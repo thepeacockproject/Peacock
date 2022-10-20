@@ -53,3 +53,14 @@ Thank you to people who have contributed!
 ## License
 
 Peacock is under the AGPL-3.0 license, see the license file for more info.
+
+## Credits
+
+Peacock started off as a fork
+of [LocalGhost](https://gitlab.com/grappigegovert/LocalGhost)
+by grappigegovert, and has since been rewritten in TypeScript, and a whole host
+of new features have been added. The codebase has been relicensed to AGPL-3.0
+with explicit permission from grappigegovert.
+
+The game is owned by [IO Interactive](https://ioi.dk), and is not affiliated
+with this project in any way.
