@@ -1,0 +1,222 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "_comment": "shotgun (901a3b51-51a0-4236-bdf2-23d20696b358)",
+                "Id": "5c365026-8a1b-4e32-a831-af1e262e86bc",
+                "Type": "statemachine",
+                "ObjectiveType": "custom",
+                "Category": "primary",
+                "Image": "images/unlockables/item_perspective_901a3b51-51a0-4236-bdf2-23d20696b358_0.jpg",
+                "IsHidden": false,
+                "BriefingName": "Shotgun",
+                "BriefingText": "Retrieve the Shotgun, and don't drop it.",
+                "LongBriefingText": "Retrieve the Shotgun, and don't drop it.",
+                "UpdateActivationWhileCompleted": true,
+                "HUDTemplate": {
+                    "display": "Retrieve the shotgun, don't drop it",
+                    "iconType": 17
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "Targets": ["901a3b51-51a0-4236-bdf2-23d20696b358"]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "901a3b51-51a0-4236-bdf2-23d20696b358"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        },
+                        "Success": {
+                            "ItemDropped": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "901a3b51-51a0-4236-bdf2-23d20696b358"
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "evidence",
+                "Id": "97d99298-90bb-4fb9-80a6-1642572ff129",
+                "Type": "statemachine",
+                "ObjectiveType": "custom",
+                "Category": "primary",
+                "Image": "images/contracts/gamechangers/Gamechanger_Global_BigBrother.jpg",
+                "IsHidden": false,
+                "ExcludeFromScoring": true,
+                "BriefingName": "Evidence",
+                "BriefingText": "Destroy the evidence recorders in the security room.",
+                "LongBriefingText": "Destroy the evidence recorder in the security room.",
+                "HUDTemplate": {
+                    "display": "Destroy the evidence recorder in the security room",
+                    "iconType": 17
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "Targets": ["e29d8ce5-64d6-4207-a55d-ebe5e84b16b3"]
+                    },
+                    "States": {
+                        "Start": {
+                            "setpieces": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "e29d8ce5-64d6-4207-a55d-ebe5e84b16b3"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "fire alarm",
+                "Type": "statemachine",
+                "ObjectiveType": "custom",
+                "ExcludeFromScoring": true,
+                "Image": "images/contracts/escalation/flumpybuns_alarm.png",
+                "Id": "7e1fbdee-1f0c-4b1b-840c-f5d7e70f7977",
+                "BriefingName": "Pull the fire alarm in Parking Security.",
+                "BriefingText": "Pull the fire alarm in Parking Security.",
+                "HUDTemplate": {
+                    "display": "Pull the fire alarm in Parking Security"
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Context": {
+                        "Targets": ["b51c226a-abc4-44e9-a520-5bf7c31180a4"]
+                    },
+                    "States": {
+                        "Start": {
+                            "setpieces": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "b51c226a-abc4-44e9-a520-5bf7c31180a4"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Sam Williams - b9896f90-aa45-45fa-859b-f5304bba41d4",
+                "Type": "statemachine",
+                "Id": "25aaeb5c-df4a-493d-8ed5-bbfcbf32042b",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository b9896f90-aa45-45fa-859b-f5304bba41d4).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": "Eliminate Sam Williams with a Shotgun"
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["b9896f90-aa45-45fa-859b-f5304bba41d4"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "b9896f90-aa45-45fa-859b-f5304bba41d4"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitIsHitmanSuit",
+                                                    true
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillMethodBroad",
+                                                    "shotgun"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "b9896f90-aa45-45fa-859b-f5304bba41d4"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "TargetConditions": [
+                    {
+                        "Type": "hitmansuit",
+                        "RepositoryId": "fa174084-2b74-4654-8673-b45678367095",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "killmethod",
+                        "HardCondition": true,
+                        "KillMethod": "shotgun"
+                    }
+                ]
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [
+            "3db72bb5-63d6-47fe-9332-d7ea3c195e06",
+            "054a5ac6-59e1-42ed-885a-30c65f446e72"
+        ],
+        "MandatoryLoadout": []
+    },
+    "Metadata": {
+        "Id": "2d1bada4-aa46-4954-8cf5-684989f1668a",
+        "Title": "UI_PEACOCK_FLUMPYBUNS2",
+        "Description": "",
+        "Type": "escalation",
+        "ScenePath": "assembly:/_pro/scenes/missions/miami/scene_flamingo.entity",
+        "Location": "LOCATION_MIAMI",
+        "InGroup": "448d89e8-2026-43e3-86f0-205018cbd87e",
+        "GroupObjectiveDisplayOrder": [
+            {
+                "Id": "25aaeb5c-df4a-493d-8ed5-bbfcbf32042b",
+                "IsNew": true
+            },
+            {
+                "Id": "7e1fbdee-1f0c-4b1b-840c-f5d7e70f7977",
+                "IsNew": true
+            }
+        ],
+        "TileImage": "images/contracts/escalation/contractescalation_flumpybuns.png"
+    },
+    "UserData": {}
+}

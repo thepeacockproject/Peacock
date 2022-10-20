@@ -1,0 +1,511 @@
+{
+    "$datacontext": {
+        "in": "$.",
+        "datavalues": {
+            "IsMatchmaking": {
+                "$or": [
+                    "$isnullorempty $.@global.args.multiplayer-action",
+                    "$eq ($.@global.args.multiplayer-action,matchmaking)"
+                ]
+            },
+            "ShowMatchmaking": {
+                "$or": [
+                    "$isnullorempty $.@global.args.multiplayer-action",
+                    {
+                        "$and": [
+                            "$not $not $.@global.OpenActionDone",
+                            "$eq ($.@global.args.multiplayer-action,matchmaking)"
+                        ]
+                    }
+                ]
+            },
+            "ShowInvite": {
+                "$or": [
+                    "$isnullorempty $.@global.args.multiplayer-action",
+                    "$eq ($.@global.args.multiplayer-action,invite)"
+                ]
+            },
+            "NatTypeStrictDescription": {
+                "$loc": {
+                    "key": "NETWORK_WARNING_NAT_DESC",
+                    "data": {
+                        "$if $eq($platform,orbis)": {
+                            "$then": "$loc NETWORK_NAT_TYPE_ORBIS_STRICT",
+                            "$else": "$loc NETWORK_NAT_TYPE_DURANGO_STRICT"
+                        }
+                    }
+                }
+            }
+        },
+        "do": {
+            "id": "lobby_child_context",
+            "controller": "headless-context",
+            "attachcontentonlyonactivate": false,
+            "deactivatechildondeselect": false,
+            "resetpreviouschildselectiononactivate": true,
+            "manualactivechild": {
+                "$switch $multiplayerlobbystate": [
+                    {
+                        "case": "lobby-state-ready",
+                        "return": "context_start"
+                    },
+                    {
+                        "case": "lobby-state-matchmaking",
+                        "return": "context_matchmaking"
+                    },
+                    {
+                        "case": "lobby-state-awaiting-players",
+                        "return": "context_disabled"
+                    },
+                    {
+                        "case": "lobby-state-awaiting-player-ready",
+                        "return": "context_ready"
+                    },
+                    {
+                        "case": "lobby-state-player-ready",
+                        "return": "context_ready"
+                    },
+                    {
+                        "case": "lobby-awaiting-game-start",
+                        "return": "context_gamestart"
+                    },
+                    {
+                        "default": "context_disabled"
+                    }
+                ]
+            },
+            "pressable": false,
+            "selectable": true,
+            "children": [
+                {
+                    "id": "context_disabled",
+                    "controller": "headless-contextitem",
+                    "pressable": false,
+                    "selectable": true,
+                    "col": 0,
+                    "row": 0,
+                    "children": [
+                        {
+                            "controller": "container",
+                            "selectable": true,
+                            "pressable": false,
+                            "col": 0,
+                            "actions": {
+                                "activated": {
+                                    "set-value": {
+                                        "target": "$.@global.CurrentBackgroundLayer",
+                                        "value": "images/backgrounds/holster.png"
+                                    }
+                                }
+                            },
+                            "children": [
+                                {
+                                    "$datacontext": {
+                                        "in": "$.",
+                                        "datavalues": {
+                                            "Text": "$loc UI_MULTIPLAYER_SESSION_STARTING_PLEASE_WAIT"
+                                        },
+                                        "do": {
+                                            "$include": {
+                                                "$path": "menusystem/pages/multiplayer/content/items/lobbyslim_infotext.json"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "context_start",
+                    "controller": "headless-contextitem",
+                    "pressable": false,
+                    "selectable": true,
+                    "col": 0,
+                    "row": 0,
+                    "children": [
+                        {
+                            "id": "playpagebuttons",
+                            "controller": "list",
+                            "view": "menu3.containers.ListContainer",
+                            "direction": "horizontal",
+                            "selectable": true,
+                            "col": 0,
+                            "actions": {
+                                "activated": {
+                                    "set-value": {
+                                        "target": "$.@global.CurrentBackgroundLayer",
+                                        "value": "images/backgrounds/holster.png"
+                                    }
+                                }
+                            },
+                            "data": {
+                                "direction": "horizontal"
+                            },
+                            "children": {
+                                "$if $.IsMatchmaking": {
+                                    "$then": [
+                                        {
+                                            "id": "PLANNING_BUTTON_PLAY_FIND_GAME",
+                                            "view": "menu3.basic.SimpleButtonTile",
+                                            "row": 3.25,
+                                            "visible": "$.ShowMatchmaking",
+                                            "pressable": {
+                                                "$if": {
+                                                    "$condition": {
+                                                        "$and": [
+                                                            "$.ShowMatchmaking",
+                                                            "$eq($multiplayerlobbystate,lobby-state-ready)"
+                                                        ]
+                                                    },
+                                                    "$then": true,
+                                                    "$else": false
+                                                }
+                                            },
+                                            "data": {
+                                                "header": "$loc UI_MENU_LOBBY_HEADLINE",
+                                                "title": "$loc UI_MENU_LOBBY_MATCHMAKE",
+                                                "icon": "profile"
+                                            },
+                                            "actions": {
+                                                "accept": {
+                                                    "multiplayer-matchmaking": {
+                                                        "state": "start"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ],
+                                    "$else": [
+                                        {
+                                            "id": "PLANNING_BUTTON_PLAY_INVITE",
+                                            "view": "menu3.basic.SimpleButtonTile",
+                                            "row": 0,
+                                            "visible": "$.ShowInvite",
+                                            "pressable": {
+                                                "$if": {
+                                                    "$condition": {
+                                                        "$and": [
+                                                            "$.ShowInvite",
+                                                            "$eq($multiplayerlobbystate,lobby-state-ready)"
+                                                        ]
+                                                    },
+                                                    "$then": true,
+                                                    "$else": false
+                                                }
+                                            },
+                                            "data": {
+                                                "header": "$loc UI_MENU_LOBBY_HEADLINE",
+                                                "title": "$loc UI_MENU_LOBBY_INVITEPLAYER",
+                                                "icon": "livetilenews"
+                                            },
+                                            "actions": {
+                                                "accept": {
+                                                    "multiplayer-friend-invite": {}
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "view": "menu3.basic.StateText",
+                                            "row": 1.7,
+                                            "col": 0.147,
+                                            "selectable": false,
+                                            "pressable": false,
+                                            "data": {
+                                                "text": "$loc UI_MENU_LOBBY_STATE_AWAITING_PLAYERS",
+                                                "backgroundoverflow": 26,
+                                                "isdone": false
+                                            }
+                                        },
+                                        {
+                                            "controller": "container",
+                                            "pressable": false,
+                                            "selectable": false,
+                                            "row": -0.38,
+                                            "col": 0,
+                                            "children": [
+                                                {
+                                                    "$include": {
+                                                        "$path": "menusystem/pages/multiplayer/content/items/lobbyslim_natinfo.json"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": "context_matchmaking",
+                    "controller": "headless-contextitem",
+                    "pressable": false,
+                    "selectable": true,
+                    "col": 0,
+                    "row": 0,
+                    "children": [
+                        {
+                            "id": "matchmaking",
+                            "controller": "container",
+                            "selectable": true,
+                            "pressable": false,
+                            "col": 0,
+                            "actions": {
+                                "activated": {
+                                    "set-value": {
+                                        "target": "$.@global.CurrentBackgroundLayer",
+                                        "value": "images/backgrounds/holster.png"
+                                    }
+                                }
+                            },
+                            "children": [
+                                {
+                                    "view": "menu3.basic.StateText",
+                                    "row": 1.7,
+                                    "col": 0.147,
+                                    "selectable": true,
+                                    "pressable": false,
+                                    "data": {
+                                        "text": "$loc UI_MENU_LOBBY_STATE_AWAITING_MATCHMAKING",
+                                        "backgroundoverflow": 26,
+                                        "isdone": false
+                                    }
+                                },
+                                {
+                                    "$datacontext": {
+                                        "in": "$.",
+                                        "datavalues": {
+                                            "Text": "$formatstring {$loc UI_MENU_LOBBY_STATE_AWAITING_ELAPSED} <font face=\"$global\">{$multiplayermatchmakingtime}</font>"
+                                        },
+                                        "do": {
+                                            "$include": {
+                                                "$path": "menusystem/pages/multiplayer/content/items/lobbyslim_infotext.json"
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "$include": {
+                                        "$path": "menusystem/pages/multiplayer/content/items/lobbyslim_natinfo.json"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "context_ready",
+                    "controller": "headless-contextitem",
+                    "pressable": false,
+                    "selectable": true,
+                    "col": 0,
+                    "row": 0,
+                    "children": [
+                        {
+                            "id": "playpagebuttons",
+                            "controller": "container",
+                            "selectable": true,
+                            "col": 0,
+                            "row": 0.25,
+                            "actions": {
+                                "activated": {
+                                    "set-value": {
+                                        "target": "$.@global.CurrentBackgroundLayer",
+                                        "value": ""
+                                    }
+                                },
+                                "actiony": {
+                                    "$if": {
+                                        "$condition": {
+                                            "$and": [
+                                                "$not $isnullorempty $multiplayerjoinedids",
+                                                "$not $eq($platform,pc)"
+                                            ]
+                                        },
+                                        "$then": {
+                                            "prompt_label": {
+                                                "$if $eq($platform,durango)": {
+                                                    "$then": "$loc UI_BUTTON_PROMPTS_ACTION_PLATFORM_PROFILE_DURANGO",
+                                                    "$else": "$loc UI_BUTTON_PROMPTS_ACTION_PLATFORM_PROFILE"
+                                                }
+                                            },
+                                            "show-player-profile-dialog": {
+                                                "profileid": "{$multiplayerinfo $multiplayerjoinedids[0]}.profileid"
+                                            }
+                                        },
+                                        "$else": null
+                                    }
+                                }
+                            },
+                            "children": [
+                                {
+                                    "id": "ready_button",
+                                    "view": "menu3.basic.SimpleButtonTile",
+                                    "row": 0,
+                                    "col": 0,
+                                    "selectable": true,
+                                    "pressable": true,
+                                    "data": {
+                                        "header": "$loc UI_MENU_LOBBY_HEADLINE",
+                                        "title": {
+                                            "$if $multiplayerisplayerready $multiplayerlocalid": {
+                                                "$then": "$loc UI_MENU_LOBBY_STATE_PLAYER_READY",
+                                                "$else": "$loc UI_MENU_LOBBY_STATE_AWAITING_PLAYER_READY"
+                                            }
+                                        },
+                                        "image": "{$item {$loadout[0]}.Item.unlockable}.image",
+                                        "icon": {
+                                            "$if $multiplayerisplayerready $multiplayerlocalid": {
+                                                "$then": "check",
+                                                "$else": "play"
+                                            }
+                                        }
+                                    },
+                                    "actions": {
+                                        "accept": {
+                                            "multiplayer-set-ready": {
+                                                "isready": "$not $multiplayerisplayerready $multiplayerlocalid",
+                                                "selectionid": -2
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "id": "localplayer",
+                                    "view": "menu3.missionend.MissionEndMultiplayerScore",
+                                    "col": 2.5,
+                                    "row": 0,
+                                    "selectable": false,
+                                    "data": {
+                                        "scale": 0.9,
+                                        "profilename": "$user $profileid",
+                                        "score": "",
+                                        "profilelevel": "{$multiplayerinfo $multiplayerlocalid}.profilelevel",
+                                        "islocalplayer": true,
+                                        "state": {
+                                            "$if $multiplayerisplayerready $multiplayerlocalid": {
+                                                "$then": "$loc UI_MENU_LOBBY_STATE_PLAYER_READY"
+                                            }
+                                        },
+                                        "iswinner": "$multiplayerisplayerready $multiplayerlocalid",
+                                        "image": {
+                                            "$if $not $isnullorempty {$repository {$item {$loadout[0]}.Item.unlockable}.repositoryid}.ImageTransparent": {
+                                                "$then": "$res {$repository {$item {$loadout[0]}.Item.unlockable}.repositoryid}.ImageTransparent",
+                                                "$else": "$res {$repository {$item {$loadout[0]}.Item.unlockable}.repositoryid}.Image"
+                                            }
+                                        },
+                                        "maskx": -100,
+                                        "masky": -140,
+                                        "maskwidth": 1000,
+                                        "maskheight": 1000
+                                    }
+                                },
+                                {
+                                    "id": "opponent",
+                                    "view": "menu3.missionend.MissionEndMultiplayerScore",
+                                    "col": 6.5,
+                                    "row": 0,
+                                    "selectable": false,
+                                    "data": {
+                                        "scale": 0.9,
+                                        "profilename": {
+                                            "$if $not $isnullorempty $multiplayerjoinedids": {
+                                                "$then": "$user {$multiplayerinfo $multiplayerjoinedids[0]}.profileid",
+                                                "$else": null
+                                            }
+                                        },
+                                        "score": "",
+                                        "profilelevel": "{$multiplayerinfo $multiplayerjoinedids[0]}.profilelevel",
+                                        "islocalplayer": false,
+                                        "state": {
+                                            "$if $multiplayerisplayerready $multiplayerjoinedids[0]": {
+                                                "$then": "$loc UI_MENU_LOBBY_STATE_PLAYER_READY"
+                                            }
+                                        },
+                                        "iswinner": "$multiplayerisplayerready $multiplayerjoinedids[0]",
+                                        "image": {
+                                            "$if $not $isnullorempty {$repository {$multiplayerinfo $multiplayerjoinedids[0]}.disguise}.ImageTransparent": {
+                                                "$then": "$res {$repository {$multiplayerinfo $multiplayerjoinedids[0]}.disguise}.ImageTransparent",
+                                                "$else": "$res {$repository {$multiplayerinfo $multiplayerjoinedids[0]}.disguise}.Image"
+                                            }
+                                        },
+                                        "maskx": -100,
+                                        "masky": -140,
+                                        "maskwidth": 1000,
+                                        "maskheight": 1000
+                                    }
+                                },
+                                {
+                                    "id": "statistics",
+                                    "view": "menu3.missionend.MultiplayerScoreLineWithText",
+                                    "col": 6.3,
+                                    "row": -0.3,
+                                    "selectable": false,
+                                    "data": {
+                                        "text": "VS"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "context_gamestart",
+                    "controller": "headless-contextitem",
+                    "pressable": false,
+                    "selectable": true,
+                    "col": 0,
+                    "row": 0,
+                    "children": [
+                        {
+                            "id": "gamestart",
+                            "controller": "container",
+                            "selectable": true,
+                            "pressable": false,
+                            "col": 0,
+                            "actions": {
+                                "activated": {
+                                    "set-value": {
+                                        "target": "$.@global.CurrentBackgroundLayer",
+                                        "value": "images/backgrounds/holster.png"
+                                    }
+                                },
+                                "cancel": {
+                                    "prompt_enabled": false
+                                }
+                            },
+                            "children": [
+                                {
+                                    "view": "menu3.basic.StateText",
+                                    "row": 1.7,
+                                    "col": 0.147,
+                                    "selectable": true,
+                                    "pressable": false,
+                                    "data": {
+                                        "text": "$loc UI_MENU_LOBBY_STATE_AWAITING_MATCHFOUND",
+                                        "backgroundoverflow": 26,
+                                        "isdone": true
+                                    }
+                                },
+                                {
+                                    "$datacontext": {
+                                        "in": "$.",
+                                        "datavalues": {
+                                            "Text": "$loc UI_MULTIPLAYER_SESSION_STARTING_PLEASE_WAIT"
+                                        },
+                                        "do": {
+                                            "$include": {
+                                                "$path": "menusystem/pages/multiplayer/content/items/lobbyslim_infotext.json"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

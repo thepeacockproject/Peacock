@@ -1,0 +1,173 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "Id": "5b710a65-b5d0-44c4-929d-0c319979a3f2",
+                "Type": "statemachine",
+                "Category": "condition",
+                "BriefingText": "$loc UI_CONTRACT_CREATION_TUTORIAL_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_CREATE_CONTRACT_TUTORIAL_OBJ_1"
+                },
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": false
+                    }
+                },
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "Tutorial_ActivateTagObjective": [
+                                {
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "aa12167e-e757-4dbf-83fe-f02dcece5de4",
+                "Type": "statemachine",
+                "Category": "primary",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_CREATE_CONTRACT_TUTORIAL_OBJ_1"
+                },
+                "Activation": {
+                    "$eq": [
+                        "$5b710a65-b5d0-44c4-929d-0c319979a3f2",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": {
+                    "IfCompleted": {
+                        "State": "InProgress"
+                    }
+                },
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "Tags": 0
+                    },
+                    "States": {
+                        "Start": {
+                            "ActorTagged": [
+                                {
+                                    "Condition": {
+                                        "$eq": ["$Value.Tagged", true]
+                                    },
+                                    "Actions": {
+                                        "$inc": "Tags"
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        },
+                        "Success": {
+                            "ActorTagged": [
+                                {
+                                    "Condition": {
+                                        "$eq": ["$Value.Tagged", true]
+                                    },
+                                    "Actions": {
+                                        "$inc": "Tags"
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$Value.Tagged", false]
+                                    },
+                                    "Actions": {
+                                        "$dec": "Tags"
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.Tags", 0]
+                                    },
+                                    "Transition": "Start"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "MandatoryLoadout": [
+            {
+                "Id": "FIREARMS_HERO_PISTOL_TACTICAL_ICA_19",
+                "Properties": {
+                    "LoadoutSlot": "concealedweapon",
+                    "RepositoryId": "73875794-5a86-410e-84a4-1b5b2f7e5a54"
+                }
+            },
+            {
+                "Id": "Melee_FiberWire_Descriptor",
+                "Properties": {
+                    "LoadoutSlot": "gear",
+                    "RepositoryId": "1a11a060-358c-4054-98ec-d3491af1d7c6"
+                }
+            },
+            {
+                "Id": "Tool_Coin",
+                "Properties": {
+                    "LoadoutSlot": "gear",
+                    "RepositoryId": "dda002e9-02b1-4208-82a5-cf059f3c79cf"
+                }
+            },
+            {
+                "Id": "Tool_Coin",
+                "Properties": {
+                    "LoadoutSlot": "gear",
+                    "RepositoryId": "dda002e9-02b1-4208-82a5-cf059f3c79cf"
+                }
+            },
+            {
+                "Id": "Tool_Coin",
+                "Properties": {
+                    "LoadoutSlot": "gear",
+                    "RepositoryId": "dda002e9-02b1-4208-82a5-cf059f3c79cf"
+                }
+            },
+            {
+                "Id": "Tool_Coin",
+                "Properties": {
+                    "LoadoutSlot": "gear",
+                    "RepositoryId": "dda002e9-02b1-4208-82a5-cf059f3c79cf"
+                }
+            },
+            {
+                "Id": "Tool_Coin",
+                "Properties": {
+                    "LoadoutSlot": "gear",
+                    "RepositoryId": "dda002e9-02b1-4208-82a5-cf059f3c79cf"
+                }
+            }
+        ],
+        "RecommendedLoadout": [],
+        "Bricks": [],
+        "GameChangers": []
+    },
+    "Metadata": {
+        "Id": "d7e2607c-6916-48e2-9588-976c7d8998bb",
+        "IsPublished": true,
+        "CreationTimestamp": "2015-11-06T12:07:55.3015599Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_CREATION_TUTORIAL_TITLE",
+        "Description": "UI_CONTRACT_CREATION_TUTORIAL_DESC",
+        "CodeName_Hint": "Contracts Creation Tutorial",
+        "Location": "LOCATION_ICA_FACILITY_SHIP",
+        "ScenePath": "assembly:/_pro/scenes/missions/thefacility/_scene_mission_polarbear_002_contracts_creation_tutorial.entity",
+        "TileImage": "images/contracts/tutorial_contract_creation/tile_tutorial_contract_creation.jpg",
+        "Type": "creation",
+        "Release": "1.0.x",
+        "RequiredUnlockable": "ACCESS_HIT_POLARBEAR_MODULE_002B",
+        "PublishingDisabled": true,
+        "LastUpdate": "2021-03-11T13:19:13.5855127Z",
+        "PublicId": "099150029647"
+    },
+    "UserData": {}
+}

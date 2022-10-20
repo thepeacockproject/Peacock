@@ -1,0 +1,52 @@
+{
+    "Contracts": {
+        "Events": {
+            "PollingTime": 20,
+            "PollingRandomTime": 2,
+            "Enabled": {
+                "ContractBegins": true,
+                "TargetKilled": true,
+                "CorrectWeaponUsed": true,
+                "CorrectDisguiseUsed": true,
+                "CorrectLocationUsed": true
+            },
+            "Disabled": {
+                "AI_STATE": true,
+                "InstinctActivated": true,
+                "GainActionXP": true,
+                "OpenDoor": true,
+                "GameTension_Ambient": true,
+                "GameTension_LowAlert": true,
+                "AgilityRoute": true,
+                "TrespassingStarted": true,
+                "TrespassingEnded": true,
+                "CoverUsed": true,
+                "AIDialog": true
+            }
+        }
+    },
+    "Online": {
+        "BlobSignatureRenewalMinutes": 5.0,
+        "BlobSignatureRenewalCooldownSeconds": 30.0,
+        "GPSTokenRenewalMinutes": 5.0,
+        "GPSTokenRenewalCooldownSeconds": 30.0,
+        "DefaultHttpTimeout": 30.0,
+        "WebSocketsRoute": "authentication/ws",
+        "DefaultWebSocketTimeout": 30.0,
+        "WebSocketsEnabled": false,
+        "DefaultAdaptiveHttpTimeout": {
+            "timeout_s": 99.0,
+            "speed_kbs": 50.0,
+            "enabled": true
+        }
+    },
+    "Metrics": {
+        "VerboseMetricsInterval": 5000.0,
+        "Verbosity": {
+            "default": 1.0,
+            "MenuMetric.hub": 1.0
+        },
+        "Denied": "AI_STATE,InstinctActivated,GainActionXP,OpenDoor,GameTension_Ambient,GameTension_LowAlert,AgilityRoute,TrespassingStarted,TrespassingEnded,CoverUsed,AIDialog,OpportunityStageEvent,OpportunityEvents,NPC_Distracted,Witness,setpieces,Spotted,ItemPickedUp",
+        "PathValueAllowed": "MenuMetric:Properties.Context.page:hub,MenuMetric:Properties.Context.page:planning,MenuMetric:Properties.Context.page:logbook,MenuMetric:Properties.Context.page:statistics,MenuMetric:Properties.Context.page:credits,MenuMetric:Properties.Context.page:video"
+    }
+}

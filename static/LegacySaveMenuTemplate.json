@@ -1,0 +1,411 @@
+{
+    "onpageopened": {
+        "set-selected": {
+            "target": "$formatstring Slot_{$.LastSlot}"
+        }
+    },
+    "buttons": [
+        {
+            "actiontype": "accept",
+            "actionlabel": "$loc UI_BUTTON_PROMPTS_ACTION_SELECT"
+        },
+        {
+            "actiontype": "cancel",
+            "actionlabel": "$loc UI_BUTTON_PROMPTS_ACTION_BACK"
+        }
+    ],
+    "body": {
+        "controller": "list",
+        "actions": {
+            "select": {
+                "select-category": {}
+            }
+        },
+        "children": [
+            {
+                "controller": "group",
+                "id": "headline_container",
+                "row": 4.25,
+                "col": 0,
+                "selectable": false,
+                "pressable": false,
+                "_comment": "the container that will hold the HeadlineElement. It will show info on whatever item is selected",
+                "children": {
+                    "id": "headline_element",
+                    "view": "menu3.basic.HeadlineElement"
+                }
+            },
+            {
+                "id": "data_list",
+                "controller": "list"
+            },
+            {
+                "view": "menu3.containers.ScrollingTabsContainer",
+                "direction": "horizontal",
+                "data": {
+                    "direction": "horizontal"
+                },
+                "_comment": "note the below two fields, the container tells the category controller which container is to be used",
+                "controller": "category",
+                "id": "category_container",
+                "container": "data_list",
+                "children": {
+                    "view": "menu3.basic.CategoryElement",
+                    "data": {
+                        "title": "$loc UI_DIALOG_SAVE_GAME",
+                        "icon": "stashpointempty"
+                    },
+                    "children": [
+                        {
+                            "controller": "group",
+                            "row": 1,
+                            "pages": true,
+                            "nrows": 3,
+                            "ncols": 10,
+                            "children": [
+                                {
+                                    "view": "menu3.basic.MenuTileSmall",
+                                    "nrows": 1.5,
+                                    "ncols": 2,
+                                    "pressable": false,
+                                    "selectable": false,
+                                    "data": {
+                                        "$mergeobjects": [
+                                            {
+                                                "setassaveslotheader": true,
+                                                "header": "$loc UI_MENU_PAGE_SAVELOAD_MANUAL",
+                                                "title": "$loc UI_MENU_PAGE_SAVELOAD_SAVESLOTS",
+                                                "icon": "savemanual"
+                                            },
+                                            {
+                                                "$if $eqs ($($arg Contract).Metadata.Difficulty,pro1)": {
+                                                    "$then": {
+                                                        "$if $arg _savelimitexceeded": {
+                                                            "$then": {
+                                                                "saveslotheaderdata": {
+                                                                    "disable": true,
+                                                                    "infotitle": "$loc UI_MENU_PAGE_SAVELOAD_LIMIT_REACHED_TITLE",
+                                                                    "infoicon": "warning"
+                                                                }
+                                                            },
+                                                            "$else": {
+                                                                "saveslotheaderdata": {
+                                                                    "disable": false,
+                                                                    "infotitle": "$loc UI_MENU_PAGE_SAVELOAD_LIMIT_TITLE",
+                                                                    "infotext": "$loc UI_MENU_PAGE_SAVELOAD_LIMIT_DESCRIPTION",
+                                                                    "infoicon": "warning"
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "$else": null
+                                                }
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "view": "menu3.basic.MenuTileSmall",
+                                    "nrows": 1.5,
+                                    "ncols": 2,
+                                    "pressable": false,
+                                    "selectable": false,
+                                    "data": {
+                                        "$mergeobjects": [
+                                            {
+                                                "setassaveslotheader": true,
+                                                "header": "$loc UI_MENU_PAGE_SAVELOAD_AUTO",
+                                                "title": "$loc UI_MENU_PAGE_SAVELOAD_SAVESLOTS",
+                                                "icon": "saveauto"
+                                            },
+                                            {
+                                                "$if $eqs ($($arg Contract).Metadata.Difficulty,pro1)": {
+                                                    "$then": {
+                                                        "saveslotheaderdata": {
+                                                            "disable": true,
+                                                            "infotext": "$loc UI_MENU_PAGE_SAVELOAD_AUTOSAVE_DISABLED_DESCRIPTION"
+                                                        }
+                                                    },
+                                                    "$else": null
+                                                }
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "controller": "group",
+                                    "view": "menu3.containers.ScrollingListContainer",
+                                    "direction": "horizontal",
+                                    "data": {
+                                        "direction": "horizontal",
+                                        "forceMask": true,
+                                        "maskwidthoffset": 400,
+                                        "maskstartleftoffset": 40,
+                                        "masktopoffset": 40,
+                                        "maskheightoffset": 40,
+                                        "overflowscrolling": "0.3",
+                                        "outsidemaskscrolling": true
+                                    },
+                                    "ncols": 8,
+                                    "nrows": 3,
+                                    "pages": true,
+                                    "id": "scroll-list",
+                                    "children": {
+                                        "$each $.Savegames": {
+                                            "view": "menu3.basic.LoadSaveTileSmall",
+                                            "nrows": 1.5,
+                                            "ncols": 2,
+                                            "id": "$formatstring Slot_{$.Metadata.Slot}",
+                                            "pressable": {
+                                                "$switch $.Metadata.Type": [
+                                                    {
+                                                        "case": "auto",
+                                                        "return": false
+                                                    },
+                                                    {
+                                                        "default": "$not $arg _savelimitexceeded"
+                                                    }
+                                                ]
+                                            },
+                                            "data": {
+                                                "$if $.Metadata.Occupied": {
+                                                    "$then": {
+                                                        "$if": {
+                                                            "$condition": {
+                                                                "$and": [
+                                                                    "$.Metadata.Valid",
+                                                                    "$not $.Metadata.Invalidated"
+                                                                ]
+                                                            },
+                                                            "$then": {
+                                                                "disable": {
+                                                                    "$switch $.Metadata.Type": [
+                                                                        {
+                                                                            "case": "auto",
+                                                                            "return": true
+                                                                        },
+                                                                        {
+                                                                            "default": "$arg _savelimitexceeded"
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                "disabletext": {
+                                                                    "$switch $.Metadata.Type": [
+                                                                        {
+                                                                            "case": "auto",
+                                                                            "return": "$formatstring {$loc UI_MENU_PAGE_SAVELOAD_AUTOSAVE_SELECT_QUICK}<br>{$loc UI_MENU_PAGE_SAVELOAD_AUTOSAVE_SLOT}"
+                                                                        },
+                                                                        {
+                                                                            "default": "$formatstring {$loc UI_MENU_PAGE_SAVELOAD_LIMIT_REACHED_DESCRIPTION}<br>{$loc UI_MENU_PAGE_SAVELOAD_LIMIT_DESCRIPTION}"
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                "timestamp": "$.Metadata.TimestampString",
+                                                                "header": {
+                                                                    "$switch $.UserCentricContract.Contract.Metadata.Location": [
+                                                                        {
+                                                                            "case": null,
+                                                                            "return": ""
+                                                                        },
+                                                                        {
+                                                                            "default": "$loc $formatstring UI_{$.UserCentricContract.Contract.Metadata.Location}_CITY"
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                "title": {
+                                                                    "$switch $.UserCentricContract.Contract.Metadata.Location": [
+                                                                        {
+                                                                            "case": null,
+                                                                            "return": "$loc UI_MENU_PAGE_SAVELOAD_OCCUPIED_SAVE_SLOT"
+                                                                        },
+                                                                        {
+                                                                            "default": "$loc $.UserCentricContract.Contract.Metadata.Title"
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                "occupied": "$.Metadata.Occupied",
+                                                                "image": {
+                                                                    "$savegameimage": {
+                                                                        "slot": "$.Metadata.Slot",
+                                                                        "type": "$.Metadata.Type"
+                                                                    }
+                                                                },
+                                                                "icon": "mission",
+                                                                "online": "$.Metadata.Online",
+                                                                "useronline": "$arg IsOnline",
+                                                                "valid": "$.Metadata.Valid",
+                                                                "difficulty": "$.UserCentricContract.Contract.Metadata.Difficulty"
+                                                            },
+                                                            "$else": {
+                                                                "disableautosave": {
+                                                                    "$switch $.Metadata.Type": [
+                                                                        {
+                                                                            "case": "auto",
+                                                                            "return": true
+                                                                        },
+                                                                        {
+                                                                            "default": false
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                "timestamp": "$.Metadata.TimestampString",
+                                                                "header": "",
+                                                                "title": {
+                                                                    "$if $not $.Metadata.Valid": {
+                                                                        "$then": "$loc UI_DIALOG_CORRUPT_SAVE_FILE_TITLE",
+                                                                        "$else": "$loc UI_DIALOG_INVALID_SAVE_FILE_TITLE"
+                                                                    }
+                                                                },
+                                                                "occupied": "$.Metadata.Occupied",
+                                                                "image": "$res images/ui/tiles/corrupted.jpg",
+                                                                "icon": "corrupt",
+                                                                "online": true,
+                                                                "useronline": true,
+                                                                "valid": false
+                                                            }
+                                                        }
+                                                    },
+                                                    "$else": {
+                                                        "disable": {
+                                                            "$switch $.Metadata.Type": [
+                                                                {
+                                                                    "case": "auto",
+                                                                    "return": true
+                                                                },
+                                                                {
+                                                                    "default": "$arg _savelimitexceeded"
+                                                                }
+                                                            ]
+                                                        },
+                                                        "disabletext": {
+                                                            "$switch $.Metadata.Type": [
+                                                                {
+                                                                    "case": "auto",
+                                                                    "return": "$formatstring {$loc UI_MENU_PAGE_SAVELOAD_AUTOSAVE_SELECT_QUICK}<br>{$loc UI_MENU_PAGE_SAVELOAD_AUTOSAVE_SLOT}"
+                                                                },
+                                                                {
+                                                                    "default": "$formatstring {$loc UI_MENU_PAGE_SAVELOAD_LIMIT_REACHED_DESCRIPTION}<br>{$loc UI_MENU_PAGE_SAVELOAD_LIMIT_DESCRIPTION}"
+                                                                }
+                                                            ]
+                                                        },
+                                                        "title": "$loc UI_MENU_PAGE_SAVELOAD_EMPTY_SAVE_SLOT",
+                                                        "occupied": "$.Metadata.Occupied",
+                                                        "online": true,
+                                                        "image": "$res images/ui/tiles/empty_saveslot.jpg",
+                                                        "icon": "mission"
+                                                    }
+                                                }
+                                            },
+                                            "actions": {
+                                                "select": {
+                                                    "replace-children": {
+                                                        "target": "headline_container",
+                                                        "children": [
+                                                            {
+                                                                "view": "menu3.basic.ItemHeadlineElement",
+                                                                "data": {
+                                                                    "$if $.Metadata.Occupied": {
+                                                                        "$then": {
+                                                                            "$if": {
+                                                                                "title": {
+                                                                                    "$if $not $.Metadata.Valid": {
+                                                                                        "$then": "$loc UI_DIALOG_CORRUPT_SAVE_FILE_TITLE",
+                                                                                        "$else": "$loc UI_DIALOG_INVALID_SAVE_FILE_TITLE"
+                                                                                    }
+                                                                                },
+                                                                                "$then": {
+                                                                                    "$if $isnull $.UserCentricContract.Contract.Metadata.Location": {
+                                                                                        "$then": {
+                                                                                            "header": "",
+                                                                                            "title": "$loc UI_MENU_PAGE_SAVELOAD_OCCUPIED_SAVE_SLOT",
+                                                                                            "typeicon": "mission"
+                                                                                        },
+                                                                                        "$else": {
+                                                                                            "header": "$loc $formatstring UI_{$.UserCentricContract.Contract.Metadata.Location}_CITY",
+                                                                                            "title": "$loc $.UserCentricContract.Contract.Metadata.Title",
+                                                                                            "typeicon": "mission"
+                                                                                        }
+                                                                                    }
+                                                                                },
+                                                                                "$else": {
+                                                                                    "header": "",
+                                                                                    "title": {
+                                                                                        "$if $not $.Metadata.Valid": {
+                                                                                            "$then": "$loc UI_DIALOG_CORRUPT_SAVE_FILE_TITLE",
+                                                                                            "$else": "$loc UI_DIALOG_INVALID_SAVE_FILE_TITLE"
+                                                                                        }
+                                                                                    },
+                                                                                    "typeicon": "corrupt"
+                                                                                }
+                                                                            }
+                                                                        },
+                                                                        "$else": {
+                                                                            "header": "",
+                                                                            "title": "$loc UI_MENU_PAGE_SAVELOAD_EMPTY_SAVE_SLOT",
+                                                                            "typeicon": "mission"
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                "deselect": {
+                                                    "replace-children": {
+                                                        "target": "headline_container",
+                                                        "children": []
+                                                    }
+                                                },
+                                                "accept": {
+                                                    "$if $.Metadata.Occupied": {
+                                                        "$then": {
+                                                            "show-modal": {
+                                                                "config": {
+                                                                    "type": "online",
+                                                                    "buttons": [
+                                                                        "$loc UI_DIALOG_CONFIRM",
+                                                                        {
+                                                                            "label": "$loc UI_DIALOG_CANCEL",
+                                                                            "type": "cancel"
+                                                                        }
+                                                                    ],
+                                                                    "data": {
+                                                                        "title": "$loc UI_DIALOG_OVERWRITE_SAVE_FILE_TITLE",
+                                                                        "description": {
+                                                                            "$loc": {
+                                                                                "key": "UI_DIALOG_CONFIRM_TEXT",
+                                                                                "data": "$loc UI_DIALOG_ACTION_OVERWRITE_SAVE"
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                },
+                                                                "onbutton": [
+                                                                    {
+                                                                        "save-game": {
+                                                                            "slot": "$.Metadata.Slot"
+                                                                        },
+                                                                        "request-back": {}
+                                                                    }
+                                                                ]
+                                                            }
+                                                        },
+                                                        "$else": {
+                                                            "save-game": {
+                                                                "slot": "$.Metadata.Slot"
+                                                            },
+                                                            "request-back": {}
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}

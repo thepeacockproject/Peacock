@@ -1,0 +1,268 @@
+{
+    "Data": {
+        "EnableExits": {
+            "$eq": [
+                "$539e4f17-56f0-4f97-bfb4-23f99e3f17db",
+                "$ac25739d-e541-440e-8b2f-ab838dd87996",
+                "$cd7a224c-5ab0-4b4e-b7b9-106ad0f7f47d",
+                "Completed"
+            ]
+        },
+        "Objectives": [
+            {
+                "Type": "statemachine",
+                "Id": "539e4f17-56f0-4f97-bfb4-23f99e3f17db",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository 905e7cd5-1dd9-4ce3-bec2-a0120b921308).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 905e7cd5-1dd9-4ce3-bec2-a0120b921308).Name"
+                        }
+                    }
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["905e7cd5-1dd9-4ce3-bec2-a0120b921308"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "905e7cd5-1dd9-4ce3-bec2-a0120b921308"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "ac25739d-e541-440e-8b2f-ab838dd87996",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository 50cea951-bb99-431d-aa22-9a31afcaec59).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 50cea951-bb99-431d-aa22-9a31afcaec59).Name"
+                        }
+                    }
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["50cea951-bb99-431d-aa22-9a31afcaec59"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "50cea951-bb99-431d-aa22-9a31afcaec59"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "cd7a224c-5ab0-4b4e-b7b9-106ad0f7f47d",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository 38c1700e-0247-4c09-8985-d98573a39f24).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 38c1700e-0247-4c09-8985-d98573a39f24).Name"
+                        }
+                    }
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["38c1700e-0247-4c09-8985-d98573a39f24"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "38c1700e-0247-4c09-8985-d98573a39f24"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "5976d560-c546-40a4-9d3a-1d044f32168b",
+                "BriefingText": "You filthy cheater",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "ItemDropped": {
+                                "Condition": {
+                                    "$or": [
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "ae158afc-2df1-474b-abc8-1e58ed69bb8d"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "7e8ba667-ac70-4591-9bde-c7d846eacbb2"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "419bc68a-a76e-461d-ba92-327b9a25a182"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "83a78b07-1c9a-43a5-802d-35d97e537769"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "09268e60-216a-4ccf-8e41-c3cc45391222"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "3a05dae6-d904-4a18-8196-de2d46e4c5d4"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "271eb4ce-7297-449d-95d4-20cd56dffd80"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            },
+                            "ItemRemovedFromInventory": {
+                                "Condition": {
+                                    "$or": [
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "ae158afc-2df1-474b-abc8-1e58ed69bb8d"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "7e8ba667-ac70-4591-9bde-c7d846eacbb2"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "419bc68a-a76e-461d-ba92-327b9a25a182"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "83a78b07-1c9a-43a5-802d-35d97e537769"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "09268e60-216a-4ccf-8e41-c3cc45391222"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "3a05dae6-d904-4a18-8196-de2d46e4c5d4"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "271eb4ce-7297-449d-95d4-20cd56dffd80"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "GameChangers": [],
+        "EnableSaving": false,
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/marrakesh/mission_marrakesh_hottoddy.brick",
+            "assembly:/_pro/scenes/missions/marrakesh/mission_marrakesh_screwdriver.brick",
+            "assembly:/_pro/scenes/missions/marrakesh/mission_marrakesh_cosmopolitan.brick"
+        ]
+    },
+    "Metadata": {
+        "Title": "The Trinity",
+        "Description": "No additional objectives! Just kill them all!\r\rCreated by WINNODD",
+        "Entitlements": ["H1_LEGACY_STANDARD"],
+        "ScenePath": "assembly:/_pro/scenes/missions/marrakesh/_scene_spider.entity",
+        "Location": "LOCATION_MARRAKECH",
+        "IsPublished": true,
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "GameVersion": "8.9.0.0",
+        "ServerVersion": "8.9.0.0",
+        "Type": "featured",
+        "Id": "6275f476-b90a-4f79-abf3-bf30af020ad8",
+        "TileImage": "images/contracts/featured/winnodd1.jpg",
+        "CreationTimestamp": "2022-08-19T12:25:48.852Z"
+    },
+    "UserData": {}
+}

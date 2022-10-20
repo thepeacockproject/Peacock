@@ -1,0 +1,225 @@
+{
+    "Data": {
+        "EnableSaving": true,
+        "Objectives": [
+            {
+                "Id": "1cb0d79c-1805-4e91-bc97-97469e616832",
+                "Category": "primary",
+                "ObjectiveType": "setpiece",
+                "Image": "images/actors/Flamingo_Sierra_Knox.jpg",
+                "BriefingName": "$loc UI_CONTRACT_FLAMINGO_SIERRA_NAME",
+                "BriefingText": "$loc UI_CONTRACT_FLAMINGO_SIERRA_OBJ",
+                "LongBriefingText": "$loc c0ab162c-1502-40d5-801f-c5471289d6b7_SierraKnox_Description",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_FLAMINGO_SIERRA_OBJ"
+                },
+                "DisplayAsKillObjective": true,
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {
+                        "Targets": ["af77ead8-72d4-461c-adb8-dd55146d029f"]
+                    },
+                    "States": {
+                        "Start": {
+                            "SierraLeftCar": {
+                                "Actions": {
+                                    "$pushunique": [
+                                        "Targets",
+                                        "c0ab162c-1502-40d5-801f-c5471289d6b7"
+                                    ],
+                                    "$remove": [
+                                        "Targets",
+                                        "af77ead8-72d4-461c-adb8-dd55146d029f"
+                                    ]
+                                }
+                            },
+                            "Pre_Kill": {
+                                "Actions": {
+                                    "$pushunique": [
+                                        "Targets",
+                                        "c0ab162c-1502-40d5-801f-c5471289d6b7"
+                                    ],
+                                    "$remove": [
+                                        "Targets",
+                                        "af77ead8-72d4-461c-adb8-dd55146d029f"
+                                    ]
+                                }
+                            },
+                            "Kill": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "c0ab162c-1502-40d5-801f-c5471289d6b7"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "faa743ed-1d68-4329-a18e-597a63428dc8",
+                "Category": "primary",
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "ee454990-0c4b-49e5-9572-a67887325283"
+                    }
+                }
+            },
+            {
+                "Id": "e4b445db-bf1a-4239-acdc-83d945d198a7",
+                "Type": "statemachine",
+                "Category": "condition",
+                "ExcludeFromScoring": true,
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "TargetEscapeStarted": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "5b1534ef-7848-440c-855a-d2635663dd74",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "IgnoreIfInactive": true,
+                "Activation": {
+                    "$eq": [
+                        "$e4b445db-bf1a-4239-acdc-83d945d198a7",
+                        "Completed"
+                    ]
+                },
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "BriefingText": "$loc UI_CONTRACT_FLAMINGO_ROBERT_ESCAPED",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_FLAMINGO_ROBERT_ESCAPING"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "TargetEscapeStarted": {
+                                "Transition": "TargetIsEscaping"
+                            }
+                        },
+                        "TargetIsEscaping": {
+                            "TargetEscaped": {
+                                "Transition": "Failure"
+                            },
+                            "Kill": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "ee454990-0c4b-49e5-9572-a67887325283"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_PRO/scenes/missions/miami/mission_flamingo.brick"
+        ],
+        "DevOnlyBricks": [
+            "assembly:/_PRO/scenes/missions/miami/dev_flamingo.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/miami/vr_overrides_flamingo.brick",
+                    "assembly:/_PRO/scenes/missions/miami/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/miami/vr_overrides_flamingo.brick"
+                ]
+            }
+        ],
+        "GameChangers": [],
+        "GameChangerReferences": [],
+        "GameDifficulties": [
+            {
+                "Difficulty": "easy",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/miami/difficulty_easy_miami_flamingo.brick"
+                ]
+            },
+            {
+                "Difficulty": "normal",
+                "Bricks": []
+            },
+            {
+                "Difficulty": "hard",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/miami/difficulty_hard_miami_flamingo.brick"
+                ]
+            }
+        ],
+        "SimulationQualities": [
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/miami/scenario_flamingo_intel_6cores.brick"
+                ]
+            },
+            {
+                "Quality": "best",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/miami/scenario_flamingo_intel_8cores.brick"
+                ]
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "c1d015b4-be08-4e44-808e-ada0f387656f",
+        "IsPublished": true,
+        "TileImage": "images/contracts/flamingo/tile.jpg",
+        "BriefingVideo": "briefing_flamingo",
+        "DebriefingVideo": "debriefing_flamingo",
+        "CreationTimestamp": "2016-12-22T09:38:47.0308316Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_FLAMINGO_TITLE",
+        "Description": "UI_CONTRACT_FLAMINGO_DESC",
+        "CodeName_Hint": "Flamingo",
+        "Location": "LOCATION_MIAMI",
+        "ScenePath": "assembly:/_pro/scenes/missions/miami/scene_flamingo.entity",
+        "Type": "mission",
+        "Order": 50,
+        "Release": "2.0.x",
+        "Opportunities": [
+            "7f5ba93a-7011-4194-94c1-8413d8adb22e",
+            "b57c90e2-4f18-44e7-a2e9-4d950f519246",
+            "604e9a0c-db5c-4468-a7cd-fd0db2cab902",
+            "21c55940-a7d5-4c6f-9a76-7434e6aa0f82",
+            "97568c11-92bc-47d1-af0d-531fc138b1e4",
+            "5d9f606b-0390-4942-81f3-3b98e5e85985",
+            "0be63e06-94ad-42b2-841a-a79664c45bc9"
+        ],
+        "RequiredUnlockable": "ACCESS_HIT_FLAMINGO",
+        "Drops": ["ACCESS_HIT_HIPPO"],
+        "Entitlements": ["H2_LEGACY_STANDARD"],
+        "LastUpdate": "2022-01-20T18:29:24.3770856Z",
+        "PublicId": "011375586847"
+    },
+    "UserData": {}
+}

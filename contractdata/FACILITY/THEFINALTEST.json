@@ -1,0 +1,129 @@
+{
+    "Data": {
+        "Bricks": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/thefacility/vr_overrides_polarbear_graduation.brick"
+                ]
+            }
+        ],
+        "GameChangers": [],
+        "Objectives": [
+            {
+                "Definition": {
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["579f2544-1970-4865-afa3-ad4566e5f98d"]
+                    },
+                    "Scope": "hit",
+                    "States": {
+                        "Start": {
+                            "Kill": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "579f2544-1970-4865-afa3-ad4566e5f98d"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                },
+                "Id": "045c7a1b-0324-4cf1-8814-71e893287a41",
+                "Primary": true,
+                "BriefingText": "$loc UI_CONTRACT_POLARBEAR_GRADUATION_OBJ_KILL",
+                "Type": "statemachine",
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 579f2544-1970-4865-afa3-ad4566e5f98d).Name"
+                        }
+                    }
+                }
+            }
+        ],
+        "MandatoryLoadout": [
+            {
+                "Id": "FIREARMS_HERO_PISTOL_TACTICAL_ICA_19",
+                "Properties": {
+                    "LoadoutSlot": "concealedweapon",
+                    "RepositoryId": "73875794-5a86-410e-84a4-1b5b2f7e5a54"
+                }
+            },
+            {
+                "Id": "Melee_FiberWire_Descriptor",
+                "Properties": {
+                    "LoadoutSlot": "gear",
+                    "RepositoryId": "1a11a060-358c-4054-98ec-d3491af1d7c6"
+                }
+            },
+            {
+                "Id": "Tool_Coin",
+                "Properties": {
+                    "LoadoutSlot": "gear",
+                    "RepositoryId": "dda002e9-02b1-4208-82a5-cf059f3c79cf"
+                }
+            },
+            {
+                "Id": "Tool_Coin",
+                "Properties": {
+                    "LoadoutSlot": "gear",
+                    "RepositoryId": "dda002e9-02b1-4208-82a5-cf059f3c79cf"
+                }
+            },
+            {
+                "Id": "Tool_Coin",
+                "Properties": {
+                    "LoadoutSlot": "gear",
+                    "RepositoryId": "dda002e9-02b1-4208-82a5-cf059f3c79cf"
+                }
+            },
+            {
+                "Id": "Tool_Coin",
+                "Properties": {
+                    "LoadoutSlot": "gear",
+                    "RepositoryId": "dda002e9-02b1-4208-82a5-cf059f3c79cf"
+                }
+            },
+            {
+                "Id": "Tool_Coin",
+                "Properties": {
+                    "LoadoutSlot": "gear",
+                    "RepositoryId": "dda002e9-02b1-4208-82a5-cf059f3c79cf"
+                }
+            }
+        ],
+        "RecommendedLoadout": []
+    },
+    "Metadata": {
+        "CodeName_Hint": "Polarbear Graduation",
+        "CreationTimestamp": "2015-03-27T13:03:33.163Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Description": "UI_CONTRACT_POLARBEAR_GRADUATION_DESC",
+        "TileImage": "images/contracts/polarbear/graduation/tile.jpg",
+        "DebriefingVideo": "prologue_intermission4",
+        "Id": "ada5f2b1-8529-48bb-a596-717f75f5eacb",
+        "IsPublished": true,
+        "Location": "LOCATION_ICA_FACILITY",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/TheFacility/_Scene_Mission_Polarbear_Module_005.entity",
+        "Title": "UI_CONTRACT_POLARBEAR_GRADUATION_TITLE",
+        "Type": "tutorial",
+        "Release": "1.0.x",
+        "Drops": ["PACKAGE_PEACOCK_ACCESS_PACKAGE"],
+        "RequiredUnlockable": "ACCESS_HIT_POLARBEAR_MODULE_002B",
+        "Opportunities": [
+            "7aa939bf-7a7d-4983-9ac7-4c117e4ca9e7",
+            "2ee0504e-2e6b-48ac-b38a-7ad577a02c1a",
+            "dd238889-0e34-44eb-82db-c1b5484d388c",
+            "f7c3fc51-c6b6-4ad5-8d42-a46acaacff46"
+        ],
+        "LastUpdate": "2021-03-16T13:07:47.7596669Z",
+        "PublicId": "001265064347"
+    },
+    "UserData": {}
+}

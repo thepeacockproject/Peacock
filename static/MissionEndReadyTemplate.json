@@ -1,0 +1,27 @@
+{
+    "controller": "group",
+    "id": "mission_rewards",
+    "selectable": false,
+    "pressable": false,
+    "children": [
+        {
+            "view": "menu3.MissionRewardPage",
+            "selectable": false,
+            "pressable": false,
+            "data": {
+                "loading": true
+            }
+        }
+    ],
+    "post-load-action": {
+        "link": {
+            "page": "missionend",
+            "clearhistory": true,
+            "args": {
+                "url": "missionend",
+                "contractSessionId": "$.contractSessionId",
+                "masteryUnlockableId": "$arg MasteryUnlockableId"
+            }
+        }
+    }
+}

@@ -1,0 +1,272 @@
+{
+    "id": "playnext_data_container",
+    "controller": "list",
+    "direction": "horizontal",
+    "data": {
+        "direction": "horizontal"
+    },
+    "children": {
+        "$each $.Categories": {
+            "$if $gt ($arraysize $.Items,0)": {
+                "$then": {
+                    "$switch $.CategoryType": [
+                        {
+                            "case": "NextMission",
+                            "return": {
+                                "id": "playnext_data_categories",
+                                "controller": "list",
+                                "view": "menu3.containers.ListContainerWithHeader",
+                                "direction": "horizontal",
+                                "pressable": false,
+                                "selectable": true,
+                                "data": {
+                                    "direction": "horizontal",
+                                    "headlinetitle": "$loc $.CategoryName"
+                                },
+                                "children": {
+                                    "$each $.Items": {
+                                        "$if $eqs ($.ContentType,Contract)": {
+                                            "$then": {
+                                                "id": "element",
+                                                "view": "menu3.basic.MenuTileLarge",
+                                                "pressable": true,
+                                                "selectable": true,
+                                                "data": {
+                                                    "title": "$loc $.Content.UserCentricContract.Contract.Metadata.Title",
+                                                    "image": "$res $.Content.UserCentricContract.Contract.Metadata.TileImage",
+                                                    "header": "$loc UI_PLAYNEXT_CONTINUE_STORY_TITLE",
+                                                    "icon": "arrowright"
+                                                },
+                                                "actions": {
+                                                    "select": {
+                                                        "replace-children": {
+                                                            "target": "headline_container",
+                                                            "children": [
+                                                                {
+                                                                    "view": "menu3.basic.HeadlineElement",
+                                                                    "selectable": false,
+                                                                    "pressable": false,
+                                                                    "data": {
+                                                                        "title": "$loc $.Content.UserCentricContract.Contract.Metadata.Title",
+                                                                        "header": "$loc UI_PLAYNEXT_CONTINUE_STORY_TITLE",
+                                                                        "icon": "arrowright"
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    },
+                                                    "deselect": {
+                                                        "replace-children": {
+                                                            "target": "headline_container",
+                                                            "children": []
+                                                        }
+                                                    },
+                                                    "accept": {
+                                                        "$setup": {
+                                                            "$set CampaignName": "$.Content.CampaignInfo.CampaignName",
+                                                            "$set ContractId": "$.Content.ContractId",
+                                                            "$set IntroVideoId": "$.Content.CampaignInfo.IntroVideoId",
+                                                            "$in": {
+                                                                "set-persistent-context": {
+                                                                    "$if $not $isnull $.IntroVideoId": {
+                                                                        "$then": {
+                                                                            "target": "hub",
+                                                                            "actions": [
+                                                                                {
+                                                                                    "show-background-layers": {
+                                                                                        "show-background": false
+                                                                                    }
+                                                                                },
+                                                                                {
+                                                                                    "set-selected": {
+                                                                                        "target": "category_story"
+                                                                                    }
+                                                                                },
+                                                                                {
+                                                                                    "set-selected": {
+                                                                                        "target": "$formatstring story_category_{$.CampaignName}"
+                                                                                    }
+                                                                                },
+                                                                                {
+                                                                                    "trigger-input": {
+                                                                                        "action": "accept"
+                                                                                    }
+                                                                                },
+                                                                                {
+                                                                                    "set-selected": {
+                                                                                        "target": "$formatstring video-tile-{$.IntroVideoId}"
+                                                                                    }
+                                                                                },
+                                                                                {
+                                                                                    "set-background": ""
+                                                                                },
+                                                                                {
+                                                                                    "trigger-input": {
+                                                                                        "action": "accept"
+                                                                                    }
+                                                                                },
+                                                                                {
+                                                                                    "set-selected": {
+                                                                                        "target": "$formatstring story-tile-{$.ContractId}"
+                                                                                    }
+                                                                                },
+                                                                                {
+                                                                                    "show-background-layers": {
+                                                                                        "show-background": true
+                                                                                    }
+                                                                                }
+                                                                            ]
+                                                                        },
+                                                                        "$else": {
+                                                                            "target": "hub",
+                                                                            "actions": [
+                                                                                {
+                                                                                    "show-background-layers": {
+                                                                                        "show-background": false
+                                                                                    }
+                                                                                },
+                                                                                {
+                                                                                    "set-selected": {
+                                                                                        "target": "category_story"
+                                                                                    }
+                                                                                },
+                                                                                {
+                                                                                    "set-selected": {
+                                                                                        "target": "$formatstring story_category_{$.CampaignName}"
+                                                                                    }
+                                                                                },
+                                                                                {
+                                                                                    "trigger-input": {
+                                                                                        "action": "accept"
+                                                                                    }
+                                                                                },
+                                                                                {
+                                                                                    "set-selected": {
+                                                                                        "target": "$formatstring story-tile-{$.ContractId}"
+                                                                                    }
+                                                                                },
+                                                                                {
+                                                                                    "set-background": ""
+                                                                                },
+                                                                                {
+                                                                                    "trigger-input": {
+                                                                                        "action": "accept"
+                                                                                    }
+                                                                                },
+                                                                                {
+                                                                                    "show-background-layers": {
+                                                                                        "show-background": true
+                                                                                    }
+                                                                                }
+                                                                            ]
+                                                                        }
+                                                                    }
+                                                                },
+                                                                "exit-to-main-menu": {}
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            "$else": null
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "case": "Matchmaking",
+                            "return": {
+                                "id": "playnext_data_category_matchmaking",
+                                "controller": "list",
+                                "view": "menu3.containers.ListContainer",
+                                "direction": "horizontal",
+                                "pressable": false,
+                                "selectable": true,
+                                "data": {
+                                    "direction": "horizontal"
+                                },
+                                "children": {
+                                    "$each $.Items": {
+                                        "$if $eqs ($.ContentType,Matchmaking)": {
+                                            "$then": {
+                                                "id": "element",
+                                                "view": "menu3.basic.MenuTileLarge",
+                                                "pressable": true,
+                                                "selectable": true,
+                                                "data": {
+                                                    "title": "$loc UI_MENU_PAGE_HUB_GAMEMODE_NEWMODE",
+                                                    "image": "$res images/gamemodes/tile_multiplayer_matchmaking.jpg",
+                                                    "header": "$loc UI_MENU_PAGE_HUB_GAMEMODES",
+                                                    "icon": "arrowright"
+                                                },
+                                                "actions": {
+                                                    "select": {
+                                                        "replace-children": {
+                                                            "target": "headline_container",
+                                                            "children": [
+                                                                {
+                                                                    "view": "menu3.basic.HeadlineElement",
+                                                                    "selectable": false,
+                                                                    "pressable": false,
+                                                                    "data": {
+                                                                        "title": "$loc UI_MENU_PAGE_HUB_GAMEMODE_NEWMODE",
+                                                                        "header": "$loc UI_MENU_PAGE_HUB_GAMEMODES",
+                                                                        "icon": "arrowright"
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    },
+                                                    "deselect": {
+                                                        "replace-children": {
+                                                            "target": "headline_container",
+                                                            "children": []
+                                                        }
+                                                    },
+                                                    "accept": {
+                                                        "set-persistent-context": {
+                                                            "target": "hub",
+                                                            "actions": [
+                                                                {
+                                                                    "set-selected": {
+                                                                        "target": "category_gamemodes"
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "set-selected": {
+                                                                        "target": "gamemodes_category_newgamemode_multiplayerpage"
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "trigger-input": {
+                                                                        "action": "accept"
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "set-selected": {
+                                                                        "target": "$formatstring preset_matchmaking_{$.Content.Id}"
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        "exit-to-main-menu": {}
+                                                    }
+                                                }
+                                            },
+                                            "$else": null
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "default": null
+                        }
+                    ]
+                },
+                "$else": null
+            }
+        }
+    }
+}

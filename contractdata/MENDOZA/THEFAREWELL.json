@@ -1,0 +1,638 @@
+{
+    "Data": {
+        "EnableExits": {
+            "$eq": [
+                "$ec5a2a3e-7dad-49a0-bfdc-74e2717ad32d",
+                "$522a8f9e-9528-47f8-9dbf-624287cb45c8",
+                "$ffaa1229-2fd3-4a93-87ca-974122e2a25f",
+                "Completed"
+            ]
+        },
+        "Objectives": [
+            {
+                "_comment": "----- Eliminate The Winemaker -----",
+                "Id": "ec5a2a3e-7dad-49a0-bfdc-74e2717ad32d",
+                "UpdateActivationWhileCompleted": true,
+                "Primary": true,
+                "Activation": {
+                    "$eq": [
+                        "$fdd987fd-20e2-42f8-a28a-6420584be50c",
+                        "Completed"
+                    ]
+                },
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "57907f04-329e-4faf-b753-7e95d5c2e085"
+                    }
+                },
+                "OnInactive": {
+                    "IfCompleted": {
+                        "State": "Completed",
+                        "Visible": false
+                    }
+                },
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": true
+                    }
+                }
+            },
+            {
+                "_comment": "----- Eliminate The Herald -----",
+                "Id": "522a8f9e-9528-47f8-9dbf-624287cb45c8",
+                "UpdateActivationWhileCompleted": true,
+                "Primary": true,
+                "Activation": {
+                    "$eq": [
+                        "$fdd987fd-20e2-42f8-a28a-6420584be50c",
+                        "Completed"
+                    ]
+                },
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "651ceb9a-117f-4f8d-89dd-9b6bd2a38b5a"
+                    }
+                },
+                "OnInactive": {
+                    "IfCompleted": {
+                        "State": "Completed",
+                        "Visible": false
+                    }
+                },
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": true
+                    }
+                }
+            },
+            {
+                "_comment": "----- Find Diana Burnwood -----",
+                "Id": "fdd987fd-20e2-42f8-a28a-6420584be50c",
+                "Primary": true,
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": true,
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Image": "images/actors/Llama_Diana_Burnwood.jpg",
+                "BriefingName": "$loc UI_CONTRACT_LLAMA_DIANA_FIND_NAME",
+                "BriefingText": "$loc UI_CONTRACT_LLAMA_DIANA_FIND_OBJ",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_LLAMA_DIANA_FIND_NAME",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "display": {
+                        "iconType": 17
+                    },
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "Diana_Fail": {
+                                "Transition": "Failure"
+                            },
+                            "Diana_Find_Completed": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Do Not Eliminate Diana Burnwood -----",
+                "Id": "ffaa1229-2fd3-4a93-87ca-974122e2a25f",
+                "Primary": true,
+                "Activation": {
+                    "$eq": [
+                        "$fdd987fd-20e2-42f8-a28a-6420584be50c",
+                        "Completed"
+                    ]
+                },
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": true,
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Image": "images/actors/Llama_Diana_Burnwood.jpg",
+                "BriefingName": "$loc UI_CONTRACT_LLAMA_DIANA_NAME",
+                "BriefingText": "$loc UI_CONTRACT_LLAMA_DIANA_NAME",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_LLAMA_DIANA_NAME",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "display": {
+                        "iconType": 17
+                    },
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "Diana_Extract_Start": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Do Not Eliminate Diana Burnwood Dummy -----",
+                "Id": "636aef3d-3c15-4a5f-882a-d04a19ebbc7c",
+                "Primary": true,
+                "Activation": {
+                    "$eq": [
+                        "$fdd987fd-20e2-42f8-a28a-6420584be50c",
+                        "Completed"
+                    ]
+                },
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": false,
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    }
+                },
+                "Image": "images/actors/Llama_Diana_Burnwood.jpg",
+                "BriefingName": "$loc UI_CONTRACT_LLAMA_DIANA_NAME",
+                "BriefingText": "$loc UI_CONTRACT_LLAMA_DIANA_NAME",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_LLAMA_DIANA_NAME",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "display": {
+                        "iconType": 17
+                    },
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "Diana_Fail": {
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "76c66acd-18d7-4f93-b74f-95a6bea515d8",
+                "Type": "statemachine",
+                "Category": "condition",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": true
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    }
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "DianaMurderStarted": {
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Activation": {
+                    "$eq": ["$76c66acd-18d7-4f93-b74f-95a6bea515d8", "Failed"]
+                },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_LLAMA_TIMER_DIANAMURDER"
+                },
+                "Id": "f92b9623-6cb5-44cb-b9a2-bf483a3bfe1d",
+                "Scope": "session",
+                "Type": "statemachine",
+                "Category": "secondary",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": true
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Definition": {
+                    "ContextListeners": {
+                        "Timeout": {
+                            "type": "custom",
+                            "HUDTemplate": {
+                                "display": {
+                                    "$loc": {
+                                        "key": "UI_CONTRACT_HAWK_TIMER_TIMED_OUT",
+                                        "data": []
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "Context": {
+                        "Timeout": 1
+                    },
+                    "States": {
+                        "Start": {
+                            "BeginTimer": {
+                                "Transition": "TimerRunning"
+                            }
+                        },
+                        "TimerRunning": {
+                            "$timer": {
+                                "Condition": {
+                                    "$after": 600
+                                },
+                                "Actions": {
+                                    "$dec": "Timeout"
+                                },
+                                "Transition": "Failure"
+                            },
+                            "EndTimer": {
+                                "Transition": "Failure"
+                            },
+                            "SuccessTimer": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Dormant Laser Timer 1 -----",
+                "Id": "1420233f-fb30-4d9d-b8b3-bf97231e526b",
+                "Type": "statemachine",
+                "Category": "condition",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    }
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "LASER_TIMER_ACTIVATE": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Activation": {
+                    "$eq": [
+                        "$1420233f-fb30-4d9d-b8b3-bf97231e526b",
+                        "Completed"
+                    ]
+                },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_LLAMA_LASERTIMER_TITLE"
+                },
+                "_comment": "----- LASER TIMER 1 -----",
+                "Id": "01d97de2-bb2a-42b7-93c1-ea29c60bfd9b",
+                "Scope": "session",
+                "Type": "statemachine",
+                "Category": "secondary",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": true
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Definition": {
+                    "ContextListeners": {
+                        "Timeout": {
+                            "type": "custom",
+                            "HUDTemplate": {
+                                "display": {
+                                    "$loc": {
+                                        "key": "UI_CONTRACT_LLAMA_LASERTIMER1",
+                                        "data": []
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "Context": {
+                        "Timeout": 1
+                    },
+                    "States": {
+                        "Start": {
+                            "LASER_TIMER_ON": {
+                                "Transition": "TimerRunning"
+                            }
+                        },
+                        "TimerRunning": {
+                            "$timer": {
+                                "Condition": {
+                                    "$after": 60
+                                },
+                                "Actions": {
+                                    "$dec": "Timeout"
+                                },
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Dormant Laser Timer 2 -----",
+                "Id": "701a1d42-b317-4103-bd74-a01f19920eab",
+                "Type": "statemachine",
+                "Category": "condition",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    }
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "LASER_TIMER2_ACTIVATE": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Activation": {
+                    "$eq": [
+                        "$701a1d42-b317-4103-bd74-a01f19920eab",
+                        "Completed"
+                    ]
+                },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_LLAMA_LASERTIMER_TITLE"
+                },
+                "_comment": "----- LASER TIMER 1 -----",
+                "Id": "d3098d33-247a-4849-8ce2-fb6b9a2850ed",
+                "Scope": "session",
+                "Type": "statemachine",
+                "Category": "secondary",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": true
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Definition": {
+                    "ContextListeners": {
+                        "Timeout": {
+                            "type": "custom",
+                            "HUDTemplate": {
+                                "display": {
+                                    "$loc": {
+                                        "key": "UI_CONTRACT_LLAMA_LASERTIMER2",
+                                        "data": []
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "Context": {
+                        "Timeout": 1
+                    },
+                    "States": {
+                        "Start": {
+                            "LASER_TIMER2_ON": {
+                                "Transition": "TimerRunning"
+                            }
+                        },
+                        "TimerRunning": {
+                            "$timer": {
+                                "Condition": {
+                                    "$after": 60
+                                },
+                                "Actions": {
+                                    "$dec": "Timeout"
+                                },
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Dormant Laser Timer 3 -----",
+                "Id": "0662c9ff-dee3-44cf-ab2b-761eb970936a",
+                "Type": "statemachine",
+                "Category": "condition",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    }
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "LASER_TIMER3_ACTIVATE": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Activation": {
+                    "$eq": [
+                        "$0662c9ff-dee3-44cf-ab2b-761eb970936a",
+                        "Completed"
+                    ]
+                },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_LLAMA_LASERTIMER_TITLE"
+                },
+                "_comment": "----- LASER TIMER 3 -----",
+                "Id": "c3e9ad3e-b913-4d7d-85ad-ad538141778c",
+                "Scope": "session",
+                "Type": "statemachine",
+                "Category": "secondary",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": true
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Definition": {
+                    "ContextListeners": {
+                        "Timeout": {
+                            "type": "custom",
+                            "HUDTemplate": {
+                                "display": {
+                                    "$loc": {
+                                        "key": "UI_CONTRACT_LLAMA_LASERTIMER3",
+                                        "data": []
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "Context": {
+                        "Timeout": 1
+                    },
+                    "States": {
+                        "Start": {
+                            "LASER_TIMER3_ON": {
+                                "Transition": "TimerRunning"
+                            }
+                        },
+                        "TimerRunning": {
+                            "$timer": {
+                                "Condition": {
+                                    "$after": 60
+                                },
+                                "Actions": {
+                                    "$dec": "Timeout"
+                                },
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_PRO/scenes/missions/elegant/mission_llama.brick"
+        ],
+        "DevOnlyBricks": [
+            "assembly:/_PRO/scenes/missions/elegant/dev_llama.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/elegant/vr_overrides_llama.brick",
+                    "assembly:/_pro/scenes/missions/elegant/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/elegant/vr_overrides_llama.brick"
+                ]
+            }
+        ],
+        "GameChangers": [],
+        "GameChangerReferences": [],
+        "GameDifficulties": [
+            {
+                "Difficulty": "easy",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/elegant/difficulty_easy_llama.brick"
+                ]
+            },
+            {
+                "Difficulty": "normal",
+                "Bricks": []
+            },
+            {
+                "Difficulty": "hard",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/elegant/difficulty_hard_llama.brick"
+                ]
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "d42f850f-ca55-4fc9-9766-8c6a2b5c3129",
+        "IsPublished": true,
+        "TileImage": "images/contracts/llama/llama_tile.jpg",
+        "BriefingVideo": "briefing_llama",
+        "DebriefingVideo": "debriefing_llama",
+        "CreationTimestamp": "2019-09-18T09:49:25.5705635Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_LLAMA_TITLE",
+        "Description": "UI_CONTRACT_LLAMA_DESC",
+        "CodeName_Hint": "Llama",
+        "Location": "LOCATION_ELEGANT_LLAMA",
+        "ScenePath": "assembly:/_pro/scenes/missions/elegant/scene_llama.entity",
+        "Type": "mission",
+        "Release": "3.0.x",
+        "Opportunities": [
+            "ad88d89a-3bda-401e-9e57-fc66264f239c",
+            "0854c929-4291-42fa-ba73-f2b7a2659d83",
+            "53f38ab3-bbdf-4a73-97e1-697c5695519a"
+        ],
+        "RequiredUnlockable": "ACCESS_HIT_LLAMA",
+        "Drops": ["ACCESS_HIT_WOLVERINE"],
+        "Entitlements": ["LOCATION_ELEGANT"],
+        "LastUpdate": "2021-11-09T14:55:15.180849Z",
+        "PublicId": "031209089947"
+    },
+    "UserData": {}
+}

@@ -1,0 +1,200 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Type": "statemachine",
+                "Id": "93d775ad-d4c5-4c99-b5d3-3ded6ccc568a",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": true,
+                "Image": "images/challenges/profile_challenges/elusive_targets_5.jpg",
+                "BriefingName": "$loc UI_CHALLENGES_MIAMI_47_ASSASINATION_ACCIDENT_NAME",
+                "BriefingText": "Eliminate yourself 5 times. If you did it more than 5 times you will fail.",
+                "LongBriefingText": "Eliminate yourself 5 times. If you did it more than 5 times you will fail.",
+                "HUDTemplate": {
+                    "display": "Eliminate Agent 47",
+                    "iconType": 0
+                },
+                "Scope": "session",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Killyourselfcounter": 0
+                    },
+                    "ContextListeners": {
+                        "Killyourselfcounter": {
+                            "type": "objective-counter",
+                            "header": "UI_MENU_PAGE_FAILURE_DIED"
+                        }
+                    },
+                    "States": {
+                        "Start": {
+                            "Ghost_PlayerDied": [
+                                {
+                                    "Actions": {
+                                        "$inc": "Killyourselfcounter"
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.Killyourselfcounter", 5]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        },
+                        "Success": {
+                            "Ghost_PlayerDied": {
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Comment": "Banned items: 2 big tasers, 1 mini taser, emp, car battery. We don't know the exact weapon pool so we add them all just in case.",
+                "Type": "statemachine",
+                "Id": "c44a926d-af93-4f74-af4d-9686e2d94d25",
+                "Category": "secondary",
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": true,
+                "Image": "images/contractconditions/condition_killmethod_accident_electric.jpg",
+                "BriefingName": "$loc UI_CHALLENGES_TIGER_OPP_PLACE_MIKE_NAME",
+                "LongBriefingText": "Because they can kill you infinite times.",
+                "BriefingText": "Do not use any electrocution item",
+                "HUDTemplate": {
+                    "display": "Do not use any electrocution item",
+                    "iconType": 36
+                },
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "ItemDropped": {
+                                "Condition": {
+                                    "$or": [
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "021ed731-eebc-400a-9658-8f6fc5af9da6"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "0209f0b7-f6de-45c2-a730-4802abe35a75"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "dac32c27-4c49-4933-bccb-56c8f526515f"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "765b2c7d-8554-463a-9ee4-de7b20822161"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "93f34bf9-2bd4-4aff-85c7-7e4a9921dfe7"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            },
+                            "ItemRemovedFromInventory": {
+                                "Condition": {
+                                    "$or": [
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "021ed731-eebc-400a-9658-8f6fc5af9da6"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "0209f0b7-f6de-45c2-a730-4802abe35a75"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "dac32c27-4c49-4933-bccb-56c8f526515f"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "765b2c7d-8554-463a-9ee4-de7b20822161"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "93f34bf9-2bd4-4aff-85c7-7e4a9921dfe7"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            },
+                            "exit_gate": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "GameChangers": ["b48bb7f9-b630-48cb-a816-720ed7959319"],
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/miami/versus_items_miami.brick",
+            "assembly:/_pro/scenes/missions/miami/versus_entrance_miami.brick"
+        ],
+        "EnableSaving": false,
+        "MandatoryLoadout": [
+            {
+                "Id": "DuckySuit",
+                "Properties": {
+                    "LoadoutSlot": "disguise",
+                    "RepositoryId": "7459c8b3-4f09-4d72-bf3f-84bab1f9a2ff"
+                }
+            },
+            {
+                "Id": "blacklilly s3",
+                "Properties": {
+                    "LoadoutSlot": "concealedweapon",
+                    "RepositoryId": "b0f87b4e-a41c-4771-8c74-f56574129679"
+                }
+            },
+            {
+                "Id": "speedboat key",
+                "Properties": {
+                    "LoadoutSlot": "gear",
+                    "RepositoryId": "b4093da7-f878-4dee-be47-fc9363549288"
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Title": "The Undying Legend",
+        "Description": "RIP GM\r\rCreated by Quartz Tan & WINNODD",
+        "ScenePath": "assembly:/_pro/scenes/missions/miami/scene_flamingo.entity",
+        "Location": "LOCATION_MIAMI",
+        "IsPublished": true,
+        "CreatorUserId": "b8bd09ec-83a3-4ba6-a648-20caef9e0636",
+        "GameVersion": "8.8.0.0",
+        "ServerVersion": "8.8.0.42",
+        "Type": "featured",
+        "Id": "35547610-b036-4025-84f8-18a5db125ea4",
+        "TileImage": "images/contracts/featured/winnodd4.jpg",
+        "CreationTimestamp": "2022-06-16T07:54:57.5679265Z",
+        "Entitlements": ["H2_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

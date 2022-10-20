@@ -1,0 +1,2060 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "Comment": "--- Primary Target 1 ---",
+                "Id": "80621eca-eddf-4167-a9fe-912e8f476b73",
+                "Primary": true,
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "22283ca4-89cf-4235-be1d-4f76cd1bd321"
+                    }
+                }
+            },
+            {
+                "Comment": "--- Primary Target 2 ---",
+                "Id": "0b6ae576-32d0-4d09-990a-ab16e9987bae",
+                "Primary": true,
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "55334e2d-45c6-41b3-920e-aeb5c5111b37"
+                    }
+                }
+            },
+            {
+                "Comment": "--- Primary Target 3 ---",
+                "Id": "dd100889-2a9e-4ed0-91c2-b780ae77e53f",
+                "Primary": true,
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "0a4e517a-e1e1-41d7-af91-751bc663df35"
+                    }
+                }
+            },
+            {
+                "Comment": "----- Do not Eliminate Main Hostage -----",
+                "Id": "0b935cd6-8ca4-4094-81a4-2b1c24465cee",
+                "Primary": true,
+                "ForceShowOnLoadingScreen": true,
+                "ObjectiveType": "custom",
+                "LongBriefingText": "$loc UI_CONTRACT_SEAGULL_DESC",
+                "Image": "images/contracts/seagull/tile_hostages.jpg",
+                "BriefingName": "$loc UI_CONTRACT_SEAGULL_HOSTAGE_NAME",
+                "BriefingText": "$loc UI_CONTRACT_SEAGULL_HOSTAGE_OBJ",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_SEAGULL_HOSTAGE_OBJ",
+                    "iconType": 8
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "display": {
+                        "iconType": 8
+                    },
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "Main_Hostage_Down": {
+                                "Transition": "Failure"
+                            },
+                            "AllTargetsDown": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Comment": "--- Secondary Targets ---",
+                "Id": "e4b9a0ad-e4a1-4d23-a328-221214d051c2",
+                "Category": "primary",
+                "ForceShowOnLoadingScreen": true,
+                "ObjectiveType": "custom",
+                "CounterVisibleInTile": false,
+                "Image": "images/contracts/gamechangers/Gamechanger_Global_KillStreak.jpg",
+                "BriefingName": "$loc UI_CONTRACT_SEAGULL_Objective_Bodyguards",
+                "BriefingText": "$loc UI_CONTRACT_SEAGULL_OBJ_BODYGUARDS_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_SEAGULL_Objective_Bodyguards"
+                },
+                "Type": "statemachine",
+                "Scope": "hit",
+                "Definition": {
+                    "ContextListeners": {
+                        "TargetsCounter": {
+                            "type": "objective-counter",
+                            "header": "UI_CONTRACT_SEAGULL_Objective_Remaining",
+                            "deactivate": -1,
+                            "extra-data": {
+                                "TargetEscaped": "$.TargetEscaped"
+                            }
+                        },
+                        "ForceUpdateCounters": {
+                            "type": "force-update",
+                            "target": "TargetsCounter"
+                        }
+                    },
+                    "Context": {
+                        "Targets": [
+                            "b528b5e9-35ff-4642-93b7-421866eecf92",
+                            "03024491-d477-4d74-a31f-4c50cd3b82f6",
+                            "5eca3cc3-5c5c-4d94-9add-d01439381a7c",
+                            "0861b91d-daa9-4ffa-8c5f-efeb5a95a321",
+                            "856ec4d9-c19b-4f95-9a8e-2a139b891017",
+                            "af4d2c4b-89bb-48a5-a299-8123a05c567d",
+                            "56ef218a-fd31-4bc4-8430-107230e17c8e",
+                            "9bb32759-bdfa-467c-a972-a54a73ea0e11",
+                            "391f9fce-4ad5-4c02-93dd-a147679bd75f",
+                            "49c90dbd-0400-43e8-871b-03bfb7e425c5",
+                            "c99657d8-3975-409c-9326-abc55fdb1abd",
+                            "bdc392d1-a48d-4326-ac87-b1e9838eb5cd",
+                            "af0577a8-016e-4c55-b314-ad3771d59e6c",
+                            "d26ae5c0-7491-4d75-8fb3-d54ca7c6a4bf",
+                            "b3489b30-d15d-407b-9de3-1036ddd103b9"
+                        ],
+                        "TargetsCounter": 15,
+                        "TargetEscaped": false,
+                        "Goal": 0,
+                        "ForceUpdateCounters": 0
+                    },
+                    "States": {
+                        "Start": {
+                            "-": {
+                                "Condition": {
+                                    "$eq": ["$.ForceUpdateCounters", 0]
+                                },
+                                "Actions": {
+                                    "$inc": "ForceUpdateCounters"
+                                }
+                            },
+                            "BodyguardEscaped": [
+                                {
+                                    "Actions": {
+                                        "$set": ["TargetEscaped", true],
+                                        "$dec": "TargetsCounter"
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["TargetsCounter", "$.Goal"]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ],
+                            "Kill": [
+                                {
+                                    "Actions": {
+                                        "$set": ["TargetEscaped", false],
+                                        "$dec": "TargetsCounter"
+                                    },
+                                    "Condition": {
+                                        "$inarray": {
+                                            "in": "$.Targets",
+                                            "?": {
+                                                "$eq": [
+                                                    "$.#",
+                                                    "$Value.RepositoryId"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.TargetsCounter", "$.Goal"]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ],
+                            "AllTargetsDown": {
+                                "Actions": [
+                                    {
+                                        "$set": ["TargetEscaped", false]
+                                    },
+                                    {
+                                        "$set": ["TargetsCounter", 0]
+                                    }
+                                ],
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "HUDTemplate": {
+                    "display": ""
+                },
+                "Comment": "--- Contract Timer ---",
+                "Id": "78b242c6-5494-4c7c-a803-f290011c677f",
+                "BriefingText": "$loc UI_CONTRACT_SEAGULL_HOSTAGE_OBJ",
+                "Scope": "session",
+                "Type": "statemachine",
+                "OnActive": {
+                    "IfFailed": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Definition": {
+                    "ContextListeners": {
+                        "Timeout": {
+                            "type": "custom",
+                            "HUDTemplate": {
+                                "display": {
+                                    "$loc": {
+                                        "key": "UI_CONTRACT_HAWK_TIMER_TIMED_OUT",
+                                        "data": []
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "Context": {
+                        "Timeout": 1,
+                        "Goal": 18,
+                        "Count": 0
+                    },
+                    "States": {
+                        "Start": {
+                            "IntroCutEnd": {
+                                "Transition": "TimerRunning"
+                            }
+                        },
+                        "TimerRunning": {
+                            "$timer": {
+                                "Condition": {
+                                    "$after": 900
+                                },
+                                "Actions": {
+                                    "$dec": "Timeout"
+                                },
+                                "Transition": "Failure"
+                            },
+                            "Kill": [
+                                {
+                                    "Actions": {
+                                        "$inc": "Count"
+                                    },
+                                    "Condition": {
+                                        "$eq": ["$Value.IsTarget", true]
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.Count", "$.Goal"]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ],
+                            "BodyguardEscaped": [
+                                {
+                                    "Actions": {
+                                        "$inc": "Count"
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.Count", "$.Goal"]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ],
+                            "HostagesStoppedMoving": [
+                                {
+                                    "Transition": "Success"
+                                }
+                            ],
+                            "MainTargetsDead": [
+                                {
+                                    "Transition": "Success"
+                                }
+                            ]
+                        },
+                        "WaitForTargetsToEscape": {
+                            "MainTargetEscaped": {
+                                "Transition": "Failure"
+                            },
+                            "Kill": [
+                                {
+                                    "Actions": {
+                                        "$inc": "Count"
+                                    },
+                                    "Condition": {
+                                        "$eq": ["$Value.IsTarget", true]
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.Count", "$.Goal"]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ],
+                            "BodyguardEscaped": [
+                                {
+                                    "Actions": {
+                                        "$inc": "Count"
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.Count", "$.Goal"]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "22bdf176-4ca4-4075-9ce3-ea792392983e",
+                "Type": "statemachine",
+                "Category": "condition",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    }
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "TargetsEscaping": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Activation": {
+                    "$eq": [
+                        "$22bdf176-4ca4-4075-9ce3-ea792392983e",
+                        "Completed"
+                    ]
+                },
+                "Id": "bee28940-3092-4639-b24a-5c7e16e94d07",
+                "BriefingText": "$loc UI_CONTRACT_ELUSIVE_STATE_FAILED",
+                "IsHidden": true,
+                "ExcludeFromScoring": true,
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_SEAGULL_Objective_StopEvacuation"
+                },
+                "IgnoreIfInactive": true,
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    },
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    }
+                },
+                "Scope": "session",
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "MainTargetEscaped": {
+                                "Transition": "Failure"
+                            },
+                            "PreventedEvacuation": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/Salty/mission_seagull/mission_seagull.brick"
+        ],
+        "DevOnlyBricks": [
+            "assembly:/_pro/scenes/missions/Salty/mission_seagull/dev_seagull.brick"
+        ],
+        "GameChangers": [],
+        "EngineModesBricks": [
+            {
+                "Mode": "singleplayer",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/Salty/mission_seagull/singleplayer_seagull.brick"
+                ]
+            }
+        ]
+    },
+    "Metadata": {
+        "DebriefingVideo": "debriefing_seagull",
+        "Location": "LOCATION_SALTY_SEAGULL",
+        "Title": "UI_CONTRACT_SEAGULL_TITLE",
+        "CodeName_Hint": "SC_Seagull",
+        "ScenePath": "assembly:/_pro/scenes/missions/Salty/mission_seagull/scene_seagull.entity",
+        "Description": "UI_CONTRACT_SEAGULL_DESC",
+        "Id": "00e57709-e049-44c9-a2c3-7655e19884fb",
+        "CreationTimestamp": "2014-04-04T09:41:25.473Z",
+        "LastUpdate": "2021-03-16T13:08:04.6912525Z",
+        "Type": "sniper",
+        "Release": "2.20.x",
+        "Gamemodes": ["sniper"],
+        "Enginemodes": ["singleplayer", "multiplayer"],
+        "CharacterSetup": [
+            {
+                "Mode": "singleplayer",
+                "Characters": [
+                    {
+                        "Name": "47",
+                        "Id": "44eba719-4d3a-4f27-9437-3f29821934b3",
+                        "MandatoryLoadout": ["FIREARMS_SC_SEAGULL_HM"]
+                    }
+                ]
+            },
+            {
+                "Mode": "multiplayer",
+                "Characters": [
+                    {
+                        "Name": "Knight",
+                        "Id": "a6e8cd0e-e991-4765-9fa7-26bca77d5146",
+                        "MandatoryLoadout": ["FIREARMS_SC_SEAGULL_KNIGHT"]
+                    },
+                    {
+                        "Name": "Stone",
+                        "Id": "8d976df0-65b4-4864-86b2-4416b2b059e3",
+                        "MandatoryLoadout": ["FIREARMS_SC_SEAGULL_STONE"]
+                    }
+                ]
+            }
+        ],
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "IsPublished": true,
+        "TileImage": [
+            {
+                "Mode": "singleplayer",
+                "Image": "images/contracts/seagull/tile.jpg"
+            },
+            {
+                "Mode": "multiplayer",
+                "Image": "images/contracts/seagull/tile_mp.jpg"
+            }
+        ],
+        "BriefingVideo": [
+            {
+                "Mode": "singleplayer",
+                "VideoId": "briefing_seagull"
+            },
+            {
+                "Mode": "multiplayer",
+                "VideoId": "briefing_seagull_stoneknight"
+            }
+        ],
+        "BackgroundImage": [
+            {
+                "Mode": "singleplayer",
+                "Image": "images/contracts/seagull/tile_background.jpg"
+            },
+            {
+                "Mode": "singleplayer",
+                "Image": "images/contracts/seagull/tile_background_mp.jpg"
+            }
+        ],
+        "Modules": [
+            {
+                "Type": "sniper.scoring.timebonus",
+                "score": 50000,
+                "maxtime": 15
+            },
+            {
+                "Type": "sniper.scoring.silentassassin",
+                "score": 50000,
+                "multiplier": 2.0
+            },
+            {
+                "Type": "sniper.scoring.bulletsused",
+                "penalty": -0.0
+            },
+            {
+                "Type": "sniper.scoring.challenges",
+                "Unlockables": [
+                    "SCORE_MULTIPLIER_SC_SEAGULL_ALL_HEADSHOTS",
+                    "SCORE_MULTIPLIER_SC_SEAGULL_BODYHIDER_TARGETS",
+                    "SCORE_MULTIPLIER_SC_SEAGULL_BODYHIDER_BODYGUARDS",
+                    "SCORE_MULTIPLIER_SC_SEAGULL_WATER_DUMP",
+                    "SCORE_MULTIPLIER_SC_SEAGULL_NO_LOOSE_ENDS",
+                    "SCORE_MULTIPLIER_SC_SEAGULL_HEAVY_BURDEN",
+                    "SCORE_MULTIPLIER_SC_SEAGULL_GOT_A_LIGHT",
+                    "SCORE_MULTIPLIER_SC_SEAGULL_TOUCH_AND_GO",
+                    "SCORE_MULTIPLIER_SC_SEAGULL_ELECTRIFIED",
+                    "SCORE_MULTIPLIER_SC_SEAGULL_RAFT_KILL",
+                    "SCORE_MULTIPLIER_SC_SEAGULL_CANNON_KILL",
+                    "SCORE_MULTIPLIER_SC_SEAGULL_CAR_KILL",
+                    "SCORE_MULTIPLIER_SC_SEAGULL_BARRIER_KILL",
+                    "SCORE_MULTIPLIER_SC_SEAGULL_RATS",
+                    "SCORE_MULTIPLIER_SC_SEAGULL_AGENT_SMITH",
+                    "SCORE_MULTIPLIER_SC_SEAGULL_RUBBER_DUCK",
+                    "SCORE_MULTIPLIER_SC_SEAGULL_HOSTAGES_MOVED",
+                    "SCORE_MULTIPLIER_SC_SEAGULL_OPEN_CONTAINERS",
+                    "SCORE_MULTIPLIER_SC_SEAGULL_SHOOT_LAMPS",
+                    "SCORE_MULTIPLIER_SC_SEAGULL_SHOOT_SEAGULLS",
+                    "SCORE_MULTIPLIER_SC_SEAGULL_SHOOT_BEER",
+                    "SCORE_MULTIPLIER_SC_SEAGULL_SHOOT_CORDS",
+                    "SCORE_MULTIPLIER_SC_SEAGULL_START_CRANE",
+                    "SCORE_MULTIPLIER_SC_SEAGULL_CRANE_47",
+                    "SCORE_MULTIPLIER_SC_SEAGULL_FOG_HORN",
+                    "SCORE_MULTIPLIER_SC_SEAGULL_SATELLITE_DISH",
+                    "SCORE_MULTIPLIER_SC_SEAGULL_LILLY_ESCORT"
+                ]
+            },
+            {
+                "Type": "sniper.scoring",
+                "ScoringDefinitions": [
+                    {
+                        "ContextListeners": {},
+                        "Constants": {
+                            "Score_Kill_Bodyshot": 500,
+                            "Score_Kill_Streak": 500,
+                            "Score_Kill_Streak_Successive": 500,
+                            "Score_Kill_Headshot": 1500,
+                            "Score_Kill_Headshot_Streak": 750,
+                            "Score_Kill_Headshot_Streak_Successive": 750,
+                            "Score_Kill_Headshot_Successive": 500,
+                            "Score_Kill_Multi": 2000,
+                            "Score_Kill_Multi_Successive": 2000,
+                            "Score_Kill_Multi_Shot": 3000,
+                            "Score_Kill_Multi_Shot_Successive": 3000,
+                            "Score_Kill_Moving": 1500,
+                            "Score_Kill_Moving_Successive": 1000,
+                            "Score_Kill_Moving_Streak": 1000,
+                            "Score_Kill_Moving_Streak_Successive": 1000,
+                            "Score_Kill_Explosion": 4000,
+                            "Score_Kill_Explosion_Successive": 2000,
+                            "Score_Kill_Civilian": -3000,
+                            "Score_Kill_Civilian_Successive": -500,
+                            "Score_Kill_Accident": 5000,
+                            "Score_Kill_Accident_Successive": 3000,
+                            "Score_Kill_Distraction": 5000,
+                            "Score_Kill_Distraction_Successive": 5000,
+                            "Score_BodyHidden": 2000,
+                            "Score_BodyHidden_Successive": 1000,
+                            "Targets": [
+                                "55334e2d-45c6-41b3-920e-aeb5c5111b37",
+                                "22283ca4-89cf-4235-be1d-4f76cd1bd321",
+                                "0a4e517a-e1e1-41d7-af91-751bc663df35",
+                                "b528b5e9-35ff-4642-93b7-421866eecf92",
+                                "03024491-d477-4d74-a31f-4c50cd3b82f6",
+                                "5eca3cc3-5c5c-4d94-9add-d01439381a7c",
+                                "0861b91d-daa9-4ffa-8c5f-efeb5a95a321",
+                                "856ec4d9-c19b-4f95-9a8e-2a139b891017",
+                                "af4d2c4b-89bb-48a5-a299-8123a05c567d",
+                                "56ef218a-fd31-4bc4-8430-107230e17c8e",
+                                "9bb32759-bdfa-467c-a972-a54a73ea0e11",
+                                "391f9fce-4ad5-4c02-93dd-a147679bd75f",
+                                "49c90dbd-0400-43e8-871b-03bfb7e425c5",
+                                "c99657d8-3975-409c-9326-abc55fdb1abd",
+                                "bdc392d1-a48d-4326-ac87-b1e9838eb5cd",
+                                "af0577a8-016e-4c55-b314-ad3771d59e6c",
+                                "d26ae5c0-7491-4d75-8fb3-d54ca7c6a4bf",
+                                "b3489b30-d15d-407b-9de3-1036ddd103b9"
+                            ]
+                        },
+                        "ScoreEvents": {
+                            "ScoreEvent_BODYSHOT": {
+                                "type": 0,
+                                "text": "UI_HUD_SCORING_SCORE_KILL_BODYSHOT"
+                            },
+                            "ScoreEvent_HEADSHOT": {
+                                "type": 1,
+                                "text": "UI_HUD_SCORING_SCORE_KILL_HEADSHOT"
+                            },
+                            "ScoreEvent_MOVINGKILL": {
+                                "type": 2,
+                                "text": "UI_HUD_SCORING_SCORE_KILL_MOVINGKILL"
+                            },
+                            "ScoreEvent_CIVILIANKILL": {
+                                "type": 3,
+                                "text": "UI_HUD_SCORING_SCORE_KILL_CIVILIANKILL"
+                            },
+                            "ScoreEvent_EXPLOSIONKILL": {
+                                "type": 4,
+                                "text": "UI_HUD_SCORING_SCORE_KILL_EXPLOSIONKILL"
+                            },
+                            "ScoreEvent_ENVIRONMENTKILL": {
+                                "type": 5,
+                                "text": "UI_HUD_SCORING_SCORE_KILL_ENVIRONMENTKILL"
+                            },
+                            "ScoreEvent_BODYHIDDEN": {
+                                "type": 6,
+                                "text": "UI_HUD_SCORING_SCORE_KILL_BODYHIDDEN"
+                            },
+                            "ScoreEvent_HEADSHOTSTREAK": {
+                                "type": 7,
+                                "text": "UI_HUD_SCORING_SCORE_KILL_HEADSHOTSTREAK"
+                            },
+                            "ScoreEvent_MOVINGSTREAK": {
+                                "type": 8,
+                                "text": "UI_HUD_SCORING_SCORE_KILL_MOVINGSTREAK"
+                            },
+                            "ScoreEvent_KILLSTREAK": {
+                                "type": 9,
+                                "text": "UI_HUD_SCORING_SCORE_KILL_KILLSTREAK"
+                            },
+                            "ScoreEvent_MULTISHOTKILL": {
+                                "type": 10,
+                                "text": "UI_HUD_SCORING_SCORE_KILL_MULTISHOTKILL"
+                            },
+                            "ScoreEvent_MULTIKILL": {
+                                "type": 11,
+                                "text": "UI_HUD_SCORING_SCORE_KILL_MULTIKILL"
+                            },
+                            "ScoreEvent_StreakStarted": {
+                                "type": 12,
+                                "text": ""
+                            }
+                        },
+                        "Context": {
+                            "TotalScore": 0,
+                            "Events": [],
+                            "BulletsUsed": 0,
+                            "HeadShot_Successive_Count": 0,
+                            "HeadShot_Successive_CurrentScore": 0,
+                            "HeadShot_CurrentScore": 0,
+                            "HeadShot_Streak_Count": 0,
+                            "HeadShot_Streak_Count_Temp": 0,
+                            "HeadShot_Streak_CurrentScore": 0,
+                            "Moving_Successive_Count": 0,
+                            "Moving_Successive_CurrentScore": 0,
+                            "Moving_CurrentScore": 0,
+                            "Moving_Streak_Count": 0,
+                            "Moving_Streak_Count_Temp": 0,
+                            "Moving_Streak_CurrentScore": 0,
+                            "Kill_Streak_Count": 0,
+                            "Kill_Streak_Count_Temp": 0,
+                            "Kill_Streak_CurrentScore": 0,
+                            "Accident_Successive_Count": 0,
+                            "Accident_Successive_CurrentScore": 0,
+                            "Explosion_Successive_Count": 0,
+                            "Explosion_Successive_CurrentScore": 0,
+                            "BodyHidden_Successive_Count": 0,
+                            "BodyHidden_Successive_CurrentScore": 0,
+                            "BodyHidden_CurrentScore": 0,
+                            "CivilianKill_Successive_Count": 0,
+                            "CivilianKill_Successive_CurrentScore": 0,
+                            "CivilianKill_CurrentScore": 0,
+                            "MultiKill_CurrentScore": 0,
+                            "MultiKill_Shot_CurrentScore": 0,
+                            "ReInitialiseTimer": 0,
+                            "StreakTime": 8,
+                            "PlayerId": -1
+                        },
+                        "States": {
+                            "Start": {
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$and": [
+                                                        {
+                                                            "$eq": [
+                                                                "$Value.IsHeadshot",
+                                                                false
+                                                            ]
+                                                        },
+                                                        {
+                                                            "$eq": [
+                                                                "$Value.IsTarget",
+                                                                true
+                                                            ]
+                                                        },
+                                                        {
+                                                            "$eq": [
+                                                                "$Value.Projectile",
+                                                                true
+                                                            ]
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "$and": [
+                                                        {
+                                                            "$eq": [
+                                                                "$Value.IsHeadshot",
+                                                                false
+                                                            ]
+                                                        },
+                                                        {
+                                                            "$eq": [
+                                                                "$Value.IsTarget",
+                                                                true
+                                                            ]
+                                                        },
+                                                        {
+                                                            "$eq": [
+                                                                "$Value.ExplosionType",
+                                                                2
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$inc": [
+                                                "TotalScore",
+                                                "$.Score_Kill_Bodyshot"
+                                            ],
+                                            "$push": [
+                                                "Events",
+                                                {
+                                                    "Type": "ScoreEvent_BODYSHOT",
+                                                    "Points": "$.Score_Kill_Bodyshot"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsHeadshot",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Actions": [
+                                            {
+                                                "$mul": [
+                                                    "Score_Kill_Headshot_Successive",
+                                                    "$.HeadShot_Successive_Count",
+                                                    "HeadShot_Successive_CurrentScore"
+                                                ],
+                                                "$inc": "HeadShot_Successive_Count"
+                                            },
+                                            {
+                                                "$set": [
+                                                    "HeadShot_CurrentScore",
+                                                    "$.Score_Kill_Headshot"
+                                                ],
+                                                "$inc": [
+                                                    "HeadShot_CurrentScore",
+                                                    "$.HeadShot_Successive_CurrentScore"
+                                                ]
+                                            },
+                                            {
+                                                "$inc": [
+                                                    "TotalScore",
+                                                    "$.HeadShot_CurrentScore"
+                                                ],
+                                                "$push": [
+                                                    "Events",
+                                                    {
+                                                        "Type": "ScoreEvent_HEADSHOT",
+                                                        "Points": "$.HeadShot_CurrentScore"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$inc": "HeadShot_Streak_Count"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsMoving",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Actions": [
+                                            {
+                                                "$mul": [
+                                                    "Score_Kill_Moving_Successive",
+                                                    "$.Moving_Successive_Count",
+                                                    "Moving_Successive_CurrentScore"
+                                                ],
+                                                "$inc": "Moving_Successive_Count"
+                                            },
+                                            {
+                                                "$set": [
+                                                    "Moving_CurrentScore",
+                                                    "$.Score_Kill_Moving"
+                                                ],
+                                                "$inc": [
+                                                    "Moving_CurrentScore",
+                                                    "$.Moving_Successive_CurrentScore"
+                                                ]
+                                            },
+                                            {
+                                                "$inc": [
+                                                    "TotalScore",
+                                                    "$.Moving_CurrentScore"
+                                                ],
+                                                "$push": [
+                                                    "Events",
+                                                    {
+                                                        "Type": "ScoreEvent_MOVINGKILL",
+                                                        "Points": "$.Moving_CurrentScore"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$inc": "Moving_Streak_Count"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.ExplosionType",
+                                                        1
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Actions": [
+                                            {
+                                                "$mul": [
+                                                    "Score_Kill_Explosion_Successive",
+                                                    "$.Explosion_Successive_Count",
+                                                    "Explosion_Successive_CurrentScore"
+                                                ],
+                                                "$inc": "Explosion_Successive_Count"
+                                            },
+                                            {
+                                                "$set": [
+                                                    "Explosion_CurrentScore",
+                                                    "$.Score_Kill_Explosion"
+                                                ],
+                                                "$inc": [
+                                                    "Explosion_CurrentScore",
+                                                    "$.Explosion_Successive_CurrentScore"
+                                                ]
+                                            },
+                                            {
+                                                "$inc": [
+                                                    "TotalScore",
+                                                    "$.Explosion_CurrentScore"
+                                                ],
+                                                "$push": [
+                                                    "Events",
+                                                    {
+                                                        "Type": "ScoreEvent_EXPLOSIONKILL",
+                                                        "Points": "$.Explosion_CurrentScore"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.Accident",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.Explosive",
+                                                        false
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Actions": [
+                                            {
+                                                "$mul": [
+                                                    "Score_Kill_Accident_Successive",
+                                                    "$.Accident_Successive_Count",
+                                                    "Accident_Successive_CurrentScore"
+                                                ],
+                                                "$inc": "Accident_Successive_Count"
+                                            },
+                                            {
+                                                "$set": [
+                                                    "Accident_CurrentScore",
+                                                    "$.Score_Kill_Accident"
+                                                ],
+                                                "$inc": [
+                                                    "Accident_CurrentScore",
+                                                    "$.Accident_Successive_CurrentScore"
+                                                ]
+                                            },
+                                            {
+                                                "$inc": [
+                                                    "TotalScore",
+                                                    "$.Accident_CurrentScore"
+                                                ],
+                                                "$push": [
+                                                    "Events",
+                                                    {
+                                                        "Type": "ScoreEvent_ENVIRONMENTKILL",
+                                                        "Points": "$.Accident_CurrentScore"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$Value.KillContext",
+                                                            1
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Actions": [
+                                            {
+                                                "$mul": [
+                                                    "Score_Kill_Civilian_Successive",
+                                                    "$.CivilianKill_Successive_Count",
+                                                    "CivilianKill_Successive_CurrentScore"
+                                                ],
+                                                "$inc": "CivilianKill_Successive_Count"
+                                            },
+                                            {
+                                                "$set": [
+                                                    "CivilianKill_CurrentScore",
+                                                    "$.Score_Kill_Civilian"
+                                                ],
+                                                "$inc": [
+                                                    "CivilianKill_CurrentScore",
+                                                    "$.CivilianKill_Successive_CurrentScore"
+                                                ]
+                                            },
+                                            {
+                                                "$inc": [
+                                                    "TotalScore",
+                                                    "$.CivilianKill_CurrentScore"
+                                                ],
+                                                "$push": [
+                                                    "Events",
+                                                    {
+                                                        "Type": "ScoreEvent_CIVILIANKILL",
+                                                        "Points": "$.CivilianKill_CurrentScore"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$Value.IsTarget", true]
+                                        },
+                                        "Actions": {
+                                            "$inc": "Kill_Streak_Count"
+                                        },
+                                        "Transition": "State_Kill_Streak"
+                                    }
+                                ],
+                                "CrowdNPC_Died": [
+                                    {
+                                        "Actions": [
+                                            {
+                                                "$mul": [
+                                                    "Score_Kill_Civilian_Successive",
+                                                    "$.CivilianKill_Successive_Count",
+                                                    "CivilianKill_Successive_CurrentScore"
+                                                ],
+                                                "$inc": "CivilianKill_Successive_Count"
+                                            },
+                                            {
+                                                "$set": [
+                                                    "CivilianKill_CurrentScore",
+                                                    "$.Score_Kill_Civilian"
+                                                ],
+                                                "$inc": [
+                                                    "CivilianKill_CurrentScore",
+                                                    "$.CivilianKill_Successive_CurrentScore"
+                                                ]
+                                            },
+                                            {
+                                                "$inc": [
+                                                    "TotalScore",
+                                                    "$.CivilianKill_CurrentScore"
+                                                ],
+                                                "$push": [
+                                                    "Events",
+                                                    {
+                                                        "Type": "ScoreEvent_CIVILIANKILL",
+                                                        "Points": "$.CivilianKill_CurrentScore"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "BodyHidden": [
+                                    {
+                                        "Condition": {
+                                            "$inarray": {
+                                                "in": "$.Targets",
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$Value.RepositoryId"
+                                                    ]
+                                                }
+                                            }
+                                        },
+                                        "Actions": [
+                                            {
+                                                "$mul": [
+                                                    "Score_BodyHidden_Successive",
+                                                    "$.BodyHidden_Successive_Count",
+                                                    "BodyHidden_Successive_CurrentScore"
+                                                ],
+                                                "$inc": "BodyHidden_Successive_Count"
+                                            },
+                                            {
+                                                "$set": [
+                                                    "BodyHidden_CurrentScore",
+                                                    "$.Score_BodyHidden"
+                                                ],
+                                                "$inc": [
+                                                    "BodyHidden_CurrentScore",
+                                                    "$.BodyHidden_Successive_CurrentScore"
+                                                ]
+                                            },
+                                            {
+                                                "$inc": [
+                                                    "TotalScore",
+                                                    "$.BodyHidden_CurrentScore"
+                                                ],
+                                                "$push": [
+                                                    "Events",
+                                                    {
+                                                        "Type": "ScoreEvent_BODYHIDDEN",
+                                                        "Points": "$.BodyHidden_CurrentScore"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "State_Kill_Streak_ResetTimer": {
+                                "-": [
+                                    {
+                                        "Transition": "State_Kill_Streak"
+                                    }
+                                ]
+                            },
+                            "State_Kill_Streak": {
+                                "-": [
+                                    {
+                                        "$push": [
+                                            "Events",
+                                            {
+                                                "Type": "ScoreEvent_StreakStarted"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "MissedShot": [
+                                    {
+                                        "Transition": "Start"
+                                    }
+                                ],
+                                "MultiShotKillTargets": [
+                                    {
+                                        "Actions": [
+                                            {
+                                                "$mul": [
+                                                    "Score_Kill_Multi_Shot",
+                                                    "$Value.KillCount",
+                                                    "MultiKill_Shot_CurrentScore"
+                                                ]
+                                            },
+                                            {
+                                                "$mul": [
+                                                    "MultiKill_Shot_CurrentScore",
+                                                    "$Value.KillCount"
+                                                ]
+                                            },
+                                            {
+                                                "$inc": [
+                                                    "TotalScore",
+                                                    "$.MultiKill_Shot_CurrentScore"
+                                                ],
+                                                "$push": [
+                                                    "Events",
+                                                    {
+                                                        "Type": "ScoreEvent_MULTISHOTKILL",
+                                                        "Points": "$.MultiKill_Shot_CurrentScore"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "MultiKillTargets": [
+                                    {
+                                        "Actions": [
+                                            {
+                                                "$mul": [
+                                                    "Score_Kill_Multi",
+                                                    "$Value.KillCount",
+                                                    "MultiKill_CurrentScore"
+                                                ]
+                                            },
+                                            {
+                                                "$inc": [
+                                                    "TotalScore",
+                                                    "$.MultiKill_CurrentScore"
+                                                ],
+                                                "$push": [
+                                                    "Events",
+                                                    {
+                                                        "Type": "ScoreEvent_MULTIKILL",
+                                                        "Points": "$.MultiKill_CurrentScore"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$and": [
+                                                        {
+                                                            "$eq": [
+                                                                "$Value.IsHeadshot",
+                                                                false
+                                                            ]
+                                                        },
+                                                        {
+                                                            "$eq": [
+                                                                "$Value.IsTarget",
+                                                                true
+                                                            ]
+                                                        },
+                                                        {
+                                                            "$eq": [
+                                                                "$Value.Projectile",
+                                                                true
+                                                            ]
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "$and": [
+                                                        {
+                                                            "$eq": [
+                                                                "$Value.IsHeadshot",
+                                                                false
+                                                            ]
+                                                        },
+                                                        {
+                                                            "$eq": [
+                                                                "$Value.IsTarget",
+                                                                true
+                                                            ]
+                                                        },
+                                                        {
+                                                            "$eq": [
+                                                                "$Value.ExplosionType",
+                                                                2
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$inc": [
+                                                "TotalScore",
+                                                "$.Score_Kill_Bodyshot"
+                                            ],
+                                            "$push": [
+                                                "Events",
+                                                {
+                                                    "Type": "ScoreEvent_BODYSHOT",
+                                                    "Points": "$.Score_Kill_Bodyshot"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsHeadshot",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsMoving",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Actions": [
+                                            {
+                                                "$mul": [
+                                                    "Score_Kill_Headshot_Successive",
+                                                    "$.HeadShot_Successive_Count",
+                                                    "HeadShot_Successive_CurrentScore"
+                                                ],
+                                                "$inc": "HeadShot_Successive_Count"
+                                            },
+                                            {
+                                                "$set": [
+                                                    "HeadShot_CurrentScore",
+                                                    "$.Score_Kill_Headshot"
+                                                ],
+                                                "$inc": [
+                                                    "HeadShot_CurrentScore",
+                                                    "$.HeadShot_Successive_CurrentScore"
+                                                ]
+                                            },
+                                            {
+                                                "$inc": [
+                                                    "TotalScore",
+                                                    "$.HeadShot_CurrentScore"
+                                                ],
+                                                "$push": [
+                                                    "Events",
+                                                    {
+                                                        "Type": "ScoreEvent_HEADSHOT",
+                                                        "Points": "$.HeadShot_CurrentScore"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$mul": [
+                                                    "Score_Kill_Moving_Successive",
+                                                    "$.Moving_Successive_Count",
+                                                    "Moving_Successive_CurrentScore"
+                                                ],
+                                                "$inc": "Moving_Successive_Count"
+                                            },
+                                            {
+                                                "$set": [
+                                                    "Moving_CurrentScore",
+                                                    "$.Score_Kill_Moving"
+                                                ],
+                                                "$inc": [
+                                                    "Moving_CurrentScore",
+                                                    "$.Moving_Successive_CurrentScore"
+                                                ]
+                                            },
+                                            {
+                                                "$inc": [
+                                                    "TotalScore",
+                                                    "$.Moving_CurrentScore"
+                                                ],
+                                                "$push": [
+                                                    "Events",
+                                                    {
+                                                        "Type": "ScoreEvent_MOVINGKILL",
+                                                        "Points": "$.Moving_CurrentScore"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$inc": "Moving_Streak_Count"
+                                            },
+                                            {
+                                                "$inc": "HeadShot_Streak_Count"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsHeadshot",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsMoving",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Actions": [
+                                            {
+                                                "$mul": [
+                                                    "Score_Kill_Headshot_Successive",
+                                                    "$.HeadShot_Successive_Count",
+                                                    "HeadShot_Successive_CurrentScore"
+                                                ],
+                                                "$inc": "HeadShot_Successive_Count"
+                                            },
+                                            {
+                                                "$set": [
+                                                    "HeadShot_CurrentScore",
+                                                    "$.Score_Kill_Headshot"
+                                                ],
+                                                "$inc": [
+                                                    "HeadShot_CurrentScore",
+                                                    "$.HeadShot_Successive_CurrentScore"
+                                                ]
+                                            },
+                                            {
+                                                "$inc": [
+                                                    "TotalScore",
+                                                    "$.HeadShot_CurrentScore"
+                                                ],
+                                                "$push": [
+                                                    "Events",
+                                                    {
+                                                        "Type": "ScoreEvent_HEADSHOT",
+                                                        "Points": "$.HeadShot_CurrentScore"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$inc": "HeadShot_Streak_Count"
+                                            },
+                                            {
+                                                "$set": [
+                                                    "Moving_Streak_Count",
+                                                    0
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsHeadshot",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsMoving",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Actions": [
+                                            {
+                                                "$mul": [
+                                                    "Score_Kill_Moving_Successive",
+                                                    "$.Moving_Successive_Count",
+                                                    "Moving_Successive_CurrentScore"
+                                                ],
+                                                "$inc": "Moving_Successive_Count"
+                                            },
+                                            {
+                                                "$set": [
+                                                    "Moving_CurrentScore",
+                                                    "$.Score_Kill_Moving"
+                                                ],
+                                                "$inc": [
+                                                    "Moving_CurrentScore",
+                                                    "$.Moving_Successive_CurrentScore"
+                                                ]
+                                            },
+                                            {
+                                                "$inc": [
+                                                    "TotalScore",
+                                                    "$.Moving_CurrentScore"
+                                                ],
+                                                "$push": [
+                                                    "Events",
+                                                    {
+                                                        "Type": "ScoreEvent_MOVINGKILL",
+                                                        "Points": "$.Moving_CurrentScore"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$inc": "Moving_Streak_Count"
+                                            },
+                                            {
+                                                "$set": [
+                                                    "HeadShot_Streak_Count",
+                                                    0
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.ExplosionType",
+                                                        1
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Actions": [
+                                            {
+                                                "$mul": [
+                                                    "Score_Kill_Explosion_Successive",
+                                                    "$.Explosion_Successive_Count",
+                                                    "Explosion_Successive_CurrentScore"
+                                                ],
+                                                "$inc": "Explosion_Successive_Count"
+                                            },
+                                            {
+                                                "$set": [
+                                                    "Explosion_CurrentScore",
+                                                    "$.Score_Kill_Explosion"
+                                                ],
+                                                "$inc": [
+                                                    "Explosion_CurrentScore",
+                                                    "$.Explosion_Successive_CurrentScore"
+                                                ]
+                                            },
+                                            {
+                                                "$inc": [
+                                                    "TotalScore",
+                                                    "$.Explosion_CurrentScore"
+                                                ],
+                                                "$push": [
+                                                    "Events",
+                                                    {
+                                                        "Type": "ScoreEvent_EXPLOSIONKILL",
+                                                        "Points": "$.Explosion_CurrentScore"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.Accident",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.Explosive",
+                                                        false
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Actions": [
+                                            {
+                                                "$mul": [
+                                                    "Score_Kill_Accident_Successive",
+                                                    "$.Accident_Successive_Count",
+                                                    "Accident_Successive_CurrentScore"
+                                                ],
+                                                "$inc": "Accident_Successive_Count"
+                                            },
+                                            {
+                                                "$set": [
+                                                    "Accident_CurrentScore",
+                                                    "$.Score_Kill_Accident"
+                                                ],
+                                                "$inc": [
+                                                    "Accident_CurrentScore",
+                                                    "$.Accident_Successive_CurrentScore"
+                                                ]
+                                            },
+                                            {
+                                                "$inc": [
+                                                    "TotalScore",
+                                                    "$.Accident_CurrentScore"
+                                                ],
+                                                "$push": [
+                                                    "Events",
+                                                    {
+                                                        "Type": "ScoreEvent_ENVIRONMENTKILL",
+                                                        "Points": "$.Accident_CurrentScore"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$Value.KillContext",
+                                                            1
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Actions": [
+                                            {
+                                                "$mul": [
+                                                    "Score_Kill_Civilian_Successive",
+                                                    "$.CivilianKill_Successive_Count",
+                                                    "CivilianKill_Successive_CurrentScore"
+                                                ],
+                                                "$inc": "CivilianKill_Successive_Count"
+                                            },
+                                            {
+                                                "$set": [
+                                                    "CivilianKill_CurrentScore",
+                                                    "$.Score_Kill_Civilian"
+                                                ],
+                                                "$inc": [
+                                                    "CivilianKill_CurrentScore",
+                                                    "$.CivilianKill_Successive_CurrentScore"
+                                                ]
+                                            },
+                                            {
+                                                "$inc": [
+                                                    "TotalScore",
+                                                    "$.CivilianKill_CurrentScore"
+                                                ],
+                                                "$push": [
+                                                    "Events",
+                                                    {
+                                                        "Type": "ScoreEvent_CIVILIANKILL",
+                                                        "Points": "$.CivilianKill_CurrentScore"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$set": [
+                                                    "HeadShot_Streak_Count",
+                                                    0
+                                                ]
+                                            },
+                                            {
+                                                "$set": [
+                                                    "Moving_Streak_Count",
+                                                    0
+                                                ]
+                                            },
+                                            {
+                                                "$set": ["Kill_Streak_Count", 0]
+                                            }
+                                        ],
+                                        "Transition": "Start"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$Value.IsTarget", true]
+                                        },
+                                        "Actions": {
+                                            "$inc": "Kill_Streak_Count",
+                                            "$set": ["ReInitialiseTimer", 1]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsHeadshot",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsMoving",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Actions": [
+                                            {
+                                                "$set": [
+                                                    "HeadShot_Streak_Count",
+                                                    0
+                                                ]
+                                            },
+                                            {
+                                                "$set": [
+                                                    "Moving_Streak_Count",
+                                                    0
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$ge": [
+                                                "$.HeadShot_Streak_Count",
+                                                2
+                                            ]
+                                        },
+                                        "Actions": [
+                                            {
+                                                "$set": [
+                                                    "HeadShot_Streak_Count_Temp",
+                                                    "$.HeadShot_Streak_Count"
+                                                ],
+                                                "$dec": "HeadShot_Streak_Count_Temp",
+                                                "$mul": [
+                                                    "Score_Kill_Headshot_Streak_Successive",
+                                                    "$.HeadShot_Streak_Count_Temp",
+                                                    "HeadShot_Streak_CurrentScore"
+                                                ],
+                                                "$inc": [
+                                                    "TotalScore",
+                                                    "$.HeadShot_Streak_CurrentScore"
+                                                ],
+                                                "$push": [
+                                                    "Events",
+                                                    {
+                                                        "Type": "ScoreEvent_HEADSHOTSTREAK",
+                                                        "Points": "$.HeadShot_Streak_CurrentScore"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$ge": ["$.Moving_Streak_Count", 2]
+                                        },
+                                        "Actions": [
+                                            {
+                                                "$set": [
+                                                    "Moving_Streak_Count_Temp",
+                                                    "$.Moving_Streak_Count"
+                                                ],
+                                                "$dec": "Moving_Streak_Count_Temp",
+                                                "$mul": [
+                                                    "Score_Kill_Moving_Streak_Successive",
+                                                    "$.Moving_Streak_Count_Temp",
+                                                    "Moving_Streak_CurrentScore"
+                                                ],
+                                                "$inc": [
+                                                    "TotalScore",
+                                                    "$.Moving_Streak_CurrentScore"
+                                                ],
+                                                "$push": [
+                                                    "Events",
+                                                    {
+                                                        "Type": "ScoreEvent_MOVINGSTREAK",
+                                                        "Points": "$.Moving_Streak_CurrentScore"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$ge": ["$.Kill_Streak_Count", 2]
+                                        },
+                                        "Actions": [
+                                            {
+                                                "$set": [
+                                                    "Kill_Streak_Count_Temp",
+                                                    "$.Kill_Streak_Count"
+                                                ],
+                                                "$dec": "Kill_Streak_Count_Temp",
+                                                "$mul": [
+                                                    "Score_Kill_Streak_Successive",
+                                                    "$.Kill_Streak_Count_Temp",
+                                                    "Kill_Streak_CurrentScore"
+                                                ],
+                                                "$inc": [
+                                                    "TotalScore",
+                                                    "$.Kill_Streak_CurrentScore"
+                                                ],
+                                                "$push": [
+                                                    "Events",
+                                                    {
+                                                        "Type": "ScoreEvent_KILLSTREAK",
+                                                        "Points": "$.Kill_Streak_CurrentScore"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.ReInitialiseTimer", 1]
+                                        },
+                                        "Actions": {
+                                            "$set": ["ReInitialiseTimer", 0]
+                                        },
+                                        "Transition": "State_Kill_Streak_ResetTimer"
+                                    }
+                                ],
+                                "$timer": [
+                                    {
+                                        "Condition": {
+                                            "$after": "$.StreakTime"
+                                        },
+                                        "Actions": [
+                                            {
+                                                "$set": [
+                                                    "HeadShot_Streak_Count",
+                                                    0
+                                                ]
+                                            },
+                                            {
+                                                "$set": [
+                                                    "Moving_Streak_Count",
+                                                    0
+                                                ]
+                                            },
+                                            {
+                                                "$set": ["Kill_Streak_Count", 0]
+                                            }
+                                        ],
+                                        "Transition": "Start"
+                                    }
+                                ],
+                                "CrowdNPC_Died": [
+                                    {
+                                        "Actions": [
+                                            {
+                                                "$mul": [
+                                                    "Score_Kill_Civilian_Successive",
+                                                    "$.CivilianKill_Successive_Count",
+                                                    "CivilianKill_Successive_CurrentScore"
+                                                ],
+                                                "$inc": "CivilianKill_Successive_Count"
+                                            },
+                                            {
+                                                "$set": [
+                                                    "CivilianKill_CurrentScore",
+                                                    "$.Score_Kill_Civilian"
+                                                ],
+                                                "$inc": [
+                                                    "CivilianKill_CurrentScore",
+                                                    "$.CivilianKill_Successive_CurrentScore"
+                                                ]
+                                            },
+                                            {
+                                                "$inc": [
+                                                    "TotalScore",
+                                                    "$.CivilianKill_CurrentScore"
+                                                ],
+                                                "$push": [
+                                                    "Events",
+                                                    {
+                                                        "Type": "ScoreEvent_CIVILIANKILL",
+                                                        "Points": "$.CivilianKill_CurrentScore"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$set": [
+                                                    "HeadShot_Streak_Count",
+                                                    0
+                                                ]
+                                            },
+                                            {
+                                                "$set": [
+                                                    "Moving_Streak_Count",
+                                                    0
+                                                ]
+                                            },
+                                            {
+                                                "$set": ["Kill_Streak_Count", 0]
+                                            }
+                                        ],
+                                        "Transition": "Start"
+                                    }
+                                ],
+                                "BodyHidden": [
+                                    {
+                                        "Condition": {
+                                            "$inarray": {
+                                                "in": "$.Targets",
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$Value.RepositoryId"
+                                                    ]
+                                                }
+                                            }
+                                        },
+                                        "Actions": [
+                                            {
+                                                "$mul": [
+                                                    "Score_BodyHidden_Successive",
+                                                    "$.BodyHidden_Successive_Count",
+                                                    "BodyHidden_Successive_CurrentScore"
+                                                ],
+                                                "$inc": "BodyHidden_Successive_Count"
+                                            },
+                                            {
+                                                "$set": [
+                                                    "BodyHidden_CurrentScore",
+                                                    "$.Score_BodyHidden"
+                                                ],
+                                                "$inc": [
+                                                    "BodyHidden_CurrentScore",
+                                                    "$.BodyHidden_Successive_CurrentScore"
+                                                ]
+                                            },
+                                            {
+                                                "$inc": [
+                                                    "TotalScore",
+                                                    "$.BodyHidden_CurrentScore"
+                                                ],
+                                                "$push": [
+                                                    "Events",
+                                                    {
+                                                        "Type": "ScoreEvent_BODYHIDDEN",
+                                                        "Points": "$.BodyHidden_CurrentScore"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "ScoreEvents": {
+                            "ScoreEvent_SYNCHRONISEDKILL": {
+                                "type": 13,
+                                "text": "UI_HUD_SCORING_SCORE_KILL_SYNCHRONIZEDKILL"
+                            },
+                            "ScoreEvent_SYNCHRONISEDKILL_SUCCESSIVE": {
+                                "type": 14,
+                                "text": "UI_HUD_SCORING_SCORE_KILL_SYNCHRONIZEDKILLSUCCESSIVE"
+                            }
+                        },
+                        "Constants": {
+                            "Score_Synchronised_Kill": 4000,
+                            "Score_Synchronised_Kill_Successive": 2000,
+                            "SynchronisedKillTimerLength": 1
+                        },
+                        "Context": {
+                            "PlayerIds": [],
+                            "SuccessivePlayerIds": [],
+                            "Events": [],
+                            "TotalScore": 0,
+                            "SynchronisedKill_Count": 0,
+                            "SynchronisedKill_Successive_CurrentScore": 0,
+                            "SynchronisedKill_CurrentScore": 0
+                        },
+                        "States": {
+                            "Start": {
+                                "-": {
+                                    "Actions": [
+                                        {
+                                            "$reset": "PlayerIds"
+                                        },
+                                        {
+                                            "$reset": "SuccessivePlayerIds"
+                                        }
+                                    ]
+                                },
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$pushunique": [
+                                                        "PlayerIds",
+                                                        "$Value.PlayerId"
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "EnterCoopState"
+                                    }
+                                ]
+                            },
+                            "EnterCoopState": {
+                                "$timer": [
+                                    {
+                                        "Condition": {
+                                            "$after": "$.SynchronisedKillTimerLength"
+                                        },
+                                        "Transition": "Start"
+                                    }
+                                ],
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$Value.IsTarget", false]
+                                        },
+                                        "Transition": "Start"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$pushunique": [
+                                                        "PlayerIds",
+                                                        "$Value.PlayerId"
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Actions": [
+                                            {
+                                                "$mul": [
+                                                    "Score_Synchronised_Kill_Successive",
+                                                    "$.SynchronisedKill_Count",
+                                                    "SynchronisedKill_Successive_CurrentScore"
+                                                ],
+                                                "$inc": "SynchronisedKill_Count"
+                                            },
+                                            {
+                                                "$set": [
+                                                    "SynchronisedKill_CurrentScore",
+                                                    "$.Score_Synchronised_Kill"
+                                                ],
+                                                "$inc": [
+                                                    "SynchronisedKill_CurrentScore",
+                                                    "$.SynchronisedKill_Successive_CurrentScore"
+                                                ]
+                                            },
+                                            {
+                                                "$inc": [
+                                                    "TotalScore",
+                                                    "$.SynchronisedKill_CurrentScore"
+                                                ],
+                                                "$push": [
+                                                    "Events",
+                                                    {
+                                                        "Type": "ScoreEvent_SYNCHRONISEDKILL",
+                                                        "Points": "$.SynchronisedKill_CurrentScore"
+                                                    }
+                                                ]
+                                            }
+                                        ],
+                                        "Transition": "Start"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            }
+        ],
+        "Entitlements": ["H2_LEGACY_EXPANSION"],
+        "PublicId": "023467413847"
+    },
+    "UserData": {}
+}

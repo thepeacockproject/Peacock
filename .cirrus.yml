@@ -1,0 +1,73 @@
+env:
+    # don't clone the entire repository history, saves time
+    CIRRUS_CLONE_DEPTH: 1
+
+Patcher_task:
+    # we don't need to tell GitHub if this isn't done
+    skip_notifications: "!changesInclude('.cirrus.yml', '**.{cs,resx,config,settings,ico,csproj,sln}')"
+    # skip if patcher remains unchanged
+    skip: "!changesInclude('.cirrus.yml', '**.{cs,resx,config,settings,ico,csproj,sln}')"
+    windows_container:
+        image: cirrusci/windowsservercore:visualstudio2019
+    Build_script:
+        - patcher/BuildCI.cmd
+    Patcher_Windows_artifacts:
+        path: patcher/bin/x64/Release/PeacockPatcher.exe
+        type: application/vnd.microsoft.portable-executable
+    Patcher_Linux_artifacts:
+        path: patcher/bin/x64/Linux.Release/PeacockPatcher.exe
+        type: application/vnd.microsoft.portable-executable
+
+Build_task:
+    container:
+        image: node:18-slim
+        cpu: 4
+        memory: 4gb
+    Yarn_cache:
+        folder: .yarn/cache
+    Yarn_Populate_script:
+        - yarn
+    Install_System_Dependencies_script:
+        - apt update --yes
+        - apt install zip jq --yes
+    Build_Modules_script:
+        - yarn build
+    Optimize_script:
+        - yarn optimize
+    Assemble_Full_script:
+        - ./packaging/ciAssemble.sh
+    Assemble_Lite_script:
+        - ./packaging/ciAssemble.sh lite
+    Peacock_Release_artifacts:
+        path: Peacock-v*.zip
+        type: application/zip
+    SourceMap_artifacts:
+        path: chunk0.js.map
+
+task:
+    container:
+        image: node:18-slim
+    Yarn_cache:
+        folder: .yarn/cache
+    Yarn_Populate_script:
+        - yarn
+    Type_Check_script:
+        - yarn typecheck
+    matrix:
+        -   only_if: $CIRRUS_TAG != ''
+            name: Types Publish
+            env:
+                NPM_AUTH_TOKEN: ENCRYPTED[f8bceee158d69277081075585ade5affc81890ef5f66385d9ae50ab6a75fa3a27a5501ecb8dadc95a6e4e3cace0b915d]
+            Install_System_Dependencies_script:
+                - apt update --yes
+                - apt install rsync --yes
+            Push_Types_script:
+                - rsync -a --include '*/' --include '*.d.ts' --exclude '*' build/ packaging/typedefs/
+                - yarn typedefs reversion
+                - yarn typedefs pack
+                - yarn config set npmAuthToken $NPM_AUTH_TOKEN
+                - yarn typedefs npm publish
+        -   only_if: $CIRRUS_TAG == ''
+            name: Linting
+            Lint_script:
+                - yarn lint

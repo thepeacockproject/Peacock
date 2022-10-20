@@ -1,0 +1,268 @@
+{
+    "Data": {
+        "EnableExits": {
+            "$eq": [
+                "$b6dae5cd-31f7-4c81-8ccb-b0b9c58c791d",
+                "$a8412294-ed08-4b43-bce0-742962bcdfef",
+                "Completed"
+            ]
+        },
+        "EnableSaving": true,
+        "Objectives": [
+            {
+                "_comment": "----- Kill CEO -----",
+                "Id": "a8412294-ed08-4b43-bce0-742962bcdfef",
+                "Category": "primary",
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "ad93e268-3d6e-4aba-bec0-607cb5451ac7"
+                    }
+                }
+            },
+            {
+                "_comment": "----- Get McGuffin -----",
+                "Id": "b6dae5cd-31f7-4c81-8ccb-b0b9c58c791d",
+                "UpdateActivationWhileCompleted": true,
+                "Category": "primary",
+                "Primary": true,
+                "ObjectiveType": "custom",
+                "ExcludeFromScoring": true,
+                "ForceShowOnLoadingScreen": true,
+                "Image": "images/actors/raccoon-gather-intel.jpg",
+                "BriefingName": "$loc UI_CONTRACT_RACCOON_OBJ_MCGUFFIN_TITLE",
+                "BriefingText": "$loc UI_CONTRACT_RACCOON_OBJ_MCGUFFIN_DESC",
+                "LongBriefingText": "$loc UI_CONTRACT_RACCOON_OBJ_MCGUFFIN_BRIEFING",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_RACCOON_OBJ_MCGUFFIN_TITLE",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Scope": "session",
+                "Definition": {
+                    "ContextListeners": {
+                        "update_counter": {
+                            "type": "custom",
+                            "HUDTemplate": {
+                                "display": {
+                                    "$loc": {
+                                        "key": "UI_CONTRACT_RACCOON_OBJ_MCGUFFIN_DYNAMIC",
+                                        "data": ["$.Core", "$.Disks"]
+                                    }
+                                },
+                                "iconType": 17
+                            }
+                        }
+                    },
+                    "Context": {
+                        "Core": "$loc UI_CONTRACT_RACCOON_OBJ_MCGUFFIN_CORE_GET",
+                        "Disks": "$loc UI_CONTRACT_RACCOON_OBJ_MCGUFFIN_DISK_0",
+                        "Core_Get": "$loc UI_CONTRACT_RACCOON_OBJ_MCGUFFIN_CORE_GET",
+                        "Core_Got": "$loc UI_CONTRACT_RACCOON_OBJ_MCGUFFIN_CORE_GOT",
+                        "Disk_0": "$loc UI_CONTRACT_RACCOON_OBJ_MCGUFFIN_DISK_0",
+                        "Disk_1": "$loc UI_CONTRACT_RACCOON_OBJ_MCGUFFIN_DISK_1",
+                        "Disk_2": "$loc UI_CONTRACT_RACCOON_OBJ_MCGUFFIN_DISK_2",
+                        "PieceCounter": 0,
+                        "update_counter": 0
+                    },
+                    "States": {
+                        "Start": {
+                            "-": {
+                                "Actions": {
+                                    "$inc": "update_counter"
+                                }
+                            },
+                            "DiskPieceFound": {
+                                "Actions": {
+                                    "$inc": "PieceCounter"
+                                },
+                                "Transition": "DiskText"
+                            },
+                            "McGuffinGotEvent": {
+                                "Actions": {
+                                    "$set": ["Core", "$.Core_Got"]
+                                },
+                                "Transition": "Success"
+                            }
+                        },
+                        "DiskText": {
+                            "-": [
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.PieceCounter", 0]
+                                    },
+                                    "Actions": {
+                                        "$set": ["Disks", "$.Disk_0"]
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.PieceCounter", 1]
+                                    },
+                                    "Actions": {
+                                        "$set": ["Disks", "$.Disk_1"]
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.PieceCounter", 2]
+                                    },
+                                    "Actions": {
+                                        "$set": ["Disks", "$.Disk_2"]
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.PieceCounter", 3]
+                                    },
+                                    "Actions": {
+                                        "$set": ["Core", ""]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Actions": {
+                                        "$set": ["Core", "$.Core_Get"]
+                                    },
+                                    "Transition": "Start"
+                                }
+                            ]
+                        },
+                        "Success": {
+                            "-": {
+                                "Actions": {
+                                    "$set": ["Disks", ""],
+                                    "$inc": "update_counter"
+                                }
+                            },
+                            "McGuffinLostEvent": {
+                                "Transition": "DiskText"
+                            },
+                            "DiskPieceFound": [
+                                {
+                                    "Actions": {
+                                        "$inc": "PieceCounter"
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.PieceCounter", 3]
+                                    },
+                                    "Transition": "DiskText"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Scoring Dummy for DataCore Objective -----",
+                "Id": "dc87ba2d-2e2d-4a9d-9fd9-ce005345425a",
+                "Category": "primary",
+                "Primary": true,
+                "ObjectiveType": "custom",
+                "Image": "",
+                "BriefingName": "",
+                "BriefingText": "",
+                "Type": "statemachine",
+                "Scope": "session",
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "exit_gate": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/Greedy/mission_raccoon/mission_raccoon.brick"
+        ],
+        "DevOnlyBricks": [
+            "assembly:/_pro/scenes/missions/Greedy/mission_raccoon/dev_raccoon.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/Greedy/mission_raccoon/vr_overrides_raccoon.brick",
+                    "assembly:/_pro/scenes/missions/greedy/mission_raccoon/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/Greedy/mission_raccoon/vr_overrides_raccoon.brick"
+                ]
+            }
+        ],
+        "GameChangers": [],
+        "GameChangerReferences": [],
+        "GameDifficulties": [
+            {
+                "Difficulty": "easy",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/Greedy/mission_raccoon/difficulty_easy_raccoon.brick"
+                ]
+            },
+            {
+                "Difficulty": "normal",
+                "Bricks": []
+            },
+            {
+                "Difficulty": "hard",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/Greedy/mission_raccoon/difficulty_hard_raccoon.brick"
+                ]
+            }
+        ],
+        "SimulationQualities": [
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/Greedy/mission_raccoon/intel_6core_racoon.brick"
+                ]
+            },
+            {
+                "Quality": "best",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/Greedy/mission_raccoon/intel_8core_racoon.brick"
+                ]
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "7a03a97d-238c-48bd-bda0-e5f279569cce",
+        "IsPublished": true,
+        "TileImage": "images/contracts/raccoon/tile.jpg",
+        "BriefingVideo": "briefing_raccoon",
+        "DebriefingVideo": "debriefing_raccoon",
+        "CreationTimestamp": "2016-12-15T15:27:35.423427Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_RACCOON_TITLE",
+        "Description": "UI_CONTRACT_RACCOON_DESC",
+        "CodeName_Hint": "Raccoon",
+        "Location": "LOCATION_GREEDY_RACCOON",
+        "ScenePath": "assembly:/_pro/scenes/missions/Greedy/mission_raccoon/scene_raccoon_basic.entity",
+        "Type": "mission",
+        "Order": 50,
+        "Release": "2.40.x",
+        "RequiredUnlockable": "ACCESS_HIT_S2_CONCLUSION",
+        "Drops": ["ACCESS_HIT_STINGRAY"],
+        "Opportunities": [
+            "49ed98fb-c007-47ac-8d95-45629d12553e",
+            "d9fa1cae-8362-4cc2-b20d-1dc6b953ef27",
+            "bcbd4477-3e9d-4650-a552-b908090bbfaf",
+            "19019a2b-7d9a-4b6f-aa99-a4c639a1f1ad",
+            "e18ca915-d2b6-4a8d-8ac2-661e51c2df84"
+        ],
+        "Entitlements": ["H2_LEGACY_EXPANSION"],
+        "LastUpdate": "2022-01-20T18:29:24.5934015Z",
+        "PublicId": "024502314547"
+    },
+    "UserData": {}
+}

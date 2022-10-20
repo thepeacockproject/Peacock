@@ -1,0 +1,120 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "301de7a7-3e79-4200-ba67-67e03c5c0add",
+                "Category": "primary",
+                "ObjectiveType": "setpiece",
+                "Image": "images/actors/Snowcrane_erich_soders_briefing.jpg",
+                "BriefingName": "$loc UI_CONTRACT_SNOW_CRANE_ELIMINATE_SODERS_NAME",
+                "BriefingText": "$loc UI_CONTRACT_SNOW_CRANE_ELIMINATE_SODERS_OBJ",
+                "LongBriefingText": "$loc 5651198f-9ef7-4f3c-908b-a570f1cd64e2_ErichSoders_Hokkaido_Description",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_SNOW_CRANE_ELIMINATE_SODERS_OBJ"
+                },
+                "DisplayAsKillObjective": true,
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {
+                        "Targets": ["5651198f-9ef7-4f3c-908b-a570f1cd64e2"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Soders_Dead": [
+                                {
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "898631fc-fdc5-49e7-8012-029d23934308",
+                "Primary": true,
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "9bebb40a-3746-4ba2-8bfc-a1fcabaec72c"
+                    }
+                }
+            },
+            {
+                "Id": "5b1534ef-7848-440c-855a-d2635663dd74",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "BriefingText": "$loc UI_CONTRACT_SNOWCRANE_FAIL_ESCAPE",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_SNOWCRANE_OBJ_ESCAPE"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "-": {
+                                "Transition": "Success"
+                            }
+                        },
+                        "Success": {
+                            "TargetEscapeStarted": {
+                                "Transition": "Countdown"
+                            }
+                        },
+                        "Countdown": {
+                            "TargetEscapeFoiled": {
+                                "Transition": "Success"
+                            },
+                            "$timer": {
+                                "Condition": {
+                                    "$after": 45
+                                },
+                                "Transition": "Failure"
+                            },
+                            "Kill": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "9bebb40a-3746-4ba2-8bfc-a1fcabaec72c"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_PRO/Scenes/Missions/Hokkaido/difficulty_pro1_hokkaido_snowcrane.brick"
+        ],
+        "GameChangers": []
+    },
+    "Metadata": {
+        "Id": "3d885714-fa9a-4438-9e0f-c58dbcaab8b8",
+        "IsPublished": true,
+        "CreationTimestamp": "2015-06-19T09:07:04.74Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_SNOW_CRANE_TITLE",
+        "TileImage": "images/Contracts/SnowCrane/Tile.jpg",
+        "CodeName_Hint": "Snow Crane PRO1",
+        "Description": "UI_CONTRACT_SNOW_CRANE_DESC",
+        "BriefingVideo": "briefing_snowcrane",
+        "DebriefingVideo": "debriefing_snowcrane",
+        "Location": "LOCATION_HOKKAIDO",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Hokkaido/_Scene_Mission_SnowCrane.entity",
+        "Type": "mission",
+        "Difficulty": "pro1",
+        "Release": "1.7.x",
+        "RequiredUnlockable": "ACCESS_HIT_SNOW_CRANE",
+        "Drops": ["ACCESS_HIT_S1_CONCLUSION"],
+        "LastUpdate": "2020-11-09T13:35:13.8667614Z",
+        "PublicId": "010574484047"
+    },
+    "UserData": {}
+}

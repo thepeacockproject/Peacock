@@ -1,0 +1,158 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Type": "statemachine",
+                "Id": "096acf86-c35c-44bb-9ffe-688e17d569e0",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository 5368e882-2a03-474a-8ebf-abedde6bab7c).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 5368e882-2a03-474a-8ebf-abedde6bab7c).Name"
+                        }
+                    }
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["5368e882-2a03-474a-8ebf-abedde6bab7c"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "5368e882-2a03-474a-8ebf-abedde6bab7c"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "d62e9680-1974-43e2-b4b4-af5171b9f88b",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository 50599f53-8317-4887-819e-24930a861eee).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 50599f53-8317-4887-819e-24930a861eee).Name"
+                        }
+                    }
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["50599f53-8317-4887-819e-24930a861eee"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "50599f53-8317-4887-819e-24930a861eee"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "b081e6c3-39c9-4c6e-b13d-1426c7de5914",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository d886281d-c802-479f-a545-6d6addc6f1f7).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository d886281d-c802-479f-a545-6d6addc6f1f7).Name"
+                        }
+                    }
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["d886281d-c802-479f-a545-6d6addc6f1f7"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "d886281d-c802-479f-a545-6d6addc6f1f7"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "GameChangers": [],
+        "Bricks": [],
+        "Stashpoints": ["9c33f44b-71ca-46a4-aaa3-18d18e0c4335"],
+        "Entrances": ["a20e45b9-172c-49e6-84a2-04da840bf90f"]
+    },
+    "Metadata": {
+        "Title": "The Sandstorm Incident",
+        "Description": "Hello. Our Client has called us, and stated that the targets have betrayed our clients trust, and they need to be taken care of. They all are on bodyguard duty on the rooftops, so you might need to get on high ground to get to them.\n\nCreated By: Tinosaurus\nCurated By: Tinosaurus",
+        "ScenePath": "assembly:/_pro/scenes/missions/marrakesh/_scene_python.entity",
+        "Location": "LOCATION_MARRAKECH_NIGHT",
+        "IsPublished": true,
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "GameVersion": "8.6.0.0",
+        "ServerVersion": "8.6.0.30",
+        "Type": "featured",
+        "Id": "fd3d8751-6298-4a11-9b29-e1bc01c8e08c",
+        "PublicId": "107329572213",
+        "TileImage": "images/contracts/featured/tino3.jpg",
+        "GroupObjectiveDisplayOrder": [
+            {
+                "Id": "096acf86-c35c-44bb-9ffe-688e17d569e0"
+            },
+            {
+                "Id": "d62e9680-1974-43e2-b4b4-af5171b9f88b"
+            },
+            {
+                "Id": "b081e6c3-39c9-4c6e-b13d-1426c7de5914"
+            }
+        ],
+        "CreationTimestamp": "2021-09-09T13:34:29.875887Z",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

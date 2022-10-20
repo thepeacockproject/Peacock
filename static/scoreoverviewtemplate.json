@@ -1,0 +1,36 @@
+{
+    "controller": "group",
+    "children": [
+        {
+            "view": "menu3.basic.DetailedScoreTileDetail",
+            "row": 0,
+            "col": 0,
+            "data": {
+                "animate": true,
+                "rating": "$.stars",
+                "completed": true,
+                "isonline": "$arg _isonline",
+                "difficulty": "$($arg Contract).Metadata.Difficulty",
+                "scoresummary": "$.ScoreDetails.Headlines",
+                "levelsummary": [
+                    {
+                        "header": "$loc UI_MENU_SCOREOVERVIEW_CHALLENGESCOMPLETED",
+                        "value": "$.ChallengesCompleted"
+                    },
+                    {
+                        "header": "$loc UI_MENU_SCOREOVERVIEW_XP_EARNED",
+                        "value": "$formatstring +{$.XPGain,.0f}"
+                    }
+                ]
+            },
+            "actions": {
+                "on-add-child": {
+                    "dbind:trigger-update": {
+                        "id": "mastery_data",
+                        "oneshot": true
+                    }
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,115 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Type": "statemachine",
+                "Id": "34ec2cee-95c0-461c-93d9-d26897483712",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository 7e9a575c-8c24-466b-b32b-bbb150e138ad).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 7e9a575c-8c24-466b-b32b-bbb150e138ad).Name"
+                        }
+                    }
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["7e9a575c-8c24-466b-b32b-bbb150e138ad"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "7e9a575c-8c24-466b-b32b-bbb150e138ad"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "a31ee175-afd7-46b7-8c87-e506f602f348",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository 7592b04e-4ba6-4559-a8d4-661a55e3f8a0).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 7592b04e-4ba6-4559-a8d4-661a55e3f8a0).Name"
+                        }
+                    }
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["7592b04e-4ba6-4559-a8d4-661a55e3f8a0"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "7592b04e-4ba6-4559-a8d4-661a55e3f8a0"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "GameChangers": [],
+        "Bricks": [],
+        "Stashpoints": ["ea156a43-2020-4fee-b726-a5d01c2b0cc2"],
+        "Entrances": ["da717656-934e-4783-8c36-65bf486cfdfa"]
+    },
+    "Metadata": {
+        "Title": "The leak at the movie scene",
+        "Description": "You are tasked with taking out the person, who has been leaking details about the movie to the public, and his best friend, who he has been sharing the secrets with.\rYou are free to do this contract any way you want. You can think outside the box, as you have been set no restrictions. Of course doing the job cleanly is the best.\n\nCreated By: Tinosaurus\nCurated By: Tinosaurus",
+        "ScenePath": "assembly:/_pro/scenes/missions/coastaltown/_scene_copperhead.entity",
+        "Location": "LOCATION_COASTALTOWN_MOVIESET",
+        "IsPublished": true,
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "GameVersion": "8.6.0.0",
+        "ServerVersion": "8.6.0.30",
+        "Type": "featured",
+        "Id": "9b4636e3-2a6f-4bce-80e1-e3a5f79972b3",
+        "PublicId": "105042598113",
+        "TileImage": "images/contracts/featured/tino2.jpg",
+        "GroupObjectiveDisplayOrder": [
+            {
+                "Id": "34ec2cee-95c0-461c-93d9-d26897483712"
+            },
+            {
+                "Id": "a31ee175-afd7-46b7-8c87-e506f602f348"
+            }
+        ],
+        "CreationTimestamp": "2021-09-11T19:40:15.5781213Z",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

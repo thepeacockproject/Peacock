@@ -1,0 +1,211 @@
+{
+    "Data": {
+        "EnableSaving": true,
+        "Objectives": [
+            {
+                "_comment": "----- Identify the Maelstrom -----",
+                "Id": "7effacb2-77d2-4a9c-86a7-6a69eb0aa1e2",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": true,
+                "Image": "images/actors/mongoose_wazir_kale.jpg",
+                "BriefingName": "$loc UI_CONTRACT_MONGOOSE_OBJ_ID_TITLE",
+                "BriefingText": "$loc UI_CONTRACT_MONGOOSE_OBJ_ID_DESC",
+                "LongBriefingText": "$loc UI_CONTRACT_MONGOOSE_OBJ_ID_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_MONGOOSE_OBJ_ID_TITLE",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "IdentifyMaelstrom": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Eliminate the Maelstrom Identified -----",
+                "Id": "85c5ac7e-55ba-44fc-9225-82e6c1250b51",
+                "UpdateActivationWhileCompleted": true,
+                "IsHidden": false,
+                "Category": "primary",
+                "Activation": {
+                    "$eq": [
+                        "$7effacb2-77d2-4a9c-86a7-6a69eb0aa1e2",
+                        "Completed"
+                    ]
+                },
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "c7c9e213-16f9-4215-bf07-dd8f801ce3e0"
+                    }
+                },
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": true
+                    }
+                },
+                "OnInactive": {
+                    "IfCompleted": {
+                        "State": "Completed"
+                    }
+                }
+            },
+            {
+                "_comment": "----- Eliminate the Maelstrom Not identified -----",
+                "Id": "7161cbf5-af3a-4a1b-b2b8-60437c4e8187",
+                "UpdateActivationWhileCompleted": true,
+                "IsHidden": true,
+                "ExcludeFromScoring": true,
+                "Category": "primary",
+                "Activation": {
+                    "$eq": [
+                        "$7effacb2-77d2-4a9c-86a7-6a69eb0aa1e2",
+                        "InProgress"
+                    ]
+                },
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "c7c9e213-16f9-4215-bf07-dd8f801ce3e0"
+                    }
+                },
+                "OnInactive": {
+                    "IfCompleted": {
+                        "State": "Completed",
+                        "Visible": false
+                    }
+                },
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                }
+            },
+            {
+                "_comment": "----- Eliminate Vanya Shah -----",
+                "Id": "7b55b285-5921-477c-bd0f-559d0a00ec68",
+                "Primary": true,
+                "RepeatSuccess": 1,
+                "RepeatFailed": 1,
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "076f23cc-09d8-423f-b890-74020f53b1d6"
+                    }
+                }
+            },
+            {
+                "_comment": "----- Eliminate Dawood Rangan -----",
+                "Id": "424bb008-4b9c-4435-8e01-eaccb118f8cf",
+                "Primary": true,
+                "RepeatSuccess": 1,
+                "RepeatFailed": 1,
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "78f98c70-b7be-4578-9b6a-1c96a3e1ff1a"
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_PRO/scenes/missions/mumbai/mission_mongoose.brick"
+        ],
+        "DevOnlyBricks": [
+            "assembly:/_pro/scenes/missions/mumbai/dev_mongoose.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/mumbai/vr_overrides_mongoose.brick",
+                    "assembly:/_pro/scenes/missions/mumbai/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/mumbai/vr_overrides_mongoose.brick"
+                ]
+            }
+        ],
+        "GameChangers": [],
+        "GameChangerReferences": [],
+        "GameDifficulties": [
+            {
+                "Difficulty": "easy",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/mumbai/difficulty_easy_mumbai_mongoose.brick"
+                ]
+            },
+            {
+                "Difficulty": "normal",
+                "Bricks": []
+            },
+            {
+                "Difficulty": "hard",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/mumbai/difficulty_hard_mumbai_mongoose.brick"
+                ]
+            }
+        ],
+        "SimulationQualities": [
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/mumbai/intel_6core_mongoose.brick"
+                ]
+            },
+            {
+                "Quality": "best",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/mumbai/intel_8core_mongoose.brick"
+                ]
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "0fad48d7-3d0f-4c66-8605-6cbe9c3a46d7",
+        "IsPublished": true,
+        "TileImage": "images/contracts/mongoose/tile.jpg",
+        "BriefingVideo": "briefing_mongoose",
+        "DebriefingVideo": "debriefing_mongoose",
+        "CreationTimestamp": "2016-12-22T09:38:47.0308316Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_MONGOOSE_TITLE",
+        "Description": "UI_CONTRACT_MONGOOSE_DESC",
+        "CodeName_Hint": "Mongoose",
+        "Location": "LOCATION_MUMBAI",
+        "ScenePath": "assembly:/_pro/scenes/missions/Mumbai/scene_mongoose.entity",
+        "Type": "mission",
+        "Order": 50,
+        "Release": "2.2.x",
+        "RequiredUnlockable": "ACCESS_HIT_MONGOOSE",
+        "Drops": ["ACCESS_HIT_SKUNK"],
+        "Opportunities": [
+            "172cbd1d-3877-4309-97bd-bebfb7b5a71b",
+            "d9c7ba7e-3f8f-4ed4-9981-d94b6958b3bd",
+            "0145c6e7-5d84-41a8-b711-5ff10e65e7cb",
+            "87372d06-9d13-4612-be48-6206ee788e56",
+            "3bcc7c37-3d5e-4099-9776-d14b1be6e959",
+            "21eeff62-dc2b-4906-a271-4c3b2731b260",
+            "8b7c3665-4ffc-4df0-8141-fd2a9d25d5a5"
+        ],
+        "Entitlements": ["H2_LEGACY_STANDARD"],
+        "LastUpdate": "2022-01-20T18:29:24.5185038Z",
+        "PublicId": "013753175047"
+    },
+    "UserData": {}
+}

@@ -1,0 +1,512 @@
+[
+    {
+        "Id": "9bb822a6-a174-4bd8-8d80-116612b75bd2",
+        "GroupId": "00000000-0000-0000-0000-000000000000",
+        "Name": "UI_CHALLENGES_GLOBAL_POISON_KILL_NAME",
+        "Type": "Statistic",
+        "Description": "UI_CHALLENGES_GLOBAL_POISON_KILL_DESC",
+        "ImageName": null,
+        "Definition": {
+            "Context": {},
+            "Repeatable": {
+                "Base": 10,
+                "Delta": 10
+            },
+            "Scope": "profile",
+            "States": {
+                "Start": {
+                    "Kill": {
+                        "Condition": {
+                            "$and": [
+                                {
+                                    "$eq": ["$Value.KillClass", "poison"]
+                                },
+                                {
+                                    "$eq": ["$Value.IsTarget", true]
+                                }
+                            ]
+                        },
+                        "Transition": "Success"
+                    }
+                }
+            }
+        },
+        "Tags": ["story", "stats"],
+        "Drops": [],
+        "LastModified": "2019-02-05T08:37:45.6213397"
+    },
+    {
+        "Id": "6aab8b21-0483-4baa-abeb-12d943957a44",
+        "GroupId": "00000000-0000-0000-0000-000000000000",
+        "Name": "UI_CHALLENGES_GLOBAL_BALLISTIC_KILL_NAME",
+        "Type": "Statistic",
+        "Description": "UI_CHALLENGES_GLOBAL_BALLISTIC_KILL_DESC",
+        "ImageName": null,
+        "Definition": {
+            "Context": {},
+            "Repeatable": {
+                "Base": 10,
+                "Delta": 10
+            },
+            "Scope": "profile",
+            "States": {
+                "Start": {
+                    "Kill": {
+                        "Condition": {
+                            "$and": [
+                                {
+                                    "$eq": ["$Value.KillClass", "ballistic"]
+                                },
+                                {
+                                    "$eq": ["$Value.IsTarget", true]
+                                }
+                            ]
+                        },
+                        "Transition": "Success"
+                    }
+                }
+            }
+        },
+        "Tags": ["story", "stats"],
+        "Drops": [],
+        "LastModified": "2019-02-05T08:37:45.6369662"
+    },
+    {
+        "Id": "a25014b3-82c3-45d2-8d28-1c9e80e8808c",
+        "GroupId": "00000000-0000-0000-0000-000000000000",
+        "Name": "UI_CHALLENGES_GLOBAL_ACCIDENT_KILL_NAME",
+        "Type": "Statistic",
+        "Description": "UI_CHALLENGES_GLOBAL_ACCIDENT_KILL_DESC",
+        "ImageName": null,
+        "Definition": {
+            "Context": {},
+            "Repeatable": {
+                "Base": 10,
+                "Delta": 10
+            },
+            "Scope": "profile",
+            "States": {
+                "Start": {
+                    "Kill": {
+                        "Condition": {
+                            "$and": [
+                                {
+                                    "$eq": ["$Value.Accident", true]
+                                },
+                                {
+                                    "$eq": ["$Value.IsTarget", true]
+                                }
+                            ]
+                        },
+                        "Transition": "Success"
+                    }
+                }
+            }
+        },
+        "Tags": ["story", "stats"],
+        "Drops": [],
+        "LastModified": "2019-02-05T08:37:45.4808194"
+    },
+    {
+        "Id": "f929efad-5d5e-4fcb-9c4e-6eb61a01412c",
+        "GroupId": "00000000-0000-0000-0000-000000000000",
+        "Name": "UI_CHALLENGES_GLOBAL_NON_TARGET_KILL_NAME",
+        "Type": "Statistic",
+        "Description": "UI_CHALLENGES_GLOBAL_NON_TARGET_KILL_DESC",
+        "ImageName": null,
+        "Definition": {
+            "Context": {},
+            "Repeatable": {
+                "Base": 10,
+                "Delta": 10
+            },
+            "Scope": "profile",
+            "States": {
+                "Start": {
+                    "Kill": {
+                        "Condition": {
+                            "$and": [
+                                {
+                                    "$eq": ["$Value.IsTarget", false]
+                                },
+                                {
+                                    "$not": {
+                                        "$eq": ["$Value.KillContext", 1]
+                                    }
+                                }
+                            ]
+                        },
+                        "Transition": "Success"
+                    },
+                    "CrowdNPC_Died": {
+                        "Transition": "Success"
+                    }
+                }
+            }
+        },
+        "Tags": ["story", "stats"],
+        "Drops": [],
+        "LastModified": "2019-02-05T08:37:45.6682232"
+    },
+    {
+        "Id": "2debf12d-726b-4bc4-9ea7-8526c1499988",
+        "GroupId": "00000000-0000-0000-0000-000000000000",
+        "Name": "UI_CHALLENGES_GLOBAL_MELEE_KILL_NAME",
+        "Type": "Statistic",
+        "Description": "UI_CHALLENGES_GLOBAL_MELEE_KILL_DESC",
+        "ImageName": null,
+        "Definition": {
+            "Context": {},
+            "Repeatable": {
+                "Base": 10,
+                "Delta": 10
+            },
+            "Scope": "profile",
+            "States": {
+                "Start": {
+                    "Kill": {
+                        "Condition": {
+                            "$and": [
+                                {
+                                    "$eq": ["$Value.KillClass", "melee"]
+                                },
+                                {
+                                    "$eq": ["$Value.IsTarget", true]
+                                }
+                            ]
+                        },
+                        "Transition": "Success"
+                    }
+                }
+            }
+        },
+        "Tags": ["story", "stats"],
+        "Drops": [],
+        "LastModified": "2019-02-05T08:37:45.6213397"
+    },
+    {
+        "Id": "b55bb4da-bb14-46a4-9975-af79e5a3e088",
+        "GroupId": "00000000-0000-0000-0000-000000000000",
+        "Name": "UI_CHALLENGES_GLOBAL_HEADSHOT_NAME",
+        "Type": "Statistic",
+        "Description": "UI_CHALLENGES_GLOBAL_HEADSHOT_DESC",
+        "ImageName": null,
+        "Definition": {
+            "Context": {},
+            "Repeatable": {
+                "Base": 10,
+                "Delta": 10
+            },
+            "Scope": "profile",
+            "States": {
+                "Start": {
+                    "Kill": {
+                        "Condition": {
+                            "$and": [
+                                {
+                                    "$eq": ["$Value.IsHeadshot", true]
+                                },
+                                {
+                                    "$eq": ["$Value.IsTarget", true]
+                                }
+                            ]
+                        },
+                        "Transition": "Success"
+                    }
+                }
+            }
+        },
+        "Tags": ["story", "stats"],
+        "Drops": [],
+        "LastModified": "2019-02-05T08:37:45.5900901"
+    },
+    {
+        "Id": "1d4b7e46-4d83-4cea-a357-d092eb43cb5d",
+        "GroupId": "00000000-0000-0000-0000-000000000000",
+        "Name": "UI_CHALLENGES_GLOBAL_EXPLOSION_KILL_NAME",
+        "Type": "Statistic",
+        "Description": "UI_CHALLENGES_GLOBAL_EXPLOSION_KILL_DESC",
+        "ImageName": null,
+        "Definition": {
+            "Context": {},
+            "Repeatable": {
+                "Base": 10,
+                "Delta": 10
+            },
+            "Scope": "profile",
+            "States": {
+                "Start": {
+                    "Kill": {
+                        "Condition": {
+                            "$and": [
+                                {
+                                    "$eq": ["$Value.KillClass", "explosion"]
+                                },
+                                {
+                                    "$eq": ["$Value.IsTarget", true]
+                                }
+                            ]
+                        },
+                        "Transition": "Success"
+                    }
+                }
+            }
+        },
+        "Tags": ["story", "stats"],
+        "Drops": [],
+        "LastModified": "2019-02-05T08:37:45.6525988"
+    },
+    {
+        "Id": "8fca391e-0ff6-451c-9894-e38cb604ea86",
+        "GroupId": "00000000-0000-0000-0000-000000000000",
+        "Name": "UI_CHALLENGES_GLOBAL_UNNOTICED_KILL_NAME",
+        "Type": "Statistic",
+        "Description": "UI_CHALLENGES_GLOBAL_UNNOTICED_KILL_DESC",
+        "ImageName": null,
+        "Definition": {
+            "Context": {},
+            "Repeatable": {
+                "Base": 10,
+                "Delta": 10
+            },
+            "Scope": "profile",
+            "States": {
+                "Start": {
+                    "Kill": {
+                        "Condition": {
+                            "$eq": ["$Value.IsTarget", true]
+                        },
+                        "Transition": "Checkbodyfound"
+                    }
+                },
+                "Checkbodyfound": {
+                    "$timer": {
+                        "Condition": {
+                            "$after": 5.0
+                        },
+                        "Transition": "Start"
+                    },
+                    "BodyFound": {
+                        "Transition": "Failure"
+                    },
+                    "Spotted": {
+                        "Transition": "Failure"
+                    },
+                    "Unnoticed_Kill": {
+                        "Transition": "Success"
+                    }
+                }
+            }
+        },
+        "Tags": ["story", "stats"],
+        "Drops": [],
+        "LastModified": "2019-02-05T08:37:45.6057536"
+    },
+    {
+        "Id": "b1a85feb-55af-4707-8271-b3522661c0b1",
+        "GroupId": "00000000-0000-0000-0000-000000000000",
+        "Name": "UI_CHALLENGES_GLOBAL_SILENT_ASSASSIN_FEEDBACK_NAME",
+        "Type": "Statistic",
+        "Description": "UI_CHALLENGES_GLOBAL_SILENT_ASSASSIN_FEEDBACK_DESC",
+        "ImageName": null,
+        "Definition": {
+            "Context": {
+                "Witnesses": [],
+                "KilledTargets": [],
+                "RecordingDestroyed": true,
+                "LastAccidentTime": 0
+            },
+            "Repeatable": {
+                "Base": 1,
+                "Delta": 0
+            },
+            "Scope": "session",
+            "States": {
+                "Start": {
+                    "ContractEnd": {
+                        "Condition": {
+                            "$and": [
+                                {
+                                    "$eq": [true, "$.RecordingDestroyed"]
+                                },
+                                {
+                                    "$all": {
+                                        "in": "$.Witnesses",
+                                        "?": {
+                                            "$any": {
+                                                "in": "$.KilledTargets",
+                                                "?": {
+                                                    "$eq": ["$.#", "$.##"]
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        "Transition": "Success"
+                    },
+                    "AccidentBodyFound": {
+                        "$set": ["LastAccidentTime", "$Timestamp"]
+                    },
+                    "Witnesses": {
+                        "Condition": {
+                            "$any": {
+                                "in": "$Value",
+                                "?": {
+                                    "$pushunique": ["Witnesses", "$.#"]
+                                }
+                            }
+                        }
+                    },
+                    "Spotted": {
+                        "Condition": {
+                            "$any": {
+                                "in": "$Value",
+                                "?": {
+                                    "$pushunique": ["Witnesses", "$.#"]
+                                }
+                            }
+                        }
+                    },
+                    "Kill": [
+                        {
+                            "Condition": {
+                                "$and": [
+                                    {
+                                        "$eq": ["$Value.IsTarget", false]
+                                    },
+                                    {
+                                        "$not": {
+                                            "$eq": ["$Value.KillContext", 1]
+                                        }
+                                    }
+                                ]
+                            },
+                            "Transition": "Failure"
+                        },
+                        {
+                            "Condition": {
+                                "$and": [
+                                    {
+                                        "$eq": ["$Value.IsTarget", false]
+                                    },
+                                    {
+                                        "$eq": ["$Value.KillContext", 1]
+                                    }
+                                ]
+                            },
+                            "Actions": {
+                                "$pushunique": [
+                                    "KilledTargets",
+                                    "$Value.RepositoryId"
+                                ]
+                            }
+                        },
+                        {
+                            "Condition": {
+                                "$eq": ["$Value.IsTarget", true]
+                            },
+                            "Actions": {
+                                "$pushunique": [
+                                    "KilledTargets",
+                                    "$Value.RepositoryId"
+                                ]
+                            }
+                        }
+                    ],
+                    "CrowdNPC_Died": {
+                        "Transition": "Failure"
+                    },
+                    "MurderedBodySeen": [
+                        {
+                            "Condition": {
+                                "$eq": ["$Value.IsWitnessTarget", true]
+                            },
+                            "Actions": {
+                                "$pushunique": ["Witnesses", "$Value.Witness"]
+                            }
+                        },
+                        {
+                            "Condition": {
+                                "$and": [
+                                    {
+                                        "$eq": ["$Value.IsWitnessTarget", false]
+                                    },
+                                    {
+                                        "$not": {
+                                            "$eq": [
+                                                "$.LastAccidentTime",
+                                                "$Timestamp"
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            "Transition": "Failure"
+                        }
+                    ],
+                    "SecuritySystemRecorder": [
+                        {
+                            "Actions": {
+                                "$set": ["RecordingDestroyed", false]
+                            },
+                            "Condition": {
+                                "$eq": ["$Value.event", "spotted"]
+                            }
+                        },
+                        {
+                            "Actions": {
+                                "$set": ["RecordingDestroyed", true]
+                            },
+                            "Condition": {
+                                "$or": [
+                                    {
+                                        "$eq": ["$Value.event", "erased"]
+                                    },
+                                    {
+                                        "$eq": ["$Value.event", "destroyed"]
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            "ContextListeners": {
+                "RecordingDestroyed": {
+                    "type": "toggle"
+                },
+                "KilledTargets": {
+                    "comparand": "$.Witnesses",
+                    "type": "matcharrays"
+                }
+            }
+        },
+        "Tags": ["story", "stats", "hideinhud", "sa-feedback"],
+        "Drops": [],
+        "LastModified": "2019-10-22T11:38:54.9922012",
+        "Xp": 0,
+        "XpModifier": {},
+        "PlayableSince": null,
+        "PlayableUntil": null,
+        "InclusionData": {
+            "ContractIds": null,
+            "ContractTypes": [
+                "mission",
+                "flashback",
+                "elusive",
+                "escalation",
+                "usercreated",
+                "tutorial",
+                "creation",
+                "orbis",
+                "featured",
+                "campaign",
+                "vsrace"
+            ],
+            "Locations": null,
+            "GameModes": null
+        }
+    }
+]

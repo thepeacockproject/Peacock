@@ -1,0 +1,235 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "2937d553-7162-4a49-accd-52c2ac93ab2a",
+                "Type": "statemachine",
+                "Category": "condition",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": false
+                    }
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "Close_To_FaceScanner_1": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "2ffceeaf-9c3a-4aef-a897-857538538c7f",
+                "Category": "primary",
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "5b54d9fb-fa85-4302-a8d5-c5c5e97344c4"
+                    }
+                }
+            },
+            {
+                "Id": "880e6299-195f-4fca-8a09-13257f5087a2",
+                "Category": "primary",
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "963c2774-cb9a-4b0c-ab69-210b2405383b"
+                    }
+                }
+            },
+            {
+                "Id": "681c4058-7035-4a30-8b42-393600508361",
+                "Category": "primary",
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "1a8a827f-932e-49c0-a1b3-e3201795ae19"
+                    }
+                }
+            },
+            {
+                "Id": "346d7dfc-1dcc-4c46-9746-1d925942be84",
+                "Type": "statemachine",
+                "Category": "condition",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": false
+                    }
+                },
+                "Activation": {
+                    "$eq": [
+                        "$2ffceeaf-9c3a-4aef-a897-857538538c7f",
+                        "$880e6299-195f-4fca-8a09-13257f5087a2",
+                        "$681c4058-7035-4a30-8b42-393600508361",
+                        "$1a7d60d3-3299-4917-b1e7-e9dd778e20ce",
+                        "Completed"
+                    ]
+                },
+                "ObjectiveType": "setpiece",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "Targets": ["0116d627-6a70-4365-aa85-8ce506ff07a0"]
+                    },
+                    "States": {
+                        "Start": {
+                            "47_Has_Mask": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "7d386f54-3059-4771-9fe4-2a6b51faa9eb",
+                "Category": "primary",
+                "OnInactive": {
+                    "IfCompleted": {
+                        "State": "Completed"
+                    }
+                },
+                "Activation": {
+                    "$eq": [
+                        "$2ffceeaf-9c3a-4aef-a897-857538538c7f",
+                        "$880e6299-195f-4fca-8a09-13257f5087a2",
+                        "$681c4058-7035-4a30-8b42-393600508361",
+                        "$1a7d60d3-3299-4917-b1e7-e9dd778e20ce",
+                        "$2937d553-7162-4a49-accd-52c2ac93ab2a",
+                        "Completed"
+                    ]
+                },
+                "ObjectiveType": "custom",
+                "Image": "images/contracts/bull/Contract_Bull_GetSeanRosesFace_ObjectiveTile.jpg",
+                "BriefingName": "$loc UI_CONTRACT_BULL_GET_MASK_OBJECTIVE",
+                "BriefingText": "$loc UI_CONTRACT_BULL_GET_MASK_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_BULL_GET_MASK_OBJECTIVE"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {},
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "47_Has_Mask": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "1a7d60d3-3299-4917-b1e7-e9dd778e20ce",
+                "Category": "primary",
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "d94f3e83-36e3-453c-8d4b-28c93229826a"
+                    }
+                }
+            },
+            {
+                "Id": "004847f4-0fd2-4b0f-a655-a33506b38482",
+                "Category": "primary",
+                "OnInactive": {
+                    "IfCompleted": {
+                        "State": "InProgress"
+                    }
+                },
+                "Activation": {
+                    "$eq": [
+                        "$2ffceeaf-9c3a-4aef-a897-857538538c7f",
+                        "$880e6299-195f-4fca-8a09-13257f5087a2",
+                        "$681c4058-7035-4a30-8b42-393600508361",
+                        "$1a7d60d3-3299-4917-b1e7-e9dd778e20ce",
+                        "Completed"
+                    ]
+                },
+                "ObjectiveType": "custom",
+                "Image": "images/contracts/bull/Contract_Bull_InfiltrateTornadoShelter_ObjectiveTile.jpg",
+                "BriefingName": "$loc UI_CONTRACT_BULL_INFILTRATE_SHELTER_TITLE",
+                "BriefingText": "$loc UI_CONTRACT_BULL_INFILTRATE_SHELTER_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_BULL_INFILTRATE_SHELTER_TITLE"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {},
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "BunkerUnlocked": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "6d530d1f-a16b-48e9-9553-4681c9eb01a3",
+                "Category": "primary",
+                "OnInactive": {
+                    "IfCompleted": {
+                        "State": "InProgress"
+                    }
+                },
+                "Activation": {
+                    "$eq": [
+                        "$004847f4-0fd2-4b0f-a655-a33506b38482",
+                        "Completed"
+                    ]
+                },
+                "ObjectiveType": "custom",
+                "Image": "images/contracts/bull/Contract_Bull_Militia_ObjectiveTile.jpg",
+                "BriefingName": "$loc UI_CONTRACT_BULL_MILITIA_BRIEFING_NAME",
+                "LongBriefingText": "$loc UI_CONTRACT_BULL_MILITIA_OBJECTIVE",
+                "BriefingText": "$loc UI_CONTRACT_BULL_MILITIA_OBJECTIVE",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_BULL_MILITIA_BRIEFING_NAME"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {},
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "MilitiaAgendaRevealed": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": []
+    },
+    "Metadata": {
+        "Id": "42bac555-bbb9-429d-a8ce-f1ffdf94211c",
+        "Location": "LOCATION_COLORADO",
+        "IsPublished": true,
+        "CreationTimestamp": "2015-06-24T10:22:57.02Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_BULL_TITLE",
+        "Description": "UI_CONTRACT_BULL_DESC",
+        "BriefingVideo": "briefing_bull",
+        "DebriefingVideo": "debriefing_bull",
+        "TileImage": "images/contracts/Bull/Tile.jpg",
+        "CodeName_Hint": "Bull",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Colorado_2/_scene_mission_bull.entity",
+        "Type": "mission",
+        "Release": "1.5.x",
+        "RequiredUnlockable": "ACCESS_HIT_BULL",
+        "Drops": ["ACCESS_HIT_SNOW_CRANE"],
+        "LastUpdate": "2020-11-09T13:35:13.319949Z",
+        "PublicId": "009684938047"
+    },
+    "UserData": {}
+}

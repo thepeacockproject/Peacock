@@ -1,0 +1,172 @@
+{
+    "e47d6995-ba9a-4d13-b40a-84e104b84bb6": {
+        "Name": "UI_PEACOCK_SATANTA_GUARDS_PLANNING",
+        "Description": "UI_PEACOCK_SATANTA_GUARDS_PLANNING_DESC",
+        "TileImage": "images/contracts/escalation/satanta-guards.png",
+        "Icon": null,
+        "ObjectivesCategory": "secondary",
+        "IsHidden": null,
+        "Resource": [],
+        "Objectives": []
+    },
+    "fa65efde-247a-418b-bb92-988adf032773": {
+        "Name": "UI_PEACOCK_SATANTA_GUARDS_PLANNING",
+        "Description": "UI_PEACOCK_SATANTA_GUARDS_PLANNING2_DESC",
+        "TileImage": "images/contracts/escalation/satanta-guards.png",
+        "Icon": null,
+        "ObjectivesCategory": "secondary",
+        "IsHidden": null,
+        "Resource": [],
+        "Objectives": []
+    },
+    "1f23082c-2d1f-4dcf-b45f-0a9eb39ed441": {
+        "Name": "UI_PEACOCK_SATANTA_COUPLE",
+        "Description": "UI_PEACOCK_SATANTA_COUPLE_DESC",
+        "TileImage": "images/contracts/escalation/satanta-couple.png",
+        "Icon": null,
+        "ObjectivesCategory": "secondary",
+        "IsHidden": null,
+        "Resource": [],
+        "Objectives": []
+    },
+    "7138fd16-4d15-4cca-816b-958e2f3a8164": {
+        "Name": "UI_PEACOCK_YANNINI_WHEREAMI",
+        "Description": "UI_PEACOCK_YANNINI_WHEREAMI_DETAILS",
+        "TileImage": "images/contracts/escalation/gamechanger-yannini-whereami.png",
+        "Icon": "images/challenges/default_challenge_icon.png",
+        "ObjectivesCategory": "secondary",
+        "IsHidden": null,
+        "Resource": [],
+        "Objectives": []
+    },
+    "6a628ec5-a1d7-4a7e-9b25-b66e740ea6a6": {
+        "Name": "UI_PEACOCK_NO_WAITER",
+        "Description": "UI_PEACOCK_NO_WAITER_DETAILS",
+        "TileImage": "images/contracts/escalation/gamechanger-yannini-colorblossom.png",
+        "Icon": "images/challenges/default_challenge_icon.png",
+        "ObjectivesCategory": "secondary",
+        "IsHidden": null,
+        "Resource": [],
+        "Objectives": []
+    },
+    "e99b499a-d309-485e-96a5-beb4c398a596": {
+        "Name": "UI_PEACOCK_GLOBAL_CAMERA_FAIL",
+        "Description": "UI_PEACOCK_GLOBAL_CAMERA_FAIL_DESC",
+        "TileImage": "images/contracts/gamechangers/gamechanger_global_bigbrother.jpg",
+        "Icon": "images/challenges/default_challenge_icon.png",
+        "ObjectivesCategory": "primary",
+        "IsHidden": null,
+        "Resource": [],
+        "Objectives": [
+            {
+                "Id": "0c0f7ac5-5fb9-45ff-b909-71cd2cd93e81",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "BriefingText": "You were spotted on camera.",
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "-": {
+                                "Transition": "Success"
+                            }
+                        },
+                        "Success": {
+                            "SecuritySystemRecorder": {
+                                "Condition": {
+                                    "$eq": ["$Value.event", "spotted"]
+                                },
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "834a20cc-7cfc-4ec3-8858-c3a213e3de56": {
+        "Name": "UI_GAMECHANGERS_GLOBAL_KILL_STREAK_10_SEC_NAME",
+        "Description": "UI_GAMECHANGERS_GLOBAL_KILL_STREAK_10_SEC_DESC",
+        "TileImage": "images/contracts/gamechangers/Gamechanger_Global_KillStreak.jpg",
+        "Icon": "images/challenges/default_challenge_icon.png",
+        "ObjectivesCategory": "primary",
+        "IsHidden": null,
+        "Resource": [],
+        "Objectives": [
+            {
+                "Id": "a382704d-0814-4853-ad4d-dd3acc864b50",
+                "Category": "primary",
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "BriefingText": "$loc UI_GAMECHANGERS_GLOBAL_KILL_STREAK_30_SEC_2_TARGETS_NAME",
+                "HUDTemplate": {
+                    "display": "$loc UI_GAMECHANGERS_GLOBAL_KILL_STREAK_30_SECS_OBJ"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "AmountToKill": 4
+                    },
+                    "States": {
+                        "Start": {
+                            "-": {
+                                "Transition": "Success"
+                            }
+                        },
+                        "Success": {
+                            "Kill": {
+                                "Condition": {
+                                    "$eq": ["$Value.IsTarget", true]
+                                },
+                                "Actions": {
+                                    "$dec": "AmountToKill"
+                                },
+                                "Transition": "CheckCount"
+                            }
+                        },
+                        "CheckCount": {
+                            "-": [
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.AmountToKill", 0]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Transition": "InKillStreak"
+                                }
+                            ]
+                        },
+                        "InKillStreak": {
+                            "$timer": {
+                                "Condition": {
+                                    "$after": 10
+                                },
+                                "Transition": "Failure"
+                            },
+                            "Kill": {
+                                "Condition": {
+                                    "$eq": ["$Value.IsTarget", true]
+                                },
+                                "Actions": {
+                                    "$dec": "AmountToKill"
+                                },
+                                "Transition": "CheckCount"
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    }
+}

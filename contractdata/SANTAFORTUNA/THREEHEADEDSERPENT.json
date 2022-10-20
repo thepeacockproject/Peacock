@@ -1,0 +1,150 @@
+{
+    "Data": {
+        "EnableSaving": true,
+        "Objectives": [
+            {
+                "Id": "0ad6e457-28b5-41e7-a747-77a8dee73e18",
+                "Primary": true,
+                "Image": "images/actors/Hippo_Rico_Delgado.jpg",
+                "BriefingName": "$loc UI_CONTRACT_HIPPO_RICO_NAME",
+                "BriefingText": "$loc UI_CONTRACT_HIPPO_RICO_OBJ",
+                "LongBriefingText": "$loc Actors_S2_004",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_HIPPO_RICO_OBJ"
+                },
+                "DisplayAsKillObjective": true,
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "00df867e-f27f-4904-8bc7-9504443ccb5a"
+                    }
+                }
+            },
+            {
+                "Id": "33534647-a6a5-4ab2-b61b-556c0fd6b8e0",
+                "Primary": true,
+                "Image": "images/actors/Hippo_Jorge_Franco.jpg",
+                "BriefingName": "$loc UI_CONTRACT_HIPPO_JORGE_NAME",
+                "BriefingText": "$loc UI_CONTRACT_HIPPO_JORGE_OBJ",
+                "LongBriefingText": "$loc Actors_S2_006",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_HIPPO_JORGE_OBJ"
+                },
+                "DisplayAsKillObjective": true,
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "b87b242e-4ef4-42d8-94ed-17cbfc9009bf"
+                    }
+                }
+            },
+            {
+                "Id": "2dd22970-6533-427e-8e23-0ca273edc7c6",
+                "Primary": true,
+                "Image": "images/actors/Hippo_Andrea_Martinez.jpg",
+                "BriefingName": "$loc UI_CONTRACT_HIPPO_ANDREA_NAME",
+                "BriefingText": "$loc UI_CONTRACT_HIPPO_ANDREA_OBJ",
+                "LongBriefingText": "$loc Actors_S2_005",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_HIPPO_ANDREA_OBJ"
+                },
+                "DisplayAsKillObjective": true,
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "db21a429-add2-46fa-8176-540f846d89e0"
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_PRO/scenes/missions/Colombia/mission_hippo.brick"
+        ],
+        "DevOnlyBricks": [
+            "assembly:/_PRO/scenes/missions/colombia/dev_hippo.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/colombia/vr_overrides_hippo.brick",
+                    "assembly:/_PRO/scenes/missions/colombia/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/colombia/vr_overrides_hippo.brick"
+                ]
+            }
+        ],
+        "GameChangers": [],
+        "GameChangerReferences": [],
+        "GameDifficulties": [
+            {
+                "Difficulty": "easy",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/colombia/difficulty_easy_columbia_hippo.brick"
+                ]
+            },
+            {
+                "Difficulty": "normal",
+                "Bricks": []
+            },
+            {
+                "Difficulty": "hard",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/colombia/difficulty_hard_columbia_hippo.brick"
+                ]
+            }
+        ],
+        "SimulationQualities": [
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/colombia/intel_6core_hippo.brick"
+                ]
+            },
+            {
+                "Quality": "best",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/colombia/intel_8core_hippo.brick"
+                ]
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "422519be-ed2e-44df-9dac-18f739d44fd9",
+        "IsPublished": true,
+        "TileImage": "images/contracts/hippo/tile.jpg",
+        "BriefingVideo": "briefing_hippo",
+        "DebriefingVideo": "debriefing_hippo",
+        "CreationTimestamp": "2016-12-15T15:27:35.423427Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_HIPPO_TITLE",
+        "Description": "UI_CONTRACT_HIPPO_DESC",
+        "CodeName_Hint": "Hippo",
+        "Location": "LOCATION_COLOMBIA",
+        "ScenePath": "assembly:/_pro/scenes/missions/colombia/scene_hippo.entity",
+        "Type": "mission",
+        "Order": 50,
+        "Release": "2.1.x",
+        "Opportunities": [
+            "4372cdbf-f56a-440e-b06d-f076ba2c33d7",
+            "fccf719c-94b9-43b8-acb1-60f494743622",
+            "2874aa47-abcb-44e3-9706-f58112f7ee65",
+            "0c0c243f-8a43-4e6c-aee3-6d167ae31d7a",
+            "7c2f850f-e804-45bf-88c2-e5483d976d9a",
+            "3ddbfc15-7a59-423e-834a-822cfaf6c507",
+            "792d42bb-742e-4fee-81cf-10554f68c34d"
+        ],
+        "RequiredUnlockable": "ACCESS_HIT_HIPPO",
+        "Drops": ["ACCESS_HIT_MONGOOSE"],
+        "Entitlements": ["H2_LEGACY_STANDARD"],
+        "LastUpdate": "2022-01-20T18:29:24.4461527Z",
+        "PublicId": "012286545247"
+    },
+    "UserData": {}
+}

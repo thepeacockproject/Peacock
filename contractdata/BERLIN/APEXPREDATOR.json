@@ -1,0 +1,859 @@
+{
+    "Data": {
+        "EnableSaving": true,
+        "EnableExits": {
+            "$or": [
+                {
+                    "$eq": [
+                        "$47de2b7d-eae7-4d60-9987-154078ff11e9",
+                        "Completed"
+                    ]
+                },
+                {
+                    "$eq": [
+                        "$11d9655f-190c-4181-be5f-30cadd50dc3c",
+                        "Completed"
+                    ]
+                }
+            ]
+        },
+        "Objectives": [
+            {
+                "_comment": "----- Silent objective to trigger Olivia Objective -----",
+                "Id": "52c2496a-34e9-48da-98ce-4cf12b8e53c5",
+                "Type": "statemachine",
+                "Category": "condition",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    }
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "StartOliviaObjective": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Hidden objective to check for lesser targets killed before being active -----",
+                "Id": "8814dcc8-cc82-47e3-9536-19211d65ec07",
+                "IgnoreIfInactive": true,
+                "UpdateActivationWhileCompleted": true,
+                "IsHidden": true,
+                "ExcludeFromScoring": true,
+                "Category": "primary",
+                "OnInactive": {
+                    "IfCompleted": {
+                        "State": "Completed",
+                        "Visible": false
+                    },
+                    "IfInProgress": {
+                        "Visible": false
+                    }
+                },
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Activation": {
+                    "$eq": [
+                        "$52c2496a-34e9-48da-98ce-4cf12b8e53c5",
+                        "Completed"
+                    ]
+                },
+                "Type": "statemachine",
+                "Scope": "hit",
+                "Definition": {
+                    "ContextListeners": {
+                        "RemainingTargetsCount": {
+                            "type": "objective-counter",
+                            "header": "UI_CONTRACT_FOX_ELIMINATE_REMAINING_LESSER_AGENTS_COUNT_HEAD"
+                        }
+                    },
+                    "Context": {
+                        "Targets": [
+                            "252428ca-3f8e-4477-b2b9-58f18cff3e44",
+                            "abd1c0e7-e406-43bd-9185-419029c5bf3d",
+                            "922deccd-7fb4-45d9-ae3d-2cf11915c403",
+                            "b8e7e65b-587e-471b-894d-282cda6614d4",
+                            "2ab07903-e958-4af6-b01c-b62058745ce1",
+                            "28cb7e91-bf9c-46ee-a371-1bd1448f1994",
+                            "633398ac-c4b4-4441-852d-ae6460172025",
+                            "eb024a5e-9580-49dc-a519-bb92c886f3b1",
+                            "1305c2e4-6394-4cfa-b873-22adbd0c9702",
+                            "f83376a4-6e56-4f2a-8122-151b272108fd",
+                            "8b29da09-461f-44d7-9042-d4fde829b9f2"
+                        ],
+                        "RemainingTargetsCount": 11
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Actions": {
+                                        "$dec": "RemainingTargetsCount"
+                                    },
+                                    "Condition": {
+                                        "$inarray": {
+                                            "in": "$.Targets",
+                                            "?": {
+                                                "$eq": [
+                                                    "$.#",
+                                                    "$Value.RepositoryId"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.RemainingTargetsCount", 0]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ],
+                            "FoxTargetIdentification": [
+                                {
+                                    "Actions": {
+                                        "$remove": [
+                                            "Targets",
+                                            "$Value.RepositoryId"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.RemainingTargetsCount", 0]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "------ First objective from default starting location: Contact Olivia Obj -----",
+                "Id": "be29b79d-68b5-49df-a07d-d8fe58b766e5",
+                "Category": "secondary",
+                "IgnoreIfInactive": true,
+                "Activation": {
+                    "$eq": [
+                        "$52c2496a-34e9-48da-98ce-4cf12b8e53c5",
+                        "Completed"
+                    ]
+                },
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": true
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": true,
+                "Image": "images/contracts/fox/Fox_Contact_Olivia.jpg",
+                "BriefingName": "$loc UI_CONTRACT_FOX_OBJ_OLIVIA_CONTACT_TITLE",
+                "BriefingText": "$loc UI_CONTRACT_FOX_OBJ_OLIVIA_CONTACT_HEADER",
+                "LongBriefingText": "$loc UI_CONTRACT_FOX_OBJ_OLIVIA_CONTACT_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_FOX_OBJ_OLIVIA_CONTACT_TITLE",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "ObjectiveOliviaFinishPt1": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Second objective from default starting location: Find Olivia Obj -----",
+                "Id": "4402ad59-e4b2-4de5-ad58-d1fa8b163810",
+                "IgnoreIfInactive": true,
+                "Category": "secondary",
+                "Activation": {
+                    "$eq": [
+                        "$be29b79d-68b5-49df-a07d-d8fe58b766e5",
+                        "Completed"
+                    ]
+                },
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": true
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": false,
+                "Image": "images/contracts/fox/Fox_Locate_Olivia.jpg",
+                "BriefingName": "$loc UI_CONTRACT_FOX_OBJ_OLIVIA_FIND_TITLE",
+                "BriefingText": "$loc UI_CONTRACT_FOX_OBJ_OLIVIA_FIND_HEADER",
+                "LongBriefingText": "$loc UI_CONTRACT_FOX_OBJ_OLIVIA_FIND_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_FOX_OBJ_OLIVIA_FIND_TITLE",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "ObjectiveOliviaFinishPt2": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Silent objective to trigger Pickup earpiece objective -----",
+                "IgnoreIfInactive": true,
+                "Id": "dce61868-a885-42fd-9274-d48ddb0d30aa",
+                "Type": "statemachine",
+                "Category": "condition",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": true
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    }
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "EarpieceObjectiveStart": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Optional Objective from default starting location: Pick up earpiece -----",
+                "IgnoreIfInactive": true,
+                "Id": "2a52744b-e290-43ce-9e18-115180d3d460",
+                "Category": "secondary",
+                "Activation": {
+                    "$eq": [
+                        "$dce61868-a885-42fd-9274-d48ddb0d30aa",
+                        "Completed"
+                    ]
+                },
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": true
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": false,
+                "Image": "images/contracts/fox/Fox_Pickup_Earpiece.jpg",
+                "BriefingName": "$loc UI_CONTRACT_FOX_OBJ_EARPIECE_TITLE",
+                "BriefingText": "$loc UI_CONTRACT_FOX_OBJ_EARPIECE_HEADER",
+                "LongBriefingText": "$loc UI_CONTRACT_FOX_OBJ_EARPIECE_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_FOX_OBJ_EARPIECE_TITLE",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "EarpieceObjectiveComplete": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- DEFAULT SL: Silent Objective to trigger main objective -----",
+                "Id": "642e7f65-72ef-4a77-abd4-ea2d4454cd31",
+                "Type": "statemachine",
+                "Category": "condition",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    }
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "StartMainObjectives": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- OTHER SL: Silent Objective to trigger main objective -----",
+                "Id": "ec243189-3a89-4d6b-b1f7-958d95658e2b",
+                "Type": "statemachine",
+                "Category": "condition",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    }
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "StartMainObjective_OtherSL": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- OTHER SL:  Eliminate Agents -----",
+                "Id": "11d9655f-190c-4181-be5f-30cadd50dc3c",
+                "IgnoreIfInactive": true,
+                "Category": "primary",
+                "Activation": {
+                    "$eq": [
+                        "$ec243189-3a89-4d6b-b1f7-958d95658e2b",
+                        "Completed"
+                    ]
+                },
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": true
+                    }
+                },
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": true,
+                "Image": "images/contracts/fox/Fox_Eliminate_Lesser_Obj.jpg",
+                "BriefingName": "$loc UI_CONTRACT_FOX_ELIMINATE_LESSER_AGENTS_TITLE",
+                "BriefingText": "$loc UI_CONTRACT_FOX_ELIMINATE_LESSER_AGENTS_HEADER",
+                "LongBriefingText": "$loc UI_CONTRACT_FOX_ELIMINATE_LESSER_AGENTS_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_FOX_ELIMINATE_LESSER_AGENTS_TITLE"
+                },
+                "Type": "statemachine",
+                "Scope": "session",
+                "Definition": {
+                    "ContextListeners": {
+                        "update_counter": {
+                            "type": "custom",
+                            "HUDTemplate": {
+                                "display": {
+                                    "$loc": {
+                                        "key": "UI_CONTRACT_FOX_ELIMINATE_LESSER_AGENTS_HUD",
+                                        "data": [
+                                            "$.AgentsKilledCounter",
+                                            "$.AgentsKilledGoal"
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "Context": {
+                        "Targets": [
+                            "252428ca-3f8e-4477-b2b9-58f18cff3e44",
+                            "abd1c0e7-e406-43bd-9185-419029c5bf3d",
+                            "922deccd-7fb4-45d9-ae3d-2cf11915c403",
+                            "b8e7e65b-587e-471b-894d-282cda6614d4",
+                            "2ab07903-e958-4af6-b01c-b62058745ce1",
+                            "28cb7e91-bf9c-46ee-a371-1bd1448f1994",
+                            "633398ac-c4b4-4441-852d-ae6460172025",
+                            "eb024a5e-9580-49dc-a519-bb92c886f3b1",
+                            "1305c2e4-6394-4cfa-b873-22adbd0c9702",
+                            "f83376a4-6e56-4f2a-8122-151b272108fd",
+                            "8b29da09-461f-44d7-9042-d4fde829b9f2"
+                        ],
+                        "AgentsKilledCounter": 0,
+                        "AgentsKilledGoal": 5,
+                        "update_counter": 1
+                    },
+                    "States": {
+                        "Start": {
+                            "StartMainObjective_OtherSL": {
+                                "Transition": "CheckKills"
+                            }
+                        },
+                        "CheckKills": {
+                            "Kill": [
+                                {
+                                    "Actions": {
+                                        "$inc": "AgentsKilledCounter",
+                                        "$dec": "update_counter"
+                                    },
+                                    "Condition": {
+                                        "$inarray": {
+                                            "in": "$.Targets",
+                                            "?": {
+                                                "$eq": [
+                                                    "$.#",
+                                                    "$Value.RepositoryId"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.AgentsKilledCounter", 5]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- DEFAULT SL: Eliminate Agents -----",
+                "Id": "47de2b7d-eae7-4d60-9987-154078ff11e9",
+                "IgnoreIfInactive": true,
+                "Category": "primary",
+                "Activation": {
+                    "$eq": [
+                        "$642e7f65-72ef-4a77-abd4-ea2d4454cd31",
+                        "Completed"
+                    ]
+                },
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": true
+                    }
+                },
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": true,
+                "Image": "images/contracts/fox/Fox_Eliminate_Lesser_Obj.jpg",
+                "BriefingName": "$loc UI_CONTRACT_FOX_ELIMINATE_LESSER_AGENTS_SH_TITLE",
+                "BriefingText": "$loc UI_CONTRACT_FOX_ELIMINATE_LESSER_AGENTS_HEADER",
+                "LongBriefingText": "$loc UI_CONTRACT_FOX_ELIMINATE_LESSER_AGENTS_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_FOX_ELIMINATE_LESSER_AGENTS_SH_TITLE"
+                },
+                "Type": "statemachine",
+                "Scope": "session",
+                "Definition": {
+                    "ContextListeners": {
+                        "update_counter": {
+                            "type": "custom",
+                            "HUDTemplate": {
+                                "display": {
+                                    "$loc": {
+                                        "key": "UI_CONTRACT_FOX_ELIMINATE_LESSER_AGENTS_HUD",
+                                        "data": [
+                                            "$.AgentsKilledCounter",
+                                            "$.Questionmark"
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "Context": {
+                        "Targets": [],
+                        "Questionmark": "?",
+                        "AgentsKilledCounter": 0,
+                        "AgentsKilledGoal": 5,
+                        "update_counter": 1
+                    },
+                    "States": {
+                        "Start": {
+                            "StartMainObjectives": {
+                                "Transition": "CheckKills"
+                            }
+                        },
+                        "CheckKills": {
+                            "FoxTargetIdentification": {
+                                "Actions": {
+                                    "$pushunique": [
+                                        "Targets",
+                                        "$Value.RepositoryId"
+                                    ]
+                                }
+                            },
+                            "Kill": [
+                                {
+                                    "Actions": {
+                                        "$inc": "AgentsKilledCounter",
+                                        "$dec": "update_counter"
+                                    },
+                                    "Condition": {
+                                        "$eq": ["$Value.IsTarget", true]
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.AgentsKilledCounter", 5]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        },
+                        "Success": {
+                            "-": {
+                                "Actions": {
+                                    "$set": ["Questionmark", "5"],
+                                    "$dec": "update_counter"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "------ Explore the Compound and find ICA Agents -----",
+                "Id": "88921515-8ae2-4369-b089-623e60490f74",
+                "Category": "secondary",
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": false,
+                "Activation": {
+                    "$eq": [
+                        "$2a52744b-e290-43ce-9e18-115180d3d460",
+                        "Completed"
+                    ]
+                },
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": true
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "OnInactive": {
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    }
+                },
+                "Image": "images/contracts/fox/Fox_Search_The_Compound.jpg",
+                "BriefingName": "$loc UI_CONTRACT_FOX_OBJ_FIND_AGENTS_TITLE",
+                "BriefingText": "$loc UI_CONTRACT_FOX_OBJ_FIND_AGENTS_HEADER",
+                "LongBriefingText": "$loc UI_CONTRACT_FOX_OBJ_FIND_AGENTS_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_FOX_OBJ_FIND_AGENTS_TITLE",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {
+                        "Targets": [],
+                        "KilledTargets": 0,
+                        "Active": true
+                    },
+                    "States": {
+                        "Start": {
+                            "FoxTargetIdentification": [
+                                {
+                                    "Actions": {
+                                        "$pushunique": [
+                                            "Targets",
+                                            "$Value.RepositoryId"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$gt": [
+                                            "($.Targets).Count",
+                                            "$.KilledTargets"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ],
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": ["$Value.IsTarget", true]
+                                    },
+                                    "Actions": {
+                                        "$inc": "KilledTargets"
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.KilledTargets", 5]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        },
+                        "Success": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": ["$Value.IsTarget", true]
+                                    },
+                                    "Actions": {
+                                        "$inc": "KilledTargets"
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.KilledTargets", 5]
+                                    },
+                                    "Actions": {
+                                        "$set": ["Active", false]
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$le": [
+                                                    "($.Targets).Count",
+                                                    "$.KilledTargets"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": ["$.Active", true]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Start"
+                                }
+                            ],
+                            "FoxTargetIdentification": {
+                                "Actions": {
+                                    "$pushunique": [
+                                        "Targets",
+                                        "$Value.RepositoryId"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Invisible Seconday: Eliminate Lesser Agents. Allow us to kill stragglers -----",
+                "Id": "7e74ccd4-5070-4bfd-b9b0-b7fe5ecb8ab9",
+                "Category": "secondary",
+                "IsHidden": true,
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    }
+                },
+                "Activation": {
+                    "$or": [
+                        {
+                            "$eq": [
+                                "$47de2b7d-eae7-4d60-9987-154078ff11e9",
+                                "Completed"
+                            ]
+                        },
+                        {
+                            "$eq": [
+                                "$11d9655f-190c-4181-be5f-30cadd50dc3c",
+                                "Completed"
+                            ]
+                        }
+                    ]
+                },
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": true,
+                "Image": "images/contracts/whitespider/003_rabies/Rabies_Eliminate_Infected_Obj.jpg",
+                "BriefingName": "$loc UI_CONTRACT_FOX_ELIMINATE_REMAINING_LESSER_AGENTS_TITLE",
+                "BriefingText": "$loc UI_CONTRACT_FOX_ELIMINATE_REMAINING_LESSER_AGENTS_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_FOX_ELIMINATE_REMAINING_LESSER_AGENTS_OBJ"
+                },
+                "Type": "statemachine",
+                "Scope": "hit",
+                "Definition": {
+                    "Context": {
+                        "Targets": [
+                            "252428ca-3f8e-4477-b2b9-58f18cff3e44",
+                            "abd1c0e7-e406-43bd-9185-419029c5bf3d",
+                            "922deccd-7fb4-45d9-ae3d-2cf11915c403",
+                            "b8e7e65b-587e-471b-894d-282cda6614d4",
+                            "2ab07903-e958-4af6-b01c-b62058745ce1",
+                            "28cb7e91-bf9c-46ee-a371-1bd1448f1994",
+                            "633398ac-c4b4-4441-852d-ae6460172025",
+                            "eb024a5e-9580-49dc-a519-bb92c886f3b1",
+                            "1305c2e4-6394-4cfa-b873-22adbd0c9702",
+                            "8b29da09-461f-44d7-9042-d4fde829b9f2"
+                        ],
+                        "RemainingTargetsCount": 10
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Actions": {
+                                        "$dec": "RemainingTargetsCount"
+                                    },
+                                    "Condition": {
+                                        "$inarray": {
+                                            "in": "$.Targets",
+                                            "?": {
+                                                "$eq": [
+                                                    "$.#",
+                                                    "$Value.RepositoryId"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.RemainingTargetsCount", 0]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/edgy/mission_fox/mission_fox.brick"
+        ],
+        "DevOnlyBricks": [
+            "assembly:/_PRO/scenes/missions/edgy/mission_fox/dev_fox.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/edgy/mission_fox/vr_overrides_fox.brick",
+                    "assembly:/_pro/scenes/missions/edgy/mission_fox/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/edgy/mission_fox/vr_overrides_fox.brick"
+                ]
+            }
+        ],
+        "GameModesBricks": null,
+        "EngineModessBricks": null,
+        "GameDifficulties": [
+            {
+                "Difficulty": "easy",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/edgy/mission_fox/difficulty_easy_fox.brick"
+                ]
+            },
+            {
+                "Difficulty": "normal",
+                "Bricks": []
+            },
+            {
+                "Difficulty": "hard",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/edgy/mission_fox/difficulty_hard_fox.brick"
+                ]
+            }
+        ],
+        "GameChangers": [],
+        "GameChangerReferences": []
+    },
+    "Metadata": {
+        "Id": "ebcd14b2-0786-4ceb-a2a4-e771f60d0125",
+        "IsPublished": true,
+        "CreationTimestamp": "2019-10-24T10:09:50.1436831Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_FOX_MAIN_TITLE",
+        "Description": "UI_CONTRACT_FOX_MAIN_DESC",
+        "BriefingVideo": "briefing_fox",
+        "DebriefingVideo": "debriefing_fox",
+        "TileImage": "images/contracts/fox/fox_tile.jpg",
+        "CodeName_Hint": "Fox",
+        "Location": "LOCATION_EDGY_FOX",
+        "ScenePath": "assembly:/_pro/scenes/missions/edgy/mission_fox/scene_fox_basic.entity",
+        "Type": "mission",
+        "Release": "3.3.x",
+        "GameModes": null,
+        "EngineModes": null,
+        "OpportunitiesDisabled": true,
+        "IsVersus": false,
+        "RequiredUnlockable": "ACCESS_HIT_FOX",
+        "Drops": ["ACCESS_HIT_RAT"],
+        "Entitlements": ["LOCATION_EDGY"],
+        "LastUpdate": "2021-11-09T14:55:15.1199003Z",
+        "PublicId": "029662477847"
+    },
+    "UserData": {}
+}

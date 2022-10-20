@@ -1,0 +1,114 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Type": "statemachine",
+                "Id": "9a0caafc-b55a-40ad-bfce-7dc4a69b9177",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository c85a7b4d-d5aa-4fc2-9ed4-d24df2b33758).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository c85a7b4d-d5aa-4fc2-9ed4-d24df2b33758).Name"
+                        }
+                    }
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["c85a7b4d-d5aa-4fc2-9ed4-d24df2b33758"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "c85a7b4d-d5aa-4fc2-9ed4-d24df2b33758"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "GameChangers": ["3db72bb5-63d6-47fe-9332-d7ea3c195e06"],
+        "Bricks": [
+            "assembly:/_PRO/Scenes/Missions/Paris/Location_parisnoel.brick"
+        ],
+        "GameDifficulties": [
+            {
+                "Difficulty": "easy",
+                "Bricks": [
+                    "assembly:/_PRO/Scenes/Missions/paris/gamechangers_peacock_torenia.brick",
+                    "assembly:/_PRO/Scenes/Missions/Paris/Gamechangers_TripWireMaze_Agility.brick",
+                    "assembly:/_PRO/Scenes/Missions/Paris/Gamechangers_TripwireMines.brick",
+                    "assembly:/_PRO/Scenes/Missions/Paris/Gamechangers_Traps.brick"
+                ]
+            },
+            {
+                "Difficulty": "normal",
+                "Bricks": []
+            },
+            {
+                "Difficulty": "hard",
+                "Bricks": [
+                    "assembly:/_PRO/Scenes/Missions/Paris/Gamechangers_BodyguardBartenders.brick",
+                    "assembly:/_PRO/Scenes/Missions/Paris/Gamechangers_PatrolGuardsSuperEnforcers.brick",
+                    "assembly:/_PRO/Scenes/Missions/Paris/Gamechangers_BodyguardLoungeWaiters.brick",
+                    "assembly:/_PRO/Scenes/Missions/Paris/Gamechangers_AllCameras.brick"
+                ]
+            }
+        ],
+        "Stashpoints": [
+            "37495d13-a49d-404b-a4ba-6f8c39f20feb",
+            "6120437a-d943-431f-90c1-a7ccca663a07",
+            "e1f3a43e-2c27-438f-a733-47f39208ca34",
+            "244e6667-4d99-40d1-a766-6324d133b669",
+            "52c22399-fe49-48d4-bc5c-bf1726616444",
+            "25ff09ba-134e-4292-901b-a43efc73c2ae"
+        ]
+    },
+    "Metadata": {
+        "Title": "The Red Menace Mk II",
+        "Description": "47,\r\rOur client is a wealthy philanthropist who has decided it&apos;s time a serial pest was taken care of once and for all. Your target is a globe-trotting miscreant who has to his name over a million counts of breaking and entering, tresspassing, harassment and intimidation charges, not to mention the allegations of slave labour being levelled against him.\r\rHe&apos;s evaded authorities for almost a century, but if someone&apos;s up to the task it&apos;s you.\r\rI shall leave you to prepare\r\rBy: Kevin Rudd",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Paris/_scene_paris.entity",
+        "Location": "LOCATION_PARIS",
+        "IsPublished": true,
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "GameVersion": "7.17.0.0",
+        "ServerVersion": "7.17.6.0",
+        "Type": "featured",
+        "Id": "4d049c4d-581f-4080-a600-8f1b38937256",
+        "PublicId": "102990850152",
+        "Entitlements": ["H1_LEGACY_STANDARD"],
+        "TileImage": "images/contracts/featured/Redmenace.jpg",
+        "GroupObjectiveDisplayOrder": [
+            {
+                "Id": "9a0caafc-b55a-40ad-bfce-7dc4a69b9177"
+            },
+            {
+                "Id": "00000000-0000-0000-0000-000000000000"
+            },
+            {
+                "Id": "00000000-0000-0000-0000-000000000000"
+            }
+        ],
+        "CreationTimestamp": "2020-09-23T10:34:55.0833333Z"
+    },
+    "UserData": {},
+    "Peacock": {
+        "noCarriedWeapon": true,
+        "noGear": true
+    }
+}

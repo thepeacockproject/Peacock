@@ -1,0 +1,555 @@
+{
+    "Data": {
+        "EnableSaving": true,
+        "Objectives": [
+            {
+                "_comment": "----- Eliminate Hush -----",
+                "Id": "a7b2c7f2-4f73-45d6-a048-b235e0679fd9",
+                "Primary": true,
+                "RepeatSuccess": 1,
+                "RepeatFailed": 1,
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "967abcf9-2672-4e81-8fef-211aaa366747"
+                    }
+                }
+            },
+            {
+                "_comment": "----- Eliminate The Archivist -----",
+                "Id": "f6d37527-2130-46de-8f74-57fd4bfed298",
+                "Primary": true,
+                "RepeatSuccess": 1,
+                "RepeatFailed": 1,
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "a7fd7a4f-2bee-4787-bc60-90f9dd64233b"
+                    }
+                }
+            },
+            {
+                "_comment": "----- START VETTING HACK COUNTDOWN -----",
+                "Id": "5dc023cb-083f-49e5-8c42-1f0f47f56700",
+                "Type": "statemachine",
+                "Category": "condition",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    }
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "StartVettingTimer": {
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Activation": {
+                    "$eq": ["$5dc023cb-083f-49e5-8c42-1f0f47f56700", "Failed"]
+                },
+                "_comment": "----- VETTING HACK PUZZLE -----",
+                "Id": "620db22d-ff0f-46d2-9c99-3fcca69c6586",
+                "Category": "secondary",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    }
+                },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_RAT_OBJ_VETTING"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "StartVettingTimer": {
+                                "Transition": "VettingTimer"
+                            }
+                        },
+                        "VettingTimer": {
+                            "VettingSuccessful": {
+                                "Transition": "Success"
+                            },
+                            "$timer": {
+                                "Condition": {
+                                    "$after": 57.0
+                                },
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Activates Data Core OPTIONAL Objectives",
+                "Id": "52e024e8-26b8-4cb2-8f17-93e649a33c95",
+                "Type": "statemachine",
+                "Category": "condition",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfFailed": {
+                        "Visible": false
+                    },
+                    "IfInProgress": {
+                        "Visible": false
+                    }
+                },
+                "Definition": {
+                    "Constants": {
+                        "Goal": 2
+                    },
+                    "Context": {
+                        "Count": 0
+                    },
+                    "States": {
+                        "Start": {
+                            "DefaultStartingLocation": {
+                                "Transition": "Failure"
+                            },
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": ["$Value.IsTarget", true]
+                                    },
+                                    "Actions": {
+                                        "$inc": "Count"
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.Count", "$.Goal"]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Get Data [OPTIONAL]",
+                "Id": "851cfa2a-874d-4374-8f3e-74379ce429e6",
+                "Category": "secondary",
+                "Type": "statemachine",
+                "Activation": {
+                    "$eq": [
+                        "$52e024e8-26b8-4cb2-8f17-93e649a33c95",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": {
+                    "IfCompleted": {
+                        "State": "Completed",
+                        "Visible": false
+                    },
+                    "IfInProgress": {
+                        "Visible": false
+                    }
+                },
+                "ExcludeFromScoring": true,
+                "ObjectiveType": "setpiece",
+                "Image": "Images/Contracts/Rat/rat_objective.jpg",
+                "BriefingName": "$loc UI_CONTRACT_RAT_OBJ_DATACORE_TITLE_OPTIONAL",
+                "BriefingText": "$loc UI_CONTRACT_RAT_OBJ_DATACORE_DESC",
+                "LongBriefingText": "$loc UI_CONTRACT_RAT_OBJ_DATACORE_BRIEFING",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_RAT_OBJ_DATACORE_TITLE_OPTIONAL",
+                    "iconType": 17
+                },
+                "Definition": {
+                    "Context": {
+                        "Targets": ["f9c04811-11e8-464d-9222-d79a636cebf3"]
+                    },
+                    "States": {
+                        "Start": {
+                            "DataGot": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Get Data - Primary - Invisible ",
+                "Id": "6a631726-5bd4-4e06-84a0-56c805c4ab92",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "IsHidden": true,
+                "IgnoreIfInactive": true,
+                "Activation": {
+                    "$eq": [
+                        "$8283ba19-13db-4f34-a27d-228a275a4f48",
+                        "Completed"
+                    ]
+                },
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "OnInactive": {
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "ObjectiveType": "custom",
+                "Image": "Images/Contracts/Rat/rat_objective.jpg",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_RAT_OBJ_DATACORE_TITLE_03",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {
+                        "OneTime": true
+                    },
+                    "States": {
+                        "Start": {
+                            "-": {
+                                "Transition": "Success"
+                            }
+                        },
+                        "Active": {
+                            "DataGot": {
+                                "Actions": {
+                                    "$set": ["OneTime", false]
+                                },
+                                "Transition": "Success"
+                            }
+                        },
+                        "Success": {
+                            "DefaultStartingLocation": {
+                                "Condition": {
+                                    "$eq": ["$.OneTime", true]
+                                },
+                                "Transition": "Active"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Activates Data Core Objectives",
+                "Id": "8283ba19-13db-4f34-a27d-228a275a4f48",
+                "Type": "statemachine",
+                "Category": "condition",
+                "ExcludeFromScoring": true,
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "DefaultStartingLocation": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Get Data - No Targets Killed",
+                "Id": "c75bb683-781d-41aa-be06-264083a8d658",
+                "Category": "secondary",
+                "Type": "statemachine",
+                "Activation": {
+                    "$eq": [
+                        "$8283ba19-13db-4f34-a27d-228a275a4f48",
+                        "Completed"
+                    ]
+                },
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "OnInactive": {
+                    "IfCompleted": {
+                        "State": "Completed",
+                        "Visible": false
+                    },
+                    "IfInProgress": {
+                        "Visible": false
+                    }
+                },
+                "ExcludeFromScoring": true,
+                "ObjectiveType": "custom",
+                "Image": "Images/Contracts/Rat/rat_objective.jpg",
+                "BriefingName": "$loc UI_CONTRACT_RAT_OBJ_DATACORE_TITLE_UNAVAILABLE",
+                "BriefingText": "$loc UI_CONTRACT_RAT_OBJ_DATACORE_DESC",
+                "LongBriefingText": "$loc UI_CONTRACT_RAT_OBJ_DATACORE_BRIEFING",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_RAT_OBJ_DATACORE_TITLE_01",
+                    "iconType": 17
+                },
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "Kill": {
+                                "Condition": {
+                                    "$eq": ["$Value.IsTarget", true]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Get Data - 1 Targets Killed",
+                "Id": "6debc7f2-d4f8-4be5-88ce-e09af4821a78",
+                "Category": "secondary",
+                "Type": "statemachine",
+                "Activation": {
+                    "$eq": [
+                        "$c75bb683-781d-41aa-be06-264083a8d658",
+                        "$8283ba19-13db-4f34-a27d-228a275a4f48",
+                        "Completed"
+                    ]
+                },
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "OnInactive": {
+                    "IfCompleted": {
+                        "State": "Completed",
+                        "Visible": false
+                    },
+                    "IfInProgress": {
+                        "Visible": false
+                    }
+                },
+                "ExcludeFromScoring": true,
+                "ObjectiveType": "custom",
+                "Image": "Images/Contracts/Rat/rat_objective.jpg",
+                "BriefingName": "$loc UI_CONTRACT_RAT_OBJ_DATACORE_TITLE_UNAVAILABLE",
+                "BriefingText": "$loc UI_CONTRACT_RAT_OBJ_DATACORE_DESC",
+                "LongBriefingText": "$loc UI_CONTRACT_RAT_OBJ_DATACORE_BRIEFING",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_RAT_OBJ_DATACORE_TITLE_02",
+                    "iconType": 17
+                },
+                "Definition": {
+                    "Constants": {
+                        "Goal": 2
+                    },
+                    "Context": {
+                        "Count": 0
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": ["$Value.IsTarget", true]
+                                    },
+                                    "Actions": {
+                                        "$inc": "Count"
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.Count", "$.Goal"]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Get Data - All Targets Killed",
+                "Id": "63c0b383-a72f-4591-95ce-453a0152863e",
+                "Category": "secondary",
+                "Type": "statemachine",
+                "Activation": {
+                    "$eq": [
+                        "$8283ba19-13db-4f34-a27d-228a275a4f48",
+                        "$6debc7f2-d4f8-4be5-88ce-e09af4821a78",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": {
+                    "IfCompleted": {
+                        "State": "Completed",
+                        "Visible": false
+                    },
+                    "IfInProgress": {
+                        "Visible": false
+                    }
+                },
+                "ExcludeFromScoring": true,
+                "ObjectiveType": "setpiece",
+                "Image": "Images/Contracts/Rat/rat_objective.jpg",
+                "BriefingName": "$loc UI_CONTRACT_RAT_OBJ_DATACORE_TITLE_03",
+                "BriefingText": "$loc UI_CONTRACT_RAT_OBJ_DATACORE_DESC",
+                "LongBriefingText": "$loc UI_CONTRACT_RAT_OBJ_DATACORE_BRIEFING",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_RAT_OBJ_DATACORE_TITLE_03",
+                    "iconType": 17
+                },
+                "Definition": {
+                    "Context": {
+                        "Targets": ["f9c04811-11e8-464d-9222-d79a636cebf3"]
+                    },
+                    "States": {
+                        "Start": {
+                            "DataGot": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "f4afd898-9270-4e3a-9a26-326172760a01",
+                "Type": "statemachine",
+                "Category": "condition",
+                "ExcludeFromScoring": true,
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "ShowDataObjectiveSecond": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Get Data Second Playthrough -----",
+                "Id": "8281663a-3787-42ab-ada1-6048757529a4",
+                "Category": "secondary",
+                "ExcludeFromScoring": true,
+                "OnInactive": {
+                    "IfCompleted": {
+                        "State": "Completed",
+                        "Visible": false
+                    }
+                },
+                "Activation": {
+                    "$eq": [
+                        "$f4afd898-9270-4e3a-9a26-326172760a01",
+                        "Completed"
+                    ]
+                },
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": false,
+                "Image": "Images/Contracts/Rat/rat_objective.jpg",
+                "BriefingName": "$loc UI_CONTRACT_RAT_OBJ_DATACORE_OPTIONAL_TITLE",
+                "BriefingText": "$loc UI_CONTRACT_RAT_OBJ_DATACORE_DESC",
+                "LongBriefingText": "$loc UI_CONTRACT_RAT_OBJ_DATACORE_BRIEFING",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_RAT_OBJ_DATACORE_OPTIONAL_TITLE",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "CompleteDataObjectiveSecond": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": ["assembly:/_pro/scenes/missions/wet/mission_rat.brick"],
+        "DevOnlyBricks": ["assembly:/_pro/scenes/missions/wet/dev_rat.brick"],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/wet/vr_overrides_rat.brick",
+                    "assembly:/_pro/scenes/missions/Wet/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/wet/vr_overrides_rat.brick"
+                ]
+            }
+        ],
+        "GameChangers": [],
+        "GameChangerReferences": [],
+        "GameDifficulties": [
+            {
+                "Difficulty": "easy",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/wet/difficulty_easy_rat.brick"
+                ]
+            },
+            {
+                "Difficulty": "normal",
+                "Bricks": []
+            },
+            {
+                "Difficulty": "hard",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/wet/difficulty_hard_rat.brick"
+                ]
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "3d0cbb8c-2a80-442a-896b-fea00e98768c",
+        "IsPublished": true,
+        "TileImage": "images/contracts/rat/rat_tile.jpg",
+        "BriefingVideo": "briefing_rat",
+        "DebriefingVideo": "debriefing_rat",
+        "CreationTimestamp": "2016-12-15T15:27:35.423427Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_RAT_TITLE",
+        "Description": "UI_CONTRACT_RAT_DESC",
+        "CodeName_Hint": "Rat",
+        "Location": "LOCATION_WET_RAT",
+        "ScenePath": "assembly:/_pro/scenes/missions/wet/scene_rat_basic.entity",
+        "Type": "mission",
+        "Order": 50,
+        "Release": "3.70.x",
+        "RequiredUnlockable": "ACCESS_HIT_RAT",
+        "Drops": ["ACCESS_HIT_LLAMA"],
+        "Opportunities": [
+            "d741f698-c08c-4760-891c-44e34b2ce2d3",
+            "165fee0e-f109-4578-9954-bdf87e4da32e",
+            "98265e5a-00ad-4189-b49e-b3ebf47798f8"
+        ],
+        "Entitlements": ["LOCATION_WET"],
+        "LastUpdate": "2021-11-09T14:55:15.3020082Z",
+        "PublicId": "030531277747"
+    },
+    "UserData": {}
+}

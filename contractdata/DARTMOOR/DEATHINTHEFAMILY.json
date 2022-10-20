@@ -1,0 +1,128 @@
+{
+    "Data": {
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/ancestral/mission_bulldog.brick"
+        ],
+        "DevOnlyBricks": [
+            "assembly:/_pro/scenes/missions/ancestral/dev_bulldog.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ancestral_bulldog.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ancestral_bulldog.brick"
+                ]
+            }
+        ],
+        "GameChangers": [],
+        "GameDifficulties": [
+            {
+                "Difficulty": "easy",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/ancestral/difficulty_easy_bulldog.brick"
+                ]
+            },
+            {
+                "Difficulty": "normal",
+                "Bricks": []
+            },
+            {
+                "Difficulty": "hard",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/ancestral/difficulty_hard_bulldog.brick"
+                ]
+            }
+        ],
+        "Objectives": [
+            {
+                "_comment": "----- Eliminate Alexa Carlisle -----",
+                "Id": "b7c9b7aa-e23a-4a30-816b-03e59e60c2fc",
+                "Primary": true,
+                "RepeatSuccess": 1,
+                "RepeatFailed": 1,
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "080efb03-a66a-401e-b6df-4eac496e9e2d"
+                    }
+                }
+            },
+            {
+                "_comment": "----- Find the Case File -----",
+                "Id": "ccb699ba-e975-40bd-aa7b-9b3c88cd6448",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": true,
+                "Image": "images/actors/Ancestral_gather_intel.jpg",
+                "BriefingName": "$loc UI_CONTRACT_BULLDOG_OBJ_FILE_NAME",
+                "BriefingText": "$loc UI_CONTRACT_BULLDOG_OBJ_FILE_TEXT",
+                "LongBriefingText": "$loc UI_CONTRACT_BULLDOG_OBJ_FILE_LONG",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_BULLDOG_OBJ_FILE_TEXT",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {
+                        "CaseFile": ["e5bde241-5958-496d-9d2d-39932fe93123"],
+                        "Casepart": [
+                            "a7afa677-83d0-4aba-82f4-78654de07ed2",
+                            "79fc044c-e3cc-4f92-8402-394a1699d4c3"
+                        ]
+                    },
+                    "States": {
+                        "Start": {
+                            "CaseFileAcquired": {
+                                "Transition": "Success"
+                            },
+                            "BothCasePartsAcquired": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "755984a8-fb0b-4673-8637-95cfe7d34e0f",
+        "CodeName_Hint": "Bulldog",
+        "Release": {
+            "Major": 3,
+            "Minor": 0,
+            "Build": 0,
+            "Revision": -1
+        },
+        "Type": "mission",
+        "Title": "UI_CONTRACT_BULLDOG_TITLE",
+        "Description": "UI_CONTRACT_BULLDOG_DESC",
+        "BriefingVideo": "briefing_bulldog",
+        "DebriefingVideo": "debriefing_bulldog",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Ancestral/scene_bulldog.entity",
+        "TileImage": "images/contracts/bulldog/bulldog_tile.jpg",
+        "Location": "LOCATION_ANCESTRAL_BULLDOG",
+        "IsPublished": true,
+        "LastUpdate": "2022-01-20T18:29:24.354557Z",
+        "CreationTimestamp": "2015-03-25T13:08:00.173Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "RequiredUnlockable": "ACCESS_HIT_BULLDOG",
+        "Drops": ["ACCESS_HIT_FOX"],
+        "Opportunities": [
+            "81a84bc1-3219-4f40-8f42-7c49de5166f7",
+            "dcdf2ec2-64f2-493d-80ea-641f32a53794",
+            "0da56b6a-5462-4bec-8721-d36ab91cf4d6"
+        ],
+        "Entitlements": ["LOCATION_ANCESTRAL"],
+        "PublicId": "028839514247"
+    },
+    "UserData": {}
+}

@@ -1,0 +1,143 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "a926831d-87f2-4c2e-af8d-69167b2b9c04",
+                "Primary": true,
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "0dfaea51-3c36-4722-9eff-f1e7ef139878"
+                    }
+                }
+            },
+            {
+                "Id": "14e41bce-ae6d-4b7b-8e43-aa130cce17a6",
+                "Primary": true,
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "94ab740b-b30f-4086-9aea-5c9c0de28456"
+                    }
+                }
+            },
+            {
+                "Id": "e15b5171-2b12-4966-9339-3344042f9867",
+                "ObjectiveType": "setpiece",
+                "Image": "images/contracts/octopus/Contract_Octopus_Virus_ObjectiveTile.jpg",
+                "BriefingName": "$loc UI_CONTRACT_OCTOPUS_VIRUS_BRIEFING_NAME",
+                "LongBriefingText": "$loc UI_CONTRACT_OCTOPUS_VIRUS_BRIEFING_DESC",
+                "Category": "primary",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_OCTOPUS_OBJ_2"
+                },
+                "BriefingText": "$loc UI_CONTRACT_OCTOPUS_OBJ_2",
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {
+                        "Targets": ["53629764-635d-4d11-b671-7ba9b5a03298"]
+                    },
+                    "States": {
+                        "Start": {
+                            "VirusDestroyed": [
+                                {
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "5ff67d0f-9fcc-4775-ad60-364e69571388",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "BriefingText": "$loc UI_CONTRACT_OCTOPUS_FAIL_SILVIO_ESCAPED",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_OCTOPUS_OBJ_3"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "-": {
+                                "Transition": "Success"
+                            }
+                        },
+                        "Success": {
+                            "SilvioSeaplaneEscaping": {
+                                "Transition": "EscapeCountdownStart"
+                            }
+                        },
+                        "EscapeCountdownStart": {
+                            "$timer": {
+                                "Condition": {
+                                    "$after": 90
+                                },
+                                "Transition": "Failure"
+                            },
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "0dfaea51-3c36-4722-9eff-f1e7ef139878"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/CoastalTown/octopus_pro1.brick"
+        ],
+        "GameChangers": [],
+        "Entrances": [
+            "c27f76ca-ed71-4b2d-9b9d-693875df830c",
+            "c113315d-ffcc-4878-9e70-bb35aadf0211",
+            "495222ec-e8c9-416a-a41f-4bdfc3e6b80e",
+            "8fd339e1-ea06-4aee-bd65-0c89b34e4e7e",
+            "1021798e-cec1-4b43-ba33-69b7d53da867",
+            "249659f3-8989-4ffc-b727-4902e954605f",
+            "a72bd197-f996-4e3b-b494-11f62296a2b3",
+            "4970aae5-e4c1-4d5c-a66a-0fc06616211b"
+        ]
+    },
+    "Metadata": {
+        "Id": "644d36bd-1f88-44f9-9fed-14a51e5e3f6b",
+        "IsPublished": true,
+        "CreationTimestamp": "2016-08-22T13:09:31.073Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "TileImage": "images/contracts/surveillance_portofino/tile.jpg",
+        "Location": "LOCATION_COASTALTOWN",
+        "BriefingVideo": "briefing_octopus",
+        "DebriefingVideo": "debriefing_octopus",
+        "MissionData": {
+            "Context": "BIO LAB",
+            "MissionType": "Assasination"
+        },
+        "Title": "UI_CONTRACT_OCTOPUS_TITLE",
+        "Description": "UI_CONTRACT_OCTOPUS_DESC",
+        "CodeName_Hint": "Octopus PRO1",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/CoastalTown/Mission01.entity",
+        "IsLocked": false,
+        "Type": "mission",
+        "Difficulty": "pro1",
+        "RequiredUnlockable": "ACCESS_HIT_OCTOPUS",
+        "Release": "1.7.x",
+        "Drops": [],
+        "LastUpdate": "2020-11-09T13:35:13.5385793Z",
+        "PublicId": "003255786647"
+    },
+    "UserData": {}
+}

@@ -1,0 +1,480 @@
+{
+    "metricscontext": {
+        "contractid": "$.Contract.Metadata.Id",
+        "location": "$.Contract.Metadata.Location"
+    },
+    "onpageopened": {
+        "set-selected": {
+            "target": "$arg selecteditem"
+        }
+    },
+    "onpageclosed": {
+        "set-mastery-data": {}
+    },
+    "buttons": [
+        {
+            "actiontype": "accept",
+            "actionlabel": "$loc UI_BUTTON_PROMPTS_ACTION_SELECT"
+        },
+        {
+            "actiontype": "cancel",
+            "actionlabel": "$loc UI_BUTTON_PROMPTS_ACTION_BACK"
+        }
+    ],
+    "body": {
+        "$setupcomponents": {
+            "difficulty-manager": {
+                "always-reload-setup": true,
+                "setup": {
+                    "difficulty": "$.Contract.Metadata.Difficulty"
+                }
+            }
+        },
+        "controller": "list",
+        "actions": {
+            "select": {
+                "select-category": {}
+            }
+        },
+        "children": [
+            {
+                "controller": "group",
+                "id": "headline_container",
+                "row": 4.25,
+                "col": 0,
+                "selectable": false,
+                "pressable": false,
+                "_comment": "the container that will hold the HeadlineElement. It will show info on whatever item is selected",
+                "children": {
+                    "id": "headline_element",
+                    "view": "menu3.basic.HeadlineElement"
+                }
+            },
+            {
+                "id": "category_container",
+                "controller": "list"
+            },
+            {
+                "view": "menu3.containers.ScrollingTabsContainer",
+                "controller": "category",
+                "id": "category_context",
+                "container": "category_container",
+                "direction": "horizontal",
+                "data": {
+                    "direction": "horizontal",
+                    "topnavigation": {
+                        "header": {
+                            "$if $arg extra-title": {
+                                "$then": {
+                                    "$switch $arg allowlargeitems": [
+                                        {
+                                            "case": true,
+                                            "return": "$loc UI_MENU_PAGE_LOADOUT_ELEMENT_SLOT_STASHPOINT_LARGE"
+                                        },
+                                        {
+                                            "default": "$loc UI_MENU_PAGE_LOADOUT_ELEMENT_SLOT_STASHPOINT_SMALL"
+                                        }
+                                    ]
+                                },
+                                "$else": "$loc $formatstring UI_{$.Contract.Metadata.Location}_CITY"
+                            }
+                        },
+                        "title": {
+                            "$if $arg extra-title": {
+                                "$then": "$arg extra-title",
+                                "$else": {
+                                    "$if $arg contract-creation": {
+                                        "$then": "$loc $.Contract.Metadata.Title",
+                                        "$else": {
+                                            "$switch $.Contract.Metadata.Type": [
+                                                {
+                                                    "case": "usercreated",
+                                                    "return": "$.Contract.Metadata.Title"
+                                                },
+                                                {
+                                                    "case": "featured",
+                                                    "return": "$.Contract.Metadata.Title"
+                                                },
+                                                {
+                                                    "default": "$loc $.Contract.Metadata.Title"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "icon": {
+                            "$if $arg extra-title": {
+                                "$then": "stashpointempty",
+                                "$else": {
+                                    "$switch $.Contract.Metadata.Type": [
+                                        {
+                                            "case": "orbis",
+                                            "return": "ica"
+                                        },
+                                        {
+                                            "case": "campaign",
+                                            "return": "mission"
+                                        },
+                                        {
+                                            "default": "$.Contract.Metadata.Type"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "actions": {
+                    "select": {
+                        "$use $.UserCentric": {
+                            "set-mastery-data": {
+                                "$setup": {
+                                    "$set ValidContractType": {
+                                        "$if $isnull $.Contract": {
+                                            "$then": true,
+                                            "$else": {
+                                                "$switch $.Contract.Metadata.Type": [
+                                                    {
+                                                        "case": "usercreated",
+                                                        "return": false
+                                                    },
+                                                    {
+                                                        "case": "featured",
+                                                        "return": false
+                                                    },
+                                                    {
+                                                        "default": true
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "$set HideProgression": {
+                                        "$if $isnull $.CompletionData": {
+                                            "$then": "$.Data.LocationHideProgression",
+                                            "$else": "$.CompletionData.HideProgression"
+                                        }
+                                    },
+                                    "$set MasteryTitle": {
+                                        "$if $isnull $.CompletionData": {
+                                            "$then": "$formatstring {$.Data.LocationLevel,.0f}/{$.Data.LocationMaxLevel,.0f}",
+                                            "$else": "$formatstring {$.CompletionData.Level,.0f}/{$.CompletionData.MaxLevel,.0f}"
+                                        }
+                                    },
+                                    "$set MasteryCompletion": {
+                                        "$if $isnull $.CompletionData": {
+                                            "$then": "$.Data.LocationCompletion",
+                                            "$else": "$.CompletionData.Completion"
+                                        }
+                                    },
+                                    "$set MasteryXpLeft": {
+                                        "$if $isnull $.CompletionData": {
+                                            "$then": "$.Data.LocationXpLeft",
+                                            "$else": "$.CompletionData.XpLeft"
+                                        }
+                                    },
+                                    "$set CityName": {
+                                        "$if $isnull $.CompletionData": {
+                                            "$then": "$loc $formatstring UI_{$.Contract.Metadata.Location}_CITY",
+                                            "$else": "$loc $formatstring UI_{$.CompletionData.Id}_CITY"
+                                        }
+                                    },
+                                    "$in": {
+                                        "$if": {
+                                            "$condition": {
+                                                "$and": [
+                                                    "$arg _isonline",
+                                                    "$not $.HideProgression",
+                                                    "$.ValidContractType"
+                                                ]
+                                            },
+                                            "$then": {
+                                                "masteryheader": {
+                                                    "$loc": {
+                                                        "key": "UI_MENU_LOCATION_PROGRESSION_HEADER",
+                                                        "data": ["$.CityName"]
+                                                    }
+                                                },
+                                                "masterytitle": "$.MasteryTitle",
+                                                "masterycompletion": "$.MasteryCompletion",
+                                                "masteryxpleft": "$.MasteryXpLeft"
+                                            },
+                                            "$else": {}
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "children": {
+                    "view": "menu3.basic.CategoryElement",
+                    "data": {
+                        "title": "$loc UI_LOADOUT_SELECT_ITEM",
+                        "icon": "stashpointempty"
+                    },
+                    "children": {
+                        "view": "menu3.containers.ListContainer",
+                        "controller": "list",
+                        "row": 1,
+                        "pages": true,
+                        "nrows": 3,
+                        "ncols": 10,
+                        "toshow": "$arg ShowSlotName",
+                        "children": {
+                            "$each $.LoadoutData": {
+                                "$switch $arg ShowSlotName": [
+                                    {
+                                        "case": "$formatstring {$.SlotName}{$.SlotId}",
+                                        "return": {
+                                            "id": "$formatstring loadout_overview_tile_{$.SlotId}",
+                                            "controller": "list",
+                                            "children": {
+                                                "id": "$formatstring scroll_container_{$.SlotId}",
+                                                "controller": "group",
+                                                "navigationmode": "leaf-selection",
+                                                "view": "menu3.containers.ScrollingListContainer",
+                                                "nrows": 3,
+                                                "ncols": 10,
+                                                "direction": "horizontal",
+                                                "paginate": {
+                                                    "page": "$.Page",
+                                                    "hasmore": "$.HasMore",
+                                                    "hasmoreleft": "$.HasMore",
+                                                    "hasmoreright": "$.HasMore",
+                                                    "url": "stashpointslot",
+                                                    "args": {
+                                                        "slotid": "$.SlotId",
+                                                        "stashpoint": "$.OptionalData.stashpoint",
+                                                        "allowlargeitems": "$.OptionalData.AllowLargeItems"
+                                                    }
+                                                },
+                                                "data": {
+                                                    "direction": "horizontal"
+                                                },
+                                                "children": {
+                                                    "$each": {
+                                                        "in": {
+                                                            "$groupby": {
+                                                                "from": {
+                                                                    "$orderby": {
+                                                                        "from": "$.Items",
+                                                                        "by": "Item.Unlockable.Subtype",
+                                                                        "order": [
+                                                                            "pistol",
+                                                                            "smg",
+                                                                            "shotgun",
+                                                                            "assaultrifle",
+                                                                            "sniperrifle",
+                                                                            "melee",
+                                                                            "tool",
+                                                                            "distraction",
+                                                                            "poison",
+                                                                            "explosive"
+                                                                        ]
+                                                                    }
+                                                                },
+                                                                "by": "Item.Unlockable.Subtype"
+                                                            }
+                                                        },
+                                                        "do": {
+                                                            "controller": "group",
+                                                            "navigationmode": "forward-to-parent",
+                                                            "view": {
+                                                                "$if $arg usewhitelineheader": {
+                                                                    "$then": "menu3.containers.ListContainerWithHeader",
+                                                                    "$else": "menu3.containers.ListContainer"
+                                                                }
+                                                            },
+                                                            "nrows": 3,
+                                                            "ncols": 10,
+                                                            "pages": true,
+                                                            "id": "$formatstring {$.by}_container",
+                                                            "direction": "horizontal",
+                                                            "data": {
+                                                                "direction": "horizontal",
+                                                                "headlinetitle": "$loc $formatstring UI_ITEM_SUBTYPE_IN_PLURAL_{$.by}"
+                                                            },
+                                                            "children": {
+                                                                "$each": {
+                                                                    "in": {
+                                                                        "$if $eqs ($.by,disguise)": {
+                                                                            "$then": {
+                                                                                "$orderby": {
+                                                                                    "from": "$.group",
+                                                                                    "by": {
+                                                                                        "$if $not $isnull $.Item.Unlockable.Properties.OrderIndex": {
+                                                                                            "$then": "$.Item.Unlockable.Properties.OrderIndex",
+                                                                                            "$else": 10000
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            },
+                                                                            "$else": {
+                                                                                "$orderby": {
+                                                                                    "from": "$.group",
+                                                                                    "by": "$($item $.Item).name"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    },
+                                                                    "do": {
+                                                                        "$mergeobjects": [
+                                                                            {
+                                                                                "$if $arg usetalltile": {
+                                                                                    "$then": {
+                                                                                        "view": "menu3.basic.ItemTileTall",
+                                                                                        "nrows": 3
+                                                                                    },
+                                                                                    "$else": {
+                                                                                        "view": "menu3.basic.ItemTileSmall",
+                                                                                        "nrows": 1.5
+                                                                                    }
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "ncols": 2,
+                                                                                "id": "$($item $.Item).id",
+                                                                                "data": {
+                                                                                    "_header": "$loc $formatstring UI_ITEM_SUBTYPE_{$.Item.Unlockable.Subtype}",
+                                                                                    "title": "$($item $.Item).name",
+                                                                                    "image": "$($item $.Item).image",
+                                                                                    "rarity": "$($item $.Item).rarity",
+                                                                                    "icon": "$.Item.Unlockable.Subtype",
+                                                                                    "perks": "$($repository $.Item.Unlockable.Properties.RepositoryId).Perks",
+                                                                                    "itemcount": "$arraysize $.Item.Unlockable.Properties.RepositoryAssets",
+                                                                                    "header": {
+                                                                                        "$if $isinloadout $($item $.Item).repositoryid": {
+                                                                                            "$then": "$loc UI_MENU_PAGE_LOADOUT_ALREADY_IN_USE",
+                                                                                            "$else": "$loc $formatstring UI_ITEM_SUBTYPE_{$.Item.Unlockable.Subtype}"
+                                                                                        }
+                                                                                    }
+                                                                                },
+                                                                                "buttons": [
+                                                                                    {
+                                                                                        "actiontype": "action-y",
+                                                                                        "actionlabel": "$loc UI_DIALOG_SHOW_DETAILS"
+                                                                                    }
+                                                                                ],
+                                                                                "actions": {
+                                                                                    "select": {
+                                                                                        "replace-children": {
+                                                                                            "target": "headline_container",
+                                                                                            "children": [
+                                                                                                {
+                                                                                                    "view": "menu3.basic.ItemHeadlineElement",
+                                                                                                    "id": "headline_element"
+                                                                                                }
+                                                                                            ]
+                                                                                        },
+                                                                                        "update-content": {
+                                                                                            "target": "headline_element"
+                                                                                        },
+                                                                                        "update-buttons": {
+                                                                                            "type": "slotitem",
+                                                                                            "slotid": "$.SlotId",
+                                                                                            "instanceId": "$.Item.InstanceId"
+                                                                                        },
+                                                                                        "set-repositoryitem-selected": "$.Item.Unlockable.Properties.RepositoryId"
+                                                                                    },
+                                                                                    "action-y": {
+                                                                                        "show-modal": {
+                                                                                            "config": {
+                                                                                                "type": "online",
+                                                                                                "view": "menu3.modal.ModalDialogItemDetails",
+                                                                                                "buttons": [
+                                                                                                    "$loc UI_DIALOG_OK",
+                                                                                                    {
+                                                                                                        "type": "cancel"
+                                                                                                    }
+                                                                                                ],
+                                                                                                "data": {
+                                                                                                    "type": "$.Item.Unlockable.Type",
+                                                                                                    "subtype": "$.Item.Unlockable.Subtype",
+                                                                                                    "rarity": "$.Item.Unlockable.Properties.Rarity",
+                                                                                                    "item": "$($repository $.Item.Unlockable.Properties.RepositoryId)",
+                                                                                                    "displaybuttons": [
+                                                                                                        {
+                                                                                                            "actiontype": "cancel",
+                                                                                                            "actionlabel": "$loc UI_BUTTON_PROMPTS_ACTION_BACK",
+                                                                                                            "hideIndicator": true
+                                                                                                        }
+                                                                                                    ],
+                                                                                                    "actionAndKillTypes": {
+                                                                                                        "$setup": {
+                                                                                                            "$set ItemRepositoryId": "$repository $.Item.Unlockable.Properties.RepositoryId",
+                                                                                                            "$in": {
+                                                                                                                "$convertarray": {
+                                                                                                                    "discardElementsWithoutConversion": true,
+                                                                                                                    "sourceArray": "$.ItemRepositoryId.OnlineTraits",
+                                                                                                                    "conversionRules": {
+                                                                                                                        "melee_nonlethal": "$loc UI_ITEM_ONLINETRAITS_MELEE_NONLETHAL",
+                                                                                                                        "melee_lethal": "$loc UI_ITEM_ONLINETRAITS_MELEE_LETHAL",
+                                                                                                                        "throw_nonlethal": "$loc UI_ITEM_ONLINETRAITS_THROW_NONLETHAL",
+                                                                                                                        "throw_lethal": "$loc UI_ITEM_ONLINETRAITS_THROW_LETHAL",
+                                                                                                                        "fiberwire": "$loc UI_ITEM_ONLINETRAITS_FIBERWIRE",
+                                                                                                                        "syringe_poison": "$loc UI_ITEM_ONLINETRAITS_SYRINGE_POISON",
+                                                                                                                        "consumable_poison": "$loc UI_ITEM_ONLINETRAITS_CONSUMABLE_POISON",
+                                                                                                                        "accident_explosion": "$loc UI_KILL_METHOD_ACCIDENT_EXPLOSION",
+                                                                                                                        "detonator_explosive_device": "$loc UI_KILL_METHOD_EXPLOSIVE",
+                                                                                                                        "explosive_device": "$loc UI_KILL_METHOD_EXPLOSIVE"
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    },
+                                                                                    "accept": {
+                                                                                        "select-stashpoint": {
+                                                                                            "target": {
+                                                                                                "$if $arg set-stashpoint": {
+                                                                                                    "$then": "$arg stashpoint",
+                                                                                                    "$else": null
+                                                                                                }
+                                                                                            }
+                                                                                        },
+                                                                                        "loadout_equip_unequip": {
+                                                                                            "slotid": "$.SlotId",
+                                                                                            "instance": "$.Item",
+                                                                                            "mode": "equip"
+                                                                                        },
+                                                                                        "request-back": {
+                                                                                            "target": [
+                                                                                                "contractcreation_planning",
+                                                                                                "planning"
+                                                                                            ],
+                                                                                            "usecache": false
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "default": {
+                                            "selectable": false,
+                                            "pressable": false
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "compilerOptions": {
+        "declaration": true,
+        "target": "ES2021",
+        "module": "commonjs",
+        "lib": ["ESNext"],
+        "emitDeclarationOnly": true,
+        "checkJs": false,
+        "strict": false,
+        "noUnusedLocals": true,
+        "noImplicitUseStrict": true,
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitOverride": true,
+        "noImplicitThis": true,
+        "strictBindCallApply": true,
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "typeRoots": ["./components/types", "./node_modules/@types"],
+        "baseUrl": ".",
+        "rootDir": "components",
+        "outDir": "./build",
+        "isolatedModules": true,
+        "stripInternal": true
+    },
+    "include": ["components"],
+    "exclude": ["packaging", "chunk0.js", "webui"]
+}

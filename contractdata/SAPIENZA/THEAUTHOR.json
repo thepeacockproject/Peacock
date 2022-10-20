@@ -1,0 +1,173 @@
+{
+    "Data": {
+        "EnableSaving": true,
+        "Objectives": [
+            {
+                "Id": "e734a4b4-c1b1-4195-93ba-079835ebca33",
+                "Category": "primary",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_EBOLA_OBJ_1_1"
+                },
+                "BriefingText": "$loc UI_CONTRACT_EBOLA_TARGET_ESCAPED",
+                "Type": "statemachine",
+                "Definition": {
+                    "ContextListeners": {
+                        "TargetEscaping": {
+                            "type": "custom",
+                            "HUDTemplate": {
+                                "display": {
+                                    "$loc": {
+                                        "key": "UI_CONTRACT_EBOLA_OBJ_1_2",
+                                        "data": []
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "Scope": "hit",
+                    "Context": {
+                        "TargetEscaping": 1,
+                        "Targets": ["ab48a89d-e8a7-4df4-ae72-f0fccaa65e7f"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "ab48a89d-e8a7-4df4-ae72-f0fccaa65e7f"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ],
+                            "Target_Leaving": [
+                                {
+                                    "Actions": {
+                                        "$dec": "TargetEscaping"
+                                    },
+                                    "Transition": "TargetEscaping"
+                                }
+                            ]
+                        },
+                        "TargetEscaping": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "ab48a89d-e8a7-4df4-ae72-f0fccaa65e7f"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ],
+                            "Target_Escape": {
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "83f63302-47e6-4258-83a1-29aae15725f3",
+                "Category": "primary",
+                "ObjectiveType": "setpiece",
+                "BriefingName": "$loc UI_CONTRACT_EBOLA_AKRAM_NAME",
+                "DisplayAsKillObjective": true,
+                "LongBriefingText": "$loc 07c64264-9fa9-4c4a-a933-802011bee9e6_brotherakram_description",
+                "Image": "images/actors/WS_Ebola_Brother_Akram.jpg",
+                "TargetConditions": [],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_EBOLA_OBJ_2"
+                },
+                "BriefingText": "$loc UI_CONTRACT_EBOLA_OBJ_2",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["07c64264-9fa9-4c4a-a933-802011bee9e6"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "07c64264-9fa9-4c4a-a933-802011bee9e6"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "f6d7ccfd-6f0b-4e01-b80f-982c051c4c8e",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": true,
+                "Image": "images/contracts/whitespider/002_ebola/WS_Ebola_Virus_Sample.jpg",
+                "BriefingName": "$loc UI_CONTRACT_EBOLA_OBJ_3_TITLE",
+                "BriefingText": "$loc UI_CONTRACT_EBOLA_OBJ_3_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_EBOLA_OBJ_3"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {
+                        "Targets": ["8521184b-4899-4e63-b9d0-e0bf830706a3"]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "8521184b-4899-4e63-b9d0-e0bf830706a3"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_PRO/Scenes/Missions/CoastalTown/mission_guidance_ebola.brick"
+        ],
+        "GameChangers": [],
+        "Stashpoints": ["e9c2f7ba-2d52-47a2-99b2-d14eba6d5278"],
+        "Entrances": ["a28dd5e3-1f1d-408d-9387-945641c32218"]
+    },
+    "Metadata": {
+        "Id": "7e3f758a-2435-42de-93bd-d8f0b72c63a4",
+        "IsPublished": true,
+        "Title": "UI_CONTRACT_EBOLA_TITLE",
+        "Description": "UI_CONTRACT_EBOLA_DESC",
+        "BriefingVideo": "briefing_ebola",
+        "DebriefingVideo": "debriefing_ebola",
+        "CodeName_Hint": "Ebola",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/CoastalTown/scene_ebola.entity",
+        "Location": "LOCATION_COASTALTOWN_EBOLA",
+        "TileImage": "images/contracts/whitespider/002_ebola/tile.jpg",
+        "LastUpdate": "2021-03-16T13:08:04.5161821Z",
+        "CreationTimestamp": "2012-12-12T12:12:12.743Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Release": "1.13.x",
+        "Type": "campaign",
+        "GroupTitle": "UI_CONTRACT_CAMPAIGN_WHITE_SPIDER_TITLE",
+        "InGroup": "3d407b2b-e2f2-4204-9c08-7da67baa78fd",
+        "RequiredUnlockable": "ACCESS_HIT_EBOLA",
+        "Drops": ["ACCESS_HIT_RABIES"],
+        "Entitlements": ["H1_LEGACY_EXPANSION"],
+        "PublicId": "015719744047"
+    },
+    "UserData": {}
+}

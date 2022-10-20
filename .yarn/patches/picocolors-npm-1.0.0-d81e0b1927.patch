@@ -1,0 +1,42 @@
+diff --git a/picocolors.browser.js b/picocolors.browser.js
+index 5eb9fbe8b5a0d60e91c88a2851b3b975d70261bf..85cdbe731e277f5a780eba50b1515db31b6c2bf7 100644
+--- a/picocolors.browser.js
++++ b/picocolors.browser.js
+@@ -1,4 +1,4 @@
+ var x=String;
+-var create=function() {return {isColorSupported:false,reset:x,bold:x,dim:x,italic:x,underline:x,inverse:x,hidden:x,strikethrough:x,black:x,red:x,green:x,yellow:x,blue:x,magenta:x,cyan:x,white:x,gray:x,bgBlack:x,bgRed:x,bgGreen:x,bgYellow:x,bgBlue:x,bgMagenta:x,bgCyan:x,bgWhite:x}};
++var create=function() {return {isColorSupported:false,reset:x,bold:x,dim:x,italic:x,underline:x,inverse:x,hidden:x,strikethrough:x,black:x,red:x,green:x,yellow:x,blue:x,magenta:x,cyan:x,white:x,gray:x,bgBlack:x,bgRed:x,bgGreen:x,bgYellow:x,bgBlue:x,bgMagenta:x,bgCyan:x,bgWhite:x,redBright:x,greenBright:x,yellowBright:x,blueBright:x,magentaBright:x,cyanBright:x}};
+ module.exports=create();
+ module.exports.createColors = create;
+diff --git a/picocolors.js b/picocolors.js
+index fdb630451d89b134b069355bb97556e39b0b171a..389dee8a5d5c91c66a480f8230242b651deddce3 100644
+--- a/picocolors.js
++++ b/picocolors.js
+@@ -52,6 +52,12 @@ let createColors = (enabled = isColorSupported) => ({
+ 	bgMagenta: enabled ? formatter("\x1b[45m", "\x1b[49m") : String,
+ 	bgCyan: enabled ? formatter("\x1b[46m", "\x1b[49m") : String,
+ 	bgWhite: enabled ? formatter("\x1b[47m", "\x1b[49m") : String,
++	redBright: enabled ? formatter("\x1b[91m", "\x1b[39m") : String,
++	greenBright: enabled ? formatter("\x1b[92m", "\x1b[39m") : String,
++	yellowBright: enabled ? formatter("\x1b[93m", "\x1b[39m") : String,
++	blueBright: enabled ? formatter("\x1b[94m", "\x1b[39m") : String,
++	magentaBright: enabled ? formatter("\x1b[95m", "\x1b[39m") : String,
++	cyanBright: enabled ? formatter("\x1b[96m", "\x1b[39m") : String,
+ })
+ 
+ module.exports = createColors()
+diff --git a/types.ts b/types.ts
+index b4bacee4909e7f562fb13f89720c8ae57c4922fc..7b8327138390bfa3c397690a62a2c269cdbac06e 100644
+--- a/types.ts
++++ b/types.ts
+@@ -27,4 +27,10 @@ export interface Colors {
+ 	bgMagenta: Formatter
+ 	bgCyan: Formatter
+ 	bgWhite: Formatter
++	redBright: Formatter
++	greenBright: Formatter
++	yellowBright: Formatter
++	blueBright: Formatter
++	magentaBright: Formatter
++	cyanBright: Formatter
+ }

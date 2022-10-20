@@ -1,0 +1,112 @@
+{
+    "Data": {
+        "EnableSaving": true,
+        "Entrances": [
+            "783a0cba-fdc5-44e3-85a3-e16e14d3cd04",
+            "494b9470-402f-4902-8770-46a470097ad7",
+            "2c2a5173-db6c-40d8-9520-67b895aac2cc",
+            "4b344092-e910-4c2f-80c8-9f2501e411bb",
+            "0c848791-ae6e-4442-8bd9-9717e95d2a56",
+            "18bcd289-eada-499d-821b-64d232da4cda",
+            "37d5b96b-2c27-4d1b-a7e4-2fa290e6d2d6"
+        ],
+        "GameDifficulties": [
+            {
+                "Difficulty": "easy",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/colombia/difficulty_easy_columbia_anaconda.brick"
+                ]
+            },
+            {
+                "Difficulty": "normal",
+                "Bricks": []
+            },
+            {
+                "Difficulty": "hard",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/colombia/difficulty_hard_columbia_anaconda.brick"
+                ]
+            }
+        ],
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/colombia/mission_anaconda.brick"
+        ],
+        "DevOnlyBricks": [
+            "assembly:/_pro/scenes/missions/colombia/dev_anaconda.brick"
+        ],
+        "GameChangers": [],
+        "Objectives": [
+            {
+                "Id": "d84ad5f8-0312-4232-b65c-8cb2bdfff689",
+                "Primary": true,
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "1e8bbf5a-473e-4b00-b58a-4706f13e497b"
+                    }
+                }
+            },
+            {
+                "Id": "d61d68e2-1e72-4c50-9c65-f2106ae30a9d",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "Image": "images/unlockables/item_perspective_e5bde241-5958-496d-9d2d-39932fe93123_0.jpg",
+                "ForceShowOnLoadingScreen": true,
+                "BriefingName": "$loc UI_CONTRACT_ANACONDA_OBJ_DOCS_NAME",
+                "BriefingText": "$loc UI_CONTRACT_ANACONDA_OBJ_DOCS_TEXT",
+                "LongBriefingText": "$loc UI_CONTRACT_ANACONDA_OBJ_DOCS_LONG",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_ANACONDA_OBJ_DOCS_HUD",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {
+                        "Targets": ["e5bde241-5958-496d-9d2d-39932fe93123"]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "e5bde241-5958-496d-9d2d-39932fe93123"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "179563a4-727a-4072-b354-c9fff4e8bff0",
+        "CodeName_Hint": "Anaconda",
+        "Release": {
+            "Major": 2,
+            "Minor": 40,
+            "Build": 0,
+            "Revision": -1,
+            "MajorRevision": -1,
+            "MinorRevision": -1
+        },
+        "Type": "flashback",
+        "Subtype": "specialassignment",
+        "Title": "UI_CONTRACT_ANACONDA_TITLE",
+        "Description": "UI_CONTRACT_ANACONDA_DESC",
+        "BriefingVideo": "briefing_anaconda",
+        "DebriefingVideo": "debriefing_anaconda",
+        "ScenePath": "assembly:/_pro/scenes/missions/colombia/scene_anaconda.entity",
+        "TileImage": "Images/Contracts/Anaconda/Tile.jpg",
+        "Location": "LOCATION_COLOMBIA_ANACONDA",
+        "IsPublished": true,
+        "LastUpdate": "2021-03-16T13:07:48.4535526Z",
+        "CreationTimestamp": "2012-12-12T12:12:12.743Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Entitlements": ["H2_LEGACY_EXPANSION"],
+        "PublicId": "099567328647"
+    },
+    "UserData": {}
+}

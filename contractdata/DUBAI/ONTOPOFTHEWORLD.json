@@ -1,0 +1,210 @@
+{
+    "Data": {
+        "EnableSaving": true,
+        "Bricks": [
+            "assembly:/_PRO/scenes/missions/golden/mission_gecko/mission_gecko.brick"
+        ],
+        "DevOnlyBricks": [
+            "assembly:/_PRO/scenes/missions/golden/mission_gecko/dev_gecko.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/scenes/missions/golden/mission_gecko/vr_overrides_golden_gecko.brick",
+                    "assembly:/_PRO/scenes/missions/golden/mission_gecko/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/scenes/missions/golden/mission_gecko/vr_overrides_golden_gecko.brick"
+                ]
+            }
+        ],
+        "GameModesBricks": null,
+        "EngineModesBricks": null,
+        "GameDifficulties": [
+            {
+                "Difficulty": "easy",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/golden/mission_gecko/difficulty_easy_gecko.brick"
+                ]
+            },
+            {
+                "Difficulty": "normal",
+                "Bricks": []
+            },
+            {
+                "Difficulty": "hard",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/golden/mission_gecko/difficulty_hard_gecko.brick"
+                ]
+            }
+        ],
+        "GameChangers": [],
+        "GameChangerReferences": [],
+        "Objectives": [
+            {
+                "_comment": "----- Kill Carl Ingram -----",
+                "Id": "cecfe961-442d-40eb-a1e2-1ce8a04b3b64",
+                "Category": "primary",
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "bd0689d6-07b4-4757-b8ee-cac19f1c9e16"
+                    }
+                }
+            },
+            {
+                "_comment": "----- Kill Marcus Stuyvesant -----",
+                "Id": "71b9fbeb-950b-4131-8f83-b5eb8b1d07f0",
+                "Category": "primary",
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "9571d196-8d67-4d94-8dad-6e2d970d7a91"
+                    }
+                }
+            },
+            {
+                "_comment": "----- Marcus Stuyvesant Escape -----",
+                "Id": "9571d196-8d67-4d94-8dad-6e2d970d7a91",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "BriefingText": "$loc UI_CONTRACT_GECKO_FAIL_ESCAPE_MARCUS",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_GECKO_OBJ_ESCAPE_MARCUS"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "-": {
+                                "Transition": "Success"
+                            }
+                        },
+                        "Success": {
+                            "MarcusEscapeStarted": {
+                                "Transition": "Countdown"
+                            }
+                        },
+                        "Countdown": {
+                            "MarcusEscapeFoiled": {
+                                "Transition": "Success"
+                            },
+                            "$timer": {
+                                "Condition": {
+                                    "$after": 20.0
+                                },
+                                "Transition": "Failure"
+                            },
+                            "Kill": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "88f7ec38-c083-4de0-9004-c1e4f0e4fba0"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Carl Ingram Escape -----",
+                "Id": "e9722da6-65e2-49b1-b951-a82efc54ea35",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "BriefingText": "$loc UI_CONTRACT_GECKO_FAIL_ESCAPE_INGRAM",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_GECKO_OBJ_ESCAPE_INGRAM"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "-": {
+                                "Transition": "Success"
+                            }
+                        },
+                        "Success": {
+                            "IngramEscapeStarted": {
+                                "Transition": "Countdown"
+                            }
+                        },
+                        "Countdown": {
+                            "IngramEscapeFoiled": {
+                                "Transition": "Success"
+                            },
+                            "$timer": {
+                                "Condition": {
+                                    "$after": 20.0
+                                },
+                                "Transition": "Failure"
+                            },
+                            "Kill": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "bd0689d6-07b4-4757-b8ee-cac19f1c9e16"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "7d85f2b0-80ca-49be-a2b7-d56f67faf252",
+        "IsPublished": true,
+        "CreationTimestamp": "2019-09-06T08:30:40.6504427Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_GECKO_TITLE",
+        "Description": "UI_CONTRACT_GECKO_DESC",
+        "CodeName_Hint": "Gecko",
+        "Location": "LOCATION_GOLDEN_GECKO",
+        "ScenePath": "assembly:/_pro/scenes/missions/golden/mission_gecko/scene_gecko_basic.entity",
+        "TileImage": "images/contracts/gecko/gecko_tile.jpg",
+        "BriefingVideo": "briefing_gecko",
+        "DebriefingVideo": "debriefing_gecko",
+        "Type": "mission",
+        "Release": {
+            "Major": 3,
+            "Minor": 0,
+            "Build": 0,
+            "Revision": -1
+        },
+        "GameModes": null,
+        "EngineModes": null,
+        "IsVersus": false,
+        "Drops": ["ACCESS_HIT_BULLDOG"],
+        "Opportunities": [
+            "6298d6c5-e512-4475-be6b-3ed7040b9f9d",
+            "3e58ea63-c6f5-472d-a52f-d3875a92d196",
+            "c52dc088-cc41-4313-a779-15b4bb3ed74a"
+        ],
+        "Entitlements": ["LOCATION_GOLDEN"],
+        "LastUpdate": "2022-01-20T18:29:24.4235346Z",
+        "PublicId": "027004097647"
+    },
+    "UserData": {}
+}

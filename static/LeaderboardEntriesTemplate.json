@@ -1,0 +1,1037 @@
+{
+    "id": "leaderboard_entries_root",
+    "row": 0,
+    "col": 2,
+    "selectable": true,
+    "direction": "vertical",
+    "controller": "list",
+    "children": {
+        "$if $($arraysize $.Entries)": {
+            "$then": {
+                "controller": "list",
+                "direction": "vertical",
+                "selectable": true,
+                "children": [
+                    {
+                        "id": "leaderboard_top_score",
+                        "controller": "list",
+                        "row": 0,
+                        "view": "menu3.containers.ScrollingListContainer",
+                        "data": {
+                            "direction": "vertical",
+                            "overflowscrolling": 1
+                        },
+                        "nrows": 2.492,
+                        "ncols": 3.85,
+                        "children": {
+                            "$merge": [
+                                {
+                                    "$if $.Page": {
+                                        "$then": {
+                                            "$setup": {
+                                                "$set Title": "UI_MENU_PAGE_LEADERBOARDS_PREVIOUS",
+                                                "$set PageDirection": -1,
+                                                "$in": {
+                                                    "view": "menu3.basic.ListElementLeaderboardSmall",
+                                                    "pressable": true,
+                                                    "data": {
+                                                        "player": "$loc $.Title"
+                                                    },
+                                                    "id": "PrevNextLeaderboard",
+                                                    "selectable": true,
+                                                    "actions": {
+                                                        "accept": {
+                                                            "$setup": {
+                                                                "$set BlockInput": true,
+                                                                "$set PostLoadAction": {
+                                                                    "set-child-selected": {
+                                                                        "target": "leaderboard_top_score",
+                                                                        "selectdirection": "$.PageDirection"
+                                                                    }
+                                                                },
+                                                                "$set LeaderboardUrl": "leaderboardentries",
+                                                                "$set DifficultyLevel": "$arg DifficultyLevel",
+                                                                "$set Target": "leaderboard_entries_root",
+                                                                "$in": {
+                                                                    "load-async": {
+                                                                        "from": {
+                                                                            "url": "$.LeaderboardUrl",
+                                                                            "args": {
+                                                                                "$mergeobjects": [
+                                                                                    {
+                                                                                        "page": "$.Page",
+                                                                                        "contractid": "$arg ContractId",
+                                                                                        "type": "$.LeaderboardType"
+                                                                                    },
+                                                                                    {
+                                                                                        "$if $isnull $.DifficultyLevel": {
+                                                                                            "$then": null,
+                                                                                            "$else": {
+                                                                                                "difficultyLevel": "$.DifficultyLevel"
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                ]
+                                                                            }
+                                                                        },
+                                                                        "post-load-action": "$.PostLoadAction",
+                                                                        "page": "$.Page",
+                                                                        "pagedirection": "$.PageDirection",
+                                                                        "target": "$.Target",
+                                                                        "showloadingindicator": true,
+                                                                        "blocksinput": "$.BlockInput"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "$else": {
+                                            "selectable": false,
+                                            "pressable": false,
+                                            "nrows": 0,
+                                            "ncols": 0
+                                        }
+                                    }
+                                },
+                                {
+                                    "$each $.Entries": {
+                                        "$setup": {
+                                            "$set ProfileId1": {
+                                                "$if $eqs ($.LeaderboardData.Player2,$arg _profileid)": {
+                                                    "$then": "$.LeaderboardData.Player2",
+                                                    "$else": "$.LeaderboardData.Player"
+                                                }
+                                            },
+                                            "$set ProfileId2": {
+                                                "$if $eqs ($.LeaderboardData.Player2,$arg _profileid)": {
+                                                    "$then": "$.LeaderboardData.Player",
+                                                    "$else": "$.LeaderboardData.Player2"
+                                                }
+                                            },
+                                            "$in": {
+                                                "view": "menu3.basic.ListElementLeaderboardSmall",
+                                                "pressable": {
+                                                    "$if $not $isnull $.ProfileId2": {
+                                                        "$then": {
+                                                            "$if": {
+                                                                "$condition": {
+                                                                    "$or": [
+                                                                        "$($user $.ProfileId1).isresolved",
+                                                                        "$($user $.ProfileId2).isresolved"
+                                                                    ]
+                                                                },
+                                                                "$then": true,
+                                                                "$else": false
+                                                            }
+                                                        },
+                                                        "$else": "$($user $.ProfileId1).isresolved"
+                                                    }
+                                                },
+                                                "showpressableprompt": false,
+                                                "data": {
+                                                    "showningame": {
+                                                        "$if $arg _isingame": {
+                                                            "$then": true,
+                                                            "$else": false
+                                                        }
+                                                    },
+                                                    "rank": "$.LeaderboardData.Rank",
+                                                    "player": "$($user $.ProfileId1).name",
+                                                    "player2": {
+                                                        "$if $not $isnull $.ProfileId2": {
+                                                            "$then": "$($user $.ProfileId2).name",
+                                                            "$else": null
+                                                        }
+                                                    },
+                                                    "score": "$.LeaderboardData.Score",
+                                                    "isPlayer": "$.IsPlayer"
+                                                },
+                                                "stateproviders": [
+                                                    {
+                                                        "type": "userresolution",
+                                                        "target": "player",
+                                                        "profileid": "$.ProfileId1"
+                                                    },
+                                                    {
+                                                        "$if $not $isnull $.ProfileId2": {
+                                                            "$then": {
+                                                                "type": "userresolution",
+                                                                "target": "player2",
+                                                                "profileid": "$.ProfileId2"
+                                                            }
+                                                        }
+                                                    }
+                                                ],
+                                                "buttons": [
+                                                    {
+                                                        "actiontype": "cancel",
+                                                        "actionlabel": "$loc UI_BUTTON_PROMPTS_ACTION_BACK"
+                                                    },
+                                                    {
+                                                        "$setup": {
+                                                            "$set ProfileId1": {
+                                                                "$if $not $isnull $.ProfileId": {
+                                                                    "$then": "$.ProfileId",
+                                                                    "$else": "$.ProfileId1"
+                                                                }
+                                                            },
+                                                            "$set Platform": {
+                                                                "$if $not $isnull $arg _platform": {
+                                                                    "$then": "$arg _platform",
+                                                                    "$else": "$.Platform"
+                                                                }
+                                                            },
+                                                            "$in": {
+                                                                "$if": {
+                                                                    "$condition": {
+                                                                        "$if $not $isnull $.ProfileId2": {
+                                                                            "$then": {
+                                                                                "$if": {
+                                                                                    "$condition": {
+                                                                                        "$or": [
+                                                                                            "$($user $.ProfileId1).isresolved",
+                                                                                            "$($user $.ProfileId2).isresolved"
+                                                                                        ]
+                                                                                    },
+                                                                                    "$then": true,
+                                                                                    "$else": false
+                                                                                }
+                                                                            },
+                                                                            "$else": "$($user $.ProfileId1).isresolved"
+                                                                        }
+                                                                    },
+                                                                    "$then": {
+                                                                        "$switch $.Platform": [
+                                                                            {
+                                                                                "case": "pc",
+                                                                                "return": {}
+                                                                            },
+                                                                            {
+                                                                                "case": "stadia",
+                                                                                "return": {}
+                                                                            },
+                                                                            {
+                                                                                "case": "durango",
+                                                                                "return": {
+                                                                                    "actiontype": "action-y",
+                                                                                    "actionlabel": "$loc UI_BUTTON_PROMPTS_ACTION_PLATFORM_PROFILE_DURANGO"
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "default": {
+                                                                                    "actiontype": "action-y",
+                                                                                    "actionlabel": "$loc UI_BUTTON_PROMPTS_ACTION_PLATFORM_PROFILE"
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                ],
+                                                "actions": {
+                                                    "select": [
+                                                        {
+                                                            "replace-children": {
+                                                                "target": "headline_container",
+                                                                "children": {
+                                                                    "id": "leaderboard_player_header",
+                                                                    "view": "menu3.basic.HeadlineElement",
+                                                                    "selectable": false,
+                                                                    "pressable": false,
+                                                                    "data": {
+                                                                        "player": "$($user $.ProfileId1).name",
+                                                                        "player2": {
+                                                                            "$if $not $isnull $.ProfileId2": {
+                                                                                "$then": "$($user $.ProfileId2).name",
+                                                                                "$else": null
+                                                                            }
+                                                                        },
+                                                                        "typeicon": "profile"
+                                                                    },
+                                                                    "stateproviders": [
+                                                                        {
+                                                                            "type": "userresolution",
+                                                                            "target": "player",
+                                                                            "profileid": "$.ProfileId1"
+                                                                        },
+                                                                        {
+                                                                            "$if $not $isnull $.ProfileId2": {
+                                                                                "$then": {
+                                                                                    "type": "userresolution",
+                                                                                    "target": "player2",
+                                                                                    "profileid": "$.ProfileId2"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        },
+                                                        {
+                                                            "replace-children": {
+                                                                "target": "leaderboard_score_detail",
+                                                                "children": {
+                                                                    "$if $isnull $.LeaderboardData.Data.SniperChallengeScore": {
+                                                                        "$then": {
+                                                                            "__comment": "View for displaying detailed score for individual Player (Global, Friends)",
+                                                                            "view": "menu3.basic.DetailedScoreTile",
+                                                                            "nrows": 3,
+                                                                            "ncols": 4,
+                                                                            "pressable": false,
+                                                                            "selectable": false,
+                                                                            "data": {
+                                                                                "$mergeobjects": [
+                                                                                    {
+                                                                                        "player": "$($user $.ProfileId1).name",
+                                                                                        "player2": {
+                                                                                            "$if $not $isnull $.ProfileId2": {
+                                                                                                "$then": "$($user $.ProfileId2).name",
+                                                                                                "$else": null
+                                                                                            }
+                                                                                        },
+                                                                                        "title": "$loc UI_MENU_PAGE_DEBRIEFING_SCORE_DETAILS",
+                                                                                        "completed": true,
+                                                                                        "isonline": true,
+                                                                                        "animate": false,
+                                                                                        "rating": "$.LeaderboardData.Data.Score.StarCount",
+                                                                                        "scoresummary": "$.detailedscore.Headlines"
+                                                                                    },
+                                                                                    {
+                                                                                        "$if $eqs ($arg ContractType,placeholder)": {
+                                                                                            "$then": {
+                                                                                                "MedicineMan": {
+                                                                                                    "$if $ge ($.LeaderboardData.Data.Score.StarCount,5)": {
+                                                                                                        "$then": true,
+                                                                                                        "$else": false
+                                                                                                    }
+                                                                                                }
+                                                                                            },
+                                                                                            "$else": {
+                                                                                                "silentAssassin": {
+                                                                                                    "$if $not $isnull $.LeaderboardData.Data.Score.SilentAssassin": {
+                                                                                                        "$then": "$.LeaderboardData.Data.Score.SilentAssassin",
+                                                                                                        "$else": {
+                                                                                                            "$if $ge ($.LeaderboardData.Data.Score.StarCount,5)": {
+                                                                                                                "$then": true,
+                                                                                                                "$else": false
+                                                                                                            }
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                ]
+                                                                            },
+                                                                            "stateproviders": [
+                                                                                {
+                                                                                    "type": "userresolution",
+                                                                                    "target": "player",
+                                                                                    "profileid": "$.ProfileId1"
+                                                                                },
+                                                                                {
+                                                                                    "$if $not $isnull $.ProfileId2": {
+                                                                                        "$then": {
+                                                                                            "type": "userresolution",
+                                                                                            "target": "player2",
+                                                                                            "profileid": "$.ProfileId2"
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            ]
+                                                                        },
+                                                                        "$else": {
+                                                                            "__comment": "View for displaying detailed sniperscore for individual Player (Global, Friends)",
+                                                                            "view": "menu3.basic.DetailedScoreTileSniper",
+                                                                            "nrows": 3,
+                                                                            "ncols": 4,
+                                                                            "selectable": false,
+                                                                            "pressable": false,
+                                                                            "data": {
+                                                                                "player": "$($user $.ProfileId1).name",
+                                                                                "player2": {
+                                                                                    "$if $not $isnull $.ProfileId2": {
+                                                                                        "$then": "$($user $.ProfileId2).name",
+                                                                                        "$else": null
+                                                                                    }
+                                                                                },
+                                                                                "title": "$loc UI_MENU_PAGE_DEBRIEFING_SCORE_DETAILS",
+                                                                                "completed": true,
+                                                                                "isonline": true,
+                                                                                "animate": false,
+                                                                                "SniperChallengeScore": "$.LeaderboardData.Data.SniperChallengeScore",
+                                                                                "isPartOfTopScores": "$.LeaderboardData.Data.IsPartOfTopScores",
+                                                                                "newRank": "$.LeaderboardData.Data.NewRank"
+                                                                            },
+                                                                            "stateproviders": [
+                                                                                {
+                                                                                    "type": "userresolution",
+                                                                                    "target": "player",
+                                                                                    "profileid": "$.ProfileId1"
+                                                                                },
+                                                                                {
+                                                                                    "$if $not $isnull $.ProfileId2": {
+                                                                                        "$then": {
+                                                                                            "type": "userresolution",
+                                                                                            "target": "player2",
+                                                                                            "profileid": "$.ProfileId2"
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            ]
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    ],
+                                                    "deselect": [
+                                                        {
+                                                            "replace-children": {
+                                                                "target": "leaderboard_score_detail",
+                                                                "children": []
+                                                            }
+                                                        },
+                                                        {
+                                                            "replace-children": {
+                                                                "target": "headline_container",
+                                                                "children": []
+                                                            }
+                                                        }
+                                                    ],
+                                                    "action-y": {
+                                                        "$setup": {
+                                                            "$set ProfileId1": {
+                                                                "$if $not $isnull $.ProfileId": {
+                                                                    "$then": "$.ProfileId",
+                                                                    "$else": "$.ProfileId1"
+                                                                }
+                                                            },
+                                                            "$set Platform": {
+                                                                "$if $not $isnull $arg _platform": {
+                                                                    "$then": "$arg _platform",
+                                                                    "$else": "$.Platform"
+                                                                }
+                                                            },
+                                                            "$in": {
+                                                                "$switch $.Platform": [
+                                                                    {
+                                                                        "case": "pc",
+                                                                        "return": {}
+                                                                    },
+                                                                    {
+                                                                        "case": "stadia",
+                                                                        "return": {}
+                                                                    },
+                                                                    {
+                                                                        "default": {
+                                                                            "$if": {
+                                                                                "$condition": {
+                                                                                    "$and": [
+                                                                                        "$not $isnull $.ProfileId2",
+                                                                                        "$($user $.ProfileId1).isresolved",
+                                                                                        "$($user $.ProfileId2).isresolved"
+                                                                                    ]
+                                                                                },
+                                                                                "$then": {
+                                                                                    "show-modal": {
+                                                                                        "config": {
+                                                                                            "view": "menu3.modal.ModalDialogGeneric",
+                                                                                            "buttons": [
+                                                                                                "$($user $.ProfileId1).name",
+                                                                                                "$($user $.ProfileId2).name",
+                                                                                                {
+                                                                                                    "label": "$loc UI_DIALOG_CANCEL",
+                                                                                                    "type": "cancel"
+                                                                                                }
+                                                                                            ],
+                                                                                            "data": {
+                                                                                                "title": {
+                                                                                                    "$if $eqs ($arg _platform,durango)": {
+                                                                                                        "$then": "$loc UI_BUTTON_PROMPTS_ACTION_PLATFORM_PROFILE_DURANGO",
+                                                                                                        "$else": "$loc UI_BUTTON_PROMPTS_ACTION_PLATFORM_PROFILE"
+                                                                                                    }
+                                                                                                },
+                                                                                                "description": {
+                                                                                                    "$if $eqs ($arg _platform,durango)": {
+                                                                                                        "$then": "$loc UI_DIALOG_PLATFORM_PROFILE_DURANGO_SELECT_DESC",
+                                                                                                        "$else": "$loc UI_DIALOG_PLATFORM_PROFILE_SELECT_DESC"
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        },
+                                                                                        "onbutton": [
+                                                                                            {
+                                                                                                "show-player-profile-dialog": {
+                                                                                                    "profileId": "$.ProfileId1"
+                                                                                                }
+                                                                                            },
+                                                                                            {
+                                                                                                "show-player-profile-dialog": {
+                                                                                                    "profileId": "$.ProfileId2"
+                                                                                                }
+                                                                                            }
+                                                                                        ]
+                                                                                    }
+                                                                                },
+                                                                                "$else": {
+                                                                                    "show-player-profile-dialog": {
+                                                                                        "profileId": {
+                                                                                            "$if $($user $.ProfileId1).isresolved": {
+                                                                                                "$then": "$.ProfileId1",
+                                                                                                "$else": "$.ProfileId2"
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "$if $.HasMore": {
+                                        "$then": {
+                                            "$setup": {
+                                                "$set Title": "UI_MENU_PAGE_LEADERBOARDS_NEXT",
+                                                "$set PageDirection": 1,
+                                                "$in": {
+                                                    "view": "menu3.basic.ListElementLeaderboardSmall",
+                                                    "pressable": true,
+                                                    "data": {
+                                                        "player": "$loc $.Title"
+                                                    },
+                                                    "id": "PrevNextLeaderboard",
+                                                    "selectable": true,
+                                                    "actions": {
+                                                        "accept": {
+                                                            "$setup": {
+                                                                "$set BlockInput": true,
+                                                                "$set PostLoadAction": {
+                                                                    "set-child-selected": {
+                                                                        "target": "leaderboard_top_score",
+                                                                        "selectdirection": "$.PageDirection"
+                                                                    }
+                                                                },
+                                                                "$set LeaderboardUrl": "leaderboardentries",
+                                                                "$set DifficultyLevel": "$arg DifficultyLevel",
+                                                                "$set Target": "leaderboard_entries_root",
+                                                                "$in": {
+                                                                    "load-async": {
+                                                                        "from": {
+                                                                            "url": "$.LeaderboardUrl",
+                                                                            "args": {
+                                                                                "$mergeobjects": [
+                                                                                    {
+                                                                                        "page": "$.Page",
+                                                                                        "contractid": "$arg ContractId",
+                                                                                        "type": "$.LeaderboardType"
+                                                                                    },
+                                                                                    {
+                                                                                        "$if $isnull $.DifficultyLevel": {
+                                                                                            "$then": null,
+                                                                                            "$else": {
+                                                                                                "difficultyLevel": "$.DifficultyLevel"
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                ]
+                                                                            }
+                                                                        },
+                                                                        "post-load-action": "$.PostLoadAction",
+                                                                        "page": "$.Page",
+                                                                        "pagedirection": "$.PageDirection",
+                                                                        "target": "$.Target",
+                                                                        "showloadingindicator": true,
+                                                                        "blocksinput": "$.BlockInput"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "$else": {
+                                            "selectable": false,
+                                            "pressable": false,
+                                            "nrows": 0,
+                                            "ncols": 0
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "leaderboard_self",
+                        "controller": "list",
+                        "row": 2.75,
+                        "children": {
+                            "$if $.PlayerEntry": {
+                                "$then": {
+                                    "$use $.PlayerEntry": {
+                                        "$setup": {
+                                            "$set IsPlayer": true,
+                                            "$in": {
+                                                "$setup": {
+                                                    "$set ProfileId1": {
+                                                        "$if $eqs ($.LeaderboardData.Player2,$arg _profileid)": {
+                                                            "$then": "$.LeaderboardData.Player2",
+                                                            "$else": "$.LeaderboardData.Player"
+                                                        }
+                                                    },
+                                                    "$set ProfileId2": {
+                                                        "$if $eqs ($.LeaderboardData.Player2,$arg _profileid)": {
+                                                            "$then": "$.LeaderboardData.Player",
+                                                            "$else": "$.LeaderboardData.Player2"
+                                                        }
+                                                    },
+                                                    "$in": {
+                                                        "view": "menu3.basic.ListElementLeaderboardSmall",
+                                                        "pressable": {
+                                                            "$if $not $isnull $.ProfileId2": {
+                                                                "$then": {
+                                                                    "$if": {
+                                                                        "$condition": {
+                                                                            "$or": [
+                                                                                "$($user $.ProfileId1).isresolved",
+                                                                                "$($user $.ProfileId2).isresolved"
+                                                                            ]
+                                                                        },
+                                                                        "$then": true,
+                                                                        "$else": false
+                                                                    }
+                                                                },
+                                                                "$else": "$($user $.ProfileId1).isresolved"
+                                                            }
+                                                        },
+                                                        "showpressableprompt": false,
+                                                        "data": {
+                                                            "showningame": {
+                                                                "$if $arg _isingame": {
+                                                                    "$then": true,
+                                                                    "$else": false
+                                                                }
+                                                            },
+                                                            "rank": "$.LeaderboardData.Rank",
+                                                            "player": "$($user $.ProfileId1).name",
+                                                            "player2": {
+                                                                "$if $not $isnull $.ProfileId2": {
+                                                                    "$then": "$($user $.ProfileId2).name",
+                                                                    "$else": null
+                                                                }
+                                                            },
+                                                            "score": "$.LeaderboardData.Score",
+                                                            "isPlayer": "$.IsPlayer"
+                                                        },
+                                                        "stateproviders": [
+                                                            {
+                                                                "type": "userresolution",
+                                                                "target": "player",
+                                                                "profileid": "$.ProfileId1"
+                                                            },
+                                                            {
+                                                                "$if $not $isnull $.ProfileId2": {
+                                                                    "$then": {
+                                                                        "type": "userresolution",
+                                                                        "target": "player2",
+                                                                        "profileid": "$.ProfileId2"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ],
+                                                        "buttons": [
+                                                            {
+                                                                "actiontype": "cancel",
+                                                                "actionlabel": "$loc UI_BUTTON_PROMPTS_ACTION_BACK"
+                                                            },
+                                                            {
+                                                                "$setup": {
+                                                                    "$set ProfileId1": {
+                                                                        "$if $not $isnull $.ProfileId": {
+                                                                            "$then": "$.ProfileId",
+                                                                            "$else": "$.ProfileId1"
+                                                                        }
+                                                                    },
+                                                                    "$set Platform": {
+                                                                        "$if $not $isnull $arg _platform": {
+                                                                            "$then": "$arg _platform",
+                                                                            "$else": "$.Platform"
+                                                                        }
+                                                                    },
+                                                                    "$in": {
+                                                                        "$if": {
+                                                                            "$condition": {
+                                                                                "$if $not $isnull $.ProfileId2": {
+                                                                                    "$then": {
+                                                                                        "$if": {
+                                                                                            "$condition": {
+                                                                                                "$or": [
+                                                                                                    "$($user $.ProfileId1).isresolved",
+                                                                                                    "$($user $.ProfileId2).isresolved"
+                                                                                                ]
+                                                                                            },
+                                                                                            "$then": true,
+                                                                                            "$else": false
+                                                                                        }
+                                                                                    },
+                                                                                    "$else": "$($user $.ProfileId1).isresolved"
+                                                                                }
+                                                                            },
+                                                                            "$then": {
+                                                                                "$switch $.Platform": [
+                                                                                    {
+                                                                                        "case": "pc",
+                                                                                        "return": {}
+                                                                                    },
+                                                                                    {
+                                                                                        "case": "stadia",
+                                                                                        "return": {}
+                                                                                    },
+                                                                                    {
+                                                                                        "case": "durango",
+                                                                                        "return": {
+                                                                                            "actiontype": "action-y",
+                                                                                            "actionlabel": "$loc UI_BUTTON_PROMPTS_ACTION_PLATFORM_PROFILE_DURANGO"
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "default": {
+                                                                                            "actiontype": "action-y",
+                                                                                            "actionlabel": "$loc UI_BUTTON_PROMPTS_ACTION_PLATFORM_PROFILE"
+                                                                                        }
+                                                                                    }
+                                                                                ]
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        ],
+                                                        "actions": {
+                                                            "select": [
+                                                                {
+                                                                    "replace-children": {
+                                                                        "target": "headline_container",
+                                                                        "children": {
+                                                                            "id": "leaderboard_player_header",
+                                                                            "view": "menu3.basic.HeadlineElement",
+                                                                            "selectable": false,
+                                                                            "pressable": false,
+                                                                            "data": {
+                                                                                "player": "$($user $.ProfileId1).name",
+                                                                                "player2": {
+                                                                                    "$if $not $isnull $.ProfileId2": {
+                                                                                        "$then": "$($user $.ProfileId2).name",
+                                                                                        "$else": null
+                                                                                    }
+                                                                                },
+                                                                                "typeicon": "profile"
+                                                                            },
+                                                                            "stateproviders": [
+                                                                                {
+                                                                                    "type": "userresolution",
+                                                                                    "target": "player",
+                                                                                    "profileid": "$.ProfileId1"
+                                                                                },
+                                                                                {
+                                                                                    "$if $not $isnull $.ProfileId2": {
+                                                                                        "$then": {
+                                                                                            "type": "userresolution",
+                                                                                            "target": "player2",
+                                                                                            "profileid": "$.ProfileId2"
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            ]
+                                                                        }
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "replace-children": {
+                                                                        "target": "leaderboard_score_detail",
+                                                                        "children": {
+                                                                            "$if $isnull $.LeaderboardData.Data.SniperChallengeScore": {
+                                                                                "$then": {
+                                                                                    "__comment": "View for displaying detailed score for individual Player (Global, Friends)",
+                                                                                    "view": "menu3.basic.DetailedScoreTile",
+                                                                                    "nrows": 3,
+                                                                                    "ncols": 4,
+                                                                                    "pressable": false,
+                                                                                    "selectable": false,
+                                                                                    "data": {
+                                                                                        "$mergeobjects": [
+                                                                                            {
+                                                                                                "player": "$($user $.ProfileId1).name",
+                                                                                                "player2": {
+                                                                                                    "$if $not $isnull $.ProfileId2": {
+                                                                                                        "$then": "$($user $.ProfileId2).name",
+                                                                                                        "$else": null
+                                                                                                    }
+                                                                                                },
+                                                                                                "title": "$loc UI_MENU_PAGE_DEBRIEFING_SCORE_DETAILS",
+                                                                                                "completed": true,
+                                                                                                "isonline": true,
+                                                                                                "animate": false,
+                                                                                                "rating": "$.LeaderboardData.Data.Score.StarCount",
+                                                                                                "scoresummary": "$.detailedscore.Headlines"
+                                                                                            },
+                                                                                            {
+                                                                                                "$if $eqs ($arg ContractType,placeholder)": {
+                                                                                                    "$then": {
+                                                                                                        "MedicineMan": {
+                                                                                                            "$if $ge ($.LeaderboardData.Data.Score.StarCount,5)": {
+                                                                                                                "$then": true,
+                                                                                                                "$else": false
+                                                                                                            }
+                                                                                                        }
+                                                                                                    },
+                                                                                                    "$else": {
+                                                                                                        "silentAssassin": {
+                                                                                                            "$if $not $isnull $.LeaderboardData.Data.Score.SilentAssassin": {
+                                                                                                                "$then": "$.LeaderboardData.Data.Score.SilentAssassin",
+                                                                                                                "$else": {
+                                                                                                                    "$if $ge ($.LeaderboardData.Data.Score.StarCount,5)": {
+                                                                                                                        "$then": true,
+                                                                                                                        "$else": false
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        ]
+                                                                                    },
+                                                                                    "stateproviders": [
+                                                                                        {
+                                                                                            "type": "userresolution",
+                                                                                            "target": "player",
+                                                                                            "profileid": "$.ProfileId1"
+                                                                                        },
+                                                                                        {
+                                                                                            "$if $not $isnull $.ProfileId2": {
+                                                                                                "$then": {
+                                                                                                    "type": "userresolution",
+                                                                                                    "target": "player2",
+                                                                                                    "profileid": "$.ProfileId2"
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    ]
+                                                                                },
+                                                                                "$else": {
+                                                                                    "__comment": "View for displaying detailed sniperscore for individual Player (Global, Friends)",
+                                                                                    "view": "menu3.basic.DetailedScoreTileSniper",
+                                                                                    "nrows": 3,
+                                                                                    "ncols": 4,
+                                                                                    "selectable": false,
+                                                                                    "pressable": false,
+                                                                                    "data": {
+                                                                                        "player": "$($user $.ProfileId1).name",
+                                                                                        "player2": {
+                                                                                            "$if $not $isnull $.ProfileId2": {
+                                                                                                "$then": "$($user $.ProfileId2).name",
+                                                                                                "$else": null
+                                                                                            }
+                                                                                        },
+                                                                                        "title": "$loc UI_MENU_PAGE_DEBRIEFING_SCORE_DETAILS",
+                                                                                        "completed": true,
+                                                                                        "isonline": true,
+                                                                                        "animate": false,
+                                                                                        "SniperChallengeScore": "$.LeaderboardData.Data.SniperChallengeScore",
+                                                                                        "isPartOfTopScores": "$.LeaderboardData.Data.IsPartOfTopScores",
+                                                                                        "newRank": "$.LeaderboardData.Data.NewRank"
+                                                                                    },
+                                                                                    "stateproviders": [
+                                                                                        {
+                                                                                            "type": "userresolution",
+                                                                                            "target": "player",
+                                                                                            "profileid": "$.ProfileId1"
+                                                                                        },
+                                                                                        {
+                                                                                            "$if $not $isnull $.ProfileId2": {
+                                                                                                "$then": {
+                                                                                                    "type": "userresolution",
+                                                                                                    "target": "player2",
+                                                                                                    "profileid": "$.ProfileId2"
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    ]
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            ],
+                                                            "deselect": [
+                                                                {
+                                                                    "replace-children": {
+                                                                        "target": "leaderboard_score_detail",
+                                                                        "children": []
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "replace-children": {
+                                                                        "target": "headline_container",
+                                                                        "children": []
+                                                                    }
+                                                                }
+                                                            ],
+                                                            "action-y": {
+                                                                "$setup": {
+                                                                    "$set ProfileId1": {
+                                                                        "$if $not $isnull $.ProfileId": {
+                                                                            "$then": "$.ProfileId",
+                                                                            "$else": "$.ProfileId1"
+                                                                        }
+                                                                    },
+                                                                    "$set Platform": {
+                                                                        "$if $not $isnull $arg _platform": {
+                                                                            "$then": "$arg _platform",
+                                                                            "$else": "$.Platform"
+                                                                        }
+                                                                    },
+                                                                    "$in": {
+                                                                        "$switch $.Platform": [
+                                                                            {
+                                                                                "case": "pc",
+                                                                                "return": {}
+                                                                            },
+                                                                            {
+                                                                                "case": "stadia",
+                                                                                "return": {}
+                                                                            },
+                                                                            {
+                                                                                "default": {
+                                                                                    "$if": {
+                                                                                        "$condition": {
+                                                                                            "$and": [
+                                                                                                "$not $isnull $.ProfileId2",
+                                                                                                "$($user $.ProfileId1).isresolved",
+                                                                                                "$($user $.ProfileId2).isresolved"
+                                                                                            ]
+                                                                                        },
+                                                                                        "$then": {
+                                                                                            "show-modal": {
+                                                                                                "config": {
+                                                                                                    "view": "menu3.modal.ModalDialogGeneric",
+                                                                                                    "buttons": [
+                                                                                                        "$($user $.ProfileId1).name",
+                                                                                                        "$($user $.ProfileId2).name",
+                                                                                                        {
+                                                                                                            "label": "$loc UI_DIALOG_CANCEL",
+                                                                                                            "type": "cancel"
+                                                                                                        }
+                                                                                                    ],
+                                                                                                    "data": {
+                                                                                                        "title": {
+                                                                                                            "$if $eqs ($arg _platform,durango)": {
+                                                                                                                "$then": "$loc UI_BUTTON_PROMPTS_ACTION_PLATFORM_PROFILE_DURANGO",
+                                                                                                                "$else": "$loc UI_BUTTON_PROMPTS_ACTION_PLATFORM_PROFILE"
+                                                                                                            }
+                                                                                                        },
+                                                                                                        "description": {
+                                                                                                            "$if $eqs ($arg _platform,durango)": {
+                                                                                                                "$then": "$loc UI_DIALOG_PLATFORM_PROFILE_DURANGO_SELECT_DESC",
+                                                                                                                "$else": "$loc UI_DIALOG_PLATFORM_PROFILE_SELECT_DESC"
+                                                                                                            }
+                                                                                                        }
+                                                                                                    }
+                                                                                                },
+                                                                                                "onbutton": [
+                                                                                                    {
+                                                                                                        "show-player-profile-dialog": {
+                                                                                                            "profileId": "$.ProfileId1"
+                                                                                                        }
+                                                                                                    },
+                                                                                                    {
+                                                                                                        "show-player-profile-dialog": {
+                                                                                                            "profileId": "$.ProfileId2"
+                                                                                                        }
+                                                                                                    }
+                                                                                                ]
+                                                                                            }
+                                                                                        },
+                                                                                        "$else": {
+                                                                                            "show-player-profile-dialog": {
+                                                                                                "profileId": {
+                                                                                                    "$if $($user $.ProfileId1).isresolved": {
+                                                                                                        "$then": "$.ProfileId1",
+                                                                                                        "$else": "$.ProfileId2"
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "$else": {
+                                    "view": "menu3.basic.ListElementLeaderboardSmall",
+                                    "pressable": false,
+                                    "selectable": false,
+                                    "data": {
+                                        "infotext": "$loc UI_MENU_PAGE_LEADERBOARDS_NO_PLAYER_SCORE",
+                                        "isPlayer": true
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "id": "leaderboard_score_detail",
+                        "row": 0,
+                        "col": 4,
+                        "selectable": false,
+                        "pressable": false
+                    }
+                ]
+            },
+            "$else": {
+                "$setup": {
+                    "$set Title": "$loc UI_MENU_ELEMENT_NO_CONTENT",
+                    "$in": {
+                        "view": "menu3.basic.DefaultNoContentHeader",
+                        "selectable": false,
+                        "pressable": false,
+                        "data": {
+                            "header": "$.Header",
+                            "title": "$.Title",
+                            "typeicon": {
+                                "$if $.Icon": {
+                                    "$then": "$.Icon",
+                                    "$else": "info"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

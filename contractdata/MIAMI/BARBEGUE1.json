@@ -1,0 +1,271 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "_comment": "Duncan Raines - f1059598-377a-455d-b236-39fa45f3c20c",
+                "Type": "statemachine",
+                "Id": "2c98ca9d-1727-4dd6-9699-82070c5ed7b3",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository f1059598-377a-455d-b236-39fa45f3c20c).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": "Eliminate Duncan Raines with a Pistol"
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["f1059598-377a-455d-b236-39fa45f3c20c"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "f1059598-377a-455d-b236-39fa45f3c20c"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$or": [
+                                                            {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "pistol"
+                                                                ]
+                                                            },
+                                                            {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "close_combat_pistol_elimination"
+                                                                ]
+                                                            }
+                                                        ]
+                                                    },
+                                                    "in": [
+                                                        "$Value.KillMethodBroad",
+                                                        "$Value.KillMethodStrict"
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitIsHitmanSuit",
+                                                    true
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "f1059598-377a-455d-b236-39fa45f3c20c"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "TargetConditions": [
+                    {
+                        "Type": "hitmansuit",
+                        "RepositoryId": "fa174084-2b74-4654-8673-b45678367095",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "killmethod",
+                        "HardCondition": true,
+                        "KillMethod": "pistol"
+                    }
+                ]
+            },
+            {
+                "_comment": "Travis Norman - e32236e6-cdf6-4bee-9f76-3f5d36ac6bf8",
+                "Type": "statemachine",
+                "Id": "f017fde7-4520-4cd3-8d21-77fc20f8f92e",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository e32236e6-cdf6-4bee-9f76-3f5d36ac6bf8).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": "Eliminate Travis Norman with a Shotgun"
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["e32236e6-cdf6-4bee-9f76-3f5d36ac6bf8"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "e32236e6-cdf6-4bee-9f76-3f5d36ac6bf8"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitIsHitmanSuit",
+                                                    true
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillMethodBroad",
+                                                    "shotgun"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "e32236e6-cdf6-4bee-9f76-3f5d36ac6bf8"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "TargetConditions": [
+                    {
+                        "Type": "hitmansuit",
+                        "RepositoryId": "fa174084-2b74-4654-8673-b45678367095",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "killmethod",
+                        "HardCondition": true,
+                        "KillMethod": "shotgun"
+                    }
+                ]
+            },
+            {
+                "_comment": "shotgun (901a3b51-51a0-4236-bdf2-23d20696b358)",
+                "Id": "5c365026-8a1b-4e32-a831-af1e262e86bc",
+                "Type": "statemachine",
+                "ObjectiveType": "custom",
+                "Category": "primary",
+                "Image": "images/unlockables/item_perspective_901a3b51-51a0-4236-bdf2-23d20696b358_0.jpg",
+                "IsHidden": false,
+                "BriefingName": "Shotgun",
+                "BriefingText": "Retrieve the Shotgun, and don't drop it.",
+                "LongBriefingText": "Retrieve the Shotgun, and don't drop it.",
+                "UpdateActivationWhileCompleted": true,
+                "HUDTemplate": {
+                    "display": "Retrieve the shotgun, don't drop it",
+                    "iconType": 17
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "Targets": ["901a3b51-51a0-4236-bdf2-23d20696b358"]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "901a3b51-51a0-4236-bdf2-23d20696b358"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        },
+                        "Success": {
+                            "ItemDropped": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "901a3b51-51a0-4236-bdf2-23d20696b358"
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "evidence",
+                "Id": "97d99298-90bb-4fb9-80a6-1642572ff129",
+                "Type": "statemachine",
+                "ObjectiveType": "custom",
+                "Category": "primary",
+                "Image": "images/contracts/gamechangers/Gamechanger_Global_BigBrother.jpg",
+                "IsHidden": false,
+                "BriefingName": "Evidence",
+                "BriefingText": "Destroy the evidence recorder in the security room.",
+                "LongBriefingText": "Destroy the evidence recorder in the security room.",
+                "HUDTemplate": {
+                    "display": "Destroy the evidence recorder in the security room",
+                    "iconType": 17
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "Targets": ["e29d8ce5-64d6-4207-a55d-ebe5e84b16b3"]
+                    },
+                    "States": {
+                        "Start": {
+                            "setpieces": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "e29d8ce5-64d6-4207-a55d-ebe5e84b16b3"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [
+            "3db72bb5-63d6-47fe-9332-d7ea3c195e06",
+            "054a5ac6-59e1-42ed-885a-30c65f446e72"
+        ],
+        "MandatoryLoadout": []
+    },
+    "Metadata": {
+        "Id": "b82fd894-c12c-44e9-99fd-07b860b76c72",
+        "Title": "UI_PEACOCK_FLUMPYBUNS1",
+        "Description": "",
+        "Type": "escalation",
+        "ScenePath": "assembly:/_pro/scenes/missions/miami/scene_flamingo.entity",
+        "Location": "LOCATION_MIAMI",
+        "InGroup": "448d89e8-2026-43e3-86f0-205018cbd87e",
+        "PublicId": "013370577897",
+        "TileImage": "images/contracts/escalation/contractescalation_flumpybuns.png"
+    },
+    "UserData": {}
+}

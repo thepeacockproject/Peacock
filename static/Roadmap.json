@@ -1,0 +1,80 @@
+{
+    "$datacontext": {
+        "in": "$.",
+        "datavalues": {
+            "_comment": "changing the Tag will show the modal again for all players one time only on startup - only do that if we have new content to show",
+            "Tag": "PeacockV5Release2022",
+            "Url": "https://thepeacockproject.org/wiki/roadmaps#v5-release",
+            "ForceOpenModal": "$.ForceOpenModal"
+        },
+        "do": {
+            "$if": {
+                "$condition": {
+                    "$or": [
+                        "$not $eq ($gamepersistentdata marketingmodal_roadmap,$.Tag)",
+                        "$.ForceOpenModal"
+                    ]
+                },
+                "$then": {
+                    "show-modal": {
+                        "config": {
+                            "view": "menu3.modal.ModalDialogGeneric",
+                            "buttons": [
+                                "$loc UI_DIALOG_SHOW_DETAILS",
+                                {
+                                    "label": "$loc UI_DIALOG_CANCEL",
+                                    "type": "cancel"
+                                }
+                            ],
+                            "data": {
+                                "dialogWidth": 1320,
+                                "frameheightmax": 900,
+                                "information": [
+                                    {
+                                        "image": "$res images/generic/peacock-v5-roadmap.jpg",
+                                        "imageheight": 720
+                                    }
+                                ]
+                            }
+                        },
+                        "onbutton": [
+                            [
+                                {
+                                    "open-url": {
+                                        "url": "$.Url"
+                                    }
+                                },
+                                {
+                                    "set-game-persistent-data": {
+                                        "key": "marketingmodal_roadmap",
+                                        "value": "$.Tag"
+                                    }
+                                },
+                                {
+                                    "set-value": {
+                                        "target": "$.@global.OtherModalWasShown",
+                                        "value": true
+                                    }
+                                }
+                            ],
+                            [
+                                {
+                                    "set-game-persistent-data": {
+                                        "key": "marketingmodal_roadmap",
+                                        "value": "$.Tag"
+                                    }
+                                },
+                                {
+                                    "set-value": {
+                                        "target": "$.@global.OtherModalWasShown",
+                                        "value": true
+                                    }
+                                }
+                            ]
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}

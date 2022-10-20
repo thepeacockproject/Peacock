@@ -1,0 +1,344 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "_comment": "kill the warden",
+                "Type": "statemachine",
+                "Id": "1a1e8e2b-ee8e-481a-b142-c314d139a655",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository d1fcedd5-b0bc-4d91-bf7f-97ff6392d2c9).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository d1fcedd5-b0bc-4d91-bf7f-97ff6392d2c9).Name"
+                        }
+                    }
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["d1fcedd5-b0bc-4d91-bf7f-97ff6392d2c9"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "d1fcedd5-b0bc-4d91-bf7f-97ff6392d2c9"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "RepositoryId": "edd82229-9984-45db-802f-8584ecf38ef3",
+                        "HardCondition": false,
+                        "ObjectiveId": "fd06a8ac-4355-401a-8e9b-dc7f140da27f",
+                        "KillMethod": "fiberwire"
+                    }
+                ]
+            },
+            {
+                "Type": "statemachine",
+                "Id": "fd06a8ac-4355-401a-8e9b-dc7f140da27f",
+                "Category": "secondary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["d1fcedd5-b0bc-4d91-bf7f-97ff6392d2c9"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "d1fcedd5-b0bc-4d91-bf7f-97ff6392d2c9"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "fiberwire"
+                                                        ]
+                                                    },
+                                                    "in": [
+                                                        "$Value.KillMethodBroad",
+                                                        "$Value.KillMethodStrict"
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "d1fcedd5-b0bc-4d91-bf7f-97ff6392d2c9"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Comment": "kill smith",
+                "Type": "statemachine",
+                "Id": "1834ec09-6df7-41f6-8f9e-1b933f602416",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository 90a96671-e8a8-459d-a55c-4928e0a8556b).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 90a96671-e8a8-459d-a55c-4928e0a8556b).Name"
+                        }
+                    }
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["90a96671-e8a8-459d-a55c-4928e0a8556b"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "90a96671-e8a8-459d-a55c-4928e0a8556b"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod_specificitem",
+                        "RepositoryId": "d439fb64-8713-4c54-a3f3-90730dbdf370",
+                        "HardCondition": false,
+                        "ObjectiveId": "b3812a1b-596b-4b47-be0d-52aa3288a335",
+                        "KillMethod": "throw"
+                    }
+                ]
+            },
+            {
+                "Type": "statemachine",
+                "Id": "b3812a1b-596b-4b47-be0d-52aa3288a335",
+                "Category": "secondary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["90a96671-e8a8-459d-a55c-4928e0a8556b"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "90a96671-e8a8-459d-a55c-4928e0a8556b"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$any": {
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "throw"
+                                                                ]
+                                                            },
+                                                            "in": [
+                                                                "$Value.KillMethodBroad",
+                                                                "$Value.KillMethodStrict"
+                                                            ]
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "d439fb64-8713-4c54-a3f3-90730dbdf370"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "90a96671-e8a8-459d-a55c-4928e0a8556b"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Comment": "kill the pilot",
+                "Type": "statemachine",
+                "Id": "a157b840-f2e5-473d-9edc-c9b3b9de973f",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository b514770f-7ba2-4da0-ac74-640e65918b90).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository b514770f-7ba2-4da0-ac74-640e65918b90).Name"
+                        }
+                    }
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["b514770f-7ba2-4da0-ac74-640e65918b90"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "b514770f-7ba2-4da0-ac74-640e65918b90"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "563542bb-84c6-4898-8e42-70cc3b2c1dc1",
+                "Category": "secondary",
+                "ForceShowOnLoadingScreen": true,
+                "ObjectiveType": "custom",
+                "Image": "images/contracts/falcon/Objective_Bodyguards.jpg",
+                "BriefingName": "The Siberian Kitties",
+                "BriefingText": "Do not eliminate any Siberian Tigers member",
+                "LongBriefingText": "Actually you can, just no SA for you since they are non-targets. I know they are red. Still... non-targets.",
+                "HUDTemplate": {
+                    "display": "Do not eliminate any Siberian Tigers member",
+                    "iconType": 50
+                },
+                "ExcludeFromScoring": true,
+                "Type": "statemachine",
+                "Scope": "hit",
+                "Definition": {
+                    "States": {
+                        "exit_gate": {
+                            "Transition": "Success"
+                        }
+                    }
+                }
+            },
+            {
+                "Comment": "must add this otherwise it'll softlock the mission",
+                "Id": "b87e10e1-ccab-4857-a845-da3954a7ac67",
+                "Category": "primary",
+                "ForceShowOnLoadingScreen": true,
+                "ObjectiveType": "custom",
+                "BriefingText": "$loc UI_CONTRACT_Hawk_Objective_StopEvacuation",
+                "ExcludeFromScoring": true,
+                "Image": "images/challenges/caged/falcon_great_escape.jpg",
+                "BriefingName": "No Escaping",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_Hawk_Objective_StopEvacuation",
+                    "iconType": 63
+                },
+                "Scope": "session",
+                "Type": "statemachine",
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "TargetEscaped": {
+                                "Transition": "Failure"
+                            },
+                            "exit_gate": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "EnableExits": {
+            "$eq": [
+                "$1a1e8e2b-ee8e-481a-b142-c314d139a655",
+                "$1834ec09-6df7-41f6-8f9e-1b933f602416",
+                "$a157b840-f2e5-473d-9edc-c9b3b9de973f",
+                "Completed"
+            ]
+        },
+        "GameChangers": [],
+        "EnableSaving": false,
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/caged/mission_falcon/mission_falcon.brick"
+        ]
+    },
+    "Metadata": {
+        "Title": "The Caged Bull",
+        "Description": "There's no SA tracker in the mission but the general SA rule still applies. Meaning Siberian NPCs spot bodies doesn't equal to SA ruined.\r\rCreated by WINNODD",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Colorado_2/_scene_mission_bull.entity",
+        "Location": "LOCATION_COLORADO",
+        "IsPublished": true,
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "GameVersion": "8.8.0.0",
+        "ServerVersion": "8.8.0.0",
+        "Type": "featured",
+        "Id": "ee0411d6-b3e7-4320-b56b-25c45d8a9d61",
+        "TileImage": "images/contracts/featured/winnodd2.jpg",
+        "CreationTimestamp": "2022-06-22T05:27:24.276Z"
+    },
+    "UserData": {}
+}

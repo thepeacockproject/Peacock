@@ -1,0 +1,605 @@
+{
+    "Data": {
+        "EnableExits": {
+            "$eq": [
+                "$9c2c10e3-ccfd-4523-a70a-c2707afff1e2",
+                "$13d84f97-e53a-4ba3-88d1-153a1a0d9b61",
+                "$9077c53a-96cd-4497-82a6-514083d20a00",
+                "$2b46071e-a9b8-4993-b3d9-aa0280aa15ed",
+                "$ce119587-6da0-41e1-ad35-8cb6e120195e",
+                "$ec5baebb-91a2-4bde-974c-b560143edf9b",
+                "$ef253b48-672a-4388-8c0d-c18b94d5d661",
+                "$aac489da-66e1-4772-982e-39cc898a43d9",
+                "$31714cee-36ee-465f-a6d8-fb90da128975",
+                "$3f2d721c-ba88-481a-a351-47502614749e",
+                "Completed"
+            ]
+        },
+        "Objectives": [
+            {
+                "Type": "statemachine",
+                "Id": "80535f7a-fd7c-4738-a850-35682396e1c7",
+                "ObjectiveType": "custom",
+                "Primary": true,
+                "ExcludeFromScoring": true,
+                "ForceShowOnLoadingScreen": true,
+                "Image": "images/challenges/profile_challenges/generic_location_47_chameleon.jpg",
+                "BriefingName": "$loc UI_CHALLENGES_EDGY_MASTER_OF_DISGUISE_NAME",
+                "BriefingText": "$loc UI_CHALLENGES_EDGY_MASTER_OF_DISGUISE_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CHALLENGES_EDGY_MASTER_OF_DISGUISE_DESC",
+                    "iconType": 61
+                },
+                "Definition": {
+                    "States": {
+                        "Scope": "session",
+                        "Start": {
+                            "exit_gate": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "9c2c10e3-ccfd-4523-a70a-c2707afff1e2",
+                "ObjectiveType": "custom",
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Image": "images/unlockables/outfit_816cf012-ab64-48a0-b4cc-ff7470874007_0.jpg",
+                "BriefingName": "$loc outfits_edgy_worker_bartender_m_name_aee94745-0130-4bc9-87a4-6057ea330735",
+                "BriefingText": "$loc outfits_edgy_worker_bartender_m_name_aee94745-0130-4bc9-87a4-6057ea330735",
+                "HUDTemplate": {
+                    "display": "$loc outfits_edgy_worker_bartender_m_name_aee94745-0130-4bc9-87a4-6057ea330735",
+                    "iconType": 22
+                },
+                "Category": "primary",
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "Disguise": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value",
+                                        "816cf012-ab64-48a0-b4cc-ff7470874007"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            },
+                            "StartingSuit": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value",
+                                        "816cf012-ab64-48a0-b4cc-ff7470874007"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "13d84f97-e53a-4ba3-88d1-153a1a0d9b61",
+                "ObjectiveType": "custom",
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Image": "images/unlockables/outfit_95918f14-fa9f-4315-be95-bf4b9efe6ee6_0.jpg",
+                "BriefingName": "$loc outfits_edgy_guard_biker_m_name_62b3aebe-b6ec-4fcd-9e32-5b21cc4b335b",
+                "BriefingText": "$loc outfits_edgy_guard_biker_m_name_62b3aebe-b6ec-4fcd-9e32-5b21cc4b335b",
+                "HUDTemplate": {
+                    "display": "$loc outfits_edgy_guard_biker_m_name_62b3aebe-b6ec-4fcd-9e32-5b21cc4b335b",
+                    "iconType": 22
+                },
+                "Category": "primary",
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "Disguise": {
+                                "Condition": {
+                                    "$or": [
+                                        {
+                                            "$eq": [
+                                                "$Value",
+                                                "95918f14-fa9f-4315-be95-bf4b9efe6ee6"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value",
+                                                "d222f4c4-708a-42c7-9433-f8c5cfd72706"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value",
+                                                "034d5a11-1e5c-4f57-99d9-233443e42caf"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value",
+                                                "e65fb964-a5e3-45b6-99d6-75d3c539ae92"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Transition": "Success"
+                            },
+                            "StartingSuit": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value",
+                                        "95918f14-fa9f-4315-be95-bf4b9efe6ee6"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "9077c53a-96cd-4497-82a6-514083d20a00",
+                "ObjectiveType": "custom",
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Image": "images/unlockables/outfit_6e84215c-28b7-44b2-9d15-83e9be490965_0.jpg",
+                "BriefingName": "$loc outfits_edgy_worker_clubcrew_m_name_adffe0ae-e026-42ed-afdc-b4e6990946d3",
+                "BriefingText": "$loc outfits_edgy_worker_clubcrew_m_name_adffe0ae-e026-42ed-afdc-b4e6990946d3",
+                "HUDTemplate": {
+                    "display": "$loc outfits_edgy_worker_clubcrew_m_name_adffe0ae-e026-42ed-afdc-b4e6990946d3",
+                    "iconType": 22
+                },
+                "Category": "primary",
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "Disguise": {
+                                "Condition": {
+                                    "$or": [
+                                        {
+                                            "$eq": [
+                                                "$Value",
+                                                "6e84215c-28b7-44b2-9d15-83e9be490965"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value",
+                                                "107c35d7-7300-417c-832a-4f36cd3071b9"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Transition": "Success"
+                            },
+                            "StartingSuit": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value",
+                                        "6e84215c-28b7-44b2-9d15-83e9be490965"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "2b46071e-a9b8-4993-b3d9-aa0280aa15ed",
+                "ObjectiveType": "custom",
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Image": "images/unlockables/outfit_590629f7-19a3-4eb8-88a6-94e550cd1c07_0.jpg",
+                "BriefingName": "$loc outfits_edgy_guard_bouncer_m_name_2d7d2272-a257-41b0-aba1-7bf043bb0193",
+                "BriefingText": "$loc outfits_edgy_guard_bouncer_m_name_2d7d2272-a257-41b0-aba1-7bf043bb0193",
+                "HUDTemplate": {
+                    "display": "$loc outfits_edgy_guard_bouncer_m_name_2d7d2272-a257-41b0-aba1-7bf043bb0193",
+                    "iconType": 22
+                },
+                "Category": "primary",
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "Disguise": {
+                                "Condition": {
+                                    "$or": [
+                                        {
+                                            "$eq": [
+                                                "$Value",
+                                                "590629f7-19a3-4eb8-88a6-94e550cd1c07"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value",
+                                                "6ca35f8b-b244-44a0-9813-dc050a565ac2"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value",
+                                                "acb7695a-a5eb-420a-8455-d409d08d53e2"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value",
+                                                "d9e1d24c-c9cc-48d6-bfd4-821d3e742b64"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "ce119587-6da0-41e1-ad35-8cb6e120195e",
+                "ObjectiveType": "custom",
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Image": "images/unlockables/outfit_4c379903-4cf2-49cf-953f-db7b31d2987d_0.jpg",
+                "BriefingName": "$loc outfits_edgy_unique_pusher_m_name_19e7a4bf-bb33-4ada-a2b4-90459d7ab5cd",
+                "BriefingText": "$loc outfits_edgy_unique_pusher_m_name_19e7a4bf-bb33-4ada-a2b4-90459d7ab5cd",
+                "HUDTemplate": {
+                    "display": "$loc outfits_edgy_unique_pusher_m_name_19e7a4bf-bb33-4ada-a2b4-90459d7ab5cd",
+                    "iconType": 22
+                },
+                "Category": "primary",
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "Disguise": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value",
+                                        "4c379903-4cf2-49cf-953f-db7b31d2987d"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "ec5baebb-91a2-4bde-974c-b560143edf9b",
+                "ObjectiveType": "custom",
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Image": "images/unlockables/outfit_2e5bdc9b-822d-4f5f-bc16-bd99729ef4f5_0.jpg",
+                "BriefingName": "$loc outfits_edgy_unique_deliveryguy_m_name_317fe1b9-2ea7-4a21-92a0-1547f794c596",
+                "BriefingText": "$loc outfits_edgy_unique_deliveryguy_m_name_317fe1b9-2ea7-4a21-92a0-1547f794c596",
+                "HUDTemplate": {
+                    "display": "$loc outfits_edgy_unique_deliveryguy_m_name_317fe1b9-2ea7-4a21-92a0-1547f794c596",
+                    "iconType": 22
+                },
+                "Category": "primary",
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "Disguise": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value",
+                                        "2e5bdc9b-822d-4f5f-bc16-bd99729ef4f5"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "ef253b48-672a-4388-8c0d-c18b94d5d661",
+                "ObjectiveType": "custom",
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Image": "images/unlockables/outfit_ac636da9-fd3a-4019-816a-6333e0c4298e_0.jpg",
+                "BriefingName": "$loc outfits_edgy_worker_dj_m_name_121ebc52-4e5f-4e81-812f-f687e09825bc",
+                "BriefingText": "$loc outfits_edgy_worker_dj_m_name_121ebc52-4e5f-4e81-812f-f687e09825bc",
+                "HUDTemplate": {
+                    "display": "$loc outfits_edgy_worker_dj_m_name_121ebc52-4e5f-4e81-812f-f687e09825bc",
+                    "iconType": 22
+                },
+                "Category": "primary",
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "Disguise": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value",
+                                        "ac636da9-fd3a-4019-816a-6333e0c4298e"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            },
+                            "StartingSuit": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value",
+                                        "ac636da9-fd3a-4019-816a-6333e0c4298e"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "aac489da-66e1-4772-982e-39cc898a43d9",
+                "ObjectiveType": "custom",
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Image": "images/unlockables/outfit_0e931214-6ba9-4763-b7e1-32ca64dd864a_0.jpg",
+                "BriefingName": "$loc outfits_miami_unique_floridaman_m_pro75019_name_f8ef3523-2500-410c-98fb-b6926a832df4",
+                "BriefingText": "$loc outfits_miami_unique_floridaman_m_pro75019_name_f8ef3523-2500-410c-98fb-b6926a832df4",
+                "HUDTemplate": {
+                    "display": "$loc outfits_miami_unique_floridaman_m_pro75019_name_f8ef3523-2500-410c-98fb-b6926a832df4",
+                    "iconType": 22
+                },
+                "Category": "primary",
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "Disguise": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value",
+                                        "0e931214-6ba9-4763-b7e1-32ca64dd864a"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "31714cee-36ee-465f-a6d8-fb90da128975",
+                "ObjectiveType": "custom",
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Image": "images/unlockables/outfit_8e41db54-b097-4704-8a88-83043e6557f7_0.jpg",
+                "BriefingName": "$loc outfits_edgy_unique_clubowner_m_name_64396c6a-0ad5-4d71-8102-a474a0a3b523",
+                "BriefingText": "$loc outfits_edgy_unique_clubowner_m_name_64396c6a-0ad5-4d71-8102-a474a0a3b523",
+                "HUDTemplate": {
+                    "display": "$loc outfits_edgy_unique_clubowner_m_name_64396c6a-0ad5-4d71-8102-a474a0a3b523",
+                    "iconType": 22
+                },
+                "Category": "primary",
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "Disguise": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value",
+                                        "8e41db54-b097-4704-8a88-83043e6557f7"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "3f2d721c-ba88-481a-a351-47502614749e",
+                "ObjectiveType": "custom",
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Image": "images/unlockables/outfit_f724d6b9-a45b-425f-84f1-c27dedd1fd07_0.jpg",
+                "BriefingName": "$loc outfits_edgy_worker_technician_m_name_3e12f126-e994-485e-b808-1a3c8cf7f50c",
+                "BriefingText": "$loc outfits_edgy_worker_technician_m_name_3e12f126-e994-485e-b808-1a3c8cf7f50c",
+                "HUDTemplate": {
+                    "display": "$loc outfits_edgy_worker_technician_m_name_3e12f126-e994-485e-b808-1a3c8cf7f50c",
+                    "iconType": 22
+                },
+                "Category": "primary",
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "Disguise": {
+                                "Condition": {
+                                    "$or": [
+                                        {
+                                            "$eq": [
+                                                "$Value",
+                                                "f724d6b9-a45b-425f-84f1-c27dedd1fd07"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value",
+                                                "61545feb-9594-4231-8fa2-f98307ac796f"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "5976d560-c546-40a4-9d3a-1d044f32168b",
+                "BriefingText": "I've decided I'm gonna add this objective in every mission I made",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "ItemDropped": {
+                                "Condition": {
+                                    "$or": [
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "ae158afc-2df1-474b-abc8-1e58ed69bb8d"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "7e8ba667-ac70-4591-9bde-c7d846eacbb2"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "419bc68a-a76e-461d-ba92-327b9a25a182"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "83a78b07-1c9a-43a5-802d-35d97e537769"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "09268e60-216a-4ccf-8e41-c3cc45391222"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "3a05dae6-d904-4a18-8196-de2d46e4c5d4"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "271eb4ce-7297-449d-95d4-20cd56dffd80"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            },
+                            "ItemRemovedFromInventory": {
+                                "Condition": {
+                                    "$or": [
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "ae158afc-2df1-474b-abc8-1e58ed69bb8d"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "7e8ba667-ac70-4591-9bde-c7d846eacbb2"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "419bc68a-a76e-461d-ba92-327b9a25a182"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "83a78b07-1c9a-43a5-802d-35d97e537769"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "09268e60-216a-4ccf-8e41-c3cc45391222"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "3a05dae6-d904-4a18-8196-de2d46e4c5d4"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "271eb4ce-7297-449d-95d4-20cd56dffd80"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "GameChangers": [],
+        "Bricks": []
+    },
+    "Metadata": {
+        "Title": "The Edgy Chameleon",
+        "Description": "I get it. It's the Master of Disguise: Berlin. Just wanna give it a cooler title\r\rCreated by WINNODD",
+        "Entitlements": ["LOCATION_EDGY"],
+        "ScenePath": "assembly:/_pro/scenes/missions/edgy/mission_fox/scene_fox_basic.entity",
+        "Location": "LOCATION_EDGY_FOX",
+        "IsPublished": true,
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "GameVersion": "8.8.0.0",
+        "ServerVersion": "8.8.0.0",
+        "Type": "featured",
+        "Id": "89936bfe-673c-4b35-9404-72d809620f43",
+        "TileImage": "images/contracts/featured/winnodd8.jpg",
+        "CreationTimestamp": "2022-07-02T05:58:12.470Z"
+    },
+    "UserData": {}
+}

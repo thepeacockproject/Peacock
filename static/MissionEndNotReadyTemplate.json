@@ -1,0 +1,82 @@
+{
+    "controller": "group",
+    "id": "mission_rewards",
+    "selectable": false,
+    "pressable": false,
+    "children": [
+        {
+            "view": "menu3.MissionRewardPage",
+            "selectable": false,
+            "pressable": false,
+            "data": {
+                "loading": true
+            }
+        }
+    ],
+    "post-load-action": {
+        "$if $gt ($.retryCount,45)": {
+            "$then": {
+                "trigger-action": {
+                    "target": "mission_rewards",
+                    "name": "handle-error"
+                }
+            },
+            "$else": {
+                "load-async": {
+                    "onfailurebehaviour": "ignorefailures",
+                    "showloadingindicator": true,
+                    "from": {
+                        "url": "missionendready",
+                        "args": {
+                            "contractSessionId": "$.contractSessionId",
+                            "retryCount": "$.retryCount"
+                        }
+                    },
+                    "target": "mission_rewards"
+                }
+            }
+        }
+    },
+    "on-error-action": {
+        "trigger-action": {
+            "target": "mission_rewards",
+            "name": "handle-error"
+        }
+    },
+    "actions": {
+        "handle-error": {
+            "show-modal": {
+                "config": {
+                    "view": "menu3.modal.ModalDialogGeneric",
+                    "buttons": [
+                        "$loc UI_CONNECTION_STATUS_CONNECTING_PROMPT_RETRY",
+                        "$loc UI_CONNECTION_STATUS_DISCONNECTED_GO_TO_HUB"
+                    ],
+                    "data": {
+                        "title": "$loc UI_DIALOG_ERROR",
+                        "description": "$loc UI_MENU_PAGE_OPEN_FAILED_DESCRIPTION"
+                    }
+                },
+                "onbutton": [
+                    {
+                        "load-async": {
+                            "onfailurebehaviour": "ignorefailures",
+                            "showloadingindicator": true,
+                            "from": {
+                                "url": "missionendready",
+                                "args": {
+                                    "contractSessionId": "$.contractSessionId",
+                                    "retryCount": 0
+                                }
+                            },
+                            "target": "mission_rewards"
+                        }
+                    },
+                    {
+                        "exit-to-main-menu": {}
+                    }
+                ]
+            }
+        }
+    }
+}

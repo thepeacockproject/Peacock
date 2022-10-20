@@ -1,0 +1,77 @@
+{
+    "Data": {
+        "EnableSaving": true,
+        "Objectives": [
+            {
+                "Id": "c2a5d24b-16a3-43bc-87be-08e97d3571fd",
+                "Primary": true,
+                "IsHidden": true,
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "9d1c5d01-a793-4c0a-875b-3b48ad584537"
+                    }
+                }
+            },
+            {
+                "_comment": "----- Do not eliminate the guide -----",
+                "Id": "d5331a6d-4d91-4949-884f-eb981048a137",
+                "Category": "secondary",
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": true,
+                "Image": "images/contracts/elusive/s3_radler/objective2.jpg",
+                "BriefingName": "$loc UI_CONTRACT_RADLER_OBJ_2_TITLE",
+                "BriefingText": "$loc UI_CONTRACT_RADLER_OBJ_2_DESC",
+                "LongBriefingText": "$loc UI_CONTRACT_RADLER_OBJ_2_DESC_LONG",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_RADLER_OBJ_2_TITLE",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "ExcludeFromScoring": false,
+                "Definition": {
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "ContractEnd": {
+                                "Transition": "Success"
+                            },
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "a66118e9-9c3e-4251-849c-d3146d218bd5"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/Edgy/mission_fox/elusive_radler.brick"
+        ],
+        "GameChangers": []
+    },
+    "Metadata": {
+        "Id": "38dba4d9-a361-46c9-bdae-7350945d6526",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_RADLER_TITLE",
+        "BriefingVideo": "briefing_radler",
+        "DebriefingVideo": "debriefing_radler",
+        "Location": "LOCATION_EDGY_FOX",
+        "Entitlements": ["LOCATION_EDGY"],
+        "TileImage": "images/contracts/elusive/s3_radler/title.jpg",
+        "ScenePath": "assembly:/_pro/scenes/missions/edgy/mission_fox/scene_radler.entity",
+        "Type": "elusive"
+    },
+    "UserData": {}
+}

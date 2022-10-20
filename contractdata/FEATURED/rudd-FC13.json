@@ -1,0 +1,930 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "5b7aa6df-cbc4-4fc0-9427-ad910ac39300",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository f257bd7e-8b93-460e-8a6a-e04f34cd66b2).Name"
+                        }
+                    }
+                },
+                "BriefingText": "Eliminate with Medieval weapon while dressed as a Knight",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["f257bd7e-8b93-460e-8a6a-e04f34cd66b2"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$or": [
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "f257bd7e-8b93-460e-8a6a-e04f34cd66b2"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillItemRepositoryId",
+                                                            "d2a7fa04-2cac-45d8-b696-47c566bb95ff"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.OutfitRepositoryId",
+                                                            "fae73e92-2307-4163-8e9f-30401ca884bf"
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "f257bd7e-8b93-460e-8a6a-e04f34cd66b2"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillItemRepositoryId",
+                                                            "12200bd8-9605-4111-8b26-4e73cb07d816"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.OutfitRepositoryId",
+                                                            "fae73e92-2307-4163-8e9f-30401ca884bf"
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "f257bd7e-8b93-460e-8a6a-e04f34cd66b2"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillItemRepositoryId",
+                                                            "58dceb1c-d7db-41dc-9750-55e3ab87fdf0"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.OutfitRepositoryId",
+                                                            "fae73e92-2307-4163-8e9f-30401ca884bf"
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "f257bd7e-8b93-460e-8a6a-e04f34cd66b2"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "5b7aa6df-cbc4-4fc0-9427-ad910ac39301",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository a86b51f9-cce4-410e-b4f7-dff3b7e1b511).Name"
+                        }
+                    }
+                },
+                "BriefingText": "Eliminate with Medieval weapon while dressed as a Knight",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["a86b51f9-cce4-410e-b4f7-dff3b7e1b511"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$or": [
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "a86b51f9-cce4-410e-b4f7-dff3b7e1b511"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillItemRepositoryId",
+                                                            "d2a7fa04-2cac-45d8-b696-47c566bb95ff"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.OutfitRepositoryId",
+                                                            "fae73e92-2307-4163-8e9f-30401ca884bf"
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "a86b51f9-cce4-410e-b4f7-dff3b7e1b511"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillItemRepositoryId",
+                                                            "12200bd8-9605-4111-8b26-4e73cb07d816"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.OutfitRepositoryId",
+                                                            "fae73e92-2307-4163-8e9f-30401ca884bf"
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "a86b51f9-cce4-410e-b4f7-dff3b7e1b511"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillItemRepositoryId",
+                                                            "58dceb1c-d7db-41dc-9750-55e3ab87fdf0"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.OutfitRepositoryId",
+                                                            "fae73e92-2307-4163-8e9f-30401ca884bf"
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "a86b51f9-cce4-410e-b4f7-dff3b7e1b511"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "5b7aa6df-cbc4-4fc0-9427-ad910ac39302",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository bc505eb5-8f28-4863-afb0-28a2cca9884a).Name"
+                        }
+                    }
+                },
+                "BriefingText": "Eliminate with Medieval weapon while dressed as a Knight",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["bc505eb5-8f28-4863-afb0-28a2cca9884a"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$or": [
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "bc505eb5-8f28-4863-afb0-28a2cca9884a"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillItemRepositoryId",
+                                                            "d2a7fa04-2cac-45d8-b696-47c566bb95ff"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.OutfitRepositoryId",
+                                                            "fae73e92-2307-4163-8e9f-30401ca884bf"
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "bc505eb5-8f28-4863-afb0-28a2cca9884a"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillItemRepositoryId",
+                                                            "12200bd8-9605-4111-8b26-4e73cb07d816"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.OutfitRepositoryId",
+                                                            "fae73e92-2307-4163-8e9f-30401ca884bf"
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "bc505eb5-8f28-4863-afb0-28a2cca9884a"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillItemRepositoryId",
+                                                            "58dceb1c-d7db-41dc-9750-55e3ab87fdf0"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.OutfitRepositoryId",
+                                                            "fae73e92-2307-4163-8e9f-30401ca884bf"
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "bc505eb5-8f28-4863-afb0-28a2cca9884a"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "5b7aa6df-cbc4-4fc0-9427-ad910ac39303",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 2050a38d-755f-4993-9b27-653f479e4575).Name"
+                        }
+                    }
+                },
+                "BriefingText": "Eliminate with Medieval weapon while dressed as a Knight",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["2050a38d-755f-4993-9b27-653f479e4575"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$or": [
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "2050a38d-755f-4993-9b27-653f479e4575"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillItemRepositoryId",
+                                                            "d2a7fa04-2cac-45d8-b696-47c566bb95ff"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.OutfitRepositoryId",
+                                                            "fae73e92-2307-4163-8e9f-30401ca884bf"
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "2050a38d-755f-4993-9b27-653f479e4575"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillItemRepositoryId",
+                                                            "12200bd8-9605-4111-8b26-4e73cb07d816"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.OutfitRepositoryId",
+                                                            "fae73e92-2307-4163-8e9f-30401ca884bf"
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "2050a38d-755f-4993-9b27-653f479e4575"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillItemRepositoryId",
+                                                            "58dceb1c-d7db-41dc-9750-55e3ab87fdf0"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.OutfitRepositoryId",
+                                                            "fae73e92-2307-4163-8e9f-30401ca884bf"
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "2050a38d-755f-4993-9b27-653f479e4575"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "5b7aa6df-cbc4-4fc0-9427-ad910ac39304",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 5e767a0a-0f1f-4dab-83f5-38e49726950c).Name"
+                        }
+                    }
+                },
+                "BriefingText": "Eliminate with Medieval weapon while dressed as a Knight",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["5e767a0a-0f1f-4dab-83f5-38e49726950c"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$or": [
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "5e767a0a-0f1f-4dab-83f5-38e49726950c"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillItemRepositoryId",
+                                                            "d2a7fa04-2cac-45d8-b696-47c566bb95ff"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.OutfitRepositoryId",
+                                                            "fae73e92-2307-4163-8e9f-30401ca884bf"
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "5e767a0a-0f1f-4dab-83f5-38e49726950c"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillItemRepositoryId",
+                                                            "12200bd8-9605-4111-8b26-4e73cb07d816"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.OutfitRepositoryId",
+                                                            "fae73e92-2307-4163-8e9f-30401ca884bf"
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "5e767a0a-0f1f-4dab-83f5-38e49726950c"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillItemRepositoryId",
+                                                            "58dceb1c-d7db-41dc-9750-55e3ab87fdf0"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.OutfitRepositoryId",
+                                                            "fae73e92-2307-4163-8e9f-30401ca884bf"
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "5e767a0a-0f1f-4dab-83f5-38e49726950c"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "5b7aa6df-cbc4-4fc0-9427-ad910ac39305",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 91e18b67-566b-4954-93d0-b3ebc4bb25cc).Name"
+                        }
+                    }
+                },
+                "BriefingText": "Eliminate with Medieval weapon while dressed as a Knight",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["91e18b67-566b-4954-93d0-b3ebc4bb25cc"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$or": [
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "91e18b67-566b-4954-93d0-b3ebc4bb25cc"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillItemRepositoryId",
+                                                            "d2a7fa04-2cac-45d8-b696-47c566bb95ff"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.OutfitRepositoryId",
+                                                            "fae73e92-2307-4163-8e9f-30401ca884bf"
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "91e18b67-566b-4954-93d0-b3ebc4bb25cc"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillItemRepositoryId",
+                                                            "12200bd8-9605-4111-8b26-4e73cb07d816"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.OutfitRepositoryId",
+                                                            "fae73e92-2307-4163-8e9f-30401ca884bf"
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "91e18b67-566b-4954-93d0-b3ebc4bb25cc"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillItemRepositoryId",
+                                                            "58dceb1c-d7db-41dc-9750-55e3ab87fdf0"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.OutfitRepositoryId",
+                                                            "fae73e92-2307-4163-8e9f-30401ca884bf"
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "91e18b67-566b-4954-93d0-b3ebc4bb25cc"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "5b7aa6df-cbc4-4fc0-9427-ad910ac39306",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 8e39a621-8bbd-43b4-badc-3d6e73e43fd8).Name"
+                        }
+                    }
+                },
+                "BriefingText": "Eliminate with Medieval weapon while dressed as a Knight",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["8e39a621-8bbd-43b4-badc-3d6e73e43fd8"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$or": [
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "8e39a621-8bbd-43b4-badc-3d6e73e43fd8"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillItemRepositoryId",
+                                                            "d2a7fa04-2cac-45d8-b696-47c566bb95ff"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.OutfitRepositoryId",
+                                                            "fae73e92-2307-4163-8e9f-30401ca884bf"
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "8e39a621-8bbd-43b4-badc-3d6e73e43fd8"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillItemRepositoryId",
+                                                            "12200bd8-9605-4111-8b26-4e73cb07d816"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.OutfitRepositoryId",
+                                                            "fae73e92-2307-4163-8e9f-30401ca884bf"
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "8e39a621-8bbd-43b4-badc-3d6e73e43fd8"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillItemRepositoryId",
+                                                            "58dceb1c-d7db-41dc-9750-55e3ab87fdf0"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.OutfitRepositoryId",
+                                                            "fae73e92-2307-4163-8e9f-30401ca884bf"
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "8e39a621-8bbd-43b4-badc-3d6e73e43fd8"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "5b7aa6df-cbc4-4fc0-9427-ad910ac39307",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 6c821ceb-43f9-49a7-b133-5175c149e859).Name"
+                        }
+                    }
+                },
+                "BriefingText": "Eliminate with Medieval weapon while dressed as a Knight",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["6c821ceb-43f9-49a7-b133-5175c149e859"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$or": [
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "6c821ceb-43f9-49a7-b133-5175c149e859"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillItemRepositoryId",
+                                                            "d2a7fa04-2cac-45d8-b696-47c566bb95ff"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.OutfitRepositoryId",
+                                                            "fae73e92-2307-4163-8e9f-30401ca884bf"
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "6c821ceb-43f9-49a7-b133-5175c149e859"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillItemRepositoryId",
+                                                            "12200bd8-9605-4111-8b26-4e73cb07d816"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.OutfitRepositoryId",
+                                                            "fae73e92-2307-4163-8e9f-30401ca884bf"
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "6c821ceb-43f9-49a7-b133-5175c149e859"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillItemRepositoryId",
+                                                            "58dceb1c-d7db-41dc-9750-55e3ab87fdf0"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.OutfitRepositoryId",
+                                                            "fae73e92-2307-4163-8e9f-30401ca884bf"
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "6c821ceb-43f9-49a7-b133-5175c149e859"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "GameChangers": ["3db72bb5-63d6-47fe-9332-d7ea3c195e06"],
+        "GameDifficulties": [
+            {
+                "Difficulty": "easy",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/theark/difficulty_easy_northsea_magpie.brick"
+                ]
+            },
+            {
+                "Difficulty": "normal",
+                "Bricks": []
+            },
+            {
+                "Difficulty": "hard",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/theark/difficulty_hard_northsea_magpie.brick",
+                    "assembly:/_pro/scenes/missions/theark/gamechanger_magpie_guards_enforce_custodians.brick"
+                ]
+            }
+        ],
+        "Bricks": [],
+        "Stashpoints": [],
+        "Entrances": ["aaa819f7-908e-4bc9-99e4-ebcbc29524a2"]
+    },
+    "Metadata": {
+        "Title": "Choose Your Weapon",
+        "Description": "The weapons are on the wall\r\rDon&apos;t leave until the top two floors are dead\r\rBy: Kevin Rudd",
+        "ScenePath": "assembly:/_pro/scenes/missions/theark/_scene_magpie_lotus.entity",
+        "Location": "LOCATION_NORTHSEA",
+        "IsPublished": true,
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "GameVersion": "7.17.0.0",
+        "ServerVersion": "7.17.6.0",
+        "Type": "featured",
+        "Id": "de89370c-105a-46f7-862f-64c330f28ee9",
+        "TileImage": "images/contracts/featured/Chooseweapon.jpg",
+        "GroupObjectiveDisplayOrder": [],
+        "Entitlements": ["H2_LEGACY_STANDARD"],
+        "CreationTimestamp": "2020-10-16T00:15:06.8533333Z"
+    },
+    "Peacock": {
+        "noCarriedWeapon": true,
+        "noGear": true
+    },
+    "UserData": {}
+}

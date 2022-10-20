@@ -1,0 +1,316 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Type": "statemachine",
+                "Id": "0a1265de-6db2-4c4b-9640-f2a86a4ab45a",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository b0ce8df3-72d9-4008-b376-c1e08e29af20).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository b0ce8df3-72d9-4008-b376-c1e08e29af20).Name"
+                        }
+                    }
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["b0ce8df3-72d9-4008-b376-c1e08e29af20"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "b0ce8df3-72d9-4008-b376-c1e08e29af20"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "RepositoryId": "7d0c107e-4279-4fda-a7e2-77359271cb9a",
+                        "HardCondition": true,
+                        "ObjectiveId": "0369f156-a0a9-487f-ab85-4326435c7b54",
+                        "KillMethod": "explosive"
+                    }
+                ]
+            },
+            {
+                "Type": "statemachine",
+                "Id": "0369f156-a0a9-487f-ab85-4326435c7b54",
+                "Category": "secondary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["b0ce8df3-72d9-4008-b376-c1e08e29af20"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "b0ce8df3-72d9-4008-b376-c1e08e29af20"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "explosive"
+                                                        ]
+                                                    },
+                                                    "in": [
+                                                        "$Value.KillMethodBroad",
+                                                        "$Value.KillMethodStrict"
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "b0ce8df3-72d9-4008-b376-c1e08e29af20"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "60ed1bc7-cbe4-4935-aea4-a1d866755815",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository 2024d46c-0a52-4094-be84-5e62e10c46c3).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 2024d46c-0a52-4094-be84-5e62e10c46c3).Name"
+                        }
+                    }
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["2024d46c-0a52-4094-be84-5e62e10c46c3"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "2024d46c-0a52-4094-be84-5e62e10c46c3"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "RepositoryId": "7d0c107e-4279-4fda-a7e2-77359271cb9a",
+                        "HardCondition": true,
+                        "ObjectiveId": "c0172969-38ef-4db1-9468-0abb5503d6c6",
+                        "KillMethod": "explosive"
+                    }
+                ]
+            },
+            {
+                "Type": "statemachine",
+                "Id": "c0172969-38ef-4db1-9468-0abb5503d6c6",
+                "Category": "secondary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["2024d46c-0a52-4094-be84-5e62e10c46c3"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "2024d46c-0a52-4094-be84-5e62e10c46c3"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "explosive"
+                                                        ]
+                                                    },
+                                                    "in": [
+                                                        "$Value.KillMethodBroad",
+                                                        "$Value.KillMethodStrict"
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "2024d46c-0a52-4094-be84-5e62e10c46c3"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "GameChangers": [],
+        "GameDifficulties": [
+            {
+                "Difficulty": "easy",
+                "Bricks": []
+            },
+            {
+                "Difficulty": "normal",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/thefacility/gamechangers_big_brother_cameras.brick",
+                    "assembly:/_pro/scenes/missions/thefacility/gamechangers_snowdrop_items.brick"
+                ]
+            },
+            {
+                "Difficulty": "hard",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/thefacility/gamechangers_big_brother_cameras.brick",
+                    "assembly:/_pro/scenes/missions/thefacility/gamechangers_guard_enforcers.brick"
+                ]
+            }
+        ],
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/thefacility/gamechangers_snowdrop_items.brick"
+        ],
+        "MandatoryLoadout": [
+            {
+                "Id": "FIREARMS_HERO_PISTOL_TACTICAL_ICA_19",
+                "Properties": {
+                    "LoadoutSlot": "concealedweapon",
+                    "RepositoryId": "73875794-5a86-410e-84a4-1b5b2f7e5a54"
+                }
+            },
+            {
+                "Id": "Bomb",
+                "Properties": {
+                    "LoadoutSlot": "gear",
+                    "RepositoryId": "b26bb84e-8f15-4b4f-8554-52faa456cf2e"
+                }
+            },
+            {
+                "Id": "Melee_FiberWire_Descriptor",
+                "Properties": {
+                    "LoadoutSlot": "gear",
+                    "RepositoryId": "1a11a060-358c-4054-98ec-d3491af1d7c6"
+                }
+            },
+            {
+                "Id": "Flash",
+                "Properties": {
+                    "LoadoutSlot": "gear",
+                    "RepositoryId": "a02af9a5-aefb-47e0-9d67-51cc9ec89774"
+                }
+            },
+            {
+                "Id": "Rusty_Nail",
+                "Properties": {
+                    "LoadoutSlot": "gear",
+                    "RepositoryId": "14bf3a3c-54c7-4c98-9452-1e7f67da09bf"
+                }
+            },
+            {
+                "Id": "Tool_Coin",
+                "Properties": {
+                    "LoadoutSlot": "gear",
+                    "RepositoryId": "dda002e9-02b1-4208-82a5-cf059f3c79cf"
+                }
+            },
+            {
+                "Id": "Tool_Coin",
+                "Properties": {
+                    "LoadoutSlot": "gear",
+                    "RepositoryId": "dda002e9-02b1-4208-82a5-cf059f3c79cf"
+                }
+            }
+        ],
+        "RecommendedLoadout": []
+    },
+    "Metadata": {
+        "Title": "Lose Yourself",
+        "Description": "If you only had one bomb, one opportunity\rWould you capture it, or just let it slip?\r\rDo not miss your chance to blow\r\rP.S. The bomb is in your inventory\r\rBy: Kevin Rudd",
+        "ScenePath": "assembly:/_pro/scenes/missions/thefacility/_scene_mission_polarbear_002_for_escalation_.entity",
+        "Location": "LOCATION_ICA_FACILITY_SHIP",
+        "IsPublished": true,
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "GameVersion": "7.17.0.0",
+        "ServerVersion": "7.17.6.0",
+        "Type": "featured",
+        "Id": "608830ec-01f2-4606-a904-8acd95f7e112",
+        "PublicId": "199180643952",
+        "TileImage": "images/contracts/featured/loseyourself.jpg",
+        "GroupObjectiveDisplayOrder": [
+            {
+                "Id": "0a1265de-6db2-4c4b-9640-f2a86a4ab45a"
+            },
+            {
+                "Id": "60ed1bc7-cbe4-4935-aea4-a1d866755815"
+            },
+            {
+                "Id": "00000000-0000-0000-0000-000000000000"
+            },
+            {
+                "Id": "00000000-0000-0000-0000-000000000000"
+            }
+        ],
+        "CreationTimestamp": "2020-10-23T01:43:27.97Z"
+    },
+    "UserData": {}
+}

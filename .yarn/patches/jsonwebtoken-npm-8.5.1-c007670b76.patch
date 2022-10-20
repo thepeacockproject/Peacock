@@ -1,0 +1,54 @@
+diff --git a/lib/psSupported.js b/lib/psSupported.js
+deleted file mode 100644
+index 8c04144a14cc4f68210545769f5a23c03f808063..0000000000000000000000000000000000000000
+--- a/lib/psSupported.js
++++ /dev/null
+@@ -1,3 +0,0 @@
+-var semver = require('semver');
+-
+-module.exports = semver.satisfies(process.version, '^6.12.0 || >=8.0.0');
+diff --git a/sign.js b/sign.js
+index f649ce4ff48ffc8ce7863422e3880e78ce86c322..e275fe51ce73e403bcb26196662188f3a843d8ef 100644
+--- a/sign.js
++++ b/sign.js
+@@ -1,5 +1,4 @@
+ var timespan = require('./lib/timespan');
+-var PS_SUPPORTED = require('./lib/psSupported');
+ var jws = require('jws');
+ var includes = require('lodash.includes');
+ var isBoolean = require('lodash.isboolean');
+@@ -10,9 +9,7 @@ var isString = require('lodash.isstring');
+ var once = require('lodash.once');
+ 
+ var SUPPORTED_ALGS = ['RS256', 'RS384', 'RS512', 'ES256', 'ES384', 'ES512', 'HS256', 'HS384', 'HS512', 'none']
+-if (PS_SUPPORTED) {
+-  SUPPORTED_ALGS.splice(3, 0, 'PS256', 'PS384', 'PS512');
+-}
++SUPPORTED_ALGS.splice(3, 0, 'PS256', 'PS384', 'PS512');
+ 
+ var sign_options_schema = {
+   expiresIn: { isValid: function(value) { return isInteger(value) || (isString(value) && value); }, message: '"expiresIn" should be a number of seconds or string representing a timespan' },
+diff --git a/verify.js b/verify.js
+index 1df99f8dd429e392da8a0b84af7d7b02c0b36d0e..c9f7cef6263dd420259ebbac60efe64fb058c342 100644
+--- a/verify.js
++++ b/verify.js
+@@ -3,17 +3,14 @@ var NotBeforeError    = require('./lib/NotBeforeError');
+ var TokenExpiredError = require('./lib/TokenExpiredError');
+ var decode            = require('./decode');
+ var timespan          = require('./lib/timespan');
+-var PS_SUPPORTED      = require('./lib/psSupported');
+ var jws               = require('jws');
+ 
+ var PUB_KEY_ALGS = ['RS256', 'RS384', 'RS512', 'ES256', 'ES384', 'ES512'];
+ var RSA_KEY_ALGS = ['RS256', 'RS384', 'RS512'];
+ var HS_ALGS = ['HS256', 'HS384', 'HS512'];
+ 
+-if (PS_SUPPORTED) {
+-  PUB_KEY_ALGS.splice(3, 0, 'PS256', 'PS384', 'PS512');
+-  RSA_KEY_ALGS.splice(3, 0, 'PS256', 'PS384', 'PS512');
+-}
++PUB_KEY_ALGS.splice(3, 0, 'PS256', 'PS384', 'PS512');
++RSA_KEY_ALGS.splice(3, 0, 'PS256', 'PS384', 'PS512');
+ 
+ module.exports = function (jwtString, secretOrPublicKey, options, callback) {
+   if ((typeof options === 'function') && !callback) {

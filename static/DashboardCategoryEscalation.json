@@ -1,0 +1,33 @@
+{
+    "$if $not $isnull $.data.Item.Data": {
+        "$then": {
+            "$include": {
+                "$path": "menusystem/pages/hub/dashboard/category_escalation/contractlist.json"
+            }
+        },
+        "$else": {
+            "nrows": 1.5,
+            "ncols": 2,
+            "id": "Dashboard_Category_Escalation",
+            "controller": "livetile",
+            "groupid": 0,
+            "data": {
+                "header": "",
+                "title": "",
+                "image": ""
+            },
+            "children": [
+                {
+                    "view": "menu3.basic.MenuTileSmall",
+                    "data": {
+                        "header": "Peacock Escalations",
+                        "title": "No escalations",
+                        "image": "$res images/livetile/tile_contractescalation_nocontent.jpg",
+                        "icon": "failed",
+                        "locked": true
+                    }
+                }
+            ]
+        }
+    }
+}

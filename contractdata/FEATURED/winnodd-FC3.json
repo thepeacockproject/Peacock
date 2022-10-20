@@ -1,0 +1,266 @@
+{
+    "Data": {
+        "EnableExits": {
+            "$eq": [
+                "$837ba165-ec28-447d-9fa7-16d2490787d6",
+                "$07c8f07f-0a08-409d-bad4-776a43dcd2da",
+                "$e22d782a-b7b7-470f-a15d-42ce0226d774",
+                "Completed"
+            ]
+        },
+        "Objectives": [
+            {
+                "Type": "statemachine",
+                "Id": "837ba165-ec28-447d-9fa7-16d2490787d6",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository 84049f2c-ba47-4d02-a5a2-c31aa2f2cd4f).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 84049f2c-ba47-4d02-a5a2-c31aa2f2cd4f).Name"
+                        }
+                    }
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["84049f2c-ba47-4d02-a5a2-c31aa2f2cd4f"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "84049f2c-ba47-4d02-a5a2-c31aa2f2cd4f"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "07c8f07f-0a08-409d-bad4-776a43dcd2da",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository 2f47716a-2663-461b-bd8c-2dfdccc720c6).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 2f47716a-2663-461b-bd8c-2dfdccc720c6).Name"
+                        }
+                    }
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["2f47716a-2663-461b-bd8c-2dfdccc720c6"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "2f47716a-2663-461b-bd8c-2dfdccc720c6"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "e22d782a-b7b7-470f-a15d-42ce0226d774",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository 6c9474f0-30eb-4bac-af97-2541a9173bab).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 6c9474f0-30eb-4bac-af97-2541a9173bab).Name"
+                        }
+                    }
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["6c9474f0-30eb-4bac-af97-2541a9173bab"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "6c9474f0-30eb-4bac-af97-2541a9173bab"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "c6c5ef79-2cd2-45ce-9579-d3685965bd8f",
+                "BriefingText": "You must be suck at this game",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "ItemDropped": {
+                                "Condition": {
+                                    "$or": [
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "ae158afc-2df1-474b-abc8-1e58ed69bb8d"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "7e8ba667-ac70-4591-9bde-c7d846eacbb2"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "419bc68a-a76e-461d-ba92-327b9a25a182"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "83a78b07-1c9a-43a5-802d-35d97e537769"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "09268e60-216a-4ccf-8e41-c3cc45391222"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "3a05dae6-d904-4a18-8196-de2d46e4c5d4"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "271eb4ce-7297-449d-95d4-20cd56dffd80"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            },
+                            "ItemRemovedFromInventory": {
+                                "Condition": {
+                                    "$or": [
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "ae158afc-2df1-474b-abc8-1e58ed69bb8d"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "7e8ba667-ac70-4591-9bde-c7d846eacbb2"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "419bc68a-a76e-461d-ba92-327b9a25a182"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "83a78b07-1c9a-43a5-802d-35d97e537769"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "09268e60-216a-4ccf-8e41-c3cc45391222"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "3a05dae6-d904-4a18-8196-de2d46e4c5d4"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "271eb4ce-7297-449d-95d4-20cd56dffd80"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "GameChangers": [],
+        "EnableSaving": false,
+        "Bricks": [
+            "assembly:/_PRO/Scenes/Missions/Hokkaido/_scene_dirtyoctopus.brick"
+        ]
+    },
+    "Metadata": {
+        "Title": "The Déji-Hu",
+        "Description": "A contract has been issued. \r\rCreated by Quartz Tan & WINNODD",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Hokkaido/_Scene_SnowCrane.entity",
+        "Location": "LOCATION_HOKKAIDO",
+        "Entitlements": ["H2_LEGACY_STANDARD"],
+        "IsPublished": true,
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "GameVersion": "8.7.0.0",
+        "ServerVersion": "8.7.0.0",
+        "Type": "featured",
+        "Id": "a03285bd-7342-4262-b118-df485b5e99a9",
+        "TileImage": "images/contracts/featured/winnodd3.jpg",
+        "CreationTimestamp": "2022-05-20T17:21:36.820Z"
+    },
+    "UserData": {}
+}

@@ -1,0 +1,129 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Type": "statemachine",
+                "Id": "5a0328c1-f595-41df-b1e8-454d21b46d5e",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": true,
+                "Image": "images/contracts/gamechangers/gamechanger_global_bigbrother.jpg",
+                "BriefingName": "The Small Brother",
+                "LongBriefingText": "Destroy all 21 functional cameras in Milton-Fitzpatrick bank. Cameras in deposit box area were excluded for being malfunctioning.",
+                "BriefingText": "Destroy all 21 functional cameras in Milton-Fitzpatrick bank. Cameras in deposit box area were excluded for being malfunctioning.",
+                "HUDTemplate": {
+                    "display": "Destroy all 21 functional cameras in Milton-Fitzpatrick bank",
+                    "iconType": 0
+                },
+                "Definition": {
+                    "Context": {
+                        "CameraRemaining": 21
+                    },
+                    "ContextListeners": {
+                        "CameraRemaining": {
+                            "type": "objective-counter",
+                            "header": "UI_CONTRACT_WHITEDRYAS_OBJ_COUNTER"
+                        }
+                    },
+                    "States": {
+                        "Start": {
+                            "SecuritySystemRecorder": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.event",
+                                            "CameraDestroyed"
+                                        ]
+                                    },
+                                    "Actions": [
+                                        {
+                                            "$dec": "CameraRemaining"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.CameraRemaining", 0]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "e8eac274-42ef-4849-a276-cb63a55187c4",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "ExcludeFromScoring": true,
+                "ForceShowOnLoadingScreen": true,
+                "Image": "images/challenges/greedy/greedy_poison_ventilation.jpg",
+                "BriefingName": "Anti-Cheat",
+                "LongBriefingText": "Don't erase any evidence unless all cameras were destroyed.",
+                "BriefingText": "Don't erase any evidence unless all cameras were destroyed",
+                "HUDTemplate": {
+                    "display": "Don't erase any evidence unless all cameras were destroyed",
+                    "iconType": 54
+                },
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "ObjectiveCompleted": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Id",
+                                            "5a0328c1-f595-41df-b1e8-454d21b46d5e"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ],
+                            "SecuritySystemRecorder": [
+                                {
+                                    "Condition": {
+                                        "$or": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.event",
+                                                    "erased"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.event",
+                                                    "destroyed"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "GameChangers": [],
+        "Bricks": []
+    },
+    "Metadata": {
+        "Title": "The Ipovlopsychophobia",
+        "Description": "Cool title huh?\r\rCreated by WINNODD",
+        "Entitlements": ["H2_LEGACY_EXPANSION"],
+        "ScenePath": "assembly:/_pro/scenes/missions/Greedy/mission_raccoon/scene_raccoon_basic.entity",
+        "Location": "LOCATION_GREEDY_RACCOON",
+        "IsPublished": true,
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "GameVersion": "8.8.0.0",
+        "ServerVersion": "8.8.0.0",
+        "Type": "featured",
+        "Id": "2b61a384-b3f7-42cb-b850-4cac06e2eef1",
+        "TileImage": "images/contracts/featured/winnodd6.jpg",
+        "CreationTimestamp": "2022-07-02T12:54:54.209Z"
+    },
+    "UserData": {}
+}

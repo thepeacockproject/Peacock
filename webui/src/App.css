@@ -1,0 +1,102 @@
+/*
+ *     The Peacock Project - a HITMAN server replacement.
+ *     Copyright (C) 2021-2022 The Peacock Project Team
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     You should have received a copy of the GNU Affero General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+body {
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell,
+        Noto Sans, sans-serif, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
+        sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+:root {
+    --ifm-global-radius: 0.4rem;
+    --ifm-color-primary: #3578e5;
+    --ifm-color-emphasis-200: #ebedf0;
+    --ifm-color-emphasis-800: #444950;
+    --ifm-button-size-multiplier: 1;
+    --ifm-button-border-radius: calc(
+        var(--ifm-global-radius) * var(--ifm-button-size-multiplier)
+    );
+}
+
+@media (max-width: 996px) {
+    .navbar__item {
+        display: inherit;
+    }
+}
+
+@media (max-width: 450px) {
+    .navbar__item {
+        display: none;
+    }
+}
+
+.centered {
+    text-align: center;
+}
+
+.body-centered {
+    justify-content: center;
+}
+
+.margin-top {
+    margin-top: 10px;
+}
+
+.app-grid {
+    display: grid;
+    justify-content: center;
+}
+
+.elp-tab {
+    margin: 5px !important;
+    padding: 0 !important;
+    transition: none;
+    background-color: initial;
+}
+
+.elp-tab:hover {
+    transition: none;
+    background-color: initial;
+    cursor: initial;
+}
+
+.flex {
+    display: flex;
+}
+
+.special-card {
+    max-width: 640px;
+}
+
+.input {
+    -webkit-appearance: none;
+    appearance: none;
+    background: var(--ifm-color-emphasis-200) no-repeat 0.75rem center/1rem 1rem;
+    border: none;
+    border-radius: var(--ifm-button-border-radius);
+    color: var(--ifm-color-emphasis-800);
+    cursor: text;
+    display: inline-block;
+    font-size: 0.9rem;
+    padding: 0 0.5rem 0 0.9rem;
+    height: 2.1875rem;
+}
+
+.pagination-nav__item:first-child .pagination-nav__label::before {
+    content: "" !important;
+}

@@ -1,0 +1,84 @@
+{
+    "Data": {
+        "EnableSaving": true,
+        "Objectives": [
+            {
+                "Id": "cd1a896d-6371-4df1-a61b-b341cd822753",
+                "IsHidden": false,
+                "Primary": true,
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "010e451b-99de-4a73-a6df-520158636654"
+                    }
+                }
+            },
+            {
+                "Id": "1215fa84-31eb-4c10-b90d-8df748a62c56",
+                "Category": "primary",
+                "ObjectiveType": "setpiece",
+                "BriefingName": "$loc UI_CONTRACT_EBOLA_YULDUZ_NAME",
+                "DisplayAsKillObjective": true,
+                "LongBriefingText": "$loc 893ecd0c-9a13-42a6-b3f5-72c6059d4b16_yulduz_description",
+                "Image": "images/actors/WS_Zika_Sister_yulduz.jpg",
+                "TargetConditions": [],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_ZIKA_OBJ_2"
+                },
+                "BriefingText": "$loc UI_CONTRACT_ZIKA_OBJ_2",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["893ecd0c-9a13-42a6-b3f5-72c6059d4b16"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "893ecd0c-9a13-42a6-b3f5-72c6059d4b16"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_PRO/Scenes/Missions/bangkok/mission_guidance_zika.brick"
+        ],
+        "GameChangers": [],
+        "Stashpoints": ["9d016e48-d05b-45ce-b58a-bd61e930ac6d"],
+        "Entrances": ["213d36c0-a6af-4533-90da-2c815f6ec927"]
+    },
+    "Metadata": {
+        "BriefingVideo": "briefing_zika",
+        "CodeName_Hint": "Zika",
+        "CreationTimestamp": "2012-12-12T12:12:12.743Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "DebriefingVideo": "debriefing_zika",
+        "Description": "UI_CONTRACT_ZIKA_DESC",
+        "Id": "024b6964-a3bb-4457-b085-08f9a7dc7fb7",
+        "IsPublished": true,
+        "LastUpdate": "2021-03-16T13:08:04.5983913Z",
+        "Location": "LOCATION_BANGKOK_ZIKA",
+        "Release": "1.13.x",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/bangkok/scene_zika.entity",
+        "TileImage": "images/contracts/whitespider/001_zika/tile.jpg",
+        "Title": "UI_CONTRACT_ZIKA_TITLE",
+        "Type": "campaign",
+        "GroupTitle": "UI_CONTRACT_CAMPAIGN_WHITE_SPIDER_TITLE",
+        "InGroup": "3d407b2b-e2f2-4204-9c08-7da67baa78fd",
+        "Drops": ["ACCESS_HIT_EBOLA"],
+        "Entitlements": ["H1_LEGACY_EXPANSION"],
+        "PublicId": "016507527147"
+    },
+    "UserData": {}
+}

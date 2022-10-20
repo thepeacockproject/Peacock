@@ -1,0 +1,254 @@
+{
+    "Data": {
+        "EnableSaving": true,
+        "Bricks": ["assembly:/_PRO/scenes/missions/Rocky/mission_dugong.brick"],
+        "DevOnlyBricks": [
+            "assembly:/_PRO/scenes/missions/Rocky/dev_dugong.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/scenes/missions/rocky/vr_overrides_dugong.brick",
+                    "assembly:/_PRO/scenes/missions/rocky/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/scenes/missions/rocky/vr_overrides_dugong.brick"
+                ]
+            }
+        ],
+        "GameModesBricks": null,
+        "EngineModesBricks": null,
+        "GameDifficulties": [
+            {
+                "Difficulty": "easy",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/rocky/difficulty_easy_dugong.brick"
+                ]
+            },
+            {
+                "Difficulty": "normal",
+                "Bricks": []
+            },
+            {
+                "Difficulty": "hard",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/rocky/difficulty_hard_dugong.brick"
+                ]
+            }
+        ],
+        "GameChangers": [],
+        "GameChangerReferences": [],
+        "EnableExits": {
+            "$eq": [
+                "$7fdfddd5-84eb-48ac-b4b2-3fc876717dd9",
+                "$3a71e4b6-6de1-4cc7-8e21-02970fdb1b3a",
+                "$3fe366ef-ddac-4f30-a15a-9c711183c6c2",
+                "Completed"
+            ]
+        },
+        "Objectives": [
+            {
+                "_comment": "----- Kill Noel Crest -----",
+                "Id": "7fdfddd5-84eb-48ac-b4b2-3fc876717dd9",
+                "Category": "primary",
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "4f80ca40-a8f3-4a5e-9add-4c74d3bb5bcc"
+                    }
+                }
+            },
+            {
+                "_comment": "----- Kill Akka -----",
+                "Id": "3fe366ef-ddac-4f30-a15a-9c711183c6c2",
+                "Category": "primary",
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "666521d2-1efe-4d0a-b7f7-2afeb08262b6"
+                    }
+                }
+            },
+            {
+                "_comment": "----- Get McGuffin OR destroy satellite link -----",
+                "Id": "3a71e4b6-6de1-4cc7-8e21-02970fdb1b3a",
+                "UpdateActivationWhileCompleted": true,
+                "Category": "primary",
+                "Primary": true,
+                "ObjectiveType": "custom",
+                "ExcludeFromScoring": true,
+                "ForceShowOnLoadingScreen": true,
+                "Image": "images/actors/Rocky_Destroy_McGuffin.jpg",
+                "BriefingName": "$loc UI_CONTRACT_DUGONG_OBJ_MCGUFFIN_TITLE",
+                "BriefingText": "$loc UI_CONTRACT_DUGONG_OBJ_MCGUFFIN_DESC",
+                "LongBriefingText": "$loc UI_CONTRACT_DUGONG_OBJ_MCGUFFIN_BRIEFING",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_DUGONG_OBJ_MCGUFFIN_TITLE",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Scope": "session",
+                "Definition": {
+                    "ContextListeners": {
+                        "update_counter": {
+                            "type": "custom",
+                            "HUDTemplate": {
+                                "display": {
+                                    "$loc": {
+                                        "key": "UI_CONTRACT_DUGONG_OBJ_MCGUFFIN_DYNAMIC",
+                                        "data": ["$.Core", "$.Disks"]
+                                    }
+                                },
+                                "iconType": 17
+                            }
+                        }
+                    },
+                    "Context": {
+                        "Core": "$loc UI_CONTRACT_DUGONG_OBJ_MCGUFFIN_CONTROLS_DESTROY",
+                        "Disks": "$loc UI_CONTRACT_DUGONG_OBJ_MCGUFFIN_KEY_0",
+                        "Core_Get": "$loc UI_CONTRACT_DUGONG_OBJ_MCGUFFIN_CONTROLS_DESTROY",
+                        "Core_Got": "$loc UI_CONTRACT_DUGONG_OBJ_MCGUFFIN_CONTROLS_DESTROYED",
+                        "Disk_0": "$loc UI_CONTRACT_DUGONG_OBJ_MCGUFFIN_KEY_0",
+                        "Disk_1": "$loc UI_CONTRACT_DUGONG_OBJ_MCGUFFIN_KEY_1",
+                        "PieceCounter": 0,
+                        "update_counter": 0
+                    },
+                    "States": {
+                        "Start": {
+                            "-": {
+                                "Actions": {
+                                    "$inc": "update_counter"
+                                }
+                            },
+                            "KeyPieceFound": {
+                                "Actions": {
+                                    "$inc": "PieceCounter"
+                                },
+                                "Transition": "DiskText"
+                            },
+                            "McGuffinDestroyedEvent": {
+                                "Actions": {
+                                    "$set": ["Core", "$.Core_Got"]
+                                },
+                                "Transition": "Success"
+                            }
+                        },
+                        "DiskText": {
+                            "-": [
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.PieceCounter", 0]
+                                    },
+                                    "Actions": {
+                                        "$set": ["Disks", "$.Disk_0"]
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.PieceCounter", 1]
+                                    },
+                                    "Actions": {
+                                        "$set": ["Disks", "$.Disk_1"]
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.PieceCounter", 2]
+                                    },
+                                    "Actions": {
+                                        "$set": ["Core", ""]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Actions": {
+                                        "$set": ["Core", "$.Core_Get"]
+                                    },
+                                    "Transition": "Start"
+                                }
+                            ]
+                        },
+                        "Success": {
+                            "-": {
+                                "Actions": {
+                                    "$set": ["Disks", ""],
+                                    "$inc": "update_counter"
+                                }
+                            },
+                            "KeyPieceFound": [
+                                {
+                                    "Actions": {
+                                        "$inc": "PieceCounter"
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.PieceCounter", 2]
+                                    },
+                                    "Transition": "DiskText"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Scoring Dummy for DataCore Objective -----",
+                "Id": "e4b13eee-c90d-40ef-9ced-720d0b209721",
+                "Category": "primary",
+                "Primary": true,
+                "ObjectiveType": "custom",
+                "Image": "",
+                "BriefingName": "",
+                "BriefingText": "",
+                "Type": "statemachine",
+                "Scope": "session",
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "exit_gate": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "b2aac100-dfc7-4f85-b9cd-528114436f6c",
+        "IsPublished": true,
+        "CreationTimestamp": "2022-07-26T12:35:11.5296748Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_DUGONG_TITLE",
+        "Description": "UI_CONTRACT_DUGONG_DESC",
+        "BriefingVideo": "briefing_dugong",
+        "CodeName_Hint": "Dugong",
+        "Location": "LOCATION_ROCKY_DUGONG",
+        "ScenePath": "assembly:/_pro/scenes/missions/Rocky/scene_dugong.entity",
+        "TileImage": "images/contracts/Dugong/Dugong_tile.jpg",
+        "Type": "mission",
+        "Release": {
+            "Major": 3,
+            "Minor": 100,
+            "Build": -1,
+            "Revision": -1
+        },
+        "GameModes": null,
+        "EngineModes": null,
+        "IsVersus": false,
+        "Drops": [],
+        "Opportunities": [],
+        "Entitlements": ["LOCATION_ROCKY"],
+        "PublicId": "034879834147",
+        "IsFeatured": false,
+        "OpportunityData": []
+    },
+    "UserData": {}
+}

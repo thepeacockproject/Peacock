@@ -1,0 +1,140 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "a22129f7-d246-41c1-b176-5bf1b4998a7d",
+                "Category": "primary",
+                "BriefingName": "",
+                "Image": "images/actors/actor_04387b7a-25fa-4dec-baa0-eeff1d36ab11.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "12200bd8-9605-4111-8b26-4e73cb07d816",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 04387b7a-25fa-4dec-baa0-eeff1d36ab11).Name"
+                        }
+                    }
+                },
+                "BriefingText": "Use the sword dude",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["04387b7a-25fa-4dec-baa0-eeff1d36ab11"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "04387b7a-25fa-4dec-baa0-eeff1d36ab11"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "12200bd8-9605-4111-8b26-4e73cb07d816"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "04387b7a-25fa-4dec-baa0-eeff1d36ab11"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "7ba3bae5-bdd6-469a-8c26-fef19f869b7b",
+                "Category": "secondary",
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": true,
+                "BriefingName": "Yes Agility",
+                "ExcludeFromScoring": true,
+                "Image": "images/contracts/gamechangers/gamechanger_global_noagility.jpg",
+                "HUDTemplate": {
+                    "display": "You can perform agility moves as many times as you want, absolutely",
+                    "iconType": 17
+                },
+                "BriefingText": "You can perform agility moves as many times as you want, absolutely",
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "exit_gate": [
+                                {
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "GameChangers": [
+            "008d2eb9-c1c8-44e0-a636-ccca63629f3c",
+            "95690829-7da4-4225-a087-08918cccf120"
+        ],
+        "Bricks": [],
+        "MandatoryLoadout": [
+            {
+                "Id": "knight armor",
+                "Properties": {
+                    "LoadoutSlot": "disguise",
+                    "RepositoryId": "fae73e92-2307-4163-8e9f-30401ca884bf"
+                }
+            },
+            {
+                "Id": "flower baller",
+                "Properties": {
+                    "LoadoutSlot": "gear",
+                    "RepositoryId": "2dfacef2-57f6-4b8d-a1ae-f1f7ada4ec22"
+                }
+            },
+            {
+                "Id": "sword",
+                "Properties": {
+                    "LoadoutSlot": "gear",
+                    "RepositoryId": "12200bd8-9605-4111-8b26-4e73cb07d816"
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Title": "The Sworn Sword",
+        "Description": "you can save & load btw\r\rCreated by WINNODD",
+        "Entitlements": ["H2_LEGACY_STANDARD"],
+        "ScenePath": "assembly:/_pro/scenes/missions/theark/scene_magpie.entity",
+        "Location": "LOCATION_NORTHSEA",
+        "IsPublished": true,
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "GameVersion": "8.9.0.0",
+        "ServerVersion": "8.9.0.0",
+        "Type": "featured",
+        "Id": "2c9b146a-cad6-48e0-a0d2-55eb7e58dbf7",
+        "TileImage": "images/contracts/featured/winnodd5.jpg",
+        "CreationTimestamp": "2022-08-20T09:24:19.484Z"
+    },
+    "UserData": {}
+}

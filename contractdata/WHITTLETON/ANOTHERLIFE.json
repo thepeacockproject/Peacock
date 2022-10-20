@@ -1,0 +1,267 @@
+{
+    "Data": {
+        "EnableSaving": true,
+        "Objectives": [
+            {
+                "Id": "c96c8acf-e84e-4a37-9887-af03cfde8dde",
+                "Category": "primary",
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "672a7a52-a08a-45cd-a061-ced6a7b8d8c4"
+                    }
+                }
+            },
+            {
+                "Id": "faa743ed-1d68-4329-a18e-597a63428dc8",
+                "Category": "primary",
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "b8f0bf6c-4826-4de2-a785-2d139967e09c"
+                    }
+                }
+            },
+            {
+                "_comment": "----- Find Clues Dynamic Counter -----",
+                "Id": "369dd2f7-acfa-4c51-b03d-dbbb4bb863ac",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": true,
+                "Image": "images/actors/skunk_trackingtheconstant.jpg",
+                "BriefingName": "$loc UI_CONTRACT_SKUNK_OBJ_CLUES_TITLE",
+                "LongBriefingText": "$loc UI_CONTRACT_SKUNK_OBJ_CLUES_DESC",
+                "BriefingText": "$loc UI_CONTRACT_SKUNK_OBJ_CLUES_HEADER",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_SKUNK_OBJ_CLUES_TITLE",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Scope": "hit",
+                "Definition": {
+                    "ContextListeners": {
+                        "update_counter": {
+                            "type": "custom",
+                            "HUDTemplate": {
+                                "display": {
+                                    "$loc": {
+                                        "key": "UI_CONTRACT_SKUNK_OBJ_CLUES_DYNAMIC_TITLE",
+                                        "data": ["$.IntelCounter", "$.total"]
+                                    }
+                                },
+                                "iconType": 17
+                            }
+                        }
+                    },
+                    "Context": {
+                        "IntelCounter": 0,
+                        "update_counter": 1,
+                        "total": 3
+                    },
+                    "States": {
+                        "Start": {
+                            "One_Clue_Found": {
+                                "Actions": {
+                                    "$inc": "IntelCounter",
+                                    "$dec": "update_counter"
+                                }
+                            },
+                            "Two_Clues_Found": {
+                                "Actions": {
+                                    "$inc": "IntelCounter",
+                                    "$dec": "update_counter"
+                                }
+                            },
+                            "Three_Clues_Found": {
+                                "Actions": {
+                                    "$inc": "IntelCounter",
+                                    "$dec": "update_counter"
+                                }
+                            },
+                            "AllCluesCollected": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "8d1a5ed6-2e2d-427e-b88b-b31c1d2a9d87",
+                "Type": "statemachine",
+                "Category": "condition",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": true
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    }
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "BackgroundCheckStarted": {
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Activation": {
+                    "$eq": ["$8d1a5ed6-2e2d-427e-b88b-b31c1d2a9d87", "Failed"]
+                },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_SKUNK_TIMER_BACKGROUNDCHECK"
+                },
+                "Id": "f92b9623-6cb5-44cb-b9a2-bf483a3bfe1d",
+                "Scope": "session",
+                "Type": "statemachine",
+                "Category": "secondary",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": true
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Definition": {
+                    "ContextListeners": {
+                        "Timeout": {
+                            "type": "custom",
+                            "HUDTemplate": {
+                                "display": {
+                                    "$loc": {
+                                        "key": "UI_CONTRACT_HAWK_TIMER_TIMED_OUT",
+                                        "data": []
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "Context": {
+                        "Timeout": 1
+                    },
+                    "States": {
+                        "Start": {
+                            "BeginTimer": {
+                                "Transition": "TimerRunning"
+                            }
+                        },
+                        "TimerRunning": {
+                            "$timer": {
+                                "Condition": {
+                                    "$after": 300
+                                },
+                                "Actions": {
+                                    "$dec": "Timeout"
+                                },
+                                "Transition": "Failure"
+                            },
+                            "EndTimer": {
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": ["assembly:/_PRO/scenes/missions/skunk/mission_skunk.brick"],
+        "DevOnlyBricks": [
+            "assembly:/_pro/scenes/missions/skunk/dev_skunk.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/Scenes/missions/skunk/vr_overrides_skunk.brick",
+                    "assembly:/_pro/scenes/missions/skunk/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/Scenes/missions/skunk/vr_overrides_skunk.brick"
+                ]
+            }
+        ],
+        "GameChangers": [],
+        "GameChangerReferences": [],
+        "GameDifficulties": [
+            {
+                "Difficulty": "easy",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/skunk/difficulty_easy_vermont_skunk.brick"
+                ]
+            },
+            {
+                "Difficulty": "normal",
+                "Bricks": []
+            },
+            {
+                "Difficulty": "hard",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/skunk/difficulty_hard_vermont_skunk.brick"
+                ]
+            }
+        ],
+        "SimulationQualities": [
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/skunk/intel_6core_skunk.brick"
+                ]
+            },
+            {
+                "Quality": "best",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/skunk/intel_8core_skunk.brick"
+                ]
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "82f55837-e26c-41bf-bc6e-fa97b7981fbc",
+        "IsPublished": true,
+        "TileImage": "images/contracts/skunk/tile.jpg",
+        "BriefingVideo": "briefing_skunk",
+        "DebriefingVideo": "debriefing_skunk",
+        "CreationTimestamp": "2016-12-22T09:38:47.0308316Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_SKUNK_TITLE",
+        "Description": "UI_CONTRACT_SKUNK_DESC",
+        "CodeName_Hint": "Skunk",
+        "Location": "LOCATION_NORTHAMERICA",
+        "ScenePath": "assembly:/_pro/scenes/missions/skunk/scene_skunk.entity",
+        "Type": "mission",
+        "Release": "2.3.x",
+        "RequiredUnlockable": "ACCESS_HIT_SKUNK",
+        "Drops": ["ACCESS_HIT_MAGPIE"],
+        "Opportunities": [
+            "8120be1a-e4a7-4052-8c7c-c235a0bc0b01",
+            "d7e86cc3-16bc-430a-b4cf-c790b5fe0a95",
+            "d4792eb3-a837-4e84-8690-03dbaa9c09f8",
+            "f494d898-fdda-40b5-88f1-ba77c6a3fb87",
+            "fd4d37ac-33bb-4655-983e-a3be9af0f8f0",
+            "03d541fb-1ad3-446f-b762-7d6adab99acd",
+            "024bb599-7dd6-42b0-a60c-5077ce66fa1b"
+        ],
+        "Entitlements": ["H2_LEGACY_STANDARD"],
+        "LastUpdate": "2022-01-20T18:29:24.6836671Z",
+        "PublicId": "022963007447"
+    },
+    "UserData": {}
+}

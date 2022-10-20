@@ -1,0 +1,361 @@
+{
+    "Data": {
+        "EnableSaving": true,
+        "Objectives": [
+            {
+                "Id": "93feffcc-c2cd-4ddb-adf2-24b35c52de32",
+                "Primary": true,
+                "RepeatSuccess": 1,
+                "RepeatFailed": 1,
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "3798fcf3-4e33-40db-a8a2-c160a3ec55bf"
+                    }
+                }
+            },
+            {
+                "Id": "b8ffc636-4f9a-49b5-8293-98839a6ca202",
+                "ObjectiveType": "custom",
+                "IgnoreIfInactive": true,
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "OnInactive": {
+                    "IfCompleted": {
+                        "State": "Completed"
+                    }
+                },
+                "Image": "images/contracts/whitespider/004_flu/Eliminate_Infected_Obj.jpg",
+                "BriefingName": "$loc UI_CONTRACT_FLU_ELIMINATE_INFECTED_COUNT_HEAD",
+                "BriefingText": "$loc UI_CONTRACT_FLU_ELIMINATE_INFECTED_OBJ",
+                "Category": "primary",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_FLU_ELIMINATE_INFECTED_OBJ",
+                    "iconType": 19
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "ContextListeners": {
+                        "TargetsCounter": {
+                            "type": "objective-counter",
+                            "header": "UI_CONTRACT_FLU_ELIMINATE_INFECTED_COUNT_HEAD"
+                        }
+                    },
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": [],
+                        "TargetsCounter": 0
+                    },
+                    "States": {
+                        "Start": {
+                            "-": {
+                                "Transition": "Success"
+                            }
+                        },
+                        "Success": {
+                            "TargetPicked": [
+                                {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "3798fcf3-4e33-40db-a8a2-c160a3ec55bf",
+                                                "01822ba2-7b3b-4bbd-a9f3-cf8006ba945a"
+                                            ]
+                                        }
+                                    },
+                                    "Actions": {
+                                        "$inc": "TargetsCounter",
+                                        "$pushunique": [
+                                            "Targets",
+                                            "$Value.RepositoryId"
+                                        ]
+                                    },
+                                    "Transition": "TargetPicked"
+                                }
+                            ]
+                        },
+                        "TargetPicked": {
+                            "TargetPicked": [
+                                {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "3798fcf3-4e33-40db-a8a2-c160a3ec55bf",
+                                                "01822ba2-7b3b-4bbd-a9f3-cf8006ba945a"
+                                            ]
+                                        }
+                                    },
+                                    "Actions": {
+                                        "$inc": "TargetsCounter",
+                                        "$pushunique": [
+                                            "Targets",
+                                            "$Value.RepositoryId"
+                                        ]
+                                    }
+                                }
+                            ],
+                            "Kill": [
+                                {
+                                    "Actions": {
+                                        "$pushunique": [
+                                            "KilledActors",
+                                            "$Value.RepositoryId"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "Actions": {
+                                        "$dec": "TargetsCounter"
+                                    },
+                                    "Condition": {
+                                        "$inarray": {
+                                            "in": "$.Targets",
+                                            "?": {
+                                                "$eq": [
+                                                    "$.#",
+                                                    "$Value.RepositoryId"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$all": {
+                                            "in": "$.Targets",
+                                            "?": {
+                                                "$any": {
+                                                    "in": "$.KilledActors",
+                                                    "?": {
+                                                        "$eq": ["$.#", "$.##"]
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ],
+                            "ContractLoad": [
+                                {
+                                    "Actions": {
+                                        "$set": [
+                                            "TargetsCounter",
+                                            "$.TargetsCounter"
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "2c22eb96-bad8-4514-83c4-eece9c2c5988",
+                "ObjectiveType": "custom",
+                "IgnoreIfInactive": true,
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": true
+                    }
+                },
+                "Image": "images/contracts/whitespider/004_flu/Eliminate_Infected_Obj.jpg",
+                "BriefingName": "$loc UI_CONTRACT_FLU_ELIMINATE_INFECTED_COUNT_HEAD",
+                "BriefingText": "$loc UI_CONTRACT_FLU_ELIMINATE_INFECTED_OBJ",
+                "ExcludeFromScoring": true,
+                "Category": "secondary",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_FLU_ELIMINATE_INFECTED_OBJ",
+                    "iconType": 19
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "ContextListeners": {
+                        "TotalTargetsCounter": {
+                            "type": "objective-counter",
+                            "header": "UI_CONTRACT_FLU_ELIMINATE_INFECTED_COUNT_HEAD"
+                        }
+                    },
+                    "Context": {
+                        "TotalTargetsCounter": 0
+                    },
+                    "States": {
+                        "Start": {
+                            "TargetPicked": [
+                                {
+                                    "Actions": {
+                                        "$inc": "TotalTargetsCounter"
+                                    }
+                                }
+                            ],
+                            "ContractLoad": [
+                                {
+                                    "Actions": {
+                                        "$set": [
+                                            "TotalTargetsCounter",
+                                            "$.TotalTargetsCounter"
+                                        ]
+                                    }
+                                }
+                            ],
+                            "ContractEnd": [
+                                {
+                                    "Transition": "Success"
+                                }
+                            ],
+                            "exit_gate": [
+                                {
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "b3a631f9-7a96-4997-8a55-e9271d7fc476",
+                "Category": "primary",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_FLU_OBJ_2"
+                },
+                "BriefingText": "$loc UI_CONTRACT_FLU_OBJ_2",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["01822ba2-7b3b-4bbd-a9f3-cf8006ba945a"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "01822ba2-7b3b-4bbd-a9f3-cf8006ba945a"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "85745a86-a55a-4286-bff8-44a7960f87c8",
+                "Type": "statemachine",
+                "Category": "condition",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": false
+                    }
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "47_Infected": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "e98be877-94bb-40a8-959f-5353a7704825",
+                "ObjectiveType": "custom",
+                "IgnoreIfInactive": true,
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Activation": {
+                    "$eq": [
+                        "$85745a86-a55a-4286-bff8-44a7960f87c8",
+                        "Completed"
+                    ]
+                },
+                "Image": "images/contracts/whitespider/004_flu/WS_Flu_Obj_Antidote.jpg",
+                "BriefingName": "$loc UI_CONTRACT_FLU_ANTIDOTE_TITLE",
+                "BriefingText": "$loc UI_CONTRACT_FLU_ANTIDOTE_DESC",
+                "Category": "primary",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_FLU_ANTIDOTE_OBJ"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {
+                        "Targets": ["d940d53e-738c-4033-8bfd-c2ee28ae4e8a"]
+                    },
+                    "States": {
+                        "Start": {
+                            "-": {
+                                "Transition": "Success"
+                            }
+                        },
+                        "Success": {
+                            "47_Infected": {
+                                "Transition": "Get_Antidote"
+                            }
+                        },
+                        "Get_Antidote": {
+                            "47_Cured": {
+                                "Transition": "Success"
+                            },
+                            "$timer": {
+                                "Condition": {
+                                    "$after": 300
+                                },
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_PRO/Scenes/Missions/Hokkaido/mission_guidance_flu.brick"
+        ],
+        "GameChangers": [],
+        "Stashpoints": ["73d4bcd4-ec9f-4a6c-ae2d-1248109eadc3"],
+        "Entrances": ["8faca318-7c93-4abd-9ee3-f3c0c1577d77"]
+    },
+    "Metadata": {
+        "Id": "a2befcec-7799-4987-9215-6a152cb6a320",
+        "IsPublished": true,
+        "Title": "UI_CONTRACT_FLU_TITLE",
+        "Description": "UI_CONTRACT_FLU_DESC",
+        "BriefingVideo": "briefing_flu",
+        "DebriefingVideo": "debriefing_flu",
+        "CodeName_Hint": "Flu",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Hokkaido/_scene_flu.entity",
+        "TileImage": "images/contracts/whitespider/004_flu/tile.jpg",
+        "Location": "LOCATION_HOKKAIDO_FLU",
+        "LastUpdate": "2021-03-16T13:08:04.5442363Z",
+        "CreationTimestamp": "2012-12-12T12:12:12.743Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Type": "campaign",
+        "Release": "1.13.x",
+        "LimitedLoadout": false,
+        "GroupTitle": "UI_CONTRACT_CAMPAIGN_WHITE_SPIDER_TITLE",
+        "InGroup": "3d407b2b-e2f2-4204-9c08-7da67baa78fd",
+        "RequiredUnlockable": "ACCESS_HIT_FLU",
+        "Entitlements": ["H1_LEGACY_EXPANSION"],
+        "PublicId": "018724005647"
+    },
+    "UserData": {}
+}

@@ -1,0 +1,451 @@
+{
+    "controller": "list",
+    "id": "leaderboard",
+    "pressable": false,
+    "actions": {
+        "parentcontextpushed": {
+            "set-selected": {
+                "target": "leaderboard_button_container",
+                "post-restore-original-selection": true
+            }
+        }
+    },
+    "children": [
+        {
+            "controller": "group",
+            "id": "leaderboard_container",
+            "row": 1,
+            "col": 0,
+            "pressable": false,
+            "selectable": true,
+            "actions": {
+                "$if $not $arg _isingame": {
+                    "$then": {
+                        "on-add-child": {
+                            "show-background-layers": {
+                                "showMenuBackgroundFullOverlay": true
+                            }
+                        },
+                        "on-remove-child": {
+                            "show-background-layers": {
+                                "showMenuBackgroundFullOverlay": false
+                            }
+                        },
+                        "on-page-closed": {
+                            "show-background-layers": {
+                                "showMenuBackgroundFullOverlay": false
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "controller": "list",
+            "direction": "horizontal",
+            "row": 1,
+            "col": 0,
+            "id": "leaderboard",
+            "children": [
+                {
+                    "id": "leaderboard_button_container",
+                    "groupselect": true,
+                    "controller": "context",
+                    "contextmode": "jump",
+                    "container": "leaderboard_container",
+                    "navigationmode": "list",
+                    "loopedselection": false,
+                    "view": "menu3.containers.ListContainer",
+                    "direction": "vertical",
+                    "children": {
+                        "$if": {
+                            "$condition": {
+                                "$or": [
+                                    "$isnull $arg difficulties",
+                                    "$eq ($arraysize $arg difficulties,0)"
+                                ]
+                            },
+                            "$then": [
+                                {
+                                    "$setup": {
+                                        "$set LeaderboardUrl": "leaderboardentries",
+                                        "$set DifficultyLevel": "$arg DifficultyLevel",
+                                        "$set Id": "leaderboard_button",
+                                        "$set Title": "UI_MENU_PAGE_LEADERBOARDS_FILTER_GLOBAL",
+                                        "$set Icon": "story",
+                                        "$in": {
+                                            "id": "$.Id",
+                                            "view": "menu3.basic.ListElementSmall",
+                                            "pressable": true,
+                                            "selectable": true,
+                                            "data": {
+                                                "showningame": {
+                                                    "$if $arg _isingame": {
+                                                        "$then": true,
+                                                        "$else": false
+                                                    }
+                                                },
+                                                "title": "$loc $.Title",
+                                                "icon": "$.Icon"
+                                            },
+                                            "children": [
+                                                {
+                                                    "$setup": {
+                                                        "$set LeaderboardUrl": "$.LeaderboardUrl",
+                                                        "$set Page": 0,
+                                                        "$set BlockInput": false,
+                                                        "$set Target": "leaderboard_entries_root",
+                                                        "$set PostLoadAction": {
+                                                            "set-selected": {
+                                                                "target": "leaderboard_top_score"
+                                                            }
+                                                        },
+                                                        "$in": {
+                                                            "id": "$.Target",
+                                                            "controller": "list",
+                                                            "pressable": false,
+                                                            "selectable": true,
+                                                            "actions": {
+                                                                "on-add-child": [
+                                                                    {
+                                                                        "load-async": {
+                                                                            "from": {
+                                                                                "url": "$.LeaderboardUrl",
+                                                                                "args": {
+                                                                                    "$mergeobjects": [
+                                                                                        {
+                                                                                            "page": "$.Page",
+                                                                                            "contractid": "$arg ContractId",
+                                                                                            "type": "$.LeaderboardType"
+                                                                                        },
+                                                                                        {
+                                                                                            "$if $isnull $.DifficultyLevel": {
+                                                                                                "$then": null,
+                                                                                                "$else": {
+                                                                                                    "difficultyLevel": "$.DifficultyLevel"
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    ]
+                                                                                }
+                                                                            },
+                                                                            "post-load-action": "$.PostLoadAction",
+                                                                            "page": "$.Page",
+                                                                            "pagedirection": "$.PageDirection",
+                                                                            "target": "$.Target",
+                                                                            "showloadingindicator": true,
+                                                                            "blocksinput": "$.BlockInput"
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                },
+                                {
+                                    "$setup": {
+                                        "$set LeaderboardUrl": "friendsleaderboardentries",
+                                        "$set DifficultyLevel": "$arg DifficultyLevel",
+                                        "$set Id": "leaderboard_friends_button",
+                                        "$set Title": "UI_MENU_PAGE_LEADERBOARDS_FILTER_FRIENDS",
+                                        "$set Icon": "leaderboardfriends",
+                                        "$in": {
+                                            "id": "$.Id",
+                                            "view": "menu3.basic.ListElementSmall",
+                                            "pressable": true,
+                                            "selectable": true,
+                                            "data": {
+                                                "showningame": {
+                                                    "$if $arg _isingame": {
+                                                        "$then": true,
+                                                        "$else": false
+                                                    }
+                                                },
+                                                "title": "$loc $.Title",
+                                                "icon": "$.Icon"
+                                            },
+                                            "children": [
+                                                {
+                                                    "$setup": {
+                                                        "$set LeaderboardUrl": "$.LeaderboardUrl",
+                                                        "$set Page": 0,
+                                                        "$set BlockInput": false,
+                                                        "$set Target": "leaderboard_entries_root",
+                                                        "$set PostLoadAction": {
+                                                            "set-selected": {
+                                                                "target": "leaderboard_top_score"
+                                                            }
+                                                        },
+                                                        "$in": {
+                                                            "id": "$.Target",
+                                                            "controller": "list",
+                                                            "pressable": false,
+                                                            "selectable": true,
+                                                            "actions": {
+                                                                "on-add-child": [
+                                                                    {
+                                                                        "load-async": {
+                                                                            "from": {
+                                                                                "url": "$.LeaderboardUrl",
+                                                                                "args": {
+                                                                                    "$mergeobjects": [
+                                                                                        {
+                                                                                            "page": "$.Page",
+                                                                                            "contractid": "$arg ContractId",
+                                                                                            "type": "$.LeaderboardType"
+                                                                                        },
+                                                                                        {
+                                                                                            "$if $isnull $.DifficultyLevel": {
+                                                                                                "$then": null,
+                                                                                                "$else": {
+                                                                                                    "difficultyLevel": "$.DifficultyLevel"
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    ]
+                                                                                }
+                                                                            },
+                                                                            "post-load-action": "$.PostLoadAction",
+                                                                            "page": "$.Page",
+                                                                            "pagedirection": "$.PageDirection",
+                                                                            "target": "$.Target",
+                                                                            "showloadingindicator": true,
+                                                                            "blocksinput": "$.BlockInput"
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            ],
+                            "$else": {
+                                "$merge": [
+                                    {
+                                        "id": "leaderboard_button",
+                                        "view": "menu3.basic.ListElementSmall",
+                                        "pressable": false,
+                                        "selectable": false,
+                                        "col": -0.1,
+                                        "data": {
+                                            "showningame": {
+                                                "$if $arg _isingame": {
+                                                    "$then": true,
+                                                    "$else": false
+                                                }
+                                            },
+                                            "title": "$loc UI_MENU_PAGE_LEADERBOARDS_FILTER_GLOBAL",
+                                            "icon": "story",
+                                            "greyelement": false
+                                        }
+                                    },
+                                    {
+                                        "$each $arg difficulties": {
+                                            "$setup": {
+                                                "$set LeaderboardUrl": "leaderboardentries",
+                                                "$set DifficultyLevel": "$.DifficultyLevel",
+                                                "$set Id": "$formatstring leaderboard_button_{$.Difficulty}",
+                                                "$set Title": "$formatstring UI_DIFFICULTY_{$.Difficulty}_TITLE",
+                                                "$set Icon": "$formatstring difficulty{$.Difficulty}",
+                                                "$in": {
+                                                    "id": "$.Id",
+                                                    "view": "menu3.basic.ListElementSmall",
+                                                    "pressable": true,
+                                                    "selectable": true,
+                                                    "data": {
+                                                        "showningame": {
+                                                            "$if $arg _isingame": {
+                                                                "$then": true,
+                                                                "$else": false
+                                                            }
+                                                        },
+                                                        "title": "$loc $.Title",
+                                                        "icon": "$.Icon"
+                                                    },
+                                                    "children": [
+                                                        {
+                                                            "$setup": {
+                                                                "$set LeaderboardUrl": "$.LeaderboardUrl",
+                                                                "$set Page": 0,
+                                                                "$set BlockInput": false,
+                                                                "$set Target": "leaderboard_entries_root",
+                                                                "$set PostLoadAction": {
+                                                                    "set-selected": {
+                                                                        "target": "leaderboard_top_score"
+                                                                    }
+                                                                },
+                                                                "$in": {
+                                                                    "id": "$.Target",
+                                                                    "controller": "list",
+                                                                    "pressable": false,
+                                                                    "selectable": true,
+                                                                    "actions": {
+                                                                        "on-add-child": [
+                                                                            {
+                                                                                "load-async": {
+                                                                                    "from": {
+                                                                                        "url": "$.LeaderboardUrl",
+                                                                                        "args": {
+                                                                                            "$mergeobjects": [
+                                                                                                {
+                                                                                                    "page": "$.Page",
+                                                                                                    "contractid": "$arg ContractId",
+                                                                                                    "type": "$.LeaderboardType"
+                                                                                                },
+                                                                                                {
+                                                                                                    "$if $isnull $.DifficultyLevel": {
+                                                                                                        "$then": null,
+                                                                                                        "$else": {
+                                                                                                            "difficultyLevel": "$.DifficultyLevel"
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                            ]
+                                                                                        }
+                                                                                    },
+                                                                                    "post-load-action": "$.PostLoadAction",
+                                                                                    "page": "$.Page",
+                                                                                    "pagedirection": "$.PageDirection",
+                                                                                    "target": "$.Target",
+                                                                                    "showloadingindicator": true,
+                                                                                    "blocksinput": "$.BlockInput"
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "_comment": "placeholder element",
+                                        "view": "menu3.TextboxElement",
+                                        "pressable": false,
+                                        "selectable": false,
+                                        "data": {
+                                            "width": 1,
+                                            "height": 1,
+                                            "text": " "
+                                        }
+                                    },
+                                    {
+                                        "id": "leaderboard_button",
+                                        "view": "menu3.basic.ListElementSmall",
+                                        "pressable": false,
+                                        "selectable": false,
+                                        "col": -0.1,
+                                        "data": {
+                                            "showningame": {
+                                                "$if $arg _isingame": {
+                                                    "$then": true,
+                                                    "$else": false
+                                                }
+                                            },
+                                            "title": "$loc UI_MENU_PAGE_LEADERBOARDS_FILTER_FRIENDS",
+                                            "icon": "leaderboardfriends",
+                                            "greyelement": false
+                                        }
+                                    },
+                                    {
+                                        "$each $arg difficulties": {
+                                            "$setup": {
+                                                "$set LeaderboardUrl": "friendsleaderboardentries",
+                                                "$set DifficultyLevel": "$.DifficultyLevel",
+                                                "$set Id": "$formatstring leaderboard_button_{$.Difficulty}",
+                                                "$set Title": "$formatstring UI_DIFFICULTY_{$.Difficulty}_TITLE",
+                                                "$set Icon": "$formatstring difficulty{$.Difficulty}",
+                                                "$in": {
+                                                    "id": "$.Id",
+                                                    "view": "menu3.basic.ListElementSmall",
+                                                    "pressable": true,
+                                                    "selectable": true,
+                                                    "data": {
+                                                        "showningame": {
+                                                            "$if $arg _isingame": {
+                                                                "$then": true,
+                                                                "$else": false
+                                                            }
+                                                        },
+                                                        "title": "$loc $.Title",
+                                                        "icon": "$.Icon"
+                                                    },
+                                                    "children": [
+                                                        {
+                                                            "$setup": {
+                                                                "$set LeaderboardUrl": "$.LeaderboardUrl",
+                                                                "$set Page": 0,
+                                                                "$set BlockInput": false,
+                                                                "$set Target": "leaderboard_entries_root",
+                                                                "$set PostLoadAction": {
+                                                                    "set-selected": {
+                                                                        "target": "leaderboard_top_score"
+                                                                    }
+                                                                },
+                                                                "$in": {
+                                                                    "id": "$.Target",
+                                                                    "controller": "list",
+                                                                    "pressable": false,
+                                                                    "selectable": true,
+                                                                    "actions": {
+                                                                        "on-add-child": [
+                                                                            {
+                                                                                "load-async": {
+                                                                                    "from": {
+                                                                                        "url": "$.LeaderboardUrl",
+                                                                                        "args": {
+                                                                                            "$mergeobjects": [
+                                                                                                {
+                                                                                                    "page": "$.Page",
+                                                                                                    "contractid": "$arg ContractId",
+                                                                                                    "type": "$.LeaderboardType"
+                                                                                                },
+                                                                                                {
+                                                                                                    "$if $isnull $.DifficultyLevel": {
+                                                                                                        "$then": null,
+                                                                                                        "$else": {
+                                                                                                            "difficultyLevel": "$.DifficultyLevel"
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                            ]
+                                                                                        }
+                                                                                    },
+                                                                                    "post-load-action": "$.PostLoadAction",
+                                                                                    "page": "$.Page",
+                                                                                    "pagedirection": "$.PageDirection",
+                                                                                    "target": "$.Target",
+                                                                                    "showloadingindicator": true,
+                                                                                    "blocksinput": "$.BlockInput"
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

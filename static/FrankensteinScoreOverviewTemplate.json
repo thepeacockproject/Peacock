@@ -1,0 +1,407 @@
+{
+    "controller": "list",
+    "view": "menu3.containers.ListContainer",
+    "id": "scoreandrewards",
+    "row": 0,
+    "col": 2,
+    "direction": "horizontal",
+    "data": {
+        "direction": "horizontal"
+    },
+    "children": {
+        "$merge": [
+            {
+                "$switch $arg ContractType": [
+                    {
+                        "case": "sniper",
+                        "return": {
+                            "view": "menu3.basic.DetailedScoreTileSniper",
+                            "nrows": 3,
+                            "ncols": 4,
+                            "selectable": {
+                                "$if $not $isnull $.SniperChallengeScore": {
+                                    "$then": true,
+                                    "$else": false
+                                }
+                            },
+                            "pressable": false,
+                            "data": {
+                                "header": "$loc UI_MENU_PAGE_DEBRIEFING_SUCCESS",
+                                "title": "$loc UI_MENU_PAGE_DEBRIEFING_SCORE_DETAILS",
+                                "headerLabel": "$loc UI_MENU_PAGE_PROFILE_STATISTICS_SCORE_HEADER",
+                                "icon": "featured",
+                                "completed": true
+                            },
+                            "children": [
+                                {
+                                    "id": "detailed_score_tile_detail_sniper",
+                                    "view": "menu3.basic.DetailedScoreTileDetailSniper",
+                                    "selectable": false,
+                                    "row": 0,
+                                    "col": 0,
+                                    "data": {
+                                        "$if $not $isnull $.SniperChallengeScore": {
+                                            "$then": {
+                                                "isonline": "$arg _isonline",
+                                                "animate": true,
+                                                "SniperChallengeScore": "$.SniperChallengeScore",
+                                                "isPartOfTopScores": "$.IsPartOfTopScores",
+                                                "newRank": "$.NewRank"
+                                            },
+                                            "$else": {
+                                                "isonline": "$arg _isonline",
+                                                "animate": true,
+                                                "isloading": true
+                                            }
+                                        }
+                                    },
+                                    "actions": {
+                                        "on-add-child": [
+                                            {
+                                                "$if $not $isnull $.SniperChallengeScore": {
+                                                    "$then": {
+                                                        "dbind:trigger-update": {
+                                                            "id": "mastery_data",
+                                                            "oneshot": true
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ],
+                                        "onapplyuidata": {
+                                            "set-data-property": {
+                                                "target": "detailed_score_tile_detail_sniper",
+                                                "reload-node": false,
+                                                "property": {
+                                                    "name": "animate",
+                                                    "value": false
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            ],
+                            "actions": {
+                                "select": {
+                                    "replace-children": {
+                                        "target": "headline_container",
+                                        "children": [
+                                            {
+                                                "view": "menu3.basic.HeadlineElement",
+                                                "selectable": false,
+                                                "pressable": false,
+                                                "data": {
+                                                    "header": "$loc UI_MENU_PAGE_DEBRIEFING_SUCCESS",
+                                                    "title": "$loc UI_MENU_PAGE_DEBRIEFING_SCORE_DETAILS",
+                                                    "typeicon": "background"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "hide-node": "escalation_level_headline_container"
+                                },
+                                "deselect": {
+                                    "replace-children": {
+                                        "target": "headline_container",
+                                        "children": []
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "default": {
+                            "view": "menu3.basic.DetailedScoreTile",
+                            "nrows": 3,
+                            "ncols": 4,
+                            "pressable": false,
+                            "data": {
+                                "header": "$loc UI_MENU_PAGE_DEBRIEFING_SUCCESS",
+                                "title": "$loc UI_MENU_PAGE_DEBRIEFING_SCORE_DETAILS",
+                                "headerLabel": "$loc UI_LEADRATING_TITLE",
+                                "icon": "background",
+                                "completed": true
+                            },
+                            "children": [
+                                {
+                                    "controller": "group",
+                                    "row": 0,
+                                    "col": 0,
+                                    "selectable": false,
+                                    "children": [
+                                        {
+                                            "controller": "group",
+                                            "id": "score_overview"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "actions": {
+                                "select": {
+                                    "replace-children": {
+                                        "target": "headline_container",
+                                        "children": [
+                                            {
+                                                "view": "menu3.basic.HeadlineElement",
+                                                "selectable": false,
+                                                "pressable": false,
+                                                "data": {
+                                                    "header": "$loc UI_MENU_PAGE_DEBRIEFING_SUCCESS",
+                                                    "title": "$loc UI_MENU_PAGE_DEBRIEFING_SCORE_DETAILS",
+                                                    "typeicon": "background"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "hide-node": "escalation_level_headline_container"
+                                },
+                                "deselect": {
+                                    "replace-children": {
+                                        "target": "headline_container",
+                                        "children": []
+                                    }
+                                }
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "controller": "list",
+                "view": "menu3.containers.NewItemsContainer",
+                "id": "debriefing_reward_list",
+                "direction": "horizontal",
+                "row": 0,
+                "col": 4,
+                "data": {
+                    "direction": "horizontal",
+                    "itemNewFlagPropertyName": "isnew",
+                    "startDelay": {
+                        "$if $.IsPartOfTopScores": {
+                            "$then": 8.2,
+                            "$else": {
+                                "$if $not $isnull $.NewRank": {
+                                    "$then": 5.2,
+                                    "$else": 2
+                                }
+                            }
+                        }
+                    },
+                    "fadeInOrder": "ascending",
+                    "animate": true
+                },
+                "actions": {
+                    "onapplyuidata": {
+                        "set-data-property": {
+                            "target": "debriefing_reward_list",
+                            "reload-node": false,
+                            "property": {
+                                "name": "animate",
+                                "value": false
+                            }
+                        }
+                    }
+                },
+                "children": {
+                    "$each $.Drops": {
+                        "$if $eqs ($.Unlockable.Type,challengemultiplier)": {
+                            "$then": null,
+                            "$else": {
+                                "$setup": {
+                                    "$set Item": "$.Unlockable",
+                                    "$set LocalizedReproItem": "$item $.Unlockable",
+                                    "$in": {
+                                        "id": {
+                                            "$if $.IsLocked": {
+                                                "$then": "mastery-tile-locked",
+                                                "$else": "mastery-tile-unlocked"
+                                            }
+                                        },
+                                        "view": "menu3.basic.ObjectiveTile",
+                                        "nrows": 3,
+                                        "ncols": 2,
+                                        "pressable": true,
+                                        "data": {
+                                            "isnew": {
+                                                "$if $not $.IsLocked": {
+                                                    "$then": true,
+                                                    "$else": false
+                                                }
+                                            },
+                                            "image": "$.LocalizedReproItem.image",
+                                            "islocked": "$.IsLocked",
+                                            "header": "$loc UI_MENU_PAGE_MASTERY_UNLOCKED_HEADER",
+                                            "title": "$loc UI_MENU_PAGE_MASTERY_UPGRADE_TITLE",
+                                            "icon": {
+                                                "$switch $.IsLocked": [
+                                                    {
+                                                        "case": false,
+                                                        "return": "masteryunlocked"
+                                                    },
+                                                    {
+                                                        "case": true,
+                                                        "return": "locked"
+                                                    },
+                                                    {
+                                                        "default": "locked"
+                                                    }
+                                                ]
+                                            },
+                                            "description": "$.LocalizedReproItem.desc",
+                                            "perks": "$.LocalizedReproItem.perks",
+                                            "rarity": "$.LocalizedReproItem.rarity",
+                                            "masteryLevel": "$formatstring {$loc UI_MENU_PAGE_MASTERY_LEVEL} {$.Level,.0f}",
+                                            "conditions": [
+                                                {
+                                                    "header": {
+                                                        "$if $arg IsUpgradeMastery": {
+                                                            "$then": "$loc UI_MENU_PAGE_MASTERY_UPGRADE_TITLE",
+                                                            "$else": "$.LocalizedReproItem.type"
+                                                        }
+                                                    },
+                                                    "title": "$.LocalizedReproItem.name",
+                                                    "icon": {
+                                                        "$switch $.Unlockable.Type": [
+                                                            {
+                                                                "case": "access",
+                                                                "return": "starting"
+                                                            },
+                                                            {
+                                                                "case": "agencypickup",
+                                                                "return": "stashpointempty"
+                                                            },
+                                                            {
+                                                                "case": "loadoutunlock",
+                                                                "return": "pistol"
+                                                            },
+                                                            {
+                                                                "case": "difficultyunlock",
+                                                                "return": "difficultylevel"
+                                                            },
+                                                            {
+                                                                "default": "$.Unlockable.Subtype"
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "actions": {
+                                            "accept": {
+                                                "show-modal": {
+                                                    "config": {
+                                                        "type": "objective",
+                                                        "view": "menu3.modal.ModalDialogItemDetails",
+                                                        "buttons": [
+                                                            {
+                                                                "label": "$loc UI_BUTTON_PROMPTS_ACTION_BACK",
+                                                                "type": "cancel"
+                                                            }
+                                                        ],
+                                                        "data": {
+                                                            "description": "$.LocalizedReproItem.desc",
+                                                            "name": "$.LocalizedReproItem.name",
+                                                            "type": {
+                                                                "$if $arg IsUpgradeMastery": {
+                                                                    "$then": "$loc UI_MENU_PAGE_MASTERY_UPGRADE_TITLE",
+                                                                    "$else": "$.Item.Type"
+                                                                }
+                                                            },
+                                                            "subtype": {
+                                                                "$if $arg IsUpgradeMastery": {
+                                                                    "$then": null,
+                                                                    "$else": "$.Item.Subtype"
+                                                                }
+                                                            },
+                                                            "image": "$.LocalizedReproItem.image",
+                                                            "rarity": "$.LocalizedReproItem.rarity",
+                                                            "perks": "$.LocalizedReproItem.perks",
+                                                            "item": "$($repository $.LocalizedReproItem.repositoryid)",
+                                                            "displaybuttons": [
+                                                                {
+                                                                    "actiontype": "cancel",
+                                                                    "actionlabel": "$loc UI_BUTTON_PROMPTS_ACTION_BACK",
+                                                                    "hideIndicator": true
+                                                                }
+                                                            ],
+                                                            "actionAndKillTypes": {
+                                                                "$setup": {
+                                                                    "$set ItemRepositoryId": "$repository $.LocalizedReproItem.repositoryid",
+                                                                    "$in": {
+                                                                        "$convertarray": {
+                                                                            "discardElementsWithoutConversion": true,
+                                                                            "sourceArray": "$.ItemRepositoryId.OnlineTraits",
+                                                                            "conversionRules": {
+                                                                                "melee_nonlethal": "$loc UI_ITEM_ONLINETRAITS_MELEE_NONLETHAL",
+                                                                                "melee_lethal": "$loc UI_ITEM_ONLINETRAITS_MELEE_LETHAL",
+                                                                                "throw_nonlethal": "$loc UI_ITEM_ONLINETRAITS_THROW_NONLETHAL",
+                                                                                "throw_lethal": "$loc UI_ITEM_ONLINETRAITS_THROW_LETHAL",
+                                                                                "fiberwire": "$loc UI_ITEM_ONLINETRAITS_FIBERWIRE",
+                                                                                "syringe_poison": "$loc UI_ITEM_ONLINETRAITS_SYRINGE_POISON",
+                                                                                "consumable_poison": "$loc UI_ITEM_ONLINETRAITS_CONSUMABLE_POISON",
+                                                                                "accident_explosion": "$loc UI_KILL_METHOD_ACCIDENT_EXPLOSION",
+                                                                                "detonator_explosive_device": "$loc UI_KILL_METHOD_EXPLOSIVE",
+                                                                                "explosive_device": "$loc UI_KILL_METHOD_EXPLOSIVE"
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            "select": {
+                                                "replace-children": {
+                                                    "target": "headline_container",
+                                                    "children": {
+                                                        "id": "headline_element",
+                                                        "view": "menu3.basic.HeadlineElement",
+                                                        "selectable": false,
+                                                        "pressable": false,
+                                                        "data": {
+                                                            "header": {
+                                                                "$if $arg IsUpgradeMastery": {
+                                                                    "$then": "$loc UI_MENU_PAGE_MASTERY_UPGRADE_TITLE",
+                                                                    "$else": "$loc $.TypeLocaKey"
+                                                                }
+                                                            },
+                                                            "title": "$($item $.Item).name",
+                                                            "typeicon": {
+                                                                "$switch $.Unlockable.Type": [
+                                                                    {
+                                                                        "case": "access",
+                                                                        "return": "starting"
+                                                                    },
+                                                                    {
+                                                                        "case": "agencypickup",
+                                                                        "return": "stashpointempty"
+                                                                    },
+                                                                    {
+                                                                        "case": "loadoutunlock",
+                                                                        "return": "pistol"
+                                                                    },
+                                                                    {
+                                                                        "case": "difficultyunlock",
+                                                                        "return": "difficultylevel"
+                                                                    },
+                                                                    {
+                                                                        "default": "$.Unlockable.Subtype"
+                                                                    }
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    }
+}

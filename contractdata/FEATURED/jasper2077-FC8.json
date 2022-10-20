@@ -1,0 +1,225 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Type": "statemachine",
+                "Id": "94974447-9bfd-4fec-9506-d1a9e8d2a64a",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository 89c446da-527e-4bd1-b707-6f78949ffd38).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 89c446da-527e-4bd1-b707-6f78949ffd38).Name"
+                        }
+                    }
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["89c446da-527e-4bd1-b707-6f78949ffd38"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "89c446da-527e-4bd1-b707-6f78949ffd38"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "TargetConditions": [
+                    {
+                        "Type": "hitmansuit",
+                        "RepositoryId": "69fac809-4130-4068-86c1-b3ff820a117e",
+                        "HardCondition": false,
+                        "ObjectiveId": "8f91a744-4820-4bc6-9fdb-f255da53f5e4",
+                        "KillMethod": ""
+                    },
+                    {
+                        "Type": "killmethod",
+                        "RepositoryId": "a8a0c154-c36f-413e-8f29-b83a1b7a22f0",
+                        "HardCondition": false,
+                        "ObjectiveId": "3d320107-8118-4256-a85e-83234eaeb32f",
+                        "KillMethod": "accident_explosion"
+                    }
+                ]
+            },
+            {
+                "Type": "statemachine",
+                "Id": "8f91a744-4820-4bc6-9fdb-f255da53f5e4",
+                "Category": "secondary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["89c446da-527e-4bd1-b707-6f78949ffd38"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "89c446da-527e-4bd1-b707-6f78949ffd38"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitIsHitmanSuit",
+                                                    true
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "89c446da-527e-4bd1-b707-6f78949ffd38"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "3d320107-8118-4256-a85e-83234eaeb32f",
+                "Category": "secondary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["89c446da-527e-4bd1-b707-6f78949ffd38"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "89c446da-527e-4bd1-b707-6f78949ffd38"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "accident_explosion"
+                                                        ]
+                                                    },
+                                                    "in": [
+                                                        "$Value.KillMethodBroad",
+                                                        "$Value.KillMethodStrict"
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "89c446da-527e-4bd1-b707-6f78949ffd38"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "burger",
+                "Id": "1a2a9e52-f25c-489c-bb20-d99355527ebb",
+                "Type": "statemachine",
+                "ObjectiveType": "custom",
+                "Category": "secondary",
+                "Image": "images/unlockables/item_perspective_25bc1a6d-c618-43ee-9c1f-81347ed430a6_0.jpg",
+                "IsHidden": false,
+                "BriefingName": "Cheeseburger",
+                "BriefingText": "Get Roy's cheeseburger.",
+                "LongBriefingText": "Get Roy's cheeseburger.",
+                "HUDTemplate": {
+                    "display": "Retrieve the cheeseburger.",
+                    "iconType": 17
+                },
+                "Definition": {
+                    "Context": {
+                        "Targets": ["25bc1a6d-c618-43ee-9c1f-81347ed430a6"]
+                    },
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "setpieces": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "25bc1a6d-c618-43ee-9c1f-81347ed430a6"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "GameChangers": [],
+        "Bricks": []
+    },
+    "Metadata": {
+        "Title": "Slippery floor",
+        "Description": "Hello Munga and Muffins!\r\rThis bank is a disgrace!\rThere are puddles everywhere and nobody is doing anything about them.\rCreate 5 accidents with them so the number of complaints will push them to do something about the puddles.\r\rOh and bring me Roy&apos;s Cheeseburger please!\r\rHappy hunting!\n\nCreated By: Jasper_2077\nCurated By: Jasper_2077",
+        "ScenePath": "assembly:/_pro/scenes/missions/Greedy/mission_raccoon/scene_raccoon_basic.entity",
+        "Location": "LOCATION_GREEDY_RACCOON",
+        "IsPublished": true,
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "GameVersion": "8.3.0.0",
+        "ServerVersion": "8.3.0.21",
+        "Type": "featured",
+        "Id": "13d41ab3-4774-4caa-87d1-8d6d31df0423",
+        "PublicId": "124284133748",
+        "TileImage": "$($repository 89c446da-527e-4bd1-b707-6f78949ffd38).Image",
+        "GroupObjectiveDisplayOrder": [
+            {
+                "Id": "94974447-9bfd-4fec-9506-d1a9e8d2a64a"
+            },
+            {
+                "Id": "8f91a744-4820-4bc6-9fdb-f255da53f5e4"
+            },
+            {
+                "Id": "3d320107-8118-4256-a85e-83234eaeb32f"
+            }
+        ],
+        "CreationTimestamp": "2021-04-09T14:02:35.7936676Z",
+        "Entitlements": ["H2_LEGACY_EXPANSION"]
+    },
+    "UserData": {}
+}

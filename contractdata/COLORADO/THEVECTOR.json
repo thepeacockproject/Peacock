@@ -1,0 +1,201 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "e6b988c1-872e-449a-b233-ef34f2905f57",
+                "IsHidden": false,
+                "Primary": true,
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "a109591e-1225-4043-9a12-c4535dc28764"
+                    }
+                }
+            },
+            {
+                "Id": "0122e0cc-cc4c-40e9-94f7-5832733414a4",
+                "Category": "primary",
+                "IsHidden": true,
+                "ExcludeFromScoring": true,
+                "BriefingText": "$loc UI_CONTRACT_RABIES_DOCTOR_ESCAPING_DESC",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "-": {
+                                "Transition": "Success"
+                            }
+                        },
+                        "Success": {
+                            "DoctorEscaped": {
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "11d9655f-190c-4181-be5f-30cadd50dc3c",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": true,
+                "IsHidden": true,
+                "Image": "images/contracts/whitespider/003_rabies/Rabies_Eliminate_Infected_Obj.jpg",
+                "BriefingName": "$loc UI_CONTRACT_RABIES_ELIMINATE_INFECTED_TITLE",
+                "BriefingText": "$loc UI_CONTRACT_RABIES_ELIMINATE_INFECTED_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_RABIES_ELIMINATE_INFECTED_OBJ"
+                },
+                "Type": "statemachine",
+                "Scope": "hit",
+                "Definition": {
+                    "ContextListeners": {
+                        "TargetsCounter": {
+                            "type": "objective-counter",
+                            "header": "UI_CONTRACT_FLU_ELIMINATE_INFECTED_COUNT_HEAD"
+                        }
+                    },
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": [],
+                        "TargetsCounter": 0
+                    },
+                    "States": {
+                        "Start": {
+                            "InfectedPicked": [
+                                {
+                                    "Actions": {
+                                        "$pushunique": [
+                                            "Targets",
+                                            "$Value.RepositoryId"
+                                        ],
+                                        "$inc": "TargetsCounter"
+                                    },
+                                    "Transition": "TargetPicked"
+                                }
+                            ]
+                        },
+                        "TargetPicked": {
+                            "InfectedPicked": [
+                                {
+                                    "Actions": {
+                                        "$pushunique": [
+                                            "Targets",
+                                            "$Value.RepositoryId"
+                                        ],
+                                        "$inc": "TargetsCounter"
+                                    }
+                                }
+                            ],
+                            "Kill": [
+                                {
+                                    "Actions": {
+                                        "$pushunique": [
+                                            "KilledActors",
+                                            "$Value.RepositoryId"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "Actions": {
+                                        "$dec": "TargetsCounter"
+                                    },
+                                    "Condition": {
+                                        "$inarray": {
+                                            "in": "$.Targets",
+                                            "?": {
+                                                "$eq": [
+                                                    "$.#",
+                                                    "$Value.RepositoryId"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$all": {
+                                            "in": "$.Targets",
+                                            "?": {
+                                                "$any": {
+                                                    "in": "$.KilledActors",
+                                                    "?": {
+                                                        "$eq": ["$.#", "$.##"]
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "4e0a4855-720c-4557-85f2-8195048baf36",
+                "Category": "primary",
+                "IsHidden": true,
+                "ExcludeFromScoring": true,
+                "BriefingText": "$loc UI_CONTRACT_RABIES_INFECTED_ESCAPING_DESC",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "-": {
+                                "Transition": "Success"
+                            }
+                        },
+                        "Success": {
+                            "InfectedEscaped": {
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_PRO/Scenes/Missions/Colorado_2/mission_rabies.brick"
+        ],
+        "EnableSaving": true,
+        "Entrances": ["237e7963-574a-48c8-8d8a-e415b30f5643"],
+        "GameChangers": [],
+        "MandatoryLoadout": [
+            {
+                "Id": "TOKEN_OUTFIT_COLORADO_HERO_RABIESSUIT",
+                "Properties": {
+                    "LoadoutSlot": "disguise",
+                    "RepositoryId": "e3b30dec-d130-4091-85d4-020a29040b74"
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "BriefingVideo": "briefing_rabies",
+        "CodeName_Hint": "Rabies",
+        "CreationTimestamp": "2012-12-12T12:12:12.743Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "DebriefingVideo": "debriefing_rabies",
+        "Description": "UI_CONTRACT_RABIES_DESC",
+        "Id": "ada6205e-6ee8-4189-9cdb-4947cccd84f4",
+        "IsPublished": true,
+        "LastUpdate": "2021-03-16T13:08:04.571199Z",
+        "Location": "LOCATION_COLORADO_RABIES",
+        "Release": "1.13.x",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Colorado_2/scene_rabies.entity",
+        "TileImage": "images/contracts/whitespider/003_rabies/tile.jpg",
+        "Title": "UI_CONTRACT_RABIES_TITLE",
+        "Type": "campaign",
+        "GroupTitle": "UI_CONTRACT_CAMPAIGN_WHITE_SPIDER_TITLE",
+        "InGroup": "3d407b2b-e2f2-4204-9c08-7da67baa78fd",
+        "RequiredUnlockable": "ACCESS_HIT_RABIES",
+        "Drops": ["ACCESS_HIT_FLU"],
+        "Entitlements": ["H1_LEGACY_EXPANSION"],
+        "PublicId": "017572964047"
+    },
+    "UserData": {}
+}

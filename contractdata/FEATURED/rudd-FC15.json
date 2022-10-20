@@ -1,0 +1,198 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Type": "statemachine",
+                "Id": "230f1378-e1eb-41f2-9bed-096b13e43b7a",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository 87fe3062-32ba-42be-909c-7bcd78b53d4c).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 87fe3062-32ba-42be-909c-7bcd78b53d4c).Name"
+                        }
+                    }
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["87fe3062-32ba-42be-909c-7bcd78b53d4c"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "87fe3062-32ba-42be-909c-7bcd78b53d4c"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "3c2319a9-aa7b-46ec-9803-bea6ccbe642b",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository 835bc2c9-5d0f-405f-9860-9cc99f3ee486).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 835bc2c9-5d0f-405f-9860-9cc99f3ee486).Name"
+                        }
+                    }
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["835bc2c9-5d0f-405f-9860-9cc99f3ee486"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "835bc2c9-5d0f-405f-9860-9cc99f3ee486"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "a06994b1-b0c2-4c64-8c06-7585bcd43b35",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository 695a9aa2-94db-4072-a3eb-b8df627714d4).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 695a9aa2-94db-4072-a3eb-b8df627714d4).Name"
+                        }
+                    }
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["695a9aa2-94db-4072-a3eb-b8df627714d4"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "695a9aa2-94db-4072-a3eb-b8df627714d4"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "GameChangers": ["63055f1a-bcd2-4e0f-8caf-b446f01d02f3"],
+        "GameDifficulties": [
+            {
+                "Difficulty": "easy",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/mumbai/difficulty_easy_mumbai_mongoose.brick",
+                    "assembly:/_pro/scenes/missions/mumbai/difficulty_easy_mumbai_kingcobra.brick"
+                ]
+            },
+            {
+                "Difficulty": "normal",
+                "Bricks": []
+            },
+            {
+                "Difficulty": "hard",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/mumbai/difficulty_hard_mumbai_kingcobra.brick",
+                    "assembly:/_pro/scenes/missions/mumbai/difficulty_hard_mumbai_mongoose.brick"
+                ]
+            }
+        ],
+        "Bricks": [],
+        "Stashpoints": [],
+        "Entrances": [
+            "37dda555-cdf2-4444-8de2-4659d371be4c",
+            "c7596e36-43ae-4e03-aa66-84f6a88f0cd3",
+            "f1bb66b5-b446-4a00-a951-af7310e28566",
+            "37af536b-3f36-49ed-986a-9d55f4481ed4",
+            "774b7dec-ce57-4318-9dbd-f6d7fa39ef1d",
+            "f4659b56-65c3-4f4f-8f20-11d09af2f2d2",
+            "724b24ef-e87f-4060-b7ed-5c315fb0f29f",
+            "0e33bbeb-2c77-419a-be0c-ce9c3627d543",
+            "51145d77-882e-4be0-a471-73704497aa8b",
+            "8b1c3ba0-9c91-4b3e-96f9-7d3c8632b7c2"
+        ]
+    },
+    "Metadata": {
+        "Title": "Moved On Mk II",
+        "Description": "These people are not where they usually are and it's triggering my OCD. Kill them.\r\rBy: Kevin Rudd",
+        "ScenePath": "assembly:/_pro/scenes/missions/mumbai/scene_kingcobra.entity",
+        "Location": "LOCATION_MUMBAI_KINGCOBRA",
+        "IsPublished": true,
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "GameVersion": "7.17.0.0",
+        "ServerVersion": "7.17.6.0",
+        "Type": "featured",
+        "Id": "f9c0cc2c-d779-4641-a011-a39734349058",
+        "PublicId": "199918354852",
+        "TileImage": "images/contracts/featured/movedon.jpg",
+        "Entitlements": ["H2_LEGACY_EXPANSION"],
+        "GroupObjectiveDisplayOrder": [
+            {
+                "Id": "230f1378-e1eb-41f2-9bed-096b13e43b7a"
+            },
+            {
+                "Id": "3c2319a9-aa7b-46ec-9803-bea6ccbe642b"
+            },
+            {
+                "Id": "a06994b1-b0c2-4c64-8c06-7585bcd43b35"
+            },
+            {
+                "Id": "00000000-0000-0000-0000-000000000000"
+            },
+            {
+                "Id": "00000000-0000-0000-0000-000000000000"
+            },
+            {
+                "Id": "63055f1a-bcd2-4e0f-8caf-b446f01d02f3"
+            }
+        ],
+        "CreationTimestamp": "2020-10-20T10:43:21.68Z"
+    },
+    "UserData": {}
+}

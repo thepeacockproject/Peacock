@@ -1,0 +1,293 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Type": "statemachine",
+                "Id": "0fb9f3c5-cab2-412d-b52c-9d9774046708",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository 8af9c2be-066a-4f56-90d5-fa79d3d97f41).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 8af9c2be-066a-4f56-90d5-fa79d3d97f41).Name"
+                        }
+                    }
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["8af9c2be-066a-4f56-90d5-fa79d3d97f41"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "8af9c2be-066a-4f56-90d5-fa79d3d97f41"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod_specificitem",
+                        "RepositoryId": "a2c56798-026f-4d0b-9480-de0d2525a119",
+                        "HardCondition": false,
+                        "ObjectiveId": "b463d14d-de61-4fd2-9bdf-1c5a8dc2848f",
+                        "KillMethod": "melee_lethal"
+                    }
+                ]
+            },
+            {
+                "Type": "statemachine",
+                "Id": "b463d14d-de61-4fd2-9bdf-1c5a8dc2848f",
+                "Category": "secondary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["8af9c2be-066a-4f56-90d5-fa79d3d97f41"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "8af9c2be-066a-4f56-90d5-fa79d3d97f41"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$any": {
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "melee_lethal"
+                                                                ]
+                                                            },
+                                                            "in": [
+                                                                "$Value.KillMethodBroad",
+                                                                "$Value.KillMethodStrict"
+                                                            ]
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "a2c56798-026f-4d0b-9480-de0d2525a119"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "8af9c2be-066a-4f56-90d5-fa79d3d97f41"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "5d24a588-5253-471f-8398-41aa3a2d74c7",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository 8421c112-bea1-4001-aa6e-3aeda2aee3d2).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 8421c112-bea1-4001-aa6e-3aeda2aee3d2).Name"
+                        }
+                    }
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["8421c112-bea1-4001-aa6e-3aeda2aee3d2"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "8421c112-bea1-4001-aa6e-3aeda2aee3d2"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod_specificitem",
+                        "RepositoryId": "6ecf1f15-453c-4783-9c70-8777c83934d7",
+                        "HardCondition": false,
+                        "ObjectiveId": "5000b62a-d6c1-47d0-bb08-5fb903691685",
+                        "KillMethod": "melee_lethal"
+                    }
+                ]
+            },
+            {
+                "Type": "statemachine",
+                "Id": "5000b62a-d6c1-47d0-bb08-5fb903691685",
+                "Category": "secondary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["8421c112-bea1-4001-aa6e-3aeda2aee3d2"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "8421c112-bea1-4001-aa6e-3aeda2aee3d2"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$any": {
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "melee_lethal"
+                                                                ]
+                                                            },
+                                                            "in": [
+                                                                "$Value.KillMethodBroad",
+                                                                "$Value.KillMethodStrict"
+                                                            ]
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "6ecf1f15-453c-4783-9c70-8777c83934d7"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "8421c112-bea1-4001-aa6e-3aeda2aee3d2"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "GameChangers": [
+            "008d2eb9-c1c8-44e0-a636-ccca63629f3c",
+            "f96e94b7-1c0e-49c9-9332-07346a955fd2"
+        ],
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/opulent/mission_stingray/gamechanger_opulent_ArcticThyme.brick",
+            "assembly:/_pro/scenes/missions/opulent/mission_stingray/gamechanger_opulent_ArcticThyme_level3.brick"
+        ],
+        "MandatoryLoadout": [
+            {
+                "Id": "TOKEN_OUTFIT_HERO_PIRATE_SUIT",
+                "Properties": {
+                    "LoadoutSlot": "outfit",
+                    "RepositoryId": "052cbf5d-e268-479a-a705-17609d528182"
+                }
+            },
+            {
+                "Id": "PROP_MELEE_RUSTYPIRATESABER",
+                "Properties": {
+                    "LoadoutSlot": "gear",
+                    "RepositoryId": "fba6e133-78d1-4af1-8450-1ff30466c553"
+                }
+            }
+        ],
+        "Stashpoints": [],
+        "Entrances": ["d8894bef-3ab0-4b7f-80ef-da0649e11f28"]
+    },
+    "Metadata": {
+        "Title": "Captain Jack Magpie",
+        "Description": "Oh where have the waves carried me? What splendidly rich people! So much glittering, shining booty!\rBut, what is this? Mechanical eyes? Keys like shards? Cannons that fit in pockets?\rThat can only mean that there must be particularly valuable treasure hidden away! I wouldn’t mind if they are not only shiny but also deadly!\rBy: Urben\rCurated by: Kevin Rudd",
+        "ScenePath": "assembly:/_pro/scenes/missions/Opulent/mission_stingray/scene_stingray_arcticThyme.entity",
+        "Location": "LOCATION_OPULENT_STINGRAY",
+        "IsPublished": true,
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "GameVersion": "7.17.0.0",
+        "ServerVersion": "7.17.6.0",
+        "Type": "featured",
+        "Id": "2d26476a-aad3-4a75-b2cd-afaf037876b7",
+        "PublicId": "126850056252",
+        "TileImage": "images/contracts/featured/JackMagpie.jpg",
+        "Entitlements": ["H2_LEGACY_EXPANSION"],
+        "GroupObjectiveDisplayOrder": [
+            {
+                "Id": "0fb9f3c5-cab2-412d-b52c-9d9774046708"
+            },
+            {
+                "Id": "5d24a588-5253-471f-8398-41aa3a2d74c7"
+            },
+            {
+                "Id": "00000000-0000-0000-0000-000000000000"
+            },
+            {
+                "Id": "00000000-0000-0000-0000-000000000000"
+            },
+            {
+                "Id": "008d2eb9-c1c8-44e0-a636-ccca63629f3c"
+            },
+            {
+                "Id": "f96e94b7-1c0e-49c9-9332-07346a955fd2"
+            }
+        ],
+        "CreationTimestamp": "2020-10-28T00:39:10.4633333Z"
+    },
+    "UserData": {}
+}

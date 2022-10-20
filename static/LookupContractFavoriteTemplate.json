@@ -1,0 +1,351 @@
+{
+    "pageisclosable": true,
+    "body": {
+        "controller": "list",
+        "direction": "horizontal",
+        "children": {
+            "id": "dataNode",
+            "data": {
+                "creatorname": "$($user $($arg UserCentricContract).Contract.Metadata.CreatorUserId).name"
+            },
+            "stateproviders": [
+                {
+                    "type": "lazycontractavailability",
+                    "contract": "$.UserCentricContract.Contract"
+                },
+                {
+                    "type": "userresolution",
+                    "target": "creatorname",
+                    "profileid": "$($arg UserCentricContract).Contract.Metadata.CreatorUserId"
+                }
+            ],
+            "actions": {
+                "on-entitlement-missing": {
+                    "set-persistent-context": {
+                        "target": "gamemode_contracts",
+                        "actions": {
+                            "show-modal": {
+                                "config": {
+                                    "view": "menu3.modal.ModalDialogGeneric",
+                                    "buttons": ["$loc UI_DIALOG_OK"],
+                                    "data": {
+                                        "title": "$loc UI_CONTENT_UNKNOWN_DLC_TITLE",
+                                        "description": "$loc UI_CONTENT_UNKNOWN_DLC_TEXT"
+                                    }
+                                },
+                                "onbutton": []
+                            }
+                        }
+                    },
+                    "request-back": {}
+                },
+                "on-content-unknown": {
+                    "set-persistent-context": {
+                        "target": "gamemode_contracts",
+                        "actions": {
+                            "show-modal": {
+                                "config": {
+                                    "view": "menu3.modal.ModalDialogGeneric",
+                                    "buttons": ["$loc UI_DIALOG_OK"],
+                                    "data": {
+                                        "title": "$loc UI_CONTENT_UNKNOWN_DLC_TITLE",
+                                        "description": "$loc UI_CONTENT_UNKNOWN_DLC_TEXT"
+                                    }
+                                },
+                                "onbutton": []
+                            }
+                        }
+                    },
+                    "request-back": {}
+                },
+                "on-content-not-owned": {
+                    "set-persistent-context": {
+                        "target": "gamemode_contracts",
+                        "actions": {
+                            "show-modal": {
+                                "config": {
+                                    "view": "menu3.modal.ModalDialogGeneric",
+                                    "buttons": ["$loc UI_DIALOG_OK"],
+                                    "data": {
+                                        "title": "$loc UI_CONTENT_UNKNOWN_DLC_TITLE",
+                                        "description": "$loc UI_CONTENT_UNKNOWN_DLC_TEXT"
+                                    }
+                                },
+                                "onbutton": []
+                            }
+                        }
+                    },
+                    "request-back": {}
+                },
+                "on-content-not-installed": {
+                    "set-persistent-context": {
+                        "target": "gamemode_contracts",
+                        "actions": {
+                            "show-modal": {
+                                "config": {
+                                    "view": "menu3.modal.ModalDialogGeneric",
+                                    "buttons": ["$loc UI_DIALOG_OK"],
+                                    "data": {
+                                        "title": "$loc UI_CONTENT_UNKNOWN_DLC_TITLE",
+                                        "description": "$loc UI_CONTENT_UNKNOWN_DLC_TEXT"
+                                    }
+                                },
+                                "onbutton": []
+                            }
+                        }
+                    },
+                    "request-back": {}
+                },
+                "on-content-downloading": {
+                    "set-persistent-context": {
+                        "target": "gamemode_contracts",
+                        "actions": {
+                            "show-modal": {
+                                "config": {
+                                    "view": "menu3.modal.ModalDialogGeneric",
+                                    "buttons": ["$loc UI_DIALOG_OK"],
+                                    "data": {
+                                        "title": "$loc UI_CONTENT_UNKNOWN_DLC_TITLE",
+                                        "description": "$loc UI_CONTENT_UNKNOWN_DLC_TEXT"
+                                    }
+                                },
+                                "onbutton": []
+                            }
+                        }
+                    },
+                    "request-back": {}
+                },
+                "on-content-update-required": {
+                    "set-persistent-context": {
+                        "target": "gamemode_contracts",
+                        "actions": {
+                            "show-modal": {
+                                "config": {
+                                    "view": "menu3.modal.ModalDialogGeneric",
+                                    "buttons": ["$loc UI_DIALOG_OK"],
+                                    "data": {
+                                        "title": "$loc UI_CONTENT_UNKNOWN_DLC_TITLE",
+                                        "description": "$loc UI_CONTENT_UNKNOWN_DLC_TEXT"
+                                    }
+                                },
+                                "onbutton": []
+                            }
+                        }
+                    },
+                    "request-back": {}
+                },
+                "on-content-installing": {
+                    "set-persistent-context": {
+                        "target": "gamemode_contracts",
+                        "actions": {
+                            "show-modal": {
+                                "config": {
+                                    "view": "menu3.modal.ModalDialogGeneric",
+                                    "buttons": ["$loc UI_DIALOG_OK"],
+                                    "data": {
+                                        "title": "$loc UI_CONTENT_UNKNOWN_DLC_TITLE",
+                                        "description": "$loc UI_CONTENT_UNKNOWN_DLC_TEXT"
+                                    }
+                                },
+                                "onbutton": []
+                            }
+                        }
+                    },
+                    "request-back": {}
+                },
+                "on-content-available": {
+                    "set-persistent-context": {
+                        "target": "gamemode_contracts",
+                        "actions": {
+                            "show-modal": {
+                                "config": {
+                                    "view": "menu3.modal.ModalDialogGeneric",
+                                    "buttons": [
+                                        "$loc UI_DIALOG_CONTRACT_SEARCH_CONTRACT_FOUND_BUTTON",
+                                        {
+                                            "$if $.UserCentricContract.Data.PlaylistData.IsAdded": {
+                                                "$then": {
+                                                    "label": "$loc UI_BUTTON_PROMPTS_ACTION_REMOVE_FROM_PLAYLIST",
+                                                    "icon": "trashbin"
+                                                },
+                                                "$else": {
+                                                    "label": "$loc UI_BUTTON_PROMPTS_ACTION_ADD_TO_PLAYLIST",
+                                                    "icon": "addtolist"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "label": "$loc UI_DIALOG_CANCEL",
+                                            "type": "cancel"
+                                        }
+                                    ],
+                                    "data": {
+                                        "title": "$loc UI_DIALOG_CONTRACT_SEARCH_CONTRACT_FOUND_TITLE",
+                                        "information": [
+                                            {
+                                                "contract": {
+                                                    "$mergeobjects": [
+                                                        {
+                                                            "type": "$.Contract.Metadata.Type",
+                                                            "name": {
+                                                                "$switch $.Contract.Metadata.Type": [
+                                                                    {
+                                                                        "case": "usercreated",
+                                                                        "return": {
+                                                                            "$if $($arg _ugcrestricted)": {
+                                                                                "$then": "$loc UI_CONTRACT_NO_ACCESS_UGC",
+                                                                                "$else": "$.Contract.Metadata.Title"
+                                                                            }
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        "case": "featured",
+                                                                        "return": "$.Contract.Metadata.Title"
+                                                                    },
+                                                                    {
+                                                                        "default": "$loc $.Contract.Metadata.Title"
+                                                                    }
+                                                                ]
+                                                            },
+                                                            "creator": "$($user $.Contract.Metadata.CreatorUserId).name",
+                                                            "id": "$formatpublicid $.Contract.Metadata.PublicId",
+                                                            "creationdate": "$.Contract.Metadata.CreationTimestamp",
+                                                            "description": "$loc $.Contract.Metadata.Description",
+                                                            "image": {
+                                                                "$if $.Contract.Metadata.TileImage": {
+                                                                    "$then": {
+                                                                        "$if $gt ($arraysize $.Contract.Metadata.TileImage,0)": {
+                                                                            "$then": {
+                                                                                "$setup": {
+                                                                                    "$set EngineMode": {
+                                                                                        "$if $isnull $.EngineMode": {
+                                                                                            "$then": {
+                                                                                                "$if $isnull $arg EngineMode": {
+                                                                                                    "$then": "singleplayer",
+                                                                                                    "$else": "$arg EngineMode"
+                                                                                                }
+                                                                                            },
+                                                                                            "$else": "$.EngineMode"
+                                                                                        }
+                                                                                    },
+                                                                                    "$set TileImageOrdered": {
+                                                                                        "$orderby": {
+                                                                                            "from": "$expand $.Contract.Metadata.TileImage",
+                                                                                            "by": "Mode",
+                                                                                            "order": [
+                                                                                                "$.EngineMode"
+                                                                                            ]
+                                                                                        }
+                                                                                    },
+                                                                                    "$in": "$res $.TileImageOrdered[0].Image"
+                                                                                }
+                                                                            },
+                                                                            "$else": "$res $expand $.Contract.Metadata.TileImage"
+                                                                        }
+                                                                    },
+                                                                    "$else": "$res images/ui/tiles/defaultmenutilesmall.jpg"
+                                                                }
+                                                            },
+                                                            "icon": "$.Contract.Metadata.Type",
+                                                            "locked": false,
+                                                            "addedSuccessfullyToPlaylist": "$.AddedSuccessfully",
+                                                            "isInPlaylist": "$.UserCentricContract.Data.PlaylistData.IsAdded"
+                                                        },
+                                                        {
+                                                            "completionstate": {
+                                                                "$use $.UserCentricContract": {
+                                                                    "$switch $.Contract.Metadata.Type": [
+                                                                        {
+                                                                            "case": "usercreated",
+                                                                            "return": {
+                                                                                "$if $.Data.LastPlayedAt": {
+                                                                                    "$then": {
+                                                                                        "$if $.Data.Completed": {
+                                                                                            "$then": "completed",
+                                                                                            "$else": "failed"
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        },
+                                                                        {
+                                                                            "case": "featured",
+                                                                            "return": {
+                                                                                "$if $.Data.LastPlayedAt": {
+                                                                                    "$then": {
+                                                                                        "$if $.Data.Completed": {
+                                                                                            "$then": "completed",
+                                                                                            "$else": "failed"
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        },
+                                                                        {
+                                                                            "case": "escalation",
+                                                                            "return": {
+                                                                                "$if $.Data.LastPlayedAt": {
+                                                                                    "$then": {
+                                                                                        "$if $.Data.EscalationCompleted": {
+                                                                                            "$then": "completed"
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        },
+                                                                        {
+                                                                            "case": "placeholder",
+                                                                            "return": {
+                                                                                "$if $.Data.LastPlayedAt": {
+                                                                                    "$then": {
+                                                                                        "$if $.Data.EscalationCompleted": {
+                                                                                            "$then": "completed"
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        ],
+                                        "userresolution": {
+                                            "informationtarget": "contract.creator",
+                                            "profileid": "$.Contract.Metadata.CreatorUserId"
+                                        }
+                                    }
+                                },
+                                "onbutton": [
+                                    {
+                                        "link": {
+                                            "page": "planning",
+                                            "args": {
+                                                "contractid": "$.Contract.Metadata.Id"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "link": {
+                                            "page": "lookupcontractdialogaddordeletefromplaylist",
+                                            "args": {
+                                                "url": "lookupcontractdialogaddordeletefromplaylist",
+                                                "args": {
+                                                    "contractId": "$.Contract.Metadata.Id"
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "request-back": {}
+                }
+            }
+        }
+    }
+}

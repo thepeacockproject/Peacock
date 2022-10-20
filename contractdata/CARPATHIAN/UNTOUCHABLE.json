@@ -1,0 +1,192 @@
+{
+    "Data": {
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/trapped/mission_wolverine.brick"
+        ],
+        "DevOnlyBricks": [
+            "assembly:/_pro/scenes/missions/trapped/dev_wolverine.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/trapped/vr_overrides_wolverine.brick",
+                    "assembly:/_PRO/Scenes/Missions/trapped/vr_overrides_wolverine_2.brick",
+                    "assembly:/_PRO/Scenes/Missions/trapped/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/trapped/vr_overrides_wolverine.brick",
+                    "assembly:/_PRO/Scenes/Missions/trapped/vr_overrides_wolverine_2.brick"
+                ]
+            }
+        ],
+        "GameChangers": [],
+        "GameDifficulties": [
+            {
+                "Difficulty": "easy",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/trapped/difficulty_easy_trapped_wolverine.brick"
+                ]
+            },
+            {
+                "Difficulty": "normal",
+                "Bricks": []
+            },
+            {
+                "Difficulty": "hard",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/trapped/difficulty_hard_trapped_wolverine.brick"
+                ]
+            }
+        ],
+        "Objectives": [
+            {
+                "_comment": "----- Eliminate Arthur Edwards -----",
+                "Id": "63b987e4-18d7-4a09-8848-4fc4970fa733",
+                "Category": "primary",
+                "Activation": {
+                    "$eq": [
+                        "$c458f79e-f308-49d9-8491-854e04aaeecb",
+                        "Completed"
+                    ]
+                },
+                "RepeatSuccess": 1,
+                "RepeatFailed": 1,
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_WOLVERINE_OBJ_EDWARDS"
+                },
+                "BriefingText": "$loc UI_CONTRACT_WOLVERINE_OBJ_EDWARDS",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "Targets": ["17c40b70-506a-494e-89ef-31360cdead47"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$inarray": {
+                                            "in": "$.Targets",
+                                            "?": {
+                                                "$eq": [
+                                                    "$.#",
+                                                    "$Value.RepositoryId"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ],
+                            "CompleteObjective": [
+                                {
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "-----UI text objective for Eliminate any Providence NPC -----",
+                "Id": "efb1da8a-c282-4b6f-bc1a-7efea39e1421",
+                "Category": "secondary",
+                "Activation": {
+                    "$eq": [
+                        "$c458f79e-f308-49d9-8491-854e04aaeecb",
+                        "Completed"
+                    ]
+                },
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": true
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    }
+                },
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "Scope": "session",
+                "Image": "images/contracts/wolverine/wolverine_providence_logo_obj.jpg",
+                "BriefingName": "$loc UI_CONTRACT_WOLVERINE_ELIMINATE_PROVIDENCE_TITLE",
+                "BriefingText": "$loc UI_CONTRACT_WOLVERINE_ELIMINATE_PROVIDENCE_HEADER",
+                "LongBriefingText": "$loc UI_CONTRACT_WOLVERINE_ELIMINATE_PROVIDENCE_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_WOLVERINE_ELIMINATE_PROVIDENCE_TITLE",
+                    "iconType": 17
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "RemoveOptionalObjective": [
+                                {
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Objective hider -----",
+                "Id": "c458f79e-f308-49d9-8491-854e04aaeecb",
+                "Type": "statemachine",
+                "Category": "condition",
+                "ExcludeFromScoring": true,
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "EnableObjective": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "a3e19d55-64a6-4282-bb3c-d18c3f3e6e29",
+        "CodeName_Hint": "Wolverine",
+        "Release": {
+            "Major": 3,
+            "Minor": 0,
+            "Build": 0,
+            "Revision": -1
+        },
+        "Type": "mission",
+        "Title": "UI_CONTRACT_WOLVERINE_TITLE",
+        "Description": "UI_CONTRACT_WOLVERINE_DESC",
+        "BriefingVideo": "briefing_wolverine",
+        "DebriefingVideo": "debriefing_wolverine",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/trapped/scene_wolverine.entity",
+        "TileImage": "images/contracts/wolverine/wolverine_tile.jpg",
+        "Location": "LOCATION_TRAPPED_WOLVERINE",
+        "IsPublished": true,
+        "LastUpdate": "2021-11-09T14:55:15.4518Z",
+        "CreationTimestamp": "2015-03-25T13:08:00.173Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "NonTargetKillsAllowed": true,
+        "RequiredUnlockable": "ACCESS_HIT_WOLVERINE",
+        "Drops": ["ACCESS_HIT_S3_CONCLUSION"],
+        "Entitlements": ["LOCATION_TRAPPED"],
+        "PublicId": "032822648347"
+    },
+    "UserData": {}
+}

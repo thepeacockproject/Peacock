@@ -1,0 +1,97 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "EnableExits": {
+            "$eq": [
+                "$90be3823-aec0-4403-91dc-3f85979c1c65",
+                "$7a4e0253-2092-4792-a879-00dfe5f3b662",
+                "Completed"
+            ]
+        },
+        "Objectives": [
+            {
+                "Id": "90be3823-aec0-4403-91dc-3f85979c1c65",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_HOGWEED_OBJ_1"
+                },
+                "DisplayAsKillObjective": true,
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["f58711ae-1c69-4e22-a71a-8c54044066af"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "f58711ae-1c69-4e22-a71a-8c54044066af"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "7a4e0253-2092-4792-a879-00dfe5f3b662",
+                "Category": "primary",
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "03ad9aec-d7aa-430b-9655-2516a80b7813"
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_PRO/Scenes/Missions/TheArk/gamechanger_no_constant_glow.brick",
+            "assembly:/_pro/scenes/missions/theark/gamechanger_magpie_guards_enforce_custodians.brick",
+            "assembly:/_pro/scenes/missions/theark/gamechanger_magpie_hogweed_hackable_laptop.brick"
+        ],
+        "GameChangers": ["8aa258f7-c283-446a-87b1-c87cb1e5a995"]
+    },
+    "Metadata": {
+        "Id": "aa4fb2e6-3494-4b88-a882-43ce135f8b1b",
+        "InGroup": "d0a0fa03-08a7-43ef-b5e8-d8662d015372",
+        "IsPublished": false,
+        "CreationTimestamp": "2018-10-04T15:21:50.3066392Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_HOGWEED_LEVEL_2_TITLE",
+        "Description": "",
+        "CodeName_Hint": "Hogweed Level 2",
+        "Location": "LOCATION_NORTHSEA",
+        "ScenePath": "assembly:/_pro/scenes/missions/theark/scene_magpie.entity",
+        "Type": "escalation",
+        "TileImage": "images/contracts/escalation/contractescalation_magpie_hogweed.jpg",
+        "GroupObjectiveDisplayOrder": [
+            {
+                "IsNew": true,
+                "Id": "7a4e0253-2092-4792-a879-00dfe5f3b662"
+            },
+            {
+                "IsNew": true,
+                "Id": "8aa258f7-c283-446a-87b1-c87cb1e5a995"
+            },
+            {
+                "Id": "90be3823-aec0-4403-91dc-3f85979c1c65"
+            }
+        ],
+        "Entitlements": ["H2_LEGACY_STANDARD"],
+        "LastUpdate": "2021-04-20T12:25:03.0417128Z",
+        "PublicId": "021010993847"
+    },
+    "UserData": {}
+}

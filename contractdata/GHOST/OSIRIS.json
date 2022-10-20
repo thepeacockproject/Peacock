@@ -1,0 +1,216 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "318b7374-bceb-4fbe-909f-a5647cdf6f43",
+                "ObjectiveType": "custom",
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Image": "images/contracts/AssRace/AssRaceTarget.jpg",
+                "BriefingName": "$loc UI_CONTRACT_VS_RACE_TARGETS_OBJ_NAME",
+                "BriefingText": "$loc UI_CONTRACT_VS_RACE_TARGETS_OBJ_DESC",
+                "Category": "primary",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_VS_RACE_TARGETS_OBJ"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "ContextListeners": {
+                        "CooldownActive": {
+                            "type": "custom",
+                            "HUDTemplate": {
+                                "display": {
+                                    "$loc": {
+                                        "key": "UI_CONTRACT_VS_RACE_TARGET_INCOMING_OBJ",
+                                        "data": []
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": [],
+                        "CooldownActive": 1,
+                        "CooldownInActive": 1
+                    },
+                    "States": {
+                        "Start": {
+                            "TargetPickedConfirm": [
+                                {
+                                    "Actions": [
+                                        {
+                                            "$reset": "Targets"
+                                        },
+                                        {
+                                            "$pushunique": [
+                                                "Targets",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    ],
+                                    "Transition": "TargetPicked"
+                                }
+                            ]
+                        },
+                        "TargetPicked": {
+                            "TimerExpirationStart": [
+                                {
+                                    "Actions": {
+                                        "$dec": "CooldownActive"
+                                    },
+                                    "Transition": "CooldownRunning"
+                                }
+                            ],
+                            "TimerExpirationEnd": [
+                                {
+                                    "Actions": {
+                                        "$dec": "CooldownActive"
+                                    }
+                                }
+                            ],
+                            "TargetPickedConfirm": [
+                                {
+                                    "Actions": [
+                                        {
+                                            "$reset": "Targets"
+                                        },
+                                        {
+                                            "$pushunique": [
+                                                "Targets",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        "CooldownRunning": {
+                            "$timer": [
+                                {
+                                    "Condition": {
+                                        "$after": 20
+                                    },
+                                    "Actions": {
+                                        "$dec": "CooldownInActive"
+                                    },
+                                    "Transition": "TargetPicked"
+                                }
+                            ],
+                            "TimerExpirationEnd": [
+                                {
+                                    "Actions": {
+                                        "$dec": "CooldownInActive"
+                                    }
+                                }
+                            ],
+                            "TargetPickedConfirm": [
+                                {
+                                    "Actions": [
+                                        {
+                                            "$reset": "Targets"
+                                        },
+                                        {
+                                            "$pushunique": [
+                                                "Targets",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/miami/versus_targets_miami.brick",
+            "assembly:/_pro/scenes/missions/miami/versus_items_miami.brick",
+            "assembly:/_pro/scenes/missions/miami/versus_entrance_miami.brick",
+            "assembly:/_PRO/Scenes/bricks/ui_versus.brick",
+            "assembly:/_PRO/Scenes/bricks/vs_race_multiplayer.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/miami/vr_overrides_flamingo.brick",
+                    "assembly:/_PRO/scenes/missions/miami/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/miami/vr_overrides_flamingo.brick"
+                ]
+            }
+        ],
+        "Entrances": [],
+        "GameChangers": [],
+        "EngineModesBricks": [],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "CodeName_Hint": "Osiris - Ghost Mode Miami ",
+        "CreationTimestamp": "2012-12-12T12:12:12.7433333Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "TileImage": "images/contracts/assrace/tile.jpg",
+        "Title": "UI_CONTRACT_VS_RACE_NAME",
+        "Description": "UI_CONTRACT_VS_RACE_DESC",
+        "Id": "c854d9c7-8991-42db-a2e4-3cf93e645e81",
+        "IsPublished": true,
+        "IsVersus": true,
+        "LastUpdate": "2020-06-18T12:56:37.0083457Z",
+        "Location": "LOCATION_MIAMI",
+        "Release": "2.0.x",
+        "SpawnSelectionType": "random",
+        "Gamemodes": ["versus"],
+        "Enginemodes": ["singleplayer", "multiplayer"],
+        "CharacterSetup": [
+            {
+                "Mode": "multiplayer",
+                "Characters": [
+                    {
+                        "Name": "47",
+                        "Id": "44eba719-4d3a-4f27-9437-3f29821934b3"
+                    },
+                    {
+                        "Name": "47",
+                        "Id": "44eba719-4d3a-4f27-9437-3f29821934b3"
+                    }
+                ]
+            }
+        ],
+        "ScenePath": "assembly:/_pro/scenes/missions/miami/scene_flamingo.entity",
+        "Type": "vsrace",
+        "UserData": null,
+        "Scoring": {
+            "Kill": {
+                "UnnoticedTarget": 1,
+                "NoticedTarget": 0,
+                "NoticedNonTarget": -1,
+                "UnnoticedNonTarget": -1
+            },
+            "AccidentKill": 1,
+            "AsyncKill": {}
+        },
+        "EndConditions": {
+            "PointLimit": 5
+        },
+        "TargetExpiration": 20,
+        "TargetExpirationReduced": 10,
+        "TargetLifeTime": 0,
+        "NonTargetKillPenaltyEnabled": false,
+        "NoticedTargetStreakPenaltyMax": 60,
+        "PublicId": "011523680847",
+        "IsFeatured": false,
+        "OpportunityData": []
+    },
+    "UserData": {}
+}

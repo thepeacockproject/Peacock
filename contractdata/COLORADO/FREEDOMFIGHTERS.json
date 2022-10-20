@@ -1,0 +1,338 @@
+{
+    "Data": {
+        "EnableExits": {
+            "$eq": [
+                "$53a78c2d-e25d-4dd1-b3af-6091b08211a0",
+                "$2ffceeaf-9c3a-4aef-a897-857538538c7f",
+                "$880e6299-195f-4fca-8a09-13257f5087a2",
+                "$681c4058-7035-4a30-8b42-393600508361",
+                "$1a7d60d3-3299-4917-b1e7-e9dd778e20ce",
+                "Completed"
+            ]
+        },
+        "Objectives": [
+            {
+                "_comment": "----- Target Definitions ---------------------------------------------------------------",
+                "Id": "2ffceeaf-9c3a-4aef-a897-857538538c7f",
+                "Category": "primary",
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "5b54d9fb-fa85-4302-a8d5-c5c5e97344c4"
+                    }
+                }
+            },
+            {
+                "Id": "880e6299-195f-4fca-8a09-13257f5087a2",
+                "Category": "primary",
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "963c2774-cb9a-4b0c-ab69-210b2405383b"
+                    }
+                }
+            },
+            {
+                "Id": "681c4058-7035-4a30-8b42-393600508361",
+                "Category": "primary",
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "1a8a827f-932e-49c0-a1b3-e3201795ae19"
+                    }
+                }
+            },
+            {
+                "Id": "1a7d60d3-3299-4917-b1e7-e9dd778e20ce",
+                "Category": "primary",
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "d94f3e83-36e3-453c-8d4b-28c93229826a"
+                    }
+                }
+            },
+            {
+                "_comment": "----- hidden objective to control whether bunker objectives should be activated -----",
+                "Id": "c709c7a7-a223-4e31-aede-400ca67ed302",
+                "Type": "statemachine",
+                "Category": "condition",
+                "ExcludeFromScoring": true,
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "ActivateBunkerObjectives": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- hidden objective to open the exits when the targets are killed after the first playthrough -----",
+                "Id": "53a78c2d-e25d-4dd1-b3af-6091b08211a0",
+                "Type": "statemachine",
+                "Category": "condition",
+                "ExcludeFromScoring": true,
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "TargetsDead_EnableExits": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Locate the Bunker - Completes when HM approaches the scanner---------------------------",
+                "Id": "2937d553-7162-4a49-accd-52c2ac93ab2a",
+                "Type": "statemachine",
+                "Category": "condition",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": false
+                    }
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "Close_To_FaceScanner_1": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- [HIDDEN] Get Roses's Face - Completes when HM has Mask---------------------------",
+                "Id": "346d7dfc-1dcc-4c46-9746-1d925942be84",
+                "Type": "statemachine",
+                "Category": "condition",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": false
+                    }
+                },
+                "Activation": {
+                    "$eq": [
+                        "$2ffceeaf-9c3a-4aef-a897-857538538c7f",
+                        "$880e6299-195f-4fca-8a09-13257f5087a2",
+                        "$681c4058-7035-4a30-8b42-393600508361",
+                        "$1a7d60d3-3299-4917-b1e7-e9dd778e20ce",
+                        "$c709c7a7-a223-4e31-aede-400ca67ed302",
+                        "Completed"
+                    ]
+                },
+                "ObjectiveType": "setpiece",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "47_Has_Mask": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- [VISIBLE] Get Roses's Face - Completes when HM has Mask---------------------------",
+                "Id": "7d386f54-3059-4771-9fe4-2a6b51faa9eb",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "OnInactive": {
+                    "IfCompleted": {
+                        "State": "Completed"
+                    }
+                },
+                "Activation": {
+                    "$eq": [
+                        "$2ffceeaf-9c3a-4aef-a897-857538538c7f",
+                        "$880e6299-195f-4fca-8a09-13257f5087a2",
+                        "$681c4058-7035-4a30-8b42-393600508361",
+                        "$1a7d60d3-3299-4917-b1e7-e9dd778e20ce",
+                        "$2937d553-7162-4a49-accd-52c2ac93ab2a",
+                        "$c709c7a7-a223-4e31-aede-400ca67ed302",
+                        "Completed"
+                    ]
+                },
+                "ObjectiveType": "custom",
+                "Image": "images/contracts/bull/Contract_Bull_GetSeanRosesFace_ObjectiveTile.jpg",
+                "BriefingName": "$loc UI_CONTRACT_BULL_GET_MASK_OBJECTIVE",
+                "BriefingText": "$loc UI_CONTRACT_BULL_GET_MASK_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_BULL_GET_MASK_OBJECTIVE",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {},
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "47_Has_Mask": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Infiltrate Bunker - Completes when door opened--------------------------------------------",
+                "Id": "004847f4-0fd2-4b0f-a655-a33506b38482",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "OnInactive": {
+                    "IfCompleted": {
+                        "State": "InProgress"
+                    }
+                },
+                "Activation": {
+                    "$eq": [
+                        "$2ffceeaf-9c3a-4aef-a897-857538538c7f",
+                        "$880e6299-195f-4fca-8a09-13257f5087a2",
+                        "$681c4058-7035-4a30-8b42-393600508361",
+                        "$1a7d60d3-3299-4917-b1e7-e9dd778e20ce",
+                        "$c709c7a7-a223-4e31-aede-400ca67ed302",
+                        "Completed"
+                    ]
+                },
+                "ObjectiveType": "custom",
+                "Image": "images/contracts/bull/Contract_Bull_InfiltrateTornadoShelter_ObjectiveTile.jpg",
+                "BriefingName": "$loc UI_CONTRACT_BULL_INFILTRATE_SHELTER_TITLE",
+                "BriefingText": "$loc UI_CONTRACT_BULL_INFILTRATE_SHELTER_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_BULL_INFILTRATE_SHELTER_TITLE",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {},
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "BunkerUnlocked": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Investigate Command Room - Completes when Intel read---------------------------",
+                "Id": "6d530d1f-a16b-48e9-9553-4681c9eb01a3",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "OnInactive": {
+                    "IfCompleted": {
+                        "State": "InProgress"
+                    }
+                },
+                "Activation": {
+                    "$eq": [
+                        "$004847f4-0fd2-4b0f-a655-a33506b38482",
+                        "Completed"
+                    ]
+                },
+                "ObjectiveType": "custom",
+                "Image": "images/contracts/bull/Contract_Bull_Militia_ObjectiveTile.jpg",
+                "BriefingName": "$loc UI_CONTRACT_BULL_MILITIA_BRIEFING_NAME",
+                "LongBriefingText": "$loc UI_CONTRACT_BULL_MILITIA_OBJECTIVE",
+                "BriefingText": "$loc UI_CONTRACT_BULL_MILITIA_OBJECTIVE",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_BULL_MILITIA_BRIEFING_NAME",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {},
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "MilitiaAgendaRevealed": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "GameDifficulties": [
+            {
+                "Difficulty": "easy",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/colorado_2/difficulty_easy_colorado_bull.brick"
+                ]
+            },
+            {
+                "Difficulty": "normal",
+                "Bricks": []
+            },
+            {
+                "Difficulty": "hard",
+                "Bricks": [
+                    "assembly:/_PRO/Scenes/Missions/Colorado_2/difficulty_pro1_bull.brick"
+                ]
+            }
+        ],
+        "Bricks": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/missions/colorado_2/vr_overrides_bull.brick",
+                    "assembly:/_PRO/scenes/missions/colorado_2/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/missions/colorado_2/vr_overrides_bull.brick"
+                ]
+            }
+        ],
+        "GameChangers": []
+    },
+    "Metadata": {
+        "Id": "42bac555-bbb9-429d-a8ce-f1ffdf94211c",
+        "Location": "LOCATION_COLORADO",
+        "IsPublished": true,
+        "CreationTimestamp": "2015-06-24T10:22:57.0206359Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_BULL_TITLE",
+        "Description": "UI_CONTRACT_BULL_DESC",
+        "BriefingVideo": "briefing_bull",
+        "DebriefingVideo": "debriefing_bull",
+        "TileImage": "images/contracts/Bull/Tile.jpg",
+        "CodeName_Hint": "Bull",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Colorado_2/_scene_mission_bull.entity",
+        "Type": "mission",
+        "Release": "1.5.x",
+        "RequiredUnlockable": "ACCESS_HIT_BULL",
+        "Drops": ["ACCESS_HIT_SNOW_CRANE"],
+        "Opportunities": [
+            "897fde3b-0c85-4bc6-be5f-1ca3f14a3ade",
+            "fee557d9-c03b-4af8-871a-7d01d9c7567a",
+            "e1f64d61-0152-4c17-8ffb-e26d683cd412",
+            "476124df-11c1-4369-ad51-ded30e34e337",
+            "28c82b4b-c7b3-44f0-8639-48fb31fb1e06",
+            "5649e47c-2c71-4226-a6c3-2f9767e6191f"
+        ],
+        "Entitlements": ["H1_LEGACY_STANDARD"],
+        "LastUpdate": "2022-01-20T18:29:24.3303843Z",
+        "PublicId": "009684938047"
+    },
+    "UserData": {}
+}

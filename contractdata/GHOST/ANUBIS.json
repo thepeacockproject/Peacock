@@ -1,0 +1,203 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "fd4c1514-55b9-43ab-881c-44a1c217eaef",
+                "ObjectiveType": "custom",
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Image": "images/contracts/AssRace/AssRaceTarget.jpg",
+                "BriefingName": "$loc UI_CONTRACT_VS_RACE_TARGETS_OBJ_NAME",
+                "BriefingText": "$loc UI_CONTRACT_VS_RACE_TARGETS_OBJ_DESC",
+                "Category": "primary",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_VS_RACE_TARGETS_OBJ"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "ContextListeners": {
+                        "CooldownActive": {
+                            "type": "custom",
+                            "HUDTemplate": {
+                                "display": {
+                                    "$loc": {
+                                        "key": "UI_CONTRACT_VS_RACE_TARGET_INCOMING_OBJ",
+                                        "data": []
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": [],
+                        "CooldownActive": 1,
+                        "CooldownInActive": 1
+                    },
+                    "States": {
+                        "Start": {
+                            "TargetPickedConfirm": [
+                                {
+                                    "Actions": [
+                                        {
+                                            "$reset": "Targets"
+                                        },
+                                        {
+                                            "$pushunique": [
+                                                "Targets",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    ],
+                                    "Transition": "TargetPicked"
+                                }
+                            ]
+                        },
+                        "TargetPicked": {
+                            "TimerExpirationStart": [
+                                {
+                                    "Actions": {
+                                        "$dec": "CooldownActive"
+                                    },
+                                    "Transition": "CooldownRunning"
+                                }
+                            ],
+                            "TimerExpirationEnd": [
+                                {
+                                    "Actions": {
+                                        "$dec": "CooldownActive"
+                                    }
+                                }
+                            ],
+                            "TargetPickedConfirm": [
+                                {
+                                    "Actions": [
+                                        {
+                                            "$reset": "Targets"
+                                        },
+                                        {
+                                            "$pushunique": [
+                                                "Targets",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        "CooldownRunning": {
+                            "$timer": [
+                                {
+                                    "Condition": {
+                                        "$after": 20
+                                    },
+                                    "Actions": {
+                                        "$dec": "CooldownInActive"
+                                    },
+                                    "Transition": "TargetPicked"
+                                }
+                            ],
+                            "TimerExpirationEnd": [
+                                {
+                                    "Actions": {
+                                        "$dec": "CooldownInActive"
+                                    }
+                                }
+                            ],
+                            "TargetPickedConfirm": [
+                                {
+                                    "Actions": [
+                                        {
+                                            "$reset": "Targets"
+                                        },
+                                        {
+                                            "$pushunique": [
+                                                "Targets",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/sheep/outfits_anubis.brick",
+            "assembly:/_pro/scenes/missions/sheep/versus_targets_newzealand.brick",
+            "assembly:/_pro/scenes/missions/sheep/versus_items_newzealand.brick",
+            "assembly:/_pro/scenes/missions/sheep/versus_entrance_newzealand.brick",
+            "assembly:/_pro/scenes/missions/sheep/override_skipintro.brick",
+            "assembly:/_pro/scenes/missions/sheep/lighting_day.brick",
+            "assembly:/_PRO/Scenes/bricks/ui_versus.brick",
+            "assembly:/_PRO/Scenes/bricks/vs_race_multiplayer.brick"
+        ],
+        "Entrances": [],
+        "GameChangers": [],
+        "EngineModesBricks": [],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "CodeName_Hint": "Anubis - Ghost Mode Hawkes Bay ",
+        "CreationTimestamp": "2012-12-12T12:12:12.7433333Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "TileImage": "images/contracts/assrace/tile.jpg",
+        "Title": "UI_CONTRACT_VS_RACE_NAME",
+        "Description": "UI_CONTRACT_VS_RACE_DESC",
+        "Id": "8fcf8f5d-0fe9-47d7-bff3-d747d0cd1e89",
+        "IsPublished": true,
+        "IsVersus": true,
+        "LastUpdate": "2020-06-18T12:56:37.0083457Z",
+        "Location": "LOCATION_NEWZEALAND",
+        "Release": "2.0.x",
+        "SpawnSelectionType": "random",
+        "Gamemodes": ["versus"],
+        "Enginemodes": ["singleplayer", "multiplayer"],
+        "CharacterSetup": [
+            {
+                "Mode": "multiplayer",
+                "Characters": [
+                    {
+                        "Name": "47",
+                        "Id": "44eba719-4d3a-4f27-9437-3f29821934b3"
+                    },
+                    {
+                        "Name": "47",
+                        "Id": "44eba719-4d3a-4f27-9437-3f29821934b3"
+                    }
+                ]
+            }
+        ],
+        "Entitlements": ["H2_LEGACY_STANDARD"],
+        "ScenePath": "assembly:/_pro/scenes/missions/sheep/scene_sheep.entity",
+        "Type": "vsrace",
+        "UserData": null,
+        "Scoring": {
+            "Kill": {
+                "UnnoticedTarget": 1,
+                "NoticedTarget": 0,
+                "NoticedNonTarget": -1,
+                "UnnoticedNonTarget": -1
+            },
+            "AccidentKill": 1,
+            "AsyncKill": {}
+        },
+        "EndConditions": {
+            "PointLimit": 5
+        },
+        "TargetExpiration": 20,
+        "TargetExpirationReduced": 10,
+        "TargetLifeTime": 0,
+        "NonTargetKillPenaltyEnabled": false,
+        "NoticedTargetStreakPenaltyMax": 60,
+        "PublicId": "010523680847",
+        "IsFeatured": false,
+        "OpportunityData": []
+    },
+    "UserData": {}
+}

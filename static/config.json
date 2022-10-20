@@ -1,0 +1,32 @@
+{
+    "Versions": [
+        {
+            "Name": "pc-prod",
+            "GAME_VER": "8.10.0",
+            "SERVER_VER": {
+                "Metrics": {
+                    "MetricsServerHost": "http://localhost",
+                    "MetricsServerServicePath": "api/metrics/add"
+                },
+                "Authentication": {
+                    "AuthenticationHost": "http://localhost",
+                    "AuthenticationServicePathConfiguration": "authentication/api/configuration",
+                    "UserChannelServicePath": "authentication/api/userchannel"
+                },
+                "Configuration": {
+                    "Url": "http://localhost/files/onlineconfig.json",
+                    "AgreementUrl": "http://localhost/files/privacypolicy/hm3/privacypolicy.json"
+                },
+                "Resources": {
+                    "ResourcesServicePath": "http://localhost/files"
+                },
+                "GlobalAuthentication": {
+                    "AuthenticationHost": "http://localhost",
+                    "OAuthPath": "oauth/token",
+                    "RequestedAudience": "pc-prod_8"
+                }
+            },
+            "ISSUER_ID": ""
+        }
+    ]
+}

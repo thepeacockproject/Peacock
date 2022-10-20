@@ -1,0 +1,249 @@
+{
+    "Data": {
+        "EnableExits": {
+            "$eq": ["$2c1f42dd-bc8e-478f-b297-18f3e6273827", "Completed"]
+        },
+        "Objectives": [
+            {
+                "Type": "statemachine",
+                "Id": "2ea20ba9-0c4c-45a8-963a-dd4fa340519e",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository 0e2111f1-d5ab-4a06-90ce-703abd6d3f91).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 0e2111f1-d5ab-4a06-90ce-703abd6d3f91).Name"
+                        }
+                    }
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["0e2111f1-d5ab-4a06-90ce-703abd6d3f91"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "0e2111f1-d5ab-4a06-90ce-703abd6d3f91"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "2c1f42dd-bc8e-478f-b297-18f3e6273827",
+                "ObjectiveType": "custom",
+                "Image": "images/contractconditions/condition_contrac_no_bodies_found.jpg",
+                "BriefingName": "The Sealed Love",
+                "BriefingText": "Let the guards bag her body. Don't put her in the closet",
+                "LongBriefingText": "Don't you see? She can only go this far.",
+                "HUDTemplate": {
+                    "display": "Let the guards bag her body",
+                    "iconType": 17
+                },
+                "Category": "primary",
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "BodyBagged": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "0e2111f1-d5ab-4a06-90ce-703abd6d3f91"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            },
+                            "BodyHidden": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "0e2111f1-d5ab-4a06-90ce-703abd6d3f91"
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "a83349bf-3d9c-43ec-92ee-c8c98cbeabc1",
+                "ExcludeFromScoring": true,
+                "BriefingName": "NO MOLOTOV",
+                "BriefingText": "I had this contract idea way before molotov was a thing so...deal with it",
+                "Category": "primary",
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "ItemRemovedFromInventory": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "a83349bf-3d9c-43ec-92ee-c8c98cbeabc1"
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            },
+                            "ItemDropped": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "a83349bf-3d9c-43ec-92ee-c8c98cbeabc1"
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "1643ef58-e3b6-4d5f-b658-beee3005f250",
+                "BriefingText": "You're still cheating though",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "ItemDropped": {
+                                "Condition": {
+                                    "$or": [
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "ae158afc-2df1-474b-abc8-1e58ed69bb8d"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "7e8ba667-ac70-4591-9bde-c7d846eacbb2"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "419bc68a-a76e-461d-ba92-327b9a25a182"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "83a78b07-1c9a-43a5-802d-35d97e537769"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "09268e60-216a-4ccf-8e41-c3cc45391222"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "3a05dae6-d904-4a18-8196-de2d46e4c5d4"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "271eb4ce-7297-449d-95d4-20cd56dffd80"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            },
+                            "ItemRemovedFromInventory": {
+                                "Condition": {
+                                    "$or": [
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "ae158afc-2df1-474b-abc8-1e58ed69bb8d"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "7e8ba667-ac70-4591-9bde-c7d846eacbb2"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "419bc68a-a76e-461d-ba92-327b9a25a182"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "83a78b07-1c9a-43a5-802d-35d97e537769"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "09268e60-216a-4ccf-8e41-c3cc45391222"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "3a05dae6-d904-4a18-8196-de2d46e4c5d4"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "271eb4ce-7297-449d-95d4-20cd56dffd80"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "GameChangers": [],
+        "EnableSaving": false,
+        "Bricks": []
+    },
+    "Metadata": {
+        "Title": "The Sealed Love",
+        "Description": "Your heart died at the moment you found out her betrayal. Kill her and revenge your brother.\r\rCreated by WINNODD",
+        "Entitlements": ["LOCATION_ELEGANT"],
+        "ScenePath": "assembly:/_pro/scenes/missions/elegant/scene_llama.entity",
+        "Location": "LOCATION_ELEGANT_LLAMA",
+        "IsPublished": true,
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "GameVersion": "8.9.0.0",
+        "ServerVersion": "8.9.0.0",
+        "Type": "featured",
+        "Id": "1447a96c-73bd-4811-9c2e-5588885e36d7",
+        "TileImage": "images/contracts/featured/winnodd9.jpg",
+        "CreationTimestamp": "2022-08-16T14:56:13.772Z"
+    },
+    "UserData": {}
+}
