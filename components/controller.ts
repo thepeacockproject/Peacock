@@ -869,11 +869,23 @@ export class Controller {
     }
 
     /**
-     * Loads all normal, pre-built or pure JS plugins.
+     * Loads all normal, pre-built or pure JS plugins either from root or plugins folder.
      *
      * @internal
      */
     private async _loadPlugins(): Promise<void> {
+        if (existsSync("plugins")) {
+            const entries = (
+                await readdir(join(process.cwd(), "plugins"))
+            ).filter((n) => isPlugin(n, "js") || isPlugin(n, "cjs"))
+
+            for (const plugin of entries) {
+                const sourceFile = join(process.cwd(), "plugins", plugin)
+                const src = (await readFile(sourceFile)).toString()
+
+                await this._executePlugin(plugin, src, sourceFile)
+            }
+        }
         const entries = (await readdir(process.cwd())).filter(
             (n) => isPlugin(n, "js") || isPlugin(n, "cjs"),
         )
