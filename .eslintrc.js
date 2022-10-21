@@ -21,11 +21,11 @@ module.exports = {
         node: true,
         es2021: true,
     },
-    plugins: ["@typescript-eslint", "promise", "react-hooks"],
+    plugins: ["@typescript-eslint", "promise", "react-hooks", "prettier"],
     extends: [
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended",
-        "prettier",
+        "plugin:prettier/recommended",
     ],
     parser: "@typescript-eslint/parser",
     parserOptions: {
