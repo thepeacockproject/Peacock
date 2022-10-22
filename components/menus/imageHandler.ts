@@ -25,7 +25,9 @@ import { getFlag } from "../flags"
 import { createWriteStream } from "fs"
 
 const fileNameSafeChars: readonly string[] =
-    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_".split("")
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_/".split(
+        "",
+    )
 
 export async function imageFetchingMiddleware(
     req: RequestWithJwt,
