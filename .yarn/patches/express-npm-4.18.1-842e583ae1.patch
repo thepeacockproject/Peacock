@@ -25,12 +25,12 @@ index ebb30b51b3d6e84d33288251d11ab92d8462c181..cdc9b97c7b625e03673aba29bf121314
 -
 -var hasOwnProperty = Object.prototype.hasOwnProperty
  var slice = Array.prototype.slice;
- 
+
  /**
 @@ -44,13 +28,6 @@ var slice = Array.prototype.slice;
- 
+
  var app = exports = module.exports = {};
- 
+
 -/**
 - * Variable for trust proxy inheritance back-compat
 - * @private
@@ -43,16 +43,16 @@ index ebb30b51b3d6e84d33288251d11ab92d8462c181..cdc9b97c7b625e03673aba29bf121314
   *
 @@ -62,8 +39,6 @@ var trustProxyDefaultSymbol = '@@symbol:trust_proxy_default';
   */
- 
+
  app.init = function init() {
 -  this.cache = {};
 -  this.engines = {};
    this.settings = {};
- 
+
    this.defaultConfiguration();
 @@ -75,62 +50,17 @@ app.init = function init() {
   */
- 
+
  app.defaultConfiguration = function defaultConfiguration() {
 -  var env = process.env.NODE_ENV || 'development';
 -
@@ -71,7 +71,7 @@ index ebb30b51b3d6e84d33288251d11ab92d8462c181..cdc9b97c7b625e03673aba29bf121314
 -  });
 -
 -  debug('booting in %s mode', env);
- 
+
    this.on('mount', function onmount(parent) {
 -    // inherit trust proxy
 -    if (this.settings[trustProxyDefaultSymbol] === true
@@ -88,7 +88,7 @@ index ebb30b51b3d6e84d33288251d11ab92d8462c181..cdc9b97c7b625e03673aba29bf121314
 +    Object.setPrototypeOf(this.request, parent.request)
 +    Object.setPrototypeOf(this.response, parent.response)
    });
- 
+
 -  // setup locals
 -  this.locals = Object.create(null);
 -
@@ -113,19 +113,19 @@ index ebb30b51b3d6e84d33288251d11ab92d8462c181..cdc9b97c7b625e03673aba29bf121314
 -    }
 -  });
  };
- 
+
  /**
 @@ -148,7 +78,7 @@ app.lazyrouter = function lazyrouter() {
        strict: this.enabled('strict routing')
      });
- 
+
 -    this._router.use(query(this.get('query parser fn')));
 +    this._router.use(query());
      this._router.use(middleware.init(this));
    }
  };
 @@ -173,7 +103,6 @@ app.handle = function handle(req, res, callback) {
- 
+
    // no routes
    if (!router) {
 -    debug('no routes defined on app');
@@ -135,11 +135,11 @@ index ebb30b51b3d6e84d33288251d11ab92d8462c181..cdc9b97c7b625e03673aba29bf121314
 @@ -227,7 +156,6 @@ app.use = function use(fn) {
        return router.use(path, fn);
      }
- 
+
 -    debug('.use app under %s', path);
      fn.mountpath = path;
      fn.parent = this;
- 
+
 @@ -235,8 +163,8 @@ app.use = function use(fn) {
      router.use(path, function mounted_app(req, res, next) {
        var orig = req.app;
@@ -154,7 +154,7 @@ index ebb30b51b3d6e84d33288251d11ab92d8462c181..cdc9b97c7b625e03673aba29bf121314
 @@ -263,84 +191,6 @@ app.route = function route(path) {
    return this._router.route(path);
  };
- 
+
 -/**
 - * Register the given template engine callback `fn`
 - * as `ext`.
@@ -253,12 +253,12 @@ index ebb30b51b3d6e84d33288251d11ab92d8462c181..cdc9b97c7b625e03673aba29bf121314
 -    return undefined
 +    return this.settings[setting];
    }
- 
+
 -  debug('set "%s" to %o', setting, val);
 -
    // set value
    this.settings[setting] = val;
- 
+
    // trigger matched settings
 -  switch (setting) {
 -    case 'etag':
@@ -279,10 +279,10 @@ index ebb30b51b3d6e84d33288251d11ab92d8462c181..cdc9b97c7b625e03673aba29bf121314
 -
 -      break;
    }
- 
+
    return this;
  };
- 
+
 -/**
 - * Return the app's absolute pathname
 - * based on the parent(s) that have
@@ -309,7 +309,7 @@ index ebb30b51b3d6e84d33288251d11ab92d8462c181..cdc9b97c7b625e03673aba29bf121314
 @@ -458,30 +261,6 @@ app.disabled = function disabled(setting) {
    return !this.set(setting);
  };
- 
+
 -/**
 - * Enable `setting`.
 - *
@@ -340,7 +340,7 @@ index ebb30b51b3d6e84d33288251d11ab92d8462c181..cdc9b97c7b625e03673aba29bf121314
 @@ -524,117 +303,6 @@ app.all = function all(path) {
    return this;
  };
- 
+
 -// del -> delete alias
 -
 -app.del = deprecate.function(app.delete, 'app.del: Use app.delete instead');
@@ -457,7 +457,7 @@ index ebb30b51b3d6e84d33288251d11ab92d8462c181..cdc9b97c7b625e03673aba29bf121314
   *
 @@ -643,19 +311,5 @@ app.listen = function listen() {
   */
- 
+
  function logerror(err) {
 -  /* istanbul ignore next */
 -  if (this.get('env') !== 'test') console.error(err.stack || err.toString());
@@ -483,7 +483,7 @@ index d188a16db70387967e0f913c2ee7c0bf9f7ffb09..eb07f8ca0fffa306fb507ad63e7123a4
 @@ -12,7 +12,6 @@
   * Module dependencies.
   */
- 
+
 -var bodyParser = require('body-parser')
  var EventEmitter = require('events').EventEmitter;
  var mixin = require('merge-descriptors');
@@ -491,7 +491,7 @@ index d188a16db70387967e0f913c2ee7c0bf9f7ffb09..eb07f8ca0fffa306fb507ad63e7123a4
 @@ -75,42 +74,4 @@ exports.Router = Router;
   * Expose middleware
   */
- 
+
 -exports.json = bodyParser.json
  exports.query = require('./middleware/query');
 -exports.raw = bodyParser.raw
@@ -536,9 +536,9 @@ index dfd042747bdb971d9760e9575241ddaa1b776cd8..09d5084102aad81041dcba9332a49e8c
 --- a/lib/middleware/init.js
 +++ b/lib/middleware/init.js
 @@ -8,13 +8,6 @@
- 
+
  'use strict';
- 
+
 -/**
 - * Module dependencies.
 - * @private
@@ -550,41 +550,44 @@ index dfd042747bdb971d9760e9575241ddaa1b776cd8..09d5084102aad81041dcba9332a49e8c
   * Initialization middleware, exposing the
   * request and response to each other, as well
 @@ -27,17 +20,13 @@ var setPrototypeOf = require('setprototypeof')
- 
+
  exports.init = function(app){
    return function expressInit(req, res, next){
 -    if (app.enabled('x-powered-by')) res.setHeader('X-Powered-By', 'Express');
      req.res = res;
      res.req = req;
      req.next = next;
- 
+
 -    setPrototypeOf(req, app.request)
 -    setPrototypeOf(res, app.response)
 -
 -    res.locals = res.locals || Object.create(null);
 +    Object.setPrototypeOf(req, app.request)
 +    Object.setPrototypeOf(res, app.response)
- 
+
      next();
    };
  };
 -
 diff --git a/lib/middleware/query.js b/lib/middleware/query.js
-index 7e9166947aff3be10f7ffec3771c92581ce211da..a782f962a4a389c08891c4cf2483e45035abe610 100644
+index 7e9166947aff3be10f7ffec3771c92581ce211da..40a25b3fc1e25fdfde3ac678800bf71aff9e5f4b 100644
 --- a/lib/middleware/query.js
 +++ b/lib/middleware/query.js
-@@ -12,7 +12,6 @@
+@@ -12,9 +12,8 @@
   * Module dependencies.
   */
- 
+
 -var merge = require('utils-merge')
  var parseUrl = require('parseurl');
- var qs = require('qs');
- 
+-var qs = require('qs');
++var querystring = require('querystring');
+
+ /**
+  * @param {Object} options
 @@ -22,24 +21,11 @@ var qs = require('qs');
   * @api public
   */
- 
+
 -module.exports = function query(options) {
 -  var opts = merge({}, options)
 -  var queryparse = qs.parse;
@@ -606,9 +609,9 @@ index 7e9166947aff3be10f7ffec3771c92581ce211da..a782f962a4a389c08891c4cf2483e450
 -      var val = parseUrl(req).query;
 -      req.query = queryparse(val, opts);
 +      const val = parseUrl(req).query;
-+      req.query = qs.parse(val, { allowPrototypes: false, parseArrays: false, allowDots: false });
++      req.query = querystring.parse(val);
      }
- 
+
      next();
 diff --git a/lib/request.js b/lib/request.js
 index 3f1eeca6c1ac502dfb12ae0144a3a5cced4f34a3..fb889be9bee5f61dab4a362a65c423e8a9a0b311 100644
@@ -628,13 +631,13 @@ index 3f1eeca6c1ac502dfb12ae0144a3a5cced4f34a3..fb889be9bee5f61dab4a362a65c423e8
 -var parseRange = require('range-parser');
  var parse = require('parseurl');
 -var proxyaddr = require('proxy-addr');
- 
+
  /**
   * Request prototype.
 @@ -83,138 +75,6 @@ req.header = function header(name) {
    }
  };
- 
+
 -/**
 - * To do: update docs.
 - *
@@ -773,7 +776,7 @@ index 3f1eeca6c1ac502dfb12ae0144a3a5cced4f34a3..fb889be9bee5f61dab4a362a65c423e8
 @@ -237,11 +97,6 @@ req.param = function param(name, defaultValue) {
    var body = this.body || {};
    var query = this.query || {};
- 
+
 -  var args = arguments.length === 1
 -    ? 'name'
 -    : 'name, default';
@@ -785,7 +788,7 @@ index 3f1eeca6c1ac502dfb12ae0144a3a5cced4f34a3..fb889be9bee5f61dab4a362a65c423e8
 @@ -249,46 +104,6 @@ req.param = function param(name, defaultValue) {
    return defaultValue;
  };
- 
+
 -/**
 - * Check if the incoming request contains the "Content-Type"
 - * header field, and it contains the given mime `type`.
@@ -838,13 +841,13 @@ index 3f1eeca6c1ac502dfb12ae0144a3a5cced4f34a3..fb889be9bee5f61dab4a362a65c423e8
 -  if (!trust(this.connection.remoteAddress, 0)) {
 -    return proto;
 -  }
- 
+
    // Note: X-Forwarded-Proto is normally only ever a
    //       single value, but this is to be safe.
 @@ -323,85 +133,6 @@ defineGetter(req, 'protocol', function protocol(){
      : header.trim()
  });
- 
+
 -/**
 - * Short-hand for:
 - *
@@ -929,11 +932,11 @@ index 3f1eeca6c1ac502dfb12ae0144a3a5cced4f34a3..fb889be9bee5f61dab4a362a65c423e8
   *
 @@ -425,10 +156,9 @@ defineGetter(req, 'path', function path() {
   */
- 
+
  defineGetter(req, 'hostname', function hostname(){
 -  var trust = this.app.get('trust proxy fn');
    var host = this.get('X-Forwarded-Host');
- 
+
 -  if (!host || !trust(this.connection.remoteAddress, 0)) {
 +  if (!host) {
      host = this.get('Host');
@@ -942,7 +945,7 @@ index 3f1eeca6c1ac502dfb12ae0144a3a5cced4f34a3..fb889be9bee5f61dab4a362a65c423e8
 @@ -449,65 +179,6 @@ defineGetter(req, 'hostname', function hostname(){
      : host;
  });
- 
+
 -// TODO: change req.host to return host in next major
 -
 -defineGetter(req, 'host', deprecate.function(function host(){
@@ -1012,7 +1015,7 @@ index fede486c06d8c96f8d565b3c1d70c2585033a69c..c0fef51dd0b755e33ae452c4be841b2b
 @@ -12,28 +12,10 @@
   * @private
   */
- 
+
 -var Buffer = require('safe-buffer').Buffer
 -var contentDisposition = require('content-disposition');
 -var createError = require('http-errors')
@@ -1036,12 +1039,12 @@ index fede486c06d8c96f8d565b3c1d70c2585033a69c..c0fef51dd0b755e33ae452c4be841b2b
 -var resolve = path.resolve;
 -var vary = require('vary');
 +var mime = require("mime");
- 
+
  /**
   * Response prototype.
 @@ -65,36 +47,10 @@ var charsetRegExp = /;\s*charset\s*=/;
   */
- 
+
  res.status = function status(code) {
 -  if ((typeof code === 'string' || Math.floor(code) !== code) && code > 99 && code < 1000) {
 -    deprecate('res.status(' + JSON.stringify(code) + '): use res.status(' + Math.floor(code) + ') instead')
@@ -1049,7 +1052,7 @@ index fede486c06d8c96f8d565b3c1d70c2585033a69c..c0fef51dd0b755e33ae452c4be841b2b
    this.statusCode = code;
    return this;
  };
- 
+
 -/**
 - * Set Link header field with the given `links`.
 - *
@@ -1090,7 +1093,7 @@ index fede486c06d8c96f8d565b3c1d70c2585033a69c..c0fef51dd0b755e33ae452c4be841b2b
 @@ -137,7 +91,6 @@ res.send = function send(body) {
        this.type('txt');
      }
- 
+
 -    deprecate('res.send(status): Use res.sendStatus(status) instead');
      this.statusCode = chunk;
      chunk = statuses.message[chunk]
@@ -1098,7 +1101,7 @@ index fede486c06d8c96f8d565b3c1d70c2585033a69c..c0fef51dd0b755e33ae452c4be841b2b
 @@ -206,9 +159,6 @@ res.send = function send(body) {
      }
    }
- 
+
 -  // freshness
 -  if (req.fresh) this.statusCode = 304;
 -
@@ -1108,7 +1111,7 @@ index fede486c06d8c96f8d565b3c1d70c2585033a69c..c0fef51dd0b755e33ae452c4be841b2b
 @@ -250,25 +200,8 @@ res.send = function send(body) {
  res.json = function json(obj) {
    var val = obj;
- 
+
 -  // allow status / body
 -  if (arguments.length === 2) {
 -    // res.json(body, status) backwards compat
@@ -1129,13 +1132,13 @@ index fede486c06d8c96f8d565b3c1d70c2585033a69c..c0fef51dd0b755e33ae452c4be841b2b
 -  var spaces = app.get('json spaces');
 -  var body = stringify(val, replacer, spaces, escape)
 +  var body = JSON.stringify(val)
- 
+
    // content-type
    if (!this.get('Content-Type')) {
 @@ -278,79 +211,6 @@ res.json = function json(obj) {
    return this.send(body);
  };
- 
+
 -/**
 - * Send JSON response with JSONP callback support.
 - *
@@ -1215,7 +1218,7 @@ index fede486c06d8c96f8d565b3c1d70c2585033a69c..c0fef51dd0b755e33ae452c4be841b2b
 @@ -375,229 +235,6 @@ res.sendStatus = function sendStatus(statusCode) {
    return this.send(body);
  };
- 
+
 -/**
 - * Transfer the file at the given `path`.
 - *
@@ -1445,7 +1448,7 @@ index fede486c06d8c96f8d565b3c1d70c2585033a69c..c0fef51dd0b755e33ae452c4be841b2b
 @@ -624,137 +261,6 @@ res.type = function contentType(type) {
    return this.set('Content-Type', ct);
  };
- 
+
 -/**
 - * Respond to the Acceptable formats using an `obj`
 - * of mime-type callbacks.
@@ -1953,16 +1956,16 @@ index 5174c34f455a1553c6065fee4425f153d37d84b2..220e0ed0bcc656619dc745c9cd9f6c2a
  var flatten = require('array-flatten');
  var parseUrl = require('parseurl');
 -var setPrototypeOf = require('setprototypeof')
- 
+
  /**
   * Module variables.
 @@ -48,7 +45,7 @@ var proto = module.exports = function(options) {
    }
- 
+
    // mixin Router class functions
 -  setPrototypeOf(router, proto)
 +  Object.setPrototypeOf(router, proto)
- 
+
    router.params = {};
    router._params = [];
 @@ -97,7 +94,6 @@ var proto = module.exports = function(options) {
@@ -1975,33 +1978,33 @@ index 5174c34f455a1553c6065fee4425f153d37d84b2..220e0ed0bcc656619dc745c9cd9f6c2a
    }
 @@ -108,7 +104,6 @@ proto.param = function param(name, fn) {
    var ret;
- 
+
    if (name[0] === ':') {
 -    deprecate('router.param(' + JSON.stringify(name) + ', fn): Use router.param(' + JSON.stringify(name.slice(1)) + ', fn) instead')
      name = name.slice(1)
    }
- 
+
 @@ -136,8 +131,6 @@ proto.param = function param(name, fn) {
  proto.handle = function handle(req, res, out) {
    var self = this;
- 
+
 -  debug('dispatching %s %s', req.method, req.url);
 -
    var idx = 0;
    var protohost = getProtohost(req.url) || ''
    var removed = '';
 @@ -304,7 +297,6 @@ proto.handle = function handle(req, res, out) {
- 
+
        // Trim off the part of the url that matches the route
        // middleware (.use stuff) needs to have the path stripped
 -      debug('trim prefix (%s) from url %s', layerPath, req.url);
        removed = layerPath;
        req.url = protohost + req.url.slice(protohost.length + removed.length)
- 
+
 @@ -320,8 +312,6 @@ proto.handle = function handle(req, res, out) {
          : removed);
      }
- 
+
 -    debug('%s %s : %s', layer.name, layerPath, req.originalUrl);
 -
      if (layerError) {
@@ -2010,7 +2013,7 @@ index 5174c34f455a1553c6065fee4425f153d37d84b2..220e0ed0bcc656619dc745c9cd9f6c2a
 @@ -469,9 +459,6 @@ proto.use = function use(fn) {
        throw new TypeError('Router.use() requires a middleware function but got a ' + gettype(fn))
      }
- 
+
 -    // add the middleware
 -    debug('use %o %s', path, fn.name || '<anonymous>')
 -
@@ -2023,19 +2026,19 @@ index 4dc8e86d4f7fac6a5849ec236359e2300b4e3654..ec0b4d09e20ecf8b648a1b19178e1442
 +++ b/lib/router/layer.js
 @@ -14,7 +14,6 @@
   */
- 
+
  var pathRegexp = require('path-to-regexp');
 -var debug = require('debug')('express:router:layer');
- 
+
  /**
   * Module variables.
 @@ -35,7 +34,6 @@ function Layer(path, options, fn) {
      return new Layer(path, options, fn);
    }
- 
+
 -  debug('new %o', path)
    var opts = options || {};
- 
+
    this.handle = fn;
 diff --git a/lib/router/route.js b/lib/router/route.js
 index 5adaa125e27ac1caf94d675133e8dc556143022d..6b8d12852c10d5008a3ae9af2a1e9e0005f67168 100644
@@ -2044,7 +2047,7 @@ index 5adaa125e27ac1caf94d675133e8dc556143022d..6b8d12852c10d5008a3ae9af2a1e9e00
 @@ -13,7 +13,6 @@
   * @private
   */
- 
+
 -var debug = require('debug')('express:router:route');
  var flatten = require('array-flatten');
  var Layer = require('./layer');
@@ -2052,7 +2055,7 @@ index 5adaa125e27ac1caf94d675133e8dc556143022d..6b8d12852c10d5008a3ae9af2a1e9e00
 @@ -44,8 +43,6 @@ function Route(path) {
    this.path = path;
    this.stack = [];
- 
+
 -  debug('new %o', path)
 -
    // route handlers for various http methods
@@ -2061,12 +2064,12 @@ index 5adaa125e27ac1caf94d675133e8dc556143022d..6b8d12852c10d5008a3ae9af2a1e9e00
 @@ -211,8 +208,6 @@ methods.forEach(function(method){
          throw new Error(msg);
        }
- 
+
 -      debug('%s %o', method, this.path)
 -
        var layer = Layer('/', {}, handle);
        layer.method = method;
- 
+
 diff --git a/lib/utils.js b/lib/utils.js
 index 799a6a2b4ee4672c7662a2951b5cdcc1b2413a28..309224d69fea3daeeeeaa9a718b5bcbdc70e7327 100644
 --- a/lib/utils.js
@@ -2074,7 +2077,7 @@ index 799a6a2b4ee4672c7662a2951b5cdcc1b2413a28..309224d69fea3daeeeeaa9a718b5bcbd
 @@ -12,16 +12,8 @@
   * @api private
   */
- 
+
 -var Buffer = require('safe-buffer').Buffer
 -var contentDisposition = require('content-disposition');
  var contentType = require('content-type');
@@ -2085,13 +2088,13 @@ index 799a6a2b4ee4672c7662a2951b5cdcc1b2413a28..309224d69fea3daeeeeaa9a718b5bcbd
 -var proxyaddr = require('proxy-addr');
 -var qs = require('qs');
 -var querystring = require('querystring');
- 
+
  /**
   * Return strong ETag for `body`.
 @@ -59,88 +51,6 @@ exports.isAbsolute = function(path){
    if ('\\\\' === path.substring(0, 2)) return true; // Microsoft Azure absolute path
  };
- 
+
 -/**
 - * Flatten the given `arr`.
 - *
@@ -2180,7 +2183,7 @@ index 799a6a2b4ee4672c7662a2951b5cdcc1b2413a28..309224d69fea3daeeeeaa9a718b5bcbd
 @@ -173,69 +83,6 @@ exports.compileETag = function(val) {
    return fn;
  }
- 
+
 -/**
 - * Compile "query parser" value to function.
 - *
@@ -2274,192 +2277,4 @@ index 799a6a2b4ee4672c7662a2951b5cdcc1b2413a28..309224d69fea3daeeeeaa9a718b5bcbd
 -
 -function newObject() {
 -  return {};
--}
-diff --git a/lib/view.js b/lib/view.js
-deleted file mode 100644
-index c08ab4d8d521cc18cbb89c3a705d8f137d12d056..0000000000000000000000000000000000000000
---- a/lib/view.js
-+++ /dev/null
-@@ -1,182 +0,0 @@
--/*!
-- * express
-- * Copyright(c) 2009-2013 TJ Holowaychuk
-- * Copyright(c) 2013 Roman Shtylman
-- * Copyright(c) 2014-2015 Douglas Christopher Wilson
-- * MIT Licensed
-- */
--
--'use strict';
--
--/**
-- * Module dependencies.
-- * @private
-- */
--
--var debug = require('debug')('express:view');
--var path = require('path');
--var fs = require('fs');
--
--/**
-- * Module variables.
-- * @private
-- */
--
--var dirname = path.dirname;
--var basename = path.basename;
--var extname = path.extname;
--var join = path.join;
--var resolve = path.resolve;
--
--/**
-- * Module exports.
-- * @public
-- */
--
--module.exports = View;
--
--/**
-- * Initialize a new `View` with the given `name`.
-- *
-- * Options:
-- *
-- *   - `defaultEngine` the default template engine name
-- *   - `engines` template engine require() cache
-- *   - `root` root path for view lookup
-- *
-- * @param {string} name
-- * @param {object} options
-- * @public
-- */
--
--function View(name, options) {
--  var opts = options || {};
--
--  this.defaultEngine = opts.defaultEngine;
--  this.ext = extname(name);
--  this.name = name;
--  this.root = opts.root;
--
--  if (!this.ext && !this.defaultEngine) {
--    throw new Error('No default engine was specified and no extension was provided.');
--  }
--
--  var fileName = name;
--
--  if (!this.ext) {
--    // get extension from default engine name
--    this.ext = this.defaultEngine[0] !== '.'
--      ? '.' + this.defaultEngine
--      : this.defaultEngine;
--
--    fileName += this.ext;
--  }
--
--  if (!opts.engines[this.ext]) {
--    // load engine
--    var mod = this.ext.slice(1)
--    debug('require "%s"', mod)
--
--    // default engine export
--    var fn = require(mod).__express
--
--    if (typeof fn !== 'function') {
--      throw new Error('Module "' + mod + '" does not provide a view engine.')
--    }
--
--    opts.engines[this.ext] = fn
--  }
--
--  // store loaded engine
--  this.engine = opts.engines[this.ext];
--
--  // lookup path
--  this.path = this.lookup(fileName);
--}
--
--/**
-- * Lookup view by the given `name`
-- *
-- * @param {string} name
-- * @private
-- */
--
--View.prototype.lookup = function lookup(name) {
--  var path;
--  var roots = [].concat(this.root);
--
--  debug('lookup "%s"', name);
--
--  for (var i = 0; i < roots.length && !path; i++) {
--    var root = roots[i];
--
--    // resolve the path
--    var loc = resolve(root, name);
--    var dir = dirname(loc);
--    var file = basename(loc);
--
--    // resolve the file
--    path = this.resolve(dir, file);
--  }
--
--  return path;
--};
--
--/**
-- * Render with the given options.
-- *
-- * @param {object} options
-- * @param {function} callback
-- * @private
-- */
--
--View.prototype.render = function render(options, callback) {
--  debug('render "%s"', this.path);
--  this.engine(this.path, options, callback);
--};
--
--/**
-- * Resolve the file within the given directory.
-- *
-- * @param {string} dir
-- * @param {string} file
-- * @private
-- */
--
--View.prototype.resolve = function resolve(dir, file) {
--  var ext = this.ext;
--
--  // <path>.<ext>
--  var path = join(dir, file);
--  var stat = tryStat(path);
--
--  if (stat && stat.isFile()) {
--    return path;
--  }
--
--  // <path>/index.<ext>
--  path = join(dir, basename(file, ext), 'index' + ext);
--  stat = tryStat(path);
--
--  if (stat && stat.isFile()) {
--    return path;
--  }
--};
--
--/**
-- * Return a stat, maybe.
-- *
-- * @param {string} path
-- * @return {fs.Stats}
-- * @private
-- */
--
--function tryStat(path) {
--  debug('stat "%s"', path);
--
--  try {
--    return fs.statSync(path);
--  } catch (e) {
--    return undefined;
--  }
 -}

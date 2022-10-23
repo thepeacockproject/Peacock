@@ -1,13 +1,3 @@
-diff --git a/picocolors.browser.js b/picocolors.browser.js
-index 5eb9fbe8b5a0d60e91c88a2851b3b975d70261bf..85cdbe731e277f5a780eba50b1515db31b6c2bf7 100644
---- a/picocolors.browser.js
-+++ b/picocolors.browser.js
-@@ -1,4 +1,4 @@
- var x=String;
--var create=function() {return {isColorSupported:false,reset:x,bold:x,dim:x,italic:x,underline:x,inverse:x,hidden:x,strikethrough:x,black:x,red:x,green:x,yellow:x,blue:x,magenta:x,cyan:x,white:x,gray:x,bgBlack:x,bgRed:x,bgGreen:x,bgYellow:x,bgBlue:x,bgMagenta:x,bgCyan:x,bgWhite:x}};
-+var create=function() {return {isColorSupported:false,reset:x,bold:x,dim:x,italic:x,underline:x,inverse:x,hidden:x,strikethrough:x,black:x,red:x,green:x,yellow:x,blue:x,magenta:x,cyan:x,white:x,gray:x,bgBlack:x,bgRed:x,bgGreen:x,bgYellow:x,bgBlue:x,bgMagenta:x,bgCyan:x,bgWhite:x,redBright:x,greenBright:x,yellowBright:x,blueBright:x,magentaBright:x,cyanBright:x}};
- module.exports=create();
- module.exports.createColors = create;
 diff --git a/picocolors.js b/picocolors.js
 index fdb630451d89b134b069355bb97556e39b0b171a..389dee8a5d5c91c66a480f8230242b651deddce3 100644
 --- a/picocolors.js
@@ -23,7 +13,7 @@ index fdb630451d89b134b069355bb97556e39b0b171a..389dee8a5d5c91c66a480f8230242b65
 +	magentaBright: enabled ? formatter("\x1b[95m", "\x1b[39m") : String,
 +	cyanBright: enabled ? formatter("\x1b[96m", "\x1b[39m") : String,
  })
- 
+
  module.exports = createColors()
 diff --git a/types.ts b/types.ts
 index b4bacee4909e7f562fb13f89720c8ae57c4922fc..7b8327138390bfa3c397690a62a2c269cdbac06e 100644
