@@ -346,20 +346,15 @@ export function fastClone<T>(item: T): T {
                 result[index] = fastClone(child)
             })
         } else if (typeof item === "object") {
-            // @ts-expect-error JavaScript built-in things.
-            if (!item.prototype) {
-                // this is a literal
-                if (item instanceof Date) {
-                    result = new Date(item)
-                } else {
-                    // object literal
-                    result = {}
-                    for (const i in item) {
-                        result[i] = fastClone(item[i])
-                    }
-                }
+            // this is a literal
+            if (item instanceof Date) {
+                result = new Date(item)
             } else {
-                result = item
+                // object literal
+                result = {}
+                for (const i in item) {
+                    result[i] = fastClone(item[i])
+                }
             }
         } else {
             result = item
