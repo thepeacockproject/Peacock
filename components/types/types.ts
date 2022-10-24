@@ -630,6 +630,20 @@ export interface MissionManifestObjective {
     IgnoreIfInactive?: boolean
 }
 
+/**
+ * Data for a group contract.
+ */
+export type ContractGroupDefinition = {
+    /**
+     * The contract group type.
+     */
+    Type: MissionType
+    /**
+     * The contracts in this group, ordered by their position in the group.
+     */
+    Order: string[]
+}
+
 export interface MissionManifestMetadata {
     Id: string
     Location: string
@@ -699,6 +713,7 @@ export interface MissionManifestMetadata {
      */
     readonly UserData?: unknown | null
     IsVersus?: boolean
+    GroupDefinition?: ContractGroupDefinition
 }
 
 export interface GroupObjectiveDisplayOrderItem {
