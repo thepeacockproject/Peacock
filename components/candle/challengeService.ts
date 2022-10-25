@@ -119,7 +119,7 @@ export abstract class ChallengeRegistry {
         return this._dependencyTree.get(challengeId) || []
     }
 
-    private checkHeuristics(challenge: RegistryChallenge): void {
+    protected checkHeuristics(challenge: RegistryChallenge): void {
         const ctxListeners = ChallengeRegistry._parseContextListeners(challenge)
 
         if (ctxListeners.challengeTreeIds.length > 0) {

@@ -26,8 +26,12 @@ import { brotliCompress } from "zlib"
 import { promisify } from "util"
 
 const packer = new Packr({
-    useRecords: false,
+    bundleStrings: true,
 })
+
+async function readJson(filePath) {
+    return JSON.parse((await readFile(filePath)).toString())
+}
 
 export async function packContractsAndChallenges() {
     const resources = join("resources", "challenges")
@@ -41,10 +45,6 @@ export async function packContractsAndChallenges() {
     }
 
     const start = Date.now()
-
-    async function readJson(filePath) {
-        return JSON.parse((await readFile(filePath)).toString())
-    }
 
     const subdirs = await readdir("contractdata")
     const b = []
@@ -81,11 +81,7 @@ export async function packContractsAndChallenges() {
 
             if (contract.startsWith("_")) {
                 // _<LOCATION>_CHALLENGES.json
-                await handleChallengeFile(
-                    // adds a salt to make it more difficult to decode
-                    contract + "#challengePack!",
-                    json,
-                )
+                await handleChallengeFile(contract + "#packed", json)
                 return
             }
 

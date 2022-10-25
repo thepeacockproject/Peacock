@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { MissionManifestObjective } from "./types"
+import { ContextScopedStorageLocation, MissionManifestObjective } from "./types"
 
 export interface SavedChallenge {
     Id: string
@@ -38,7 +38,9 @@ export interface SavedChallenge {
     RuntimeType: "contract" | string
     XpModifier?: unknown
     DifficultyLevels: string[]
-    Definition: MissionManifestObjective["Definition"]
+    Definition: MissionManifestObjective["Definition"] & {
+        Scope: ContextScopedStorageLocation
+    }
     Tags: string[]
     InclusionData?: {
         ContractIds?: string[]

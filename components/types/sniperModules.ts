@@ -18,18 +18,14 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-export interface SniperScoreModules {
+import { StateMachineLike } from "@peacockproject/statemachine-parser"
+
+export type SniperScoreModules = {
     Type: string
-    ScoringDefinitions: ScoringDefinition[]
+    ScoringDefinitions: StateMachineLike<SniperContext, SniperConstants>[]
 }
 
-interface ScoringDefinition {
-    Constants: SniperConstants
-    Context: SniperContext
-    States: never
-}
-
-interface SniperConstants {
+type SniperConstants = Readonly<{
     Score_Synchronised_Kill: number
     Score_Synchronised_Kill_Successive: number
     SynchronisedKillTimerLength: number
@@ -58,9 +54,9 @@ interface SniperConstants {
     Score_Kill_Distraction_Successive: number
     Score_BodyHidden: number
     Score_BodyHidden_Successive: number
-}
+}>
 
-export interface SniperContext {
+export type SniperContext = {
     PlayerIds: any[]
     SuccessivePlayerIds: any[]
     Events: any[]

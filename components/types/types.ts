@@ -1208,3 +1208,20 @@ export type SniperLoadout = {
  * Common type for the `Entrances` and `AgencyPickups` configs.
  */
 export type SceneConfig = Record<string, string[]>
+
+/**
+ * Where a state machine's `Context` data should be stored.
+ *
+ * - For `profile`, the challenge's context data should be stored in the user's
+ *   profile. This data will be used across hits, instead of being constrained
+ *   to a single hit, like `Hit` is.
+ *
+ * - For `hit`, the challenge's context data should be stored with persistent
+ *   data for the current contract. This appears to function differently when
+ *   this is used in objectives.
+ *
+ * - For `session`, the challenge's context data should be stored on the
+ *   contract session. When a mission is restarted, this data is not persisted,
+ *   since that creates a new session.
+ */
+export type ContextScopedStorageLocation = "profile" | "hit" | "session"
