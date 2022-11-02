@@ -70,6 +70,7 @@ export const missionsInLocations = {
     LOCATION_ELEGANT_LLAMA: ["d42f850f-ca55-4fc9-9766-8c6a2b5c3129"],
     LOCATION_TRAPPED_WOLVERINE: ["a3e19d55-64a6-4282-bb3c-d18c3f3e6e29"],
     LOCATION_ROCKY_DUGONG: ["b2aac100-dfc7-4f85-b9cd-528114436f6c"],
+    LOCATION_SNUG: ["f8ec92c2-4fa2-471e-ae08-545480c746ee"],
     escalations: {
         LOCATION_PARIS: [
             "4f6ee6ec-b6d7-4958-9838-0352c10294a0",

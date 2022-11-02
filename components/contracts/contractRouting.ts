@@ -47,6 +47,7 @@ import {
 import { createSniperLoadouts } from "../menus/sniper"
 import { GetForPlay2Body } from "../types/gameSchemas"
 import assert from "assert"
+import { getCpd } from "../evergreen"
 
 const contractRoutingRouter = Router()
 
@@ -94,7 +95,7 @@ contractRoutingRouter.post(
             ContractSessionId: `${process.hrtime
                 .bigint()
                 .toString()}-${randomUUID()}`,
-            ContractProgressionData: null,
+            ContractProgressionData: getCpd(req.jwt.unique_name),
         }
 
         if (
@@ -106,6 +107,7 @@ contractRoutingRouter.post(
             const gameChangerData: GCPConfig = {
                 ...getConfig<GCPConfig>("GameChangerProperties", true),
                 ...getConfig<GCPConfig>("PeacockGameChangerProperties", true),
+                ...getConfig<GCPConfig>("EvergreenGameChangerProperties", true),
             }
 
             contractData.Data.GameChangerReferences =
@@ -129,9 +131,9 @@ contractRoutingRouter.post(
                 delete gameChanger.ObjectivesCategory
 
                 if (
-                    contractData.Data.GameChangerReferences.includes(
-                        gameChanger,
-                    )
+                    contractData.Data.GameChangerReferences.filter(
+                        (value) => value.Id === gameChangerId,
+                    ).length !== 0
                 ) {
                     continue
                 }

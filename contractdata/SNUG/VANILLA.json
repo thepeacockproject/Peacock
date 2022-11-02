@@ -1,0 +1,282 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "_comment": "MAIN OBJECTIVE - HQ PREPARE",
+                "Id": "f9cfcf80-9977-4ad1-b3c7-0228a2026b9c",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": false,
+                "ExcludeFromScoring": true,
+                "Image": "images/evergreen/evergreen_contract_prepare_obj.jpg",
+                "BriefingName": "$loc EVERGREEN_CONTRACT_PREPARE_BRIEFINGNAME",
+                "BriefingText": "$loc EVERGREEN_CONTRACT_PREPARE_BRIEFINGTEXT",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_EVERGREEN_SNUG_PRIMARY",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "ContextListeners": {
+                        "update_counter": {
+                            "type": "custom",
+                            "HUDTemplate": {
+                                "iconType": 17,
+                                "display": {
+                                    "$loc": {
+                                        "key": "UI_CONTRACT_EVERGREEN_SNUG_PRIMARY",
+                                        "data": ["$.First", "$.Second"]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "Context": {
+                        "update_counter": 0,
+                        "First": "$loc UI_CONTRACT_EVERGREEN_SNUG_PRIMARY_SELECTCAMPAIGN",
+                        "Second": "",
+                        "SelectCampaign_Text": "$loc UI_CONTRACT_EVERGREEN_SNUG_PRIMARY_SELECTCAMPAIGN",
+                        "Pursue_Text": "$loc UI_CONTRACT_EVERGREEN_SNUG_PRIMARY_PURSUE",
+                        "PrepareAndTravel_Text": "$loc UI_CONTRACT_EVERGREEN_SNUG_PRIMARY_PREPAREANDTRAVEL"
+                    },
+                    "States": {
+                        "Start": {
+                            "-": {
+                                "Actions": {
+                                    "$dec": "update_counter"
+                                }
+                            },
+                            "NoCampaignActive": [
+                                {
+                                    "Actions": {
+                                        "$set": [
+                                            "First",
+                                            "$.SelectCampaign_Text"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "Actions": {
+                                        "$set": ["Second", ""]
+                                    },
+                                    "Transition": "SetText"
+                                }
+                            ],
+                            "CampaignName": [
+                                {
+                                    "Actions": {
+                                        "$set": ["First", "$.Pursue_Text"]
+                                    }
+                                },
+                                {
+                                    "Actions": {
+                                        "$set": [
+                                            "Second",
+                                            "$Value.Event_metricvalue"
+                                        ]
+                                    },
+                                    "Transition": "SetText"
+                                }
+                            ],
+                            "TravelDestination": [
+                                {
+                                    "Actions": {
+                                        "$set": [
+                                            "First",
+                                            "$.PrepareAndTravel_Text"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "Actions": {
+                                        "$set": [
+                                            "Second",
+                                            "$Value.Event_metricvalue"
+                                        ]
+                                    },
+                                    "Transition": "SetText"
+                                }
+                            ],
+                            "Prepare_HQ_Finished": {
+                                "Transition": "Success"
+                            }
+                        },
+                        "SetText": {
+                            "-": {
+                                "Transition": "Start"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Gear Slots",
+                "Id": "1df5f75a-168b-492f-bc08-86b86ed0482f",
+                "Category": "secondary",
+                "BriefingName": "",
+                "Image": "images/unlockables/item_perspective_4292fe64-aac6-4bbe-be73-31671640172a_0.jpg",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_EVERGREEN_GEAR_SLOTS"
+                },
+                "BriefingText": "$loc UI_CONTRACT_EVERGREEN_GEAR_SLOTS",
+                "Type": "statemachine",
+                "Definition": {
+                    "ContextListeners": {
+                        "Used": {
+                            "type": "custom",
+                            "HUDTemplate": {
+                                "iconType": 1,
+                                "display": {
+                                    "$loc": {
+                                        "key": "UI_CONTRACT_EVERGREEN_GEAR_SLOTS",
+                                        "data": ["$.Used", "$.Total"]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "Scope": "session",
+                    "Context": {
+                        "Total": 0,
+                        "Used": 0
+                    },
+                    "States": {
+                        "Start": {
+                            "GearSlotsTotal": {
+                                "Actions": {
+                                    "$set": ["Total", "$Value"]
+                                }
+                            },
+                            "GearSlotsUsed": {
+                                "Actions": {
+                                    "$set": ["Used", "$Value"]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": ["assembly:/_pro/scenes/missions/snug/mission_vanilla.brick"],
+        "RandomBricks": {
+            "TimeOfDay": [
+                "assembly:/_pro/scenes/missions/snug/tod_vanilla_morning.brick",
+                "assembly:/_pro/scenes/missions/snug/tod_vanilla_day.brick",
+                "assembly:/_pro/scenes/missions/snug/tod_vanilla_night.brick"
+            ]
+        },
+        "DevOnlyBricks": [
+            "assembly:/_pro/scenes/missions/snug/dev_vanilla.brick"
+        ],
+        "GameModesBricks": null,
+        "EngineModesBricks": null,
+        "GameDifficulties": null,
+        "VR": null,
+        "GameChangers": [
+            "57dbb412-f797-4e77-9dac-cd3ba0d1675c",
+            "c941d5da-7fe5-4ffb-9445-8b61edaa8bb3",
+            "ebd4c2aa-5939-4223-a96b-81b270d47f21",
+            "33f264cb-185a-4cd6-939c-e39e95df1865",
+            "6e901627-d841-46ff-a0ce-c3dec11207b0",
+            "86cfa940-70e9-4e5e-bdc5-1ab11dceb9f5",
+            "e95b6d33-78fc-44f2-adf0-0672fdeb2550",
+            "bc9646d8-5fa0-45fd-821a-baeee7cd9b77",
+            "249c9866-33bd-4c90-8288-fc065ad80f5a",
+            "db28578b-5f77-4919-bb70-c0a7cdb49e00",
+            "398b1fe2-4fbc-4505-a3ab-961b4c9032b1",
+            "8e27516e-3b73-486c-9abb-d00689841795",
+            "4fab9aa7-0929-43d6-940c-cb29bfdb312c",
+            "f6c66887-c181-4b5f-8b9e-cb2ffef95735",
+            "e1825605-23d5-4bf7-88ae-ea7ec23e1291",
+            "074d076c-00bd-4758-b77d-62deacb0f669",
+            "8d776dfb-6f7c-4a11-be1a-a7639733b319",
+            "6a8fea03-ff58-448d-9369-a4e1b9ea1b6d",
+            "f209a5d9-4880-4b51-9cf2-5faaacb4a4e6",
+            "61e0090e-efee-44f6-a9ef-20513cbf2363",
+            "85881b8c-8ee5-4e34-bf73-24c7e41f00b4",
+            "091f64ab-55a0-4fe4-8abf-220270a81211",
+            "dc5cdaf6-7254-4ed1-ae18-845ee4ff2eb7",
+            "9edc7518-5b47-4ffb-a995-87b461092ba9",
+            "4fe457a9-fdf7-4de7-8f62-2a6a2d28b6c1",
+            "2aad5a65-5a9c-4a86-9287-2b8a6f8dd2e4",
+            "6c9fa748-c1b0-4a49-a052-35a66cb2188b",
+            "456e3c81-c3d4-49b4-a2b6-1bc7f7b4cef4",
+            "9dc9ef26-ce0e-4542-b8e2-2ba8e562b355",
+            "d2f8006c-a9ce-42d2-a433-67d84e3c4217",
+            "db9e3a01-f135-4b39-9132-316380a40661",
+            "06880ede-482a-40d4-9fc7-88606f228a5f",
+            "9106b979-7eaf-4a7d-ad3a-0f4531945a28",
+            "09771b41-c436-40f0-9f25-22a50da9b0dc",
+            "9d5212b3-d4cc-4f1d-9666-b4b2673a35b4",
+            "7f590b49-da75-4035-a5d8-1a5831ca5bd0",
+            "243488ef-c5b8-4e31-8a78-3e9e7a3fd81b",
+            "5fb689f8-6894-4733-9a20-e79df5e53316",
+            "5e17765c-76e0-4fca-b63e-5f3dc4dbf851",
+            "6c0c58a0-b616-4efd-abc7-22ff0b2579c6",
+            "b09a412b-e5de-4e6f-b41b-860b6393bd81",
+            "bfa7647d-de7f-4c05-ac9f-9d5a7fd5fc3a",
+            "7e33a41e-16de-446a-a29b-7b834ba57b1b",
+            "df6c8793-b73a-4a35-bcd5-001d150f3002",
+            "c53330eb-9a50-4517-9f44-cf7c52136899",
+            "77dd42a7-0c6e-4259-9079-1d69275bf23e",
+            "332f6a83-eb6e-4a88-8e31-abe2798c4b87",
+            "4448f502-409a-415e-9b3a-edefc81b26d6",
+            "9155de08-7c88-4f2d-877e-df1ba672aed6",
+            "e79e885f-e4ab-4f6a-b173-30cada73a64d",
+            "a176c14c-a37c-4a53-8e10-2c8ec679ebf2",
+            "2243a7e5-2615-4edc-9a1c-f6d9bd2aa40e",
+            "38b344af-b3e8-45b8-9e8a-5b38797b34d6",
+            "41020fb3-649f-4a2d-8827-6b581e77eb74",
+            "3db84c39-aec2-46da-a1d7-3fff9cb98e56",
+            "2b68c44e-8a54-4974-adcc-97ea5aa0a530",
+            "28e73f98-e6f7-4d71-8c4b-95b04e4e1350",
+            "8e1008b1-1053-4f08-9e2a-55deba7883fd",
+            "a29a186f-38d4-4559-84cf-296e5d92d7e0",
+            "58d506ec-8bd1-493a-a51b-5c448ddb85c6",
+            "33809fbf-c91b-4252-8b3e-602282c22799",
+            "8f0985a0-c806-46d4-976c-a9a324a65bbe",
+            "9f7bc307-2a30-4dd8-84aa-0a0099c0c871",
+            "bae31ec2-f00a-4ee1-b6d9-3ade4b2f66c3",
+            "98205708-bfe7-464b-88e7-419622b7f433",
+            "c1e5db65-e376-4d71-98aa-29d32e71c5cb",
+            "b08d9153-8470-4161-a5a3-023a63b45550",
+            "439d8f99-6283-4f33-962e-cf3fad89073c",
+            "cd8e4727-8776-4d83-9ba3-0b6732f7b6af",
+            "fb940ea3-32f5-4e59-bf75-3d89eae810a6"
+        ],
+        "GameChangerReferences": [],
+        "MandatoryLoadout": [],
+        "MandatoryLoadoutClearDisguiseIfMissing": false
+    },
+    "Metadata": {
+        "Id": "f8ec92c2-4fa2-471e-ae08-545480c746ee",
+        "IsPublished": true,
+        "CreationTimestamp": "2021-02-19T10:35:07.5164467Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_EVERGREEN_SNUG_VANILLA_TITLE",
+        "Description": "UI_CONTRACT_EVERGREEN_SNUG_VANILLA_DESC",
+        "CodeName_Hint": "Vanilla",
+        "Location": "LOCATION_SNUG",
+        "ScenePath": "assembly:/_pro/scenes/missions/snug/scene_vanilla.entity",
+        "TileImage": "images/locations/location_snug/snug_tile.jpg",
+        "Type": "evergreen",
+        "Subtype": "base",
+        "Release": {
+            "Major": 3,
+            "Minor": 200,
+            "Build": -1,
+            "Revision": -1
+        },
+        "GameModes": null,
+        "EngineModes": null,
+        "IsVersus": false,
+        "UseContractProgressionData": true,
+        "CpdId": "f8ec92c2-4fa2-471e-ae08-545480c746ee",
+        "BriefingVideo": "intro_evergreen",
+        "IsEvergreenSafehouse": true,
+        "Entitlements": ["LOCATION_GOLDEN"],
+        "LastUpdate": "2022-03-09T14:29:26.2578067Z"
+    },
+    "UserData": {}
+}

@@ -104,6 +104,8 @@ import scoreoverviewtemplate from "../static/scoreoverviewtemplate.json"
 import PeacockGameChangerProperties from "../static/PeacockGameChangerProperties.json"
 import MultiplayerPresets from "../static/MultiplayerPresets.json"
 import LobbySlimTemplate from "../static/LobbySlimTemplate.json"
+import DefaultCpdConfig from "../static/DefaultCpdConfig.json"
+import EvergreenGameChangerProperties from "../static/EvergreenGameChangerProperties.json"
 import type { GameVersion } from "./types/types"
 import { fastClone } from "./utils"
 
@@ -194,6 +196,8 @@ const configs: Record<string, unknown> = {
     PeacockGameChangerProperties,
     MultiplayerPresets,
     LobbySlimTemplate,
+    DefaultCpdConfig,
+    EvergreenGameChangerProperties,
 }
 
 Object.keys(configs).forEach((cfg) => {

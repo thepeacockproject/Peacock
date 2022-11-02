@@ -124,6 +124,7 @@ export function castUserProfile(profile: UserProfile): UserProfile {
         "PeacockEscalations",
         "PeacockFavoriteContracts",
         "PeacockCompletedEscalations",
+        "CPD",
     ]) {
         if (!Object.prototype.hasOwnProperty.call(j.Extensions, item)) {
             log(LogLevel.DEBUG, `Err missing property ${item}`)
@@ -154,6 +155,10 @@ export function castUserProfile(profile: UserProfile): UserProfile {
 
             if (item === "PeacockFavoriteContracts") {
                 j.Extensions.PeacockFavoriteContracts = []
+            }
+
+            if (item === "CPD") {
+                j.Extensions.CPD = {}
             }
 
             dirty = true

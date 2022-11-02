@@ -179,6 +179,14 @@ app.get(
                 "scpc-prod"
         }
 
+        if (req.params.audience === "playtest01-prod") {
+            log(LogLevel.DEBUG, "The grass is ever greener on the other side.")
+            config.Versions[0].Name = "playtest01-prod"
+            config.Versions[0].GAME_VER = "8.0.0"
+            config.Versions[0].SERVER_VER.GlobalAuthentication.RequestedAudience =
+                "playtest01-prod_8"
+        }
+
         config.Versions[0].ISSUER_ID = req.query.issuer || "*"
 
         config.Versions[0].SERVER_VER.Metrics.MetricsServerHost = `${proto}://${serverhost}`
@@ -205,7 +213,7 @@ app.get("/files/privacypolicy/hm3/privacypolicy_*.json", (req, res) => {
 
 app.post(
     "/api/metrics/*",
-    jsonMiddleware(),
+    jsonMiddleware({ limit: "10Mb" }),
     (req: RequestWithJwt<never, S2CEventWithTimestamp[]>, res) => {
         req.body.forEach((event) => {
             controller.hooks.newMetricsEvent.call(event, req)
@@ -323,6 +331,9 @@ app.use(
                 case STEAM_NAMESPACE_2021:
                     req.serverVersion = "8-10"
                     break
+                case "2183750":
+                    req.serverVersion = "8-11"
+                    break
                 default:
                     res.status(400).json({ message: "no game data" })
                     return
@@ -430,7 +441,7 @@ app.use(
             }
 
             if (
-                ["6-74", "7-3", "7-17", "8-10"].includes(
+                ["6-74", "7-3", "7-17", "8-10", "8-11"].includes(
                     <string>req.serverVersion,
                 )
             ) {

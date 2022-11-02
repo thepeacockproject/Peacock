@@ -298,6 +298,7 @@ export async function planningView(
                 contractData.Data.Objectives,
                 contractData.Data.GameChangers || [],
                 contractData.Metadata.GroupObjectiveDisplayOrder || [],
+                contractData.Metadata.IsEvergreenSafehouse,
             ),
             GroupData: groupData,
             Entrances:

@@ -59,6 +59,7 @@ import {
     SpottedC2SEvent,
     WitnessesC2SEvent,
 } from "./types/events"
+import { generateSeed, setCpd } from "./evergreen"
 
 const eventRouter = Router()
 
@@ -760,13 +761,32 @@ function saveEvents(
                     }`,
                 )
                 break
+            // Evergreen
+            case "CpdSet":
+                setCpd(
+                    event.Value as Record<string, string | number | boolean>,
+                    userId,
+                )
+                break
+            case "NoCampaignActive": {
+                const seed = generateSeed()
+                setCpd(
+                    {
+                        AnyActiveCampaign: false,
+                        RandomSeed: seed,
+                        DynamicSeed: seed,
+                    },
+                    userId,
+                )
+                break
+            }
+            // Sinkhole events we don't care about
             case "Hero_Health":
             case "NPC_Distracted":
             case "ShotsHit":
             case "FirstNonHeadshot":
             case "OpportunityEvents":
             case "FirstMissedShot":
-                // we don't care about these
                 break
             default:
                 // no-op on our part
