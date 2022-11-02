@@ -29,11 +29,17 @@ Build_task:
         - yarn
     Install_System_Dependencies_script:
         - apt update --yes
-        - apt install zip jq --yes
+        - apt install zip jq curl --yes
     Build_Modules_script:
         - yarn build
     Optimize_script:
         - yarn optimize
+    Download_NodeJS_script:
+        - curl https://nodejs.org/dist/$(cat .nvmrc)/node-$(cat .nvmrc)-win-x64.zip -o node.zip
+        - unzip node.zip
+        - mkdir nodedist
+        - cp node-$(cat .nvmrc)-win-x64/node.exe nodedist/node.exe
+        - cp node-$(cat .nvmrc)-win-x64/LICENSE nodedist/LICENSE
     Assemble_Full_script:
         - ./packaging/ciAssemble.sh
     Assemble_Lite_script:
