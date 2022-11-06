@@ -36,9 +36,7 @@
                         "update_counter": 0,
                         "First": "$loc UI_CONTRACT_EVERGREEN_SNUG_PRIMARY_SELECTCAMPAIGN",
                         "Second": "",
-                        "AnsweringMachine_Text": "$loc UI_CONTRACT_EVERGREEN_SNUG_PRIMARY_ANSWERINGMACHINE",
                         "SelectCampaign_Text": "$loc UI_CONTRACT_EVERGREEN_SNUG_PRIMARY_SELECTCAMPAIGN",
-                        "ContinueCampaign_Text": "$loc UI_CONTRACT_EVERGREEN_SNUG_PRIMARY_CONTINUECAMPAIGN",
                         "Pursue_Text": "$loc UI_CONTRACT_EVERGREEN_SNUG_PRIMARY_PURSUE",
                         "PrepareAndTravel_Text": "$loc UI_CONTRACT_EVERGREEN_SNUG_PRIMARY_PREPAREANDTRAVEL"
                     },
@@ -49,44 +47,12 @@
                                     "$dec": "update_counter"
                                 }
                             },
-                            "CheckAnsweringMachine": [
-                                {
-                                    "Actions": {
-                                        "$set": [
-                                            "First",
-                                            "$.AnsweringMachine_Text"
-                                        ]
-                                    }
-                                },
-                                {
-                                    "Actions": {
-                                        "$set": ["Second", ""]
-                                    },
-                                    "Transition": "SetText"
-                                }
-                            ],
                             "NoCampaignActive": [
                                 {
                                     "Actions": {
                                         "$set": [
                                             "First",
                                             "$.SelectCampaign_Text"
-                                        ]
-                                    }
-                                },
-                                {
-                                    "Actions": {
-                                        "$set": ["Second", ""]
-                                    },
-                                    "Transition": "SetText"
-                                }
-                            ],
-                            "CampaignInProgress": [
-                                {
-                                    "Actions": {
-                                        "$set": [
-                                            "First",
-                                            "$.ContinueCampaign_Text"
                                         ]
                                     }
                                 },
@@ -145,32 +111,7 @@
                 }
             },
             {
-                "_comment": "------ HIDDEN gear slots tutorialised -----",
-                "Id": "7d55be49-15cd-4c4f-906a-df174fd674b9",
-                "Category": "secondary",
-                "ObjectiveType": "custom",
-                "IgnoreIfInactive": true,
-                "ExcludeFromScoring": true,
-                "IsHidden": true,
-                "Type": "statemachine",
-                "Definition": {
-                    "States": {
-                        "Start": {
-                            "GearSlotsTutorialised": {
-                                "Transition": "Success"
-                            }
-                        }
-                    }
-                }
-            },
-            {
                 "_comment": "Gear Slots",
-                "Activation": {
-                    "$eq": [
-                        "$7d55be49-15cd-4c4f-906a-df174fd674b9",
-                        "Completed"
-                    ]
-                },
                 "Id": "1df5f75a-168b-492f-bc08-86b86ed0482f",
                 "Category": "secondary",
                 "BriefingName": "",
@@ -270,44 +211,7 @@
             "9d5212b3-d4cc-4f1d-9666-b4b2673a35b4",
             "7f590b49-da75-4035-a5d8-1a5831ca5bd0",
             "243488ef-c5b8-4e31-8a78-3e9e7a3fd81b",
-            "8f0985a0-c806-46d4-976c-a9a324a65bbe",
-            "e364d1c4-85d4-4c68-b6de-58071b8b4166",
-            "ba7ca785-e249-472b-bf9c-a70d7f294bec",
-            "8060fb48-9523-4d92-82ef-43af7e7d7790",
-            "a913d3a1-52b6-4e50-bf56-5b39406cff47",
-            "a3061d5f-be3b-4668-8ac0-481ae349f9b7",
-            "875a2e98-a4ef-4d87-89f1-f878cd2e6401",
-            "57dc20af-b013-42f1-be07-3eb414513e17",
-            "b989127d-ae32-40ff-9e5f-e40e5aa92fba",
-            "508ec166-4457-46e5-877a-55d03b3d4925",
-            "732c0ad0-6578-47da-9361-1cfe64e4c8c0",
-            "77a28286-7fb5-4dae-8137-f9aec249c27d",
-            "af3724ed-42e4-4344-bf99-77fd5f12c020",
-            "2e21724a-0859-4e98-814e-bc1e489fd903",
-            "4621e821-125c-4b80-8447-88722b524ba4",
-            "a6e2156c-b7e4-4afe-92fb-f2b50f6aaa45",
-            "d082fd57-da97-4b42-aba6-c5b158f1a3cb",
-            "7bfb420d-f7ba-40db-afbe-398f661370fc",
-            "698dda86-2c0d-4267-bc82-ecf1bfc3c180",
-            "968b68fd-dc97-479e-8a04-afac1cff98e6",
-            "b12060d1-caa1-48ad-b73a-986edbcde7de",
-            "1587a876-c337-49b9-9511-461b8a3490c7",
-            "63ff95e7-2ae0-48ce-9592-0962ff5fa540",
-            "87316545-6b14-402f-8d90-1d4f3a590041",
-            "b25c884a-1c84-4513-914f-9ccb82e84210",
-            "ab897be7-5560-4742-9d60-bc7c5a98e699",
-            "90714d17-dc6f-471f-ae29-ccd682d2a404",
-            "71ee4770-bf3c-4993-9f79-9b681440b96b",
-            "07dde709-359b-4250-ae4f-3bfadd1cd337",
-            "3f2ecf0e-7c27-40da-a6b2-eb7990322b37",
-            "b8f1c2d3-4e3b-4a32-8d8a-b13e8b6d4f7d",
-            "46406d35-a2fd-4617-ab61-205535535342",
-            "a8848c26-b308-4664-9d06-e090fd2642d9",
-            "e5ed3372-c2a4-425d-9d06-7afc7be604de",
-            "d19c35c2-fde5-4a7a-8ebf-33d5b44e8b86",
-            "996efd7a-e620-43d3-8d20-f430b64cd079",
             "5fb689f8-6894-4733-9a20-e79df5e53316",
-            "e225b335-37b5-487c-b646-6ea881ba28a5",
             "5e17765c-76e0-4fca-b63e-5f3dc4dbf851",
             "6c0c58a0-b616-4efd-abc7-22ff0b2579c6",
             "b09a412b-e5de-4e6f-b41b-860b6393bd81",
@@ -318,6 +222,8 @@
             "77dd42a7-0c6e-4259-9079-1d69275bf23e",
             "332f6a83-eb6e-4a88-8e31-abe2798c4b87",
             "4448f502-409a-415e-9b3a-edefc81b26d6",
+            "9155de08-7c88-4f2d-877e-df1ba672aed6",
+            "e79e885f-e4ab-4f6a-b173-30cada73a64d",
             "a176c14c-a37c-4a53-8e10-2c8ec679ebf2",
             "2243a7e5-2615-4edc-9a1c-f6d9bd2aa40e",
             "38b344af-b3e8-45b8-9e8a-5b38797b34d6",
@@ -329,6 +235,7 @@
             "a29a186f-38d4-4559-84cf-296e5d92d7e0",
             "58d506ec-8bd1-493a-a51b-5c448ddb85c6",
             "33809fbf-c91b-4252-8b3e-602282c22799",
+            "8f0985a0-c806-46d4-976c-a9a324a65bbe",
             "9f7bc307-2a30-4dd8-84aa-0a0099c0c871",
             "bae31ec2-f00a-4ee1-b6d9-3ade4b2f66c3",
             "98205708-bfe7-464b-88e7-419622b7f433",
@@ -336,10 +243,9 @@
             "b08d9153-8470-4161-a5a3-023a63b45550",
             "439d8f99-6283-4f33-962e-cf3fad89073c",
             "cd8e4727-8776-4d83-9ba3-0b6732f7b6af",
-            "fb940ea3-32f5-4e59-bf75-3d89eae810a6",
-            "4e706470-0415-4ef6-8f1e-fbdec8ad98f3",
-            "0ab0a960-a496-47f5-a0b6-9ab3e6d07ad8"
+            "fb940ea3-32f5-4e59-bf75-3d89eae810a6"
         ],
+        "GameChangerReferences": [],
         "MandatoryLoadout": [],
         "MandatoryLoadoutClearDisguiseIfMissing": false
     },
@@ -358,7 +264,7 @@
         "Subtype": "base",
         "Release": {
             "Major": 3,
-            "Minor": 130,
+            "Minor": 200,
             "Build": -1,
             "Revision": -1
         },
@@ -370,10 +276,7 @@
         "BriefingVideo": "intro_evergreen",
         "IsEvergreenSafehouse": true,
         "Entitlements": ["LOCATION_GOLDEN"],
-        "LastUpdate": "2022-11-03T12:44:06.0657159Z",
-        "PublicId": "099616025847",
-        "IsFeatured": false,
-        "OpportunityData": []
+        "LastUpdate": "2022-03-09T14:29:26.2578067Z"
     },
     "UserData": {}
 }
