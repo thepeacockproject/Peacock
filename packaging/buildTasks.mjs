@@ -17,13 +17,14 @@
  */
 
 import { existsSync } from "fs"
-import { join } from "path"
+import { join, basename } from "path"
 import millis from "ms"
 import { mkdir, readdir, readFile, unlink, writeFile } from "fs/promises"
 import { createHash } from "crypto"
 import { Packr } from "msgpackr"
 import { brotliCompress } from "zlib"
 import { promisify } from "util"
+import glob from "glob"
 
 const packer = new Packr({
     bundleStrings: true,
@@ -46,7 +47,7 @@ export async function packContractsAndChallenges() {
 
     const start = Date.now()
 
-    const subdirs = await readdir("contractdata")
+    const contracts = glob.sync("contractdata/**/*.json")
     const b = []
     const el = []
 
@@ -59,46 +60,36 @@ export async function packContractsAndChallenges() {
         )
     }
 
-    for (const location of subdirs) {
-        const handleContract = async (contract) => {
-            if (
-                [
-                    "FREEDOMFIGHTERSLEGACY.json",
-                    "THELASTYARDBIRD_SCPC.json",
-                ].includes(contract)
-            ) {
-                return
-            }
+    for (const path of contracts) {
+        const filename = basename(path)
 
-            if (contract.includes(".d.ts")) {
-                // type definition stub
-                return
-            }
-
-            const json = await readJson(
-                join("contractdata", location, contract),
-            )
-
-            if (contract.startsWith("_")) {
-                // _<LOCATION>_CHALLENGES.json
-                await handleChallengeFile(contract + "#packed", json)
-                return
-            }
-
-            switch (json?.Metadata?.Type) {
-                case "elusive":
-                    el.push(json)
-                    break
-                default:
-                    b.push(json)
-            }
+        if (
+            [
+                "FREEDOMFIGHTERSLEGACY.json",
+                "THELASTYARDBIRD_SCPC.json",
+            ].includes(filename)
+        ) {
+            continue
         }
 
-        const currentLocation = join("contractdata", location)
-        const locationElements = await readdir(currentLocation)
+        if (filename.includes(".d.ts")) {
+            return
+        }
 
-        for (const element of locationElements) {
-            await handleContract(element)
+        const json = await readJson(path)
+
+        if (filename.startsWith("_")) {
+            // _LOCATION_CHALLENGES.json
+            await handleChallengeFile(filename + "#packed", json)
+            continue
+        }
+
+        switch (json?.Metadata?.Type) {
+            case "elusive":
+                el.push(json)
+                break
+            default:
+                b.push(json)
         }
     }
 
