@@ -22,12 +22,12 @@ import parseUrl from "parseurl"
 import axios from "axios"
 import { log, LogLevel } from "../loggingInterop"
 import { getFlag } from "../flags"
-import { createWriteStream } from "fs"
+import { Filename, JailFS, NodeFS, ppath } from "@yarnpkg/fslib"
+import * as fs from "fs"
 
-const fileNameSafeChars: readonly string[] =
-    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_/".split(
-        "",
-    )
+const imageJailFs = new JailFS(ppath.join(ppath.cwd(), "images" as Filename), {
+    baseFs: new NodeFS(fs),
+})
 
 export async function imageFetchingMiddleware(
     req: RequestWithJwt,
@@ -51,16 +51,6 @@ export async function imageFetchingMiddleware(
         return
     }
 
-    // if the path has more than one period, or any of the characters are not in fileNameSafeChars, then we reject it
-    if (
-        path.split(".").length > 2 ||
-        path.split("").some((char) => !fileNameSafeChars.includes(char))
-    ) {
-        log(LogLevel.WARN, `Invalid image path: ${path}`)
-        res.status(400).send("Arbitrary file access is not allowed.")
-        return
-    }
-
     try {
         const axiosResponse = await axios(
             `https://img.rdil.rocks/images${path}`,
@@ -80,10 +70,9 @@ export async function imageFetchingMiddleware(
         if (getFlag("imageLoading") === "SAVEASREQUESTED") {
             log(LogLevel.DEBUG, `Saving image ${path} to disk.`)
 
-            // we got the image, we should be fine
-            // may need to introduce extra security here in the future, not sure though
-            // we've got bidi and escape paths taken care of, so it should be enough, I hope?
-            const writeStream = createWriteStream(`images${path}`)
+            const writeStream = imageJailFs.createWriteStream(
+                ppath.resolve(path as Filename),
+            )
 
             writeStream.on("finish", () => {
                 log(LogLevel.INFO, `Saved image ${path} to disk.`)
