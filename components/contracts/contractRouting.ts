@@ -141,14 +141,26 @@ contractRoutingRouter.post(
                     continue
                 }
 
+                // Push to GCR before changing for EG to be the same as official - AF
                 contractData.Data.GameChangerReferences.push(gameChanger)
+
                 contractData.Data.Bricks = [
                     ...(contractData.Data.Bricks ?? []),
                     ...(gameChanger.Resource ?? []),
                 ]
                 contractData.Data.Objectives = [
                     ...(contractData.Data.Objectives ?? []),
-                    ...(gameChanger.Objectives ?? []),
+                    ...(gameChanger.Objectives.map((val) => {
+                        if (contractData.Metadata.Type !== "evergreen")
+                            return val
+
+                        return {
+                            ...val,
+                            GameChangerName: gameChanger.Name,
+                            IsPrestigeObjective:
+                                gameChanger.IsPrestigeObjective ?? false,
+                        }
+                    }) ?? []),
                 ]
             }
         }
