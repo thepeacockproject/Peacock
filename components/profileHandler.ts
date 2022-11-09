@@ -496,7 +496,6 @@ profileRouter.post(
                 true,
             ) as CompiledChallengeRuntimeData[]
         ).filter((val) => {
-            console.log(val.Challenge.Id)
             // TODO from AF: Check all inclusion data parameters, refine how we do shortcuts as they
             // do not include inclusion data on official yet are not sent on all requests.
             if (
