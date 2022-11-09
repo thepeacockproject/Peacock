@@ -20,10 +20,6 @@ import { getUserData, writeUserData } from "./databaseHandler"
 import { getConfig } from "./configSwizzleManager"
 import { ContractProgressionData } from "./types/types"
 
-export function generateSeed(): number {
-    return Math.floor(Math.random() * (2147483647 + 2147483647) - 2147483647)
-}
-
 export async function setCpd(
     data: ContractProgressionData,
     uID: string,
@@ -50,12 +46,6 @@ export async function getCpd(
             "DefaultCpdConfig",
             false,
         ) as ContractProgressionData
-        //const seed = generateSeed()
-
-        // Not entirely sure if this is necessary as the game doesn't seem to use this
-        // but it cannot be zero, better to be safe than sorry - AF
-        //defaultCPD["DynamicSeed"] = seed
-        //defaultCPD["RandomSeed"] = seed
 
         await setCpd(defaultCPD, uID, cpdID)
         return defaultCPD
