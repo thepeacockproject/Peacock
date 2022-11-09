@@ -18,43 +18,51 @@
 
 import { getUserData, writeUserData } from "./databaseHandler"
 import { getConfig } from "./configSwizzleManager"
+import { ContractProgressionData } from "./types/types"
 
 export function generateSeed(): number {
     return Math.floor(Math.random() * (2147483647 + 2147483647) - 2147483647)
 }
 
 export async function setCpd(
-    data: Record<string, string | number | boolean>,
+    data: ContractProgressionData,
     uID: string,
+    cpdID: string,
 ) {
     const userData = getUserData(uID, "h3")
 
-    userData.Extensions.CPD = {
-        ...userData.Extensions.CPD,
+    userData.Extensions.CPD[cpdID] = {
+        ...userData.Extensions.CPD[cpdID],
         ...data,
     }
 
     await writeUserData(uID, "h3")
 }
 
-export function getCpd(uID: string): Record<string, string | number | boolean> {
+export async function getCpd(
+    uID: string,
+    cpdID: string,
+): Promise<ContractProgressionData> {
     const userData = getUserData(uID, "h3")
 
-    if (Object.keys(userData.Extensions.CPD).length === 0) {
-        const defaultCPD = getConfig("DefaultCpdConfig", false) as Record<
-            string,
-            string | number | boolean
-        >
-        const seed = generateSeed()
+    if (
+        Object.keys(userData.Extensions.CPD).length === 0 ||
+        !Object.keys(userData.Extensions.CPD).includes(cpdID)
+    ) {
+        const defaultCPD = getConfig(
+            "DefaultCpdConfig",
+            false,
+        ) as ContractProgressionData
+        //const seed = generateSeed()
 
         // Not entirely sure if this is necessary as the game doesn't seem to use this
         // but it cannot be zero, better to be safe than sorry - AF
-        defaultCPD["DynamicSeed"] = seed
-        defaultCPD["RandomSeed"] = seed
+        //defaultCPD["DynamicSeed"] = seed
+        //defaultCPD["RandomSeed"] = seed
 
-        setCpd(defaultCPD, uID)
+        await setCpd(defaultCPD, uID, cpdID)
         return defaultCPD
     }
 
-    return userData.Extensions.CPD
+    return userData.Extensions.CPD[cpdID]
 }

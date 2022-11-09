@@ -95,7 +95,10 @@ contractRoutingRouter.post(
             ContractSessionId: `${process.hrtime
                 .bigint()
                 .toString()}-${randomUUID()}`,
-            ContractProgressionData: getCpd(req.jwt.unique_name),
+            ContractProgressionData: contractData.Metadata
+                .UseContractProgressionData
+                ? await getCpd(req.jwt.unique_name, contractData.Metadata.CpdId)
+                : null,
         }
 
         if (
