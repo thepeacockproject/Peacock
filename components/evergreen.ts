@@ -45,10 +45,7 @@ export async function getCpd(
 ): Promise<ContractProgressionData> {
     const userData = getUserData(uID, "h3")
 
-    if (
-        Object.keys(userData.Extensions.CPD).length === 0 ||
-        !Object.keys(userData.Extensions.CPD).includes(cpdID)
-    ) {
+    if (!Object.keys(userData.Extensions.CPD).includes(cpdID)) {
         const defaultCPD = getConfig(
             "DefaultCpdConfig",
             false,
