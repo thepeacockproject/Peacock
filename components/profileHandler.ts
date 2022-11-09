@@ -497,15 +497,28 @@ profileRouter.post(
             ) as CompiledChallengeRuntimeData[]
         ).filter((val) => {
             if (!val.Challenge.InclusionData) return true
+            let include = false
             const incData = val.Challenge.InclusionData
-            return (
-                incData.ContractIds.includes(json.Metadata.Type) ||
-                incData.ContractTypes.includes(json.Metadata.Type) ||
-                incData.Locations.includes(json.Metadata.Location) ||
-                json.Metadata.Gamemodes.some((r) =>
+
+            if (!include && incData.ContractIds) {
+                include = incData.ContractIds.includes(json.Metadata.Id)
+            }
+
+            if (!include && incData.ContractTypes) {
+                include = incData.ContractTypes.includes(json.Metadata.Type)
+            }
+
+            if (!include && incData.Locations) {
+                include = incData.Locations.includes(json.Metadata.Location)
+            }
+
+            if (!include && incData.GameModes) {
+                include = json.Metadata.Gamemodes.some((r) =>
                     incData.GameModes.includes(r),
                 )
-            )
+            }
+
+            return include
         })
 
         challenges.push(
