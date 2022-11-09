@@ -489,11 +489,27 @@ profileRouter.post(
             return res.json([])
         }
 
-        let challenges: CompiledChallengeRuntimeData[] = getVersionedConfig(
-            "GlobalChallenges",
-            req.gameVersion,
-            true,
-        )
+        let challenges: CompiledChallengeRuntimeData[] = (
+            getVersionedConfig(
+                "GlobalChallenges",
+                req.gameVersion,
+                true,
+            ) as CompiledChallengeRuntimeData[]
+        ).filter((val) => {
+            console.log(val.Challenge.Id)
+            // TODO from AF: Check all inclusion data parameters, refine how we do shortcuts as they
+            // do not include inclusion data on official yet are not sent on all requests.
+            if (
+                !(
+                    val.Challenge.InclusionData &&
+                    val.Challenge.InclusionData.ContractTypes
+                )
+            )
+                return true
+            return val.Challenge.InclusionData.ContractTypes.includes(
+                json.Metadata.Type,
+            )
+        })
 
         challenges.push(
             ...Object.values(
