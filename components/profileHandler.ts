@@ -496,17 +496,15 @@ profileRouter.post(
                 true,
             ) as CompiledChallengeRuntimeData[]
         ).filter((val) => {
-            // TODO from AF: Check all inclusion data parameters, refine how we do shortcuts as they
-            // do not include inclusion data on official yet are not sent on all requests.
-            if (
-                !(
-                    val.Challenge.InclusionData &&
-                    val.Challenge.InclusionData.ContractTypes
+            if (!val.Challenge.InclusionData) return true
+            const incData = val.Challenge.InclusionData
+            return (
+                incData.ContractIds.includes(json.Metadata.Type) ||
+                incData.ContractTypes.includes(json.Metadata.Type) ||
+                incData.Locations.includes(json.Metadata.Location) ||
+                json.Metadata.Gamemodes.some((r) =>
+                    incData.GameModes.includes(r),
                 )
-            )
-                return true
-            return val.Challenge.InclusionData.ContractTypes.includes(
-                json.Metadata.Type,
             )
         })
 
