@@ -19,6 +19,7 @@
 import { Router } from "express"
 import {
     ClientToServerEvent,
+    ContractProgressionData,
     ContractSession,
     GameVersion,
     MissionManifestObjective,
@@ -764,8 +765,9 @@ function saveEvents(
             // Evergreen
             case "CpdSet":
                 setCpd(
-                    event.Value as Record<string, string | number | boolean>,
+                    event.Value as ContractProgressionData,
                     userId,
+                    contract.Metadata.CpdId,
                 )
                 break
             case "NoCampaignActive": {
@@ -777,6 +779,7 @@ function saveEvents(
                         DynamicSeed: seed,
                     },
                     userId,
+                    contract.Metadata.CpdId,
                 )
                 break
             }
