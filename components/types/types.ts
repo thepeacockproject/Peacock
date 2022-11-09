@@ -343,7 +343,7 @@ export interface UserProfile {
             __stats?: unknown
             PersistentBool: Record<string, unknown>
         }
-        CPD?: Record<string, string | number | boolean>
+        CPD: CPDStore
     }
     ETag: string | null
     Gamertag: string
