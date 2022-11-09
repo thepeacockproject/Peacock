@@ -60,7 +60,7 @@ import {
     SpottedC2SEvent,
     WitnessesC2SEvent,
 } from "./types/events"
-import { generateSeed, setCpd } from "./evergreen"
+import { setCpd } from "./evergreen"
 
 const eventRouter = Router()
 
@@ -771,12 +771,9 @@ function saveEvents(
                 )
                 break
             case "NoCampaignActive": {
-                const seed = generateSeed()
                 setCpd(
                     {
                         AnyActiveCampaign: false,
-                        RandomSeed: seed,
-                        DynamicSeed: seed,
                     },
                     userId,
                     contract.Metadata.CpdId,
