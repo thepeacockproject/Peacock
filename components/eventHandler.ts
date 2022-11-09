@@ -480,6 +480,9 @@ function saveEvents(
         session.duration = event.Timestamp
         session.lastUpdate = new Date()
 
+        const contract = controller.resolveContract(session.contractId)
+        const contractType = contract?.Metadata?.Type?.toLowerCase()
+
         // @ts-expect-error Issue with request type mismatch.
         controller.hooks.newEvent.call(event, req, session)
 
@@ -503,7 +506,7 @@ function saveEvents(
                 )
 
                 if (val.state === "Failure") {
-                    if (PEACOCK_DEV) {
+                    if (PEACOCK_DEV && contractType !== "evergreen") {
                         log(LogLevel.DEBUG, `Objective failed: ${objectiveId}`)
                     }
 
@@ -549,9 +552,6 @@ function saveEvents(
 
         // @ts-expect-error Tapable types not sufficient
         controller.hooks.newEvent.call(event, req)
-
-        const contract = controller.resolveContract(session.contractId)
-        const contractType = contract?.Metadata?.Type?.toLowerCase()
 
         if (handleMultiplayerEvent(event, session)) {
             processed.push(event.Name)
@@ -770,17 +770,8 @@ function saveEvents(
                     contract.Metadata.CpdId,
                 )
                 break
-            case "NoCampaignActive": {
-                setCpd(
-                    {
-                        AnyActiveCampaign: false,
-                    },
-                    userId,
-                    contract.Metadata.CpdId,
-                )
-                break
-            }
             // Sinkhole events we don't care about
+            case "NoCampaignActive":
             case "Hero_Health":
             case "NPC_Distracted":
             case "ShotsHit":
