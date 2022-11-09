@@ -395,6 +395,7 @@ export function mapObjectives(
         }
     }
 
+    // This is something to get the main objective to show on the planning menu - AF
     if (IsEvergreenSafehouse) {
         sortedResult.push(result.get("f9cfcf80-9977-4ad1-b3c7-0228a2026b9c"))
         resultIds.add("f9cfcf80-9977-4ad1-b3c7-0228a2026b9c")
