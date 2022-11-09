@@ -95,7 +95,13 @@ export const missionsInLocations = {
         LOCATION_NEWZEALAND: ["3efc73f9-33f0-4af6-9508-7208e6851394"],
         LOCATION_MIAMI: [
             "448d89e8-2026-43e3-86f0-205018cbd87e",
+            "be3ea01f-ec56-4fcb-95ec-164a1d9980f3",
+            "782a2849-14a2-4cd4-99fc-ddacaeaba2dd",
             "69b8eb0c-77d5-42e8-b604-26aba8bd835f",
+            "fca539ff-1b1a-4c04-93e0-03b9b902f86c",
+            "066ce378-0418-452a-b02e-a5e4ee711096",
+            "719ee044-4b05-4bd9-b2bb-75029f6d2a35",
+            "5284cb9f-9bdd-4b00-99c3-0b5939b01818",
         ],
         LOCATION_COLOMBIA: [
             "0042ab2c-8aa3-48e5-a75f-4558c691adff",
@@ -109,9 +115,29 @@ export const missionsInLocations = {
         LOCATION_MUMBAI: [
             "667f48a3-7f6b-486e-8f6b-2f782a5c4857",
             "e302a045-0250-4824-9416-675cf936e035",
+            "ae0bd6cd-7062-4336-8cb0-5fafad3d0f4f",
+            "4a62b328-dfe7-4956-ac0f-a3a8990fce26",
+            "b6a6330a-301a-4e8e-a26f-0f3e0ea809b5",
+            "9badee3e-0014-46b1-9ef6-edf8858ba038",
+            "b47f34cb-6537-421c-8fc8-720a4a118540",
         ],
-        LOCATION_NORTHAMERICA: ["218302a3-f682-46f9-9ffd-bb3e82487b7c"],
-        LOCATION_NORTHSEA: ["d0a0fa03-08a7-43ef-b5e8-d8662d015372"],
+        LOCATION_NORTHAMERICA: [
+            "218302a3-f682-46f9-9ffd-bb3e82487b7c",
+            "d1b9250b-33f6-4712-831b-f33fa11ee4d8",
+            "15b7ad4e-565a-4fdb-b669-c9a68176e665",
+            "fe088a10-5dbf-460f-bbe2-6b55e7a66253",
+            "74e6b561-ff1a-4742-9a7b-890b7818c796",
+            "1d5dcf3e-9682-4e32-ac11-ad6586daa456",
+        ],
+        LOCATION_NORTHSEA: [
+            "4fbfae2e-a5e7-4b79-b008-94f6cbcb13cb",
+            "dbb0e22d-084b-4b57-8616-42290982fd90",
+            "e63eeb62-29ef-428d-b003-ea043b1f11f9",
+            "3721e543-b5e6-4af8-a4fc-c92e9a4453bd",
+            "b66f151d-47a7-4681-a403-c48a46916224",
+            "d0a0fa03-08a7-43ef-b5e8-d8662d015372",
+            "8c6daf5e-5974-4438-af20-71ff570c7ff3",
+        ],
         LOCATION_GREEDY_RACCOON: [
             "55063d85-e84a-4c76-8bf7-e70fe2cab651",
             "9a461f89-86c5-44e4-998e-f2f66b496aa7",
@@ -119,6 +145,7 @@ export const missionsInLocations = {
         LOCATION_OPULENT_STINGRAY: [
             "f19f7ac8-39ec-498b-aa23-44c8e75d8693",
             "35f1f534-ae2d-42be-8472-dd55e96625ea",
+            "83d4e87e-2f47-4c81-b831-30bd13a29b05",
         ],
         LOCATION_GOLDEN_GECKO: ["be14d4f1-f1aa-4dea-8c9b-a5b1a1dea931"],
         LOCATION_ANCESTRAL_BULLDOG: [
