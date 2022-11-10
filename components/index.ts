@@ -85,6 +85,7 @@ const port = process.env.PORT || 80
 function uncaught(error: Error): void {
     if (
         (error.message || "").includes("EADDRINUSE") ||
+        (error.message || "").includes("EACCES") ||
         (error.stack || "").includes("EADDRINUSE")
     ) {
         log(LogLevel.ERROR, `Failed to use the server on ${host}:${port}!`)
