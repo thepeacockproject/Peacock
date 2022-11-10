@@ -19,6 +19,10 @@
 /* eslint-disable no-inner-declarations */
 // noinspection RequiredAttributes
 
+// load flags as soon as possible
+import { getFlag, loadFlags } from "./flags"
+loadFlags()
+
 import { setFlagsFromString } from "v8"
 import { program } from "commander"
 import express, { Request, Router } from "express"
@@ -60,7 +64,6 @@ import {
 import { legacyProfileRouter } from "./2016/legacyProfileRouter"
 import { legacyMenuDataRouter } from "./2016/legacyMenuData"
 import { legacyContractRouter } from "./2016/legacyContractHandler"
-import { getFlag, loadFlags } from "./flags"
 import { initRp } from "./discordRp"
 import random from "random"
 import { generateUserCentric } from "./contracts/dataGen"
@@ -114,8 +117,6 @@ function uncaught(error: Error): void {
 }
 
 process.on("uncaughtException", uncaught)
-
-loadFlags()
 
 const app = express()
 

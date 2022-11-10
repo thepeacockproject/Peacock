@@ -37,6 +37,10 @@ const defaultFlags: Flags = {
         desc: "Use official servers for contract downloading",
         default: true,
     },
+    liveSplit: {
+        desc: "Toggle LiveSplit support on or off",
+        default: false,
+    },
     autoSplitterCampaign: {
         desc: "Which (main) campaign to use for the AutoSplitter. Can be set to 1, 2, 3, or 'trilogy'.",
         default: "trilogy",
