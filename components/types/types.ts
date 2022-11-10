@@ -48,6 +48,7 @@ export type GameAudience =
     | "epic-prod_8"
     | "xboxone-prod"
     | "scpc-prod"
+    | "playtest01-prod_8"
 
 /**
  * Data from the JSON Web Token (JWT) authentication scheme.
@@ -178,6 +179,7 @@ export type MissionType =
     | "campaign"
     | "arcade"
     | "vsrace"
+    | "evergreen"
 
 /**
  * The last kill in a contract session.
@@ -628,6 +630,8 @@ export interface MissionManifestObjective {
     }
     ResetEvent?: null
     IgnoreIfInactive?: boolean
+    GameChangerName?: string
+    IsPrestigeObjective?: boolean
 }
 
 /**
@@ -713,6 +717,9 @@ export interface MissionManifestMetadata {
      */
     readonly UserData?: unknown | null
     IsVersus?: boolean
+    IsEvergreenSafehouse?: boolean
+    UseContractProgressionData?: boolean
+    CpdId?: string
     GroupDefinition?: ContractGroupDefinition
 }
 
@@ -732,6 +739,7 @@ export interface GameChanger {
     Resource?: string[] | null
     Objectives?: MissionManifestObjective[] | null
     LongDescription?: string | null
+    IsPrestigeObjective?: boolean
 }
 
 /**
@@ -974,9 +982,9 @@ export interface CompiledChallengeIngameData {
     Xp: number
     XpModifier: unknown
     InclusionData?: {
-        ContractIds?: unknown
+        ContractIds?: string[]
         ContractTypes?: string[]
-        Locations?: unknown
+        Locations?: string[]
         GameModes?: string[]
     }
     CrowdChoice?: {
@@ -1225,3 +1233,10 @@ export type SceneConfig = Record<string, string[]>
  *   since that creates a new session.
  */
 export type ContextScopedStorageLocation = "profile" | "hit" | "session"
+
+/**
+ * Evergreen-related types
+ */
+export type CPDStore = Record<string, Record<string, string | number | boolean>>
+
+export type ContractProgressionData = Record<string, string | number | boolean>
