@@ -514,6 +514,7 @@ function startServer(options: { hmr: boolean; pluginDevHost: boolean }): void {
         join("userdata", "scpc", "steamids"),
         join("images", "actors"),
         join("images", "contracts"),
+        join("images", "contracts", "elusive"),
         join("images", "contracts", "escalation"),
         join("images", "contracts", "featured"),
         join("images", "unlockables_override"),
