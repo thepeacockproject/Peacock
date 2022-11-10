@@ -38,6 +38,14 @@ export class LiveSplitManager {
     private _raceMode: boolean | undefined // gets late-initialized, use _isRaceMode to access
 
     constructor() {
+        // don't finish initializing if livesplit is disabled
+        if (!getFlag("liveSplit")) {
+            this._initialized = false
+            this._initializationAttempted = true
+
+            return
+        }
+
         this._initialized = false
         this._initializationAttempted = false
         this._resetMinimum = 1
