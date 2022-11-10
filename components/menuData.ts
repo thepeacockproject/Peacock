@@ -38,6 +38,7 @@ import type {
     CommonSelectScreenConfig,
     HitsCategoryCategory,
     IHit,
+    MissionManifest,
     PeacockLocationsData,
     RequestWithJwt,
     SafehouseCategory,
@@ -369,18 +370,9 @@ menuDataRouter.get(
             return
         }
 
-        if (!req.query.contractid) {
-            res.status(400).json({
-                error: "No contractid specified",
-            })
-            return
-        }
-
-        const contractData = controller.resolveContract(req.query.contractid)
-
-        if (!contractData) {
-            res.status(404).send({})
-            return
+        let contractData: MissionManifest | undefined = undefined
+        if (req.query.contractid) {
+            contractData = controller.resolveContract(req.query.contractid)
         }
 
         if (req.query.slotname.endsWith(req.query.slotid!.toString())) {
@@ -398,14 +390,14 @@ menuDataRouter.get(
                     .filter((item) => {
                         if (
                             req.query.slotname === "gear" &&
-                            contractData.Peacock?.noGear === true
+                            contractData?.Peacock?.noGear === true
                         ) {
                             return false
                         }
 
                         if (
                             req.query.slotname === "concealedweapon" &&
-                            contractData.Peacock?.noCarriedWeapon === true
+                            contractData?.Peacock?.noCarriedWeapon === true
                         ) {
                             return false
                         }
