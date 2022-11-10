@@ -5,30 +5,29 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "pwa-node",
+            "type": "node",
             "request": "launch",
             "name": "Dev Server (run-dev)",
             "skipFiles": ["<node_internals>/**"],
             "env": {
                 "DEBUG": "peacock",
-                "Path": "${workspaceFolder}/nodedist;${env:Path}"
+                "NODE_TLS_REJECT_UNAUTHORIZED": "0"
             },
             "runtimeExecutable": "yarn",
             "runtimeArgs": ["run-dev"],
             "internalConsoleOptions": "openOnSessionStart"
         },
         {
-            "type": "pwa-node",
+            "type": "node",
             "request": "launch",
-            "name": "Prod Server (build && launch chunk0)",
+            "name": "Prod Server (existing build)",
             "skipFiles": ["<node_internals>/**"],
             "program": "${workspaceFolder}/chunk0.js",
-            "preLaunchTask": "yarn build",
             "outFiles": ["${workspaceFolder}/chunk*.js"],
             "env": {
-                "DEBUG": "peacock"
+                "DEBUG": "peacock",
+                "NODE_TLS_REJECT_UNAUTHORIZED": "0"
             },
-            "runtimeExecutable": "${workspaceFolder}/nodedist/node",
             "internalConsoleOptions": "openOnSessionStart"
         }
     ]

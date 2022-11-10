@@ -5,46 +5,38 @@
     "tasks": [
         {
             "type": "shell",
-            "options": {
-                "env": {
-                    "Path": "${workspaceFolder}/nodedist;${env:Path}"
-                }
-            },
             "command": "yarn build",
             "label": "yarn build",
             "problemMatcher": []
         },
         {
             "type": "shell",
-            "options": {
-                "env": {
-                    "Path": "${workspaceFolder}/nodedist;${env:Path}"
-                }
-            },
             "command": "yarn optimize",
             "label": "yarn optimize",
             "problemMatcher": []
         },
         {
             "type": "shell",
-            "options": {
-                "env": {
-                    "Path": "${workspaceFolder}/nodedist;${env:Path}"
-                }
-            },
             "command": "yarn install",
             "label": "yarn install",
             "problemMatcher": []
         },
         {
             "type": "shell",
-            "options": {
-                "env": {
-                    "Path": "${workspaceFolder}/nodedist;${env:Path}"
-                }
-            },
             "command": "yarn typecheck",
             "label": "yarn typecheck",
+            "problemMatcher": []
+        },
+        {
+            "type": "shell",
+            "command": "yarn prettier",
+            "label": "yarn prettier",
+            "problemMatcher": []
+        },
+        {
+            "type": "shell",
+            "command": "yarn install",
+            "label": "yarn install",
             "problemMatcher": []
         }
     ]
