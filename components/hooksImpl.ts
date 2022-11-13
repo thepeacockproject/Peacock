@@ -123,6 +123,24 @@ export abstract class BaseImpl<Params, Return = void> {
     }
 
     /**
+     * Remove an interceptor.
+     *
+     * @param name A string containing the interceptor's name.
+     * @returns True if the removal was successful
+     */
+    public removeInterceptor(name: string): boolean {
+        const index = this._intercepts.findIndex((e) => e.name === name)
+
+        if (index < 0) {
+            return false
+        }
+
+        this._intercepts.splice(index, 1)
+
+        return true
+    }
+
+    /**
      * Tap the hook.
      *
      * @param nameOrOptions A string containing the tap's name, or an object containing the tap's details.
@@ -151,6 +169,29 @@ export abstract class BaseImpl<Params, Return = void> {
             func: consumer,
             enableContext,
         })
+    }
+
+    /**
+     * Untap the hook.
+     *
+     * @param nameOrOptions A string containing the tap's name, or an object containing the tap's details.
+     * @returns True if the untap was successful
+     */
+    public untap(nameOrOptions: TapOptions): boolean {
+        const name =
+            typeof nameOrOptions === "string"
+                ? nameOrOptions
+                : nameOrOptions.name
+
+        const index = this._taps.findIndex((e) => e.name === name)
+
+        if (index < 0) {
+            return false
+        }
+
+        this._taps.splice(index, 1)
+
+        return true
     }
 }
 

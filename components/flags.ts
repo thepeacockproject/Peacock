@@ -93,6 +93,10 @@ const defaultFlags: Flags = {
         desc: "[Development - Workspace required] Toggle loading of plugins with a .ts/.cts extension inside the /plugins folder",
         default: false,
     },
+    developmentTestMode: {
+        desc: "[Development] Toggle running of test code to verify functionality during runtime",
+        default: false,
+    },
 }
 
 const OLD_FLAGS_FILE = "flags.json5"
