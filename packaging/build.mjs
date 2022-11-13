@@ -19,11 +19,11 @@
 import * as e from "esbuild"
 import { createRequire } from "module"
 import { esbuildPluginLicense } from "./esbuild-plugin-license.mjs"
-import { packContractsAndChallenges } from "./buildTasks.mjs"
+import { packResources } from "./buildTasks.mjs"
 
 const require = createRequire(import.meta.url)
 
-await packContractsAndChallenges()
+await packResources()
 
 const { version, revisionIdent } = require("../package.json")
 

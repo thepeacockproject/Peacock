@@ -17,7 +17,7 @@
  */
 
 import picocolors from "picocolors"
-import { packContractsAndChallenges } from "./buildTasks.mjs"
+import { packResources } from "./buildTasks.mjs"
 import { createRequire, Module } from "module"
 import { readFileSync } from "fs"
 
@@ -25,7 +25,7 @@ import { readFileSync } from "fs"
 // TS files as if they were JS in a CommonJS environment
 const require = createRequire(import.meta.url)
 
-await packContractsAndChallenges()
+await packResources()
 
 const { version, revisionIdent } = require("../package.json")
 

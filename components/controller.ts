@@ -83,6 +83,8 @@ import assert from "assert"
 import { Response } from "express"
 import { MissionEndRequestQuery } from "./types/gameSchemas"
 import { ChallengeFilterType } from "./candle/challengeHelpers"
+import { MasteryService } from "./candle/masteryService"
+import { MasteryPackage } from "./types/mastery"
 
 /**
  * An array of string arrays that contains the IDs of the featured contracts.
@@ -328,6 +330,7 @@ export class Controller {
     public hooks: {
         serverStart: SyncHook<[]>
         challengesLoaded: SyncHook<[]>
+        masteryDataLoaded: SyncHook<[]>
         newEvent: SyncHook<
             [
                 /** event */ ClientToServerEvent,
@@ -391,6 +394,7 @@ export class Controller {
      */
     public contracts: Map<string, MissionManifest> = new Map()
     public challengeService: ChallengeService
+    public masteryService: MasteryService
     /**
      * A list of Simple Mod Framework mods installed.
      */
@@ -407,6 +411,7 @@ export class Controller {
         this.hooks = {
             serverStart: new SyncHook(),
             challengesLoaded: new SyncHook(),
+            masteryDataLoaded: new SyncHook(),
             newEvent: new SyncHook(),
             newMetricsEvent: new SyncHook(),
             getContractManifest: new SyncBailHook(),
@@ -477,6 +482,7 @@ export class Controller {
         await this._loadInternalContracts()
 
         this.challengeService = new ChallengeService(this)
+        this.masteryService = new MasteryService(this)
 
         this._addElusiveTargets()
         this.index()
@@ -543,8 +549,10 @@ export class Controller {
         this.hooks.serverStart.call()
 
         try {
-            await this._loadChallenges()
+            await this._loadResources()
+
             this.hooks.challengesLoaded.call()
+            this.hooks.masteryDataLoaded.call()
         } catch (e) {
             log(LogLevel.ERROR, `Fatal error with challenge bootstrap: ${e}`)
             log(LogLevel.ERROR, e.stack)
@@ -884,43 +892,79 @@ export class Controller {
         return fetchedData!.contract!.Contract
     }
 
-    private async _loadChallenges(): Promise<void> {
-        const dir = join(
+    private async _loadResources(): Promise<void> {
+        // Load challenge resources
+        const challengeDirectory = join(
             PEACOCK_DEV ? process.cwd() : __dirname,
             "resources",
             "challenges",
         )
-        const files = await readdir(dir)
 
-        for (const challengeFile of files) {
+        await this._handleResources(
+            challengeDirectory,
+            (data: ChallengePackage) => {
+                this._handleChallengeResources(data)
+            },
+        )
+
+        // Load mastery resources
+        const masteryDirectory = join(
+            PEACOCK_DEV ? process.cwd() : __dirname,
+            "resources",
+            "mastery",
+        )
+
+        await this._handleResources(
+            masteryDirectory,
+            (data: MasteryPackage) => {
+                this._handleMasteryResources(data)
+            },
+        )
+    }
+
+    private async _handleResources<T>(
+        directory: string,
+        handleDataCallback: (data: T) => void | Promise<void>,
+    ): Promise<void> {
+        const files = await readdir(directory)
+
+        for (const file of files) {
             try {
-                const fileBuffer = await readFile(join(dir, challengeFile))
-                const data: ChallengePackage = unpack(fileBuffer)
+                const fileBuffer = await readFile(join(directory, file))
+                const data: T = unpack(fileBuffer)
 
-                for (const group of data.groups) {
-                    if (
-                        [
-                            "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ARCADE",
-                            "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ESCALATION_HM1",
-                            "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ESCALATION_HM2",
-                        ].includes(group.Name)
-                    ) {
-                        continue
-                    }
-
-                    this.challengeService.registerGroup(group)
-
-                    for (const challenge of group.Challenges) {
-                        this.challengeService.registerChallenge(
-                            challenge,
-                            group.CategoryId,
-                        )
-                    }
-                }
+                await handleDataCallback(data)
             } catch (e) {
-                log(LogLevel.ERROR, `Aborting challenge parsing.`)
+                log(LogLevel.ERROR, `Aborting resource parsing. ${e}`)
             }
         }
+    }
+
+    private _handleChallengeResources(data: ChallengePackage): void {
+        for (const group of data.groups) {
+            if (
+                [
+                    "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ARCADE",
+                    "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ESCALATION_HM1",
+                    "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ESCALATION_HM2",
+                ].includes(group.Name)
+            ) {
+                continue
+            }
+
+            this.challengeService.registerGroup(group)
+
+            for (const challenge of group.Challenges) {
+                this.challengeService.registerChallenge(
+                    challenge,
+                    group.CategoryId,
+                )
+            }
+        }
+    }
+
+    private _handleMasteryResources(data: MasteryPackage): void {
+        this.masteryService.registerMasteryData(data)
     }
 
     /**
