@@ -93,6 +93,10 @@ const defaultFlags: Flags = {
         desc: "When set to true, the official servers will be used for contract downloading in H3, which only works for the platform you are playing on. When false, the HITMAPS servers will be used instead. Note that this option only pertains to H3. Official servers will be used for H1 and H2 regardless of the value of this option.",
         default: false,
     },
+    developmentTestMode: {
+        desc: "[Development] Toggle running of test code to verify functionality during runtime",
+        default: false,
+    },
 }
 
 const OLD_FLAGS_FILE = "flags.json5"

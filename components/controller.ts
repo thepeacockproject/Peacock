@@ -86,6 +86,17 @@ import { ChallengeFilterType } from "./candle/challengeHelpers"
 import { MasteryService } from "./candle/masteryService"
 import { MasteryPackage } from "./types/mastery"
 
+export interface IPlugin {
+    name: string
+    unload?: () => boolean
+}
+
+interface ILoadedPlugin {
+    path: string
+    plugin: IPlugin
+    isWorkspacePlugin: boolean
+}
+
 /**
  * An array of string arrays that contains the IDs of the featured contracts.
  * Each of the string arrays is one page.
@@ -399,6 +410,7 @@ export class Controller {
      * A list of Simple Mod Framework mods installed.
      */
     public readonly installedMods: readonly string[]
+    private _loadedPlugins: Map<string, ILoadedPlugin> = new Map()
     private _pubIdToContractId: Map<string, string> = new Map()
     private _internalContracts: MissionManifest[]
     /** Internal elusive target contracts - only accessible during bootstrap. */
@@ -1015,6 +1027,60 @@ export class Controller {
         return contractData || undefined
     }
 
+    public runningInDevelopment(): boolean {
+        return PEACOCK_DEV
+    }
+
+    public runningInTestMode(): boolean {
+        return getFlag("developmentTestMode") as boolean
+    }
+
+    public reloadPlugin(pluginName: string): boolean {
+        const loadedPlugin: ILoadedPlugin =
+            this._loadedPlugins[pluginName.toLowerCase()]
+
+        if (!loadedPlugin) {
+            log(LogLevel.WARN, `Plugin '${pluginName}' does not exist!`)
+
+            return false
+        }
+
+        if (!loadedPlugin.plugin.unload) {
+            log(
+                LogLevel.WARN,
+                `Plugin '${pluginName}' does not implement hot-reloading, please restart the server!`,
+            )
+
+            return false
+        }
+
+        if (!loadedPlugin.plugin.unload()) {
+            log(
+                LogLevel.WARN,
+                `Plugin '${pluginName}' failed to unload, please restart the server!`,
+            )
+
+            return false
+        }
+
+        delete this._loadedPlugins[pluginName.toLowerCase()]
+
+        log(LogLevel.INFO, `Plugin '${pluginName}' has been unloaded!`)
+
+        if (loadedPlugin.isWorkspacePlugin) {
+            this._loadWorkspacePlugin(
+                loadedPlugin.plugin.name,
+                loadedPlugin.path,
+            )
+        } else {
+            this._loadPlugin(loadedPlugin.plugin.name, loadedPlugin.path)
+        }
+
+        log(LogLevel.INFO, `Plugin '${pluginName}' has been loaded!`)
+
+        return true
+    }
+
     /**
      * Loads all normal, pre-built or pure JS plugins either from root or plugins folder.
      *
@@ -1028,9 +1094,8 @@ export class Controller {
 
             for (const plugin of entries) {
                 const sourceFile = join(process.cwd(), "plugins", plugin)
-                const src = (await readFile(sourceFile)).toString()
 
-                await this._executePlugin(plugin, src, sourceFile)
+                await this._loadPlugin(plugin, sourceFile)
             }
         }
         const entries = (await readdir(process.cwd())).filter(
@@ -1038,9 +1103,9 @@ export class Controller {
         )
 
         for (const plugin of entries) {
-            const src = (await readFile(plugin)).toString()
+            const sourceFile = join(process.cwd(), plugin)
 
-            await this._executePlugin(plugin, src, join(process.cwd(), plugin))
+            await this._loadPlugin(plugin, sourceFile)
         }
     }
 
@@ -1049,29 +1114,52 @@ export class Controller {
             (n) => isPlugin(n, "ts") || isPlugin(n, "cts"),
         )
 
+        for (const plugin of entries) {
+            const sourceFile = join(process.cwd(), "plugins", plugin)
+
+            await this._loadWorkspacePlugin(plugin, sourceFile)
+        }
+    }
+
+    private async _loadPlugin(
+        pluginName: string,
+        sourceFile: string,
+    ): Promise<void> {
+        const src = (await readFile(sourceFile)).toString()
+
+        await this._executePlugin(pluginName, src, sourceFile, false)
+    }
+
+    private async _loadWorkspacePlugin(
+        pluginName: string,
+        sourceFile: string,
+    ): Promise<void> {
+        const raw = (await readFile(sourceFile)).toString()
+
         const esbuild = await import("esbuild-wasm")
         const { transform } = esbuild
 
-        for (const plugin of entries) {
-            const sourceFile = join(process.cwd(), "plugins", plugin)
-            const raw = (await readFile(sourceFile)).toString()
+        const builtPlugin = await transform(raw, {
+            loader: "ts",
+            sourcemap: "inline",
+            sourcefile: sourceFile,
+            target: "node18",
+            format: "cjs",
+        })
 
-            const builtPlugin = await transform(raw, {
-                loader: "ts",
-                sourcemap: "inline",
-                sourcefile: sourceFile,
-                target: "node18",
-                format: "cjs",
-            })
-
-            await this._executePlugin(plugin, builtPlugin.code, sourceFile)
-        }
+        await this._executePlugin(
+            pluginName,
+            builtPlugin.code,
+            sourceFile,
+            true,
+        )
     }
 
     private async _executePlugin(
         pluginName: string,
         pluginContents: string,
         pluginPath: string,
+        isWorkspacePlugin: boolean,
     ): Promise<void> {
         const context = createContext({
             module: { exports: {} },
@@ -1108,7 +1196,24 @@ export class Controller {
                 plugin = theExports.default ?? theExports
             }
 
-            await (plugin as (controller: Controller) => Promise<void>)(this)
+            const pluginResult = await (
+                plugin as (controller: Controller) => Promise<void | IPlugin>
+            )(this)
+
+            if (pluginResult) {
+                log(
+                    LogLevel.DEBUG,
+                    `Plugin '${pluginResult.name}' potentially supports hot reloading`,
+                )
+
+                this._loadedPlugins[pluginResult.name.toLowerCase()] = <
+                    ILoadedPlugin
+                >{
+                    path: pluginPath,
+                    plugin: pluginResult,
+                    isWorkspacePlugin: isWorkspacePlugin,
+                }
+            }
         } catch (e) {
             log(LogLevel.ERROR, `Error while evaluating plugin ${pluginName}!`)
             log(LogLevel.ERROR, e)
