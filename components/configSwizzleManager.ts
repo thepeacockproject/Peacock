@@ -104,6 +104,7 @@ import scoreoverviewtemplate from "../static/scoreoverviewtemplate.json"
 import PeacockGameChangerProperties from "../static/PeacockGameChangerProperties.json"
 import MultiplayerPresets from "../static/MultiplayerPresets.json"
 import LobbySlimTemplate from "../static/LobbySlimTemplate.json"
+import MasteryDataForLocationTemplate from "../static/MasteryDataForLocationTemplate.json"
 import type { GameVersion } from "./types/types"
 import { fastClone } from "./utils"
 
@@ -194,6 +195,7 @@ const configs: Record<string, unknown> = {
     PeacockGameChangerProperties,
     MultiplayerPresets,
     LobbySlimTemplate,
+    MasteryDataForLocationTemplate,
 }
 
 Object.keys(configs).forEach((cfg) => {

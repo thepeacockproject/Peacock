@@ -40,6 +40,7 @@ import type {
     IHit,
     MissionManifest,
     PeacockLocationsData,
+    PlayerProfileView,
     RequestWithJwt,
     SafehouseCategory,
     SceneConfig,
@@ -828,7 +829,12 @@ menuDataRouter.get(
                             req.jwt.unique_name,
                         ),
                 },
-                MasteryData: [],
+                MasteryData:
+                    controller.masteryService.getMasteryDataForDestination(
+                        req.query.locationId,
+                        req.gameVersion,
+                        req.jwt.unique_name,
+                    ),
                 DifficultyData: undefined,
             },
         }
@@ -1593,8 +1599,17 @@ menuDataRouter.post(
     createLoadSaveMiddleware("SaveMenuTemplate"),
 )
 
-menuDataRouter.get("/PlayerProfile", (req, res) => {
-    const playerProfilePage = getConfig("PlayerProfilePage", true)
+menuDataRouter.get("/PlayerProfile", (req: RequestWithJwt, res) => {
+    const playerProfilePage = getConfig<PlayerProfileView>(
+        "PlayerProfilePage",
+        true,
+    )
+
+    const userProfile = getUserData(req.jwt.unique_name, req.gameVersion)
+    playerProfilePage.data.PlayerProfileXp.Total =
+        userProfile.Extensions.progression.PlayerProfileXP.Total
+    playerProfilePage.data.PlayerProfileXp.Level =
+        userProfile.Extensions.progression.PlayerProfileXP.ProfileLevel
 
     res.json(playerProfilePage)
 })
@@ -1702,6 +1717,19 @@ menuDataRouter.get(
                     ],
             },
         })
+    },
+)
+
+menuDataRouter.get(
+    "/MasteryDataForLocation",
+    (req: RequestWithJwt<{ locationId: string }>, res) => {
+        res.json(
+            controller.masteryService.getMasteryDataForLocation(
+                req.query.locationId,
+                req.gameVersion,
+                req.jwt.unique_name,
+            ),
+        )
     },
 )
 
