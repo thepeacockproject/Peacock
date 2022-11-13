@@ -81,13 +81,13 @@ export class MasteryService {
         gameVersion: GameVersion,
         userId: string,
     ): CompletionData {
-        if (!this.masteryData.has(locationParentId)) {
-            return undefined
-        }
-
         //Get the mastery data
         const masteryData: MasteryPackage =
-            this.masteryData.get(locationParentId)
+            this.getMasteryPackage(locationParentId)
+
+        if (!masteryData) {
+            return undefined
+        }
 
         //Get the user profile
         const userProfile = getUserData(userId, gameVersion)
@@ -119,7 +119,8 @@ export class MasteryService {
             Level: locationData.Level,
             MaxLevel: maxLevel,
             XP: locationData.Xp,
-            Completion: locationData.Xp / nextLevelXp,
+            //TODO: Ewww, magic values.
+            Completion: (6000 - (nextLevelXp - locationData.Xp)) / 6000,
             XpLeft: nextLevelXp - locationData.Xp,
             Id: masteryData.Id,
             SubLocationId: subLocationId,
@@ -129,20 +130,24 @@ export class MasteryService {
         }
     }
 
+    getMasteryPackage(locationParentId: string): MasteryPackage {
+        if (!this.masteryData.has(locationParentId)) {
+            return undefined
+        }
+
+        return this.masteryData.get(locationParentId)
+    }
+
     private getMasteryData(
         locationParentId: string,
         gameVersion: GameVersion,
         userId: string,
     ): MasteryData[] {
-        if (!this.masteryData.has(locationParentId)) {
-            return []
-        }
-
         //Get the mastery data
         const masteryData: MasteryPackage =
-            this.masteryData.get(locationParentId)
+            this.getMasteryPackage(locationParentId)
 
-        if (masteryData.Drops.length === 0) {
+        if (!masteryData || masteryData.Drops.length === 0) {
             return []
         }
 

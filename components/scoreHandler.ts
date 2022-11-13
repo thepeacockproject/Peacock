@@ -25,12 +25,14 @@ import {
     xpRequiredForLevel,
 } from "./utils"
 import { contractSessions, getCurrentState } from "./eventHandler"
-import { getConfig, getVersionedConfig } from "./configSwizzleManager"
+import { getConfig } from "./configSwizzleManager"
 import { _theLastYardbirdScpc, controller } from "./controller"
 import type {
     ContractSession,
+    GameVersion,
+    MissionManifest,
     MissionManifestObjective,
-    PeacockLocationsData,
+    RatingKill,
     RequestWithJwt,
     Seconds,
 } from "./types/types"
@@ -41,13 +43,31 @@ import {
 import { getUserData, writeUserData } from "./databaseHandler"
 import axios from "axios"
 import { getFlag } from "./flags"
-import { log, LogLevel } from "./loggingInterop"
-import { generateCompletionData } from "./contracts/dataGen"
+import { log, logDebug, LogLevel } from "./loggingInterop"
+import {
+    generateCompletionData,
+    getSubLocationByName,
+} from "./contracts/dataGen"
 import { liveSplitManager } from "./livesplit/liveSplitManager"
-import { Playstyle, ScoringBonus, ScoringHeadline } from "./types/scoring"
+import { Playstyle, ScoringHeadline } from "./types/scoring"
 import { MissionEndRequestQuery } from "./types/gameSchemas"
 import { ChallengeFilterType } from "./candle/challengeHelpers"
 import { getCompletionPercent } from "./menus/destinations"
+import {
+    CalculateXpResult,
+    CalculateScoreResult,
+    MissionEndResponse,
+    MissionEndDrop,
+    MissionEndEvergreen,
+    MissionEndChallenge,
+} from "./types/score"
+import { MasteryData } from "./types/mastery"
+
+interface IGetLevelInfoResult {
+    level: number
+    completion: number
+    xpLeft: number
+}
 
 /**
  * Checks the criteria of each possible play-style, ranking them by scoring.
@@ -56,7 +76,9 @@ import { getCompletionPercent } from "./menus/destinations"
  * @param session The contract session.
  * @returns The play-styles, ranked from best fit to worst fit.
  */
-export function calculatePlaystyle(session: ContractSession): Playstyle[] {
+export function calculatePlaystyle(
+    session: Partial<{ kills: Set<RatingKill> }>,
+): Playstyle[] {
     const playstylesCopy = getConfig("Playstyles", true) as Playstyle[]
 
     // Resetting the scores...
@@ -183,10 +205,335 @@ export function calculatePlaystyle(session: ContractSession): Playstyle[] {
     return playstylesCopy
 }
 
+export function calculateXp(
+    contractSession: ContractSession,
+): CalculateXpResult {
+    const completedChallenges: MissionEndChallenge[] = []
+    let totalXp = 0
+
+    //TODO: Merge with the non-global challenges?
+    for (const challengeId of Object.keys(contractSession.challengeContexts)) {
+        const data = contractSession.challengeContexts[challengeId]
+
+        if (data.timesCompleted <= 0) {
+            continue
+        }
+
+        const challenge =
+            controller.challengeService.getChallengeById(challengeId)
+
+        if (!challenge || !challenge.Xp || !challenge.Name.includes("GLOBAL")) {
+            continue
+        }
+
+        const challengeXp = challenge.Xp * data.timesCompleted
+        totalXp += challengeXp
+
+        const challengeData = {
+            ChallengeId: challenge.Id,
+            ChallengeTags: challenge.Tags,
+            ChallengeName: challenge.Name,
+            ChallengeImageUrl: challenge.ImageName,
+            ChallengeDescription: challenge.Description,
+            XPGain: challengeXp,
+            IsGlobal: true,
+            IsActionReward: challenge.Tags.includes("actionreward"),
+            Drops: challenge.Drops,
+        }
+
+        //NOTE: Official adds the same challenge multiple times
+        for (let i = 0; i < data.timesCompleted; i++) {
+            completedChallenges.push(challengeData)
+        }
+    }
+
+    return {
+        completedChallenges: completedChallenges,
+        xp: totalXp,
+    }
+}
+
+export function calculateScore(
+    gameVersion: GameVersion,
+    contractSessionId: string,
+    contractSession: ContractSession,
+    contractData: MissionManifest,
+    timeTotal: Seconds,
+): CalculateScoreResult {
+    //Bonuses
+    const bonuses = [
+        {
+            headline: "UI_SCORING_SUMMARY_OBJECTIVES",
+            bonusId: "AllObjectivesCompletedBonus",
+            condition:
+                gameVersion === "h1" ||
+                contractData.Metadata.Id ===
+                    "2d1bada4-aa46-4954-8cf5-684989f1668a" ||
+                contractData.Data.Objectives?.every(
+                    (obj: MissionManifestObjective) =>
+                        obj.ExcludeFromScoring ||
+                        contractSession.completedObjectives.has(obj.Id) ||
+                        (obj.IgnoreIfInactive &&
+                            !isObjectiveActive(
+                                obj,
+                                contractSession.completedObjectives,
+                            )) ||
+                        "Success" ===
+                            getCurrentState(contractSessionId, obj.Id),
+                ),
+            fractionNumerator: 2,
+            fractionDenominator: 3,
+        },
+        {
+            headline: "UI_SCORING_SUMMARY_NOT_SPOTTED",
+            bonusId: "Unspotted",
+            condition: [
+                ...contractSession.witnesses,
+                ...contractSession.spottedBy,
+            ].every(
+                (witness) =>
+                    (gameVersion === "h1"
+                        ? false
+                        : contractSession.targetKills.has(witness)) ||
+                    contractSession.npcKills.has(witness),
+            ),
+        },
+        {
+            headline: "UI_SCORING_SUMMARY_NO_NOTICED_KILLS",
+            bonusId: "NoWitnessedKillsBonus",
+            condition: [...contractSession.killsNoticedBy].every(
+                (witness) =>
+                    (gameVersion === "h1"
+                        ? true
+                        : contractSession.targetKills.has(witness)) ||
+                    contractSession.npcKills.has(witness),
+            ),
+        },
+        {
+            headline: "UI_SCORING_SUMMARY_NO_BODIES_FOUND",
+            bonusId: "NoBodiesFound",
+            condition:
+                contractSession.legacyHasBodyBeenFound === false &&
+                [...contractSession.bodiesFoundBy].every(
+                    (witness) =>
+                        (gameVersion === "h1"
+                            ? false
+                            : contractSession.targetKills.has(witness)) ||
+                        contractSession.npcKills.has(witness),
+                ),
+        },
+        {
+            headline: "UI_SCORING_SUMMARY_NO_RECORDINGS",
+            bonusId: "SecurityErased",
+            condition:
+                contractSession.recording === "NOT_SPOTTED" ||
+                contractSession.recording === "ERASED",
+        },
+    ]
+
+    //Non-target kills
+    const nonTargetKills =
+        contractData?.Metadata.AllowNonTargetKills === true
+            ? 0
+            : contractSession.npcKills.size + contractSession.crowdNpcKills
+
+    let totalScore = -5000 * nonTargetKills
+
+    //Headlines and bonuses
+    const scoringHeadlines = []
+    const awardedBonuses = []
+    const failedBonuses = []
+
+    const headlineObjTemplate: Partial<ScoringHeadline> = {
+        type: "summary",
+        count: "",
+        scoreIsFloatingType: false,
+        fractionNumerator: 0,
+        fractionDenominator: 0,
+        scoreTotal: 20000,
+    }
+
+    for (const bonus of bonuses) {
+        const bonusObj = {
+            Score: 20000,
+            Id: bonus.bonusId,
+            FractionNumerator: bonus.fractionNumerator || 0,
+            FractionDenominator: bonus.fractionDenominator || 0,
+        }
+
+        const headlineObj = Object.assign(
+            {},
+            headlineObjTemplate,
+        ) as ScoringHeadline
+        headlineObj.headline = bonus.headline
+        headlineObj.fractionNumerator = bonus.fractionNumerator || 0
+        headlineObj.fractionDenominator = bonus.fractionDenominator || 0
+
+        if (bonus.condition) {
+            totalScore += 20000
+            scoringHeadlines.push(headlineObj)
+            awardedBonuses.push(bonusObj)
+        } else {
+            bonusObj.Score = 0
+            headlineObj.scoreTotal = 0
+            scoringHeadlines.push(headlineObj)
+            failedBonuses.push(bonusObj)
+        }
+    }
+
+    totalScore = Math.max(totalScore, 0)
+
+    scoringHeadlines.push(
+        Object.assign(Object.assign({}, headlineObjTemplate), {
+            headline: "UI_SCORING_SUMMARY_KILL_PENALTY",
+            count: nonTargetKills > 0 ? `${nonTargetKills}x-5000` : "",
+            scoreTotal: -5000 * nonTargetKills,
+        }) as ScoringHeadline,
+    )
+
+    //#region Time
+    const timeHours = Math.floor(timeTotal / 3600)
+    const timeMinutes = Math.floor((timeTotal - timeHours * 3600) / 60)
+    const timeSeconds = Math.floor(
+        timeTotal - timeHours * 3600 - timeMinutes * 60,
+    )
+    let timebonus = 0
+
+    // formula from https://hitmanforumarchive.notex.app/#/t/how-the-time-bonus-is-calculated/17438 (https://archive.ph/pRjzI)
+    const scorePoints = [
+        [0, 1.1], // 1.1 bonus multiplier at 0 secs (0 min)
+        [300, 0.7], // 0.7 bonus multiplier at 300 secs (5 min)
+        [900, 0.6], // 0.6 bonus multiplier at 900 secs (15 min)
+        [17100, 0.0], // 0 bonus multiplier at 17100 secs (285 min)
+    ]
+
+    let prevsecs: number, prevmultiplier: number
+
+    for (const [secs, multiplier] of scorePoints) {
+        if (timeTotal > secs) {
+            prevsecs = secs
+            prevmultiplier = multiplier
+            continue
+        }
+
+        // linear interpolation between current and previous scorePoints
+        const bonusMultiplier =
+            prevmultiplier! -
+            ((prevmultiplier! - multiplier) * (timeTotal - prevsecs!)) /
+                (secs - prevsecs!)
+
+        timebonus = totalScore * bonusMultiplier
+        break
+    }
+
+    timebonus = Math.round(timebonus)
+
+    const totalScoreWithBonus = totalScore + timebonus
+
+    awardedBonuses.push({
+        Score: timebonus,
+        Id: "SwiftExecution",
+        FractionNumerator: 0,
+        FractionDenominator: 0,
+    })
+
+    scoringHeadlines.push(
+        Object.assign(Object.assign({}, headlineObjTemplate), {
+            headline: "UI_SCORING_SUMMARY_TIME",
+            count: `${`0${timeHours}`.slice(-2)}:${`0${timeMinutes}`.slice(
+                -2,
+            )}:${`0${timeSeconds}`.slice(-2)}`,
+            scoreTotal: timebonus,
+        }) as ScoringHeadline,
+    )
+    //#endregion
+
+    for (const type of ["total", "subtotal"]) {
+        scoringHeadlines.push(
+            Object.assign(Object.assign({}, headlineObjTemplate), {
+                type,
+                headline: `UI_SCORING_SUMMARY_${type.toUpperCase()}`,
+                scoreTotal: totalScoreWithBonus,
+            }) as ScoringHeadline,
+        )
+    }
+
+    //Stars
+    let stars =
+        5 -
+        [...bonuses, { condition: nonTargetKills === 0 }].filter(
+            (x) => !x!.condition,
+        ).length // one star less for each bonus missed
+
+    stars = stars < 0 ? 0 : stars // clamp to 0
+
+    //Achieved masteries
+    const achievedMasteries = [
+        {
+            score: -5000 * nonTargetKills,
+            RatioParts: nonTargetKills,
+            RatioTotal: nonTargetKills,
+            Id: "KillPenaltyMastery",
+            BaseScore: -5000,
+        },
+    ]
+
+    //NOTE: need to have all bonuses except objectives for SA
+    const silentAssassin = [
+        ...bonuses.slice(1),
+        { condition: nonTargetKills === 0 },
+    ].every((x) => x.condition)
+
+    return {
+        stars: stars,
+        scoringHeadlines: scoringHeadlines,
+        achievedMasteries: achievedMasteries,
+        awardedBonuses: awardedBonuses,
+        failedBonuses: failedBonuses,
+        silentAssassin: silentAssassin,
+        score: totalScore,
+        scoreWithBonus: totalScoreWithBonus,
+    }
+}
+
+function getLevelInfo(
+    levelInfo: number[],
+    targetXp: number,
+): IGetLevelInfoResult {
+    let level = 1
+    let completion = 0
+    let xpLeft = 0
+
+    for (let i = level; i <= levelInfo.length; i++) {
+        if (i === levelInfo.length) {
+            level = levelInfo.length
+            completion = 1
+            xpLeft = 0
+
+            break
+        } else if (targetXp <= levelInfo[i]) {
+            level = i
+            completion =
+                (targetXp - levelInfo[i - 1]) /
+                (levelInfo[i] - levelInfo[i - 1])
+            xpLeft = levelInfo[i] - targetXp
+
+            break
+        }
+    }
+
+    return {
+        level: level,
+        completion: completion,
+        xpLeft: xpLeft,
+    }
+}
+
 export async function missionEnd(
     req: RequestWithJwt<MissionEndRequestQuery>,
     res: Response,
 ): Promise<void> {
+    //Resolve the contract session
     if (!req.query.contractSessionId) {
         res.status(400).end()
         return
@@ -195,19 +542,19 @@ export async function missionEnd(
     const sessionDetails = contractSessions.get(req.query.contractSessionId)
 
     if (!sessionDetails) {
-        // contract session not found
-        res.status(404).end()
+        res.status(404).send("contract session not found")
         return
     }
 
     if (sessionDetails.userId !== req.jwt.unique_name) {
-        // requested score for other user's session
-        res.status(401).end()
+        res.status(401).send("requested score for other user's session")
         return
     }
 
+    //Resolve userdata
     const userData = getUserData(req.jwt.unique_name, req.gameVersion)
 
+    //Resolve contract data
     const contractData =
         req.gameVersion === "scpc" &&
         sessionDetails.contractId === "ff9f46cf-00bd-4c12-b887-eac491c3a96d"
@@ -215,11 +562,11 @@ export async function missionEnd(
             : controller.resolveContract(sessionDetails.contractId)
 
     if (!contractData) {
-        // contract not found
         res.status(404).send("contract not found")
         return
     }
 
+    //Handle escalation groups
     if (contractData.Metadata.Type === "escalation") {
         const eGroupId = contractIdToEscalationGroupId(
             sessionDetails.contractId,
@@ -259,18 +606,33 @@ export async function missionEnd(
         writeUserData(req.jwt.unique_name, req.gameVersion)
     }
 
-    const nonTargetKills =
-        contractData?.Metadata.AllowNonTargetKills === true
-            ? 0
-            : sessionDetails.npcKills.size + sessionDetails.crowdNpcKills
-
-    const locations = getVersionedConfig<PeacockLocationsData>(
-        "LocationsData",
+    //Resolve the id of the parent location
+    const subLocation = getSubLocationByName(
+        contractData.Metadata.Location,
         req.gameVersion,
-        true,
     )
-    const location = contractData.Metadata.Location
-    const parent = locations.children[location].Properties.ParentLocation
+
+    const locationParentId = subLocation
+        ? subLocation.Properties?.ParentLocation
+        : contractData.Metadata.Location
+
+    if (!locationParentId) {
+        res.status(404).send("location parentid not found")
+        return
+    }
+
+    const locationParentIdLowerCase = locationParentId.toLocaleLowerCase()
+
+    //Resolve all opportunities for the location
+    const opportunities = contractData.Metadata.Opportunities
+    const opportunityCount = opportunities ? opportunities.length : 0
+    const opportunityCompleted = opportunities
+        ? opportunities.filter(
+              (ms) => ms in userData.Extensions.opportunityprogression,
+          ).length
+        : 0
+
+    //Resolve all challenges for the location
     const locationChallenges =
         controller.challengeService.getGroupedChallengeLists(
             {
@@ -283,339 +645,250 @@ export async function missionEnd(
             sessionDetails.contractId,
             req.gameVersion,
         )
-    const challengeCompletion =
+    const locationChallengeCompletion =
         controller.challengeService.countTotalNCompletedChallenges(
             locationChallenges,
             userData.Id,
             req.gameVersion,
         )
-    const opportunities = contractData.Metadata.Opportunities
-    const opportunityCount = opportunities ? opportunities.length : 0
-    const opportunityCompleted = opportunities
-        ? opportunities.filter(
-              (ms) => ms in userData.Extensions.opportunityprogression,
-          ).length
-        : 0
-    const result = {
+
+    const contractChallengeCompletion =
+        controller.challengeService.countTotalNCompletedChallenges(
+            contractChallenges,
+            userData.Id,
+            req.gameVersion,
+        )
+
+    const locationPercentageComplete = getCompletionPercent(
+        locationChallengeCompletion.CompletedChallengesCount,
+        locationChallengeCompletion.ChallengesCount,
+        opportunityCompleted,
+        opportunityCount,
+    )
+
+    //Get the location and playerprofile progression from the userdata
+    if (!userData.Extensions.progression.Locations[locationParentIdLowerCase]) {
+        userData.Extensions.progression.Locations[locationParentIdLowerCase] = {
+            Xp: 0,
+            Level: 1,
+        }
+    }
+
+    const locationProgressionData =
+        userData.Extensions.progression.Locations[locationParentIdLowerCase]
+    const playerProgressionData =
+        userData.Extensions.progression.PlayerProfileXP
+
+    //Calculate XP based on all challenges, including the global ones.
+    const calculateXpResult: CalculateXpResult = calculateXp(sessionDetails)
+    let justTickedChallenges = 0
+    let earnedMasteryXp = 0
+
+    Object.values(contractChallenges)
+        .flat()
+        .filter((challengeData) => {
+            return (
+                !challengeData.Name.includes("GLOBAL") &&
+                controller.challengeService.fastGetIsUnticked(
+                    userData,
+                    challengeData.Id,
+                )
+            )
+        })
+        .forEach((challengeData) => {
+            const userId = req.jwt.unique_name
+            const gameVersion = req.gameVersion
+
+            userData.Extensions.ChallengeProgression[challengeData.Id].Ticked =
+                true
+            writeUserData(userId, gameVersion)
+
+            justTickedChallenges++
+
+            earnedMasteryXp += challengeData.Rewards.MasteryXP
+
+            calculateXpResult.completedChallenges.push({
+                ChallengeId: challengeData.Id,
+                ChallengeTags: challengeData.Tags,
+                ChallengeName: challengeData.Name,
+                ChallengeImageUrl: challengeData.ImageName,
+                ChallengeDescription: challengeData.Description,
+                XPGain: challengeData.Rewards.MasteryXP,
+                IsGlobal: false,
+                IsActionReward: challengeData.Tags.includes("actionreward"),
+                Drops: challengeData.Drops,
+            })
+        })
+
+    //Calculate the old location progression based on the current one and process it
+    const oldLocationXp = locationProgressionData.Xp - earnedMasteryXp
+    const newLocationXp = locationProgressionData.Xp
+
+    const masteryData =
+        controller.masteryService.getMasteryPackage(locationParentId)
+
+    //TODO: Make a constant out of the 20
+    const locationLevelInfo = Array.from(
+        { length: masteryData.MaxLevel || 20 },
+        (_, i) => {
+            return xpRequiredForLevel(i + 1)
+        },
+    )
+
+    const oldLocationLevelInfo: IGetLevelInfoResult = getLevelInfo(
+        locationLevelInfo,
+        oldLocationXp,
+    )
+
+    const newLocationLevelInfo: IGetLevelInfoResult = getLevelInfo(
+        locationLevelInfo,
+        newLocationXp,
+    )
+
+    const completionData = generateCompletionData(
+        contractData.Metadata.Location,
+        req.jwt.unique_name,
+        req.gameVersion,
+    )
+
+    //Calculate the old playerprofile progression based on the current one and process it
+    const newPlayerProfileLevel =
+        Math.floor(playerProgressionData.Total / 6000) + 1
+    const newPlayerProfileXp = playerProgressionData.Total
+
+    //NOTE: We assume the ProfileLevel is currently already up-to-date
+    const profileLevelInfo = [
+        xpRequiredForLevel(newPlayerProfileLevel),
+        xpRequiredForLevel(newPlayerProfileLevel + 1),
+    ]
+
+    //Drops
+    let drops: MissionEndDrop[] = []
+
+    if (newLocationLevelInfo.level - oldLocationLevelInfo.level > 0) {
+        const masteryData =
+            controller.masteryService.getMasteryDataForDestination(
+                locationParentId,
+                req.gameVersion,
+                req.jwt.unique_name,
+            ) as MasteryData[]
+
+        drops = masteryData[0].Drops.filter(
+            (e) =>
+                e.Level > oldLocationLevelInfo.level &&
+                e.Level <= newLocationLevelInfo.level,
+        ).map((e) => {
+            return {
+                Unlockable: e.Unlockable,
+            }
+        })
+    }
+
+    //Time
+    const timeTotal: Seconds =
+        (sessionDetails.timerEnd as number) -
+        (sessionDetails.timerStart as number)
+
+    //Playstyle
+    const calculatedPlaystyles = calculatePlaystyle(sessionDetails)
+
+    const playstyle =
+        calculatedPlaystyles[0].Score !== 0 ? calculatePlaystyle[0] : undefined
+
+    //Evergreen
+    let evergreenData: MissionEndEvergreen
+
+    if (contractData.Metadata.Type === "evergreen") {
+        evergreenData.Payout = sessionDetails.evergreen.payout
+        evergreenData.EndStateEventName =
+            sessionDetails.evergreen.scoringScreenEndState
+    }
+
+    //Calculate score and summary
+    const calculateScoreResult = calculateScore(
+        req.gameVersion,
+        req.query.contractSessionId,
+        sessionDetails,
+        contractData,
+        timeTotal,
+    )
+
+    //TODO: Update global challenges, since the Official versions have changed.
+
+    //Setup the result
+    const result: MissionEndResponse = {
         MissionReward: {
             LocationProgression: {
-                LevelInfo: Array.from({ length: 1 }, (_, i) =>
-                    xpRequiredForLevel(i + 1),
-                ),
-                XP: 0,
-                Level: 1,
-                Completion: 1,
-                XPGain: 0,
-                HideProgression: false,
+                LevelInfo: locationLevelInfo,
+                //TODO: Never larger than max level mastery XP
+                XP: newLocationXp,
+                Level: newLocationLevelInfo.level,
+                Completion: newLocationLevelInfo.completion,
+                //TODO: Is always 0 if max mastery is reached
+                XPGain: earnedMasteryXp,
+                HideProgression: masteryData.HideProgression || false,
             },
             ProfileProgression: {
-                LevelInfo: [0, 6000],
-                LevelInfoOffset: 0,
-                XP: userData.Extensions.progression.PlayerProfileXP.Total,
-                Level: userData.Extensions.progression.PlayerProfileXP
-                    .ProfileLevel,
-                XPGain: 0,
+                LevelInfo: profileLevelInfo,
+                LevelInfoOffset: newPlayerProfileLevel - 1,
+                XP: newPlayerProfileXp,
+                Level: newPlayerProfileLevel,
+                XPGain: calculateXpResult.xp,
             },
-            Challenges: Object.values(contractChallenges)
-                .flat()
-                .filter((challengeData) => {
-                    return controller.challengeService.fastGetIsUnticked(
-                        userData,
-                        challengeData.Id,
-                    )
-                })
-                .map((challengeData) => {
-                    const userId = req.jwt.unique_name
-                    const gameVersion = req.gameVersion
-                    userData.Extensions.ChallengeProgression[
-                        challengeData.Id
-                    ].Ticked = true
-                    writeUserData(userId, gameVersion)
-                    return {
-                        ChallengeId: challengeData.Id,
-                        ChallengeTags: challengeData.Tags,
-                        ChallengeName: challengeData.Name,
-                        ChallengeImageUrl: challengeData.ImageName,
-                        ChallengeDescription: challengeData.Description,
-                        XPGain: challengeData.Rewards.MasteryXP,
-                        IsGlobal: challengeData.Name.includes("GLOBAL"),
-                        IsActionReward:
-                            challengeData.Tags.includes("actionreward"),
-                        Drops: challengeData.Drops,
-                    }
-                }),
-            Drops: [],
-            OpportunityRewards: [], // ?
-            CompletionData: generateCompletionData(
-                contractData.Metadata.Location,
-                req.jwt.unique_name,
-                req.gameVersion,
-            ),
-            ChallengeCompletion: challengeCompletion,
-            ContractChallengeCompletion:
-                controller.challengeService.countTotalNCompletedChallenges(
-                    contractChallenges,
-                    userData.Id,
-                    req.gameVersion,
-                ),
+            Challenges: calculateXpResult.completedChallenges,
+            Drops: drops,
+            //TODO: Do these exist? Appears to be optional.
+            OpportunityRewards: [],
+            CompletionData: completionData,
+            ChallengeCompletion: locationChallengeCompletion,
+            ContractChallengeCompletion: contractChallengeCompletion,
             OpportunityStatistics: {
                 Count: opportunityCount,
                 Completed: opportunityCompleted,
             },
-            LocationCompletionPercent: getCompletionPercent(
-                challengeCompletion.CompletedChallengesCount,
-                challengeCompletion.ChallengesCount,
-                opportunityCompleted,
-                opportunityCount,
-            ),
+            LocationCompletionPercent: locationPercentageComplete,
         },
         ScoreOverview: {
-            XP: 0,
-            Level: 1,
-            Completion: 1,
-            XPGain: 0,
-            ChallengesCompleted: 0,
-            LocationHideProgression: false,
+            //TODO: Never larger than max level mastery XP
+            XP: newLocationXp,
+            Level: newLocationLevelInfo.level,
+            Completion: newLocationLevelInfo.completion,
+            //TODO: Is always 0 if max mastery is reached
+            XPGain: earnedMasteryXp,
+            ChallengesCompleted: justTickedChallenges,
+            LocationHideProgression: masteryData.HideProgression || false,
+            ProdileId1: req.jwt.unique_name,
+            stars: calculateScoreResult.stars,
             ScoreDetails: {
-                Headlines: [] as ScoringHeadline[],
+                Headlines: calculateScoreResult.scoringHeadlines,
             },
-            stars: 0,
-            SilentAssassin: false,
             ContractScore: {
-                AchievedMasteries: [
-                    {
-                        score: -5000 * nonTargetKills,
-                        RatioParts: nonTargetKills,
-                        RatioTotal: nonTargetKills,
-                        Id: "KillPenaltyMastery",
-                        BaseScore: -5000,
-                    },
-                ],
-                TotalNoMultipliers: 0,
-                AwardedBonuses: [] as ScoringBonus[],
-                FailedBonuses: [] as ScoringBonus[],
-                Total: 0,
-                StarCount: 0,
-                SilentAssassin: false,
-                TimeUsedSecs: 0,
+                Total: calculateScoreResult.scoreWithBonus,
+                AchievedMasteries: calculateScoreResult.achievedMasteries,
+                AwardedBonuses: calculateScoreResult.awardedBonuses,
+                TotalNoMultipliers: calculateScoreResult.score,
+                TimeUsedSecs: timeTotal,
+                StarCount: calculateScoreResult.stars,
+                FailedBonuses: calculateScoreResult.failedBonuses,
+                SilentAssassin: calculateScoreResult.silentAssassin,
             },
-            // todo
+            SilentAssassin: calculateScoreResult.silentAssassin,
+            //TODO: Use data from the leaderboard?
             NewRank: 1,
             RankCount: 1,
             Rank: 1,
             FriendsRankCount: 1,
             FriendsRank: 1,
             IsPartOfTopScores: false,
-            PlayStyle: {},
+            PlayStyle: playstyle,
+            IsNewBestScore: false,
+            IsNewBestTime: false,
+            IsNewBestStars: false,
+            Evergreen: evergreenData,
         },
     }
 
-    const bonuses = [
-        {
-            headline: "UI_SCORING_SUMMARY_OBJECTIVES",
-            bonusId: "AllObjectivesCompletedBonus",
-            condition:
-                req.gameVersion === "h1" ||
-                contractData.Metadata.Id ===
-                    "2d1bada4-aa46-4954-8cf5-684989f1668a" ||
-                contractData.Data.Objectives?.every(
-                    (obj: MissionManifestObjective) =>
-                        obj.ExcludeFromScoring ||
-                        sessionDetails.completedObjectives.has(obj.Id) ||
-                        (obj.IgnoreIfInactive &&
-                            !isObjectiveActive(
-                                obj,
-                                sessionDetails.completedObjectives,
-                            )) ||
-                        "Success" ===
-                            getCurrentState(
-                                req.query.contractSessionId!,
-                                obj.Id,
-                            ),
-                ),
-        },
-        {
-            headline: "UI_SCORING_SUMMARY_NOT_SPOTTED",
-            bonusId: "Unspotted",
-            condition: [
-                ...sessionDetails.witnesses,
-                ...sessionDetails.spottedBy,
-            ].every(
-                (witness) =>
-                    (req.gameVersion === "h1"
-                        ? false
-                        : sessionDetails.targetKills.has(witness)) ||
-                    sessionDetails.npcKills.has(witness),
-            ),
-        },
-        {
-            headline: "UI_SCORING_SUMMARY_NO_NOTICED_KILLS",
-            bonusId: "NoWitnessedKillsBonus",
-            condition: [...sessionDetails.killsNoticedBy].every(
-                (witness) =>
-                    (req.gameVersion === "h1"
-                        ? true
-                        : sessionDetails.targetKills.has(witness)) ||
-                    sessionDetails.npcKills.has(witness),
-            ),
-        },
-        {
-            headline: "UI_SCORING_SUMMARY_NO_BODIES_FOUND",
-            bonusId: "NoBodiesFound",
-            condition:
-                sessionDetails.legacyHasBodyBeenFound === false &&
-                [...sessionDetails.bodiesFoundBy].every(
-                    (witness) =>
-                        (req.gameVersion === "h1"
-                            ? false
-                            : sessionDetails.targetKills.has(witness)) ||
-                        sessionDetails.npcKills.has(witness),
-                ),
-        },
-        {
-            headline: "UI_SCORING_SUMMARY_NO_RECORDINGS",
-            bonusId: "SecurityErased",
-            condition:
-                sessionDetails.recording === "NOT_SPOTTED" ||
-                sessionDetails.recording === "ERASED",
-        },
-    ]
-
-    let stars =
-        5 -
-        [...bonuses, { condition: nonTargetKills === 0 }].filter(
-            (x) => !x!.condition,
-        ).length // one star less for each bonus missed
-
-    stars = stars < 0 ? 0 : stars // clamp to 0
-
-    let total = -5000 * nonTargetKills
-
-    const headlineObjTemplate: Partial<ScoringHeadline> = {
-        type: "summary",
-        count: "",
-        scoreIsFloatingType: false,
-        fractionNumerator: 0,
-        fractionDenominator: 0,
-        scoreTotal: 20000,
-    }
-
-    for (const bonus of bonuses) {
-        const bonusObj = {
-            Score: 20000,
-            Id: bonus.bonusId,
-            FractionNumerator: 0,
-            FractionDenominator: 0,
-        }
-        const headlineObj = Object.assign(
-            {},
-            headlineObjTemplate,
-        ) as ScoringHeadline
-        headlineObj.headline = bonus.headline
-
-        if (bonus.condition) {
-            total += 20000
-            result.ScoreOverview.ScoreDetails.Headlines.push(headlineObj)
-            result.ScoreOverview.ContractScore.AwardedBonuses.push(bonusObj)
-        } else {
-            bonusObj.Score = 0
-            headlineObj.scoreTotal = 0
-            result.ScoreOverview.ScoreDetails.Headlines.push(headlineObj)
-            result.ScoreOverview.ContractScore.FailedBonuses.push(bonusObj)
-        }
-    }
-
-    total = Math.max(total, 0)
-    result.ScoreOverview.ContractScore.TotalNoMultipliers =
-        result.ScoreOverview.ContractScore.Total = total
-
-    result.ScoreOverview.ScoreDetails.Headlines.push(
-        Object.assign(Object.assign({}, headlineObjTemplate), {
-            headline: "UI_SCORING_SUMMARY_KILL_PENALTY",
-            count: nonTargetKills > 0 ? `${nonTargetKills}x-5000` : "",
-            scoreTotal: -5000 * nonTargetKills,
-        }) as ScoringHeadline,
-    )
-
-    //#region Time
-    const timeTotal: Seconds =
-        (sessionDetails.timerEnd as number) -
-        (sessionDetails.timerStart as number)
-    result.ScoreOverview.ContractScore.TimeUsedSecs = timeTotal
-
-    const timeHours = Math.floor(timeTotal / 3600)
-    const timeMinutes = Math.floor((timeTotal - timeHours * 3600) / 60)
-    const timeSeconds = Math.floor(
-        timeTotal - timeHours * 3600 - timeMinutes * 60,
-    )
-    let timebonus = 0
-
-    // formula from https://hitmanforumarchive.notex.app/#/t/how-the-time-bonus-is-calculated/17438 (https://archive.ph/pRjzI)
-    const scorePoints = [
-        [0, 1.1], // 1.1 bonus multiplier at 0 secs (0 min)
-        [300, 0.7], // 0.7 bonus multiplier at 300 secs (5 min)
-        [900, 0.6], // 0.6 bonus multiplier at 900 secs (15 min)
-        [17100, 0.0], // 0 bonus multiplier at 17100 secs (285 min)
-    ]
-
-    let prevsecs: number, prevmultiplier: number
-
-    for (const [secs, multiplier] of scorePoints) {
-        if (timeTotal > secs) {
-            prevsecs = secs
-            prevmultiplier = multiplier
-            continue
-        }
-
-        // linear interpolation between current and previous scorePoints
-        const bonusMultiplier =
-            prevmultiplier! -
-            ((prevmultiplier! - multiplier) * (timeTotal - prevsecs!)) /
-                (secs - prevsecs!)
-        timebonus = total * bonusMultiplier
-        break
-    }
-
-    timebonus = Math.round(timebonus)
-
-    total += timebonus
-
-    result.ScoreOverview.ContractScore.AwardedBonuses.push({
-        Score: timebonus,
-        Id: "SwiftExecution",
-        FractionNumerator: 0,
-        FractionDenominator: 0,
-    })
-
-    result.ScoreOverview.ScoreDetails.Headlines.push(
-        Object.assign(Object.assign({}, headlineObjTemplate), {
-            headline: "UI_SCORING_SUMMARY_TIME",
-            count: `${`0${timeHours}`.slice(-2)}:${`0${timeMinutes}`.slice(
-                -2,
-            )}:${`0${timeSeconds}`.slice(-2)}`,
-            scoreTotal: timebonus,
-        }) as ScoringHeadline,
-    )
-    //#endregion
-
-    for (const type of ["total", "subtotal"]) {
-        result.ScoreOverview.ScoreDetails.Headlines.push(
-            Object.assign(Object.assign({}, headlineObjTemplate), {
-                type,
-                headline: `UI_SCORING_SUMMARY_${type.toUpperCase()}`,
-                scoreTotal: total,
-            }) as ScoringHeadline,
-        )
-    }
-
-    result.ScoreOverview.stars = result.ScoreOverview.ContractScore.StarCount =
-        stars
-    result.ScoreOverview.SilentAssassin =
-        result.ScoreOverview.ContractScore.SilentAssassin = [
-            ...bonuses.slice(1),
-            { condition: nonTargetKills === 0 },
-        ].every((x) => x.condition) // need to have all bonuses except objectives for SA
-
+    //Finalize the response
     if ((getFlag("autoSplitterForceSilentAssassin") as boolean) === true) {
         if (result.ScoreOverview.SilentAssassin) {
             await liveSplitManager.completeMission(timeTotal)
@@ -624,12 +897,6 @@ export async function missionEnd(
         }
     } else {
         await liveSplitManager.completeMission(timeTotal)
-    }
-
-    // Playstyles
-    const calculatedPlaystyles = calculatePlaystyle(sessionDetails)
-    if (calculatedPlaystyles[0].Score !== 0) {
-        result.ScoreOverview.PlayStyle = calculatedPlaystyles[0]
     }
 
     //#region Leaderboards
@@ -656,10 +923,10 @@ export async function missionEnd(
                         req.jwt.platform === "epic"
                             ? userData.EpicId
                             : userData.SteamId,
-                    score: total,
+                    score: calculateScoreResult.scoreWithBonus,
                     data: {
                         Score: {
-                            Total: total,
+                            Total: calculateScoreResult.scoreWithBonus,
                             AchievedMasteries:
                                 result.ScoreOverview.ContractScore
                                     .AchievedMasteries,
@@ -674,7 +941,7 @@ export async function missionEnd(
                             FailedBonuses: null,
                             IsVR: false,
                             SilentAssassin: result.ScoreOverview.SilentAssassin,
-                            StarCount: stars,
+                            StarCount: calculateScoreResult.stars,
                         },
                         GroupIndex: 0,
                         // TODO sniper scores
@@ -705,6 +972,8 @@ export async function missionEnd(
         }
     }
     //#endregion
+
+    logDebug(result)
 
     res.json({
         template:

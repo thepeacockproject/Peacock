@@ -262,7 +262,17 @@ export interface ContractSession {
             context: unknown
             state: string
             timers: Timer[]
+            timesCompleted: number
         }
+    }
+    /**
+     * Session Evergreen details.
+     *
+     * @since v6.0.0
+     */
+    evergreen?: {
+        payout: number
+        scoringScreenEndState: string
     }
 }
 

@@ -817,6 +817,13 @@ async function loadSession(
     }
     // Update challenge progression with the user's latest progression data
     for (const cid in sessionData.challengeContexts) {
+        // Make sure the ChallengeProgression is available, otherwise loading might fail!
+        userData.Extensions.ChallengeProgression[cid] ??= {
+            State: {},
+            Completed: false,
+            Ticked: false,
+        }
+
         const scope =
             controller.challengeService.getChallengeById(cid).Definition.Scope
         if (

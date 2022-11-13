@@ -31,7 +31,7 @@ import {
     Seconds,
     ServerToClientEvent,
 } from "./types/types"
-import { contractTypes, extractToken, ServerVer } from "./utils"
+import { contractTypes, extractToken, gameDifficulty, ServerVer } from "./utils"
 import { json as jsonMiddleware } from "body-parser"
 import { log, LogLevel } from "./loggingInterop"
 import { getUserData, writeUserData } from "./databaseHandler"
@@ -47,6 +47,7 @@ import {
     AmbientChangedC2SEvent,
     BodyHiddenC2SEvent,
     ContractStartC2SEvent,
+    Evergreen_Payout_DataC2SEvent,
     HeroSpawn_LocationC2SEvent,
     ItemDroppedC2SEvent,
     ItemPickedUpC2SEvent,
@@ -580,6 +581,18 @@ function saveEvents(
 
         if (handleMultiplayerEvent(event, session)) {
             processed.push(event.Name)
+            response.push(process.hrtime.bigint().toString())
+
+            return
+        }
+
+        if (event.Name.startsWith("ScoringScreenEndState_")) {
+            session.evergreen.scoringScreenEndState = event.Name
+
+            processed.push(event.Name)
+            response.push(process.hrtime.bigint().toString())
+
+            return
         }
 
         switch (event.Name) {
@@ -777,6 +790,11 @@ function saveEvents(
                     userId,
                     contract.Metadata.CpdId,
                 )
+                break
+            case "Evergreen_Payout_Data":
+                session.evergreen.payout = (<Evergreen_Payout_DataC2SEvent>(
+                    event
+                )).Value.Total_Payout
                 break
             // Sinkhole events we don't care about
             case "ItemPickedUp":

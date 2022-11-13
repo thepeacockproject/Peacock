@@ -32,13 +32,14 @@ import type {
 } from "../types/types"
 import { getUserData, writeUserData } from "../databaseHandler"
 
-import { Controller } from "../controller"
+import { controller, Controller } from "../controller"
 import {
     generateCompletionData,
     generateUserCentric,
+    getSubLocationByName,
     getSubLocationFromContract,
 } from "../contracts/dataGen"
-import { log, LogLevel } from "../loggingInterop"
+import { log, logDebug, LogLevel } from "../loggingInterop"
 import {
     parseContextListeners,
     ParsedContextListenerInfo,
@@ -324,6 +325,11 @@ export class ChallengeService extends ChallengeRegistry {
         let challenges: [string, RegistryChallenge[]][] = []
 
         for (const groupId of this.groups.get(location).keys()) {
+            // if this is the global group, skip it.
+            if (groupId === "global") {
+                continue
+            }
+
             const groupContents = this.getGroupContentByIdLoc(groupId, location)
             if (groupContents) {
                 let groupChallenges: RegistryChallenge[] | string[] = [
@@ -429,11 +435,67 @@ export class ChallengeService extends ChallengeRegistry {
             gameVersion,
         )
 
+        const contractJson = this.controller.resolveContract(contractId)
+
+        if (contractJson.Metadata.Type === "evergreen") {
+            session.evergreen = {
+                payout: 0,
+                scoringScreenEndState: undefined,
+            }
+        }
+
+        //TODO: Add this to getChallengesForContract without breaking the rest of Peacock?
+        challengeGroups["global"] = this.getGroupByIdLoc(
+            "global",
+            "global",
+        ).Challenges.filter((val) => {
+            if (!val.InclusionData) return true
+            let include = false
+            const incData = val.InclusionData
+
+            if (!include && incData.ContractIds) {
+                include = incData.ContractIds.includes(contractId)
+            }
+
+            if (!include && incData.ContractTypes) {
+                include = incData.ContractTypes.includes(
+                    contractJson.Metadata.Type,
+                )
+            }
+
+            if (!include && incData.Locations) {
+                include = incData.Locations.includes(
+                    contractJson.Metadata.Location,
+                )
+            }
+
+            if (!include && incData.GameModes) {
+                include = contractJson.Metadata.Gamemodes.some((r) =>
+                    incData.GameModes.includes(r),
+                )
+            }
+
+            return include
+        })
+
         const profile = getUserData(session.userId, session.gameVersion)
 
         for (const group of Object.keys(challengeGroups)) {
             for (const challenge of challengeGroups[group]) {
                 const isDone = this.fastGetIsCompleted(profile, challenge.Id)
+
+                if (
+                    challenge.Definition.Scope === "profile" ||
+                    challenge.Definition.Scope === "hit"
+                ) {
+                    profile.Extensions.ChallengeProgression[challenge.Id] ??= {
+                        Ticked: false,
+                        Completed: false,
+                        State:
+                            (<ChallengeDefinitionLike>challenge?.Definition)
+                                ?.Context || {},
+                    }
+                }
 
                 // For challenges with scopes being "profile" or "hit",
                 // update challenge progression with the user's progression data
@@ -451,6 +513,7 @@ export class ChallengeService extends ChallengeRegistry {
                     context: ctx,
                     state: isDone ? "Success" : "Start",
                     timers: [],
+                    timesCompleted: 0,
                 }
             }
         }
@@ -488,6 +551,8 @@ export class ChallengeService extends ChallengeRegistry {
                     currentState: data.state,
                     timers: data.timers,
                     timestamp: event.Timestamp,
+                    //logger: (category, message) =>
+                    //    log(LogLevel.DEBUG, `[${category}] ${message}`),
                 }
 
                 const previousState = data.state
@@ -499,6 +564,7 @@ export class ChallengeService extends ChallengeRegistry {
                     event.Value,
                     options,
                 )
+
                 // For challenges with scopes being "profile" or "hit",
                 // save challenge progression to the user's progression data
                 if (
@@ -519,6 +585,7 @@ export class ChallengeService extends ChallengeRegistry {
 
                 if (previousState !== "Success" && result.state === "Success") {
                     this.onChallengeCompleted(
+                        session,
                         session.userId,
                         session.gameVersion,
                         challenge,
@@ -991,6 +1058,7 @@ export class ChallengeService extends ChallengeRegistry {
      * @param gameVersion The game version.
      */
     public tryToCompleteChallenge(
+        session: ContractSession,
         challengeId: string,
         userData: UserProfile,
         parentId: string,
@@ -1037,6 +1105,7 @@ export class ChallengeService extends ChallengeRegistry {
         }
 
         this.onChallengeCompleted(
+            session,
             userData.Id,
             gameVersion,
             this.getChallengeById(challengeId),
@@ -1045,6 +1114,7 @@ export class ChallengeService extends ChallengeRegistry {
     }
 
     private onChallengeCompleted(
+        session: ContractSession,
         userId: string,
         gameVersion: GameVersion,
         challenge: RegistryChallenge,
@@ -1061,15 +1131,66 @@ export class ChallengeService extends ChallengeRegistry {
 
         const userData = getUserData(userId, gameVersion)
 
-        userData.Extensions.ChallengeProgression ??= {}
+        //ASSUMED: Challenges that are not global should always be completed
+        if (!challenge.Tags.includes("global")) {
+            userData.Extensions.ChallengeProgression ??= {}
 
-        userData.Extensions.ChallengeProgression[challenge.Id] ??= {
-            State: {},
-            Completed: false,
-            Ticked: false,
+            userData.Extensions.ChallengeProgression[challenge.Id] ??= {
+                State: {},
+                Completed: false,
+                Ticked: false,
+            }
+
+            userData.Extensions.ChallengeProgression[challenge.Id].Completed =
+                true
         }
 
-        userData.Extensions.ChallengeProgression[challenge.Id].Completed = true
+        //Always count the number of completions
+        session.challengeContexts[challenge.Id].timesCompleted++
+
+        //If we have a Definition-scope with a Repeatable, we may want to restart it.
+        //TODO: Figure out what Base/Delta means. For now if Repeatable is set, we restart the challenge.
+        if (challenge.Definition.Repeatable) {
+            session.challengeContexts[challenge.Id].state = "Start"
+
+            //NOTE: We have to clear timers, otherwise the statemachine won't handle it properly.
+            session.challengeContexts[challenge.Id].timers = []
+        }
+
+        //NOTE: Immediately grant the XP
+        if (challenge.Rewards?.MasteryXP > 0) {
+            log(
+                LogLevel.DEBUG,
+                `Granting user ${challenge.Rewards.MasteryXP} mastery XP`,
+            )
+
+            this.grantLocationMasteryXp(
+                challenge.Rewards.MasteryXP,
+                session,
+                userData,
+            )
+        }
+
+        if (challenge.Rewards?.MasteryXP > 0 || challenge.Xp > 0) {
+            log(LogLevel.DEBUG, `Granting user ${challenge.Xp} XP`)
+
+            //NOTE: Mastery XP is always added to the User XP as well
+            this.grantUserXp(
+                (challenge.Xp || 0) + (challenge.Rewards?.MasteryXP || 0),
+                userData,
+            )
+        }
+
+        logDebug(
+            challenge.Definition.Scope,
+            userData.Extensions.ChallengeProgression
+                ? userData.Extensions.ChallengeProgression[challenge.Id]
+                : undefined,
+            userData.Extensions.progression.Locations[
+                "location_parent_coastaltown"
+            ],
+            userData.Extensions.progression.PlayerProfileXP,
+        )
 
         writeUserData(userId, gameVersion)
 
@@ -1078,11 +1199,81 @@ export class ChallengeService extends ChallengeRegistry {
         // Check if completing this challenge also completes any dependency trees depending on it
         for (const depTreeId of this._dependencyTree.keys()) {
             this.tryToCompleteChallenge(
+                session,
                 depTreeId,
                 userData,
                 challenge.Id,
                 gameVersion,
             )
         }
+    }
+
+    grantLocationMasteryXp(
+        masteryXp: number,
+        contractSession: ContractSession,
+        userProfile: UserProfile,
+    ): boolean {
+        const contract = controller.resolveContract(contractSession.contractId)
+
+        if (!contract) {
+            return false
+        }
+
+        const subLocation = getSubLocationByName(
+            contract.Metadata.Location,
+            contractSession.gameVersion,
+        )
+
+        const parentLocationId = subLocation
+            ? subLocation.Properties?.ParentLocation
+            : contract.Metadata.Location
+
+        if (!parentLocationId) {
+            return false
+        }
+
+        const masteryData =
+            this.controller.masteryService.getMasteryPackage(parentLocationId)
+
+        if (!masteryData) {
+            return false
+        }
+
+        const parentLocationIdLowerCase = parentLocationId.toLocaleLowerCase()
+
+        userProfile.Extensions.progression.Locations[
+            parentLocationIdLowerCase
+        ] ??= {
+            Xp: 0,
+            Level: 1,
+        }
+
+        const locationData =
+            userProfile.Extensions.progression.Locations[
+                parentLocationIdLowerCase
+            ]
+
+        locationData.Xp += masteryXp
+        locationData.Level = Math.max(
+            1,
+            Math.min(
+                Math.floor(locationData.Xp / 6000) + 1,
+                masteryData.MaxLevel || 20,
+            ),
+        )
+
+        return true
+    }
+
+    grantUserXp(xp: number, userProfile: UserProfile): boolean {
+        const profileData = userProfile.Extensions.progression.PlayerProfileXP
+
+        profileData.Total += xp
+        profileData.ProfileLevel = Math.max(
+            1,
+            Math.min(Math.floor(profileData.Total / 6000) + 1, 7500),
+        )
+
+        return true
     }
 }

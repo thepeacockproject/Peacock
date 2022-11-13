@@ -104,6 +104,11 @@ export function getUserData(
         }
     }
 
+    //NOTE: ProfileLevel always starts at 1
+    if (data?.Extensions?.progression?.PlayerProfileXP?.ProfileLevel === 0) {
+        data.Extensions.progression.PlayerProfileXP.ProfileLevel = 1
+    }
+
     return data
 }
 
