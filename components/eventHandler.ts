@@ -545,9 +545,6 @@ function saveEvents(
             return
         }
 
-        // @ts-expect-error Tapable types not sufficient
-        controller.hooks.newEvent.call(event, req)
-
         const contract = controller.resolveContract(session.contractId)
         const contractType = contract?.Metadata?.Type?.toLowerCase()
 
