@@ -456,14 +456,6 @@ export const escalationMappings: {
         5: "b007a400-66b8-43c3-a919-3195e343f7b1",
     },
     /**
-     * The Marinello Motivation
-     */
-    "d0a0fa03-08a7-43ef-b5e8-d8662d015372": {
-        1: "f33d4dee-8d07-45e0-9816-55646dcb341f",
-        2: "aa4fb2e6-3494-4b88-a882-43ce135f8b1b",
-        3: "9f17c5ee-b402-11eb-8529-0242ac130003",
-    },
-    /**
      * The Sinbad Stringent
      */
     "be14d4f1-f1aa-4dea-8c9b-a5b1a1dea931": {
