@@ -70,6 +70,14 @@ export async function imageFetchingMiddleware(
         if (getFlag("imageLoading") === "SAVEASREQUESTED") {
             log(LogLevel.DEBUG, `Saving image ${path} to disk.`)
 
+            const dir = ppath.dirname(path as Filename)
+
+            if (!imageJailFs.existsSync(dir)) {
+                log(LogLevel.DEBUG, `Creating missing directory ${dir}`)
+
+                imageJailFs.mkdirSync(dir, { recursive: true })
+            }
+
             const writeStream = imageJailFs.createWriteStream(
                 ppath.resolve(path as Filename),
             )

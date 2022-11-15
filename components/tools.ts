@@ -27,7 +27,7 @@ import { Controller, isPlugin } from "./controller"
 import { getAllFlags } from "./flags"
 import axios from "axios"
 import { Stream } from "stream"
-import { createWriteStream } from "fs"
+import { createWriteStream, existsSync, mkdirSync } from "fs"
 import ProgressBar from "progress"
 import { resolve as pathResolve } from "path"
 import picocolors from "picocolors"
@@ -143,6 +143,10 @@ async function downloadContract(): Promise<void> {
     }
 
     result.Metadata.CreatorUserId = "fadb923c-e6bb-4283-a537-eb4d1150262e"
+
+    if (!existsSync("contracts")) {
+        mkdirSync("contracts")
+    }
 
     await writeFile(
         `contracts/${contractId}.json`,

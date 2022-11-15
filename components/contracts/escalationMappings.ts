@@ -68,6 +68,190 @@ export const escalationMappings: {
         3: "40651beb-edaa-41d0-aa9d-6bd4a14a8f81",
     },
     /**
+     * The Treasonous Mimicry
+     */
+    "be3ea01f-ec56-4fcb-95ec-164a1d9980f3": {
+        1: "f46a799f-1387-483b-abe1-25be8b5ffded",
+        2: "8f25f1de-69bf-4677-b8f0-11f1026df140",
+        3: "c28beef7-e223-4057-9701-db855c05744f",
+    },
+    /**
+     * The Sweeney Scrupulousness
+     */
+    "782a2849-14a2-4cd4-99fc-ddacaeaba2dd": {
+        1: "1628c270-8159-421b-9b7f-fafcb3737463",
+        2: "ce6714b4-6df4-4634-9da7-07934dde6747",
+        3: "c89d7f7c-eb2f-4530-9e06-1d6ad5187d8e",
+    },
+    /**
+     * The Bartholomew Hornswoggle
+     */
+    "83d4e87e-2f47-4c81-b831-30bd13a29b05": {
+        1: "2a16d498-664e-47c6-a79b-7b5ba403f85a",
+        2: "0c6308d7-7646-4b38-9351-d22e2ae659c1",
+        3: "c5ef7b7a-3cfb-4b99-a566-8b3ab4b36436",
+    },
+    /**
+     * The Babayeva Dissonance
+     */
+    "4fbfae2e-a5e7-4b79-b008-94f6cbcb13cb": {
+        1: "724c5688-7851-4e24-9c35-88bab2a57c90",
+        2: "f0495457-6e26-4e19-b5b9-1e4957e27755",
+        3: "04fdd55f-2ac5-4f1f-aa8d-00a9b0c6dfc4",
+    },
+    /**
+     * The Scarlett Deceit
+     */
+    "dbb0e22d-084b-4b57-8616-42290982fd90": {
+        1: "4c8480a9-359b-44d8-8e17-08430b7d01f2",
+        2: "1bda5f46-3804-46b6-870a-fa352288fb2f",
+        3: "e04758d6-fb6c-4854-a0bf-753b80e93e96",
+    },
+    /**
+     * The Rafael Misadventure
+     */
+    "e63eeb62-29ef-428d-b003-ea043b1f11f9": {
+        1: "dfc9ddf7-a0e9-4b4f-af8d-5076c0d6bf0b",
+        2: "c02d4852-0dbd-4f65-bb9a-17ecb129b775",
+        3: "6ada7787-9a8f-474a-aa96-af9407a02b6f",
+    },
+    /**
+     * The Marinello Motivation
+     */
+    "3721e543-b5e6-4af8-a4fc-c92e9a4453bd": {
+        1: "f33d4dee-8d07-45e0-9816-55646dcb341f",
+        2: "aa4fb2e6-3494-4b88-a882-43ce135f8b1b",
+        3: "2ab943ef-ba1b-48bf-9391-5b7725b4d4c7",
+    },
+    /**
+     * The Quimby Quandary
+     */
+    "b66f151d-47a7-4681-a403-c48a46916224": {
+        1: "f022db57-d9f8-4d1a-aa9d-d27622bc5fc7",
+        2: "1829ad45-92a2-4c4d-8d42-08769d219be5",
+        3: "778f0ff0-fd13-4c7d-b120-a6bf75421c63",
+    },
+    /**
+     * The Aelwin Augment
+     */
+    "8c6daf5e-5974-4438-af20-71ff570c7ff3": {
+        1: "e476863f-2c3c-4447-8b15-8ffeddcc7923",
+        2: "fe749a4f-2b0b-4fae-ae7d-9e107782944e",
+        3: "952dd0bc-29ec-4080-b179-c1c0db8c3dc6",
+    },
+    /**
+     * The Unpalatatable Termination
+     */
+    "fca539ff-1b1a-4c04-93e0-03b9b902f86c": {
+        1: "66d30da2-ee73-4f6b-9059-82bdd2a1cde6",
+        2: "dc085fde-0ad7-4d9e-b233-eff219c95258",
+        3: "f88cda79-c07c-4487-ac23-1b8b824b3497",
+    },
+    /**
+     * The BigMooneyFlamboyancy
+     */
+    "066ce378-0418-452a-b02e-a5e4ee711096": {
+        1: "48e2fa8d-e6bd-4eb6-9020-0d0191b49e29",
+        2: "b0b3cc31-8cff-4042-ad85-1328860e42be",
+        3: "f57fd6a8-cf49-499c-b560-bd377a00ffcf",
+    },
+    /**
+     * The Covert Dispersal
+     */
+    "1d5dcf3e-9682-4e32-ac11-ad6586daa456": {
+        1: "ea24b9a0-c942-424f-b358-2ed1cc6ecd74",
+        2: "bfe54e24-3491-4485-bc07-301f22461172",
+        3: "7f05929f-f1c7-49f7-9428-c9a847b12a87",
+    },
+    /**
+     * The Batty Tranquility
+     */
+    "74e6b561-ff1a-4742-9a7b-890b7818c796": {
+        1: "246b802f-2e9d-42a7-b9b7-7ef55beb3110",
+        2: "a3d5cd5e-a47f-40ac-8ba9-77fea52ee995",
+        3: "d7bc0701-e9c9-465c-a1af-561863697fca",
+    },
+    /**
+     * The Riviera Restoration
+     */
+    "719ee044-4b05-4bd9-b2bb-75029f6d2a35": {
+        1: "78875559-8efb-428d-94d5-90494cede7e4",
+        2: "b4a77622-5481-4084-88a5-a523c548a38e",
+        3: "e5b6ccf4-1f29-4ec6-bfb8-2e9b78882c85",
+    },
+    /**
+     * The Simmons Concussion
+     */
+    "5284cb9f-9bdd-4b00-99c3-0b5939b01818": {
+        1: "bb0edb91-e7ba-4e3d-9a11-df367d69f110",
+        2: "b47909db-377d-446e-816a-3c8276ef4560",
+        3: "dcc17268-84e5-4f49-badf-f0c631ab28cd",
+    },
+    /**
+     * The Raaz Algorithm
+     */
+    "b6a6330a-301a-4e8e-a26f-0f3e0ea809b5": {
+        1: "89018432-d2a9-412e-ba2f-e070cfa11f7b",
+        2: "c4b60bf8-620e-4827-9f1a-08292b5af6a7",
+        3: "3bf086b7-2fb6-49b3-bd95-7f46535801df",
+    },
+    /**
+     * The Chameleon Anonymity
+     */
+    "ae0bd6cd-7062-4336-8cb0-5fafad3d0f4f": {
+        1: "36fc1e05-14fc-4e49-a626-2b64e642f1e7",
+        2: "07787ef6-7f9a-4aa5-a5d8-2c385c708057",
+        3: "2469e028-6d85-4b50-a54c-a32c36792241",
+    },
+    /**
+     * The Han Encasement
+     */
+    "9badee3e-0014-46b1-9ef6-edf8858ba038": {
+        1: "e3191aeb-8eee-4da5-837d-e368a9cbbaca",
+        2: "e409fcc1-30db-460a-826e-8600b58a8377",
+        3: "dc16d4c4-f9a5-491f-a2f4-2c0b8e0a66a3",
+    },
+    /**
+     * The Divine Descendance
+     */
+    "4a62b328-dfe7-4956-ac0f-a3a8990fce26": {
+        1: "d4203028-f0ca-4c15-9bad-5b092d715d02",
+        2: "fc25e5b3-e98e-433b-8cdb-6d479159a2fd",
+        3: "d6f4777a-14df-40c6-a541-d8c974d9d4a1",
+    },
+    /**
+     * The Hirani Evacuation
+     */
+    "b47f34cb-6537-421c-8fc8-720a4a118540": {
+        1: "929298e1-821f-47de-bbc5-aea00002b0c8",
+        2: "fdd78676-ed12-45b8-912a-a08c7abd3e54",
+        3: "469ce2cb-a2d1-4296-bfe6-8a95bbf43fac",
+    },
+    /**
+     * The McCallister Ransack
+     */
+    "d1b9250b-33f6-4712-831b-f33fa11ee4d8": {
+        1: "0170bac0-86df-43f5-9ae7-0a7aed457e35",
+        2: "8ae81931-0e6f-4442-9e3e-7ba4f639dc3b",
+        3: "a1e125fe-b9ac-428b-8ff0-2ba5a3d508dd",
+    },
+    /**
+     * The O'Leary Conflagration
+     */
+    "15b7ad4e-565a-4fdb-b669-c9a68176e665": {
+        1: "088ee359-93ef-414f-a94f-f0e705cc7382",
+        2: "1515385d-83c9-48f4-a030-a887de9298a8",
+        3: "abddddf9-3dbc-46cb-a8e4-087418d97435",
+    },
+    /**
+     * The Nolan Disinfection
+     */
+    "fe088a10-5dbf-460f-bbe2-6b55e7a66253": {
+        1: "c4306fa7-347f-44e8-b24d-e5ded9d0e58a",
+        2: "34d8d1df-1b39-4a9c-9a07-45b83667fdb2",
+        3: "5a2a91be-4591-40f7-aada-f55fce0cadbe",
+    },
+    /**
      * The Gauchito Antiquity
      */
     "72aaaa7b-4386-4ee7-9e9e-73fb8ff8e416": {
@@ -270,14 +454,6 @@ export const escalationMappings: {
         3: "6b1fcdc7-e2c9-48c4-b1fb-0a8dd817f3b2",
         4: "d80abc24-f7d5-4e6b-a6c2-fd318135d160",
         5: "b007a400-66b8-43c3-a919-3195e343f7b1",
-    },
-    /**
-     * The Marinello Motivation
-     */
-    "d0a0fa03-08a7-43ef-b5e8-d8662d015372": {
-        1: "f33d4dee-8d07-45e0-9816-55646dcb341f",
-        2: "aa4fb2e6-3494-4b88-a882-43ce135f8b1b",
-        3: "9f17c5ee-b402-11eb-8529-0242ac130003",
     },
     /**
      * The Sinbad Stringent
