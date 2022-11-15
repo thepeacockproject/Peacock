@@ -549,9 +549,6 @@ function saveEvents(
             response.push(process.hrtime.bigint().toString())
             return
         }
-        
-        const contract = controller.resolveContract(session.contractId)
-        const contractType = contract?.Metadata?.Type?.toLowerCase()
 
         if (handleMultiplayerEvent(event, session)) {
             processed.push(event.Name)
