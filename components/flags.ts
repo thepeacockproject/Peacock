@@ -85,6 +85,14 @@ const defaultFlags: Flags = {
         desc: "Forcibly disable installed mod checks",
         default: false,
     },
+    experimentalHMR: {
+        desc: "[Experimental] Toggle hot reloading of contracts",
+        default: false,
+    },
+    developmentPluginDevHost: {
+        desc: "[Development - Workspace required] Toggle loading of plugins with a .ts/.cts extension inside the /plugins folder",
+        default: false,
+    },
 }
 
 const OLD_FLAGS_FILE = "flags.json5"

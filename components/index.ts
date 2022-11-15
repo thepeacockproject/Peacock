@@ -564,10 +564,15 @@ function startServer(options: { hmr: boolean; pluginDevHost: boolean }): void {
     }
 }
 
-program.option("--hmr", "enable experimental hot reloading of contracts")
+program.option(
+    "--hmr",
+    "enable experimental hot reloading of contracts",
+    getFlag("experimentalHMR") as boolean,
+)
 program.option(
     "--plugin-dev-host",
     "activate plugin development features - requires plugin dev workspace setup",
+    getFlag("developmentPluginDevHost") as boolean,
 )
 program.action(startServer)
 
