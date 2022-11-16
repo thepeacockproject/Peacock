@@ -19,9 +19,17 @@
 import { LiveSplitClient, LiveSplitResult } from "./liveSplitClient"
 import { log, LogLevel } from "../loggingInterop"
 import { getAllCampaigns } from "../menus/campaigns"
-import { Campaign, GameVersion, IHit, Seconds, StoryData } from "../types/types"
+import {
+    Campaign,
+    GameVersion,
+    IHit,
+    LiveSplitTimeCalcEntry,
+    Seconds,
+    StoryData,
+} from "../types/types"
 import { getFlag } from "../flags"
 import { controller } from "../controller"
+import { scenePathToRpAsset } from "../discordRp"
 
 export class LiveSplitManager {
     private readonly _liveSplitClient: LiveSplitClient
@@ -36,6 +44,7 @@ export class LiveSplitManager {
     private _currentMissionTotalTime: number
     private _campaignTotalTime: number
     private _completedMissions: string[]
+    private _timeCalcEntries: LiveSplitTimeCalcEntry[]
     private _raceMode: boolean | undefined // gets late-initialized, use _isRaceMode to access
 
     constructor() {
@@ -45,6 +54,7 @@ export class LiveSplitManager {
         this._currentMission = undefined
         this._inValidCampaignRun = false
         this._completedMissions = []
+        this._timeCalcEntries = []
         this._currentMissionTotalTime = 0
         this._campaignTotalTime = 0
         this._raceMode = undefined
@@ -160,9 +170,8 @@ export class LiveSplitManager {
         }
 
         if (this._inValidCampaignRun) {
-            const location = this._getMissionLocationName(this._currentMission)
-            log(LogLevel.DEBUG, `Current location: ${location}`)
             this._addMissionTime(attemptTime)
+            this._addTimeCalcEntry(this._currentMission, attemptTime, false)
             LiveSplitManager._logAttempt(attemptTime)
             await this._pushGameTime()
         }
@@ -177,6 +186,7 @@ export class LiveSplitManager {
 
         if (this._inValidCampaignRun) {
             this._addMissionTime(attemptTime)
+            this._addTimeCalcEntry(this._currentMission, attemptTime, true)
             log(
                 LogLevel.INFO,
                 `Total mission time with resets: ${this._currentMissionTotalTime}`,
@@ -217,6 +227,10 @@ export class LiveSplitManager {
                     logLiveSplitError(
                         await this._liveSplitClient.pause(),
                         "pause",
+                    )
+                    log(
+                        LogLevel.DEBUG,
+                        JSON.stringify(this._timeCalcEntries, null, "\t"),
                     )
                 }
             }
@@ -317,6 +331,7 @@ export class LiveSplitManager {
             `Detected campaign missions: ${this._currentCampaign}`,
         )
         this._completedMissions = []
+        this._timeCalcEntries = []
         this._inValidCampaignRun = true
         this._currentMissionTotalTime = 0
         this._campaignTotalTime = 0
@@ -392,7 +407,28 @@ export class LiveSplitManager {
     }
 
     private _getMissionLocationName(contractId: string) {
-        return controller.resolveContract(contractId)?.Metadata.Location
+        const contract = controller.resolveContract(contractId)
+        const [, , location] = scenePathToRpAsset(
+            contract.Metadata.ScenePath,
+            contract.Data.Bricks,
+        )
+        return location
+    }
+
+    private _addTimeCalcEntry(
+        contractId: string,
+        time: Seconds,
+        isCompleted: boolean,
+    ) {
+        const location = this._getMissionLocationName(contractId)
+        const entry: LiveSplitTimeCalcEntry = {
+            contractId,
+            location,
+            time,
+            isCompleted,
+        }
+        log(LogLevel.DEBUG, `New TimeCalc entry: ${JSON.stringify(entry)}`)
+        this._timeCalcEntries.push(entry)
     }
 }
 
