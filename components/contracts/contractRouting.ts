@@ -53,7 +53,7 @@ const contractRoutingRouter = Router()
 contractRoutingRouter.post(
     "/GetForPlay2",
     jsonMiddleware(),
-    async (req: RequestWithJwt<never, GetForPlay2Body>, res) => {
+    (req: RequestWithJwt<never, GetForPlay2Body>, res) => {
         if (!req.body.id || !uuidRegex.test(req.body.id)) {
             res.status(400).end()
             return // user sent some nasty info
@@ -77,15 +77,14 @@ contractRoutingRouter.post(
         }
 
         // Add escalation data to Contract data HERE
-        // @ts-expect-error TypeScript going crazy
         contractData.Metadata = {
             ...contractData.Metadata,
-            ...(await getPlayEscalationInfo(
+            ...getPlayEscalationInfo(
                 contractData.Metadata.Type === "escalation",
                 req.jwt.unique_name,
                 contractIdToEscalationGroupId(req.body.id),
                 req.gameVersion,
-            )),
+            ),
             ...loadoutData,
         }
 
