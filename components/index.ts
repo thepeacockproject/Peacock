@@ -78,6 +78,7 @@ import picocolors from "picocolors"
 import { multiplayerRouter } from "./multiplayer/multiplayerService"
 import { multiplayerMenuDataRouter } from "./multiplayer/multiplayerMenuData"
 import { pack, unpack } from "msgpackr"
+import { liveSplitManager } from "./livesplit/liveSplitManager"
 
 // welcome to the bleeding edge
 setFlagsFromString("--harmony")
@@ -550,6 +551,11 @@ function startServer(options: { hmr: boolean; pluginDevHost: boolean }): void {
 
     if (getFlag("discordRp") === true) {
         initRp()
+    }
+
+    if (getFlag("liveSplit") === true) {
+        // initialize livesplit
+        liveSplitManager.init()
     }
 }
 
