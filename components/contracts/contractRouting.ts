@@ -129,9 +129,9 @@ contractRoutingRouter.post(
                 delete gameChanger.ObjectivesCategory
 
                 if (
-                    contractData.Data.GameChangerReferences.includes(
-                        gameChanger,
-                    )
+                    contractData.Data.GameChangerReferences.filter(
+                        (value) => value.Id === gameChangerId,
+                    ).length !== 0
                 ) {
                     continue
                 }
