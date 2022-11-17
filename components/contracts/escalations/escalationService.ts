@@ -145,22 +145,16 @@ export function getLevelCount(groupContract: MissionManifest): number {
 /**
  * Get the "play" escalation info.
  *
- * @param b Internal control for code cleanliness. Setting to false returns an empty object.
  * @param userId The current user's ID.
  * @param groupContractId The escalation's group contract ID.
  * @param gameVersion The game's version.
  * @returns The escalation play details.
  */
 export function getPlayEscalationInfo(
-    b: boolean,
     userId: string,
     groupContractId: string,
     gameVersion: GameVersion,
 ) {
-    if (!b) {
-        return {}
-    }
-
     const userData = getUserData(userId, gameVersion)
 
     const p = getUserEscalationProgress(userData, groupContractId)
