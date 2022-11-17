@@ -77,6 +77,8 @@ import { ChallengePackage } from "./types/challenges"
 import { promisify } from "util"
 import { brotliDecompress } from "zlib"
 import assert from "assert"
+import { Response } from "express"
+import { MissionEndRequestQuery } from "./types/gameSchemas"
 
 /**
  * An array of string arrays that contains the IDs of the featured contracts.
@@ -362,6 +364,13 @@ export class Controller {
             ],
             PlayNextGetCampaignsHookReturn | undefined
         >
+        getMissionEnd: SyncBailHook<
+            [
+                /** req */ RequestWithJwt<MissionEndRequestQuery>,
+                /** res */ Response,
+            ],
+            boolean
+        >
     }
     public escalationMappings = escalationMappings
     public configManager: typeof configManagerType = {
@@ -399,6 +408,7 @@ export class Controller {
             contributeCampaigns: new SyncHook(),
             getSearchResults: new AsyncSeriesHook(),
             getNextCampaignMission: new SyncBailHook(),
+            getMissionEnd: new SyncBailHook(),
         }
 
         if (modFrameworkDataPath && existsSync(modFrameworkDataPath)) {
