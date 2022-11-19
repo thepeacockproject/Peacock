@@ -150,6 +150,8 @@ export abstract class ChallengeRegistry {
 }
 
 export class ChallengeService extends ChallengeRegistry {
+    // TODO: Move onto sessions - this is user specific, and I've been
+    //       procrastinating this fix. -RD
     private readonly _challengeContexts: {
         [sessionId: string]: {
             [challengeId: string]: {
