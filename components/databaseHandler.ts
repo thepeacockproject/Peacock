@@ -108,6 +108,33 @@ export function getUserData(
 }
 
 /**
+ * Only attempt to load a user's profile if it hasn't been loaded yet
+ *
+ * @param userId The user's ID.
+ * @param gameVersion The game's version.
+ */
+export async function cheapLoadUserData(
+    userId: string,
+    gameVersion: GameVersion,
+): Promise<void> {
+    if (!userId || !gameVersion) {
+        return
+    }
+
+    const userProfile = asyncGuard.getProfile(`${userId}.${gameVersion}`)
+
+    if (userProfile) {
+        return
+    }
+
+    try {
+        await loadUserData(userId, gameVersion)
+    } catch (e) {
+        log(LogLevel.DEBUG, "Unable to load profile information.")
+    }
+}
+
+/**
  * Loads a user's profile data.
  *
  * @param userId The user's ID.
