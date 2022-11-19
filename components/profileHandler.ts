@@ -22,6 +22,7 @@ import { castUserProfile, nilUuid, uuidRegex } from "./utils"
 import { json as jsonMiddleware } from "body-parser"
 import { getPlatformEntitlements } from "./platformEntitlements"
 import {
+    contractSessions,
     getActiveSessionIdForUser,
     loadSession,
     newSession,
@@ -674,6 +675,12 @@ profileRouter.post(
 
         try {
             await loadSession(req.body.contractSessionId, req.body.saveToken)
+
+            controller.challengeService.startContract(
+                req.jwt.unique_name,
+                req.body.contractSessionId,
+                contractSessions.get(req.body.contractSessionId)!,
+            )
         } catch (e) {
             if (
                 getActiveSessionIdForUser(req.jwt.unique_name) ===
