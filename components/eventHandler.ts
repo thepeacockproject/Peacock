@@ -471,7 +471,25 @@ function saveEvents(
     const processed: string[] = []
     const userData = getUserData(req.jwt.unique_name, req.gameVersion)
     events.forEach((event) => {
-        const session = contractSessions.get(event.ContractSessionId)
+        let session = contractSessions.get(event.ContractSessionId)
+
+        if (!session) {
+            log(
+                LogLevel.WARN,
+                "Creating a fake session to avoid problems... scoring will not work!",
+            )
+
+            newSession(
+                event.ContractSessionId,
+                event.ContractId,
+                req.jwt.unique_name,
+                gameDifficulty.normal,
+                req.gameVersion,
+                false,
+            )
+
+            session = contractSessions.get(event.ContractSessionId)
+        }
 
         if (
             !session ||
