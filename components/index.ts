@@ -553,10 +553,8 @@ function startServer(options: { hmr: boolean; pluginDevHost: boolean }): void {
         initRp()
     }
 
-    if (getFlag("liveSplit") === true) {
-        // initialize livesplit
-        liveSplitManager.init()
-    }
+    // initialize livesplit
+    liveSplitManager.init()
 }
 
 program.option(
