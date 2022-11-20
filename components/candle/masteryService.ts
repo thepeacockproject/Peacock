@@ -16,8 +16,8 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { getSubLocationByName } from "components/contracts/dataGen"
-import { log, LogLevel } from "components/loggingInterop"
+import { getSubLocationByName } from "../contracts/dataGen"
+import { log, LogLevel } from "../loggingInterop"
 import { getConfig, getVersionedConfig } from "../configSwizzleManager"
 import { getUserData } from "../databaseHandler"
 import {

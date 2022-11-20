@@ -18,7 +18,9 @@
         "webui": "yarn workspace @peacockproject/web-ui",
         "typedefs": "yarn workspace @peacockproject/core",
         "run-dev": "node packaging/devLoader.mjs",
-        "extract-challenge-data": "node packaging/extractChallengeData.mjs"
+        "extract-challenge-data": "node packaging/extractChallengeData.mjs",
+        "test": "vitest --run --config tests/vitest.config.ts",
+        "test-ui": "vitest --config tests/vitest.config.ts --ui"
     },
     "prettier": {
         "semi": false,
@@ -71,6 +73,7 @@
         "@types/send": "^0.17.1",
         "@typescript-eslint/eslint-plugin": "^5.55.0",
         "@typescript-eslint/parser": "^5.55.0",
+        "@vitest/ui": "0.29.6",
         "esbuild": "^0.17.12",
         "esbuild-register": "^3.4.2",
         "eslint": "^8.36.0",
@@ -85,7 +88,8 @@
         "prettier": "^2.8.4",
         "rimraf": "^4.4.0",
         "terser": "^5.16.6",
-        "typescript": "4.9.5"
+        "typescript": "4.9.5",
+        "vitest": "0.29.6"
     },
     "engines": {
         "node": "18.x || 19.x",
