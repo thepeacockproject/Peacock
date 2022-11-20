@@ -42,7 +42,6 @@ import {
 import {
     handleEvent,
     HandleEventOptions,
-    Timer,
 } from "@peacockproject/statemachine-parser"
 import { SavedChallengeGroup } from "../types/challenges"
 import { fastClone } from "../utils"
@@ -150,17 +149,6 @@ export abstract class ChallengeRegistry {
 }
 
 export class ChallengeService extends ChallengeRegistry {
-    // TODO: Move onto sessions - this is user specific, and I've been
-    //       procrastinating this fix. -RD
-    private readonly _challengeContexts: {
-        [sessionId: string]: {
-            [challengeId: string]: {
-                context: unknown
-                state: string
-                timers: Timer[]
-            }
-        }
-    }
     // we'll use this after writing details to the user's profile
     private _justCompletedChallengeIds: string[] = []
     public hooks: {
@@ -177,7 +165,6 @@ export class ChallengeService extends ChallengeRegistry {
 
     constructor(controller: Controller) {
         super(controller)
-        this._challengeContexts = {}
         this.hooks = {
             onChallengeCompleted: new SyncHook(),
         }
@@ -316,8 +303,9 @@ export class ChallengeService extends ChallengeRegistry {
         sessionId: string,
         session: ContractSession,
     ): void {
-        this._challengeContexts[sessionId] = {}
-        const { gameVersion, contractId } = session
+        // we know we will have challenge contexts because this session is
+        // brand new.
+        const { gameVersion, contractId, challengeContexts } = session
 
         const challengeGroups = this.getChallengesForContract(
             contractId,
@@ -358,7 +346,7 @@ export class ChallengeService extends ChallengeRegistry {
                     })
                 }
 
-                this._challengeContexts[sessionId][challenge.Id] = {
+                challengeContexts[challenge.Id] = {
                     context:
                         fastClone(challenge.Definition?.Context || {}) || {},
                     state: progression.Completed ? "Success" : "Start",
@@ -377,11 +365,15 @@ export class ChallengeService extends ChallengeRegistry {
     ): void {
         const writeQueue: PendingProgressionWrite[] = []
 
-        for (const challengeId of Object.keys(
-            this._challengeContexts[sessionId],
-        )) {
+        if (!session.challengeContexts) {
+            log(LogLevel.WARN, "Session does not have challenge contexts.")
+            log(LogLevel.WARN, "Challenges will be disabled!")
+            return
+        }
+
+        for (const challengeId of Object.keys(session.challengeContexts)) {
             const challenge = this.getChallengeById(challengeId)
-            const data = this._challengeContexts[sessionId][challengeId]
+            const data = session.challengeContexts[challengeId]
 
             if (!challenge) {
                 log(LogLevel.WARN, `Challenge ${challengeId} not found`)
@@ -406,9 +398,8 @@ export class ChallengeService extends ChallengeRegistry {
                     options,
                 )
 
-                this._challengeContexts[sessionId][challengeId].state =
-                    result.state
-                this._challengeContexts[sessionId][challengeId].context =
+                session.challengeContexts[challengeId].state = result.state
+                session.challengeContexts[challengeId].context =
                     result.context || challenge.Definition?.Context || {}
 
                 if (previousState !== "Success" && result.state === "Success") {
