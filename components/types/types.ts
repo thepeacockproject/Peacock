@@ -23,6 +23,7 @@ import type { Request } from "express"
 import { SavedChallenge } from "./challenges"
 import { SessionGhostModeDetails } from "../multiplayer/multiplayerService"
 import { IContextListener } from "../statemachines/contextListeners"
+import { Timer } from "@peacockproject/statemachine-parser"
 
 /**
  * A duration or relative point in time expressed in seconds.
@@ -229,7 +230,24 @@ export interface ContractSession {
     objectiveDefinitions: Map<string, unknown>
     objectiveStates: Map<string, string>
     objectiveContexts: Map<string, unknown>
+    /**
+     * Session Ghost Mode details.
+     *
+     * @since v5.0.0
+     */
     ghost?: SessionGhostModeDetails
+    /**
+     * The current state of the challenges.
+     *
+     * @since v5.6.0-dev.1
+     */
+    challengeContexts?: {
+        [challengeId: string]: {
+            context: unknown
+            state: string
+            timers: Timer[]
+        }
+    }
 }
 
 /**
