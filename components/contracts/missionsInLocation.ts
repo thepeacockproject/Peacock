@@ -71,12 +71,8 @@ export const missionsInLocations = {
     LOCATION_TRAPPED_WOLVERINE: ["a3e19d55-64a6-4282-bb3c-d18c3f3e6e29"],
     LOCATION_ROCKY_DUGONG: ["b2aac100-dfc7-4f85-b9cd-528114436f6c"],
     escalations: {
-        LOCATION_ICA_FACILITY_SHIP: [
-            "aee6a16f-6525-4d63-a37f-225e293c6118"
-        ],
-        LOCATION_ICA_FACILITY: [
-            "c469d91d-01fc-4314-b22c-71cb804e92c0"
-        ],
+        LOCATION_ICA_FACILITY_SHIP: ["aee6a16f-6525-4d63-a37f-225e293c6118"],
+        LOCATION_ICA_FACILITY: ["c469d91d-01fc-4314-b22c-71cb804e92c0"],
         LOCATION_PARIS: [
             "4f6ee6ec-b6d7-4958-9838-0352c10294a0",
             "e6be23e8-8602-42c8-a014-17ffbfa053f5",
