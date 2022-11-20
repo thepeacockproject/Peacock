@@ -230,6 +230,12 @@ export class LiveSplitManager {
      */
 
     async init() {
+        if (!getFlag("liveSplit")) {
+            this._initializationAttempted = true
+
+            return
+        }
+
         try {
             logLiveSplitError(await this._liveSplitClient.connect(), "connect")
             logLiveSplitError(
@@ -247,7 +253,6 @@ export class LiveSplitManager {
         } catch (e) {
             log(LogLevel.DEBUG, "Failed to initialize LiveSplit: ")
             log(LogLevel.DEBUG, e)
-            this._initializationAttempted = true
         }
     }
 
