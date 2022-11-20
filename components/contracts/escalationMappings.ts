@@ -789,7 +789,7 @@ export const escalationMappings: {
         4: "ded3b862-7626-43ff-8510-e2758121bf00",
         5: "d3ea9e2e-85dc-41f1-b1bf-a478879ff8ba",
     },
-     /**
+    /**
      * The Selmone Mimesis - EDELWEISS
      */
     "0c4c6ce2-09d5-4fff-a946-099ced0558ea": {
