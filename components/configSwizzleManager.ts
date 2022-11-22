@@ -22,88 +22,6 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs"
 import { join } from "path"
 import { log, LogLevel } from "./loggingInterop"
-
-import Roadmap from "../static/Roadmap.json"
-import StoreData from "../static/StoreData.json"
-import FilterData from "../static/FilterData.json"
-import LocationsData from "../static/LocationsData.json"
-import GameChangerProperties from "../static/GameChangerProperties.json"
-import allunlockables from "../static/allunlockables.json"
-import Destinations from "../static/Destinations.json"
-import connectionConfigTemplate from "../static/config.json"
-import onlineconfig from "../static/onlineconfig.json"
-import privacypolicy from "../static/privacypolicy.json"
-import UserDefault from "../static/UserDefault.json"
-import AgencyPickups from "../static/AgencyPickups.json"
-import Entrances from "../static/Entrances.json"
-import LeaderboardEntriesTemplate from "../static/LeaderboardEntriesTemplate.json"
-import LeaderboardsViewTemplate from "../static/LeaderboardsViewTemplate.json"
-import MissionEndReadyTemplate from "../static/MissionEndReadyTemplate.json"
-import MissionEndNotReadyTemplate from "../static/MissionEndNotReadyTemplate.json"
-import SelectAgencyPickupTemplate from "../static/SelectAgencyPickupTemplate.json"
-import SelectEntranceTemplate from "../static/SelectEntranceTemplate.json"
-import StashpointTemplate from "../static/StashpointTemplate.json"
-import LoadMenuTemplate from "../static/LoadMenuTemplate.json"
-import SaveMenuTemplate from "../static/SaveMenuTemplate.json"
-import Playstyles from "../static/Playstyles.json"
-import HubPageData from "../static/HubPageData.json"
-import DashboardCategoryEscalation from "../static/DashboardCategoryEscalation.json"
-import GlobalChallenges from "../static/GlobalChallenges.json"
-import ContractsTemplate from "../static/ContractsTemplate.json"
-import CreateContractPlanningTemplate from "../static/CreateContractPlanningTemplate.json"
-import CreateContractReturnTemplate from "../static/CreateContractReturnTemplate.json"
-import PlayerProfilePage from "../static/PlayerProfileView.json"
-import Legacyallunlockables from "../static/Legacyallunlockables.json"
-import LegacyGlobalChallenges from "../static/LegacyGlobalChallenges.json"
-import LegacySafehouseTemplate from "../static/LegacySafehouseTemplate.json"
-import LegacyHubTemplate from "../static/LegacyHubTemplate.json"
-import LegacyPlanningTemplate from "../static/LegacyPlanningTemplate.json"
-import LegacySelectAgencyPickupTemplate from "../static/LegacySelectAgencyPickupTemplate.json"
-import LegacySelectEntranceTemplate from "../static/LegacySelectEntranceTemplate.json"
-import LegacyStashpointTemplate from "../static/LegacyStashpointTemplate.json"
-import LegacyUserDefault from "../static/LegacyUserDefault.json"
-import LegacyContractSearchResponseTemplate from "../static/LegacyContractSearchResponseTemplate.json"
-import LegacyFilterData from "../static/LegacyFilterData.json"
-import PlayNextTemplate from "../static/PlayNextTemplate.json"
-import LookupContractByIdTemplate from "../static/LookupContractByIdTemplate.json"
-import LookupContractFavoriteTemplate from "../static/LookupContractFavoriteTemplate.json"
-import MissionStories from "../static/MissionStories.json"
-import DebriefingLeaderboardsTemplate from "../static/DebriefingLeaderboardsTemplate.json"
-import LegacyHitsCategoryTemplate from "../static/LegacyHitsCategoryTemplate.json"
-import LegacyStoreData from "../static/LegacyStoreData.json"
-import LegacyDestinations from "../static/LegacyDestinations.json"
-import LegacyDestinationTemplate from "../static/LegacyDestinationTemplate.json"
-import LegacyLocationsData from "../static/LegacyLocationsData.json"
-import LegacySaveMenuTemplate from "../static/LegacySaveMenuTemplate.json"
-import LegacyLoadMenuTemplate from "../static/LegacyLoadMenuTemplate.json"
-import LegacyLookupContractByIdTemplate from "../static/LegacyLookupContractByIdTemplate.json"
-import EiderDashboard from "../static/EiderDashboard.json"
-import PersistentBools from "../static/PersistentBools.json"
-import H2allunlockables from "../static/H2allunlockables.json"
-import H2DestinationsData from "../static/H2DestinationsData.json"
-import H2StoreData from "../static/H2StoreData.json"
-import H2ContractSearchResponseTemplate from "../static/H2ContractSearchResponseTemplate.json"
-import H2LocationsData from "../static/H2LocationsData.json"
-import H2FilterData from "../static/H2FilterData.json"
-import H2DashboardTemplate from "../static/H2DashboardTemplate.json"
-import FrankensteinHubTemplate from "../static/FrankensteinHubTemplate.json"
-import FrankensteinMmSpTemplate from "../static/FrankensteinMmSpTemplate.json"
-import FrankensteinMmMpTemplate from "../static/FrankensteinMmMpTemplate.json"
-import FrankensteinScoreOverviewTemplate from "../static/FrankensteinScoreOverviewTemplate.json"
-import FrankensteinPlanningTemplate from "../static/FrankensteinPlanningTemplate.json"
-import Videos from "../static/Videos.json"
-import ContractSearchPageTemplate from "../static/ContractSearchPageTemplate.json"
-import ContractSearchResponseTemplate from "../static/ContractSearchResponseTemplate.json"
-import LegacyDebriefingChallengesTemplate from "../static/LegacyDebriefingChallengesTemplate.json"
-import MasteryUnlockablesTemplate from "../static/MasteryUnlockablesTemplate.json"
-import SniperLoadouts from "../static/SniperLoadouts.json"
-import Scpcallunlockables from "../static/Scpcallunlockables.json"
-import DiscordRichAssetsForBricks from "../static/DiscordRichAssetsForBricks.json"
-import EscalationCodenames from "../static/EscalationCodenames.json"
-import scoreoverviewtemplate from "../static/scoreoverviewtemplate.json"
-import PeacockGameChangerProperties from "../static/PeacockGameChangerProperties.json"
-import MultiplayerPresets from "../static/MultiplayerPresets.json"
-import LobbySlimTemplate from "../static/LobbySlimTemplate.json"
 import type { GameVersion } from "./types/types"
 import { fastClone } from "./utils"
 
@@ -113,87 +31,87 @@ import { fastClone } from "./utils"
  * @private
  */
 const configs: Record<string, unknown> = {
-    Roadmap,
-    StoreData,
-    FilterData,
-    LocationsData,
-    LeaderboardsViewTemplate,
-    LeaderboardEntriesTemplate,
-    GameChangerProperties,
-    allunlockables,
-    Destinations,
-    config: connectionConfigTemplate,
-    onlineconfig,
-    privacypolicy,
-    UserDefault,
-    AgencyPickups,
-    Entrances,
-    MissionEndReadyTemplate,
-    MissionEndNotReadyTemplate,
-    SelectAgencyPickupTemplate,
-    SelectEntranceTemplate,
-    StashpointTemplate,
-    LoadMenuTemplate,
-    SaveMenuTemplate,
-    Playstyles,
-    HubPageData,
-    DashboardCategoryEscalation,
-    GlobalChallenges,
-    ContractsTemplate,
-    CreateContractPlanningTemplate,
-    CreateContractReturnTemplate,
-    PlayerProfilePage,
-    Legacyallunlockables,
-    LegacyGlobalChallenges,
-    LegacySafehouseTemplate,
-    LegacyHubTemplate,
-    LegacyPlanningTemplate,
-    LegacySelectAgencyPickupTemplate,
-    LegacySelectEntranceTemplate,
-    LegacyStashpointTemplate,
-    LegacyUserDefault,
-    LegacyFilterData,
-    PlayNextTemplate,
-    LookupContractByIdTemplate,
-    LookupContractFavoriteTemplate,
-    MissionStories,
-    DebriefingLeaderboardsTemplate,
-    LegacyHitsCategoryTemplate,
-    LegacyStoreData,
-    LegacyDestinations,
-    LegacyDestinationTemplate,
-    LegacyLocationsData,
-    LegacySaveMenuTemplate,
-    LegacyLoadMenuTemplate,
-    LegacyContractSearchResponseTemplate,
-    LegacyDebriefingChallengesTemplate,
-    LegacyLookupContractByIdTemplate,
-    EiderDashboard,
-    PersistentBools,
-    FrankensteinHubTemplate,
-    H2allunlockables,
-    H2DestinationsData,
-    H2StoreData,
-    H2ContractSearchResponseTemplate,
-    H2LocationsData,
-    H2FilterData,
-    H2DashboardTemplate,
-    FrankensteinMmSpTemplate,
-    FrankensteinMmMpTemplate,
-    FrankensteinPlanningTemplate,
-    FrankensteinScoreOverviewTemplate,
-    Videos,
-    ContractSearchPageTemplate,
-    ContractSearchResponseTemplate,
-    MasteryUnlockablesTemplate,
-    SniperLoadouts,
-    Scpcallunlockables,
-    DiscordRichAssetsForBricks,
-    EscalationCodenames,
-    scoreoverviewtemplate,
-    PeacockGameChangerProperties,
-    MultiplayerPresets,
-    LobbySlimTemplate,
+    Roadmap: require("../static/Roadmap.json"),
+    StoreData: require("../static/StoreData.json"),
+    FilterData: require("../static/FilterData.json"),
+    LocationsData: require("../static/LocationsData.json"),
+    GameChangerProperties: require("../static/GameChangerProperties.json"),
+    allunlockables: require("../static/allunlockables.json"),
+    Destinations: require("../static/Destinations.json"),
+    config: require("../static/config.json"),
+    onlineconfig: require("../static/onlineconfig.json"),
+    privacypolicy: require("../static/privacypolicy.json"),
+    UserDefault: require("../static/UserDefault.json"),
+    AgencyPickups: require("../static/AgencyPickups.json"),
+    Entrances: require("../static/Entrances.json"),
+    LeaderboardEntriesTemplate: require("../static/LeaderboardEntriesTemplate.json"),
+    LeaderboardsViewTemplate: require("../static/LeaderboardsViewTemplate.json"),
+    MissionEndReadyTemplate: require("../static/MissionEndReadyTemplate.json"),
+    MissionEndNotReadyTemplate: require("../static/MissionEndNotReadyTemplate.json"),
+    SelectAgencyPickupTemplate: require("../static/SelectAgencyPickupTemplate.json"),
+    SelectEntranceTemplate: require("../static/SelectEntranceTemplate.json"),
+    StashpointTemplate: require("../static/StashpointTemplate.json"),
+    LoadMenuTemplate: require("../static/LoadMenuTemplate.json"),
+    SaveMenuTemplate: require("../static/SaveMenuTemplate.json"),
+    Playstyles: require("../static/Playstyles.json"),
+    HubPageData: require("../static/HubPageData.json"),
+    DashboardCategoryEscalation: require("../static/DashboardCategoryEscalation.json"),
+    GlobalChallenges: require("../static/GlobalChallenges.json"),
+    ContractsTemplate: require("../static/ContractsTemplate.json"),
+    CreateContractPlanningTemplate: require("../static/CreateContractPlanningTemplate.json"),
+    CreateContractReturnTemplate: require("../static/CreateContractReturnTemplate.json"),
+    PlayerProfilePage: require("../static/PlayerProfileView.json"),
+    Legacyallunlockables: require("../static/Legacyallunlockables.json"),
+    LegacyGlobalChallenges: require("../static/LegacyGlobalChallenges.json"),
+    LegacySafehouseTemplate: require("../static/LegacySafehouseTemplate.json"),
+    LegacyHubTemplate: require("../static/LegacyHubTemplate.json"),
+    LegacyPlanningTemplate: require("../static/LegacyPlanningTemplate.json"),
+    LegacySelectAgencyPickupTemplate: require("../static/LegacySelectAgencyPickupTemplate.json"),
+    LegacySelectEntranceTemplate: require("../static/LegacySelectEntranceTemplate.json"),
+    LegacyStashpointTemplate: require("../static/LegacyStashpointTemplate.json"),
+    LegacyUserDefault: require("../static/LegacyUserDefault.json"),
+    LegacyContractSearchResponseTemplate: require("../static/LegacyContractSearchResponseTemplate.json"),
+    LegacyFilterData: require("../static/LegacyFilterData.json"),
+    PlayNextTemplate: require("../static/PlayNextTemplate.json"),
+    LookupContractByIdTemplate: require("../static/LookupContractByIdTemplate.json"),
+    LookupContractFavoriteTemplate: require("../static/LookupContractFavoriteTemplate.json"),
+    MissionStories: require("../static/MissionStories.json"),
+    DebriefingLeaderboardsTemplate: require("../static/DebriefingLeaderboardsTemplate.json"),
+    LegacyHitsCategoryTemplate: require("../static/LegacyHitsCategoryTemplate.json"),
+    LegacyStoreData: require("../static/LegacyStoreData.json"),
+    LegacyDestinations: require("../static/LegacyDestinations.json"),
+    LegacyDestinationTemplate: require("../static/LegacyDestinationTemplate.json"),
+    LegacyLocationsData: require("../static/LegacyLocationsData.json"),
+    LegacySaveMenuTemplate: require("../static/LegacySaveMenuTemplate.json"),
+    LegacyLoadMenuTemplate: require("../static/LegacyLoadMenuTemplate.json"),
+    LegacyLookupContractByIdTemplate: require("../static/LegacyLookupContractByIdTemplate.json"),
+    EiderDashboard: require("../static/EiderDashboard.json"),
+    PersistentBools: require("../static/PersistentBools.json"),
+    H2allunlockables: require("../static/H2allunlockables.json"),
+    H2DestinationsData: require("../static/H2DestinationsData.json"),
+    H2StoreData: require("../static/H2StoreData.json"),
+    H2ContractSearchResponseTemplate: require("../static/H2ContractSearchResponseTemplate.json"),
+    H2LocationsData: require("../static/H2LocationsData.json"),
+    H2FilterData: require("../static/H2FilterData.json"),
+    H2DashboardTemplate: require("../static/H2DashboardTemplate.json"),
+    FrankensteinHubTemplate: require("../static/FrankensteinHubTemplate.json"),
+    FrankensteinMmSpTemplate: require("../static/FrankensteinMmSpTemplate.json"),
+    FrankensteinMmMpTemplate: require("../static/FrankensteinMmMpTemplate.json"),
+    FrankensteinScoreOverviewTemplate: require("../static/FrankensteinScoreOverviewTemplate.json"),
+    FrankensteinPlanningTemplate: require("../static/FrankensteinPlanningTemplate.json"),
+    Videos: require("../static/Videos.json"),
+    ContractSearchPageTemplate: require("../static/ContractSearchPageTemplate.json"),
+    ContractSearchResponseTemplate: require("../static/ContractSearchResponseTemplate.json"),
+    LegacyDebriefingChallengesTemplate: require("../static/LegacyDebriefingChallengesTemplate.json"),
+    MasteryUnlockablesTemplate: require("../static/MasteryUnlockablesTemplate.json"),
+    SniperLoadouts: require("../static/SniperLoadouts.json"),
+    Scpcallunlockables: require("../static/Scpcallunlockables.json"),
+    DiscordRichAssetsForBricks: require("../static/DiscordRichAssetsForBricks.json"),
+    EscalationCodenames: require("../static/EscalationCodenames.json"),
+    scoreoverviewtemplate: require("../static/scoreoverviewtemplate.json"),
+    PeacockGameChangerProperties: require("../static/PeacockGameChangerProperties.json"),
+    MultiplayerPresets: require("../static/MultiplayerPresets.json"),
+    LobbySlimTemplate: require("../static/LobbySlimTemplate.json"),
 }
 
 Object.keys(configs).forEach((cfg) => {
