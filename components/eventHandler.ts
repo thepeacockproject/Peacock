@@ -283,6 +283,7 @@ export function newSession(
             IsWinner: false,
             timerEnd: null,
         },
+        challengeContexts: {},
     })
     userIdToTempSession.set(userId, sessionId)
 

@@ -21,6 +21,7 @@ import { log, LogLevel } from "../loggingInterop"
 import { getAllCampaigns } from "../menus/campaigns"
 import { Campaign, GameVersion, IHit, Seconds, StoryData } from "../types/types"
 import { getFlag } from "../flags"
+import { controller } from "../controller"
 
 export class LiveSplitManager {
     private readonly _liveSplitClient: LiveSplitClient
@@ -38,14 +39,6 @@ export class LiveSplitManager {
     private _raceMode: boolean | undefined // gets late-initialized, use _isRaceMode to access
 
     constructor() {
-        // don't finish initializing if livesplit is disabled
-        if (!getFlag("liveSplit")) {
-            this._initialized = false
-            this._initializationAttempted = true
-
-            return
-        }
-
         this._initialized = false
         this._initializationAttempted = false
         this._resetMinimum = 1
@@ -56,17 +49,6 @@ export class LiveSplitManager {
         this._campaignTotalTime = 0
         this._raceMode = undefined
         this._liveSplitClient = new LiveSplitClient("127.0.0.1:16834")
-        this.init()
-            .then(() => {
-                this._initialized = true
-                this._initializationAttempted = true
-                return
-            })
-            .catch((e) => {
-                log(LogLevel.DEBUG, "Failed to initialize LiveSplit: ")
-                log(LogLevel.DEBUG, e)
-                this._initializationAttempted = true
-            })
     }
 
     /*
@@ -178,6 +160,8 @@ export class LiveSplitManager {
         }
 
         if (this._inValidCampaignRun) {
+            const location = this._getMissionLocationName(this._currentMission)
+            log(LogLevel.DEBUG, `Current location: ${location}`)
             this._addMissionTime(attemptTime)
             LiveSplitManager._logAttempt(attemptTime)
             await this._pushGameTime()
@@ -245,16 +229,31 @@ export class LiveSplitManager {
      * PRIVATE METHODS
      */
 
-    private async init() {
-        logLiveSplitError(await this._liveSplitClient.connect(), "connect")
-        logLiveSplitError(
-            await this._liveSplitClient.initGameTime(),
-            "initGameTime",
-        )
-        logLiveSplitError(
-            await this._liveSplitClient.pauseGameTime(),
-            "pauseGameTime",
-        )
+    async init() {
+        if (!getFlag("liveSplit")) {
+            this._initializationAttempted = true
+
+            return
+        }
+
+        try {
+            logLiveSplitError(await this._liveSplitClient.connect(), "connect")
+            logLiveSplitError(
+                await this._liveSplitClient.initGameTime(),
+                "initGameTime",
+            )
+            logLiveSplitError(
+                await this._liveSplitClient.pauseGameTime(),
+                "pauseGameTime",
+            )
+
+            log(LogLevel.DEBUG, "LiveSplit initialized")
+            this._initialized = true
+            this._initializationAttempted = true
+        } catch (e) {
+            log(LogLevel.DEBUG, "Failed to initialize LiveSplit: ")
+            log(LogLevel.DEBUG, e)
+        }
     }
 
     private _checkInit(): boolean {
@@ -390,6 +389,10 @@ export class LiveSplitManager {
         }
 
         await this._setGameTime(this._campaignTotalTime)
+    }
+
+    private _getMissionLocationName(contractId: string) {
+        return controller.resolveContract(contractId)?.Metadata.Location
     }
 }
 
