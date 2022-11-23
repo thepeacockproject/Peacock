@@ -46,7 +46,14 @@ import { liveSplitManager } from "./livesplit/liveSplitManager"
 import { Playstyle, ScoringBonus, ScoringHeadline } from "./types/scoring"
 import { MissionEndRequestQuery } from "./types/gameSchemas"
 
-function calculatePlaystyle(session: ContractSession) {
+/**
+ * Checks the criteria of each possible play-style, ranking them by scoring.
+ *
+ * @author CurryMaker
+ * @param session The contract session.
+ * @returns The play-styles, ranked from best fit to worst fit.
+ */
+export function calculatePlaystyle(session: ContractSession): Playstyle[] {
     const playstylesCopy = getConfig("Playstyles", true) as Playstyle[]
 
     // Resetting the scores...
