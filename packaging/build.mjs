@@ -27,6 +27,23 @@ await packContractsAndChallenges()
 
 const { version, revisionIdent } = require("../package.json")
 
+const jsonAsCompressedTextPlugin = {
+    name: "jsonAsCompressedTextPlugin",
+
+    setup(build) {
+        const fs = require("fs")
+
+        build.onLoad({ filter: /\.json$/ }, async (args) => {
+            const text = await fs.promises.readFile(args.path)
+
+            return {
+                contents: JSON.stringify(JSON.parse(text)),
+                loader: "text",
+            }
+        })
+    },
+}
+
 await e.build({
     entryPoints: ["components/index.ts"],
     bundle: true,
@@ -59,6 +76,7 @@ await e.build({
     },
     sourcemap: "external",
     plugins: [
+        jsonAsCompressedTextPlugin,
         esbuildPluginLicense({
             thirdParty: {
                 output: {

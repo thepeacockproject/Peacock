@@ -66,7 +66,9 @@ import { MenuSystemDatabase, menuSystemDatabase } from "./menus/menuSystem"
 import { escalationMappings } from "./contracts/escalationMappings"
 import { parse } from "json5"
 import { userAuths } from "./officialServerAuth"
+// @ts-expect-error Ignore JSON import
 import LASTYARDBIRDSCPC from "../contractdata/SNIPER/THELASTYARDBIRD_SCPC.json"
+// @ts-expect-error Ignore JSON import
 import LEGACYFF from "../contractdata/COLORADO/FREEDOMFIGHTERSLEGACY.json"
 import { missionsInLocations } from "./contracts/missionsInLocation"
 import { createContext, Script } from "vm"
@@ -263,9 +265,10 @@ function createPeacockRequire(pluginName: string): NodeRequire {
 /**
  * Freedom Fighters for Hitman 2016 (objectives are different).
  */
-export const _legacyBull: MissionManifest = LEGACYFF
+export const _legacyBull: MissionManifest = JSON.parse(LEGACYFF)
 
-export const _theLastYardbirdScpc: MissionManifest = LASTYARDBIRDSCPC
+export const _theLastYardbirdScpc: MissionManifest =
+    JSON.parse(LASTYARDBIRDSCPC)
 
 export const peacockRecentEscalations: readonly string[] = [
     "35f1f534-ae2d-42be-8472-dd55e96625ea",

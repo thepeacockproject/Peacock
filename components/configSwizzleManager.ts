@@ -197,6 +197,9 @@ const configs: Record<string, unknown> = {
 }
 
 Object.keys(configs).forEach((cfg) => {
+    // Parse the string into an object
+    configs[cfg] = JSON.parse(configs[cfg])
+
     const overridePath = join("overrides", `${cfg}.json`)
 
     if (existsSync(overridePath)) {
