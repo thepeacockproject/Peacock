@@ -21,6 +21,9 @@
 
 // load flags as soon as possible
 import { getFlag, loadFlags } from "./flags"
+
+loadFlags()
+
 import { setFlagsFromString } from "v8"
 import { program } from "commander"
 import express, { Request, Router } from "express"
@@ -77,8 +80,6 @@ import { multiplayerRouter } from "./multiplayer/multiplayerService"
 import { multiplayerMenuDataRouter } from "./multiplayer/multiplayerMenuData"
 import { pack, unpack } from "msgpackr"
 import { liveSplitManager } from "./livesplit/liveSplitManager"
-
-loadFlags()
 
 // welcome to the bleeding edge
 setFlagsFromString("--harmony")
