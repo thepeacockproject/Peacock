@@ -83,7 +83,7 @@ import {
 } from "./types/gameSchemas"
 import assert from "assert"
 
-export const firstPassRouter = Router()
+export const preMenuDataRouter = Router()
 const menuDataRouter = Router()
 
 // /profiles/page/
@@ -1322,7 +1322,7 @@ menuDataRouter.get(
 
 menuDataRouter.get("/Contracts", contractsModeHome)
 
-firstPassRouter.get(
+preMenuDataRouter.get(
     "/contractcreation/planning",
     (
         req: RequestWithJwt<{ contractCreationIdOverwrite: string }>,

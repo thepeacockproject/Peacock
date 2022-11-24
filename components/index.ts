@@ -21,8 +21,6 @@
 
 // load flags as soon as possible
 import { getFlag, loadFlags } from "./flags"
-loadFlags()
-
 import { setFlagsFromString } from "v8"
 import { program } from "commander"
 import express, { Request, Router } from "express"
@@ -50,8 +48,8 @@ import { log, loggingMiddleware, LogLevel } from "./loggingInterop"
 import { eventRouter } from "./eventHandler"
 import { contractRoutingRouter } from "./contracts/contractRouting"
 import { profileRouter } from "./profileHandler"
-import { firstPassRouter, menuDataRouter } from "./menuData"
-import { menuSystemRouter } from "./menus/menuSystem"
+import { menuDataRouter, preMenuDataRouter } from "./menuData"
+import { menuSystemPreRouter, menuSystemRouter } from "./menus/menuSystem"
 import { legacyEventRouter } from "./2016/legacyEventRouter"
 import { legacyMenuSystemRouter } from "./2016/legacyMenuSystem"
 import { _theLastYardbirdScpc, controller } from "./controller"
@@ -79,6 +77,8 @@ import { multiplayerRouter } from "./multiplayer/multiplayerService"
 import { multiplayerMenuDataRouter } from "./multiplayer/multiplayerMenuData"
 import { pack, unpack } from "msgpackr"
 import { liveSplitManager } from "./livesplit/liveSplitManager"
+
+loadFlags()
 
 // welcome to the bleeding edge
 setFlagsFromString("--harmony")
@@ -407,9 +407,10 @@ primaryRouter.use(
     contractRoutingRouter,
 )
 primaryRouter.use("/authentication/api/userchannel/", profileRouter)
-primaryRouter.use("/profiles/page/", firstPassRouter)
+primaryRouter.use("/profiles/page/", preMenuDataRouter)
 primaryRouter.use("/profiles/page", multiplayerMenuDataRouter)
 primaryRouter.use("/profiles/page/", menuDataRouter)
+primaryRouter.use("/resources-(\\d+-\\d+)/", menuSystemPreRouter)
 primaryRouter.use("/resources-(\\d+-\\d+)/", menuSystemRouter)
 
 app.use(
