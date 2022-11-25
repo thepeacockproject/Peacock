@@ -125,6 +125,13 @@ const app = express()
 app.use(loggingMiddleware)
 app.use("/_wf", webFeaturesRouter)
 
+// make sure all responses have a default content-type set
+app.use(function (_req, res, next) {
+    res.contentType("text/plain")
+
+    next()
+})
+
 if (getFlag("loadoutSaving") === "PROFILES") {
     app.use("/loadouts", loadoutRouter)
 }
