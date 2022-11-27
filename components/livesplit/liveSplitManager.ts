@@ -228,9 +228,10 @@ export class LiveSplitManager {
                         await this._liveSplitClient.pause(),
                         "pause",
                     )
+
                     log(
-                        LogLevel.DEBUG,
-                        JSON.stringify(this._timeCalcEntries, null, "\t"),
+                        LogLevel.INFO,
+                        `TimeCalc link: ${this._generateTimeCalcLink()}`,
                     )
                 }
             }
@@ -429,6 +430,52 @@ export class LiveSplitManager {
         }
         log(LogLevel.DEBUG, `New TimeCalc entry: ${JSON.stringify(entry)}`)
         this._timeCalcEntries.push(entry)
+    }
+
+    private _generateTimeCalcLink() {
+        const url = new URL(
+            "https://solderq35.github.io/fg-time-calc/?mode=0&fs3=1&ft2=1&f3t1=1&f4t0=1&d=:&o1=1&fps=",
+        )
+
+        const searchParams = new URLSearchParams()
+
+        const completedEntries = this._timeCalcEntries.filter(
+            (e) => e.isCompleted,
+        )
+        const resetEntries = this._timeCalcEntries.filter((e) => !e.isCompleted)
+
+        let timecalcLine = 0
+
+        completedEntries.forEach((entry) => {
+            timecalcLine += 1
+            searchParams.set(`t${timecalcLine}`, `${Math.floor(entry.time)}`)
+            searchParams.set(`c${timecalcLine}`, entry.location)
+        })
+
+        let resetLocation = ""
+        let resetCount = 0
+
+        timecalcLine += 1
+
+        resetEntries.forEach((entry) => {
+            timecalcLine += 1
+            if (resetLocation === entry.location) {
+                resetCount += 1
+            } else {
+                resetLocation = entry.location
+                resetCount = 1
+            }
+            searchParams.set(`t${timecalcLine}`, `${Math.floor(entry.time)}`)
+            searchParams.set(
+                `c${timecalcLine}`,
+                `${entry.location} reset ${resetCount}`,
+            )
+        })
+
+        // Append new search
+        url.search += "&" + searchParams.toString().replaceAll("+", "%20")
+
+        return url.toString()
     }
 }
 
