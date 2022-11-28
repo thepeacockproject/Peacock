@@ -335,7 +335,7 @@ export function fastClone<T>(item: T): T {
     }
 
     if (typeof result === "undefined") {
-        if (Object.prototype.toString.call(item) === "[object Array]") {
+        if (Array.isArray(item)) {
             result = []
 
             // Ugly type casting.

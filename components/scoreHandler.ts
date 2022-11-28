@@ -264,12 +264,6 @@ export async function missionEnd(
     // const allMissionStories = getConfig("MissionStories")
     // const missionStories = (contractData.Metadata.Opportunities || []).map((missionStoryId) => allMissionStories[missionStoryId])
 
-    const batchedProgression =
-        controller.challengeService.getBatchChallengeProgression(
-            req.jwt.unique_name,
-            req.gameVersion,
-        )
-
     const result = {
         MissionReward: {
             LocationProgression: {
@@ -304,7 +298,6 @@ export async function missionEnd(
                             req.jwt.unique_name,
                             challengeData.Id,
                             req.gameVersion,
-                            batchedProgression,
                         ).Completed,
                 )
                 .map((challengeData) =>
@@ -314,7 +307,6 @@ export async function missionEnd(
                             req.jwt.unique_name,
                             challengeData.Id,
                             req.gameVersion,
-                            batchedProgression,
                         ),
                         req.gameVersion,
                         req.jwt.unique_name,
