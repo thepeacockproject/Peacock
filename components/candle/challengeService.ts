@@ -139,8 +139,6 @@ export abstract class ChallengeRegistry {
 }
 
 export class ChallengeService extends ChallengeRegistry {
-    // we'll use this after writing details to the user's profile
-    private _justCompletedChallengeIds: string[] = []
     public hooks: {
         /**
          * A hook that is called when a challenge is completed.
@@ -172,23 +170,6 @@ export class ChallengeService extends ChallengeRegistry {
         const data = userData.Extensions.PeacockChallengeProgression
 
         const challenge = this.getChallengeById(challengeId)
-
-        // TODO(Reece): Can we write directly to the user profile to avoid this?
-        // (This is a dumb solution to a dumb problem - I can't remember exactly
-        // what the problem was though.)
-        if (this._justCompletedChallengeIds.includes(challengeId)) {
-            return {
-                ChallengeId: challengeId,
-                ProfileId: userId,
-                Completed: true,
-                State: {
-                    CurrentState: "Success",
-                },
-                ETag: "",
-                CompletedAt: new Date().toISOString(),
-                MustBeSaved: true,
-            }
-        }
 
         // prevent game crash - when we have a challenge that is completed, we
         // need to implicitly add this key to the state
@@ -390,8 +371,6 @@ export class ChallengeService extends ChallengeRegistry {
                         challenge,
                         session.gameVersion,
                     )
-
-                    this._justCompletedChallengeIds.push(challengeId)
 
                     const tmp = {
                         progression: {
