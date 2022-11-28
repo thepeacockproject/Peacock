@@ -125,6 +125,20 @@ const app = express()
 app.use(loggingMiddleware)
 app.use("/_wf", webFeaturesRouter)
 
+app.get("/", (req: Request, res) => {
+    if (PEACOCK_DEV) {
+        res.send("dev active, you need to access the UI from port 3000")
+    } else {
+        const data = readFileSync("webui/dist/index.html").toString()
+
+        res.contentType("text/html")
+        res.send(data)
+    }
+})
+
+serveStatic.mime.define({ "application/javascript": ["js"] })
+app.use("/assets", serveStatic("webui/dist/assets"))
+
 // make sure all responses have a default content-type set
 app.use(function (_req, res, next) {
     res.contentType("text/plain")
@@ -135,18 +149,6 @@ app.use(function (_req, res, next) {
 if (getFlag("loadoutSaving") === "PROFILES") {
     app.use("/loadouts", loadoutRouter)
 }
-
-app.get("/", (req: Request, res) => {
-    if (PEACOCK_DEV) {
-        res.send("dev active, you need to access the UI from port 3000")
-    } else {
-        const data = readFileSync("webui/dist/index.html").toString()
-
-        res.send(data)
-    }
-})
-
-app.use("/assets", serveStatic("webui/dist/assets"))
 
 app.get(
     "/config/:audience/:serverVersion(\\d+_\\d+_\\d+)",
