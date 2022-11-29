@@ -782,7 +782,17 @@ export class ChallengeService extends ChallengeRegistry {
     private onChallengeCompleted(
         session: ContractSession,
         challenge: RegistryChallenge,
+        waterfallParent?: string,
     ): void {
+        if (waterfallParent) {
+            log(
+                LogLevel.DEBUG,
+                `Challenge ${challenge.Id} completed [via ${waterfallParent}]`,
+            )
+        } else {
+            log(LogLevel.DEBUG, `Challenge ${challenge.Id} completed`)
+        }
+
         this.hooks.onChallengeCompleted.call(
             session.userId,
             challenge,
@@ -810,28 +820,11 @@ export class ChallengeService extends ChallengeRegistry {
                 continue
             }
 
-            if (PEACOCK_DEV) {
-                log(
-                    LogLevel.DEBUG,
-                    `${challenge.Id}'s completion caused all conditions to be met for ${depTreeId}`,
-                )
-            }
-
-            // writeQueue.push(
-            const tmp = {
-                progression: {
-                    ChallengeId: depTreeId,
-                    ProfileId: session.userId,
-                    Completed: true,
-                    State: {
-                        ...((challenge?.Definition as ChallengeDefinitionLike)
-                            ?.Context || {}),
-                        CurrentState: "Success",
-                    },
-                    CompletedAt: new Date().toISOString(),
-                    MustBeSaved: true,
-                },
-            }
+            this.onChallengeCompleted(
+                session,
+                this.getChallengeById(depTreeId),
+                challenge.Id,
+            )
         }
     }
 }
