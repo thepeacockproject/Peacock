@@ -294,7 +294,7 @@ export async function missionEnd(
                 // FIXME: This behaviour may not be accurate to original server
                 .filter(
                     (challengeData) =>
-                        controller.challengeService.getChallengeProgression(
+                        controller.challengeService.getPersistentChallengeProgression(
                             req.jwt.unique_name,
                             challengeData.Id,
                             req.gameVersion,
@@ -303,7 +303,7 @@ export async function missionEnd(
                 .map((challengeData) =>
                     controller.challengeService.compileRegistryChallengeTreeData(
                         challengeData,
-                        controller.challengeService.getChallengeProgression(
+                        controller.challengeService.getPersistentChallengeProgression(
                             req.jwt.unique_name,
                             challengeData.Id,
                             req.gameVersion,

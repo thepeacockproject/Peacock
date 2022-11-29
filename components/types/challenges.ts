@@ -68,3 +68,9 @@ export interface ChallengePackage {
         Location: string
     }
 }
+
+export type ProfileChallengeData = {
+    Completed: boolean
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    State: any
+}

@@ -249,7 +249,7 @@ export const gameDifficulty = {
      * Master mode.
      */
     master: 4,
-}
+} as const
 
 export function difficultyToString(difficulty: number): string {
     switch (difficulty) {

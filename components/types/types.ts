@@ -20,7 +20,7 @@ import type * as core from "express-serve-static-core"
 
 import type { IContractCreationPayload } from "../statemachines/contractCreation"
 import type { Request } from "express"
-import { SavedChallenge } from "./challenges"
+import { ProfileChallengeData, SavedChallenge } from "./challenges"
 import { SessionGhostModeDetails } from "../multiplayer/multiplayerService"
 import { IContextListener } from "../statemachines/contextListeners"
 import { Timer } from "@peacockproject/statemachine-parser"
@@ -329,8 +329,8 @@ export interface UserProfile {
         }
         PeacockFavoriteContracts: string[]
         PeacockCompletedEscalations: string[]
-        PeacockChallengeProgression: {
-            [id: string]: ChallengeProgressionData
+        ChallengeProgression: {
+            [id: string]: ProfileChallengeData
         }
         /**
          * Player progression data.
@@ -1010,12 +1010,14 @@ export interface CompiledChallengeIngameData {
     }
 }
 
+/**
+ * Game-facing challenge progression data.
+ */
 export interface ChallengeProgressionData {
     ChallengeId: string
     ProfileId: string
     Completed: boolean
     State: Record<string, unknown>
-    ETag?: string | null
     CompletedAt: Date | string | null
     MustBeSaved: boolean
 }

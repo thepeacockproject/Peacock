@@ -95,7 +95,7 @@ legacyProfileRouter.post(
                     (challengeData) =>
                         compileRuntimeChallenge(
                             challengeData,
-                            controller.challengeService.getChallengeProgression(
+                            controller.challengeService.getPersistentChallengeProgression(
                                 req.jwt.unique_name,
                                 challengeData.Id,
                                 req.gameVersion,
