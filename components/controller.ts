@@ -479,8 +479,6 @@ export class Controller {
             log(LogLevel.ERROR, `Fatal error with challenge bootstrap: ${e}`)
             log(LogLevel.ERROR, e.stack)
         }
-
-        utils.performEpicGamerMove()
     }
 
     /**
