@@ -544,6 +544,21 @@ export const escalationMappings: {
         5: "d48ed63e-2542-4215-8e6c-6ad3c29feb42",
     },
     /**
+     * The Holcraft Vendetta
+     */
+    "7151ef94-a1e5-4b61-a542-cafa19c49a70": {
+        1: "d9b7717e-2de5-4a79-abdd-ba1ed0e0ebaf",
+        2: "8faccff7-db0a-4bd3-bc86-0894d9938d40",
+        3: "8fdd00d2-34f7-4710-9c66-a548d465757a",
+        4: "ae523b25-3597-4c22-814f-afc0b1636064",
+        5: "06a3c945-6d8f-4091-92a1-ef16c04e6886",
+        6: "74b41ac7-bd16-402f-b738-f89c3bfac3d4",
+        7: "8ed9e405-2a8f-496f-955a-a13b0019ca65",
+        8: "ecaac70b-e22c-4afe-a610-0d1f44516fe2",
+        9: "accd2587-4d32-45d6-9bd5-a3d6bb146b08",
+        10: "d5ec5ada-6d2a-444e-a136-f1bd6ea3ff86",
+    },
+    /**
      * The Argentine Acrimony
      */
     "edbacf4b-e402-4548-b723-cd4351571537": {

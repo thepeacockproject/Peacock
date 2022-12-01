@@ -74,6 +74,7 @@ export const missionsInLocations = {
         LOCATION_PARIS: [
             "4f6ee6ec-b6d7-4958-9838-0352c10294a0",
             "d6961637-effe-4c39-b99a-f2df4402657d",
+            "7151ef94-a1e5-4b61-a542-cafa19c49a70",
         ],
         LOCATION_COASTALTOWN: [
             "9e0188e8-bdad-476c-b4ce-2faa5d2be56c",
