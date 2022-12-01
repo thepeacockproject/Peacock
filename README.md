@@ -22,9 +22,13 @@ Open Windows terminal **AS ADMINISTRATOR**.
 Install Yarn, by typing:
 
 > corepack enable
+
 Then move to the folder where you cloned the repo to by using:
+
 > cd Folder/Path/Here
+
 then install the dependencies by using:
+
 > yarn install
 ## Usage
 The project is bundled with a server running configuration.
