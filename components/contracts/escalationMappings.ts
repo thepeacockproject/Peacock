@@ -544,6 +544,16 @@ export const escalationMappings: {
         5: "d48ed63e-2542-4215-8e6c-6ad3c29feb42",
     },
     /**
+     * The Achilles Proposals
+     */
+    "a6807292-1bc5-4fbb-9421-af3f5a2ee5d9": {
+        1: "7bccc2b9-c4df-4a1c-9628-b8b698058adf",
+        2: "da59d219-60f5-4e01-8e47-5fba444aaeab",
+        3: "68b18dce-8380-465a-a34c-9f763bb6887e",
+        4: "5a838dbb-3c63-495e-9ce8-9f895e698fc5",
+        5: "a6807292-1bc5-4fbb-9421-af3f5a2ee5d1",
+    },
+    /**
      * The Holcraft Vendetta
      */
     "7151ef94-a1e5-4b61-a542-cafa19c49a70": {

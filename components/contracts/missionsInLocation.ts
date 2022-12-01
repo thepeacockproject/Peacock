@@ -83,6 +83,7 @@ export const missionsInLocations = {
         ],
         LOCATION_COASTALTOWN_MOVIESET: ["74739eda-6ed5-4318-a501-2fa0bd53ef5a"],
         LOCATION_COASTALTOWN_EBOLA: ["0cceeecb-c8fe-42a4-aee4-d7b575f56a1b"],
+        LOCATION_MARRAKECH: ["a6807292-1bc5-4fbb-9421-af3f5a2ee5d9"],
         LOCATION_MARRAKECH_NIGHT: [
             "b49de2a1-fe8e-49c4-8331-17aaa9d65d32",
             "c2e16fb7-d49f-49ef-9d76-46b8b31b3389",
