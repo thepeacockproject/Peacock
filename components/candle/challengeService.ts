@@ -299,15 +299,20 @@ export class ChallengeService extends ChallengeRegistry {
 
         for (const group of Object.keys(challengeGroups)) {
             for (const challenge of challengeGroups[group]) {
-                let progression = session.challengeContexts[challenge.Id]
+                const progression = this.getPersistentChallengeProgression(
+                    userId,
+                    challenge.Id,
+                    gameVersion,
+                )
+                let activeContext = session.challengeContexts[challenge.Id]
 
-                if (!progression) {
+                if (!activeContext) {
                     const ctx = fastClone(
                         (<ChallengeDefinitionLike>challenge.Definition)
                             ?.Context,
                     )
 
-                    progression = {
+                    activeContext = {
                         state: "Start",
                         context: ctx,
                         timers: [],
@@ -317,7 +322,7 @@ export class ChallengeService extends ChallengeRegistry {
                 challengeContexts[challenge.Id] = {
                     context:
                         fastClone(challenge.Definition?.Context || {}) || {},
-                    state: progression.Completed ? "Success" : "Start",
+                    state: activeContext.Completed ? "Success" : "Start",
                     timers: [],
                 }
             }
