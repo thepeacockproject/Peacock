@@ -23,10 +23,11 @@ import type {
     CompiledChallengeTreeData,
     ContractSession,
     GameVersion,
+    MissionManifest,
     PeacockLocationsData,
     RegistryChallenge,
 } from "../types/types"
-import { getUserData } from "../databaseHandler"
+import { getUserData, writeUserData } from "../databaseHandler"
 
 import { Controller } from "../controller"
 import {
@@ -304,25 +305,16 @@ export class ChallengeService extends ChallengeRegistry {
                     challenge.Id,
                     gameVersion,
                 )
-                let activeContext = session.challengeContexts[challenge.Id]
 
-                if (!activeContext) {
-                    const ctx = fastClone(
+                const ctx =
+                    fastClone(
                         (<ChallengeDefinitionLike>challenge.Definition)
-                            ?.Context,
-                    )
-
-                    activeContext = {
-                        state: "Start",
-                        context: ctx,
-                        timers: [],
-                    }
-                }
+                            ?.Context || {},
+                    ) || {}
 
                 challengeContexts[challenge.Id] = {
-                    context:
-                        fastClone(challenge.Definition?.Context || {}) || {},
-                    state: activeContext.Completed ? "Success" : "Start",
+                    context: ctx,
+                    state: progression.Completed ? "Success" : "Start",
                     timers: [],
                 }
             }
@@ -349,6 +341,16 @@ export class ChallengeService extends ChallengeRegistry {
                 continue
             }
 
+            if (
+                this.getPersistentChallengeProgression(
+                    session.userId,
+                    challengeId,
+                    session.gameVersion,
+                ).Completed
+            ) {
+                continue
+            }
+
             try {
                 const options: HandleEventOptions = {
                     eventName: event.Name,
@@ -367,9 +369,21 @@ export class ChallengeService extends ChallengeRegistry {
                     options,
                 )
 
-                session.challengeContexts[challengeId].state = result.state
-                session.challengeContexts[challengeId].context =
-                    result.context || challenge.Definition?.Context || {}
+                if (challenge.Definition.Scope === "profile") {
+                    const profile = getUserData(
+                        session.userId,
+                        session.gameVersion,
+                    )
+
+                    profile.Extensions.ChallengeProgression[challengeId].State =
+                        result.context
+
+                    writeUserData(session.userId, session.gameVersion)
+                } else {
+                    session.challengeContexts[challengeId].state = result.state
+                    session.challengeContexts[challengeId].context =
+                        result.context || challenge.Definition?.Context || {}
+                }
 
                 if (previousState !== "Success" && result.state === "Success") {
                     this.onChallengeCompleted(session, challenge)
@@ -723,7 +737,8 @@ export class ChallengeService extends ChallengeRegistry {
         gameVersion: GameVersion,
         userId: string,
     ): CompiledChallengeTreeData {
-        let contract
+        let contract: MissionManifest | null
+
         // TODO: Properly get escalation groups for this
         if (challenge.Type === "contract") {
             contract = this.controller.resolveContract(
@@ -731,43 +746,40 @@ export class ChallengeService extends ChallengeRegistry {
             )
 
             // This is so we can remove unused data and make it more like official - AF
-            contract =
-                contract === undefined
-                    ? null
-                    : {
-                          // The null is for escalations as we cannot currently get groups
-                          Data: {
-                              Bricks: contract.Data.Bricks,
-                              DevOnlyBricks: null,
-                              GameChangerReferences:
-                                  contract.Data.GameChangerReferences || [],
-                              GameChangers: contract.Data.GameChangers || [],
-                              GameDifficulties:
-                                  contract.Data.GameDifficulties || [],
-                          },
-                          Metadata: {
-                              CreationTimestamp: null,
-                              CreatorUserId: contract.Metadata.CreatorUserId,
-                              DebriefingVideo:
-                                  contract.Metadata.DebriefingVideo || "",
-                              Description: contract.Metadata.Description,
-                              Drops: contract.Metadata.Drops || null,
-                              Entitlements:
-                                  contract.Metadata.Entitlements || [],
-                              GroupTitle: contract.Metadata.GroupTitle || "",
-                              Id: contract.Metadata.Id,
-                              IsPublished:
-                                  contract.Metadata.IsPublished || true,
-                              LastUpdate: null,
-                              Location: contract.Metadata.Location,
-                              PublicId: contract.Metadata.PublicId || "",
-                              ScenePath: contract.Metadata.ScenePath,
-                              Subtype: contract.Metadata.Subtype || "",
-                              TileImage: contract.Metadata.TileImage,
-                              Title: contract.Metadata.Title,
-                              Type: contract.Metadata.Type,
-                          },
-                      }
+            const meta = contract.Metadata
+            contract = !contract
+                ? null
+                : {
+                      // The null is for escalations as we cannot currently get groups
+                      Data: {
+                          Bricks: contract.Data.Bricks,
+                          DevOnlyBricks: null,
+                          GameChangerReferences:
+                              contract.Data.GameChangerReferences || [],
+                          GameChangers: contract.Data.GameChangers || [],
+                          GameDifficulties:
+                              contract.Data.GameDifficulties || [],
+                      },
+                      Metadata: {
+                          CreationTimestamp: null,
+                          CreatorUserId: meta.CreatorUserId,
+                          DebriefingVideo: meta.DebriefingVideo || "",
+                          Description: meta.Description,
+                          Drops: meta.Drops || null,
+                          Entitlements: meta.Entitlements || [],
+                          GroupTitle: meta.GroupTitle || "",
+                          Id: meta.Id,
+                          IsPublished: meta.IsPublished || true,
+                          LastUpdate: null,
+                          Location: meta.Location,
+                          PublicId: meta.PublicId || "",
+                          ScenePath: meta.ScenePath,
+                          Subtype: meta.Subtype || "",
+                          TileImage: meta.TileImage,
+                          Title: meta.Title,
+                          Type: meta.Type,
+                      },
+                  }
         }
 
         return {
