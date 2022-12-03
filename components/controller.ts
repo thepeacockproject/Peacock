@@ -432,7 +432,7 @@ export class Controller {
      * Returns whether a mod is UNAVAILABLE.
      *
      * @param modId The mod's ID.
-     * @returns If the mod is unavailable. You should probably abort initialisation if true is returned. Also returns true if the `overrideFrameworkChecks` flag is set.
+     * @returns If the mod is unavailable. You should probably abort initialization if true is returned. Also returns true if the `overrideFrameworkChecks` flag is set.
      * @deprecated since v5.5.0
      */
     public addClientSideModDependency(modId: string): boolean {
