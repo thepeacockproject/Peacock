@@ -430,7 +430,6 @@ export class Controller {
      * You should use `modIsInstalled` instead!
      *
      * Returns whether a mod is UNAVAILABLE.
-     * See the cookbook for a usage example!
      *
      * @param modId The mod's ID.
      * @returns If the mod is unavailable. You should probably abort initialisation if true is returned. Also returns true if the `overrideFrameworkChecks` flag is set.
@@ -445,7 +444,6 @@ export class Controller {
 
     /**
      * Returns whether a mod is available and installed.
-     * See the cookbook for a usage example!
      *
      * @param modId The mod's ID.
      * @returns If the mod is available (or the `overrideFrameworkChecks` flag is set). You should probably abort initialisation if false is returned.
