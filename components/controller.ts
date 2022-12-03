@@ -427,15 +427,32 @@ export class Controller {
     }
 
     /**
-     * Adds a dependency on a client side mod through the Simple Mod Framework.
+     * You should use `modIsInstalled` instead!
+     *
+     * Returns whether a mod is UNAVAILABLE.
      * See the cookbook for a usage example!
      *
      * @param modId The mod's ID.
-     * @returns If the mod is available. You will probably want to abort plugin initialization if false is returned.
+     * @returns If the mod is unavailable. You should probably abort initialisation if true is returned. Also returns true if the `overrideFrameworkChecks` flag is set.
+     * @deprecated since v5.5.0
      */
     public addClientSideModDependency(modId: string): boolean {
         return (
             !this.installedMods.includes(modId) ||
+            getFlag("overrideFrameworkChecks") === true
+        )
+    }
+
+    /**
+     * Returns whether a mod is available and installed.
+     * See the cookbook for a usage example!
+     *
+     * @param modId The mod's ID.
+     * @returns If the mod is available (or the `overrideFrameworkChecks` flag is set). You should probably abort initialisation if false is returned.
+     */
+    public modIsInstalled(modId: string): boolean {
+        return (
+            this.installedMods.includes(modId) ||
             getFlag("overrideFrameworkChecks") === true
         )
     }
