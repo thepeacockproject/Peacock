@@ -427,7 +427,7 @@ export class Controller {
     }
 
     /**
-     * You should use `modIsInstalled` instead!
+     * You should use {@link modIsInstalled} instead!
      *
      * Returns whether a mod is UNAVAILABLE.
      *
