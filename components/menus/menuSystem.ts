@@ -24,10 +24,13 @@ import { getConfig } from "../configSwizzleManager"
 import { readFile } from "atomically"
 import { GameVersion, RequestWithJwt } from "../types/types"
 import { log, LogLevel } from "../loggingInterop"
-import send from "send"
 import { imageFetchingMiddleware } from "./imageHandler"
 import { SyncBailHook, SyncHook } from "../hooksImpl"
 
+/**
+ * Router triggered before {@link menuSystemRouter}.
+ */
+const menuSystemPreRouter = Router()
 const menuSystemRouter = Router()
 
 // /resources-8-10/
@@ -231,26 +234,28 @@ menuSystemRouter.get(
 
 menuSystemRouter.use("/menusystem/", MenuSystemDatabase.configMiddleware)
 
+// Miranda Jamison's image path in the repository is escaped for some reason
+menuSystemPreRouter.get(
+    "/images%5Cactors%5Celusive_goldendoublet_face.jpg",
+    (req, res, next) => {
+        req.url = "/images/actors/elusive_goldendoublet_face.jpg"
+        next("router")
+    },
+)
+
+// Sully Bowden is the same (come on IOI!)
+menuSystemPreRouter.get(
+    "/images%5Cactors%5Celusive_redsnapper_face.jpg",
+    (req, res, next) => {
+        req.url = "/images/actors/elusive_redsnapper_face.jpg"
+        next("router")
+    },
+)
+
 menuSystemRouter.use(
     "/images/",
     serveStatic("images", { fallthrough: true }),
     imageFetchingMiddleware,
 )
 
-// Miranda Jamison's image path in the repository is escaped for some reason
-menuSystemRouter.get(
-    "/images%5Cactors%5Celusive_goldendoublet_face.jpg",
-    (req, res) => {
-        send(req, "images/actors/elusive_goldendoublet_face.jpg").pipe(res)
-    },
-)
-
-// Sully Bowden is the same (come on IOI!)
-menuSystemRouter.get(
-    "/images%5Cactors%5Celusive_redsnapper_face.jpg",
-    (req, res) => {
-        send(req, "images/actors/elusive_redsnapper_face.jpg").pipe(res)
-    },
-)
-
-export { menuSystemRouter }
+export { menuSystemRouter, menuSystemPreRouter }

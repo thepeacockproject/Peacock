@@ -21,6 +21,7 @@
 
 // load flags as soon as possible
 import { getFlag, loadFlags } from "./flags"
+
 loadFlags()
 
 import { setFlagsFromString } from "v8"
@@ -50,8 +51,8 @@ import { log, loggingMiddleware, LogLevel } from "./loggingInterop"
 import { eventRouter } from "./eventHandler"
 import { contractRoutingRouter } from "./contracts/contractRouting"
 import { profileRouter } from "./profileHandler"
-import { firstPassRouter, menuDataRouter } from "./menuData"
-import { menuSystemRouter } from "./menus/menuSystem"
+import { menuDataRouter, preMenuDataRouter } from "./menuData"
+import { menuSystemPreRouter, menuSystemRouter } from "./menus/menuSystem"
 import { legacyEventRouter } from "./2016/legacyEventRouter"
 import { legacyMenuSystemRouter } from "./2016/legacyMenuSystem"
 import { _theLastYardbirdScpc, controller } from "./controller"
@@ -124,21 +125,30 @@ const app = express()
 app.use(loggingMiddleware)
 app.use("/_wf", webFeaturesRouter)
 
-if (getFlag("loadoutSaving") === "PROFILES") {
-    app.use("/loadouts", loadoutRouter)
-}
-
 app.get("/", (req: Request, res) => {
     if (PEACOCK_DEV) {
         res.send("dev active, you need to access the UI from port 3000")
     } else {
         const data = readFileSync("webui/dist/index.html").toString()
 
+        res.contentType("text/html")
         res.send(data)
     }
 })
 
+serveStatic.mime.define({ "application/javascript": ["js"] })
 app.use("/assets", serveStatic("webui/dist/assets"))
+
+// make sure all responses have a default content-type set
+app.use(function (_req, res, next) {
+    res.contentType("text/plain")
+
+    next()
+})
+
+if (getFlag("loadoutSaving") === "PROFILES") {
+    app.use("/loadouts", loadoutRouter)
+}
 
 app.get(
     "/config/:audience/:serverVersion(\\d+_\\d+_\\d+)",
@@ -407,9 +417,10 @@ primaryRouter.use(
     contractRoutingRouter,
 )
 primaryRouter.use("/authentication/api/userchannel/", profileRouter)
-primaryRouter.use("/profiles/page/", firstPassRouter)
+primaryRouter.use("/profiles/page/", preMenuDataRouter)
 primaryRouter.use("/profiles/page", multiplayerMenuDataRouter)
 primaryRouter.use("/profiles/page/", menuDataRouter)
+primaryRouter.use("/resources-(\\d+-\\d+)/", menuSystemPreRouter)
 primaryRouter.use("/resources-(\\d+-\\d+)/", menuSystemRouter)
 
 app.use(
