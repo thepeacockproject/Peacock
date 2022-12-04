@@ -456,6 +456,12 @@ app.use(
         .use(primaryRouter),
 )
 
+app.get("/reloadplugin/:name", (req: Request, res) => {
+    const result = controller.reloadPlugin(req.params.name)
+
+    res.status(result ? 200 : 400).send()
+})
+
 app.all("*", (req, res) => {
     log(LogLevel.WARN, `Unhandled URL: ${req.url}`)
     res.status(404).send("Not found!")
@@ -516,6 +522,7 @@ function startServer(options: { hmr: boolean; pluginDevHost: boolean }): void {
         "contractSessions",
         "userdata",
         "contracts",
+        "plugins",
         join("userdata", "epicids"),
         join("userdata", "steamids"),
         join("userdata", "users"),
