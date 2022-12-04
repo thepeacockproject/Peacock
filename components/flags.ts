@@ -93,6 +93,10 @@ const defaultFlags: Flags = {
         desc: "[Development - Workspace required] Toggle loading of plugins with a .ts/.cts extension inside the /plugins folder",
         default: false,
     },
+    legacyContractDownloader: {
+        desc: "Use the legacy contract downloader in H3 - only works for the platform you are playing on.",
+        default: false,
+    },
 }
 
 const OLD_FLAGS_FILE = "flags.json5"

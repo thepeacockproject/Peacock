@@ -673,7 +673,10 @@ export class Controller {
 
         let contractData: MissionManifest | undefined
 
-        if (gameVersion === "h3") {
+        if (
+            gameVersion === "h3" &&
+            getFlag("legacyContractDownloader") !== true
+        ) {
             const result = await Controller._hitmapsFetchContract(pubId)
 
             if (result) {
