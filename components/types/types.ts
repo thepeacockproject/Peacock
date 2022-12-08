@@ -1258,13 +1258,3 @@ export type ContextScopedStorageLocation = "profile" | "hit" | "session"
 export type CPDStore = Record<string, Record<string, string | number | boolean>>
 
 export type ContractProgressionData = Record<string, string | number | boolean>
-
-/**
- * LiveSplit-related types
- */
-export interface LiveSplitTimeCalcEntry {
-    contractId: string
-    time: Seconds
-    location: string
-    isCompleted: boolean
-}

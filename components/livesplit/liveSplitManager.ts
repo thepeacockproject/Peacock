@@ -19,17 +19,11 @@
 import { LiveSplitClient, LiveSplitResult } from "./liveSplitClient"
 import { log, LogLevel } from "../loggingInterop"
 import { getAllCampaigns } from "../menus/campaigns"
-import {
-    Campaign,
-    GameVersion,
-    IHit,
-    LiveSplitTimeCalcEntry,
-    Seconds,
-    StoryData,
-} from "../types/types"
+import { Campaign, GameVersion, IHit, Seconds, StoryData } from "../types/types"
 import { getFlag } from "../flags"
 import { controller } from "../controller"
 import { scenePathToRpAsset } from "../discordRp"
+import { LiveSplitTimeCalcEntry } from "../types/livesplit"
 
 export class LiveSplitManager {
     private readonly _liveSplitClient: LiveSplitClient
