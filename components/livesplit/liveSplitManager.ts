@@ -107,6 +107,7 @@ export class LiveSplitManager {
                     // un-split. total time is not reset on mission complete, so it should still be valid.
                     // do pop the completed mission though as we're entering a new attempt
                     this._completedMissions.pop()
+                    this._unsplitLastTimeCalcEntry()
                     if (!this._isRaceMode) {
                         logLiveSplitError(
                             await this._liveSplitClient.unsplit(),
@@ -164,9 +165,9 @@ export class LiveSplitManager {
         }
 
         if (this._inValidCampaignRun) {
-            this._addMissionTime(attemptTime)
-            this._addTimeCalcEntry(this._currentMission, attemptTime, false)
-            LiveSplitManager._logAttempt(attemptTime)
+            const computedTime = this._addMissionTime(attemptTime)
+            this._addTimeCalcEntry(this._currentMission, computedTime, false)
+            LiveSplitManager._logAttempt(computedTime)
             await this._pushGameTime()
         }
     }
@@ -225,7 +226,7 @@ export class LiveSplitManager {
 
                     log(
                         LogLevel.INFO,
-                        `TimeCalc link: ${this._generateTimeCalcLink()}`,
+                        `TimeCalc link(s):\n${this._generateTimeCalcLinks()}`,
                     )
                 }
             }
@@ -378,12 +379,15 @@ export class LiveSplitManager {
     }
 
     private _addMissionTime(time: Seconds) {
+        let computedTime = time
         // always add at least minimum
         if (time <= this._resetMinimum) {
+            computedTime = this._resetMinimum
             this._currentMissionTotalTime += this._resetMinimum
             this._campaignTotalTime += this._resetMinimum
         } else if (time > 0 && time <= 1) {
             // if in game time is between 0 and 1, add full second
+            computedTime = 1
             this._currentMissionTotalTime += 1
             this._campaignTotalTime += 1
         } else {
@@ -391,6 +395,7 @@ export class LiveSplitManager {
             this._currentMissionTotalTime += Math.floor(time)
             this._campaignTotalTime += Math.floor(time)
         }
+        return computedTime
     }
 
     private async _pushGameTime() {
@@ -426,10 +431,21 @@ export class LiveSplitManager {
         this._timeCalcEntries.push(entry)
     }
 
-    private _generateTimeCalcLink() {
-        const url = new URL(
-            "https://solderq35.github.io/fg-time-calc/?mode=0&fs3=1&ft2=1&f3t1=1&f4t0=1&d=:&o1=1&fps=",
+    private _unsplitLastTimeCalcEntry() {
+        const entry = this._timeCalcEntries.pop()
+        entry.isCompleted = false
+        log(
+            LogLevel.DEBUG,
+            `Unsplitted TimeCalc entry: ${JSON.stringify(entry)}`,
         )
+        this._timeCalcEntries.push(entry)
+    }
+
+    private _generateTimeCalcLinks() {
+        const baseUrl =
+            "https://solderq35.github.io/fg-time-calc/?mode=0&fs3=1&ft2=1&f3t1=1&f4t0=1&d=:&o1=1&fps="
+
+        const links: string[] = []
 
         const searchParams = new URLSearchParams()
 
@@ -442,14 +458,50 @@ export class LiveSplitManager {
 
         completedEntries.forEach((entry) => {
             timecalcLine += 1
-            searchParams.set(`t${timecalcLine}`, `${Math.floor(entry.time)}`)
+            searchParams.set(
+                `t${timecalcLine}`,
+                `${this._formatSecondsToTime(entry.time)}`,
+            )
             searchParams.set(`c${timecalcLine}`, entry.location)
         })
 
+        const totalEntries = completedEntries.length + resetEntries.length
+        if (totalEntries + 1 > 40) {
+            // We need to make multiple TimeCalc links
+            const completedEntriesLink = new URL(baseUrl)
+
+            // Calculate combined reset time
+            timecalcLine += 2
+            searchParams.set(
+                `t${timecalcLine}`,
+                `${this._formatSecondsToTime(
+                    resetEntries.reduce((total, entry) => {
+                        return (total += Math.floor(entry.time))
+                    }, 0),
+                )}`,
+            )
+            searchParams.set(`c${timecalcLine}`, "Combined reset time")
+
+            // Append new search
+            completedEntriesLink.search +=
+                "&" +
+                searchParams
+                    .toString()
+                    .replaceAll("+", "%20")
+                    .replaceAll("%3A", ":")
+            links.push(completedEntriesLink.toString())
+
+            timecalcLine = 0
+
+            if (resetEntries.length > 40) {
+                // TODO: We'll need more than 1 link for resets...
+            }
+        } else {
+            timecalcLine += 1
+        }
+
         let resetLocation = ""
         let resetCount = 0
-
-        timecalcLine += 1
 
         resetEntries.forEach((entry) => {
             timecalcLine += 1
@@ -459,17 +511,35 @@ export class LiveSplitManager {
                 resetLocation = entry.location
                 resetCount = 1
             }
-            searchParams.set(`t${timecalcLine}`, `${Math.floor(entry.time)}`)
+            searchParams.set(
+                `t${timecalcLine}`,
+                `${this._formatSecondsToTime(entry.time)}`,
+            )
             searchParams.set(
                 `c${timecalcLine}`,
                 `${entry.location} reset ${resetCount}`,
             )
         })
-
+        const resetEntriesLink = new URL(baseUrl)
         // Append new search
-        url.search += "&" + searchParams.toString().replaceAll("+", "%20")
+        resetEntriesLink.search +=
+            "&" +
+            searchParams
+                .toString()
+                .replaceAll("+", "%20")
+                .replaceAll("%3A", ":")
+        links.push(resetEntriesLink.toString())
 
-        return url.toString()
+        return links.join("\n")
+    }
+
+    private _formatSecondsToTime(time: Seconds) {
+        const roundedTime = Math.floor(time)
+        if (time < 60) return roundedTime
+        const minutes = Math.floor(roundedTime / 60)
+        const seconds = roundedTime - minutes * 60
+
+        return `${minutes}:${seconds}`
     }
 }
 
