@@ -746,7 +746,7 @@ export class ChallengeService extends ChallengeRegistry {
             )
 
             // This is so we can remove unused data and make it more like official - AF
-            const meta = contract.Metadata
+            const meta = contract?.Metadata
             contract = !contract
                 ? null
                 : {
