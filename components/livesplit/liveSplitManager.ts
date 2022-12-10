@@ -180,8 +180,8 @@ export class LiveSplitManager {
         }
 
         if (this._inValidCampaignRun) {
-            this._addMissionTime(attemptTime)
-            this._addTimeCalcEntry(this._currentMission, attemptTime, true)
+            const computedTime = this._addMissionTime(attemptTime)
+            this._addTimeCalcEntry(this._currentMission, computedTime, true)
             log(
                 LogLevel.INFO,
                 `Total mission time with resets: ${this._currentMissionTotalTime}`,
@@ -378,23 +378,20 @@ export class LiveSplitManager {
         )
     }
 
-    private _addMissionTime(time: Seconds) {
-        let computedTime = time
-        // always add at least minimum
+    private _addMissionTime(time: Seconds): Seconds {
+        let computedTime = Math.floor(time)
+
+        // always add at least minimum, which is usually 0 except on cutscenes where
+        // you can gain an advantage by restarting in cs (bangkok, sgail specific starts)
         if (time <= this._resetMinimum) {
             computedTime = this._resetMinimum
-            this._currentMissionTotalTime += this._resetMinimum
-            this._campaignTotalTime += this._resetMinimum
         } else if (time > 0 && time <= 1) {
             // if in game time is between 0 and 1, add full second
             computedTime = 1
-            this._currentMissionTotalTime += 1
-            this._campaignTotalTime += 1
-        } else {
-            // important to always floor before adding time
-            this._currentMissionTotalTime += Math.floor(time)
-            this._campaignTotalTime += Math.floor(time)
         }
+
+        this._currentMissionTotalTime += computedTime
+        this._campaignTotalTime += computedTime
         return computedTime
     }
 
@@ -427,17 +424,12 @@ export class LiveSplitManager {
             time,
             isCompleted,
         }
-        log(LogLevel.DEBUG, `New TimeCalc entry: ${JSON.stringify(entry)}`)
         this._timeCalcEntries.push(entry)
     }
 
     private _unsplitLastTimeCalcEntry() {
         const entry = this._timeCalcEntries.pop()
         entry.isCompleted = false
-        log(
-            LogLevel.DEBUG,
-            `Unsplitted TimeCalc entry: ${JSON.stringify(entry)}`,
-        )
         this._timeCalcEntries.push(entry)
     }
 
@@ -534,10 +526,10 @@ export class LiveSplitManager {
     }
 
     private _formatSecondsToTime(time: Seconds) {
-        const roundedTime = Math.floor(time)
-        if (time < 60) return roundedTime
-        const minutes = Math.floor(roundedTime / 60)
-        const seconds = roundedTime - minutes * 60
+        const flooredTime = Math.floor(time)
+        if (flooredTime < 60) return flooredTime
+        const minutes = Math.floor(flooredTime / 60)
+        const seconds = Math.floor(flooredTime % 60)
 
         return `${minutes}:${seconds}`
     }
