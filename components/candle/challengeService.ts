@@ -810,6 +810,19 @@ export class ChallengeService extends ChallengeRegistry {
             log(LogLevel.DEBUG, `Challenge ${challenge.Id} completed`)
         }
 
+        const userData = getUserData(session.userId, session.gameVersion)
+
+        userData.Extensions.ChallengeProgression ??= {}
+
+        userData.Extensions.ChallengeProgression[challenge.Id] ??= {
+            State: {},
+            Completed: false,
+        }
+
+        userData.Extensions.ChallengeProgression[challenge.Id].Completed = true
+
+        writeUserData(session.userId, session.gameVersion)
+
         this.hooks.onChallengeCompleted.call(
             session.userId,
             challenge,
