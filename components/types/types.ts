@@ -956,12 +956,18 @@ export interface CompiledChallengeTreeCategoryInfo {
     CompletedChallengesCount: number
 }
 
+/**
+ * The data for a challenge's `ChallengeProgression` field. Tells the game how
+ * many challenges are completed, how many are left, etc.
+ */
+export type ChallengeTreeWaterfallState =
+    | ChallengeProgressCTreeContextListener
+    | ChallengeProgressCCountContextListener
+    | null
+
 export interface CompiledChallengeTreeData {
     CategoryName: string
-    ChallengeProgress?:
-        | ChallengeProgressCTreeContextListener
-        | ChallengeProgressCCountContextListener
-        | null
+    ChallengeProgress?: ChallengeTreeWaterfallState
     Completed: boolean
     CompletionData: CompletionData
     Description: string

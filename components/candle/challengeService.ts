@@ -18,6 +18,7 @@
 
 import type {
     ChallengeProgressionData,
+    ChallengeTreeWaterfallState,
     ClientToServerEvent,
     CompiledChallengeTreeCategory,
     CompiledChallengeTreeData,
@@ -519,28 +520,6 @@ export class ChallengeService extends ChallengeRegistry {
         gameVersion: GameVersion,
     ): CompiledChallengeTreeData[] {
         return challenges.map((challengeData) => {
-            // Handle challenge dependencies
-            const dependencies = this.getDependenciesForChallenge(
-                challengeData.Id,
-            )
-            const completed: string[] = []
-            const missing: string[] = []
-
-            for (const dependency of dependencies) {
-                if (
-                    this.getPersistentChallengeProgression(
-                        userId,
-                        challengeData.Id,
-                        gameVersion,
-                    ).Completed
-                ) {
-                    completed.push(dependency)
-                    continue
-                }
-
-                missing.push(dependency)
-            }
-
             const compiled = this.compileRegistryChallengeTreeData(
                 challengeData,
                 this.getPersistentChallengeProgression(
@@ -552,28 +531,62 @@ export class ChallengeService extends ChallengeRegistry {
                 userId,
             )
 
-            const { challengeCountData } =
-                ChallengeService._parseContextListeners(challengeData)
-
-            if (dependencies.length > 0) {
-                compiled.ChallengeProgress = {
-                    count: completed.length,
-                    completed,
-                    total: dependencies.length,
-                    missing: missing.length,
-                    all: dependencies,
-                }
-            } else if (challengeCountData.total > 0) {
-                compiled.ChallengeProgress = {
-                    count: challengeCountData.count,
-                    total: challengeCountData.total,
-                }
-            } else {
-                compiled.ChallengeProgress = null
-            }
+            compiled.ChallengeProgress = this.getChallengeDependencyData(
+                challengeData,
+                userId,
+                gameVersion,
+            )
 
             return compiled
         })
+    }
+
+    private getChallengeDependencyData(
+        challengeData: RegistryChallenge,
+        userId: string,
+        gameVersion: GameVersion,
+    ): ChallengeTreeWaterfallState {
+        // Handle challenge dependencies
+        const dependencies = this.getDependenciesForChallenge(challengeData.Id)
+        const completed: string[] = []
+        const missing: string[] = []
+
+        for (const dependency of dependencies) {
+            if (
+                this.getPersistentChallengeProgression(
+                    userId,
+                    dependency,
+                    gameVersion,
+                ).Completed
+            ) {
+                completed.push(dependency)
+                continue
+            }
+
+            missing.push(dependency)
+        }
+
+        const { challengeCountData } =
+            ChallengeService._parseContextListeners(challengeData)
+
+        if (dependencies.length > 0) {
+            return {
+                count: completed.length,
+                completed,
+                total: dependencies.length,
+                missing: missing.length,
+                all: dependencies,
+            }
+        }
+
+        if (challengeCountData.total > 0) {
+            return {
+                count: challengeCountData.count,
+                total: challengeCountData.total,
+            }
+        }
+
+        return null
     }
 
     getChallengePlanningDataForContract(
@@ -720,7 +733,11 @@ export class ChallengeService extends ChallengeRegistry {
             LocationId: challenge.LocationId,
             ParentLocationId: challenge.ParentLocationId,
             Type: challenge.Type || "contract",
-            ChallengeProgress: null,
+            ChallengeProgress: this.getChallengeDependencyData(
+                challenge,
+                userId,
+                gameVersion,
+            ),
             DifficultyLevels: [],
             CompletionData: generateCompletionData(
                 challenge.ParentLocationId,
