@@ -17,10 +17,14 @@
  */
 
 import { contractIdToHitObject, controller } from "../../controller"
-import type { GameVersion, IHit, UserProfile } from "../../types/types"
+import type {
+    GameVersion,
+    IHit,
+    MissionManifest,
+    UserProfile,
+} from "../../types/types"
 import { getUserData } from "../../databaseHandler"
 import { log, LogLevel } from "../../loggingInterop"
-import type { EscalationGroup } from "../escalationMappings"
 
 /**
  * Put a level in here to hide it from the menus on 2016.
@@ -39,99 +43,99 @@ const no2016 = [
  * Gets a user's progress on the specified escalation's group ID.
  *
  * @param userData The user's profile object.
- * @param eGroupId The escalation's group ID.
+ * @param groupContractId The escalation's group contract ID.
  * @returns The level of the escalation the user is on.
  */
 export function getUserEscalationProgress(
     userData: UserProfile,
-    eGroupId: string,
+    groupContractId: string,
 ): number {
-    userData.Extensions.PeacockEscalations ??= { [eGroupId]: 1 }
+    userData.Extensions.PeacockEscalations ??= { [groupContractId]: 1 }
 
-    if (!userData.Extensions.PeacockEscalations[eGroupId]) {
-        userData.Extensions.PeacockEscalations[eGroupId] = 1
+    if (!userData.Extensions.PeacockEscalations[groupContractId]) {
+        userData.Extensions.PeacockEscalations[groupContractId] = 1
         return 1
     }
 
-    return userData.Extensions.PeacockEscalations[eGroupId]
+    return userData.Extensions.PeacockEscalations[groupContractId]
 }
 
 /**
  * Resets a user's progress on the specified escalation.
  *
  * @param userData The user's profile object.
- * @param eGroupId The escalation's group ID.
+ * @param groupContractId The escalation's group contract ID.
  */
 export function resetUserEscalationProgress(
     userData: UserProfile,
-    eGroupId: string,
+    groupContractId: string,
 ): void {
     userData.Extensions.PeacockEscalations ??= {}
 
-    userData.Extensions.PeacockEscalations[eGroupId] = 1
+    userData.Extensions.PeacockEscalations[groupContractId] = 1
 
-    if (userData.Extensions.PeacockCompletedEscalations?.includes(eGroupId)) {
+    if (
+        userData.Extensions.PeacockCompletedEscalations?.includes(
+            groupContractId,
+        )
+    ) {
         userData.Extensions.PeacockCompletedEscalations =
             userData.Extensions.PeacockCompletedEscalations!.filter(
-                (e) => e !== eGroupId,
+                (e) => e !== groupContractId,
             )
     }
 }
 
 /**
- * Translates a contract ID to the escalation group that it is in's ID.
+ * Translates a contract ID to the escalation group contract that it is in's ID.
  *
  * @param id The contract ID.
- * @returns The escalation's group ID or null if it isn't in a group.
+ * @returns The escalation's group contract ID or null if it isn't in a group.
  */
 export function contractIdToEscalationGroupId(id: string): string | undefined {
-    let name: string | undefined = undefined
-
-    for (const groupId of Object.keys(controller.escalationMappings)) {
-        for (const level of Object.keys(
-            controller.escalationMappings[groupId],
-        )) {
-            if (controller.escalationMappings[groupId][level].includes(id)) {
-                name = groupId
+    for (const [groupId, levels] of controller.escalationMappings.entries()) {
+        for (const level of Object.values(levels)) {
+            if (level === id) {
+                return groupId
             }
         }
     }
 
-    return name
+    return undefined
 }
 
 export function getMenuDetailsForEscalation(
-    eGroupId: string,
+    groupContractId: string,
     userId: string,
     gameVersion: GameVersion,
 ): IHit | undefined {
     const userData = getUserData(userId, gameVersion)
 
-    const level = getUserEscalationProgress(userData, eGroupId)
-    const escalationGroup = controller.escalationMappings[eGroupId]
+    const level = getUserEscalationProgress(userData, groupContractId)
+    const escalationLevels = controller.escalationMappings.get(groupContractId)
 
-    if (gameVersion === "h1" && no2016.includes(eGroupId)) {
+    if (gameVersion === "h1" && no2016.includes(groupContractId)) {
         return undefined
     }
 
     // not great for performance, but it's fine for now
-    if (!controller.resolveContract(escalationGroup[level])) {
+    if (!controller.resolveContract(escalationLevels[level])) {
         return undefined
     }
 
-    return contractIdToHitObject(escalationGroup[level], gameVersion, userId)
+    return contractIdToHitObject(escalationLevels[level], gameVersion, userId)
 }
 
 /**
  * Get the number of levels in the specified group.
  *
- * @param group The escalation group.
+ * @param groupContract The escalation group's contract.
  * @returns The number of levels.
  */
-export function getLevelCount(group: EscalationGroup): number {
+export function getLevelCount(groupContract: MissionManifest): number {
     let levels = 1
 
-    while (Object.prototype.hasOwnProperty.call(group, levels + 1)) {
+    while (groupContract.Metadata.GroupDefinition.Order[levels]) {
         levels++
     }
 
@@ -143,14 +147,14 @@ export function getLevelCount(group: EscalationGroup): number {
  *
  * @param b Internal control for code cleanliness. Setting to false returns an empty object.
  * @param userId The current user's ID.
- * @param eGroupId The escalation's group ID.
+ * @param groupContractId The escalation's group contract ID.
  * @param gameVersion The game's version.
  * @returns The escalation play details.
  */
 export function getPlayEscalationInfo(
     b: boolean,
     userId: string,
-    eGroupId: string,
+    groupContractId: string,
     gameVersion: GameVersion,
 ) {
     if (!b) {
@@ -159,35 +163,35 @@ export function getPlayEscalationInfo(
 
     const userData = getUserData(userId, gameVersion)
 
-    const p = getUserEscalationProgress(userData, eGroupId)
-    const group = controller.escalationMappings[eGroupId]
+    const p = getUserEscalationProgress(userData, groupContractId)
+    const groupCt = controller.escalationMappings.get(groupContractId)
 
     const totalLevelCount = getLevelCount(
-        controller.escalationMappings[eGroupId],
+        controller.resolveContract(groupContractId),
     )
 
     let nextContractId = "00000000-0000-0000-0000-000000000000"
     if (p < totalLevelCount) {
-        nextContractId = group[p + 1]
+        nextContractId = groupCt[p + 1]
     }
 
     log(
         LogLevel.DEBUG,
-        `Get Play-EscalationInfo - group: ${eGroupId} prog: ${p} next: ${nextContractId}`,
+        `Get Play-EscalationInfo - group: ${groupContractId} prog: ${p} next: ${nextContractId}`,
     )
 
     return {
         Type: "escalation",
-        InGroup: eGroupId,
+        InGroup: groupContractId,
         NextContractId: nextContractId,
         GroupData: {
             Level: p,
             TotalLevels: totalLevelCount,
             Completed:
                 userData.Extensions.PeacockCompletedEscalations?.includes(
-                    eGroupId,
+                    groupContractId,
                 ) || false,
-            FirstContractId: group[1],
+            FirstContractId: groupCt[1],
         },
     }
 }

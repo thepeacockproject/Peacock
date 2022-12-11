@@ -30,6 +30,7 @@ import axios, { AxiosError } from "axios"
 import { log, LogLevel } from "./loggingInterop"
 import { writeFileSync } from "fs"
 import { getFlag } from "./flags"
+import { getConfig } from "./configSwizzleManager"
 
 /**
  * True if the server is being run by the launcher, false otherwise.
@@ -362,4 +363,22 @@ export function fastClone<T>(item: T): T {
     }
 
     return result
+}
+
+/**
+ * Returns if the specified repository ID is a suit.
+ *
+ * @param repoId The repository ID.
+ * @returns If the repository ID points to a suit.
+ */
+export function isSuit(repoId: string): boolean {
+    const suitsToTypeMap: Record<string, string> = {}
+
+    getConfig<readonly Unlockable[]>("allunlockables", false)
+        .filter((unlockable) => unlockable.Type === "disguise")
+        .forEach((u) => (suitsToTypeMap[u.Properties.RepositoryId] = u.Subtype))
+
+    return suitsToTypeMap[repoId]
+        ? suitsToTypeMap[repoId] !== "disguise"
+        : false
 }
