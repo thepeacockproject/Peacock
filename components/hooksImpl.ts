@@ -152,6 +152,10 @@ export abstract class BaseImpl<Params, Return = void> {
             enableContext,
         })
     }
+
+    public get allTapNames(): string[] {
+        return this._taps.map((t) => t.name)
+    }
 }
 
 /**
