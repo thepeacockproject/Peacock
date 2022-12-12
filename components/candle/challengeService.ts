@@ -18,11 +18,13 @@
 
 import type {
     ChallengeProgressionData,
+    ChallengeTreeWaterfallState,
     ClientToServerEvent,
     CompiledChallengeTreeCategory,
     CompiledChallengeTreeData,
     ContractSession,
     GameVersion,
+    MissionManifest,
     PeacockLocationsData,
     RegistryChallenge,
 } from "../types/types"
@@ -53,16 +55,6 @@ import {
 import assert from "assert"
 import { getVersionedConfig } from "../configSwizzleManager"
 import { SyncHook } from "../hooksImpl"
-
-/**
- * The structure for a pending write to a user's challenge progression data.
- */
-type PendingProgressionWrite = {
-    userId: string
-    challengeId: string
-    gameVersion: GameVersion
-    progression: ChallengeProgressionData
-}
 
 type ChallengeDefinitionLike = {
     Context?: Record<string, unknown>
@@ -149,8 +141,6 @@ export abstract class ChallengeRegistry {
 }
 
 export class ChallengeService extends ChallengeRegistry {
-    // we'll use this after writing details to the user's profile
-    private _justCompletedChallengeIds: string[] = []
     public hooks: {
         /**
          * A hook that is called when a challenge is completed.
@@ -170,62 +160,59 @@ export class ChallengeService extends ChallengeRegistry {
         }
     }
 
-    getBatchChallengeProgression(
-        userId: string,
-        gameVersion: GameVersion,
-    ): Record<string, ChallengeProgressionData> {
-        const userData = getUserData(userId, gameVersion)
-
-        userData.Extensions.PeacockChallengeProgression ??= {}
-
-        return userData.Extensions.PeacockChallengeProgression
-    }
-
-    getChallengeProgression(
+    getPersistentChallengeProgression(
         userId: string,
         challengeId: string,
         gameVersion: GameVersion,
-        batchedData?: Record<string, ChallengeProgressionData>,
     ): ChallengeProgressionData {
-        const data =
-            batchedData ||
-            this.getBatchChallengeProgression(userId, gameVersion)
+        const userData = getUserData(userId, gameVersion)
 
         const challenge = this.getChallengeById(challengeId)
 
-        if (this._justCompletedChallengeIds.includes(challengeId)) {
-            return {
-                ChallengeId: challengeId,
-                ProfileId: userId,
-                Completed: true,
-                State: {
-                    CurrentState: "Success",
-                },
-                ETag: "",
-                CompletedAt: null,
-                MustBeSaved: true,
-            }
-        }
+        userData.Extensions.ChallengeProgression ??= {}
 
-        // prevent game crash
+        const data = userData.Extensions.ChallengeProgression
+
+        // prevent game crash - when we have a challenge that is completed, we
+        // need to implicitly add this key to the state
         if (data[challengeId]?.Completed) {
             data[challengeId].State = {
                 CurrentState: "Success",
             }
         }
 
-        return (
-            data[challengeId] || {
-                ChallengeId: challengeId,
-                ProfileId: userId,
-                Completed: false,
-                State: (<ChallengeDefinitionLike>challenge?.Definition)
-                    ?.Context,
-                ETag: "",
-                CompletedAt: null,
-                MustBeSaved: true,
-            }
-        )
+        // the default context, used if the user has no progression for this
+        // challenge
+        const initialContext =
+            (<ChallengeDefinitionLike>challenge?.Definition)?.Context || {}
+
+        // apply default context if no progression exists
+        data[challengeId] ??= {
+            Completed: false,
+            State: initialContext,
+        }
+
+        const dependencies = this.getDependenciesForChallenge(challengeId)
+
+        if (dependencies.length > 0) {
+            data[challengeId].State.CompletedChallenges = dependencies.filter(
+                (depId) =>
+                    this.getPersistentChallengeProgression(
+                        userId,
+                        depId,
+                        gameVersion,
+                    ).Completed,
+            )
+        }
+
+        return {
+            Completed: data[challengeId].Completed,
+            State: data[challengeId].State,
+            ChallengeId: challengeId,
+            ProfileId: userId,
+            CompletedAt: null,
+            MustBeSaved: true,
+        }
     }
 
     /**
@@ -309,53 +296,30 @@ export class ChallengeService extends ChallengeRegistry {
 
         const challengeGroups = this.getChallengesForContract(
             contractId,
-            session.gameVersion,
-        )
-        const batchChallengeProgression = this.getBatchChallengeProgression(
-            userId,
             gameVersion,
         )
 
-        const writeQueue: PendingProgressionWrite[] = []
-
         for (const group of Object.keys(challengeGroups)) {
             for (const challenge of challengeGroups[group]) {
-                let progression = batchChallengeProgression[challenge.Id]
+                const progression = this.getPersistentChallengeProgression(
+                    userId,
+                    challenge.Id,
+                    gameVersion,
+                )
 
-                if (!progression) {
-                    const ctx = fastClone(
+                const ctx =
+                    fastClone(
                         (<ChallengeDefinitionLike>challenge.Definition)
-                            ?.Context,
-                    )
-
-                    progression = {
-                        ChallengeId: challenge.Id,
-                        ProfileId: userId,
-                        Completed: false,
-                        State: ctx,
-                        ETag: "",
-                        CompletedAt: null,
-                        MustBeSaved: true,
-                    }
-
-                    writeQueue.push({
-                        userId,
-                        gameVersion,
-                        progression,
-                        challengeId: challenge.Id,
-                    })
-                }
+                            ?.Context || {},
+                    ) || {}
 
                 challengeContexts[challenge.Id] = {
-                    context:
-                        fastClone(challenge.Definition?.Context || {}) || {},
+                    context: ctx,
                     state: progression.Completed ? "Success" : "Start",
                     timers: [],
                 }
             }
         }
-
-        this.writePendingProgression(writeQueue, userId, gameVersion)
     }
 
     onContractEvent(
@@ -363,8 +327,6 @@ export class ChallengeService extends ChallengeRegistry {
         sessionId: string,
         session: ContractSession,
     ): void {
-        const writeQueue: PendingProgressionWrite[] = []
-
         if (!session.challengeContexts) {
             log(LogLevel.WARN, "Session does not have challenge contexts.")
             log(LogLevel.WARN, "Challenges will be disabled!")
@@ -377,6 +339,16 @@ export class ChallengeService extends ChallengeRegistry {
 
             if (!challenge) {
                 log(LogLevel.WARN, `Challenge ${challengeId} not found`)
+                continue
+            }
+
+            if (
+                this.getPersistentChallengeProgression(
+                    session.userId,
+                    challengeId,
+                    session.gameVersion,
+                ).Completed
+            ) {
                 continue
             }
 
@@ -398,74 +370,29 @@ export class ChallengeService extends ChallengeRegistry {
                     options,
                 )
 
-                session.challengeContexts[challengeId].state = result.state
-                session.challengeContexts[challengeId].context =
-                    result.context || challenge.Definition?.Context || {}
-
-                if (previousState !== "Success" && result.state === "Success") {
-                    this.hooks.onChallengeCompleted.call(
+                if (challenge.Definition.Scope === "profile") {
+                    const profile = getUserData(
                         session.userId,
-                        challenge,
                         session.gameVersion,
                     )
 
-                    this._justCompletedChallengeIds.push(challengeId)
+                    profile.Extensions.ChallengeProgression[challengeId].State =
+                        result.context
 
-                    writeQueue.push({
-                        challengeId,
-                        gameVersion: session.gameVersion,
-                        userId: session.userId,
-                        progression: {
-                            ChallengeId: challenge.Id,
-                            ProfileId: session.userId,
-                            Completed: true,
-                            State: (
-                                challenge.Definition as ChallengeDefinitionLike
-                            ).Context,
-                            ETag: "",
-                            CompletedAt: new Date().toISOString(),
-                            MustBeSaved: true,
-                        },
-                    })
+                    writeUserData(session.userId, session.gameVersion)
+                } else {
+                    session.challengeContexts[challengeId].state = result.state
+                    session.challengeContexts[challengeId].context =
+                        result.context || challenge.Definition?.Context || {}
+                }
 
-                    this.checkWaterfallCompletion(
-                        writeQueue,
-                        session,
-                        challenge,
-                    )
+                if (previousState !== "Success" && result.state === "Success") {
+                    this.onChallengeCompleted(session, challenge)
                 }
             } catch (e) {
                 log(LogLevel.ERROR, e)
             }
         }
-
-        this.writePendingProgression(
-            writeQueue,
-            session.userId,
-            session.gameVersion,
-        )
-    }
-
-    // TODO: Rewrite this function out, as we can just modify the context!
-    writePendingProgression(
-        writeQueue: PendingProgressionWrite[],
-        userId: string,
-        gameVersion: GameVersion,
-    ): void {
-        if (writeQueue.length === 0) {
-            return
-        }
-
-        const userData = getUserData(userId, gameVersion)
-
-        userData.Extensions.PeacockChallengeProgression ??= {}
-
-        for (const write of writeQueue) {
-            userData.Extensions.PeacockChallengeProgression[write.challengeId] =
-                write.progression
-        }
-
-        writeUserData(userId, gameVersion)
     }
 
     /**
@@ -511,7 +438,7 @@ export class ChallengeService extends ChallengeRegistry {
                 const groupData = this.getGroupById(groupId)
                 const challengeProgressionData = challenges.map(
                     (challengeData) =>
-                        this.getChallengeProgression(
+                        this.getPersistentChallengeProgression(
                             userId,
                             challengeData.Id,
                             gameVersion,
@@ -593,31 +520,9 @@ export class ChallengeService extends ChallengeRegistry {
         gameVersion: GameVersion,
     ): CompiledChallengeTreeData[] {
         return challenges.map((challengeData) => {
-            // Handle challenge dependencies
-            const dependencies = this.getDependenciesForChallenge(
-                challengeData.Id,
-            )
-            const completed: string[] = []
-            const missing: string[] = []
-
-            for (const dependency of dependencies) {
-                if (
-                    this.getChallengeProgression(
-                        userId,
-                        challengeData.Id,
-                        gameVersion,
-                    ).Completed
-                ) {
-                    completed.push(dependency)
-                    continue
-                }
-
-                missing.push(dependency)
-            }
-
             const compiled = this.compileRegistryChallengeTreeData(
                 challengeData,
-                this.getChallengeProgression(
+                this.getPersistentChallengeProgression(
                     userId,
                     challengeData.Id,
                     gameVersion,
@@ -626,28 +531,62 @@ export class ChallengeService extends ChallengeRegistry {
                 userId,
             )
 
-            const { challengeCountData } =
-                ChallengeService._parseContextListeners(challengeData)
-
-            if (dependencies.length > 0) {
-                compiled.ChallengeProgress = {
-                    count: completed.length,
-                    completed,
-                    total: dependencies.length,
-                    missing: missing.length,
-                    all: dependencies,
-                }
-            } else if (challengeCountData.total > 0) {
-                compiled.ChallengeProgress = {
-                    count: challengeCountData.count,
-                    total: challengeCountData.total,
-                }
-            } else {
-                compiled.ChallengeProgress = null
-            }
+            compiled.ChallengeProgress = this.getChallengeDependencyData(
+                challengeData,
+                userId,
+                gameVersion,
+            )
 
             return compiled
         })
+    }
+
+    private getChallengeDependencyData(
+        challengeData: RegistryChallenge,
+        userId: string,
+        gameVersion: GameVersion,
+    ): ChallengeTreeWaterfallState {
+        // Handle challenge dependencies
+        const dependencies = this.getDependenciesForChallenge(challengeData.Id)
+        const completed: string[] = []
+        const missing: string[] = []
+
+        for (const dependency of dependencies) {
+            if (
+                this.getPersistentChallengeProgression(
+                    userId,
+                    dependency,
+                    gameVersion,
+                ).Completed
+            ) {
+                completed.push(dependency)
+                continue
+            }
+
+            missing.push(dependency)
+        }
+
+        const { challengeCountData } =
+            ChallengeService._parseContextListeners(challengeData)
+
+        if (dependencies.length > 0) {
+            return {
+                count: completed.length,
+                completed,
+                total: dependencies.length,
+                missing: missing.length,
+                all: dependencies,
+            }
+        }
+
+        if (challengeCountData.total > 0) {
+            return {
+                count: challengeCountData.count,
+                total: challengeCountData.total,
+            }
+        }
+
+        return null
     }
 
     getChallengePlanningDataForContract(
@@ -735,7 +674,7 @@ export class ChallengeService extends ChallengeRegistry {
         return entries.map(([groupId, challenges]) => {
             const groupData = this.getGroupById(groupId)
             const challengeProgressionData = challenges.map((challengeData) =>
-                this.getChallengeProgression(
+                this.getPersistentChallengeProgression(
                     userId,
                     challengeData.Id,
                     gameVersion,
@@ -753,7 +692,7 @@ export class ChallengeService extends ChallengeRegistry {
                         Challenges: challenges.map((challengeData) =>
                             compiler(
                                 challengeData,
-                                this.getChallengeProgression(
+                                this.getPersistentChallengeProgression(
                                     userId,
                                     challengeData.Id,
                                     gameVersion,
@@ -794,7 +733,11 @@ export class ChallengeService extends ChallengeRegistry {
             LocationId: challenge.LocationId,
             ParentLocationId: challenge.ParentLocationId,
             Type: challenge.Type || "contract",
-            ChallengeProgress: null,
+            ChallengeProgress: this.getChallengeDependencyData(
+                challenge,
+                userId,
+                gameVersion,
+            ),
             DifficultyLevels: [],
             CompletionData: generateCompletionData(
                 challenge.ParentLocationId,
@@ -811,7 +754,8 @@ export class ChallengeService extends ChallengeRegistry {
         gameVersion: GameVersion,
         userId: string,
     ): CompiledChallengeTreeData {
-        let contract
+        let contract: MissionManifest | null
+
         // TODO: Properly get escalation groups for this
         if (challenge.Type === "contract") {
             contract = this.controller.resolveContract(
@@ -819,43 +763,40 @@ export class ChallengeService extends ChallengeRegistry {
             )
 
             // This is so we can remove unused data and make it more like official - AF
-            contract =
-                contract === undefined
-                    ? null
-                    : {
-                          // The null is for escalations as we cannot currently get groups
-                          Data: {
-                              Bricks: contract.Data.Bricks,
-                              DevOnlyBricks: null,
-                              GameChangerReferences:
-                                  contract.Data.GameChangerReferences || [],
-                              GameChangers: contract.Data.GameChangers || [],
-                              GameDifficulties:
-                                  contract.Data.GameDifficulties || [],
-                          },
-                          Metadata: {
-                              CreationTimestamp: null,
-                              CreatorUserId: contract.Metadata.CreatorUserId,
-                              DebriefingVideo:
-                                  contract.Metadata.DebriefingVideo || "",
-                              Description: contract.Metadata.Description,
-                              Drops: contract.Metadata.Drops || null,
-                              Entitlements:
-                                  contract.Metadata.Entitlements || [],
-                              GroupTitle: contract.Metadata.GroupTitle || "",
-                              Id: contract.Metadata.Id,
-                              IsPublished:
-                                  contract.Metadata.IsPublished || true,
-                              LastUpdate: null,
-                              Location: contract.Metadata.Location,
-                              PublicId: contract.Metadata.PublicId || "",
-                              ScenePath: contract.Metadata.ScenePath,
-                              Subtype: contract.Metadata.Subtype || "",
-                              TileImage: contract.Metadata.TileImage,
-                              Title: contract.Metadata.Title,
-                              Type: contract.Metadata.Type,
-                          },
-                      }
+            const meta = contract?.Metadata
+            contract = !contract
+                ? null
+                : {
+                      // The null is for escalations as we cannot currently get groups
+                      Data: {
+                          Bricks: contract.Data.Bricks,
+                          DevOnlyBricks: null,
+                          GameChangerReferences:
+                              contract.Data.GameChangerReferences || [],
+                          GameChangers: contract.Data.GameChangers || [],
+                          GameDifficulties:
+                              contract.Data.GameDifficulties || [],
+                      },
+                      Metadata: {
+                          CreationTimestamp: null,
+                          CreatorUserId: meta.CreatorUserId,
+                          DebriefingVideo: meta.DebriefingVideo || "",
+                          Description: meta.Description,
+                          Drops: meta.Drops || null,
+                          Entitlements: meta.Entitlements || [],
+                          GroupTitle: meta.GroupTitle || "",
+                          Id: meta.Id,
+                          IsPublished: meta.IsPublished || true,
+                          LastUpdate: null,
+                          Location: meta.Location,
+                          PublicId: meta.PublicId || "",
+                          ScenePath: meta.ScenePath,
+                          Subtype: meta.Subtype || "",
+                          TileImage: meta.TileImage,
+                          Title: meta.Title,
+                          Type: meta.Type,
+                      },
+                  }
         }
 
         return {
@@ -872,11 +813,39 @@ export class ChallengeService extends ChallengeRegistry {
         }
     }
 
-    private checkWaterfallCompletion(
-        writeQueue: PendingProgressionWrite[],
+    private onChallengeCompleted(
         session: ContractSession,
         challenge: RegistryChallenge,
+        waterfallParent?: string,
     ): void {
+        if (waterfallParent) {
+            log(
+                LogLevel.DEBUG,
+                `Challenge ${challenge.Id} completed [via ${waterfallParent}]`,
+            )
+        } else {
+            log(LogLevel.DEBUG, `Challenge ${challenge.Id} completed`)
+        }
+
+        const userData = getUserData(session.userId, session.gameVersion)
+
+        userData.Extensions.ChallengeProgression ??= {}
+
+        userData.Extensions.ChallengeProgression[challenge.Id] ??= {
+            State: {},
+            Completed: false,
+        }
+
+        userData.Extensions.ChallengeProgression[challenge.Id].Completed = true
+
+        writeUserData(session.userId, session.gameVersion)
+
+        this.hooks.onChallengeCompleted.call(
+            session.userId,
+            challenge,
+            session.gameVersion,
+        )
+
         // find any dependency trees that depend on the challenge
         for (const depTreeId of this._dependencyTree.keys()) {
             const allDeps = this._dependencyTree.get(depTreeId)
@@ -885,7 +854,7 @@ export class ChallengeService extends ChallengeRegistry {
 
             // check if the dependency tree is completed
             const completed = allDeps.every((depId) => {
-                const depProgression = this.getChallengeProgression(
+                const depProgression = this.getPersistentChallengeProgression(
                     session.userId,
                     depId,
                     session.gameVersion,
@@ -898,31 +867,11 @@ export class ChallengeService extends ChallengeRegistry {
                 continue
             }
 
-            if (PEACOCK_DEV) {
-                log(
-                    LogLevel.DEBUG,
-                    `${challenge.Id}'s completion caused all conditions to be met for ${depTreeId}`,
-                )
-            }
-
-            writeQueue.push({
-                challengeId: depTreeId,
-                gameVersion: session.gameVersion,
-                userId: session.userId,
-                progression: {
-                    ChallengeId: depTreeId,
-                    ProfileId: session.userId,
-                    Completed: true,
-                    State: {
-                        ...((challenge?.Definition as ChallengeDefinitionLike)
-                            ?.Context || {}),
-                        CurrentState: "Success",
-                    },
-                    ETag: "",
-                    CompletedAt: new Date().toISOString(),
-                    MustBeSaved: true,
-                },
-            })
+            this.onChallengeCompleted(
+                session,
+                this.getChallengeById(depTreeId),
+                challenge.Id,
+            )
         }
     }
 }
