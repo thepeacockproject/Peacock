@@ -312,11 +312,7 @@ export function scenePathToRpAsset(
         // haven
         case "assembly:/_pro/scenes/missions/opulent/mission_stingray/scene_stingray_basic.entity":
         case "assembly:/_pro/scenes/missions/opulent/mission_stingray/scene_stingray_arcticthyme.entity":
-            return [
-                "havenlastresort",
-                "The Last Resort",
-                "Haven - The Maldives",
-            ]
+            return ["havenlastresort", "The Last Resort", "Haven"]
 
         // miami
         case "assembly:/_pro/scenes/missions/miami/scene_et_sambuca.entity":
@@ -328,11 +324,11 @@ export function scenePathToRpAsset(
 
         // hawkes bay
         case "assembly:/_pro/scenes/missions/sheep/scene_adonis.entity":
-            return ["elusiveadonis", "The Politician", "New Zealand"]
+            return ["elusiveadonis", "The Politician", "Hawke's Bay"]
         case "assembly:/_pro/scenes/missions/sheep/scene_sheep.entity":
-            return ["hawkenightcall", "Nightcall", "New Zealand"]
+            return ["hawkenightcall", "Nightcall", "Hawke's Bay"]
         case "assembly:/_pro/scenes/missions/sheep/scene_opuntia.entity":
-            return ["opuntia", "Opuntia", "New Zealand"]
+            return ["opuntia", "Opuntia", "Hawke's Bay"]
 
         // sgail
         case "assembly:/_pro/scenes/missions/theark/scene_magpie.entity":

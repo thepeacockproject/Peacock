@@ -22,6 +22,8 @@ import { getAllCampaigns } from "../menus/campaigns"
 import { Campaign, GameVersion, IHit, Seconds, StoryData } from "../types/types"
 import { getFlag } from "../flags"
 import { controller } from "../controller"
+import { scenePathToRpAsset } from "../discordRp"
+import { LiveSplitTimeCalcEntry } from "../types/livesplit"
 
 export class LiveSplitManager {
     private readonly _liveSplitClient: LiveSplitClient
@@ -36,6 +38,7 @@ export class LiveSplitManager {
     private _currentMissionTotalTime: number
     private _campaignTotalTime: number
     private _completedMissions: string[]
+    private _timeCalcEntries: LiveSplitTimeCalcEntry[]
     private _raceMode: boolean | undefined // gets late-initialized, use _isRaceMode to access
 
     constructor() {
@@ -45,6 +48,7 @@ export class LiveSplitManager {
         this._currentMission = undefined
         this._inValidCampaignRun = false
         this._completedMissions = []
+        this._timeCalcEntries = []
         this._currentMissionTotalTime = 0
         this._campaignTotalTime = 0
         this._raceMode = undefined
@@ -103,6 +107,7 @@ export class LiveSplitManager {
                     // un-split. total time is not reset on mission complete, so it should still be valid.
                     // do pop the completed mission though as we're entering a new attempt
                     this._completedMissions.pop()
+                    this._unsplitLastTimeCalcEntry()
                     if (!this._isRaceMode) {
                         logLiveSplitError(
                             await this._liveSplitClient.unsplit(),
@@ -160,10 +165,9 @@ export class LiveSplitManager {
         }
 
         if (this._inValidCampaignRun) {
-            const location = this._getMissionLocationName(this._currentMission)
-            log(LogLevel.DEBUG, `Current location: ${location}`)
-            this._addMissionTime(attemptTime)
-            LiveSplitManager._logAttempt(attemptTime)
+            const computedTime = this._addMissionTime(attemptTime)
+            this._addTimeCalcEntry(this._currentMission, computedTime, false)
+            LiveSplitManager._logAttempt(computedTime)
             await this._pushGameTime()
         }
     }
@@ -176,7 +180,8 @@ export class LiveSplitManager {
         }
 
         if (this._inValidCampaignRun) {
-            this._addMissionTime(attemptTime)
+            const computedTime = this._addMissionTime(attemptTime)
+            this._addTimeCalcEntry(this._currentMission, computedTime, true)
             log(
                 LogLevel.INFO,
                 `Total mission time with resets: ${this._currentMissionTotalTime}`,
@@ -217,6 +222,11 @@ export class LiveSplitManager {
                     logLiveSplitError(
                         await this._liveSplitClient.pause(),
                         "pause",
+                    )
+
+                    log(
+                        LogLevel.INFO,
+                        `TimeCalc link(s):\n${this._generateTimeCalcLinks()}`,
                     )
                 }
             }
@@ -317,6 +327,7 @@ export class LiveSplitManager {
             `Detected campaign missions: ${this._currentCampaign}`,
         )
         this._completedMissions = []
+        this._timeCalcEntries = []
         this._inValidCampaignRun = true
         this._currentMissionTotalTime = 0
         this._campaignTotalTime = 0
@@ -367,20 +378,21 @@ export class LiveSplitManager {
         )
     }
 
-    private _addMissionTime(time: Seconds) {
-        // always add at least minimum
+    private _addMissionTime(time: Seconds): Seconds {
+        let computedTime = Math.floor(time)
+
+        // always add at least minimum, which is usually 0 except on cutscenes where
+        // you can gain an advantage by restarting in cs (bangkok, sgail specific starts)
         if (time <= this._resetMinimum) {
-            this._currentMissionTotalTime += this._resetMinimum
-            this._campaignTotalTime += this._resetMinimum
+            computedTime = this._resetMinimum
         } else if (time > 0 && time <= 1) {
             // if in game time is between 0 and 1, add full second
-            this._currentMissionTotalTime += 1
-            this._campaignTotalTime += 1
-        } else {
-            // important to always floor before adding time
-            this._currentMissionTotalTime += Math.floor(time)
-            this._campaignTotalTime += Math.floor(time)
+            computedTime = 1
         }
+
+        this._currentMissionTotalTime += computedTime
+        this._campaignTotalTime += computedTime
+        return computedTime
     }
 
     private async _pushGameTime() {
@@ -392,7 +404,134 @@ export class LiveSplitManager {
     }
 
     private _getMissionLocationName(contractId: string) {
-        return controller.resolveContract(contractId)?.Metadata.Location
+        const contract = controller.resolveContract(contractId)
+        const [, , location] = scenePathToRpAsset(
+            contract.Metadata.ScenePath,
+            contract.Data.Bricks,
+        )
+        return location
+    }
+
+    private _addTimeCalcEntry(
+        contractId: string,
+        time: Seconds,
+        isCompleted: boolean,
+    ) {
+        const location = this._getMissionLocationName(contractId)
+        const entry: LiveSplitTimeCalcEntry = {
+            contractId,
+            location,
+            time,
+            isCompleted,
+        }
+        this._timeCalcEntries.push(entry)
+    }
+
+    private _unsplitLastTimeCalcEntry() {
+        const entry = this._timeCalcEntries.pop()
+        entry.isCompleted = false
+        this._timeCalcEntries.push(entry)
+    }
+
+    private _generateTimeCalcLinks() {
+        const baseUrl =
+            "https://solderq35.github.io/fg-time-calc/?mode=0&fs3=1&ft2=1&f3t1=1&f4t0=1&d=:&o1=1&fps="
+
+        const links: string[] = []
+
+        const searchParams = new URLSearchParams()
+
+        const completedEntries = this._timeCalcEntries.filter(
+            (e) => e.isCompleted,
+        )
+        const resetEntries = this._timeCalcEntries.filter((e) => !e.isCompleted)
+
+        let timecalcLine = 0
+
+        completedEntries.forEach((entry) => {
+            timecalcLine += 1
+            searchParams.set(
+                `t${timecalcLine}`,
+                `${this._formatSecondsToTime(entry.time)}`,
+            )
+            searchParams.set(`c${timecalcLine}`, entry.location)
+        })
+
+        const totalEntries = completedEntries.length + resetEntries.length
+        if (totalEntries + 1 > 40) {
+            // We need to make multiple TimeCalc links
+            const completedEntriesLink = new URL(baseUrl)
+
+            // Calculate combined reset time
+            timecalcLine += 2
+            searchParams.set(
+                `t${timecalcLine}`,
+                `${this._formatSecondsToTime(
+                    resetEntries.reduce((total, entry) => {
+                        return (total += Math.floor(entry.time))
+                    }, 0),
+                )}`,
+            )
+            searchParams.set(`c${timecalcLine}`, "Combined reset time")
+
+            // Append new search
+            completedEntriesLink.search +=
+                "&" +
+                searchParams
+                    .toString()
+                    .replaceAll("+", "%20")
+                    .replaceAll("%3A", ":")
+            links.push(completedEntriesLink.toString())
+
+            timecalcLine = 0
+
+            if (resetEntries.length > 40) {
+                // TODO: We'll need more than 1 link for resets...
+            }
+        } else {
+            timecalcLine += 1
+        }
+
+        let resetLocation = ""
+        let resetCount = 0
+
+        resetEntries.forEach((entry) => {
+            timecalcLine += 1
+            if (resetLocation === entry.location) {
+                resetCount += 1
+            } else {
+                resetLocation = entry.location
+                resetCount = 1
+            }
+            searchParams.set(
+                `t${timecalcLine}`,
+                `${this._formatSecondsToTime(entry.time)}`,
+            )
+            searchParams.set(
+                `c${timecalcLine}`,
+                `${entry.location} reset ${resetCount}`,
+            )
+        })
+        const resetEntriesLink = new URL(baseUrl)
+        // Append new search
+        resetEntriesLink.search +=
+            "&" +
+            searchParams
+                .toString()
+                .replaceAll("+", "%20")
+                .replaceAll("%3A", ":")
+        links.push(resetEntriesLink.toString())
+
+        return links.join("\n")
+    }
+
+    private _formatSecondsToTime(time: Seconds) {
+        const flooredTime = Math.floor(time)
+        if (flooredTime < 60) return flooredTime
+        const minutes = Math.floor(flooredTime / 60)
+        const seconds = Math.floor(flooredTime % 60)
+
+        return `${minutes}:${seconds}`
     }
 }
 

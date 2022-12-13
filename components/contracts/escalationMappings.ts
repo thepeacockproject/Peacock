@@ -430,14 +430,6 @@ export const escalationMappings: {
         3: "f7ad71b6-9553-4d58-86dc-e3e288849849",
     },
     /**
-     * The Barbegue Befuddlement
-     */
-    "448d89e8-2026-43e3-86f0-205018cbd87e": {
-        1: "b82fd894-c12c-44e9-99fd-07b860b76c72",
-        2: "2d1bada4-aa46-4954-8cf5-684989f1668a",
-        3: "519c097f-2e1f-48f2-8f9d-3c76223cc950",
-    },
-    /**
      * The Pirates Problem
      */
     "f19f7ac8-39ec-498b-aa23-44c8e75d8693": {
