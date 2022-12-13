@@ -38,6 +38,7 @@ import type {
     PlayNextGetCampaignsHookReturn,
     RequestWithJwt,
     S2CEventWithTimestamp,
+    SMFLastDeploy,
     Unlockable,
     UserCentricContract,
 } from "./types/types"
@@ -416,9 +417,9 @@ export class Controller {
 
         if (modFrameworkDataPath && existsSync(modFrameworkDataPath)) {
             this.installedMods = (
-                parse(readFileSync(modFrameworkDataPath!).toString()) as {
-                    loadOrder?: string[]
-                }
+                parse(
+                    readFileSync(modFrameworkDataPath!).toString(),
+                ) as SMFLastDeploy
             )?.loadOrder as readonly string[]
             return
         }
@@ -478,6 +479,59 @@ export class Controller {
 
         this._addElusiveTargets()
         this.index()
+
+        if (modFrameworkDataPath && existsSync(modFrameworkDataPath)) {
+            log(
+                LogLevel.INFO,
+                "Simple Mod Framework installed - using the data it outputs.",
+            )
+
+            const lastServerSideData = (
+                parse(
+                    readFileSync(modFrameworkDataPath!).toString(),
+                ) as SMFLastDeploy
+            ).lastServerSideStates
+
+            if (lastServerSideData.unlockables) {
+                this.configManager.configs["allunlockables"] =
+                    lastServerSideData.unlockables.slice(1)
+            }
+
+            if (lastServerSideData.contracts) {
+                for (const [contractId, contractData] of Object.entries(
+                    lastServerSideData.contracts,
+                )) {
+                    this.contracts.set(contractId, contractData)
+                }
+            }
+
+            if (lastServerSideData.blobs) {
+                menuSystemDatabase.hooks.getConfig.tap(
+                    "SMFBlobs",
+                    (name, gameVersion) => {
+                        if (
+                            gameVersion === "h3" &&
+                            (lastServerSideData.blobs[name] ||
+                                lastServerSideData.blobs[name.slice(1)]) // leading slash is not included in SMF blobs
+                        ) {
+                            return parse(
+                                readFileSync(
+                                    join(
+                                        process.env.LOCALAPPDATA,
+                                        "Simple Mod Framework",
+                                        "blobs",
+                                        lastServerSideData.blobs[name] ||
+                                            lastServerSideData.blobs[
+                                                name.slice(1)
+                                            ],
+                                    ),
+                                ).toString(),
+                            )
+                        }
+                    },
+                )
+            }
+        }
 
         await this._loadPlugins()
 
