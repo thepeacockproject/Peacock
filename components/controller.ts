@@ -38,6 +38,7 @@ import type {
     PlayNextGetCampaignsHookReturn,
     RequestWithJwt,
     S2CEventWithTimestamp,
+    SMFLastDeploy,
     Unlockable,
     UserCentricContract,
 } from "./types/types"
@@ -416,9 +417,9 @@ export class Controller {
 
         if (modFrameworkDataPath && existsSync(modFrameworkDataPath)) {
             this.installedMods = (
-                parse(readFileSync(modFrameworkDataPath!).toString()) as {
-                    loadOrder?: string[]
-                }
+                parse(
+                    readFileSync(modFrameworkDataPath!).toString(),
+                ) as SMFLastDeploy
             )?.loadOrder as readonly string[]
             return
         }
@@ -486,15 +487,9 @@ export class Controller {
             )
 
             const lastServerSideData = (
-                parse(readFileSync(modFrameworkDataPath!).toString()) as {
-                    lastServerSideStates: {
-                        unlockables?: Unlockable[]
-                        contracts?: {
-                            [k: string]: MissionManifest
-                        }
-                        blobs?: Record<string, string>
-                    }
-                }
+                parse(
+                    readFileSync(modFrameworkDataPath!).toString(),
+                ) as SMFLastDeploy
             ).lastServerSideStates
 
             if (lastServerSideData.unlockables) {
