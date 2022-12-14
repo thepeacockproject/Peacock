@@ -79,14 +79,14 @@ export function EscalationLevelPicker({
                 },
             })
             .then((value) => {
-                if (value.data.success){
+                if (value.data.success) {
                     console.debug("Changes made. ")
                     setProgressWeb(fork)
                 } else {
-                    alert("Error: "+value.data.error)
-                    console.debug("Error: "+value.data.error)
+                    alert("Error: " + value.data.error)
+                    console.debug("Error: " + value.data.error)
                 }
-            } )
+            })
             .catch(console.error)
     }
 
