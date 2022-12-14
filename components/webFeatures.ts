@@ -171,7 +171,10 @@ webFeaturesRouter.get(
         }
         log(
             LogLevel.INFO,
-            "Setting the level of escalation "+req.query.id+" to " + req.query.level,
+            "Setting the level of escalation " +
+                req.query.id +
+                " to " +
+                req.query.level,
         )
         const read = getUserData(req.query.user, req.query.gv)
 
