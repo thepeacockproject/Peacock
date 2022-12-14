@@ -54,7 +54,7 @@ webFeaturesRouter.get(
     "/local-users",
     (req: Request<unknown, unknown, unknown, { gv: GameVersion }>, res) => {
         if (!req.query.gv || !["h1", "h2", "h3"].includes(req.query.gv ?? null)) {
-            formErrorMessage(res,"The request must contain a valid game version among \"h1\", \"h2\", and \"h3\".")
+            res.json([]) 
             return 
         }
 
