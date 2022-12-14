@@ -26,6 +26,7 @@ import { getUserData, loadUserData, writeUserData } from "./databaseHandler"
 import { readdirSync } from "fs"
 import { getLevelCount } from "./contracts/escalations/escalationService"
 import { controller } from "./controller"
+import { log, LogLevel } from "./loggingInterop"
 
 const webFeaturesRouter = Router()
 
@@ -140,8 +141,6 @@ webFeaturesRouter.get(
             return
         }
 
-        console.log("Setting level to " + req.query.level)
-
         if (!req.query.id || !uuidRegex.test(req.query.id)) {
             formErrorMessage(
                 res,
@@ -170,6 +169,10 @@ webFeaturesRouter.get(
             )
             return
         }
+        log(
+            LogLevel.INFO,
+            "Setting the level of escalation "+req.query.id+" to " + req.query.level,
+        )
         const read = getUserData(req.query.user, req.query.gv)
 
         read.Extensions.PeacockEscalations[req.query.id] = parseInt(
