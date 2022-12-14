@@ -41,12 +41,14 @@ if (PEACOCK_DEV) {
         next()
     })
 }
+
 function formErrorMessage(res: Response, message: string): void {
     res.json({
         success: false,
         error: message,
     })
 }
+
 webFeaturesRouter.get("/codenames", (req, res) => {
     res.json(getConfig("EscalationCodenames", false))
 })
@@ -159,9 +161,10 @@ webFeaturesRouter.get(
             formErrorMessage(res, "Unknown escalation.")
             return
         }
+
         if (
             getLevelCount(controller.escalationMappings[req.query.id]) <
-            parseInt(req.query.level)
+            parseInt(req.query.level, 10)
         ) {
             formErrorMessage(
                 res,
@@ -169,12 +172,10 @@ webFeaturesRouter.get(
             )
             return
         }
+
         log(
             LogLevel.INFO,
-            "Setting the level of escalation " +
-                req.query.id +
-                " to " +
-                req.query.level,
+            `Setting the level of escalation ${req.query.id} to ${req.query.level}`,
         )
         const read = getUserData(req.query.user, req.query.gv)
 
