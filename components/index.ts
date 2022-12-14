@@ -127,8 +127,9 @@ app.use("/_wf", webFeaturesRouter)
 
 app.get("/", (req: Request, res) => {
     if (PEACOCK_DEV) {
-        res.send("dev active, you need to access the UI from port 3000")
-    } else {
+        res.send("<html lang=\"en\">PEACOCKDEV active, please run \"npm run webui start\" to start the web UI on port 3000 and access it there.</html>")
+    } 
+    else {
         const data = readFileSync("webui/dist/index.html").toString()
 
         res.contentType("text/html")
