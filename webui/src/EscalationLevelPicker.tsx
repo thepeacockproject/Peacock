@@ -83,6 +83,7 @@ export function EscalationLevelPicker({
                     console.debug("Changes made. ")
                     setProgressWeb(fork)
                 } else {
+                    alert("Error: "+value.data.error)
                     console.debug("Error: "+value.data.error)
                 }
             } )
