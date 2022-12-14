@@ -24,6 +24,9 @@ import { join } from "path"
 import { uuidRegex } from "./utils"
 import { getUserData, loadUserData, writeUserData } from "./databaseHandler"
 import { readdirSync } from "fs"
+import { getLevelCount } from "./contracts/escalations/escalationService"
+import { controller } from "./controller"
+import { log, LogLevel } from "./loggingInterop"
 
 const webFeaturesRouter = Router()
 
@@ -39,6 +42,13 @@ if (PEACOCK_DEV) {
     })
 }
 
+function formErrorMessage(res: Response, message: string): void {
+    res.json({
+        success: false,
+        error: message,
+    })
+}
+
 webFeaturesRouter.get("/codenames", (req, res) => {
     res.json(getConfig("EscalationCodenames", false))
 })
@@ -50,7 +60,7 @@ webFeaturesRouter.get(
             !req.query.gv ||
             !["h1", "h2", "h3"].includes(req.query.gv ?? null)
         ) {
-            res.json({ error: "bad gv" })
+            res.json([])
             return
         }
 
@@ -89,12 +99,15 @@ function validateUserAndGv(
     res: Response,
 ): boolean {
     if (!req.query.gv || !["h1", "h2", "h3"].includes(req.query.gv ?? null)) {
-        res.json({ error: "bad gv" })
+        formErrorMessage(
+            res,
+            'The request must contain a valid game version among "h1", "h2", and "h3".',
+        )
         return false
     }
 
     if (!req.query.user || !uuidRegex.test(req.query.user)) {
-        res.json({ error: "bad user" })
+        formErrorMessage(res, "The request must contain the uuid of a user.")
         return false
     }
 
@@ -115,24 +128,55 @@ webFeaturesRouter.get(
         if (!validateUserAndGv(req, res)) {
             return
         }
-
-        if (!req.query.level && !isNaN(parseInt(req.query.level))) {
-            res.json({ error: "bad level" })
+        if (!req.query.level) {
+            formErrorMessage(
+                res,
+                "The request must contain the level to set the escalation to.",
+            )
+            return
+        }
+        if (
+            isNaN(parseInt(req.query.level)) ||
+            parseInt(req.query.level) <= 0
+        ) {
+            formErrorMessage(res, "The level must be a positive integer.")
             return
         }
 
-        if (!req.query.id && !uuidRegex.test(req.query.id)) {
-            res.json({ error: "bad id" })
+        if (!req.query.id || !uuidRegex.test(req.query.id)) {
+            formErrorMessage(
+                res,
+                "The request must contain the uuid of an escalation.",
+            )
             return
         }
 
         try {
             await loadUserData(req.query.user, req.query.gv)
         } catch (e) {
-            res.json({ error: "failed to load user data" })
+            formErrorMessage(res, "Failed to load user data.")
+            return
+        }
+        if (controller.escalationMappings[req.query.id] === undefined) {
+            formErrorMessage(res, "Unknown escalation.")
             return
         }
 
+        if (
+            getLevelCount(controller.escalationMappings[req.query.id]) <
+            parseInt(req.query.level, 10)
+        ) {
+            formErrorMessage(
+                res,
+                "Cannot exceed the maximum level for this escalation!",
+            )
+            return
+        }
+
+        log(
+            LogLevel.INFO,
+            `Setting the level of escalation ${req.query.id} to ${req.query.level}`,
+        )
         const read = getUserData(req.query.user, req.query.gv)
 
         read.Extensions.PeacockEscalations[req.query.id] = parseInt(
@@ -163,7 +207,7 @@ webFeaturesRouter.get(
         try {
             await loadUserData(req.query.user, req.query.gv)
         } catch (e) {
-            res.json({ error: "failed to load user data" })
+            formErrorMessage(res, "Failed to load user data.")
             return
         }
 

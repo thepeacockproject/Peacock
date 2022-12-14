@@ -78,10 +78,18 @@ export function EscalationLevelPicker({
                     level: fork[id],
                 },
             })
-            .then(() => console.debug("Changes made"))
+            .then((value) => {
+                let message: string
+                if (value.data.success) {
+                    message = "Changes made. "
+                    setProgressWeb(fork)
+                } else {
+                    message = "Error: " + value.data.error
+                    alert(message)
+                }
+                return console.debug(message)
+            })
             .catch(console.error)
-
-        setProgressWeb(fork)
     }
 
     //#region Bootleg column paginator
