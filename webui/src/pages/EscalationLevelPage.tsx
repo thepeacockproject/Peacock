@@ -23,7 +23,7 @@ import { baseURL, fetcher, IUser } from "../utils"
 import { SelectUser } from "../SelectUser"
 import { GameVersionTabs } from "../components/GameVersionTabs"
 import { EscalationLevelPicker } from "../EscalationLevelPicker"
-export type EscalationGroup = Record<any, string>
+export type EscalationGroup = Record<number | string, string>
 
 export function EscalationLevelPage() {
     const [user, setUser] = React.useState<string | undefined>(undefined)
@@ -88,7 +88,11 @@ export function EscalationLevelPage() {
                     !isReadyToSelectUser &&
                     user && (
                         <EscalationLevelPicker
-                            codenames={codenameData as { [id: string]: EscalationGroup }}
+                            codenames={
+                                codenameData as {
+                                    [id: string]: EscalationGroup
+                                }
+                            }
                             gv={gameVersion}
                             user={user!}
                         />

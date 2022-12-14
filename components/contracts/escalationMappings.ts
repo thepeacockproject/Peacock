@@ -20,7 +20,7 @@
  * An escalation group.
  * Format: level number -> contract ID.
  */
-export type EscalationGroup = Record<any, string>
+export type EscalationGroup = Record<number | string, string>
 
 /*
  * /profiles/pages/Planning                                     -> type = "escalation", New escalation only values
@@ -42,8 +42,8 @@ export const escalationMappings: {
         1: "5452c904-e7e2-4cf4-939c-d3b41dd8dfb8",
         2: "a9e69460-73f2-4928-806d-f79d9e6368bc",
         3: "f5ebd915-3fc8-4cb7-95fd-f666f98e8b45",
-        "codename": "Grass snake",
-        "name": "Berlin Egg Hunt",
+        codename: "Grass snake",
+        name: "Berlin Egg Hunt",
     },
     /**
      * The Dexter Discordance
@@ -52,8 +52,8 @@ export const escalationMappings: {
         1: "d5e97d48-e58b-4d43-be35-ec29a51df452",
         2: "3e94d080-c6e4-4a2d-9a7d-74322440c877",
         3: "5db4c764-7ab7-40c1-8688-e2b98176fa35",
-        "codename": "Tumbleweed",
-        "name": "The Dexter Discordance",
+        codename: "Tumbleweed",
+        name: "The Dexter Discordance",
     },
     /**
      * The KOats Conspiracy
@@ -70,8 +70,8 @@ export const escalationMappings: {
         1: "645c9dd8-19e6-4cce-87ab-0e731fbaeab9",
         2: "20156bab-35f4-4a61-96f8-271041e38bf6",
         3: "40651beb-edaa-41d0-aa9d-6bd4a14a8f81",
-        "codename": "Bellflower",
-        "name": "The Proloff Parable",
+        codename: "Bellflower",
+        name: "The Proloff Parable",
     },
     /**
      * The Treasonous Mimicry

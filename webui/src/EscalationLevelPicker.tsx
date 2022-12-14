@@ -96,7 +96,7 @@ export function EscalationLevelPicker({
     const rows: React.ReactElement[][] = [[]]
     let latestRow = 0
 
-    for (let id in codenames) {
+    for (const id in codenames) {
         const comp = (
             <div className="col col--4" key={codenames[id].codename}>
                 <div className="card">
