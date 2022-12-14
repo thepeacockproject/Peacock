@@ -17,7 +17,7 @@
  */
 
 import { Request, Response, Router } from "express"
-import { getConfig } from "./configSwizzleManager"
+import { escalationMappings } from "./contracts/escalationMappings"
 import { readFileSync } from "atomically"
 import { GameVersion, UserProfile } from "./types/types"
 import { join } from "path"
@@ -50,7 +50,7 @@ function formErrorMessage(res: Response, message: string): void {
 }
 
 webFeaturesRouter.get("/codenames", (req, res) => {
-    res.json(getConfig("EscalationCodenames", false))
+    res.json(escalationMappings)
 })
 
 webFeaturesRouter.get(

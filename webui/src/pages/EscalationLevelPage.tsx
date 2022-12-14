@@ -23,15 +23,7 @@ import { baseURL, fetcher, IUser } from "../utils"
 import { SelectUser } from "../SelectUser"
 import { GameVersionTabs } from "../components/GameVersionTabs"
 import { EscalationLevelPicker } from "../EscalationLevelPicker"
-
-export interface CodenameMeta {
-    readonly codename: string
-    readonly name: string
-    /**
-     * Escalation group ID.
-     */
-    readonly id?: string
-}
+export type EscalationGroup = Record<any, string>
 
 export function EscalationLevelPage() {
     const [user, setUser] = React.useState<string | undefined>(undefined)
@@ -96,7 +88,7 @@ export function EscalationLevelPage() {
                     !isReadyToSelectUser &&
                     user && (
                         <EscalationLevelPicker
-                            codenames={codenameData as readonly CodenameMeta[]}
+                            codenames={codenameData as { [id: string]: EscalationGroup }}
                             gv={gameVersion}
                             user={user!}
                         />

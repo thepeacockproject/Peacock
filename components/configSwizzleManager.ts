@@ -99,7 +99,6 @@ import MasteryUnlockablesTemplate from "../static/MasteryUnlockablesTemplate.jso
 import SniperLoadouts from "../static/SniperLoadouts.json"
 import Scpcallunlockables from "../static/Scpcallunlockables.json"
 import DiscordRichAssetsForBricks from "../static/DiscordRichAssetsForBricks.json"
-import EscalationCodenames from "../static/EscalationCodenames.json"
 import scoreoverviewtemplate from "../static/scoreoverviewtemplate.json"
 import PeacockGameChangerProperties from "../static/PeacockGameChangerProperties.json"
 import MultiplayerPresets from "../static/MultiplayerPresets.json"
@@ -189,7 +188,6 @@ const configs: Record<string, unknown> = {
     SniperLoadouts,
     Scpcallunlockables,
     DiscordRichAssetsForBricks,
-    EscalationCodenames,
     scoreoverviewtemplate,
     PeacockGameChangerProperties,
     MultiplayerPresets,

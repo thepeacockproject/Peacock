@@ -17,12 +17,12 @@
  */
 
 import * as React from "react"
-import { CodenameMeta } from "./pages/EscalationLevelPage"
+import { EscalationGroup } from "./pages/EscalationLevelPage"
 import { produce } from "immer"
 import { axiosClient } from "./utils"
 
 export interface EscalationLevelPickerProps {
-    codenames: readonly CodenameMeta[]
+    codenames: { [id: string]: EscalationGroup }
     user: string
     gv: number
 }
@@ -96,36 +96,32 @@ export function EscalationLevelPicker({
     const rows: React.ReactElement[][] = [[]]
     let latestRow = 0
 
-    for (const codename of codenames) {
-        if (!codename.id) {
-            continue
-        }
-
+    for (let id in codenames) {
         const comp = (
-            <div className="col col--4" key={codename.codename}>
+            <div className="col col--4" key={codenames[id].codename}>
                 <div className="card">
                     <div className="card__header">
-                        <h3>{codename.name}</h3>
+                        <h3>{codenames[id].name}</h3>
                     </div>
                     <div className="card__body">
                         <ul className="tabs">
                             <li className="tabs__item elp-tab">
                                 <button
                                     className="button button--sm button--danger"
-                                    onClick={() => onChange(codename.id!, "-")}
+                                    onClick={() => onChange(id!, "-")}
                                 >
                                     -
                                 </button>
                             </li>
                             <li className="tabs__item elp-tab">
                                 <p className="elp-tab">
-                                    Current level: {progress[codename.id!] ?? 1}
+                                    Current level: {progress[id!] ?? 1}
                                 </p>
                             </li>
                             <li className="tabs__item elp-tab">
                                 <button
                                     className="button button--sm button--success"
-                                    onClick={() => onChange(codename.id!, "+")}
+                                    onClick={() => onChange(id!, "+")}
                                 >
                                     +
                                 </button>
