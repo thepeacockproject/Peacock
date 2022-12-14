@@ -141,8 +141,12 @@ webFeaturesRouter.get(
             formErrorMessage(res,"Failed to load user data.")
             return
         }
+        if (controller.escalationMappings[req.query.id]==undefined) {
+            formErrorMessage(res,"Unknown escalation.")
+            return
+        }
         if (getLevelCount(controller.escalationMappings[req.query.id]) < parseInt(req.query.level)) {
-            formErrorMessage(res,"The level is larger than the maximum level for this escalation.")
+            formErrorMessage(res,"Cannot exceed the maximum level for this escalation!")
             return
         }
         const read = getUserData(req.query.user, req.query.gv)
