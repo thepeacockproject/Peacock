@@ -40,7 +40,7 @@ if (PEACOCK_DEV) {
         next()
     })
 }
-function formErrorMessage(res: Response, message: String): void {
+function formErrorMessage(res: Response, message: string): void {
     res.json({
         success: false,
         error: message,
@@ -156,7 +156,7 @@ webFeaturesRouter.get(
             formErrorMessage(res, "Failed to load user data.")
             return
         }
-        if (controller.escalationMappings[req.query.id] == undefined) {
+        if (controller.escalationMappings[req.query.id] === undefined) {
             formErrorMessage(res, "Unknown escalation.")
             return
         }

@@ -79,13 +79,15 @@ export function EscalationLevelPicker({
                 },
             })
             .then((value) => {
+                let message: string
                 if (value.data.success) {
-                    console.debug("Changes made. ")
+                    message = "Changes made. "
                     setProgressWeb(fork)
                 } else {
-                    alert("Error: " + value.data.error)
-                    console.debug("Error: " + value.data.error)
+                    message = "Error: " + value.data.error
+                    alert(message)
                 }
+                return console.debug(message)
             })
             .catch(console.error)
     }
