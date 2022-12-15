@@ -95,8 +95,13 @@ export function EscalationLevelPicker({
     //#region Bootleg column paginator
     const rows: React.ReactElement[][] = [[]]
     let latestRow = 0
-
     for (const id in codenames) {
+        if (codenames[id].codename === undefined) {
+            codenames[id].codename = id
+        }
+        if (codenames[id].name === undefined) {
+            codenames[id].name = id
+        }
         const comp = (
             <div className="col col--4" key={codenames[id].codename}>
                 <div className="card">
