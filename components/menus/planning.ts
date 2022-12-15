@@ -76,7 +76,7 @@ export async function planningView(
 
         // now reassign properties and continue
         req.query.contractid =
-            controller.escalationMappings[escalationGroupId]["1"]
+            controller.escalationMappings.get(escalationGroupId)["1"]
     }
 
     const contractData =
@@ -120,7 +120,7 @@ export async function planningView(
         groupData.CompletedLevels = done ? p : p - 1
         groupData.Completed = done
         groupData.TotalLevels = getLevelCount(
-            controller.escalationMappings[escalationGroupId],
+            controller.resolveContract(escalationGroupId),
         )
         groupData.BestScore = 0
         groupData.BestPlayer = nilUuid
@@ -266,7 +266,7 @@ export async function planningView(
             ElusiveContractState: "",
             UserCentric: userCentric,
             IsFirstInGroup: escalation
-                ? controller.escalationMappings[escalationGroupId]["1"] ===
+                ? controller.escalationMappings.get(escalationGroupId)["1"] ===
                   req.query.contractid
                 : true,
             Creator: creatorProfile,

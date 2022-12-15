@@ -64,7 +64,6 @@ import * as hooksImpl from "./hooksImpl"
 import { AsyncSeriesHook, SyncBailHook, SyncHook } from "./hooksImpl"
 import * as hitsCategoryServiceMod from "./contracts/hitsCategoryService"
 import { MenuSystemDatabase, menuSystemDatabase } from "./menus/menuSystem"
-import { escalationMappings } from "./contracts/escalationMappings"
 import { parse } from "json5"
 import { userAuths } from "./officialServerAuth"
 // @ts-expect-error Ignore JSON import
@@ -317,6 +316,14 @@ export const validateMission = (m: MissionManifest): boolean => {
     return true
 }
 
+const internalContracts: Record<string, MissionManifest> = {}
+
+function registerInternals(contracts: MissionManifest[]): void {
+    for (const contract of contracts) {
+        internalContracts[contract.Metadata.Id] = contract
+    }
+}
+
 const modFrameworkDataPath: string | false =
     (process.env.LOCALAPPDATA &&
         join(
@@ -380,7 +387,6 @@ export class Controller {
             boolean
         >
     }
-    public escalationMappings = escalationMappings
     public configManager: typeof configManagerType = {
         getConfig,
         configs,
@@ -400,7 +406,6 @@ export class Controller {
      */
     public readonly installedMods: readonly string[]
     private _pubIdToContractId: Map<string, string> = new Map()
-    private _internalContracts: MissionManifest[]
     /** Internal elusive target contracts - only accessible during bootstrap. */
     private _internalElusives: MissionManifest[] | undefined
 
@@ -631,15 +636,14 @@ export class Controller {
         if (!id) {
             return undefined
         }
+
         const optionalPluginJson = this.hooks.getContractManifest.call(id)
 
         if (optionalPluginJson) {
             return fastClone(optionalPluginJson)
         }
 
-        const registryJson = this._internalContracts.find(
-            (j) => j.Metadata.Id === id,
-        )
+        const registryJson: MissionManifest | undefined = internalContracts[id]
 
         if (registryJson) {
             const dereferenced: MissionManifest = fastClone(registryJson)
@@ -674,16 +678,13 @@ export class Controller {
             return
         }
 
-        this.hooks.getContractManifest.tap(
-            `RegisterContract: ${manifest.Metadata.Id}`,
-            (id) => {
-                if (id === manifest.Metadata.Id) {
-                    return manifest
-                }
+        this.hooks.getContractManifest.tap(manifest.Metadata.Id, (id) => {
+            if (id === manifest.Metadata.Id) {
+                return manifest
+            }
 
-                return undefined
-            },
-        )
+            return undefined
+        })
     }
 
     /**
@@ -702,22 +703,11 @@ export class Controller {
 
         fixedLevels.forEach((level) => this.addMission(level))
 
-        if (!this.missionsInLocations.escalations[locationId]) {
-            this.missionsInLocations.escalations[locationId] = []
-        }
+        this.missionsInLocations.escalations[locationId] ??= []
 
         this.missionsInLocations.escalations[locationId].push(groupId)
 
-        const escalationGroup = {}
-
-        let i = 0
-
-        while (i + 1 <= fixedLevels.length) {
-            escalationGroup[i + 1] = fixedLevels[i].Metadata.Id
-            i++
-        }
-
-        this.escalationMappings[groupId] = escalationGroup
+        this.scanForGroups()
     }
 
     /**
@@ -823,8 +813,8 @@ export class Controller {
      */
     _addElusiveTargets(): void {
         if (getFlag("elusivesAreShown") === true) {
-            this._internalContracts.push(
-                ...this._internalElusives!.map((elusive) => {
+            registerInternals(
+                this._internalElusives!.map((elusive) => {
                     const e = { ...elusive }
 
                     assert.ok(e.Data.Objectives, "no objectives on ET")
@@ -849,7 +839,7 @@ export class Controller {
             return
         }
 
-        this._internalContracts.push(...this._internalElusives!)
+        registerInternals(this._internalElusives!)
         this._internalElusives = undefined
     }
 
@@ -1125,8 +1115,50 @@ export class Controller {
             el: MissionManifest[]
         }
 
-        this._internalContracts = decompressed.b
+        registerInternals(decompressed.b)
         this._internalElusives = decompressed.el
+        this.scanForGroups()
+    }
+
+    scanForGroups(): void {
+        let groupCount = 0
+
+        thisGroup: for (const contractId of new Set<string>([
+            ...Object.keys(internalContracts),
+            ...this.hooks.getContractManifest.allTapNames,
+        ])) {
+            const contract = this.resolveContract(contractId)
+
+            if (!contract?.Metadata?.GroupDefinition) {
+                continue
+            }
+
+            const escalationGroup: Record<number, string> = {}
+
+            let i = 0
+
+            const order = contract.Metadata.GroupDefinition.Order
+
+            while (i + 1 <= order.length) {
+                const next = this.resolveContract(order[i])
+
+                if (!next) {
+                    log(
+                        LogLevel.ERROR,
+                        `Could not find next contract (${order[i]}) in group ${contractId}!`,
+                    )
+                    break thisGroup
+                }
+
+                escalationGroup[i + 1] = next.Metadata.Id
+                i++
+            }
+
+            this.escalationMappings.set(contract.Metadata.Id, escalationGroup)
+            groupCount++
+        }
+
+        log(LogLevel.DEBUG, `Discovered ${groupCount} escalation groups.`)
     }
 }
 
@@ -1153,27 +1185,6 @@ export function isPlugin(name: string, extension: string): boolean {
         // ends with Plugin.js, but isn't just Plugin.js
         name.endsWith(`Plugin.${extension}`)
     )
-}
-
-/**
- * Returns if the specified repository ID is a suit.
- *
- * @param repoId The repository ID.
- * @param gameVersion The game version.
- * @returns If the repository ID points to a suit.
- */
-export function isSuit(repoId: string, gameVersion: GameVersion): boolean {
-    const suitsToTypeMap = new Map<string, string>()
-
-    ;(getVersionedConfig("allunlockables", gameVersion, false) as Unlockable[])
-        .filter((unlockable) => unlockable.Type === "disguise")
-        .forEach((u) =>
-            suitsToTypeMap.set(u.Properties.RepositoryId, u.Subtype),
-        )
-
-    return suitsToTypeMap.has(repoId)
-        ? suitsToTypeMap.get(repoId) !== "disguise"
-        : false
 }
 
 /**
