@@ -113,35 +113,6 @@ export async function packContractsAndChallenges() {
             delete json.Metadata.CodeName_Hint
         }
 
-        // dev scope
-        if (json.Metadata.PublicId?.startsWith("0")) {
-            delete json.Metadata.PublicId
-        }
-
-        if (json.Metadata.LastUpdate) {
-            delete json.Metadata.LastUpdate
-        }
-
-        if (json.Metadata.Release) {
-            delete json.Metadata.Release
-        }
-
-        if (json.Metadata.ServerVersion) {
-            delete json.Metadata.ServerVersion
-        }
-
-        if (json.Metadata.GameVersion) {
-            delete json.Metadata.GameVersion
-        }
-
-        if (json.Metadata.CreationTimestamp) {
-            delete json.Metadata.CreationTimestamp
-        }
-
-        if (json.Metadata.CodeName_Hint) {
-            delete json.Metadata.CodeName_Hint
-        }
-
         switch (json?.Metadata?.Type) {
             case "elusive":
                 el.push(json)
@@ -149,6 +120,7 @@ export async function packContractsAndChallenges() {
             default:
                 b.push(json)
         }
+    }
 
     const d = JSON.stringify({ b, el })
     const compressed = await promisify(brotliCompress)(d)
