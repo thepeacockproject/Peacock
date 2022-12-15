@@ -492,12 +492,12 @@ export class Controller {
                 ) as SMFLastDeploy
             ).lastServerSideStates
 
-            if (lastServerSideData.unlockables) {
+            if (lastServerSideData?.unlockables) {
                 this.configManager.configs["allunlockables"] =
                     lastServerSideData.unlockables.slice(1)
             }
 
-            if (lastServerSideData.contracts) {
+            if (lastServerSideData?.contracts) {
                 for (const [contractId, contractData] of Object.entries(
                     lastServerSideData.contracts,
                 )) {
@@ -505,7 +505,7 @@ export class Controller {
                 }
             }
 
-            if (lastServerSideData.blobs) {
+            if (lastServerSideData?.blobs) {
                 menuSystemDatabase.hooks.getConfig.tap(
                     "SMFBlobs",
                     (name, gameVersion) => {

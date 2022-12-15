@@ -1270,7 +1270,7 @@ export type ContractProgressionData = Record<string, string | number | boolean>
 /** SMF's lastDeploy.json */
 export interface SMFLastDeploy {
     loadOrder: string[]
-    lastServerSideStates: {
+    lastServerSideStates?: {
         unlockables?: Unlockable[]
         contracts?: {
             [k: string]: MissionManifest
