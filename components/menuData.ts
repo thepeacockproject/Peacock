@@ -20,6 +20,7 @@ import { Response, Router } from "express"
 import {
     contractCreationTutorialId,
     gameDifficulty,
+    isSuit,
     getMaxProfileLevel,
     PEACOCKVERSTRING,
     unlockOrderComparer,
@@ -31,7 +32,6 @@ import { getConfig, getVersionedConfig } from "./configSwizzleManager"
 import {
     contractIdToHitObject,
     controller,
-    isSuit,
     peacockRecentEscalations,
 } from "./controller"
 import { makeCampaigns } from "./menus/campaigns"
@@ -112,7 +112,7 @@ function dashEscalations(req: RequestWithJwt, res: Response) {
 
         const userCentric = generateUserCentric(
             controller.resolveContract(
-                controller.escalationMappings[groupId][level],
+                controller.escalationMappings.get(groupId)[level],
             )!,
             req.jwt.unique_name,
             req.gameVersion,
@@ -1729,10 +1729,7 @@ menuDataRouter.get("/contractcreation/create", (req: RequestWithJwt, res) => {
                             Outfit: {
                                 RepositoryId: km.OutfitRepoId,
                                 Required: true,
-                                IsHitmanSuit: isSuit(
-                                    km.OutfitRepoId,
-                                    req.gameVersion,
-                                ),
+                                IsHitmanSuit: isSuit(km.OutfitRepoId),
                             },
                         }
                     }),

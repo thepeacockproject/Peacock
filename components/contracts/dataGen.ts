@@ -221,7 +221,7 @@ export function generateUserCentric(
             // unknown to why
             uc.Data.EscalationCompletedLevels = p - 1
             uc.Data.EscalationTotalLevels = getLevelCount(
-                controller.escalationMappings[eGroupId],
+                controller.resolveContract(eGroupId),
             )
             uc.Data.InGroup = eGroupId
         }

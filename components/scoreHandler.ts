@@ -200,10 +200,7 @@ export function calculatePlaystyle(
         if (a.Score > b.Score) {
             return -1
         }
-        if (b.Score > a.Score) {
-            return 1
-        }
-        return 0
+        return b.Score > a.Score ? 1 : 0
     })
 
     return playstylesCopy
@@ -556,7 +553,7 @@ export async function missionEnd(
 
         if (
             userData.Extensions.PeacockEscalations[eGroupId] ===
-            getLevelCount(controller.escalationMappings[eGroupId])
+            getLevelCount(controller.resolveContract(eGroupId))
         ) {
             // we are on the final level, and the user completed this level
             if (
