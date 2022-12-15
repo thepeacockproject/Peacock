@@ -149,7 +149,6 @@ export async function packContractsAndChallenges() {
             default:
                 b.push(json)
         }
-    }
 
     const d = JSON.stringify({ b, el })
     const compressed = await promisify(brotliCompress)(d)
