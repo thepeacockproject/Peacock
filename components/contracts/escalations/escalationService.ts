@@ -176,7 +176,6 @@ export function getPlayEscalationInfo(
 
     return {
         InGroup: groupContractId,
-        Type: "escalation",
         NextContractId: nextContractId,
         GroupData: {
             Level: p,
