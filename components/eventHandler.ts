@@ -72,7 +72,7 @@ const pushMessageQueue = new Map<string, PushMessage[]>()
  * It will be sent back the next time the client calls `SaveAndSynchronizeEvents4`.
  *
  * @param userId The push message's target user.
- * @param message The encoded push message to send.
+ * @param message The raw push message to send.
  * @see enqueueEvent
  * @author grappigegovert
  */
