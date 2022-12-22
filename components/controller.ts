@@ -771,6 +771,9 @@ export class Controller {
      * @internal
      */
     index(): void {
+        this.contracts.clear()
+        this._pubIdToContractId.clear()
+
         const contracts = readdirSync("contracts")
         contracts.forEach((i) => {
             if (!isContractFile(i)) {
@@ -788,7 +791,7 @@ export class Controller {
                 }
 
                 this.contracts.set(f.Metadata.Id, f)
-                if (f.Metadata.PublicId && f.Metadata.PublicId !== "") {
+                if (f.Metadata.PublicId) {
                     this._pubIdToContractId.set(
                         f.Metadata.PublicId,
                         f.Metadata.Id,

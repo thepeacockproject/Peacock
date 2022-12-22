@@ -45,6 +45,10 @@ function paginate<Element>(
         }
 
         for (let j = index; j < condition; j++) {
+            if (!elements[j]) {
+                break
+            }
+
             perPageArray.push(elements[j])
         }
 
