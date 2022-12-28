@@ -850,6 +850,13 @@ export class ChallengeService extends ChallengeRegistry {
         for (const depTreeId of this._dependencyTree.keys()) {
             const allDeps = this._dependencyTree.get(depTreeId)
 
+            if (depTreeId === challenge.Id) {
+                // we're checking the tree of the challenge that was just completed,
+                // so we need to skip it, or we'll get an infinite loop and hit
+                // the max call stack size
+                continue
+            }
+
             assert.ok(allDeps, `No dep tree for ${depTreeId}`)
 
             // check if the dependency tree is completed
