@@ -32,7 +32,7 @@ import {
 } from "../contracts/dataGen"
 import { getConfig } from "../configSwizzleManager"
 import { getUserData, writeUserData } from "../databaseHandler"
-import { nilUuid, unlockorderComparer } from "../utils"
+import { nilUuid, unlockOrderComparer } from "../utils"
 
 import type { Response } from "express"
 import { createInventory } from "../inventory"
@@ -314,7 +314,7 @@ export async function planningView(
                                   unlockable.Properties.Difficulty ===
                                   contractData.Metadata.Difficulty,
                           )
-                          .sort(unlockorderComparer),
+                          .sort(unlockOrderComparer),
             Location: sublocation,
             LoadoutData:
                 contractData.Metadata.Type === "sniper"
