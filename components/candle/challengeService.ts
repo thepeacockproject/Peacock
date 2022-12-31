@@ -859,6 +859,14 @@ export class ChallengeService extends ChallengeRegistry {
 
             assert.ok(allDeps, `No dep tree for ${depTreeId}`)
 
+            if (!allDeps.includes(challenge.Id)) {
+                // we don't care about this tree, it doesn't depend on the challenge
+                // note: without this check, a race condition can occur where two
+                // trees basically bounce back and forth between each other, causing
+                // an infinite loop
+                continue
+            }
+
             // check if the dependency tree is completed
             const completed = allDeps.every((depId) => {
                 const depProgression = this.getPersistentChallengeProgression(
