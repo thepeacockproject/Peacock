@@ -80,6 +80,7 @@ import { multiplayerRouter } from "./multiplayer/multiplayerService"
 import { multiplayerMenuDataRouter } from "./multiplayer/multiplayerMenuData"
 import { pack, unpack } from "msgpackr"
 import { liveSplitManager } from "./livesplit/liveSplitManager"
+import { cheapLoadUserData } from "./databaseHandler"
 
 // welcome to the bleeding edge
 setFlagsFromString("--harmony")
@@ -356,7 +357,18 @@ app.use(
 
             next()
         }),
-)
+).use(async (req: RequestWithJwt, _res, next): Promise<void> => {
+    if (!req.jwt) {
+        next()
+
+        return
+    }
+
+    // make sure the userdata is always loaded if a proper jwt token is available
+    await cheapLoadUserData(req.jwt.unique_name, req.gameVersion)
+
+    next()
+})
 
 function generateBlobConfig(req: RequestWithJwt) {
     return {
