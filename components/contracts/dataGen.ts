@@ -97,24 +97,39 @@ export function generateCompletionData(
     gameVersion: GameVersion,
     isParentLocation = false,
 ): CompletionData {
-    // TODO(v6/v7): fetch actual statistics from the user's profile.
-
     const subLocation = getSubLocationByName(subLocationId, gameVersion)
 
-    return {
-        Level: 20,
-        MaxLevel: 20,
-        XP: 0,
-        Completion: 1,
-        XpLeft: 6000,
-        Id: isParentLocation
-            ? subLocationId
-            : subLocation?.Properties?.ParentLocation,
-        SubLocationId: subLocation?.Id,
-        HideProgression: false,
-        IsLocationProgression: true,
-        Name: null,
+    const locationId = isParentLocation
+        ? subLocationId
+        : subLocation?.Properties?.ParentLocation
+
+    const completionData = controller.masteryService.getCompletionData(
+        locationId,
+        gameVersion,
+        userId,
+    )
+
+    if (!completionData) {
+        log(
+            LogLevel.DEBUG,
+            "Could not get CompletionData for location ${locationId}",
+        )
+
+        return <CompletionData>{
+            Level: 20,
+            MaxLevel: 20,
+            XP: 0,
+            Completion: 1,
+            XpLeft: 0,
+            Id: locationId,
+            SubLocationId: subLocation?.Id,
+            HideProgression: false,
+            IsLocationProgression: true,
+            Name: null,
+        }
     }
+
+    return completionData
 }
 
 /**
@@ -216,12 +231,14 @@ export function generateUserCentric(
  * @param objectives The objectives.
  * @param gameChangers The game changers.
  * @param displayOrder The order in which to display the objectives.
+ * @param IsEvergreenSafehouse Is the contract the safehouse?
  * @returns The converted objectives.
  */
 export function mapObjectives(
     objectives: MissionManifestObjective[],
     gameChangers: string[],
     displayOrder: GroupObjectiveDisplayOrderItem[],
+    IsEvergreenSafehouse = false,
 ): MissionManifestObjective[] {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const result = new Map<string, any>()
@@ -233,6 +250,7 @@ export function mapObjectives(
             true,
         )
         for (const gamechangerId of gameChangers) {
+            if (IsEvergreenSafehouse) break
             const gameChangerProps = gameChangerData[gamechangerId]
             if (gameChangerProps) {
                 if (gameChangerProps.IsHidden) {

@@ -310,6 +310,16 @@ export interface ServerToClientEvent<EventValue = unknown> {
     Origin?: string | null
 }
 
+export interface PlayerProfileView {
+    template: unknown
+    data: {
+        PlayerProfileXp: {
+            Total: number
+            Level: number
+        }
+    }
+}
+
 export interface UserProfile {
     Id: string
     LinkedAccounts: {
@@ -345,6 +355,12 @@ export interface UserProfile {
                  * The total amount of XP a user has obtained.
                  */
                 Total: number
+            }
+            Locations: {
+                [location: string]: {
+                    Xp: number
+                    Level: number
+                }
             }
         }
         defaultloadout?: {

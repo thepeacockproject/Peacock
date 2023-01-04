@@ -34,31 +34,37 @@ async function readJson(filePath) {
     return JSON.parse((await readFile(filePath)).toString())
 }
 
-export async function packContractsAndChallenges() {
-    const resources = join("resources", "challenges")
-
+async function createResourcesFolder(resources) {
     if (!existsSync(resources)) {
         await mkdir(resources)
     } else {
-        for (const crp of await readdir(resources)) {
-            await unlink(join(resources, crp))
+        for (const prp of await readdir(resources)) {
+            await unlink(join(resources, prp))
         }
     }
+}
+
+async function handleFile(resources, name, contents) {
+    const targetName = createHash("md5").update(name).digest("hex")
+
+    await writeFile(
+        join(resources, `${targetName}.prp`),
+        packer.pack(contents),
+    )
+}
+
+export async function packResources() {
+    const challengesResources = join("resources", "challenges")
+    await createResourcesFolder(challengesResources)
+
+    const masteryResources = join("resources", "mastery")
+    await createResourcesFolder(masteryResources)
 
     const start = Date.now()
 
     const contracts = glob.sync("contractdata/**/*.json")
     const b = []
     const el = []
-
-    const handleChallengeFile = async (name, contents) => {
-        const targetName = createHash("md5").update(name).digest("hex")
-
-        await writeFile(
-            join(resources, `${targetName}.crp`),
-            packer.pack(contents),
-        )
-    }
 
     for (const path of contracts) {
         const filename = basename(path)
@@ -78,9 +84,15 @@ export async function packContractsAndChallenges() {
 
         const json = await readJson(path)
 
-        if (filename.startsWith("_")) {
+        if (filename.endsWith("_CHALLENGES.json")) {
             // _LOCATION_CHALLENGES.json
-            await handleChallengeFile(filename + "#packed", json)
+            await handleFile(challengesResources, filename + "#packed", json)
+            continue
+        }
+
+        if (filename.endsWith("_MASTERY.json")) {
+            // _LOCATION_MASTERY.json
+            await handleFile(masteryResources, filename + "#packed", json)
             continue
         }
 
