@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type * as core from "express-serve-static-core"
-import { RequestWithJwt } from "components/types/types"
+import { RequestWithJwt } from "../../components/types/types"
 import { Mock } from "vitest"
 
 export function asMock<T>(value: T): Mock {
