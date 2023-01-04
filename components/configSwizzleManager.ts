@@ -95,6 +95,7 @@ import Videos from "../static/Videos.json"
 import ContractSearchPageTemplate from "../static/ContractSearchPageTemplate.json"
 import ContractSearchResponseTemplate from "../static/ContractSearchResponseTemplate.json"
 import LegacyDebriefingChallengesTemplate from "../static/LegacyDebriefingChallengesTemplate.json"
+import DebriefingChallengesTemplate from "../static/DebriefingChallengesTemplate.json"
 import MasteryUnlockablesTemplate from "../static/MasteryUnlockablesTemplate.json"
 import SniperLoadouts from "../static/SniperLoadouts.json"
 import Scpcallunlockables from "../static/Scpcallunlockables.json"
@@ -167,6 +168,7 @@ const configs: Record<string, unknown> = {
     LegacyLoadMenuTemplate,
     LegacyContractSearchResponseTemplate,
     LegacyDebriefingChallengesTemplate,
+    DebriefingChallengesTemplate,
     LegacyLookupContractByIdTemplate,
     EiderDashboard,
     PersistentBools,

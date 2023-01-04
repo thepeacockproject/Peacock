@@ -20,7 +20,7 @@ import { Response, Router } from "express"
 import {
     gameDifficulty,
     PEACOCKVERSTRING,
-    unlockorderComparer,
+    unlockOrderComparer,
     uuidRegex,
 } from "./utils"
 import { contractSessions, getSession } from "./eventHandler"
@@ -651,7 +651,7 @@ menuDataRouter.get(
                 .filter((unlockable) =>
                     pickupsInScene.includes(unlockable.Properties.RepositoryId),
                 )
-                .sort(unlockorderComparer),
+                .sort(unlockOrderComparer),
             UserCentric: generateUserCentric(
                 contractData,
                 req.jwt.unique_name,
@@ -731,7 +731,7 @@ menuDataRouter.get(
                         unlockable.Properties.RepositoryId!,
                     ),
                 )
-                .sort(unlockorderComparer),
+                .sort(unlockOrderComparer),
             UserCentric: generateUserCentric(
                 contractData,
                 req.jwt.unique_name,
@@ -1442,6 +1442,25 @@ menuDataRouter.post(
                     ErrorReason: "",
                     HasPrevious: false,
                     HasMore: false,
+                },
+            },
+        })
+    },
+)
+
+menuDataRouter.get(
+    "/DebriefingChallenges",
+    (req: RequestWithJwt<{ contractId: string }>, res) => {
+        res.json({
+            template: getConfig("DebriefingChallengesTemplate", false),
+            data: {
+                ChallengeData: {
+                    Children:
+                        controller.challengeService.getChallengeTreeForContract(
+                            req.query.contractId,
+                            req.gameVersion,
+                            req.jwt.unique_name,
+                        ),
                 },
             },
         })
