@@ -1448,6 +1448,25 @@ menuDataRouter.post(
     },
 )
 
+menuDataRouter.get(
+    "/DebriefingChallenges",
+    (req: RequestWithJwt<{ contractId: string }>, res) => {
+        res.json({
+            template: getConfig("DebriefingChallengesTemplate", false),
+            data: {
+                ChallengeData: {
+                    Children:
+                        controller.challengeService.getChallengeTreeForContract(
+                            req.query.contractId,
+                            req.gameVersion,
+                            req.jwt.unique_name,
+                        ),
+                },
+            },
+        })
+    },
+)
+
 menuDataRouter.get("/contractcreation/create", (req: RequestWithJwt, res) => {
     let cUuid = randomUUID()
     const createContractReturnTemplate = getConfig(
