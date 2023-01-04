@@ -286,7 +286,7 @@ export function handleAxiosError(error: AxiosError): void {
     }
 }
 
-export function unlockorderComparer(a: Unlockable, b: Unlockable): number {
+export function unlockOrderComparer(a: Unlockable, b: Unlockable): number {
     return (
         (a?.Properties?.UnlockOrder ?? Number.POSITIVE_INFINITY) -
             (b?.Properties?.UnlockOrder ?? Number.POSITIVE_INFINITY) || 0

@@ -242,3 +242,14 @@ export type BodyHiddenC2SEvent = ClientToServerEvent<{
     RepositoryId: RepositoryId
     ActorName: string
 }>
+
+export type AreaDiscoveredC2SEvent = ClientToServerEvent<{
+    RepositoryId: RepositoryId
+}>
+
+export type Dart_HitC2SEvent = ClientToServerEvent<{
+    IsTarget: boolean
+    RepositoryId: RepositoryId
+    ActorType: number
+    Sedative: "" | string
+}>
