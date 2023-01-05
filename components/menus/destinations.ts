@@ -19,7 +19,6 @@
 import { getConfig, getVersionedConfig } from "../configSwizzleManager"
 import type {
     CompletionData,
-    DestinationsMenuDataObject,
     GameLocationsData,
     GameVersion,
     MissionStory,
@@ -50,12 +49,6 @@ const missionStories = getConfig<Record<string, MissionStory>>(
 )
 
 export function destinationsMenu(req: RequestWithJwt): GameFacingDestination[] {
-    const destinations = getVersionedConfig<DestinationsMenuDataObject[]>(
-        "Destinations",
-        req.gameVersion,
-        false,
-    )
-
     const result: GameFacingDestination[] = []
     const userData = getUserData(req.jwt.unique_name, req.gameVersion)
     const locations = getVersionedConfig<PeacockLocationsData>(
@@ -63,13 +56,10 @@ export function destinationsMenu(req: RequestWithJwt): GameFacingDestination[] {
         req.gameVersion,
         true,
     )
-
-    for (const destination of destinations) {
-        const parent = locations.parents[destination.ParentId]
-
+    for (const [destination, parent] of Object.entries(locations.parents)) {
         parent.GameAsset = null
         parent.DisplayNameLocKey =
-            "UI_LOCATION_PARENT_" + destination.ParentId.substring(16) + "_NAME"
+            "UI_LOCATION_PARENT_" + destination.substring(16) + "_NAME"
 
         const template = {
             ChallengeCompletion: {
@@ -77,7 +67,7 @@ export function destinationsMenu(req: RequestWithJwt): GameFacingDestination[] {
                 CompletedChallengesCount: 0, // TODO: Hook this up to challenge counts.
             },
             CompletionData: generateCompletionData(
-                destination.ParentId,
+                destination,
                 req.jwt.unique_name,
                 req.gameVersion,
             ),

@@ -29,7 +29,6 @@ import FilterData from "../static/FilterData.json"
 import LocationsData from "../static/LocationsData.json"
 import GameChangerProperties from "../static/GameChangerProperties.json"
 import allunlockables from "../static/allunlockables.json"
-import Destinations from "../static/Destinations.json"
 import connectionConfigTemplate from "../static/config.json"
 import onlineconfig from "../static/onlineconfig.json"
 import privacypolicy from "../static/privacypolicy.json"
@@ -122,7 +121,6 @@ const configs: Record<string, unknown> = {
     LeaderboardEntriesTemplate,
     GameChangerProperties,
     allunlockables,
-    Destinations,
     config: connectionConfigTemplate,
     onlineconfig,
     privacypolicy,

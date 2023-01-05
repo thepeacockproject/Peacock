@@ -818,10 +818,6 @@ export interface MissionManifest {
     }
 }
 
-export type DestinationsMenuDataObject = {
-    ParentId: string
-}
-
 /**
  * A configuration that tells the game where it should connect to.
  * This config is the first thing that the game asks for when logging in.
