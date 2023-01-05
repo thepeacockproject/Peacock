@@ -310,6 +310,16 @@ export interface ServerToClientEvent<EventValue = unknown> {
     Origin?: string | null
 }
 
+export interface MissionStory {
+    CommonRepositoryId: RepositoryId
+    PreviouslyCompleted: boolean
+    IsMainOpportunity: boolean
+    Title: string
+    Summary: string
+    Briefing: string
+    Image: string
+}
+
 export interface UserProfile {
     Id: string
     LinkedAccounts: {
@@ -360,6 +370,9 @@ export interface UserProfile {
         gamepersistentdata: {
             __stats?: unknown
             PersistentBool: Record<string, unknown>
+        }
+        opportunityprogression: {
+            [opportunityId: RepositoryId]: boolean
         }
     }
     ETag: string | null

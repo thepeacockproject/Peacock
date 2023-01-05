@@ -33,7 +33,11 @@ import {
 import { extractToken, ServerVer } from "./utils"
 import { json as jsonMiddleware } from "body-parser"
 import { log, LogLevel } from "./loggingInterop"
-import { getContractSession, writeContractSession } from "./databaseHandler"
+import {
+    getContractSession,
+    getUserData,
+    writeContractSession,
+} from "./databaseHandler"
 import { controller } from "./controller"
 import { swapToLocationStatus } from "./discordRp"
 import { randomUUID } from "crypto"
@@ -53,6 +57,7 @@ import {
     KillC2SEvent,
     MurderedBodySeenC2SEvent,
     ObjectiveCompletedC2SEvent,
+    OpportunityEventsC2SEvent,
     PacifyC2SEvent,
     SecuritySystemRecorderC2SEvent,
     SetpiecesC2SEvent,
@@ -458,7 +463,7 @@ function saveEvents(
 ): string[] {
     const response: string[] = []
     const processed: string[] = []
-
+    const userData = getUserData(req.jwt.unique_name, req.gameVersion)
     events.forEach((event) => {
         const session = contractSessions.get(event.ContractSessionId)
 
@@ -719,6 +724,22 @@ function saveEvents(
                 }
                 break
             }
+            case "StartingSuit":
+                session.currentDisguise = event.Value as string
+                break
+            case "ContractFailed":
+                session.timerEnd = event.Timestamp
+                contractFailed(event, session)
+                break
+            case "OpportunityEvents": {
+                const val = (<OpportunityEventsC2SEvent>event).Value
+                const opportunities = userData.Extensions.opportunityprogression
+                if (val.Event === "Completed") {
+                    opportunities[val.RepositoryId] = true
+                }
+                break
+            }
+            // We don't care about events below this point.
             case "ItemPickedUp":
                 log(
                     LogLevel.INFO,
@@ -726,13 +747,6 @@ function saveEvents(
                         (<ItemPickedUpC2SEvent>event).Value.RepositoryId
                     }`,
                 )
-                break
-            case "StartingSuit":
-                session.currentDisguise = event.Value as string
-                break
-            case "ContractFailed":
-                session.timerEnd = event.Timestamp
-                contractFailed(event, session)
                 break
             case "setpieces":
                 log(
@@ -762,10 +776,7 @@ function saveEvents(
             case "NPC_Distracted":
             case "ShotsHit":
             case "FirstNonHeadshot":
-            case "OpportunityEvents":
             case "FirstMissedShot":
-                // we don't care about these
-                break
             default:
                 // no-op on our part
                 break
