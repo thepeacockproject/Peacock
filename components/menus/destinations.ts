@@ -48,6 +48,21 @@ const missionStories = getConfig<Record<string, MissionStory>>(
     false,
 )
 
+export function getDestinationCompletion(parent: Unlockable) {
+    return {
+        ChallengeCompletion: {
+            ChallengesCount: 0,
+            CompletedChallengesCount: 0, // TODO: Hook this up to challenge counts.
+        },
+        OpportunityStatistics: {
+            Count: parent.Opportunities,
+            Completed: 0,
+        },
+        LocationCompletionPercent: 0,
+        Location: parent,
+    }
+}
+
 export function destinationsMenu(req: RequestWithJwt): GameFacingDestination[] {
     const result: GameFacingDestination[] = []
     const userData = getUserData(req.jwt.unique_name, req.gameVersion)
@@ -61,24 +76,16 @@ export function destinationsMenu(req: RequestWithJwt): GameFacingDestination[] {
         parent.DisplayNameLocKey =
             "UI_LOCATION_PARENT_" + destination.substring(16) + "_NAME"
 
-        const template = {
-            ChallengeCompletion: {
-                ChallengesCount: 0,
-                CompletedChallengesCount: 0, // TODO: Hook this up to challenge counts.
+        const template: GameFacingDestination = {
+            ...getDestinationCompletion(parent),
+            ...{
+                CompletionData: generateCompletionData(
+                    destination,
+                    req.jwt.unique_name,
+                    req.gameVersion,
+                ),
             },
-            CompletionData: generateCompletionData(
-                destination,
-                req.jwt.unique_name,
-                req.gameVersion,
-            ),
-            OpportunityStatistics: {
-                Count: 0,
-                Completed: 0,
-            },
-            LocationCompletionPercent: 0,
-            Location: parent,
         }
-
         result.push(template)
     }
 

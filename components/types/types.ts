@@ -414,6 +414,7 @@ export interface NamespaceEntitlementEpic {
  */
 export interface Unlockable {
     Id: string
+    Opportunities?: number
     DisplayNameLocKey: string
     GameAsset: string | null
     Guid: string
