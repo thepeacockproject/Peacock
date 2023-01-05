@@ -16,18 +16,20 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { getVersionedConfig } from "../configSwizzleManager"
+import { getConfig, getVersionedConfig } from "../configSwizzleManager"
 import type {
     CompletionData,
     DestinationsMenuDataObject,
     GameLocationsData,
     GameVersion,
+    MissionStory,
     PeacockLocationsData,
     RequestWithJwt,
     Unlockable,
 } from "../types/types"
 import { controller } from "../controller"
 import { generateCompletionData } from "../contracts/dataGen"
+import { getUserData } from "components/databaseHandler"
 
 type GameFacingDestination = {
     ChallengeCompletion: {
@@ -42,6 +44,10 @@ type GameFacingDestination = {
     LocationCompletionPercent: number
     Location: Unlockable
 }
+const missionStories = getConfig<Record<string, MissionStory>>(
+    "MissionStories",
+    false,
+)
 
 export function destinationsMenu(req: RequestWithJwt): GameFacingDestination[] {
     const destinations = getVersionedConfig<DestinationsMenuDataObject[]>(
@@ -51,7 +57,7 @@ export function destinationsMenu(req: RequestWithJwt): GameFacingDestination[] {
     )
 
     const result: GameFacingDestination[] = []
-
+    const userData = getUserData(req.jwt.unique_name, req.gameVersion)
     const locations = getVersionedConfig<PeacockLocationsData>(
         "LocationsData",
         req.gameVersion,
