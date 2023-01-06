@@ -317,6 +317,7 @@ export interface MissionStory {
     Title: string
     Summary: string
     Briefing: string
+    Location: string
     Image: string
 }
 

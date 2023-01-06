@@ -820,7 +820,7 @@ menuDataRouter.get(
             data: {
                 Location: {},
                 MissionData: {
-                    ...getDestinationCompletion(locationData),
+                    ...getDestinationCompletion(locationData, req),
                     ...{ SubLocationMissionsData: [] },
                 },
                 ChallengeData: {

@@ -48,7 +48,19 @@ const missionStories = getConfig<Record<string, MissionStory>>(
     false,
 )
 
-export function getDestinationCompletion(parent: Unlockable) {
+export function getDestinationCompletion(
+    parent: Unlockable,
+    req: RequestWithJwt,
+) {
+    const userData = getUserData(req.jwt.unique_name, req.gameVersion)
+
+    let opportunityCompletedCount = 0
+    for (const ms in userData.Extensions.opportunityprogression) {
+        if (missionStories[ms].Location === parent.Id) {
+            opportunityCompletedCount++
+        }
+    }
+
     return {
         ChallengeCompletion: {
             ChallengesCount: 0,
@@ -56,7 +68,7 @@ export function getDestinationCompletion(parent: Unlockable) {
         },
         OpportunityStatistics: {
             Count: parent.Opportunities,
-            Completed: 0,
+            Completed: opportunityCompletedCount,
         },
         LocationCompletionPercent: 0,
         Location: parent,
@@ -65,7 +77,6 @@ export function getDestinationCompletion(parent: Unlockable) {
 
 export function destinationsMenu(req: RequestWithJwt): GameFacingDestination[] {
     const result: GameFacingDestination[] = []
-    const userData = getUserData(req.jwt.unique_name, req.gameVersion)
     const locations = getVersionedConfig<PeacockLocationsData>(
         "LocationsData",
         req.gameVersion,
@@ -77,7 +88,7 @@ export function destinationsMenu(req: RequestWithJwt): GameFacingDestination[] {
             "UI_LOCATION_PARENT_" + destination.substring(16) + "_NAME"
 
         const template: GameFacingDestination = {
-            ...getDestinationCompletion(parent),
+            ...getDestinationCompletion(parent, req),
             ...{
                 CompletionData: generateCompletionData(
                     destination,
