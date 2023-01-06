@@ -37,6 +37,7 @@ import {
     getContractSession,
     getUserData,
     writeContractSession,
+    writeUserData,
 } from "./databaseHandler"
 import { controller } from "./controller"
 import { swapToLocationStatus } from "./discordRp"
@@ -737,6 +738,7 @@ function saveEvents(
                 if (val.Event === "Completed") {
                     opportunities[val.RepositoryId] = true
                 }
+                writeUserData(req.jwt.unique_name, req.gameVersion)
                 break
             }
             // We don't care about events below this point.
