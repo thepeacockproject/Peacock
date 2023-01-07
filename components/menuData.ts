@@ -33,7 +33,11 @@ import {
     peacockRecentEscalations,
 } from "./controller"
 import { makeCampaigns } from "./menus/campaigns"
-import { createLocationsData, destinationsMenu } from "./menus/destinations"
+import {
+    createLocationsData,
+    destinationsMenu,
+    getDestinationCompletion,
+} from "./menus/destinations"
 import type {
     CommonSelectScreenConfig,
     HitsCategoryCategory,
@@ -800,6 +804,14 @@ menuDataRouter.get(
     (req: RequestWithJwt<{ locationId: string; difficulty?: string }>, res) => {
         const LOCATION = req.query.locationId
 
+        const locData = getVersionedConfig<PeacockLocationsData>(
+            "LocationsData",
+            req.gameVersion,
+            false,
+        )
+
+        const locationData = locData.parents[LOCATION]
+
         const response = {
             template:
                 req.gameVersion === "h1"
@@ -808,17 +820,8 @@ menuDataRouter.get(
             data: {
                 Location: {},
                 MissionData: {
-                    Location: {},
-                    SubLocationMissionsData: [],
-                    ChallengeCompletion: {
-                        ChallengesCount: 0,
-                        CompletedChallengesCount: 0,
-                    },
-                    OpportunityStatistics: {
-                        Count: 0,
-                        Completed: 0,
-                    },
-                    LocationCompletionPercent: 0,
+                    ...getDestinationCompletion(locationData, req),
+                    ...{ SubLocationMissionsData: [] },
                 },
                 ChallengeData: {
                     Children:
@@ -854,20 +857,11 @@ menuDataRouter.get(
             log(LogLevel.DEBUG, `Looking up locations details for ${LOCATION}.`)
         }
 
-        const locData = getVersionedConfig<PeacockLocationsData>(
-            "LocationsData",
-            req.gameVersion,
-            false,
-        )
-
-        const locationData = locData.parents[LOCATION]
-
         const sublocationsData = Object.values(locData.children).filter(
             (subLocation) => subLocation.Properties.ParentLocation === LOCATION,
         )
 
         response.data.Location = locationData
-        response.data.MissionData.Location = locationData
 
         if (req.query.difficulty === "pro1") {
             log(LogLevel.DEBUG, "Adjusting for legacy-pro1.")
