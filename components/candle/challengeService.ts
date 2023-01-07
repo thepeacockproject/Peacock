@@ -470,6 +470,12 @@ export class ChallengeService extends ChallengeRegistry {
                 Object.keys(challengeLists)[index + 1],
             )
 
+            const completion = generateCompletionData(
+                subLocation?.Id,
+                userId,
+                gameVersion,
+            )
+
             return {
                 Name: groupData?.Name,
                 Description: groupData.Description,
@@ -480,11 +486,7 @@ export class ChallengeService extends ChallengeRegistry {
                 CompletedChallengesCount: challengeProgressionData.filter(
                     (progressionData) => progressionData.Completed,
                 ).length,
-                CompletionData: generateCompletionData(
-                    subLocation?.Id,
-                    userId,
-                    gameVersion,
-                ),
+                CompletionData: completion,
                 Location: subLocation,
                 IsLocked: subLocation.Properties.IsLocked || false,
                 ImageLocked: subLocation.Properties.LockedIcon || "",
@@ -516,11 +518,7 @@ export class ChallengeService extends ChallengeRegistry {
                                         progressionData.Completed,
                                 ).length,
                         },
-                        CompletionData: generateCompletionData(
-                            subLocation?.Id,
-                            userId,
-                            gameVersion,
-                        ),
+                        CompletionData: completion,
                     },
                     IsLeaf: true,
                 },
