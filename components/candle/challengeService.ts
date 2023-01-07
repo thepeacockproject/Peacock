@@ -419,7 +419,6 @@ export class ChallengeService extends ChallengeRegistry {
         const contractData = this.controller.resolveContract(contractId)
 
         if (!contractData) {
-            log(LogLevel.WARN, `Contract ${contractId} not found`)
             return []
         }
 
