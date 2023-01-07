@@ -310,6 +310,17 @@ export interface ServerToClientEvent<EventValue = unknown> {
     Origin?: string | null
 }
 
+export interface MissionStory {
+    CommonRepositoryId: RepositoryId
+    PreviouslyCompleted: boolean
+    IsMainOpportunity: boolean
+    Title: string
+    Summary: string
+    Briefing: string
+    Location: string
+    Image: string
+}
+
 export interface UserProfile {
     Id: string
     LinkedAccounts: {
@@ -361,6 +372,9 @@ export interface UserProfile {
             __stats?: unknown
             PersistentBool: Record<string, unknown>
         }
+        opportunityprogression: {
+            [opportunityId: RepositoryId]: boolean
+        }
     }
     ETag: string | null
     Gamertag: string
@@ -401,6 +415,7 @@ export interface NamespaceEntitlementEpic {
  */
 export interface Unlockable {
     Id: string
+    Opportunities?: number
     DisplayNameLocKey: string
     GameAsset: string | null
     Guid: string
@@ -803,10 +818,6 @@ export interface MissionManifest {
         noGear?: boolean
         noCarriedWeapon?: boolean
     }
-}
-
-export type DestinationsMenuDataObject = {
-    ParentId: string
 }
 
 /**
