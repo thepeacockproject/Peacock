@@ -589,41 +589,6 @@ export class ChallengeService extends ChallengeRegistry {
         return null
     }
 
-    getChallengePlanningDataForContract(
-        contractId: string,
-        gameVersion: GameVersion,
-        userId: string,
-    ): unknown[] {
-        // TODO: fix return type signature
-
-        const contractData = this.controller.resolveContract(contractId)
-
-        if (!contractData) {
-            log(LogLevel.WARN, `Contract ${contractId} not found`)
-            return []
-        }
-
-        const locationData = getSubLocationFromContract(
-            contractData,
-            gameVersion,
-        )
-
-        if (!locationData) {
-            log(
-                LogLevel.WARN,
-                `Failed to get location data in CSERV [${contractData.Metadata.Location}]`,
-            )
-            return []
-        }
-
-        const forContract = this.getChallengesForContract(
-            contractId,
-            gameVersion,
-        )
-
-        return this.reBatchIntoSwitchedData(forContract, userId, gameVersion)
-    }
-
     getChallengeDataForDestination(
         locationParentId: string,
         gameVersion: GameVersion,
