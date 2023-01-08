@@ -682,14 +682,23 @@ function saveEvents(
             case "IntroCutEnd":
                 if (!session.timerStart) {
                     session.timerStart = event.Timestamp
+                    log(
+                        LogLevel.DEBUG,
+                        `Mission started at : ${session.timerStart}`,
+                    )
                 }
                 break
             case "exit_gate":
                 session.timerEnd = event.Timestamp
+                log(LogLevel.DEBUG, `Mission ended at : ${session.timerEnd}`)
                 break
             case "ContractEnd":
                 if (!session.timerEnd) {
                     session.timerEnd = event.Timestamp
+                    log(
+                        LogLevel.DEBUG,
+                        `Mission ended at : ${session.timerEnd}`,
+                    )
                 }
                 break
             case "ObjectiveCompleted":
@@ -812,6 +821,12 @@ export async function saveSession(
         token + "_" + sessionId,
         contractSessions.get(sessionId)!,
     )
+    log(
+        LogLevel.DEBUG,
+        `Saved contract with token = ${token}, session id = ${sessionId}, start time = ${
+            contractSessions.get(sessionId).timerStart
+        }.`,
+    )
 }
 
 export async function loadSession(
@@ -824,6 +839,12 @@ export async function loadSession(
     }
 
     contractSessions.set(sessionId, sessionData)
+    log(
+        LogLevel.DEBUG,
+        `Loaded contract with token = ${token}, session id = ${sessionId}, start time = ${
+            contractSessions.get(sessionId).timerStart
+        }.`,
+    )
 }
 
 export { eventRouter }
