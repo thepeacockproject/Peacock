@@ -32,7 +32,7 @@ import {
 } from "../contracts/dataGen"
 import { getConfig } from "../configSwizzleManager"
 import { getUserData, writeUserData } from "../databaseHandler"
-import { nilUuid, unlockOrderComparer } from "../utils"
+import { getDefaultSuitFor, nilUuid, unlockOrderComparer } from "../utils"
 
 import type { Response } from "express"
 import { createInventory } from "../inventory"
@@ -193,7 +193,10 @@ export async function planningView(
     }
 
     let pistol = "FIREARMS_HERO_PISTOL_TACTICAL_ICA_19"
-    let suit = "TOKEN_OUTFIT_HITMANSUIT"
+    let suit =
+        sublocation.Id === "LOCATION_ANCESTRAL_SMOOTHSNAKE"
+            ? "TOKEN_OUTFIT_ANCESTRAL_HERO_SMOOTHSNAKESUIT"
+            : getDefaultSuitFor(sublocation?.Properties?.ParentLocation)
     let tool1 = "TOKEN_FIBERWIRE"
     let tool2 = "PROP_TOOL_COIN"
     let briefcaseProp: string | undefined = undefined
@@ -414,7 +417,7 @@ export async function planningView(
                 sniperLoadouts.length !== 0 ? sniperLoadouts : null,
             ChallengeData: {
                 Children:
-                    controller.challengeService.getChallengePlanningDataForContract(
+                    controller.challengeService.getChallengeTreeForContract(
                         req.query.contractid,
                         req.gameVersion,
                         req.jwt.unique_name,
