@@ -417,7 +417,7 @@ export async function planningView(
                 sniperLoadouts.length !== 0 ? sniperLoadouts : null,
             ChallengeData: {
                 Children:
-                    controller.challengeService.getChallengePlanningDataForContract(
+                    controller.challengeService.getChallengeTreeForContract(
                         req.query.contractid,
                         req.gameVersion,
                         req.jwt.unique_name,

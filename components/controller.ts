@@ -647,7 +647,7 @@ export class Controller {
         if (openCtJson) {
             return fastClone(openCtJson)
         }
-
+        log(LogLevel.WARN, `Contract ${id} not found!`)
         return undefined
     }
 
