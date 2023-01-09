@@ -688,11 +688,13 @@ async function saveSession(
     const sessionId = save.ContractSessionId
     const token = save.Value.LastEventToken
     const slot = save.Value.Name
+
     if (!contractSessions.has(sessionId)) {
-        throw Error("the session does not exist in the server's memory", {
+        throw new Error("the session does not exist in the server's memory", {
             cause: "non-existent",
         })
     }
+
     if (slot in userData.Extensions.Saves) {
         const delta = save.TimeStamp - userData.Extensions.Saves[slot].Timestamp
 
