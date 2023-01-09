@@ -690,10 +690,7 @@ function saveEvents(
             case "ContractEnd":
                 if (!session.timerEnd) {
                     session.timerEnd = event.Timestamp
-                    log(
-                        LogLevel.DEBUG,
-                        `Mission ended at: ${session.timerEnd}`,
-                    )
+                    log(LogLevel.DEBUG, `Mission ended at: ${session.timerEnd}`)
                 }
                 break
             case "ObjectiveCompleted":
