@@ -699,7 +699,7 @@ async function saveSession(
         const delta = save.TimeStamp - userData.Extensions.Saves[slot].Timestamp
 
         if (delta === 0) {
-            throw Error(
+            throw new Error(
                 `the client is accessing /ProfileService/UpdateUserSaveFileTable with nothing updated.`,
                 { cause: "cause uninvestigated" },
             )
