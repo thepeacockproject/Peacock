@@ -256,7 +256,7 @@ export async function writeContractSession(
 /**
  * Deletes a saved contract session from the contractsSessions folder.
  *
- * @param fileName The identifier for the saved session, in the format of token_sessionID.
+ * @param fileName The identifier for the saved session, in the format of slot_token_sessionID.
  * @throws ENOENT if the file is not found.
  */
 export async function deleteContractSession(fileName: string): Promise<void> {
