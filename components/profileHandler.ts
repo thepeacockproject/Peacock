@@ -37,6 +37,7 @@ import type {
 } from "./types/types"
 import { log, LogLevel } from "./loggingInterop"
 import {
+    deleteContractSession,
     getContractSession,
     getUserData,
     writeContractSession,
@@ -646,25 +647,24 @@ profileRouter.post(
                 (prev: SaveFile, current: SaveFile) =>
                     prev.TimeStamp > current.TimeStamp ? prev : current,
             )
-            log(
-                LogLevel.DEBUG,
-                `Saving to slot ${save.Value.Name} which was saved at ${save.TimeStamp}`,
-            )
+            const userData = getUserData(req.jwt.unique_name, req.gameVersion)
 
             try {
-                await saveSession(
-                    save.ContractSessionId,
-                    save.Value.LastEventToken,
-                )
+                await saveSession(save, userData)
+                // Successfully saved, so edit user data
+                userData.Extensions.Saves[save.Value.Name] = {
+                    Timestamp: save.TimeStamp,
+                    ContractSessionId: save.ContractSessionId,
+                    Token: save.Value.LastEventToken,
+                }
+                writeUserData(req.jwt.unique_name, req.gameVersion)
             } catch (e) {
                 log(
                     LogLevel.WARN,
-                    `Unable to save session ${save?.ContractSessionId}`,
+                    `Unable to save session ${
+                        save?.ContractSessionId
+                    } because ${getErrorMessage(e)}.`,
                 )
-
-                if (PEACOCK_DEV) {
-                    log(LogLevel.DEBUG, e.name)
-                }
             }
         }
 
@@ -672,11 +672,52 @@ profileRouter.post(
     },
 )
 
-async function saveSession(sessionId: string, token: string): Promise<void> {
+function getErrorMessage(error: unknown) {
+    if (error instanceof Error) return error.message
+    return String(error)
+}
+
+async function saveSession(
+    save: SaveFile,
+    userData: UserProfile,
+): Promise<void> {
+    const sessionId = save.ContractSessionId
+    const token = save.Value.LastEventToken
     if (!contractSessions.has(sessionId)) {
-        log(LogLevel.WARN, `Refusing to save ${sessionId} as it doesn't exist`)
-        return
+        throw Error("the session does not exist in the server's memory")
     }
+    if (save.Value.Name in userData.Extensions.Saves) {
+        if (
+            save.TimeStamp <=
+            userData.Extensions.Saves[save.Value.Name].Timestamp
+        ) {
+            throw Error(
+                `this isn't a newer save in slot ${save.Value.Name} and is ignored`,
+            )
+        } else {
+            // If we can delete the old save, then do it. If not, we can still proceed.
+            try {
+                await deleteContractSession(
+                    userData.Extensions.Saves[save.Value.Name].Token +
+                        "_" +
+                        userData.Extensions.Saves[save.Value.Name]
+                            .ContractSessionId,
+                )
+            } catch (e) {
+                log(
+                    LogLevel.INFO,
+                    `Ignoring failure to delete old session save of slot ${
+                        save.Value.Name
+                    }. Error: ${getErrorMessage(e)}.`,
+                )
+            }
+        }
+    }
+
+    log(
+        LogLevel.DEBUG,
+        `Saving to slot ${save.Value.Name} which was saved at ${save.TimeStamp}`,
+    )
 
     await writeContractSession(
         token + "_" + sessionId,
@@ -710,7 +751,6 @@ profileRouter.post(
                 LogLevel.DEBUG,
                 `Failed to load contract with token = ${req.body.saveToken}, session id = ${req.body.contractSessionId}.`,
             )
-            log(LogLevel.DEBUG, JSON.stringify(e))
             if (
                 getActiveSessionIdForUser(req.jwt.unique_name) ===
                 req.body.contractSessionId

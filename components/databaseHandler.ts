@@ -23,6 +23,7 @@ import { serializeSession, deserializeSession } from "./sessionSerialization"
 import { castUserProfile } from "./utils"
 import { getConfig } from "./configSwizzleManager"
 import { log, LogLevel } from "./loggingInterop"
+import { unlink } from "fs/promises"
 
 /**
  * Container for functions that handle file read/writes,
@@ -234,15 +235,25 @@ export async function getContractSession(
 /**
  * Writes a contract session to the contractsSessions folder.
  *
- * @param sessionId The session's ID.
+ * @param identifier The identifier for the saved session, in the format of token_sessionID.
  * @param session The contract session.
  */
 export async function writeContractSession(
-    sessionId: string,
+    identifier: string,
     session: ContractSession,
 ): Promise<void> {
     return await writeFile(
-        join("contractSessions", `${sessionId}.json`),
+        join("contractSessions", `${identifier}.json`),
         JSON.stringify(serializeSession(session)),
     )
+}
+
+/**
+ * Deletes a saved contract session from the contractsSessions folder.
+ *
+ * @param fileName The identifier for the saved session, in the format of token_sessionID.
+ * @throws ENOENT if the file is not found.
+ */
+export async function deleteContractSession(fileName: string): Promise<void> {
+    return await unlink(join("contractSessions", `${fileName}.json`))
 }
