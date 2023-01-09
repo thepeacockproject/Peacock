@@ -647,6 +647,9 @@ profileRouter.post(
             try {
                 await saveSession(save, userData)
                 // Successfully saved, so edit user data
+                if (!userData.Extensions.Saves) {
+                    userData.Extensions.Saves = {}
+                }
                 userData.Extensions.Saves[save.Value.Name] = {
                     Timestamp: save.TimeStamp,
                     ContractSessionId: save.ContractSessionId,
@@ -694,7 +697,9 @@ async function saveSession(
             cause: "non-existent",
         })
     }
-
+    if (!userData.Extensions.Saves) {
+        userData.Extensions.Saves = {}
+    }
     if (slot in userData.Extensions.Saves) {
         const delta = save.TimeStamp - userData.Extensions.Saves[slot].Timestamp
 
