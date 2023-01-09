@@ -704,7 +704,7 @@ async function saveSession(
                 { cause: "cause uninvestigated" },
             )
         } else if (delta < 0) {
-            throw Error(`there is a newer save in slot ${slot}`, {
+            throw new Error(`there is a newer save in slot ${slot}`, {
                 cause: "outdated",
             })
         } else {
