@@ -267,6 +267,16 @@ export interface SaveFile {
 }
 
 /**
+ * The body sent with the UpdateUserSaveFileTable request from the game after saving.
+ *
+ * @see SaveFile
+ */
+export interface UpdateUserSaveFileTableBody {
+    clientSaveFileList: SaveFile[]
+    deletedSaveFileList: SaveFile[]
+}
+
+/**
  * The Hitman server version in object form.
  */
 export interface ServerVersion {

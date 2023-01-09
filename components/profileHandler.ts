@@ -32,6 +32,7 @@ import type {
     GameVersion,
     RequestWithJwt,
     SaveFile,
+    UpdateUserSaveFileTableBody,
     UserProfile,
 } from "./types/types"
 import { log, LogLevel } from "./loggingInterop"
@@ -631,9 +632,11 @@ profileRouter.post(
 profileRouter.post(
     "/ProfileService/UpdateUserSaveFileTable",
     jsonMiddleware(),
-    async (req, res) => {
+    async (req: RequestWithJwt<never, UpdateUserSaveFileTableBody>, res) => {
         if (req.body.clientSaveFileList.length > 0) {
             log(LogLevel.DEBUG, JSON.stringify(req.body.clientSaveFileList))
+            // We are saving to the SaveFile with the most recent timestamp.
+            // Others are ignored.
             const save: SaveFile = req.body.clientSaveFileList.reduce(
                 (prev: SaveFile, current: SaveFile) =>
                     prev.TimeStamp > current.TimeStamp ? prev : current,
@@ -642,10 +645,6 @@ profileRouter.post(
                 LogLevel.DEBUG,
                 `Saving to slot ${save.Value.Name} which was saved at ${save.TimeStamp}`,
             )
-            // const save =
-            //     req.body.clientSaveFileList[
-            //         req.body.clientSaveFileList.length - 1
-            //     ]
 
             try {
                 await saveSession(
