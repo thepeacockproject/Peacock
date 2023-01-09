@@ -692,7 +692,7 @@ function saveEvents(
                     session.timerEnd = event.Timestamp
                     log(
                         LogLevel.DEBUG,
-                        `Mission ended at : ${session.timerEnd}`,
+                        `Mission ended at: ${session.timerEnd}`,
                     )
                 }
                 break
