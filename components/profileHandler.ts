@@ -22,13 +22,13 @@ import { castUserProfile, nilUuid, uuidRegex } from "./utils"
 import { json as jsonMiddleware } from "body-parser"
 import { getPlatformEntitlements } from "./platformEntitlements"
 import {
+    contractSessions,
     getActiveSessionIdForUser,
-    loadSession,
     newSession,
-    saveSession,
 } from "./eventHandler"
 import type {
     CompiledChallengeRuntimeData,
+    ContractSession,
     GameVersion,
     RequestWithJwt,
     SaveFile,
@@ -36,7 +36,12 @@ import type {
     UserProfile,
 } from "./types/types"
 import { log, LogLevel } from "./loggingInterop"
-import { getUserData, writeUserData } from "./databaseHandler"
+import {
+    getContractSession,
+    getUserData,
+    writeContractSession,
+    writeUserData,
+} from "./databaseHandler"
 import { randomUUID } from "crypto"
 import { getVersionedConfig } from "./configSwizzleManager"
 import { createInventory } from "./inventory"
@@ -667,6 +672,24 @@ profileRouter.post(
     },
 )
 
+async function saveSession(sessionId: string, token: string): Promise<void> {
+    if (!contractSessions.has(sessionId)) {
+        log(LogLevel.WARN, `Refusing to save ${sessionId} as it doesn't exist`)
+        return
+    }
+
+    await writeContractSession(
+        token + "_" + sessionId,
+        contractSessions.get(sessionId)!,
+    )
+    log(
+        LogLevel.DEBUG,
+        `Saved contract with token = ${token}, session id = ${sessionId}, start time = ${
+            contractSessions.get(sessionId).timerStart
+        }.`,
+    )
+}
+
 profileRouter.post(
     "/ContractSessionsService/Load",
     jsonMiddleware(),
@@ -728,6 +751,24 @@ profileRouter.post(
         res.send(`"${req.body.contractSessionId}"`)
     },
 )
+
+async function loadSession(
+    sessionId: string,
+    token: string,
+    sessionData?: ContractSession,
+): Promise<void> {
+    if (!sessionData) {
+        sessionData = await getContractSession(token + "_" + sessionId)
+    }
+
+    contractSessions.set(sessionId, sessionData)
+    log(
+        LogLevel.DEBUG,
+        `Loaded contract with token = ${token}, session id = ${sessionId}, start time = ${
+            contractSessions.get(sessionId).timerStart
+        }.`,
+    )
+}
 
 profileRouter.post(
     "/ProfileService/GetSemLinkStatus",
