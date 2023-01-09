@@ -251,6 +251,32 @@ export interface ContractSession {
 }
 
 /**
+ * The SaveFile object passed by the client in /ProfileService/UpdateUserSaveFileTable
+ */
+export interface SaveFile {
+    // The contract session ID of the save
+    ContractSessionId: string
+    // The unix timestamp at the time of saving
+    TimeStamp: number
+    Value: {
+        // The name of the save slot
+        Name: string
+        // The token of the last event that happened before the save was made
+        LastEventToken: string
+    }
+}
+
+/**
+ * The body sent with the UpdateUserSaveFileTable request from the game after saving.
+ *
+ * @see SaveFile
+ */
+export interface UpdateUserSaveFileTableBody {
+    clientSaveFileList: SaveFile[]
+    deletedSaveFileList: SaveFile[]
+}
+
+/**
  * The Hitman server version in object form.
  */
 export interface ServerVersion {
@@ -340,6 +366,13 @@ export interface UserProfile {
         }
         PeacockFavoriteContracts: string[]
         PeacockCompletedEscalations: string[]
+        Saves: {
+            [slot: string]: {
+                Timestamp: number
+                ContractSessionId: string
+                Token: string
+            }
+        }
         ChallengeProgression: {
             [id: string]: ProfileChallengeData
         }
