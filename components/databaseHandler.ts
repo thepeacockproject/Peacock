@@ -225,9 +225,11 @@ export async function getContractSession(
 ): Promise<ContractSession> {
     const files = await readdir("contractSessions")
     const filtered = files.filter((fn) => fn.endsWith(`_${identifier}.json`))
+
     if (filtered.length === 0) {
-        throw Error(`No session saved with identifier ${identifier}`)
+        throw new Error(`No session saved with identifier ${identifier}`)
     }
+
     // The filtered files have the same identifier, they are just stored at different slots
     // So we can read any of them and it will be the same.
     return deserializeSession(
