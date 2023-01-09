@@ -685,7 +685,7 @@ function saveEvents(
                 break
             case "exit_gate":
                 session.timerEnd = event.Timestamp
-                log(LogLevel.DEBUG, `Mission ended at : ${session.timerEnd}`)
+                log(LogLevel.DEBUG, `Mission ended at: ${session.timerEnd}`)
                 break
             case "ContractEnd":
                 if (!session.timerEnd) {
