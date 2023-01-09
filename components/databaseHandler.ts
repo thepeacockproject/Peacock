@@ -23,7 +23,7 @@ import { serializeSession, deserializeSession } from "./sessionSerialization"
 import { castUserProfile } from "./utils"
 import { getConfig } from "./configSwizzleManager"
 import { log, LogLevel } from "./loggingInterop"
-import { unlink } from "fs/promises"
+import { unlink, readdir } from "fs/promises"
 
 /**
  * Container for functions that handle file read/writes,
@@ -217,17 +217,22 @@ export async function writeExternalUserData(
 /**
  * Reads a contract session from the contractSessions folder.
  *
- * @param sessionId The ID of the session to load.
+ * @param identifier The identifier for the saved session, in the format of token_sessionID.
  * @returns The contract session.
  */
 export async function getContractSession(
-    sessionId: string,
+    identifier: string,
 ): Promise<ContractSession> {
+    const files = await readdir("contractSessions")
+    const filtered = files.filter((fn) => fn.endsWith(`_${identifier}.json`))
+    if (filtered.length === 0) {
+        throw Error(`No session saved with identifier ${identifier}`)
+    }
+    // The filtered files have the same identifier, they are just stored at different slots
+    // So we can read any of them and it will be the same.
     return deserializeSession(
         JSON.parse(
-            (
-                await readFile(join("contractSessions", `${sessionId}.json`))
-            ).toString(),
+            (await readFile(join("contractSessions", filtered[0]))).toString(),
         ),
     )
 }
@@ -235,7 +240,7 @@ export async function getContractSession(
 /**
  * Writes a contract session to the contractsSessions folder.
  *
- * @param identifier The identifier for the saved session, in the format of token_sessionID.
+ * @param identifier The identifier for the saved session, in the format of slot_token_sessionID.
  * @param session The contract session.
  */
 export async function writeContractSession(

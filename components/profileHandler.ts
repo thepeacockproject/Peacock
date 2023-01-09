@@ -21,11 +21,7 @@ import path from "path"
 import { castUserProfile, nilUuid, uuidRegex } from "./utils"
 import { json as jsonMiddleware } from "body-parser"
 import { getPlatformEntitlements } from "./platformEntitlements"
-import {
-    contractSessions,
-    getActiveSessionIdForUser,
-    newSession,
-} from "./eventHandler"
+import { contractSessions, newSession } from "./eventHandler"
 import type {
     CompiledChallengeRuntimeData,
     ContractSession,
@@ -640,7 +636,6 @@ profileRouter.post(
     jsonMiddleware(),
     async (req: RequestWithJwt<never, UpdateUserSaveFileTableBody>, res) => {
         if (req.body.clientSaveFileList.length > 0) {
-            log(LogLevel.DEBUG, JSON.stringify(req.body.clientSaveFileList))
             // We are saving to the SaveFile with the most recent timestamp.
             // Others are ignored.
             const save: SaveFile = req.body.clientSaveFileList.reduce(
@@ -659,12 +654,16 @@ profileRouter.post(
                 }
                 writeUserData(req.jwt.unique_name, req.gameVersion)
             } catch (e) {
-                log(
-                    LogLevel.WARN,
-                    `Unable to save session ${
-                        save?.ContractSessionId
-                    } because ${getErrorMessage(e)}.`,
-                )
+                if (getErrorCause(e) === "cause uninvestigated") {
+                    log(LogLevel.DEBUG, `${getErrorMessage(e)}`)
+                } else {
+                    log(
+                        LogLevel.WARN,
+                        `Unable to save session ${
+                            save?.ContractSessionId
+                        } because ${getErrorMessage(e)}.`,
+                    )
+                }
             }
         }
 
@@ -677,55 +676,61 @@ function getErrorMessage(error: unknown) {
     return String(error)
 }
 
+function getErrorCause(error: unknown) {
+    if (error instanceof Error) return error.cause
+    return String(error)
+}
+
 async function saveSession(
     save: SaveFile,
     userData: UserProfile,
 ): Promise<void> {
     const sessionId = save.ContractSessionId
     const token = save.Value.LastEventToken
+    const slot = save.Value.Name
     if (!contractSessions.has(sessionId)) {
-        throw Error("the session does not exist in the server's memory")
+        throw Error("the session does not exist in the server's memory", {
+            cause: "non-existent",
+        })
     }
-    if (save.Value.Name in userData.Extensions.Saves) {
-        if (
-            save.TimeStamp <=
-            userData.Extensions.Saves[save.Value.Name].Timestamp
-        ) {
+    if (slot in userData.Extensions.Saves) {
+        const delta = save.TimeStamp - userData.Extensions.Saves[slot].Timestamp
+
+        if (delta === 0) {
             throw Error(
-                `this isn't a newer save in slot ${save.Value.Name} and is ignored`,
+                `the client is accessing /ProfileService/UpdateUserSaveFileTable with nothing updated.`,
+                { cause: "cause uninvestigated" },
             )
+        } else if (delta < 0) {
+            throw Error(`there is a newer save in slot ${slot}`, {
+                cause: "outdated",
+            })
         } else {
             // If we can delete the old save, then do it. If not, we can still proceed.
             try {
                 await deleteContractSession(
-                    userData.Extensions.Saves[save.Value.Name].Token +
+                    slot +
                         "_" +
-                        userData.Extensions.Saves[save.Value.Name]
-                            .ContractSessionId,
+                        userData.Extensions.Saves[slot].Token +
+                        "_" +
+                        userData.Extensions.Saves[slot].ContractSessionId,
                 )
             } catch (e) {
                 log(
-                    LogLevel.INFO,
-                    `Ignoring failure to delete old session save of slot ${
-                        save.Value.Name
-                    }. Error: ${getErrorMessage(e)}.`,
+                    LogLevel.DEBUG,
+                    `Failed to delete old ${slot} save. ${getErrorMessage(e)}.`,
                 )
             }
         }
     }
 
-    log(
-        LogLevel.DEBUG,
-        `Saving to slot ${save.Value.Name} which was saved at ${save.TimeStamp}`,
-    )
-
     await writeContractSession(
-        token + "_" + sessionId,
+        slot + "_" + token + "_" + sessionId,
         contractSessions.get(sessionId)!,
     )
     log(
         LogLevel.DEBUG,
-        `Saved contract with token = ${token}, session id = ${sessionId}, start time = ${
+        `Saved contract to slot ${slot} with token = ${token}, session id = ${sessionId}, start time = ${
             contractSessions.get(sessionId).timerStart
         }.`,
     )
@@ -749,43 +754,33 @@ profileRouter.post(
         } catch (e) {
             log(
                 LogLevel.DEBUG,
-                `Failed to load contract with token = ${req.body.saveToken}, session id = ${req.body.contractSessionId}.`,
+                `Failed to load contract with token = ${req.body.saveToken}, session id = ${req.body.contractSessionId} because ${e.message}`,
             )
-            if (
-                getActiveSessionIdForUser(req.jwt.unique_name) ===
-                req.body.contractSessionId
-            ) {
-                log(
-                    LogLevel.INFO,
-                    "Tried to load the active session, prevented to avoid crash.",
-                )
-            } else {
-                log(
-                    LogLevel.WARN,
-                    "No such save detected! Might be an official servers save.",
-                )
+            log(
+                LogLevel.WARN,
+                "No such save detected! Might be an official servers save.",
+            )
 
-                if (PEACOCK_DEV) {
-                    log(
-                        LogLevel.DEBUG,
-                        `(Save-context: ${req.body.contractSessionId}; ${req.body.saveToken})`,
-                    )
-                }
-
+            if (PEACOCK_DEV) {
                 log(
-                    LogLevel.WARN,
-                    "Creating a fake session to avoid problems... scoring will not work!",
-                )
-
-                newSession(
-                    req.body.contractSessionId,
-                    req.body.contractId,
-                    req.jwt.unique_name,
-                    req.body.difficultyLevel!,
-                    req.gameVersion,
-                    false,
+                    LogLevel.DEBUG,
+                    `(Save-context: ${req.body.contractSessionId}; ${req.body.saveToken})`,
                 )
             }
+
+            log(
+                LogLevel.WARN,
+                "Creating a fake session to avoid problems... scoring will not work!",
+            )
+
+            newSession(
+                req.body.contractSessionId,
+                req.body.contractId,
+                req.jwt.unique_name,
+                req.body.difficultyLevel!,
+                req.gameVersion,
+                false,
+            )
         }
 
         res.send(`"${req.body.contractSessionId}"`)
