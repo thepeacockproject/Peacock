@@ -38,6 +38,7 @@ import type {
     PlayNextGetCampaignsHookReturn,
     RequestWithJwt,
     S2CEventWithTimestamp,
+    SMFLastDeploy,
     Unlockable,
     UserCentricContract,
 } from "./types/types"
@@ -66,7 +67,9 @@ import { MenuSystemDatabase, menuSystemDatabase } from "./menus/menuSystem"
 import { escalationMappings } from "./contracts/escalationMappings"
 import { parse } from "json5"
 import { userAuths } from "./officialServerAuth"
+// @ts-expect-error Ignore JSON import
 import LASTYARDBIRDSCPC from "../contractdata/SNIPER/THELASTYARDBIRD_SCPC.json"
+// @ts-expect-error Ignore JSON import
 import LEGACYFF from "../contractdata/COLORADO/FREEDOMFIGHTERSLEGACY.json"
 import { missionsInLocations } from "./contracts/missionsInLocation"
 import { createContext, Script } from "vm"
@@ -263,9 +266,10 @@ function createPeacockRequire(pluginName: string): NodeRequire {
 /**
  * Freedom Fighters for Hitman 2016 (objectives are different).
  */
-export const _legacyBull: MissionManifest = LEGACYFF
+export const _legacyBull: MissionManifest = JSON.parse(LEGACYFF)
 
-export const _theLastYardbirdScpc: MissionManifest = LASTYARDBIRDSCPC
+export const _theLastYardbirdScpc: MissionManifest =
+    JSON.parse(LASTYARDBIRDSCPC)
 
 export const peacockRecentEscalations: readonly string[] = [
     "35f1f534-ae2d-42be-8472-dd55e96625ea",
@@ -413,9 +417,9 @@ export class Controller {
 
         if (modFrameworkDataPath && existsSync(modFrameworkDataPath)) {
             this.installedMods = (
-                parse(readFileSync(modFrameworkDataPath!).toString()) as {
-                    loadOrder?: string[]
-                }
+                parse(
+                    readFileSync(modFrameworkDataPath!).toString(),
+                ) as SMFLastDeploy
             )?.loadOrder as readonly string[]
             return
         }
@@ -424,15 +428,30 @@ export class Controller {
     }
 
     /**
-     * Adds a dependency on a client side mod through the Simple Mod Framework.
-     * See the cookbook for a usage example!
+     * You should use {@link modIsInstalled} instead!
+     *
+     * Returns whether a mod is UNAVAILABLE.
      *
      * @param modId The mod's ID.
-     * @returns If the mod is available. You will probably want to abort plugin initialization if false is returned.
+     * @returns If the mod is unavailable. You should probably abort initialization if true is returned. Also returns true if the `overrideFrameworkChecks` flag is set.
+     * @deprecated since v5.5.0
      */
     public addClientSideModDependency(modId: string): boolean {
         return (
             !this.installedMods.includes(modId) ||
+            getFlag("overrideFrameworkChecks") === true
+        )
+    }
+
+    /**
+     * Returns whether a mod is available and installed.
+     *
+     * @param modId The mod's ID.
+     * @returns If the mod is available (or the `overrideFrameworkChecks` flag is set). You should probably abort initialisation if false is returned.
+     */
+    public modIsInstalled(modId: string): boolean {
+        return (
+            this.installedMods.includes(modId) ||
             getFlag("overrideFrameworkChecks") === true
         )
     }
@@ -460,6 +479,59 @@ export class Controller {
 
         this._addElusiveTargets()
         this.index()
+
+        if (modFrameworkDataPath && existsSync(modFrameworkDataPath)) {
+            log(
+                LogLevel.INFO,
+                "Simple Mod Framework installed - using the data it outputs.",
+            )
+
+            const lastServerSideData = (
+                parse(
+                    readFileSync(modFrameworkDataPath!).toString(),
+                ) as SMFLastDeploy
+            ).lastServerSideStates
+
+            if (lastServerSideData?.unlockables) {
+                this.configManager.configs["allunlockables"] =
+                    lastServerSideData.unlockables.slice(1)
+            }
+
+            if (lastServerSideData?.contracts) {
+                for (const [contractId, contractData] of Object.entries(
+                    lastServerSideData.contracts,
+                )) {
+                    this.contracts.set(contractId, contractData)
+                }
+            }
+
+            if (lastServerSideData?.blobs) {
+                menuSystemDatabase.hooks.getConfig.tap(
+                    "SMFBlobs",
+                    (name, gameVersion) => {
+                        if (
+                            gameVersion === "h3" &&
+                            (lastServerSideData.blobs[name] ||
+                                lastServerSideData.blobs[name.slice(1)]) // leading slash is not included in SMF blobs
+                        ) {
+                            return parse(
+                                readFileSync(
+                                    join(
+                                        process.env.LOCALAPPDATA,
+                                        "Simple Mod Framework",
+                                        "blobs",
+                                        lastServerSideData.blobs[name] ||
+                                            lastServerSideData.blobs[
+                                                name.slice(1)
+                                            ],
+                                    ),
+                                ).toString(),
+                            )
+                        }
+                    },
+                )
+            }
+        }
 
         await this._loadPlugins()
 
@@ -575,7 +647,7 @@ export class Controller {
         if (openCtJson) {
             return fastClone(openCtJson)
         }
-
+        log(LogLevel.WARN, `Contract ${id} not found!`)
         return undefined
     }
 
@@ -655,7 +727,10 @@ export class Controller {
 
         let contractData: MissionManifest | undefined
 
-        if (gameVersion === "h3") {
+        if (
+            gameVersion === "h3" &&
+            getFlag("legacyContractDownloader") !== true
+        ) {
             const result = await Controller._hitmapsFetchContract(pubId)
 
             if (result) {
@@ -696,6 +771,9 @@ export class Controller {
      * @internal
      */
     index(): void {
+        this.contracts.clear()
+        this._pubIdToContractId.clear()
+
         const contracts = readdirSync("contracts")
         contracts.forEach((i) => {
             if (!isContractFile(i)) {
@@ -713,7 +791,7 @@ export class Controller {
                 }
 
                 this.contracts.set(f.Metadata.Id, f)
-                if (f.Metadata.PublicId && f.Metadata.PublicId !== "") {
+                if (f.Metadata.PublicId) {
                     this._pubIdToContractId.set(
                         f.Metadata.PublicId,
                         f.Metadata.Id,

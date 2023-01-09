@@ -430,14 +430,6 @@ export const escalationMappings: {
         3: "f7ad71b6-9553-4d58-86dc-e3e288849849",
     },
     /**
-     * The Barbegue Befuddlement
-     */
-    "448d89e8-2026-43e3-86f0-205018cbd87e": {
-        1: "b82fd894-c12c-44e9-99fd-07b860b76c72",
-        2: "2d1bada4-aa46-4954-8cf5-684989f1668a",
-        3: "519c097f-2e1f-48f2-8f9d-3c76223cc950",
-    },
-    /**
      * The Pirates Problem
      */
     "f19f7ac8-39ec-498b-aa23-44c8e75d8693": {
@@ -558,5 +550,13 @@ export const escalationMappings: {
         1: "3edb330f-5129-49c6-9afd-70111ce72ae5",
         2: "c59baa15-5946-4354-875e-1c98ef7f1bfe",
         3: "83655c86-012f-4d2b-a57d-5b021af99af1",
+    },
+    /**
+     * The Christmas Calamity
+     */
+    "07bbf22b-d6ae-4883-bec2-122eeeb7b665": {
+        1: "d415f893-563a-443a-860e-33cf90c4547b",
+        2: "6fa8267b-730f-48c7-ae62-f7155eb62340",
+        3: "7e392d08-e3db-4f96-8bf2-97d28369dbec",
     },
 }

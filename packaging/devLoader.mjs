@@ -18,7 +18,8 @@
 
 import picocolors from "picocolors"
 import { packContractsAndChallenges } from "./buildTasks.mjs"
-import { createRequire } from "module"
+import { createRequire, Module } from "module"
+import { readFileSync } from "fs"
 
 // this `require` instance will be hijacked by `esbuild-register` so we can load
 // TS files as if they were JS in a CommonJS environment
@@ -45,5 +46,13 @@ console.log(
 const { register } = require("esbuild-register/dist/node")
 
 register()
+
+const resolveTextFile = function (module, path) {
+    const content = readFileSync(path).toString()
+
+    module.exports = content
+}
+
+Module._extensions[".json"] = resolveTextFile
 
 require("../components/index.ts")

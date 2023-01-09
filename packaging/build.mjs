@@ -27,6 +27,23 @@ await packContractsAndChallenges()
 
 const { version, revisionIdent } = require("../package.json")
 
+const jsonAsCompressedTextPlugin = {
+    name: "jsonAsCompressedTextPlugin",
+
+    setup(build) {
+        const fs = require("fs")
+
+        build.onLoad({ filter: /\.json$/ }, async (args) => {
+            const text = await fs.promises.readFile(args.path)
+
+            return {
+                contents: JSON.stringify(JSON.parse(text)),
+                loader: "text",
+            }
+        })
+    },
+}
+
 await e.build({
     entryPoints: ["components/index.ts"],
     bundle: true,
@@ -41,24 +58,25 @@ await e.build({
         "esbuild-wasm",
     ],
     define: {
-        PEACOCK_DEV: false,
+        PEACOCK_DEV: "false",
         HUMAN_VERSION: `"${version}"`,
-        REV_IDENT: revisionIdent,
-        "process.env.DEBUG_MIME": false,
-        "process.env.TESTING_TAR_FAKE_PLATFORM": undefined,
-        "process.env.__TESTING_MKDIRP_PLATFORM__": undefined,
-        "process.env.__TESTING_MKDIRP_NODE_VERSION__": undefined,
-        "process.env.__FAKE_PLATFORM__": undefined,
-        "process.env.VERCEL_GITHUB_COMMIT_SHA": undefined,
-        "process.env.VERCEL_GITLAB_COMMIT_SHA": undefined,
-        "process.env.VERCEL_BITBUCKET_COMMIT_SHA": undefined,
-        "process.env.ZEIT_GITHUB_COMMIT_SHA": undefined,
-        "process.env.ZEIT_BITBUCKET_COMMIT_SHA": undefined,
-        "process.env.VERCEL_GIT_COMMIT_SHA": undefined,
-        "process.env.ZEIT_GITLAB_COMMIT_SHA": undefined,
+        REV_IDENT: `${revisionIdent}`,
+        "process.env.DEBUG_MIME": "false",
+        "process.env.TESTING_TAR_FAKE_PLATFORM": "undefined",
+        "process.env.__TESTING_MKDIRP_PLATFORM__": "undefined",
+        "process.env.__TESTING_MKDIRP_NODE_VERSION__": "undefined",
+        "process.env.__FAKE_PLATFORM__": "undefined",
+        "process.env.VERCEL_GITHUB_COMMIT_SHA": "undefined",
+        "process.env.VERCEL_GITLAB_COMMIT_SHA": "undefined",
+        "process.env.VERCEL_BITBUCKET_COMMIT_SHA": "undefined",
+        "process.env.ZEIT_GITHUB_COMMIT_SHA": "undefined",
+        "process.env.ZEIT_BITBUCKET_COMMIT_SHA": "undefined",
+        "process.env.VERCEL_GIT_COMMIT_SHA": "undefined",
+        "process.env.ZEIT_GITLAB_COMMIT_SHA": "undefined",
     },
     sourcemap: "external",
     plugins: [
+        jsonAsCompressedTextPlugin,
         esbuildPluginLicense({
             thirdParty: {
                 output: {

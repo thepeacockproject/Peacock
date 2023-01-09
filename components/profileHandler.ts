@@ -532,7 +532,7 @@ profileRouter.post(
                 .map((challengeData) => {
                     return compileRuntimeChallenge(
                         challengeData,
-                        controller.challengeService.getChallengeProgression(
+                        controller.challengeService.getPersistentChallengeProgression(
                             req.jwt.unique_name,
                             challengeData.Id,
                             req.gameVersion,
@@ -570,7 +570,6 @@ profileRouter.post(
                     // @ts-expect-error typescript hates dates
                     CompletedAt: new Date(new Date() - 10).toISOString(),
                     MustBeSaved: false,
-                    ETag: null,
                 }
             } else {
                 challenge.Progression = Object.assign(

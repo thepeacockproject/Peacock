@@ -65,6 +65,15 @@ const zeroPad = (num: string | number, places: number) =>
     String(num).padStart(places, "0")
 
 /**
+ * Outputs all given arguments as a debug level indented JSON-message to the console.
+ *
+ * @param args The values to log.
+ */
+export function logDebug(...args: unknown[]): void {
+    log(LogLevel.DEBUG, JSON.stringify(args, undefined, "    "))
+}
+
+/**
  * Outputs a log message to the console.
  *
  * @param level The message's level.

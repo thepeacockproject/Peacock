@@ -20,7 +20,7 @@ import { Response, Router } from "express"
 import {
     gameDifficulty,
     PEACOCKVERSTRING,
-    unlockorderComparer,
+    unlockOrderComparer,
     uuidRegex,
 } from "./utils"
 import { contractSessions, getSession } from "./eventHandler"
@@ -33,7 +33,11 @@ import {
     peacockRecentEscalations,
 } from "./controller"
 import { makeCampaigns } from "./menus/campaigns"
-import { createLocationsData, destinationsMenu } from "./menus/destinations"
+import {
+    createLocationsData,
+    destinationsMenu,
+    getDestinationCompletion,
+} from "./menus/destinations"
 import type {
     CommonSelectScreenConfig,
     HitsCategoryCategory,
@@ -83,7 +87,7 @@ import {
 } from "./types/gameSchemas"
 import assert from "assert"
 
-export const firstPassRouter = Router()
+export const preMenuDataRouter = Router()
 const menuDataRouter = Router()
 
 // /profiles/page/
@@ -515,7 +519,7 @@ menuDataRouter.get(
                     // FIXME: This behaviour may not be accurate to original server
                     .filter(
                         (challengeData) =>
-                            controller.challengeService.getChallengeProgression(
+                            controller.challengeService.getPersistentChallengeProgression(
                                 req.jwt.unique_name,
                                 challengeData.Id,
                                 req.gameVersion,
@@ -524,7 +528,7 @@ menuDataRouter.get(
                     .map((challengeData) =>
                         controller.challengeService.compileRegistryChallengeTreeData(
                             challengeData,
-                            controller.challengeService.getChallengeProgression(
+                            controller.challengeService.getPersistentChallengeProgression(
                                 req.jwt.unique_name,
                                 challengeData.Id,
                                 req.gameVersion,
@@ -651,7 +655,7 @@ menuDataRouter.get(
                 .filter((unlockable) =>
                     pickupsInScene.includes(unlockable.Properties.RepositoryId),
                 )
-                .sort(unlockorderComparer),
+                .sort(unlockOrderComparer),
             UserCentric: generateUserCentric(
                 contractData,
                 req.jwt.unique_name,
@@ -731,7 +735,7 @@ menuDataRouter.get(
                         unlockable.Properties.RepositoryId!,
                     ),
                 )
-                .sort(unlockorderComparer),
+                .sort(unlockOrderComparer),
             UserCentric: generateUserCentric(
                 contractData,
                 req.jwt.unique_name,
@@ -800,6 +804,14 @@ menuDataRouter.get(
     (req: RequestWithJwt<{ locationId: string; difficulty?: string }>, res) => {
         const LOCATION = req.query.locationId
 
+        const locData = getVersionedConfig<PeacockLocationsData>(
+            "LocationsData",
+            req.gameVersion,
+            false,
+        )
+
+        const locationData = locData.parents[LOCATION]
+
         const response = {
             template:
                 req.gameVersion === "h1"
@@ -808,17 +820,8 @@ menuDataRouter.get(
             data: {
                 Location: {},
                 MissionData: {
-                    Location: {},
-                    SubLocationMissionsData: [],
-                    ChallengeCompletion: {
-                        ChallengesCount: 0,
-                        CompletedChallengesCount: 0,
-                    },
-                    OpportunityStatistics: {
-                        Count: 0,
-                        Completed: 0,
-                    },
-                    LocationCompletionPercent: 0,
+                    ...getDestinationCompletion(locationData, req),
+                    ...{ SubLocationMissionsData: [] },
                 },
                 ChallengeData: {
                     Children:
@@ -854,20 +857,11 @@ menuDataRouter.get(
             log(LogLevel.DEBUG, `Looking up locations details for ${LOCATION}.`)
         }
 
-        const locData = getVersionedConfig<PeacockLocationsData>(
-            "LocationsData",
-            req.gameVersion,
-            false,
-        )
-
-        const locationData = locData.parents[LOCATION]
-
         const sublocationsData = Object.values(locData.children).filter(
             (subLocation) => subLocation.Properties.ParentLocation === LOCATION,
         )
 
         response.data.Location = locationData
-        response.data.MissionData.Location = locationData
 
         if (req.query.difficulty === "pro1") {
             log(LogLevel.DEBUG, "Adjusting for legacy-pro1.")
@@ -1322,7 +1316,7 @@ menuDataRouter.get(
 
 menuDataRouter.get("/Contracts", contractsModeHome)
 
-firstPassRouter.get(
+preMenuDataRouter.get(
     "/contractcreation/planning",
     (
         req: RequestWithJwt<{ contractCreationIdOverwrite: string }>,
@@ -1442,6 +1436,25 @@ menuDataRouter.post(
                     ErrorReason: "",
                     HasPrevious: false,
                     HasMore: false,
+                },
+            },
+        })
+    },
+)
+
+menuDataRouter.get(
+    "/DebriefingChallenges",
+    (req: RequestWithJwt<{ contractId: string }>, res) => {
+        res.json({
+            template: getConfig("DebriefingChallengesTemplate", false),
+            data: {
+                ChallengeData: {
+                    Children:
+                        controller.challengeService.getChallengeTreeForContract(
+                            req.query.contractId,
+                            req.gameVersion,
+                            req.jwt.unique_name,
+                        ),
                 },
             },
         })

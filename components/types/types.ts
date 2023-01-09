@@ -20,9 +20,10 @@ import type * as core from "express-serve-static-core"
 
 import type { IContractCreationPayload } from "../statemachines/contractCreation"
 import type { Request } from "express"
-import { SavedChallenge } from "./challenges"
+import { ProfileChallengeData, SavedChallenge } from "./challenges"
 import { SessionGhostModeDetails } from "../multiplayer/multiplayerService"
 import { IContextListener } from "../statemachines/contextListeners"
+import { Timer } from "@peacockproject/statemachine-parser"
 
 /**
  * A duration or relative point in time expressed in seconds.
@@ -229,7 +230,24 @@ export interface ContractSession {
     objectiveDefinitions: Map<string, unknown>
     objectiveStates: Map<string, string>
     objectiveContexts: Map<string, unknown>
+    /**
+     * Session Ghost Mode details.
+     *
+     * @since v5.0.0
+     */
     ghost?: SessionGhostModeDetails
+    /**
+     * The current state of the challenges.
+     *
+     * @since v5.6.0-dev.1
+     */
+    challengeContexts?: {
+        [challengeId: string]: {
+            context: unknown
+            state: string
+            timers: Timer[]
+        }
+    }
 }
 
 /**
@@ -292,6 +310,17 @@ export interface ServerToClientEvent<EventValue = unknown> {
     Origin?: string | null
 }
 
+export interface MissionStory {
+    CommonRepositoryId: RepositoryId
+    PreviouslyCompleted: boolean
+    IsMainOpportunity: boolean
+    Title: string
+    Summary: string
+    Briefing: string
+    Location: string
+    Image: string
+}
+
 export interface UserProfile {
     Id: string
     LinkedAccounts: {
@@ -311,8 +340,8 @@ export interface UserProfile {
         }
         PeacockFavoriteContracts: string[]
         PeacockCompletedEscalations: string[]
-        PeacockChallengeProgression: {
-            [id: string]: ChallengeProgressionData
+        ChallengeProgression: {
+            [id: string]: ProfileChallengeData
         }
         /**
          * Player progression data.
@@ -344,6 +373,9 @@ export interface UserProfile {
             PersistentBool: Record<string, unknown>
         }
         CPD: CPDStore
+        opportunityprogression: {
+            [opportunityId: RepositoryId]: boolean
+        }
     }
     ETag: string | null
     Gamertag: string
@@ -384,6 +416,7 @@ export interface NamespaceEntitlementEpic {
  */
 export interface Unlockable {
     Id: string
+    Opportunities?: number
     DisplayNameLocKey: string
     GameAsset: string | null
     Guid: string
@@ -788,10 +821,6 @@ export interface MissionManifest {
     }
 }
 
-export type DestinationsMenuDataObject = {
-    ParentId: string
-}
-
 /**
  * A configuration that tells the game where it should connect to.
  * This config is the first thing that the game asks for when logging in.
@@ -939,12 +968,18 @@ export interface CompiledChallengeTreeCategoryInfo {
     CompletedChallengesCount: number
 }
 
+/**
+ * The data for a challenge's `ChallengeProgression` field. Tells the game how
+ * many challenges are completed, how many are left, etc.
+ */
+export type ChallengeTreeWaterfallState =
+    | ChallengeProgressCTreeContextListener
+    | ChallengeProgressCCountContextListener
+    | null
+
 export interface CompiledChallengeTreeData {
     CategoryName: string
-    ChallengeProgress?:
-        | ChallengeProgressCTreeContextListener
-        | ChallengeProgressCCountContextListener
-        | null
+    ChallengeProgress?: ChallengeTreeWaterfallState
     Completed: boolean
     CompletionData: CompletionData
     Description: string
@@ -993,12 +1028,14 @@ export interface CompiledChallengeIngameData {
     }
 }
 
+/**
+ * Game-facing challenge progression data.
+ */
 export interface ChallengeProgressionData {
     ChallengeId: string
     ProfileId: string
     Completed: boolean
     State: Record<string, unknown>
-    ETag?: string | null
     CompletedAt: Date | string | null
     MustBeSaved: boolean
 }
@@ -1241,3 +1278,15 @@ export type ContextScopedStorageLocation = "profile" | "hit" | "session"
 export type CPDStore = Record<string, Record<string, string | number | boolean>>
 
 export type ContractProgressionData = Record<string, string | number | boolean>
+
+/** SMF's lastDeploy.json */
+export interface SMFLastDeploy {
+    loadOrder: string[]
+    lastServerSideStates?: {
+        unlockables?: Unlockable[]
+        contracts?: {
+            [k: string]: MissionManifest
+        }
+        blobs?: Record<string, string>
+    }
+}

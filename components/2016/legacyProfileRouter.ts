@@ -95,7 +95,7 @@ legacyProfileRouter.post(
                     (challengeData) =>
                         compileRuntimeChallenge(
                             challengeData,
-                            controller.challengeService.getChallengeProgression(
+                            controller.challengeService.getPersistentChallengeProgression(
                                 req.jwt.unique_name,
                                 challengeData.Id,
                                 req.gameVersion,
@@ -131,25 +131,42 @@ legacyProfileRouter.post(
             }))
 
         /*
-        challenges.push(
-            ...Object.values(
-                controller.challengeService.getChallengesForContract(
-                    req.body.contractId,
+        for (const challengeId of req.body.challengeids) {
+            const challenge =
+                controller.challengeService.getChallengeById(challengeId)
+
+            if (!challenge) {
+                log(
+                    LogLevel.ERROR,
+                    `Unknown challenge in LCSGP: ${challengeId}`,
+                )
+                continue
+            }
+
+            const progression =
+                controller.challengeService.getChallengeProgression(
+                    req.jwt.unique_name,
+                    challengeId,
                     req.gameVersion,
-                ),
-            )
-                .flat()
-                .map((challengeData) =>
-                    controller.challengeService.getChallengeProgression(
-                        req.jwt.unique_name,
-                        challengeData.Id,
-                        req.gameVersion,
-                    ),
-                ),
-        )
+                )
+
+            challenges.push({
+                ChallengeId: challengeId,
+                ProfileId: req.jwt.unique_name,
+                Completed: progression.Completed,
+                State: progression.State,
+                ETag: `W/"datetime'${encodeURIComponent(
+                    new Date().toISOString(),
+                )}'"`,
+                CompletedAt: progression.CompletedAt,
+                MustBeSaved: false,
+            })
+        }
          */
         // TODO: atampy broke this - please fix
-        //  (no contract ID given on this route!!)
+        //      update(RD) nov 18 '22: fixed but still missing challenges in
+        //      2016 engine (e.g. showstopper is missing 9, 5 of which are the
+        //      classics I think, not sure about the other 4)
 
         res.json(challenges)
     },

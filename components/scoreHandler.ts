@@ -46,7 +46,14 @@ import { liveSplitManager } from "./livesplit/liveSplitManager"
 import { Playstyle, ScoringBonus, ScoringHeadline } from "./types/scoring"
 import { MissionEndRequestQuery } from "./types/gameSchemas"
 
-function calculatePlaystyle(session: ContractSession) {
+/**
+ * Checks the criteria of each possible play-style, ranking them by scoring.
+ *
+ * @author CurryMaker
+ * @param session The contract session.
+ * @returns The play-styles, ranked from best fit to worst fit.
+ */
+export function calculatePlaystyle(session: ContractSession): Playstyle[] {
     const playstylesCopy = getConfig("Playstyles", true) as Playstyle[]
 
     // Resetting the scores...
@@ -257,12 +264,6 @@ export async function missionEnd(
     // const allMissionStories = getConfig("MissionStories")
     // const missionStories = (contractData.Metadata.Opportunities || []).map((missionStoryId) => allMissionStories[missionStoryId])
 
-    const batchedProgression =
-        controller.challengeService.getBatchChallengeProgression(
-            req.jwt.unique_name,
-            req.gameVersion,
-        )
-
     const result = {
         MissionReward: {
             LocationProgression: {
@@ -293,21 +294,19 @@ export async function missionEnd(
                 // FIXME: This behaviour may not be accurate to original server
                 .filter(
                     (challengeData) =>
-                        controller.challengeService.getChallengeProgression(
+                        controller.challengeService.getPersistentChallengeProgression(
                             req.jwt.unique_name,
                             challengeData.Id,
                             req.gameVersion,
-                            batchedProgression,
                         ).Completed,
                 )
                 .map((challengeData) =>
                     controller.challengeService.compileRegistryChallengeTreeData(
                         challengeData,
-                        controller.challengeService.getChallengeProgression(
+                        controller.challengeService.getPersistentChallengeProgression(
                             req.jwt.unique_name,
                             challengeData.Id,
                             req.gameVersion,
-                            batchedProgression,
                         ),
                         req.gameVersion,
                         req.jwt.unique_name,

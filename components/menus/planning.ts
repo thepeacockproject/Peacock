@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type { RequestWithJwt, SceneConfig } from "../types/types"
+import type { MissionStory, RequestWithJwt, SceneConfig } from "../types/types"
 import { log, LogLevel } from "../loggingInterop"
 import { _legacyBull, _theLastYardbirdScpc, controller } from "../controller"
 import {
@@ -32,7 +32,7 @@ import {
 } from "../contracts/dataGen"
 import { getConfig } from "../configSwizzleManager"
 import { getUserData, writeUserData } from "../databaseHandler"
-import { nilUuid, unlockorderComparer } from "../utils"
+import { getDefaultSuitFor, nilUuid, unlockOrderComparer } from "../utils"
 
 import type { Response } from "express"
 import { createInventory } from "../inventory"
@@ -52,7 +52,7 @@ export async function planningView(
     }
 
     const entranceData = getConfig<SceneConfig>("Entrances", false)
-    const missionStories = getConfig<Record<string, unknown>>(
+    const missionStories = getConfig<Record<string, MissionStory>>(
         "MissionStories",
         false,
     )
@@ -60,6 +60,10 @@ export async function planningView(
     const userData = getUserData(req.jwt.unique_name, req.gameVersion)
 
     const isForReset = req.query.resetescalation === "true"
+
+    for (const ms in userData.Extensions.opportunityprogression) {
+        missionStories[ms].PreviouslyCompleted = true
+    }
 
     if (isForReset) {
         const escalationGroupId = contractIdToEscalationGroupId(
@@ -189,7 +193,10 @@ export async function planningView(
     }
 
     let pistol = "FIREARMS_HERO_PISTOL_TACTICAL_ICA_19"
-    let suit = "TOKEN_OUTFIT_HITMANSUIT"
+    let suit =
+        sublocation.Id === "LOCATION_ANCESTRAL_SMOOTHSNAKE"
+            ? "TOKEN_OUTFIT_ANCESTRAL_HERO_SMOOTHSNAKESUIT"
+            : getDefaultSuitFor(sublocation?.Properties?.ParentLocation)
     let tool1 = "TOKEN_FIBERWIRE"
     let tool2 = "PROP_TOOL_COIN"
     let briefcaseProp: string | undefined = undefined
@@ -315,7 +322,7 @@ export async function planningView(
                                   unlockable.Properties.Difficulty ===
                                   contractData.Metadata.Difficulty,
                           )
-                          .sort(unlockorderComparer),
+                          .sort(unlockOrderComparer),
             Location: sublocation,
             LoadoutData:
                 contractData.Metadata.Type === "sniper"
@@ -411,7 +418,7 @@ export async function planningView(
                 sniperLoadouts.length !== 0 ? sniperLoadouts : null,
             ChallengeData: {
                 Children:
-                    controller.challengeService.getChallengePlanningDataForContract(
+                    controller.challengeService.getChallengeTreeForContract(
                         req.query.contractid,
                         req.gameVersion,
                         req.jwt.unique_name,

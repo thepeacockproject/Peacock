@@ -16,18 +16,19 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { getVersionedConfig } from "../configSwizzleManager"
+import { getConfig, getVersionedConfig } from "../configSwizzleManager"
 import type {
     CompletionData,
-    DestinationsMenuDataObject,
     GameLocationsData,
     GameVersion,
+    MissionStory,
     PeacockLocationsData,
     RequestWithJwt,
     Unlockable,
 } from "../types/types"
 import { controller } from "../controller"
 import { generateCompletionData } from "../contracts/dataGen"
+import { getUserData } from "components/databaseHandler"
 
 type GameFacingDestination = {
     ChallengeCompletion: {
@@ -42,47 +43,60 @@ type GameFacingDestination = {
     LocationCompletionPercent: number
     Location: Unlockable
 }
+const missionStories = getConfig<Record<string, MissionStory>>(
+    "MissionStories",
+    false,
+)
+
+export function getDestinationCompletion(
+    parent: Unlockable,
+    req: RequestWithJwt,
+) {
+    const userData = getUserData(req.jwt.unique_name, req.gameVersion)
+
+    let opportunityCompletedCount = 0
+    for (const ms in userData.Extensions.opportunityprogression) {
+        if (missionStories[ms].Location === parent.Id) {
+            opportunityCompletedCount++
+        }
+    }
+
+    return {
+        ChallengeCompletion: {
+            ChallengesCount: 0,
+            CompletedChallengesCount: 0, // TODO: Hook this up to challenge counts.
+        },
+        OpportunityStatistics: {
+            Count: parent.Opportunities,
+            Completed: opportunityCompletedCount,
+        },
+        LocationCompletionPercent: 0,
+        Location: parent,
+    }
+}
 
 export function destinationsMenu(req: RequestWithJwt): GameFacingDestination[] {
-    const destinations = getVersionedConfig<DestinationsMenuDataObject[]>(
-        "Destinations",
-        req.gameVersion,
-        false,
-    )
-
     const result: GameFacingDestination[] = []
-
     const locations = getVersionedConfig<PeacockLocationsData>(
         "LocationsData",
         req.gameVersion,
         true,
     )
-
-    for (const destination of destinations) {
-        const parent = locations.parents[destination.ParentId]
-
+    for (const [destination, parent] of Object.entries(locations.parents)) {
         parent.GameAsset = null
         parent.DisplayNameLocKey =
-            "UI_LOCATION_PARENT_" + destination.ParentId.substring(16) + "_NAME"
+            "UI_LOCATION_PARENT_" + destination.substring(16) + "_NAME"
 
-        const template = {
-            ChallengeCompletion: {
-                ChallengesCount: 0,
-                CompletedChallengesCount: 0, // TODO: Hook this up to challenge counts.
+        const template: GameFacingDestination = {
+            ...getDestinationCompletion(parent, req),
+            ...{
+                CompletionData: generateCompletionData(
+                    destination,
+                    req.jwt.unique_name,
+                    req.gameVersion,
+                ),
             },
-            CompletionData: generateCompletionData(
-                destination.ParentId,
-                req.jwt.unique_name,
-                req.gameVersion,
-            ),
-            OpportunityStatistics: {
-                Count: 0,
-                Completed: 0,
-            },
-            LocationCompletionPercent: 0,
-            Location: parent,
         }
-
         result.push(template)
     }
 

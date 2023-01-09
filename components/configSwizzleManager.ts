@@ -29,7 +29,6 @@ import FilterData from "../static/FilterData.json"
 import LocationsData from "../static/LocationsData.json"
 import GameChangerProperties from "../static/GameChangerProperties.json"
 import allunlockables from "../static/allunlockables.json"
-import Destinations from "../static/Destinations.json"
 import connectionConfigTemplate from "../static/config.json"
 import onlineconfig from "../static/onlineconfig.json"
 import privacypolicy from "../static/privacypolicy.json"
@@ -95,6 +94,7 @@ import Videos from "../static/Videos.json"
 import ContractSearchPageTemplate from "../static/ContractSearchPageTemplate.json"
 import ContractSearchResponseTemplate from "../static/ContractSearchResponseTemplate.json"
 import LegacyDebriefingChallengesTemplate from "../static/LegacyDebriefingChallengesTemplate.json"
+import DebriefingChallengesTemplate from "../static/DebriefingChallengesTemplate.json"
 import MasteryUnlockablesTemplate from "../static/MasteryUnlockablesTemplate.json"
 import SniperLoadouts from "../static/SniperLoadouts.json"
 import Scpcallunlockables from "../static/Scpcallunlockables.json"
@@ -123,7 +123,6 @@ const configs: Record<string, unknown> = {
     LeaderboardEntriesTemplate,
     GameChangerProperties,
     allunlockables,
-    Destinations,
     config: connectionConfigTemplate,
     onlineconfig,
     privacypolicy,
@@ -169,6 +168,7 @@ const configs: Record<string, unknown> = {
     LegacyLoadMenuTemplate,
     LegacyContractSearchResponseTemplate,
     LegacyDebriefingChallengesTemplate,
+    DebriefingChallengesTemplate,
     LegacyLookupContractByIdTemplate,
     EiderDashboard,
     PersistentBools,
@@ -201,6 +201,9 @@ const configs: Record<string, unknown> = {
 }
 
 Object.keys(configs).forEach((cfg) => {
+    // Parse the string into an object
+    configs[cfg] = JSON.parse(configs[cfg])
+
     const overridePath = join("overrides", `${cfg}.json`)
 
     if (existsSync(overridePath)) {
