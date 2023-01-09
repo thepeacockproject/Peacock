@@ -251,6 +251,22 @@ export interface ContractSession {
 }
 
 /**
+ * The SaveFile object passed by the client in /ProfileService/UpdateUserSaveFileTable
+ */
+export interface SaveFile {
+    // The contract session ID of the save
+    ContractSessionId: string
+    // The unix timestamp at the time of saving
+    TimeStamp: number
+    Value: {
+        // The name of the save slot
+        Name: string
+        // The token of the last event that happened before the save was made
+        LastEventToken: string
+    }
+}
+
+/**
  * The Hitman server version in object form.
  */
 export interface ServerVersion {

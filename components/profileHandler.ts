@@ -31,6 +31,7 @@ import type {
     CompiledChallengeRuntimeData,
     GameVersion,
     RequestWithJwt,
+    SaveFile,
     UserProfile,
 } from "./types/types"
 import { log, LogLevel } from "./loggingInterop"
@@ -632,10 +633,19 @@ profileRouter.post(
     jsonMiddleware(),
     async (req, res) => {
         if (req.body.clientSaveFileList.length > 0) {
-            const save =
-                req.body.clientSaveFileList[
-                    req.body.clientSaveFileList.length - 1
-                ]
+            log(LogLevel.DEBUG, JSON.stringify(req.body.clientSaveFileList))
+            const save: SaveFile = req.body.clientSaveFileList.reduce(
+                (prev: SaveFile, current: SaveFile) =>
+                    prev.TimeStamp > current.TimeStamp ? prev : current,
+            )
+            log(
+                LogLevel.DEBUG,
+                `Saving to slot ${save.Value.Name} which was saved at ${save.TimeStamp}`,
+            )
+            // const save =
+            //     req.body.clientSaveFileList[
+            //         req.body.clientSaveFileList.length - 1
+            //     ]
 
             try {
                 await saveSession(
@@ -674,6 +684,11 @@ profileRouter.post(
         try {
             await loadSession(req.body.contractSessionId, req.body.saveToken)
         } catch (e) {
+            log(
+                LogLevel.DEBUG,
+                `Failed to load contract with token = ${req.body.saveToken}, session id = ${req.body.contractSessionId}.`,
+            )
+            log(LogLevel.DEBUG, JSON.stringify(e))
             if (
                 getActiveSessionIdForUser(req.jwt.unique_name) ===
                 req.body.contractSessionId
