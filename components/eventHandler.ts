@@ -679,7 +679,7 @@ function saveEvents(
                     session.timerStart = event.Timestamp
                     log(
                         LogLevel.DEBUG,
-                        `Mission started at : ${session.timerStart}`,
+                        `Mission started at: ${session.timerStart}`,
                     )
                 }
                 break
