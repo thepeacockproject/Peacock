@@ -366,6 +366,13 @@ export interface UserProfile {
         }
         PeacockFavoriteContracts: string[]
         PeacockCompletedEscalations: string[]
+        Saves: {
+            [slot: string]: {
+                Timestamp: number
+                ContractSessionId: string
+                Token: string
+            }
+        }
         ChallengeProgression: {
             [id: string]: ProfileChallengeData
         }
