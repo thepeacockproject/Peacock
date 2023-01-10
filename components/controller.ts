@@ -619,6 +619,9 @@ export class Controller {
      * @returns The mission manifest object, or undefined if it wasn't found.
      */
     public resolveContract(id: string): MissionManifest | undefined {
+        if (!id) {
+            return undefined
+        }
         const optionalPluginJson = this.hooks.getContractManifest.call(id)
 
         if (optionalPluginJson) {
