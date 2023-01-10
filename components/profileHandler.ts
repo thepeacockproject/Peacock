@@ -589,7 +589,7 @@ profileRouter.post(
                 PlayerProfile: {
                     Version: 1,
                     XpPerLevel: 6000,
-                    MaxLevel: 5000,
+                    MaxLevel: 7500,
                 },
             },
         })
