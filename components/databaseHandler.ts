@@ -23,6 +23,7 @@ import { serializeSession, deserializeSession } from "./sessionSerialization"
 import { castUserProfile } from "./utils"
 import { getConfig } from "./configSwizzleManager"
 import { log, LogLevel } from "./loggingInterop"
+import { unlink, readdir } from "fs/promises"
 
 /**
  * Container for functions that handle file read/writes,
@@ -216,17 +217,24 @@ export async function writeExternalUserData(
 /**
  * Reads a contract session from the contractSessions folder.
  *
- * @param sessionId The ID of the session to load.
+ * @param identifier The identifier for the saved session, in the format of token_sessionID.
  * @returns The contract session.
  */
 export async function getContractSession(
-    sessionId: string,
+    identifier: string,
 ): Promise<ContractSession> {
+    const files = await readdir("contractSessions")
+    const filtered = files.filter((fn) => fn.endsWith(`_${identifier}.json`))
+
+    if (filtered.length === 0) {
+        throw new Error(`No session saved with identifier ${identifier}`)
+    }
+
+    // The filtered files have the same identifier, they are just stored at different slots
+    // So we can read any of them and it will be the same.
     return deserializeSession(
         JSON.parse(
-            (
-                await readFile(join("contractSessions", `${sessionId}.json`))
-            ).toString(),
+            (await readFile(join("contractSessions", filtered[0]))).toString(),
         ),
     )
 }
@@ -234,15 +242,25 @@ export async function getContractSession(
 /**
  * Writes a contract session to the contractsSessions folder.
  *
- * @param sessionId The session's ID.
+ * @param identifier The identifier for the saved session, in the format of slot_token_sessionID.
  * @param session The contract session.
  */
 export async function writeContractSession(
-    sessionId: string,
+    identifier: string,
     session: ContractSession,
 ): Promise<void> {
     return await writeFile(
-        join("contractSessions", `${sessionId}.json`),
+        join("contractSessions", `${identifier}.json`),
         JSON.stringify(serializeSession(session)),
     )
+}
+
+/**
+ * Deletes a saved contract session from the contractsSessions folder.
+ *
+ * @param fileName The identifier for the saved session, in the format of slot_token_sessionID.
+ * @throws ENOENT if the file is not found.
+ */
+export async function deleteContractSession(fileName: string): Promise<void> {
+    return await unlink(join("contractSessions", `${fileName}.json`))
 }

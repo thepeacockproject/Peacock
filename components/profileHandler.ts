@@ -21,20 +21,24 @@ import path from "path"
 import { castUserProfile, nilUuid, uuidRegex } from "./utils"
 import { json as jsonMiddleware } from "body-parser"
 import { getPlatformEntitlements } from "./platformEntitlements"
-import {
-    getActiveSessionIdForUser,
-    loadSession,
-    newSession,
-    saveSession,
-} from "./eventHandler"
+import { contractSessions, newSession } from "./eventHandler"
 import type {
     CompiledChallengeRuntimeData,
+    ContractSession,
     GameVersion,
     RequestWithJwt,
+    SaveFile,
+    UpdateUserSaveFileTableBody,
     UserProfile,
 } from "./types/types"
 import { log, LogLevel } from "./loggingInterop"
-import { getUserData, writeUserData } from "./databaseHandler"
+import {
+    deleteContractSession,
+    getContractSession,
+    getUserData,
+    writeContractSession,
+    writeUserData,
+} from "./databaseHandler"
 import { randomUUID } from "crypto"
 import { getVersionedConfig } from "./configSwizzleManager"
 import { createInventory } from "./inventory"
@@ -656,26 +660,38 @@ profileRouter.post(
 profileRouter.post(
     "/ProfileService/UpdateUserSaveFileTable",
     jsonMiddleware(),
-    async (req, res) => {
+    async (req: RequestWithJwt<never, UpdateUserSaveFileTableBody>, res) => {
         if (req.body.clientSaveFileList.length > 0) {
-            const save =
-                req.body.clientSaveFileList[
-                    req.body.clientSaveFileList.length - 1
-                ]
+            // We are saving to the SaveFile with the most recent timestamp.
+            // Others are ignored.
+            const save: SaveFile = req.body.clientSaveFileList.reduce(
+                (prev: SaveFile, current: SaveFile) =>
+                    prev.TimeStamp > current.TimeStamp ? prev : current,
+            )
+            const userData = getUserData(req.jwt.unique_name, req.gameVersion)
 
             try {
-                await saveSession(
-                    save.ContractSessionId,
-                    save.Value.LastEventToken,
-                )
+                await saveSession(save, userData)
+                // Successfully saved, so edit user data
+                if (!userData.Extensions.Saves) {
+                    userData.Extensions.Saves = {}
+                }
+                userData.Extensions.Saves[save.Value.Name] = {
+                    Timestamp: save.TimeStamp,
+                    ContractSessionId: save.ContractSessionId,
+                    Token: save.Value.LastEventToken,
+                }
+                writeUserData(req.jwt.unique_name, req.gameVersion)
             } catch (e) {
-                log(
-                    LogLevel.WARN,
-                    `Unable to save session ${save?.ContractSessionId}`,
-                )
-
-                if (PEACOCK_DEV) {
-                    log(LogLevel.DEBUG, e.name)
+                if (getErrorCause(e) === "cause uninvestigated") {
+                    log(LogLevel.DEBUG, `${getErrorMessage(e)}`)
+                } else {
+                    log(
+                        LogLevel.WARN,
+                        `Unable to save session ${
+                            save?.ContractSessionId
+                        } because ${getErrorMessage(e)}.`,
+                    )
                 }
             }
         }
@@ -683,6 +699,75 @@ profileRouter.post(
         res.status(204).end()
     },
 )
+
+function getErrorMessage(error: unknown) {
+    if (error instanceof Error) return error.message
+    return String(error)
+}
+
+function getErrorCause(error: unknown) {
+    if (error instanceof Error) return error.cause
+    return String(error)
+}
+
+async function saveSession(
+    save: SaveFile,
+    userData: UserProfile,
+): Promise<void> {
+    const sessionId = save.ContractSessionId
+    const token = save.Value.LastEventToken
+    const slot = save.Value.Name
+
+    if (!contractSessions.has(sessionId)) {
+        throw new Error("the session does not exist in the server's memory", {
+            cause: "non-existent",
+        })
+    }
+    if (!userData.Extensions.Saves) {
+        userData.Extensions.Saves = {}
+    }
+    if (slot in userData.Extensions.Saves) {
+        const delta = save.TimeStamp - userData.Extensions.Saves[slot].Timestamp
+
+        if (delta === 0) {
+            throw new Error(
+                `the client is accessing /ProfileService/UpdateUserSaveFileTable with nothing updated.`,
+                { cause: "cause uninvestigated" },
+            )
+        } else if (delta < 0) {
+            throw new Error(`there is a newer save in slot ${slot}`, {
+                cause: "outdated",
+            })
+        } else {
+            // If we can delete the old save, then do it. If not, we can still proceed.
+            try {
+                await deleteContractSession(
+                    slot +
+                        "_" +
+                        userData.Extensions.Saves[slot].Token +
+                        "_" +
+                        userData.Extensions.Saves[slot].ContractSessionId,
+                )
+            } catch (e) {
+                log(
+                    LogLevel.DEBUG,
+                    `Failed to delete old ${slot} save. ${getErrorMessage(e)}.`,
+                )
+            }
+        }
+    }
+
+    await writeContractSession(
+        slot + "_" + token + "_" + sessionId,
+        contractSessions.get(sessionId)!,
+    )
+    log(
+        LogLevel.DEBUG,
+        `Saved contract to slot ${slot} with token = ${token}, session id = ${sessionId}, start time = ${
+            contractSessions.get(sessionId).timerStart
+        }.`,
+    )
+}
 
 profileRouter.post(
     "/ContractSessionsService/Load",
@@ -700,46 +785,58 @@ profileRouter.post(
         try {
             await loadSession(req.body.contractSessionId, req.body.saveToken)
         } catch (e) {
-            if (
-                getActiveSessionIdForUser(req.jwt.unique_name) ===
-                req.body.contractSessionId
-            ) {
-                log(
-                    LogLevel.INFO,
-                    "Tried to load the active session, prevented to avoid crash.",
-                )
-            } else {
-                log(
-                    LogLevel.WARN,
-                    "No such save detected! Might be an official servers save.",
-                )
+            log(
+                LogLevel.DEBUG,
+                `Failed to load contract with token = ${req.body.saveToken}, session id = ${req.body.contractSessionId} because ${e.message}`,
+            )
+            log(
+                LogLevel.WARN,
+                "No such save detected! Might be an official servers save.",
+            )
 
-                if (PEACOCK_DEV) {
-                    log(
-                        LogLevel.DEBUG,
-                        `(Save-context: ${req.body.contractSessionId}; ${req.body.saveToken})`,
-                    )
-                }
-
+            if (PEACOCK_DEV) {
                 log(
-                    LogLevel.WARN,
-                    "Creating a fake session to avoid problems... scoring will not work!",
-                )
-
-                newSession(
-                    req.body.contractSessionId,
-                    req.body.contractId,
-                    req.jwt.unique_name,
-                    req.body.difficultyLevel!,
-                    req.gameVersion,
-                    false,
+                    LogLevel.DEBUG,
+                    `(Save-context: ${req.body.contractSessionId}; ${req.body.saveToken})`,
                 )
             }
+
+            log(
+                LogLevel.WARN,
+                "Creating a fake session to avoid problems... scoring will not work!",
+            )
+
+            newSession(
+                req.body.contractSessionId,
+                req.body.contractId,
+                req.jwt.unique_name,
+                req.body.difficultyLevel!,
+                req.gameVersion,
+                false,
+            )
         }
 
         res.send(`"${req.body.contractSessionId}"`)
     },
 )
+
+async function loadSession(
+    sessionId: string,
+    token: string,
+    sessionData?: ContractSession,
+): Promise<void> {
+    if (!sessionData) {
+        sessionData = await getContractSession(token + "_" + sessionId)
+    }
+
+    contractSessions.set(sessionId, sessionData)
+    log(
+        LogLevel.DEBUG,
+        `Loaded contract with token = ${token}, session id = ${sessionId}, start time = ${
+            contractSessions.get(sessionId).timerStart
+        }.`,
+    )
+}
 
 profileRouter.post(
     "/ProfileService/GetSemLinkStatus",

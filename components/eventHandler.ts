@@ -34,19 +34,13 @@ import {
 import { extractToken, ServerVer } from "./utils"
 import { json as jsonMiddleware } from "body-parser"
 import { log, LogLevel } from "./loggingInterop"
-import {
-    getContractSession,
-    getUserData,
-    writeContractSession,
-    writeUserData,
-} from "./databaseHandler"
+import { getUserData, writeUserData } from "./databaseHandler"
 import { controller } from "./controller"
 import { swapToLocationStatus } from "./discordRp"
 import { randomUUID } from "crypto"
 import { liveSplitManager } from "./livesplit/liveSplitManager"
 import { handleMultiplayerEvent } from "./multiplayer/multiplayerService"
 import { handleEvent } from "@peacockproject/statemachine-parser"
-import picocolors from "picocolors"
 import { encodePushMessage } from "./multiplayer/multiplayerUtils"
 import {
     ActorTaggedC2SEvent,
@@ -67,6 +61,7 @@ import {
     WitnessesC2SEvent,
 } from "./types/events"
 import { setCpd } from "./evergreen"
+import picocolors from "picocolors"
 
 const eventRouter = Router()
 
@@ -684,14 +679,20 @@ function saveEvents(
             case "IntroCutEnd":
                 if (!session.timerStart) {
                     session.timerStart = event.Timestamp
+                    log(
+                        LogLevel.DEBUG,
+                        `Mission started at: ${session.timerStart}`,
+                    )
                 }
                 break
             case "exit_gate":
                 session.timerEnd = event.Timestamp
+                log(LogLevel.DEBUG, `Mission ended at: ${session.timerEnd}`)
                 break
             case "ContractEnd":
                 if (!session.timerEnd) {
                     session.timerEnd = event.Timestamp
+                    log(LogLevel.DEBUG, `Mission ended at: ${session.timerEnd}`)
                 }
                 break
             case "ObjectiveCompleted":
@@ -809,33 +810,6 @@ function saveEvents(
     }
 
     return response
-}
-
-export async function saveSession(
-    sessionId: string,
-    token: string,
-): Promise<void> {
-    if (!contractSessions.has(sessionId)) {
-        log(LogLevel.WARN, `Refusing to save ${sessionId} as it doesn't exist`)
-        return
-    }
-
-    await writeContractSession(
-        token + "_" + sessionId,
-        contractSessions.get(sessionId)!,
-    )
-}
-
-export async function loadSession(
-    sessionId: string,
-    token: string,
-    sessionData?: ContractSession,
-): Promise<void> {
-    if (!sessionData) {
-        sessionData = await getContractSession(token + "_" + sessionId)
-    }
-
-    contractSessions.set(sessionId, sessionData)
 }
 
 export { eventRouter }
