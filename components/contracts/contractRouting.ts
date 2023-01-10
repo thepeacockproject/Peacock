@@ -32,6 +32,7 @@ import type {
     GameChanger,
     MissionManifest,
     MissionManifestObjective,
+    MissionStory,
     RequestWithJwt,
 } from "../types/types"
 import {
@@ -47,6 +48,7 @@ import {
 import { createSniperLoadouts } from "../menus/sniper"
 import { GetForPlay2Body } from "../types/gameSchemas"
 import assert from "assert"
+import { getUserData } from "components/databaseHandler"
 
 const contractRoutingRouter = Router()
 
@@ -302,6 +304,30 @@ contractRoutingRouter.post(
 
         await controller.commitNewContract(manifest)
         res.json(manifest)
+    },
+)
+
+contractRoutingRouter.post(
+    "/GetContractOpportunities",
+    jsonMiddleware(),
+    (req: RequestWithJwt<never, { contractId: string }>, res) => {
+        const contract = controller.resolveContract(req.body.contractId)
+        const missionStories = getConfig<Record<string, MissionStory>>(
+            "MissionStories",
+            false,
+        )
+        const userData = getUserData(req.jwt.unique_name, req.gameVersion)
+        const result = []
+
+        for (const ms of contract.Metadata.Opportunities) {
+            missionStories[ms].PreviouslyCompleted =
+                ms in userData.Extensions.opportunityprogression
+            const current = missionStories[ms]
+            delete current.Location
+            result.push(current)
+        }
+
+        res.json(result)
     },
 )
 
