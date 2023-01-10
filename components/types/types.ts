@@ -714,6 +714,18 @@ export type ContractGroupDefinition = {
     Order: string[]
 }
 
+export interface EscalationInfo {
+    Type?: MissionType
+    InGroup?: string
+    NextContractId?: string
+    GroupData?: {
+        Level: number
+        TotalLevels: number
+        Completed: boolean
+        FirstContractId: string
+    }
+}
+
 export interface MissionManifestMetadata {
     Id: string
     Location: string
@@ -742,6 +754,7 @@ export interface MissionManifestMetadata {
     RequiredUnlockable?: string
     Drops?: string[]
     Opportunities?: string[]
+    OpportunityData?: MissionStory[]
     Entitlements: string[]
     LastUpdate?: string
     PublicId?: string
@@ -767,7 +780,6 @@ export interface MissionManifestMetadata {
     EndConditions?: {
         PointLimit?: number
     }
-    InGroup?: string
     Subtype?: string
     GroupTitle?: string
     TargetExpiration?: number
@@ -776,6 +788,16 @@ export interface MissionManifestMetadata {
     NonTargetKillPenaltyEnabled?: boolean
     NoticedTargetStreakPenaltyMax?: number
     IsFeatured?: boolean
+    // Begin escalation-exclusive properties
+    InGroup?: string
+    NextContractId?: string
+    GroupData?: {
+        Level: number
+        TotalLevels: number
+        Completed: boolean
+        FirstContractId: string
+    }
+    // End escalation-exclusive properties
     /**
      * Useless property.
      *

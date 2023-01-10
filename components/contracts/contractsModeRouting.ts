@@ -51,7 +51,7 @@ export function contractsModeHome(req: RequestWithJwt, res: Response): void {
                 XP: userData.Extensions.progression.PlayerProfileXP.Total,
                 Level: userData.Extensions.progression.PlayerProfileXP
                     .ProfileLevel,
-                MaxLevel: 5000,
+                MaxLevel: 7500,
             },
         },
     })

@@ -209,7 +209,7 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
                 XP: userdata.Extensions.progression.PlayerProfileXP.Total,
                 Level: userdata.Extensions.progression.PlayerProfileXP
                     .ProfileLevel,
-                MaxLevel: 5000,
+                MaxLevel: 7500,
             },
         },
     })
@@ -1634,7 +1634,7 @@ menuDataRouter.get("/GetPlayerProfileXpData", (req: RequestWithJwt, res) => {
                 XP: userData.Extensions.progression.PlayerProfileXP.Total,
                 Level: userData.Extensions.progression.PlayerProfileXP
                     .ProfileLevel,
-                MaxLevel: 5000,
+                MaxLevel: 7500,
             },
         },
     })
