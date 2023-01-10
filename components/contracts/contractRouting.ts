@@ -79,7 +79,6 @@ contractRoutingRouter.post(
         }
 
         // Add escalation data to Contract data HERE
-        // @ts-expect-error TypeScript going crazy
         contractData.Metadata = {
             ...contractData.Metadata,
             ...(await getPlayEscalationInfo(
