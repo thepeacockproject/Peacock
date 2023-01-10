@@ -742,6 +742,7 @@ export interface MissionManifestMetadata {
     RequiredUnlockable?: string
     Drops?: string[]
     Opportunities?: string[]
+    OpportunityData?: MissionStory[]
     Entitlements: string[]
     LastUpdate?: string
     PublicId?: string

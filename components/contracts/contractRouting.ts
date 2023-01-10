@@ -17,7 +17,7 @@
  */
 
 import { Router } from "express"
-import { nilUuid, ServerVer, uuidRegex } from "../utils"
+import { fastClone, nilUuid, ServerVer, uuidRegex } from "../utils"
 import { json as jsonMiddleware } from "body-parser"
 import {
     enqueueEvent,
@@ -89,6 +89,9 @@ contractRoutingRouter.post(
                 req.gameVersion,
             )),
             ...loadoutData,
+            ...{
+                OpportunityData: getContractOpportunityData(req, contractData),
+            },
         }
 
         const contractSesh = {
@@ -312,23 +315,30 @@ contractRoutingRouter.post(
     jsonMiddleware(),
     (req: RequestWithJwt<never, { contractId: string }>, res) => {
         const contract = controller.resolveContract(req.body.contractId)
-        const missionStories = getConfig<Record<string, MissionStory>>(
-            "MissionStories",
-            false,
-        )
-        const userData = getUserData(req.jwt.unique_name, req.gameVersion)
-        const result = []
-
-        for (const ms of contract.Metadata.Opportunities) {
-            missionStories[ms].PreviouslyCompleted =
-                ms in userData.Extensions.opportunityprogression
-            const current = missionStories[ms]
-            delete current.Location
-            result.push(current)
-        }
-
-        res.json(result)
+        res.json(getContractOpportunityData(req, contract))
     },
 )
+
+function getContractOpportunityData(
+    req: RequestWithJwt,
+    contract: MissionManifest,
+): MissionStory[] {
+    const userData = getUserData(req.jwt.unique_name, req.gameVersion)
+    const result = []
+    const missionStories = getConfig<Record<string, MissionStory>>(
+        "MissionStories",
+        false,
+    )
+
+    for (const ms of contract.Metadata.Opportunities) {
+        missionStories[ms].PreviouslyCompleted =
+            ms in userData.Extensions.opportunityprogression
+        const current = fastClone(missionStories[ms])
+        delete current.Location
+        result.push(current)
+    }
+
+    return result
+}
 
 export { contractRoutingRouter }
