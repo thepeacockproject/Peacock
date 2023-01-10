@@ -51,6 +51,7 @@ export async function handleOauthToken(
     res: Response,
 ): Promise<void> {
     const isFrankenstein = req.body.gs === "scpc-prod"
+    const isEGTesting = req.body.gs === "playtest01-prod_8"
 
     const signOptions = {
         notBefore: -60000,
@@ -74,7 +75,11 @@ export async function handleOauthToken(
         // ts-expect-error Non-optional, we're reassigning.
         delete req.jwt.aud // audience
 
-        if (getFlag("officialAuthentication") === true && !isFrankenstein) {
+        if (
+            getFlag("officialAuthentication") === true &&
+            !isFrankenstein &&
+            !isEGTesting
+        ) {
             if (userAuths.has(req.jwt.unique_name)) {
                 userAuths
                     .get(req.jwt.unique_name)!
@@ -147,7 +152,8 @@ export async function handleOauthToken(
 
     const isHitman3 =
         external_appid === "fghi4567xQOCheZIin0pazB47qGUvZw4" ||
-        external_appid === STEAM_NAMESPACE_2021
+        external_appid === STEAM_NAMESPACE_2021 ||
+        external_appid === "2183750"
 
     const gameVersion: GameVersion = isFrankenstein
         ? "scpc"
@@ -243,6 +249,10 @@ export async function handleOauthToken(
                     log(LogLevel.ERROR, "Unsupported platform.")
                     return []
                 }
+            }
+
+            if (isEGTesting) {
+                return ["2183750"]
             }
 
             if (gameVersion === "h2") {

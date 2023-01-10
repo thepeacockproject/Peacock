@@ -121,6 +121,13 @@ export function createInventory(
                 return false
             }
 
+            if (
+                unlockContainer.Unlockable.Type === "evergreenmastery" &&
+                !entP.includes("2183750")
+            ) {
+                return false
+            }
+
             if (gameVersion === "h3") {
                 if (WINTERSPORTS_UNLOCKABLES.includes(id)) {
                     return (

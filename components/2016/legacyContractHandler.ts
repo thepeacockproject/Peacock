@@ -68,6 +68,7 @@ legacyContractRouter.post(
             const gameChangerData: GCPConfig = {
                 ...getConfig<GCPConfig>("GameChangerProperties", true),
                 ...getConfig<GCPConfig>("PeacockGameChangerProperties", true),
+                ...getConfig<GCPConfig>("EvergreenGameChangerProperties", true),
             }
 
             contractData.Data.GameChangerReferences = []

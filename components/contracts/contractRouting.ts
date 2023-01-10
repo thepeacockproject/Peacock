@@ -47,6 +47,7 @@ import {
 import { createSniperLoadouts } from "../menus/sniper"
 import { GetForPlay2Body } from "../types/gameSchemas"
 import assert from "assert"
+import { getCpd } from "../evergreen"
 
 const contractRoutingRouter = Router()
 
@@ -94,7 +95,10 @@ contractRoutingRouter.post(
             ContractSessionId: `${process.hrtime
                 .bigint()
                 .toString()}-${randomUUID()}`,
-            ContractProgressionData: null,
+            ContractProgressionData: contractData.Metadata
+                .UseContractProgressionData
+                ? await getCpd(req.jwt.unique_name, contractData.Metadata.CpdId)
+                : null,
         }
 
         if (
@@ -106,6 +110,7 @@ contractRoutingRouter.post(
             const gameChangerData: GCPConfig = {
                 ...getConfig<GCPConfig>("GameChangerProperties", true),
                 ...getConfig<GCPConfig>("PeacockGameChangerProperties", true),
+                ...getConfig<GCPConfig>("EvergreenGameChangerProperties", true),
             }
 
             contractData.Data.GameChangerReferences =
@@ -136,14 +141,26 @@ contractRoutingRouter.post(
                     continue
                 }
 
+                // Push to GCR before changing for EG to be the same as official - AF
                 contractData.Data.GameChangerReferences.push(gameChanger)
+
                 contractData.Data.Bricks = [
                     ...(contractData.Data.Bricks ?? []),
                     ...(gameChanger.Resource ?? []),
                 ]
                 contractData.Data.Objectives = [
                     ...(contractData.Data.Objectives ?? []),
-                    ...(gameChanger.Objectives ?? []),
+                    ...(gameChanger.Objectives.map((val) => {
+                        if (contractData.Metadata.Type !== "evergreen")
+                            return val
+
+                        return {
+                            ...val,
+                            GameChangerName: gameChanger.Name,
+                            IsPrestigeObjective:
+                                gameChanger.IsPrestigeObjective ?? false,
+                        }
+                    }) ?? []),
                 ]
             }
         }

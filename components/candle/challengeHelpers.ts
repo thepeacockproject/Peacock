@@ -78,6 +78,7 @@ export type ChallengeFilterOptions =
           contractId: string
           locationId: string
           locationParentId: string
+          isEvergreen: boolean
       }
     | {
           type: ChallengeFilterType.ParentLocation
@@ -98,6 +99,13 @@ export function filterChallenge(
 
             if (!challenge) {
                 return false
+            }
+
+            if (
+                challenge.LocationId === "LOCATION_PARENT_SNUG" &&
+                options.isEvergreen
+            ) {
+                return true
             }
 
             // is this for the current contract?

@@ -405,6 +405,7 @@ export interface UserProfile {
             __stats?: unknown
             PersistentBool: Record<string, unknown>
         }
+        CPD: CPDStore
         opportunityprogression: {
             [opportunityId: RepositoryId]: boolean
         }
