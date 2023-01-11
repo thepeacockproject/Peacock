@@ -224,9 +224,19 @@
                                                     ]
                                                 },
                                                 {
-                                                    "$eq": [
-                                                        "$Value.OutfitRepositoryId",
-                                                        "315400cd-90d8-43cc-8c22-62c0cb8969a5"
+                                                    "$or": [
+                                                        {
+                                                            "$eq": [
+                                                                "$Value.OutfitRepositoryId",
+                                                                "315400cd-90d8-43cc-8c22-62c0cb8969a5"
+                                                            ]
+                                                        },
+                                                        {
+                                                            "$eq": [
+                                                                "$Value.OutfitRepositoryId",
+                                                                "31ac5259-ff59-46e0-ab0f-8ddeaf296a36"
+                                                            ]
+                                                        }
                                                     ]
                                                 }
                                             ]
@@ -243,6 +253,95 @@
                         }
                     },
                     "Tags": ["story", "hard", "assassination", "live"],
+                    "InclusionData": {
+                        "ContractIds": ["4e45e91a-94ca-4d89-89fc-1b250e608e73"]
+                    }
+                },
+                {
+                    "Id": "adf48d58-2ee4-4066-944d-f7cdbc4b3dcc",
+                    "Name": "UI_CHALLENGES_NOEL_GIFTANDTAKE_NAME",
+                    "ImageName": "images/challenges/paris/noel_GiftAndTake.jpg",
+                    "Description": "UI_CHALLENGES_NOEL_GIFTANDTAKE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [
+                        {
+                            "Properties": {
+                                "Quality": 4,
+                                "LoadoutSlot": "gear",
+                                "Rarity": "common",
+                                "RepositoryId": "c601c095-e1dc-4490-aeae-e8e200dd9ac8",
+                                "UnlockOrder": 10
+                            },
+                            "Rarity": "common",
+                            "DisplayNameLocKey": "UI_PROP_DEVICE_EXPLOSIVE_PRESENT_NAME",
+                            "Id": "PROP_DEVICE_EXPLOSIVE_PRESENT",
+                            "Type": "gear",
+                            "Subtype": "explosive",
+                            "GameAsset": null,
+                            "ImageId": "",
+                            "RMTPrice": 149,
+                            "GamePrice": 149,
+                            "IsPurchasable": false,
+                            "IsPublished": true,
+                            "IsDroppable": false,
+                            "Capabilities": [],
+                            "Qualities": {},
+                            "Guid": "0a447781-8552-4b55-9651-c95bde9e5a7e"
+                        }
+                    ],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_PARIS",
+                    "ParentLocationId": "LOCATION_PARENT_PARIS",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": ["$Value.IsTarget", true]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "c601c095-e1dc-4490-aeae-e8e200dd9ac8"
+                                                ]
+                                            },
+                                            {
+                                                "$or": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.OutfitRepositoryId",
+                                                            "315400cd-90d8-43cc-8c22-62c0cb8969a5"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.OutfitRepositoryId",
+                                                            "31ac5259-ff59-46e0-ab0f-8ddeaf296a36"
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "hard"],
                     "InclusionData": {
                         "ContractIds": ["4e45e91a-94ca-4d89-89fc-1b250e608e73"]
                     }
@@ -3255,6 +3354,89 @@
                     }
                 },
                 {
+                    "Id": "5e0d4f1e-4e45-43e4-8fe3-6e38067afe93",
+                    "Name": "UI_CHALLENGES_NOEL_5PRESENTS_NAME",
+                    "ImageName": "images/challenges/paris/noel_5Presents.jpg",
+                    "Description": "UI_CHALLENGES_NOEL_5PRESENTS_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [
+                        {
+                            "Properties": {
+                                "Quality": 4,
+                                "LoadoutSlot": "gear",
+                                "Rarity": "common",
+                                "RepositoryId": "6561a437-86ef-4338-a01f-005b3476be20",
+                                "UnlockOrder": 10
+                            },
+                            "Rarity": "common",
+                            "DisplayNameLocKey": "UI_PROP_DEVICE_LIL_FLASHY_REMOTE_FLASH_NAME",
+                            "Id": "PROP_DEVICE_LIL_FLASHY_REMOTE_FLASH",
+                            "Type": "gear",
+                            "Subtype": "explosive",
+                            "GameAsset": null,
+                            "ImageId": "",
+                            "RMTPrice": 149,
+                            "GamePrice": 149,
+                            "IsPurchasable": false,
+                            "IsPublished": true,
+                            "IsDroppable": false,
+                            "Capabilities": [],
+                            "Qualities": {},
+                            "Guid": "a556efcf-123a-4fe2-b9dd-87b03d98c232"
+                        }
+                    ],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_PARIS",
+                    "ParentLocationId": "LOCATION_PARENT_PARIS",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 5
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal"
+                            }
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "PresentOpened": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["easy", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["4e45e91a-94ca-4d89-89fc-1b250e608e73"]
+                    }
+                },
+                {
                     "Id": "dd37d9a2-87fc-416b-aa60-4b09cc4e4044",
                     "Name": "UI_CHALLENGES_NOEL_FIND_ITEMS_NAME",
                     "ImageName": "images/challenges/paris/noel_find_items.jpg",
@@ -5107,6 +5289,28 @@
             "CategoryId": "arcade",
             "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_ARCADE",
             "Challenges": [
+                {
+                    "Id": "8e95c10a-c710-41c5-830e-9f0711965259",
+                    "Name": "UI_ORANGE_COMPLETION_CHALLENGE_NAME",
+                    "ImageName": "images/contracts/arcade/Arcade_Orange_Group.jpg",
+                    "Description": "UI_ORANGE_COMPLETION_CHALLENGE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ARCADE",
+                    "Icon": "arcademode",
+                    "LocationId": "LOCATION_PARENT_PARIS",
+                    "ParentLocationId": "LOCATION_PARENT_PARIS",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "InclusionData": {
+                        "ContractIds": ["223aa1f3-64a1-43c0-b3c8-36aebd7998e4"]
+                    }
+                },
                 {
                     "Id": "5750363c-3332-4df4-9235-7c3d991d6133",
                     "Name": "UI_SALAK_COMPLETION_CHALLENGE_NAME",

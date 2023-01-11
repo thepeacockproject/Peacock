@@ -1,0 +1,2479 @@
+{
+    "meta": {
+        "Location": "LOCATION_PARENT_SALTY"
+    },
+    "groups": [
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+            "Image": "images/challenges/categories/assassination/tile.jpg",
+            "Icon": "challenge_category_assassination",
+            "CategoryId": "assassination",
+            "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_SIGNATUREKILL",
+            "Challenges": [
+                {
+                    "Id": "2fa4d785-af92-494c-8a9f-7475f04c0f7f",
+                    "Name": "UI_CHALLENGES_SEAGULL_BARRIER_KILL_NAME",
+                    "ImageName": "images/challenges/salty/seagull_barrier_kill.jpg",
+                    "Description": "UI_CHALLENGES_SEAGULL_BARRIER_KILL_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        {
+                            "Properties": {
+                                "Rarity": "common",
+                                "IsConsumable": false,
+                                "RepositoryId": "65065587-ff8f-4a9b-bda4-2be8817fd157",
+                                "Multiplier": 0.1
+                            },
+                            "Rarity": "common",
+                            "DisplayNameLocKey": "UI_SCORE_MULTIPLIER_SC_SEAGULL_BARRIER_KILL_NAME",
+                            "Id": "SCORE_MULTIPLIER_SC_SEAGULL_BARRIER_KILL",
+                            "Type": "challengemultiplier",
+                            "Subtype": "challengemultiplier",
+                            "GameAsset": null,
+                            "ImageId": "",
+                            "RMTPrice": -1,
+                            "GamePrice": -1,
+                            "IsPurchasable": false,
+                            "IsPublished": true,
+                            "IsDroppable": false,
+                            "Capabilities": [],
+                            "Qualities": {},
+                            "Guid": "83b7488e-ee38-41cd-afc9-b5153a1d0496"
+                        }
+                    ],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_SALTY",
+                    "ParentLocationId": "LOCATION_PARENT_SALTY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "22283ca4-89cf-4235-be1d-4f76cd1bd321"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceId",
+                                                    "0de9e3ce-b466-459a-9006-066a453304aa"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["00e57709-e049-44c9-a2c3-7655e19884fb"]
+                    }
+                },
+                {
+                    "Id": "373929a9-bec4-405b-bad0-9bf6c175dcaf",
+                    "Name": "UI_CHALLENGES_SEAGULL_CANNON_KILL_NAME",
+                    "ImageName": "images/challenges/salty/seagull_cannon_kill.jpg",
+                    "Description": "UI_CHALLENGES_SEAGULL_CANNON_KILL_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        {
+                            "Properties": {
+                                "Rarity": "common",
+                                "IsConsumable": false,
+                                "RepositoryId": "5dc08f96-48f5-417d-b6e0-96efa1b43247",
+                                "Multiplier": 0.1
+                            },
+                            "Rarity": "common",
+                            "DisplayNameLocKey": "UI_SCORE_MULTIPLIER_SC_SEAGULL_CANNON_KILL_NAME",
+                            "Id": "SCORE_MULTIPLIER_SC_SEAGULL_CANNON_KILL",
+                            "Type": "challengemultiplier",
+                            "Subtype": "challengemultiplier",
+                            "GameAsset": null,
+                            "ImageId": "",
+                            "RMTPrice": -1,
+                            "GamePrice": -1,
+                            "IsPurchasable": false,
+                            "IsPublished": true,
+                            "IsDroppable": false,
+                            "Capabilities": [],
+                            "Qualities": {},
+                            "Guid": "d1a8f3c0-a14d-4d0f-adfe-0a31ec68dee5"
+                        }
+                    ],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_SALTY",
+                    "ParentLocationId": "LOCATION_PARENT_SALTY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "HiddenID": "00000000-0000-0000-000000000000"
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": ["$Value.IsTarget", true]
+                                            },
+                                            {
+                                                "$or": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.SetPieceId",
+                                                            "e75026c3-9629-4899-851a-d842f343cdb3"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.SetPieceId",
+                                                            "510d8eb0-69fe-4bb1-be10-faed574b038f"
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Actions": {
+                                        "$set": [
+                                            "HiddenID",
+                                            "$Value.RepositoryId"
+                                        ]
+                                    },
+                                    "Transition": "IsHidden"
+                                }
+                            },
+                            "IsHidden": {
+                                "$timer": {
+                                    "Condition": {
+                                        "$after": 5
+                                    },
+                                    "Transition": "Start"
+                                },
+                                "BodyHidden": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "$.HiddenID"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["00e57709-e049-44c9-a2c3-7655e19884fb"]
+                    }
+                },
+                {
+                    "Id": "3b857633-a6fd-45ce-a0cb-3fe4d2540863",
+                    "Name": "UI_CHALLENGES_SEAGULL_RAFT_KILL_NAME",
+                    "ImageName": "images/challenges/salty/seagull_raft_kill.jpg",
+                    "Description": "UI_CHALLENGES_SEAGULL_RAFT_KILL_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        {
+                            "Properties": {
+                                "Rarity": "common",
+                                "IsConsumable": false,
+                                "RepositoryId": "f215c15a-7c82-4b1a-a1aa-b1bb7c0f85ba",
+                                "Multiplier": 0.09
+                            },
+                            "Rarity": "common",
+                            "DisplayNameLocKey": "UI_SCORE_MULTIPLIER_SC_SEAGULL_RAFT_KILL_NAME",
+                            "Id": "SCORE_MULTIPLIER_SC_SEAGULL_RAFT_KILL",
+                            "Type": "challengemultiplier",
+                            "Subtype": "challengemultiplier",
+                            "GameAsset": null,
+                            "ImageId": "",
+                            "RMTPrice": -1,
+                            "GamePrice": -1,
+                            "IsPurchasable": false,
+                            "IsPublished": true,
+                            "IsDroppable": false,
+                            "Capabilities": [],
+                            "Qualities": {},
+                            "Guid": "ca04630c-6672-4181-bb0f-e204fa78d191"
+                        }
+                    ],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_SALTY",
+                    "ParentLocationId": "LOCATION_PARENT_SALTY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "LifeRaftIDs": [
+                                "3d8c0d23-4203-445f-96ee-b6be23ad5e92",
+                                "22a8f5ee-ef76-461f-bb42-2b83af54c921",
+                                "00721b7b-d7e2-49e3-a169-350f2a95a707",
+                                "d5ec885d-9436-474c-a5cc-a012c9678724",
+                                "26869ece-112b-4d0f-98c4-343bd63ae5b0",
+                                "12587caa-4a53-4914-a358-6c2e0f8e2ad1"
+                            ],
+                            "MainTargetIDs": [
+                                "22283ca4-89cf-4235-be1d-4f76cd1bd321",
+                                "0a4e517a-e1e1-41d7-af91-751bc663df35",
+                                "55334e2d-45c6-41b3-920e-aeb5c5111b37"
+                            ]
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.RepositoryId"
+                                                        ]
+                                                    },
+                                                    "in": "$.MainTargetIDs"
+                                                }
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.SetPieceId"
+                                                        ]
+                                                    },
+                                                    "in": "$.LifeRaftIDs"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Is_DoubleKill"
+                                }
+                            },
+                            "Is_DoubleKill": {
+                                "$timer": {
+                                    "Condition": {
+                                        "$after": 0.2
+                                    },
+                                    "Transition": "Start"
+                                },
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.RepositoryId"
+                                                        ]
+                                                    },
+                                                    "in": "$.MainTargetIDs"
+                                                }
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.SetPieceId"
+                                                        ]
+                                                    },
+                                                    "in": "$.LifeRaftIDs"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["00e57709-e049-44c9-a2c3-7655e19884fb"]
+                    }
+                },
+                {
+                    "Id": "3d1aa487-67c9-4bce-8ba4-fb25f71cfa9f",
+                    "Name": "UI_CHALLENGES_SEAGULL_ALL_HEADSHOTS_NAME",
+                    "ImageName": "images/challenges/salty/seagull_all_headshots.jpg",
+                    "Description": "UI_CHALLENGES_SEAGULL_ALL_HEADSHOTS_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        {
+                            "Properties": {
+                                "Rarity": "common",
+                                "IsConsumable": false,
+                                "RepositoryId": "02d97e32-8d31-4127-9079-9cb15f795360",
+                                "Multiplier": 0.12
+                            },
+                            "Rarity": "common",
+                            "DisplayNameLocKey": "UI_SCORE_MULTIPLIER_SC_SEAGULL_ALL_HEADSHOTS_NAME",
+                            "Id": "SCORE_MULTIPLIER_SC_SEAGULL_ALL_HEADSHOTS",
+                            "Type": "challengemultiplier",
+                            "Subtype": "challengemultiplier",
+                            "GameAsset": null,
+                            "ImageId": "",
+                            "RMTPrice": -1,
+                            "GamePrice": -1,
+                            "IsPurchasable": false,
+                            "IsPublished": true,
+                            "IsDroppable": false,
+                            "Capabilities": [],
+                            "Qualities": {},
+                            "Guid": "e86f5188-3715-4213-b705-59088174c151"
+                        }
+                    ],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_SALTY",
+                    "ParentLocationId": "LOCATION_PARENT_SALTY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 18
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "BodyguardEscaped": {
+                                    "Transition": "Failure"
+                                },
+                                "Kill": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        },
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsHeadshot",
+                                                        true
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsHeadshot",
+                                                        false
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["00e57709-e049-44c9-a2c3-7655e19884fb"]
+                    }
+                },
+                {
+                    "Id": "47f790ad-ac31-490b-9fbc-056d10d1d648",
+                    "Name": "UI_CHALLENGES_SEAGULL_HEAVY_BURDEN_NAME",
+                    "ImageName": "images/challenges/salty/seagull_heavy_burden.jpg",
+                    "Description": "UI_CHALLENGES_SEAGULL_HEAVY_BURDEN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        {
+                            "Properties": {
+                                "Rarity": "common",
+                                "IsConsumable": false,
+                                "RepositoryId": "29dcad81-1871-47a4-b2a2-f69d8bd03181",
+                                "Multiplier": 0.11
+                            },
+                            "Rarity": "common",
+                            "DisplayNameLocKey": "UI_SCORE_MULTIPLIER_SC_SEAGULL_HEAVY_BURDEN_NAME",
+                            "Id": "SCORE_MULTIPLIER_SC_SEAGULL_HEAVY_BURDEN",
+                            "Type": "challengemultiplier",
+                            "Subtype": "challengemultiplier",
+                            "GameAsset": null,
+                            "ImageId": "",
+                            "RMTPrice": -1,
+                            "GamePrice": -1,
+                            "IsPurchasable": false,
+                            "IsPublished": true,
+                            "IsDroppable": false,
+                            "Capabilities": [],
+                            "Qualities": {},
+                            "Guid": "235673df-f8cf-422b-be35-1f2d40b728a8"
+                        }
+                    ],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_SALTY",
+                    "ParentLocationId": "LOCATION_PARENT_SALTY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "Constants": {
+                            "MainTargetIDs": [
+                                "22283ca4-89cf-4235-be1d-4f76cd1bd321",
+                                "0a4e517a-e1e1-41d7-af91-751bc663df35",
+                                "55334e2d-45c6-41b3-920e-aeb5c5111b37"
+                            ]
+                        },
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.RepositoryId"
+                                                        ]
+                                                    },
+                                                    "in": "$.MainTargetIDs"
+                                                }
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceId",
+                                                    "f8e813be-ec8f-4b5c-997e-1b73ac11efc0"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Is_DoubleKill"
+                                }
+                            },
+                            "Is_DoubleKill": {
+                                "$timer": {
+                                    "Condition": {
+                                        "$after": 0.1
+                                    },
+                                    "Transition": "Failure"
+                                },
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.RepositoryId"
+                                                        ]
+                                                    },
+                                                    "in": "$.MainTargetIDs"
+                                                }
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceId",
+                                                    "f8e813be-ec8f-4b5c-997e-1b73ac11efc0"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Is_TripleKill"
+                                }
+                            },
+                            "Is_TripleKill": {
+                                "$timer": {
+                                    "Condition": {
+                                        "$after": 0.1
+                                    },
+                                    "Transition": "Failure"
+                                },
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.RepositoryId"
+                                                        ]
+                                                    },
+                                                    "in": "$.MainTargetIDs"
+                                                }
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceId",
+                                                    "f8e813be-ec8f-4b5c-997e-1b73ac11efc0"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["00e57709-e049-44c9-a2c3-7655e19884fb"]
+                    }
+                },
+                {
+                    "Id": "543b2a4c-20be-4157-a9a3-6b08d033026b",
+                    "Name": "UI_CHALLENGES_SEAGULL_ELECTRIFIED_NAME",
+                    "ImageName": "images/challenges/salty/seagull_electrified.jpg",
+                    "Description": "UI_CHALLENGES_SEAGULL_ELECTRIFIED_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        {
+                            "Properties": {
+                                "Rarity": "common",
+                                "IsConsumable": false,
+                                "RepositoryId": "8d045d6a-9b6e-481f-acd5-cd34ff8a5141",
+                                "Multiplier": 0.1
+                            },
+                            "Rarity": "common",
+                            "DisplayNameLocKey": "UI_SCORE_MULTIPLIER_SC_SEAGULL_ELECTRIFIED_NAME",
+                            "Id": "SCORE_MULTIPLIER_SC_SEAGULL_ELECTRIFIED",
+                            "Type": "challengemultiplier",
+                            "Subtype": "challengemultiplier",
+                            "GameAsset": null,
+                            "ImageId": "",
+                            "RMTPrice": -1,
+                            "GamePrice": -1,
+                            "IsPurchasable": false,
+                            "IsPublished": true,
+                            "IsDroppable": false,
+                            "Capabilities": [],
+                            "Qualities": {},
+                            "Guid": "47e64d65-fbd6-4c84-95bb-56566a697b38"
+                        }
+                    ],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_SALTY",
+                    "ParentLocationId": "LOCATION_PARENT_SALTY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 3
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "accident_electric"
+                                                            ]
+                                                        },
+                                                        "in": [
+                                                            "$Value.KillMethodBroad",
+                                                            "$Value.KillMethodStrict"
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["00e57709-e049-44c9-a2c3-7655e19884fb"]
+                    }
+                },
+                {
+                    "Id": "573596d0-fd57-47a7-91fd-1024474a8aa4",
+                    "Name": "UI_CHALLENGES_SEAGULL_GOT_A_LIGHT_NAME",
+                    "ImageName": "images/challenges/salty/seagull_got_a_light.jpg",
+                    "Description": "UI_CHALLENGES_SEAGULL_GOT_A_LIGHT_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        {
+                            "Properties": {
+                                "Rarity": "common",
+                                "IsConsumable": false,
+                                "RepositoryId": "54023c65-1f37-4b66-b2f7-6286ea47525e",
+                                "Multiplier": 0.1
+                            },
+                            "Rarity": "common",
+                            "DisplayNameLocKey": "UI_SCORE_MULTIPLIER_SC_SEAGULL_GOT_A_LIGHT_NAME",
+                            "Id": "SCORE_MULTIPLIER_SC_SEAGULL_GOT_A_LIGHT",
+                            "Type": "challengemultiplier",
+                            "Subtype": "challengemultiplier",
+                            "GameAsset": null,
+                            "ImageId": "",
+                            "RMTPrice": -1,
+                            "GamePrice": -1,
+                            "IsPurchasable": false,
+                            "IsPublished": true,
+                            "IsDroppable": false,
+                            "Capabilities": [],
+                            "Qualities": {},
+                            "Guid": "5d4ede2d-4603-4693-8047-5d4b75b01869"
+                        }
+                    ],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_SALTY",
+                    "ParentLocationId": "LOCATION_PARENT_SALTY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": ["$Value.IsTarget", true]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillMethodStrict",
+                                                    "accident_explosion"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Is_DoubleKill"
+                                }
+                            },
+                            "Is_DoubleKill": {
+                                "$timer": {
+                                    "Condition": {
+                                        "$after": 0.2
+                                    },
+                                    "Transition": "Start"
+                                },
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": ["$Value.IsTarget", true]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillMethodStrict",
+                                                    "accident_explosion"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Is_TripleKill"
+                                }
+                            },
+                            "Is_TripleKill": {
+                                "$timer": {
+                                    "Condition": {
+                                        "$after": 0.2
+                                    },
+                                    "Transition": "Start"
+                                },
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": ["$Value.IsTarget", true]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillMethodStrict",
+                                                    "accident_explosion"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["00e57709-e049-44c9-a2c3-7655e19884fb"]
+                    }
+                },
+                {
+                    "Id": "83462fc1-7cbd-46c9-8897-506e6d27194b",
+                    "Name": "UI_CHALLENGES_SEAGULL_NO_LOOSE_ENDS_NAME",
+                    "ImageName": "images/challenges/salty/seagull_no_loose_ends.jpg",
+                    "Description": "UI_CHALLENGES_SEAGULL_NO_LOOSE_ENDS_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        {
+                            "Properties": {
+                                "Rarity": "common",
+                                "IsConsumable": false,
+                                "RepositoryId": "902aa7bb-d060-4ab3-9c84-e59ca647ea56",
+                                "Multiplier": 0.1
+                            },
+                            "Rarity": "common",
+                            "DisplayNameLocKey": "UI_SCORE_MULTIPLIER_SC_SEAGULL_NO_LOOSE_ENDS_NAME",
+                            "Id": "SCORE_MULTIPLIER_SC_SEAGULL_NO_LOOSE_ENDS",
+                            "Type": "challengemultiplier",
+                            "Subtype": "challengemultiplier",
+                            "GameAsset": null,
+                            "ImageId": "",
+                            "RMTPrice": -1,
+                            "GamePrice": -1,
+                            "IsPurchasable": false,
+                            "IsPublished": true,
+                            "IsDroppable": false,
+                            "Capabilities": [],
+                            "Qualities": {},
+                            "Guid": "4903ecf3-dabd-4c15-90ae-34b6f5c998e5"
+                        }
+                    ],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_SALTY",
+                    "ParentLocationId": "LOCATION_PARENT_SALTY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "BodyguardIDs": [
+                                "5eca3cc3-5c5c-4d94-9add-d01439381a7c",
+                                "0861b91d-daa9-4ffa-8c5f-efeb5a95a321",
+                                "856ec4d9-c19b-4f95-9a8e-2a139b891017",
+                                "af4d2c4b-89bb-48a5-a299-8123a05c567d",
+                                "56ef218a-fd31-4bc4-8430-107230e17c8e",
+                                "9bb32759-bdfa-467c-a972-a54a73ea0e11",
+                                "391f9fce-4ad5-4c02-93dd-a147679bd75f",
+                                "49c90dbd-0400-43e8-871b-03bfb7e425c5",
+                                "c99657d8-3975-409c-9326-abc55fdb1abd",
+                                "b528b5e9-35ff-4642-93b7-421866eecf92",
+                                "03024491-d477-4d74-a31f-4c50cd3b82f6",
+                                "d26ae5c0-7491-4d75-8fb3-d54ca7c6a4bf",
+                                "b3489b30-d15d-407b-9de3-1036ddd103b9",
+                                "bdc392d1-a48d-4326-ac87-b1e9838eb5cd",
+                                "af0577a8-016e-4c55-b314-ad3771d59e6c"
+                            ]
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "($.BodyguardIDs).Count"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$any": {
+                                            "?": {
+                                                "$eq": [
+                                                    "$.#",
+                                                    "$Value.RepositoryId"
+                                                ]
+                                            },
+                                            "in": "$.BodyguardIDs"
+                                        }
+                                    },
+                                    "Transition": "Failure"
+                                },
+                                "CombatStarted": {
+                                    "Transition": "InCombat"
+                                }
+                            },
+                            "InCombat": {
+                                "BodyguardEscaped": {
+                                    "Transition": "Failure"
+                                },
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$Value.RepositoryId"
+                                                    ]
+                                                },
+                                                "in": "$.BodyguardIDs"
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$.Count",
+                                                "($.BodyguardIDs).Count"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["00e57709-e049-44c9-a2c3-7655e19884fb"]
+                    }
+                },
+                {
+                    "Id": "90b2972f-c5f1-4e78-b6ab-f414bdfbea5d",
+                    "Name": "UI_CHALLENGES_SEAGULL_WATER_DUMP_NAME",
+                    "ImageName": "images/challenges/salty/seagull_water_dump.jpg",
+                    "Description": "UI_CHALLENGES_SEAGULL_WATER_DUMP_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        {
+                            "Properties": {
+                                "Rarity": "common",
+                                "IsConsumable": false,
+                                "RepositoryId": "4d858780-ed2b-4b7a-96fc-e21b4a57bbbc",
+                                "Multiplier": 0.06
+                            },
+                            "Rarity": "common",
+                            "DisplayNameLocKey": "UI_SCORE_MULTIPLIER_SC_SEAGULL_WATER_DUMP_NAME",
+                            "Id": "SCORE_MULTIPLIER_SC_SEAGULL_WATER_DUMP",
+                            "Type": "challengemultiplier",
+                            "Subtype": "challengemultiplier",
+                            "GameAsset": null,
+                            "ImageId": "",
+                            "RMTPrice": -1,
+                            "GamePrice": -1,
+                            "IsPurchasable": false,
+                            "IsPublished": true,
+                            "IsDroppable": false,
+                            "Capabilities": [],
+                            "Qualities": {},
+                            "Guid": "ef08793f-4983-496c-ae3c-e8f40e4e8b3a"
+                        }
+                    ],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_SALTY",
+                    "ParentLocationId": "LOCATION_PARENT_SALTY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 5
+                        },
+                        "Context": {
+                            "TargetsDumpedInWater": [],
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "DumpInOcean": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count",
+                                            "$pushunique": [
+                                                "TargetsDumpedInWater",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$Value.RepositoryId"
+                                                            ]
+                                                        },
+                                                        "in": [
+                                                            "22283ca4-89cf-4235-be1d-4f76cd1bd321",
+                                                            "0a4e517a-e1e1-41d7-af91-751bc663df35",
+                                                            "55334e2d-45c6-41b3-920e-aeb5c5111b37",
+                                                            "5eca3cc3-5c5c-4d94-9add-d01439381a7c",
+                                                            "0861b91d-daa9-4ffa-8c5f-efeb5a95a321",
+                                                            "856ec4d9-c19b-4f95-9a8e-2a139b891017",
+                                                            "af4d2c4b-89bb-48a5-a299-8123a05c567d",
+                                                            "56ef218a-fd31-4bc4-8430-107230e17c8e",
+                                                            "9bb32759-bdfa-467c-a972-a54a73ea0e11",
+                                                            "391f9fce-4ad5-4c02-93dd-a147679bd75f",
+                                                            "49c90dbd-0400-43e8-871b-03bfb7e425c5",
+                                                            "c99657d8-3975-409c-9326-abc55fdb1abd",
+                                                            "b528b5e9-35ff-4642-93b7-421866eecf92",
+                                                            "03024491-d477-4d74-a31f-4c50cd3b82f6",
+                                                            "d26ae5c0-7491-4d75-8fb3-d54ca7c6a4bf",
+                                                            "b3489b30-d15d-407b-9de3-1036ddd103b9",
+                                                            "bdc392d1-a48d-4326-ac87-b1e9838eb5cd",
+                                                            "af0577a8-016e-4c55-b314-ad3771d59e6c"
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["00e57709-e049-44c9-a2c3-7655e19884fb"]
+                    }
+                },
+                {
+                    "Id": "c2ff5178-474c-4c49-9393-af0c2d407578",
+                    "Name": "UI_CHALLENGES_SEAGULL_BODYHIDER_BODYGUARDS_NAME",
+                    "ImageName": "images/challenges/salty/seagull_bodyhider_bodyguards.jpg",
+                    "Description": "UI_CHALLENGES_SEAGULL_BODYHIDER_BODYGUARDS_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        {
+                            "Properties": {
+                                "Rarity": "common",
+                                "IsConsumable": false,
+                                "RepositoryId": "109acf63-b950-4b14-b674-85b3d8ac28bc",
+                                "Multiplier": 0.08
+                            },
+                            "Rarity": "common",
+                            "DisplayNameLocKey": "UI_SCORE_MULTIPLIER_SC_SEAGULL_BODYHIDER_BODYGUARDS_NAME",
+                            "Id": "SCORE_MULTIPLIER_SC_SEAGULL_BODYHIDER_BODYGUARDS",
+                            "Type": "challengemultiplier",
+                            "Subtype": "challengemultiplier",
+                            "GameAsset": null,
+                            "ImageId": "",
+                            "RMTPrice": -1,
+                            "GamePrice": -1,
+                            "IsPurchasable": false,
+                            "IsPublished": true,
+                            "IsDroppable": false,
+                            "Capabilities": [],
+                            "Qualities": {},
+                            "Guid": "3e5abb9d-ee9b-4b47-8137-c24b5f6973ba"
+                        }
+                    ],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_SALTY",
+                    "ParentLocationId": "LOCATION_PARENT_SALTY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 15
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "BodyguardEscaped": {
+                                    "Transition": "Failure"
+                                },
+                                "BodyHidden": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$Value.RepositoryId"
+                                                    ]
+                                                },
+                                                "in": [
+                                                    "5eca3cc3-5c5c-4d94-9add-d01439381a7c",
+                                                    "0861b91d-daa9-4ffa-8c5f-efeb5a95a321",
+                                                    "856ec4d9-c19b-4f95-9a8e-2a139b891017",
+                                                    "af4d2c4b-89bb-48a5-a299-8123a05c567d",
+                                                    "56ef218a-fd31-4bc4-8430-107230e17c8e",
+                                                    "9bb32759-bdfa-467c-a972-a54a73ea0e11",
+                                                    "391f9fce-4ad5-4c02-93dd-a147679bd75f",
+                                                    "49c90dbd-0400-43e8-871b-03bfb7e425c5",
+                                                    "c99657d8-3975-409c-9326-abc55fdb1abd",
+                                                    "b528b5e9-35ff-4642-93b7-421866eecf92",
+                                                    "03024491-d477-4d74-a31f-4c50cd3b82f6",
+                                                    "d26ae5c0-7491-4d75-8fb3-d54ca7c6a4bf",
+                                                    "b3489b30-d15d-407b-9de3-1036ddd103b9",
+                                                    "bdc392d1-a48d-4326-ac87-b1e9838eb5cd",
+                                                    "af0577a8-016e-4c55-b314-ad3771d59e6c"
+                                                ]
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["00e57709-e049-44c9-a2c3-7655e19884fb"]
+                    }
+                },
+                {
+                    "Id": "d6a1e18a-e9a5-4246-8299-bffb5976e332",
+                    "Name": "UI_CHALLENGES_SEAGULL_TOUCH_AND_GO_NAME",
+                    "ImageName": "images/challenges/salty/seagull_touch_and_go.jpg",
+                    "Description": "UI_CHALLENGES_SEAGULL_TOUCH_AND_GO_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        {
+                            "Properties": {
+                                "Rarity": "common",
+                                "IsConsumable": false,
+                                "RepositoryId": "98532f55-deb7-4f04-9413-949d2dc2a8b5",
+                                "Multiplier": 0.08
+                            },
+                            "Rarity": "common",
+                            "DisplayNameLocKey": "UI_SCORE_MULTIPLIER_SC_SEAGULL_TOUCH_AND_GO_NAME",
+                            "Id": "SCORE_MULTIPLIER_SC_SEAGULL_TOUCH_AND_GO",
+                            "Type": "challengemultiplier",
+                            "Subtype": "challengemultiplier",
+                            "GameAsset": null,
+                            "ImageId": "",
+                            "RMTPrice": -1,
+                            "GamePrice": -1,
+                            "IsPurchasable": false,
+                            "IsPublished": true,
+                            "IsDroppable": false,
+                            "Capabilities": [],
+                            "Qualities": {},
+                            "Guid": "6c34d368-c166-4722-b6e9-d4e24c4350ca"
+                        }
+                    ],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_SALTY",
+                    "ParentLocationId": "LOCATION_PARENT_SALTY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "MainTargetIDs": [
+                                "22283ca4-89cf-4235-be1d-4f76cd1bd321",
+                                "0a4e517a-e1e1-41d7-af91-751bc663df35",
+                                "55334e2d-45c6-41b3-920e-aeb5c5111b37"
+                            ]
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "($.MainTargetIDs).Count"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "TargetsEscaping": {
+                                    "Transition": "EliminateTargets"
+                                },
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$Value.RepositoryId"
+                                                    ]
+                                                },
+                                                "in": "$.MainTargetIDs"
+                                            }
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ]
+                            },
+                            "EliminateTargets": {
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$Value.RepositoryId"
+                                                    ]
+                                                },
+                                                "in": "$.MainTargetIDs"
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$.Count",
+                                                "($.MainTargetIDs).Count"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ],
+                                "TargetEscaped": {
+                                    "Transition": "Failure"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["00e57709-e049-44c9-a2c3-7655e19884fb"]
+                    }
+                },
+                {
+                    "Id": "de069d95-3ba6-4027-9fa5-9ea8589ace99",
+                    "Name": "UI_CHALLENGES_SEAGULL_BODYHIDER_TARGETS_NAME",
+                    "ImageName": "images/challenges/salty/seagull_bodyhider_targets.jpg",
+                    "Description": "UI_CHALLENGES_SEAGULL_BODYHIDER_TARGETS_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        {
+                            "Properties": {
+                                "Rarity": "common",
+                                "IsConsumable": false,
+                                "RepositoryId": "4d01afe4-bb11-4c68-93dc-c8f465861eb5",
+                                "Multiplier": 0.1
+                            },
+                            "Rarity": "common",
+                            "DisplayNameLocKey": "UI_SCORE_MULTIPLIER_SC_SEAGULL_BODYHIDER_TARGETS_NAME",
+                            "Id": "SCORE_MULTIPLIER_SC_SEAGULL_BODYHIDER_TARGETS",
+                            "Type": "challengemultiplier",
+                            "Subtype": "challengemultiplier",
+                            "GameAsset": null,
+                            "ImageId": "",
+                            "RMTPrice": -1,
+                            "GamePrice": -1,
+                            "IsPurchasable": false,
+                            "IsPublished": true,
+                            "IsDroppable": false,
+                            "Capabilities": [],
+                            "Qualities": {},
+                            "Guid": "56716ea5-d749-4375-ab38-4b61d8854410"
+                        }
+                    ],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_SALTY",
+                    "ParentLocationId": "LOCATION_PARENT_SALTY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "MainTargetIDs": [
+                                "22283ca4-89cf-4235-be1d-4f76cd1bd321",
+                                "0a4e517a-e1e1-41d7-af91-751bc663df35",
+                                "55334e2d-45c6-41b3-920e-aeb5c5111b37"
+                            ]
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "($.MainTargetIDs).Count"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "BodyHidden": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$Value.RepositoryId"
+                                                    ]
+                                                },
+                                                "in": "$.MainTargetIDs"
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$.Count",
+                                                "($.MainTargetIDs).Count"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["00e57709-e049-44c9-a2c3-7655e19884fb"]
+                    }
+                },
+                {
+                    "Id": "fa19971f-4edd-42ef-b986-4fe282dc5abb",
+                    "Name": "UI_CHALLENGES_SEAGULL_CAR_KILL_NAME",
+                    "ImageName": "images/challenges/salty/seagull_car_kill.jpg",
+                    "Description": "UI_CHALLENGES_SEAGULL_CAR_KILL_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        {
+                            "Properties": {
+                                "Rarity": "common",
+                                "IsConsumable": false,
+                                "RepositoryId": "df1278b3-53f8-4f5e-92b1-f80f37f4c8f3",
+                                "Multiplier": 0.08
+                            },
+                            "Rarity": "common",
+                            "DisplayNameLocKey": "UI_SCORE_MULTIPLIER_SC_SEAGULL_CAR_KILL_NAME",
+                            "Id": "SCORE_MULTIPLIER_SC_SEAGULL_CAR_KILL",
+                            "Type": "challengemultiplier",
+                            "Subtype": "challengemultiplier",
+                            "GameAsset": null,
+                            "ImageId": "",
+                            "RMTPrice": -1,
+                            "GamePrice": -1,
+                            "IsPurchasable": false,
+                            "IsPublished": true,
+                            "IsDroppable": false,
+                            "Capabilities": [],
+                            "Qualities": {},
+                            "Guid": "fa11378d-ffe1-4862-8e04-122d995ecb69"
+                        }
+                    ],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_SALTY",
+                    "ParentLocationId": "LOCATION_PARENT_SALTY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "TargetIDs": [
+                                "22283ca4-89cf-4235-be1d-4f76cd1bd321",
+                                "0a4e517a-e1e1-41d7-af91-751bc663df35",
+                                "55334e2d-45c6-41b3-920e-aeb5c5111b37",
+                                "5eca3cc3-5c5c-4d94-9add-d01439381a7c",
+                                "0861b91d-daa9-4ffa-8c5f-efeb5a95a321",
+                                "856ec4d9-c19b-4f95-9a8e-2a139b891017",
+                                "af4d2c4b-89bb-48a5-a299-8123a05c567d",
+                                "56ef218a-fd31-4bc4-8430-107230e17c8e",
+                                "9bb32759-bdfa-467c-a972-a54a73ea0e11",
+                                "391f9fce-4ad5-4c02-93dd-a147679bd75f",
+                                "49c90dbd-0400-43e8-871b-03bfb7e425c5",
+                                "c99657d8-3975-409c-9326-abc55fdb1abd",
+                                "b528b5e9-35ff-4642-93b7-421866eecf92",
+                                "03024491-d477-4d74-a31f-4c50cd3b82f6",
+                                "d26ae5c0-7491-4d75-8fb3-d54ca7c6a4bf",
+                                "b3489b30-d15d-407b-9de3-1036ddd103b9",
+                                "bdc392d1-a48d-4326-ac87-b1e9838eb5cd",
+                                "af0577a8-016e-4c55-b314-ad3771d59e6c"
+                            ]
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.RepositoryId"
+                                                        ]
+                                                    },
+                                                    "in": "$.TargetIDs"
+                                                }
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceId",
+                                                    "2fa9b901-9c26-4ba1-820e-b9f28695141b"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["00e57709-e049-44c9-a2c3-7655e19884fb"]
+                    }
+                }
+            ]
+        },
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+            "Image": "images/challenges/categories/feats/tile.jpg",
+            "Icon": "challenge_category_feats",
+            "CategoryId": "feats",
+            "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_COMMUNITY",
+            "Challenges": [
+                {
+                    "Id": "084c0484-459d-4d53-a9d0-7bb74e789962",
+                    "Name": "UI_CHALLENGES_SEAGULL_HOSTAGES_MOVED_NAME",
+                    "ImageName": "images/challenges/salty/seagull_hostages_moved.jpg",
+                    "Description": "UI_CHALLENGES_SEAGULL_HOSTAGES_MOVED_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        {
+                            "Properties": {
+                                "Rarity": "common",
+                                "IsConsumable": false,
+                                "RepositoryId": "0d1f7075-4d8e-4a87-994a-3dbaf0b4cdaf",
+                                "Multiplier": 0.07
+                            },
+                            "Rarity": "common",
+                            "DisplayNameLocKey": "UI_SCORE_MULTIPLIER_SC_SEAGULL_HOSTAGES_MOVED_NAME",
+                            "Id": "SCORE_MULTIPLIER_SC_SEAGULL_HOSTAGES_MOVED",
+                            "Type": "challengemultiplier",
+                            "Subtype": "challengemultiplier",
+                            "GameAsset": null,
+                            "ImageId": "",
+                            "RMTPrice": -1,
+                            "GamePrice": -1,
+                            "IsPurchasable": false,
+                            "IsPublished": true,
+                            "IsDroppable": false,
+                            "Capabilities": [],
+                            "Qualities": {},
+                            "Guid": "1f9b506e-5883-4b14-a7c0-22aa05c30482"
+                        }
+                    ],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_SALTY",
+                    "ParentLocationId": "LOCATION_PARENT_SALTY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Hostages_Moved_Event": {
+                                    "Transition": "Failure"
+                                },
+                                "Hostages_Remained_Event": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["00e57709-e049-44c9-a2c3-7655e19884fb"]
+                    }
+                },
+                {
+                    "Id": "1153979c-b557-4974-a8ad-b195387efb6a",
+                    "Name": "UI_CHALLENGES_SEAGULL_START_CRANE_NAME",
+                    "ImageName": "images/challenges/salty/seagull_start_crane.jpg",
+                    "Description": "UI_CHALLENGES_SEAGULL_START_CRANE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        {
+                            "Properties": {
+                                "Rarity": "common",
+                                "IsConsumable": false,
+                                "RepositoryId": "7872376d-fd88-4be9-8909-de186aabf54d",
+                                "Multiplier": 0.04
+                            },
+                            "Rarity": "common",
+                            "DisplayNameLocKey": "UI_SCORE_MULTIPLIER_SC_SEAGULL_START_CRANE_NAME",
+                            "Id": "SCORE_MULTIPLIER_SC_SEAGULL_START_CRANE",
+                            "Type": "challengemultiplier",
+                            "Subtype": "challengemultiplier",
+                            "GameAsset": null,
+                            "ImageId": "",
+                            "RMTPrice": -1,
+                            "GamePrice": -1,
+                            "IsPurchasable": false,
+                            "IsPublished": true,
+                            "IsDroppable": false,
+                            "Capabilities": [],
+                            "Qualities": {},
+                            "Guid": "97583446-a30a-431a-9216-9540e5d11cd7"
+                        }
+                    ],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_SALTY",
+                    "ParentLocationId": "LOCATION_PARENT_SALTY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Start_Crane_Event": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["00e57709-e049-44c9-a2c3-7655e19884fb"]
+                    }
+                },
+                {
+                    "Id": "11c5de45-dc87-40a0-b23a-50a72c7912bb",
+                    "Name": "UI_CHALLENGES_SEAGULL_SHOOT_SEAGULLS_NAME",
+                    "ImageName": "images/challenges/salty/seagull_shoot_seagulls.jpg",
+                    "Description": "UI_CHALLENGES_SEAGULL_SHOOT_SEAGULLS_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        {
+                            "Properties": {
+                                "Rarity": "common",
+                                "IsConsumable": false,
+                                "RepositoryId": "ee7d46df-ba58-4f92-a691-4a246959a86d",
+                                "Multiplier": 0.05
+                            },
+                            "Rarity": "common",
+                            "DisplayNameLocKey": "UI_SCORE_MULTIPLIER_SC_SEAGULL_SHOOT_SEAGULLS_NAME",
+                            "Id": "SCORE_MULTIPLIER_SC_SEAGULL_SHOOT_SEAGULLS",
+                            "Type": "challengemultiplier",
+                            "Subtype": "challengemultiplier",
+                            "GameAsset": null,
+                            "ImageId": "",
+                            "RMTPrice": -1,
+                            "GamePrice": -1,
+                            "IsPurchasable": false,
+                            "IsPublished": true,
+                            "IsDroppable": false,
+                            "Capabilities": [],
+                            "Qualities": {},
+                            "Guid": "3e84d13c-f3a5-487c-b020-7535c0c7573b"
+                        }
+                    ],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_SALTY",
+                    "ParentLocationId": "LOCATION_PARENT_SALTY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 5
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "SeagullHit_Event": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["00e57709-e049-44c9-a2c3-7655e19884fb"]
+                    }
+                },
+                {
+                    "Id": "18309f54-0357-4f6b-8006-01192b76e207",
+                    "Name": "UI_CHALLENGES_SEAGULL_FOG_HORN_NAME",
+                    "ImageName": "images/challenges/salty/seagull_fog_horn.jpg",
+                    "Description": "UI_CHALLENGES_SEAGULL_FOG_HORN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        {
+                            "Properties": {
+                                "Rarity": "common",
+                                "IsConsumable": false,
+                                "RepositoryId": "da0ee139-36e2-491e-8cfc-498ee0270e31",
+                                "Multiplier": 0.05
+                            },
+                            "Rarity": "common",
+                            "DisplayNameLocKey": "UI_SCORE_MULTIPLIER_SC_SEAGULL_FOG_HORN_NAME",
+                            "Id": "SCORE_MULTIPLIER_SC_SEAGULL_FOG_HORN",
+                            "Type": "challengemultiplier",
+                            "Subtype": "challengemultiplier",
+                            "GameAsset": null,
+                            "ImageId": "",
+                            "RMTPrice": -1,
+                            "GamePrice": -1,
+                            "IsPurchasable": false,
+                            "IsPublished": true,
+                            "IsDroppable": false,
+                            "Capabilities": [],
+                            "Qualities": {},
+                            "Guid": "c088144b-fd58-493e-82c8-4823e3cbd014"
+                        }
+                    ],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_SALTY",
+                    "ParentLocationId": "LOCATION_PARENT_SALTY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Fog_Horn_Event": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["00e57709-e049-44c9-a2c3-7655e19884fb"]
+                    }
+                },
+                {
+                    "Id": "243eb8ee-9602-4d27-bf16-b25d6ebf68ff",
+                    "Name": "UI_CHALLENGES_SEAGULL_AGENT_SMITH_NAME",
+                    "ImageName": "images/challenges/salty/seagull_agent_smith.jpg",
+                    "Description": "UI_CHALLENGES_SEAGULL_AGENT_SMITH_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        {
+                            "Properties": {
+                                "Rarity": "common",
+                                "IsConsumable": false,
+                                "RepositoryId": "3bab3303-6bb9-4960-9d5f-88d244187f36",
+                                "Multiplier": 0.05
+                            },
+                            "Rarity": "common",
+                            "DisplayNameLocKey": "UI_SCORE_MULTIPLIER_SC_SEAGULL_AGENT_SMITH_NAME",
+                            "Id": "SCORE_MULTIPLIER_SC_SEAGULL_AGENT_SMITH",
+                            "Type": "challengemultiplier",
+                            "Subtype": "challengemultiplier",
+                            "GameAsset": null,
+                            "ImageId": "",
+                            "RMTPrice": -1,
+                            "GamePrice": -1,
+                            "IsPurchasable": false,
+                            "IsPublished": true,
+                            "IsDroppable": false,
+                            "Capabilities": [],
+                            "Qualities": {},
+                            "Guid": "f6dc0c2e-5338-4604-8f76-46ae6f0e91f0"
+                        }
+                    ],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_SALTY",
+                    "ParentLocationId": "LOCATION_PARENT_SALTY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Agent_Smith_Event": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["00e57709-e049-44c9-a2c3-7655e19884fb"]
+                    }
+                },
+                {
+                    "Id": "35b0e116-25b8-4b10-bd3c-7bf0f4acdb40",
+                    "Name": "UI_CHALLENGES_SEAGULL_SATELLITE_DISH_NAME",
+                    "ImageName": "images/challenges/salty/seagull_satellite_dish.jpg",
+                    "Description": "UI_CHALLENGES_SEAGULL_SATELLITE_DISH_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        {
+                            "Properties": {
+                                "Rarity": "common",
+                                "IsConsumable": false,
+                                "RepositoryId": "70ddbac1-0803-4e4d-b962-1914b4e76658",
+                                "Multiplier": 0.05
+                            },
+                            "Rarity": "common",
+                            "DisplayNameLocKey": "UI_SCORE_MULTIPLIER_SC_SEAGULL_SATELLITE_DISH_NAME",
+                            "Id": "SCORE_MULTIPLIER_SC_SEAGULL_SATELLITE_DISH",
+                            "Type": "challengemultiplier",
+                            "Subtype": "challengemultiplier",
+                            "GameAsset": null,
+                            "ImageId": "",
+                            "RMTPrice": -1,
+                            "GamePrice": -1,
+                            "IsPurchasable": false,
+                            "IsPublished": true,
+                            "IsDroppable": false,
+                            "Capabilities": [],
+                            "Qualities": {},
+                            "Guid": "e318012e-d92d-46ca-b3c4-1a15f73d07c7"
+                        }
+                    ],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_SALTY",
+                    "ParentLocationId": "LOCATION_PARENT_SALTY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Satellite_Dish_Event": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["00e57709-e049-44c9-a2c3-7655e19884fb"]
+                    }
+                },
+                {
+                    "Id": "49e050f9-65e9-46b5-85e5-bf398b786b3e",
+                    "Name": "UI_CHALLENGES_SEAGULL_RUBBER_DUCK_NAME",
+                    "ImageName": "images/challenges/salty/seagull_rubber_duck.jpg",
+                    "Description": "UI_CHALLENGES_SEAGULL_RUBBER_DUCK_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        {
+                            "Properties": {
+                                "Rarity": "common",
+                                "IsConsumable": false,
+                                "RepositoryId": "e579d385-9419-4b39-ac39-01296d63039f",
+                                "Multiplier": 0.07
+                            },
+                            "Rarity": "common",
+                            "DisplayNameLocKey": "UI_SCORE_MULTIPLIER_SC_SEAGULL_RUBBER_DUCK_NAME",
+                            "Id": "SCORE_MULTIPLIER_SC_SEAGULL_RUBBER_DUCK",
+                            "Type": "challengemultiplier",
+                            "Subtype": "challengemultiplier",
+                            "GameAsset": null,
+                            "ImageId": "",
+                            "RMTPrice": -1,
+                            "GamePrice": -1,
+                            "IsPurchasable": false,
+                            "IsPublished": true,
+                            "IsDroppable": false,
+                            "Capabilities": [],
+                            "Qualities": {},
+                            "Guid": "91b6a6e2-5dd1-440f-ac32-2fb3713ac611"
+                        }
+                    ],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_SALTY",
+                    "ParentLocationId": "LOCATION_PARENT_SALTY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 10
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "RubberDuckHit_Event": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["00e57709-e049-44c9-a2c3-7655e19884fb"]
+                    }
+                },
+                {
+                    "Id": "7facc8da-8147-43c4-9a3a-86f5697bae39",
+                    "Name": "UI_CHALLENGES_SEAGULL_SHOOT_CORDS_NAME",
+                    "ImageName": "images/challenges/salty/seagull_shoot_cords.jpg",
+                    "Description": "UI_CHALLENGES_SEAGULL_SHOOT_CORDS_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        {
+                            "Properties": {
+                                "Rarity": "common",
+                                "IsConsumable": false,
+                                "RepositoryId": "d15299e9-c5e0-49b4-9e35-609a705ca7e3",
+                                "Multiplier": 0.04
+                            },
+                            "Rarity": "common",
+                            "DisplayNameLocKey": "UI_SCORE_MULTIPLIER_SC_SEAGULL_SHOOT_CORDS_NAME",
+                            "Id": "SCORE_MULTIPLIER_SC_SEAGULL_SHOOT_CORDS",
+                            "Type": "challengemultiplier",
+                            "Subtype": "challengemultiplier",
+                            "GameAsset": null,
+                            "ImageId": "",
+                            "RMTPrice": -1,
+                            "GamePrice": -1,
+                            "IsPurchasable": false,
+                            "IsPublished": true,
+                            "IsDroppable": false,
+                            "Capabilities": [],
+                            "Qualities": {},
+                            "Guid": "7867dcfe-14ec-4c09-a650-81b024cbf1fa"
+                        }
+                    ],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_SALTY",
+                    "ParentLocationId": "LOCATION_PARENT_SALTY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 6
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Shoot_Cords_Event": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["00e57709-e049-44c9-a2c3-7655e19884fb"]
+                    }
+                },
+                {
+                    "Id": "80666d64-5915-4c86-b89e-951997724a27",
+                    "Name": "UI_CHALLENGES_SEAGULL_SHOOT_LAMPS_NAME",
+                    "ImageName": "images/challenges/salty/seagull_shoot_lamps.jpg",
+                    "Description": "UI_CHALLENGES_SEAGULL_SHOOT_LAMPS_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        {
+                            "Properties": {
+                                "Rarity": "common",
+                                "IsConsumable": false,
+                                "RepositoryId": "7cb89fba-b229-4e11-aaef-ee7e984a523b",
+                                "Multiplier": 0.06
+                            },
+                            "Rarity": "common",
+                            "DisplayNameLocKey": "UI_SCORE_MULTIPLIER_SC_SEAGULL_SHOOT_LAMPS_NAME",
+                            "Id": "SCORE_MULTIPLIER_SC_SEAGULL_SHOOT_LAMPS",
+                            "Type": "challengemultiplier",
+                            "Subtype": "challengemultiplier",
+                            "GameAsset": null,
+                            "ImageId": "",
+                            "RMTPrice": -1,
+                            "GamePrice": -1,
+                            "IsPurchasable": false,
+                            "IsPublished": true,
+                            "IsDroppable": false,
+                            "Capabilities": [],
+                            "Qualities": {},
+                            "Guid": "dec39b90-ac85-4ba6-9cae-9787283230c2"
+                        }
+                    ],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_SALTY",
+                    "ParentLocationId": "LOCATION_PARENT_SALTY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Shoot_Lamps_Event": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["00e57709-e049-44c9-a2c3-7655e19884fb"]
+                    }
+                },
+                {
+                    "Id": "a9218949-ef89-4b2a-9a70-f7892899ee1d",
+                    "Name": "UI_CHALLENGES_SEAGULL_RATS_NAME",
+                    "ImageName": "images/challenges/salty/seagull_rats.jpg",
+                    "Description": "UI_CHALLENGES_SEAGULL_RATS_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        {
+                            "Properties": {
+                                "Rarity": "common",
+                                "IsConsumable": false,
+                                "RepositoryId": "787c6a39-00f4-402c-baab-228ad7cc6136",
+                                "Multiplier": 0.07
+                            },
+                            "Rarity": "common",
+                            "DisplayNameLocKey": "UI_SCORE_MULTIPLIER_SC_SEAGULL_RATS_NAME",
+                            "Id": "SCORE_MULTIPLIER_SC_SEAGULL_RATS",
+                            "Type": "challengemultiplier",
+                            "Subtype": "challengemultiplier",
+                            "GameAsset": null,
+                            "ImageId": "",
+                            "RMTPrice": -1,
+                            "GamePrice": -1,
+                            "IsPurchasable": false,
+                            "IsPublished": true,
+                            "IsDroppable": false,
+                            "Capabilities": [],
+                            "Qualities": {},
+                            "Guid": "9c709484-872e-487f-94e2-a6f44013c022"
+                        }
+                    ],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_SALTY",
+                    "ParentLocationId": "LOCATION_PARENT_SALTY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 9
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "RatHit_Event": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["00e57709-e049-44c9-a2c3-7655e19884fb"]
+                    }
+                },
+                {
+                    "Id": "cc05ed79-7a8f-4dad-ae7b-4d52635c6351",
+                    "Name": "UI_CHALLENGES_SEAGULL_LILLY_ESCORT_NAME",
+                    "ImageName": "images/challenges/salty/seagull_lilly_escort.jpg",
+                    "Description": "UI_CHALLENGES_SEAGULL_LILLY_ESCORT_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        {
+                            "Properties": {
+                                "Rarity": "common",
+                                "IsConsumable": false,
+                                "RepositoryId": "7464e1cb-bca7-4e4f-b8ba-d8f5a271fb1a",
+                                "Multiplier": 0.06
+                            },
+                            "Rarity": "common",
+                            "DisplayNameLocKey": "UI_SCORE_MULTIPLIER_SC_SEAGULL_LILLY_ESCORT_NAME",
+                            "Id": "SCORE_MULTIPLIER_SC_SEAGULL_LILLY_ESCORT",
+                            "Type": "challengemultiplier",
+                            "Subtype": "challengemultiplier",
+                            "GameAsset": null,
+                            "ImageId": "",
+                            "RMTPrice": -1,
+                            "GamePrice": -1,
+                            "IsPurchasable": false,
+                            "IsPublished": true,
+                            "IsDroppable": false,
+                            "Capabilities": [],
+                            "Qualities": {},
+                            "Guid": "9306da98-d98e-411c-8ecc-170526d91f5c"
+                        }
+                    ],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_SALTY",
+                    "ParentLocationId": "LOCATION_PARENT_SALTY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Lilly_Escort_Event": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["00e57709-e049-44c9-a2c3-7655e19884fb"]
+                    }
+                },
+                {
+                    "Id": "e6331fe4-3c0c-4fed-8447-d90824e172c9",
+                    "Name": "UI_CHALLENGES_SEAGULL_OPEN_CONTAINERS_NAME",
+                    "ImageName": "images/challenges/salty/seagull_open_containers.jpg",
+                    "Description": "UI_CHALLENGES_SEAGULL_OPEN_CONTAINERS_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        {
+                            "Properties": {
+                                "Rarity": "common",
+                                "IsConsumable": false,
+                                "RepositoryId": "04fcc4b9-5946-4979-8c96-4bd0990d9fe2",
+                                "Multiplier": 0.06
+                            },
+                            "Rarity": "common",
+                            "DisplayNameLocKey": "UI_SCORE_MULTIPLIER_SC_SEAGULL_OPEN_CONTAINERS_NAME",
+                            "Id": "SCORE_MULTIPLIER_SC_SEAGULL_OPEN_CONTAINERS",
+                            "Type": "challengemultiplier",
+                            "Subtype": "challengemultiplier",
+                            "GameAsset": null,
+                            "ImageId": "",
+                            "RMTPrice": -1,
+                            "GamePrice": -1,
+                            "IsPurchasable": false,
+                            "IsPublished": true,
+                            "IsDroppable": false,
+                            "Capabilities": [],
+                            "Qualities": {},
+                            "Guid": "c61fdb85-502b-44b9-9e71-d57974791635"
+                        }
+                    ],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_SALTY",
+                    "ParentLocationId": "LOCATION_PARENT_SALTY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 5
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Open_Containers_Event": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["00e57709-e049-44c9-a2c3-7655e19884fb"]
+                    }
+                },
+                {
+                    "Id": "f1b6481e-0856-4243-b19a-c012525998b0",
+                    "Name": "UI_CHALLENGES_SEAGULL_CRANE_47_NAME",
+                    "ImageName": "images/challenges/salty/seagull_crane_47.jpg",
+                    "Description": "UI_CHALLENGES_SEAGULL_CRANE_47_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        {
+                            "Properties": {
+                                "Rarity": "common",
+                                "IsConsumable": false,
+                                "RepositoryId": "35434487-ccbe-456f-8d4e-14458d6c84ce",
+                                "Multiplier": 0.07
+                            },
+                            "Rarity": "common",
+                            "DisplayNameLocKey": "UI_SCORE_MULTIPLIER_SC_SEAGULL_CRANE_47_NAME",
+                            "Id": "SCORE_MULTIPLIER_SC_SEAGULL_CRANE_47",
+                            "Type": "challengemultiplier",
+                            "Subtype": "challengemultiplier",
+                            "GameAsset": null,
+                            "ImageId": "",
+                            "RMTPrice": -1,
+                            "GamePrice": -1,
+                            "IsPurchasable": false,
+                            "IsPublished": true,
+                            "IsDroppable": false,
+                            "Capabilities": [],
+                            "Qualities": {},
+                            "Guid": "ef4f2229-deb8-4e11-b306-0a831f7c4c0e"
+                        }
+                    ],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_SALTY",
+                    "ParentLocationId": "LOCATION_PARENT_SALTY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Crane_47_Event": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["00e57709-e049-44c9-a2c3-7655e19884fb"]
+                    }
+                },
+                {
+                    "Id": "f83d2db1-9987-4712-9974-54552b4c2fcf",
+                    "Name": "UI_CHALLENGES_SEAGULL_SHOOT_BEER_NAME",
+                    "ImageName": "images/challenges/salty/seagull_shoot_beer.jpg",
+                    "Description": "UI_CHALLENGES_SEAGULL_SHOOT_BEER_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        {
+                            "Properties": {
+                                "Rarity": "common",
+                                "IsConsumable": false,
+                                "RepositoryId": "e6179ca0-3fdd-4b31-a4b4-b2f55f50e4e9",
+                                "Multiplier": 0.04
+                            },
+                            "Rarity": "common",
+                            "DisplayNameLocKey": "UI_SCORE_MULTIPLIER_SC_SEAGULL_SHOOT_BEER_NAME",
+                            "Id": "SCORE_MULTIPLIER_SC_SEAGULL_SHOOT_BEER",
+                            "Type": "challengemultiplier",
+                            "Subtype": "challengemultiplier",
+                            "GameAsset": null,
+                            "ImageId": "",
+                            "RMTPrice": -1,
+                            "GamePrice": -1,
+                            "IsPurchasable": false,
+                            "IsPublished": true,
+                            "IsDroppable": false,
+                            "Capabilities": [],
+                            "Qualities": {},
+                            "Guid": "5b9dea45-b163-411d-ab81-0dcdfd56f79a"
+                        }
+                    ],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_SALTY",
+                    "ParentLocationId": "LOCATION_PARENT_SALTY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Shoot_Beer_Event": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["00e57709-e049-44c9-a2c3-7655e19884fb"]
+                    }
+                }
+            ]
+        }
+    ]
+}

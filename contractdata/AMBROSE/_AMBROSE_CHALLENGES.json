@@ -1,0 +1,2952 @@
+{
+    "meta": {
+        "Location": "LOCATION_PARENT_ROCKY"
+    },
+    "groups": [
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+            "Image": "images/challenges/categories/assassination/tile.jpg",
+            "Icon": "challenge_category_assassination",
+            "CategoryId": "assassination",
+            "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_SIGNATUREKILL",
+            "Challenges": [
+                {
+                    "Id": "2638c6ab-20e5-4f5f-bcbb-2f940c7adee3",
+                    "Name": "UI_CHALLENGES_DUGONG_CRESTSLAPOUTCOME_NAME",
+                    "ImageName": "images/challenges/Rocky/Rocky_SleepOnIt.jpg",
+                    "Description": "UI_CHALLENGES_DUGONG_CRESTSLAPOUTCOME_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "SLEEPONIT": {
+                                    "Transition": "CheckKill"
+                                }
+                            },
+                            "CheckKill": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "4f80ca40-a8f3-4a5e-9add-4c74d3bb5bcc"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "CRESTLEFTAREA": {
+                                    "Transition": "Start"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["b2aac100-dfc7-4f85-b9cd-528114436f6c"]
+                    }
+                },
+                {
+                    "Id": "2bbd5d4b-5d3b-405b-a003-f2baf61670b2",
+                    "Name": "UI_CHALLENGES_DUGONG_CRESTKILLEDBYBOAT_NAME",
+                    "ImageName": "images/challenges/Rocky/Rocky_CrestKilledByEngine.jpg",
+                    "Description": "UI_CHALLENGES_DUGONG_CRESTKILLEDBYBOAT_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "CRESTTHERE": {
+                                    "Transition": "CheckKill"
+                                }
+                            },
+                            "CheckKill": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "4f80ca40-a8f3-4a5e-9add-4c74d3bb5bcc"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillMethodStrict",
+                                                    "accident_burn"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "CRESTNOTTHERE": {
+                                    "Transition": "Start"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["b2aac100-dfc7-4f85-b9cd-528114436f6c"]
+                    }
+                },
+                {
+                    "Id": "577cb50a-8df2-4869-af93-f6fdff6daeac",
+                    "Name": "UI_CHALLENGES_DUGONG_ELIMINATE_AKKAKILLCREST_NAME",
+                    "ImageName": "images/challenges/Rocky/Rocky_AkkaKillsCrest.jpg",
+                    "Description": "UI_CHALLENGES_DUGONG_ELIMINATE_AKKAKILLCREST_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "AKKAKILLCREST": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "hard", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["b2aac100-dfc7-4f85-b9cd-528114436f6c"]
+                    }
+                },
+                {
+                    "Id": "5cd1be2d-06bb-4e2d-9f47-34ad6002a0b9",
+                    "Name": "UI_CHALLENGES_DUGONG_ELIMINATE_AKKASMOKINGDEATH_NAME",
+                    "ImageName": "images/challenges/Rocky/Rocky_AkkaDiesWhileSmoking.jpg",
+                    "Description": "UI_CHALLENGES_DUGONG_ELIMINATE_AKKASMOKINGDEATH_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "AKKASMOKING": {
+                                    "Transition": "CheckKill"
+                                }
+                            },
+                            "CheckKill": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "666521d2-1efe-4d0a-b7f7-2afeb08262b6"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillClass",
+                                                    "explosion"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "AKKANOTSMOKING": {
+                                    "Transition": "Start"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "hard", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["b2aac100-dfc7-4f85-b9cd-528114436f6c"]
+                    }
+                },
+                {
+                    "Id": "76e77c1b-fa6d-4949-84b8-df5be2db5f4a",
+                    "Name": "UI_CHALLENGES_DUGONG_AKKACAGE_NAME",
+                    "ImageName": "images/challenges/Rocky/Rocky_AkkaCageKill.jpg",
+                    "Description": "UI_CHALLENGES_DUGONG_AKKACAGE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "AKKAINCAGE": {
+                                    "Transition": "CheckKill"
+                                }
+                            },
+                            "CheckKill": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "666521d2-1efe-4d0a-b7f7-2afeb08262b6"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "Electric"
+                                                        ]
+                                                    },
+                                                    "in": "$Value.DamageEvents"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "AKKANOTINCAGE": {
+                                    "Transition": "Start"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "hard", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["b2aac100-dfc7-4f85-b9cd-528114436f6c"]
+                    }
+                },
+                {
+                    "Id": "83254586-bf80-414e-bcb3-97c64793205f",
+                    "Name": "UI_CHALLENGES_DUGONG_PIRATESLIFE_NAME",
+                    "ImageName": "images/challenges/Rocky/Rocky_PiratesLifeForMe.jpg",
+                    "Description": "UI_CHALLENGES_DUGONG_PIRATESLIFE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "Targets": [
+                                "4f80ca40-a8f3-4a5e-9add-4c74d3bb5bcc",
+                                "666521d2-1efe-4d0a-b7f7-2afeb08262b6"
+                            ]
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$inarray": {
+                                                    "in": "$.Targets",
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.RepositoryId"
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "052cbf5d-e268-479a-a705-17609d528182"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "fba6e133-78d1-4af1-8450-1ff30466c553"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Actions": {
+                                        "$remove": [
+                                            "Targets",
+                                            "$Value.RepositoryId"
+                                        ]
+                                    },
+                                    "Transition": "SecondTarget"
+                                }
+                            },
+                            "SecondTarget": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$inarray": {
+                                                    "in": "$.Targets",
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.RepositoryId"
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "052cbf5d-e268-479a-a705-17609d528182"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "fba6e133-78d1-4af1-8450-1ff30466c553"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "hard", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["b2aac100-dfc7-4f85-b9cd-528114436f6c"]
+                    }
+                },
+                {
+                    "Id": "af3285ff-d2c8-462d-9372-f728de6239f7",
+                    "Name": "UI_CHALLENGES_DUGONG_CRESTLETHALCOOKPOISON_NAME",
+                    "ImageName": "images/challenges/Rocky/Rocky_CrestLethalCook.jpg",
+                    "Description": "UI_CHALLENGES_DUGONG_CRESTLETHALCOOKPOISON_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "CRESTEATING": {
+                                    "Transition": "CheckKill"
+                                }
+                            },
+                            "CheckKill": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "4f80ca40-a8f3-4a5e-9add-4c74d3bb5bcc"
+                                                ]
+                                            },
+                                            {
+                                                "$or": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillMethodStrict",
+                                                            "consumed_poison"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillClass",
+                                                            "poison"
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "CRESTNOTEATING": {
+                                    "Transition": "Start"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["b2aac100-dfc7-4f85-b9cd-528114436f6c"]
+                    }
+                },
+                {
+                    "Id": "d634562c-c265-4b62-b123-d93b89d81c9f",
+                    "Name": "UI_CHALLENGES_DUGONG_CRESTROPEBRIDGETRAP_NAME",
+                    "ImageName": "images/challenges/Rocky/Rocky_CrestBridgeTrap.jpg",
+                    "Description": "UI_CHALLENGES_DUGONG_CRESTROPEBRIDGETRAP_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "4f80ca40-a8f3-4a5e-9add-4c74d3bb5bcc"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceId",
+                                                    "f4ebf9f6-6151-4304-9612-5473a38916d2"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "hard", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["b2aac100-dfc7-4f85-b9cd-528114436f6c"]
+                    }
+                },
+                {
+                    "Id": "e4ebc1fa-d048-48cb-82bc-447ff81504b5",
+                    "Name": "UI_CHALLENGES_DUGONG_HEADCANON_NAME",
+                    "ImageName": "images/challenges/Rocky/Rocky_2Targets1Cannon.jpg",
+                    "Description": "UI_CHALLENGES_DUGONG_HEADCANON_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "HEADCANON": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "hard", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["b2aac100-dfc7-4f85-b9cd-528114436f6c"]
+                    }
+                },
+                {
+                    "Id": "f2c6a306-f472-41e0-ade4-80ff05466ba5",
+                    "Name": "UI_CHALLENGES_DUGONG_AKKAKILLEDBYHIPPIE_NAME",
+                    "ImageName": "images/challenges/Rocky/Rocky_AkkaKilledByHippie.jpg",
+                    "Description": "UI_CHALLENGES_DUGONG_AKKAKILLEDBYHIPPIE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "666521d2-1efe-4d0a-b7f7-2afeb08262b6"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "9f95337d-0316-4cfc-9881-13080e2bc365"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["b2aac100-dfc7-4f85-b9cd-528114436f6c"]
+                    }
+                },
+                {
+                    "Id": "0826ff92-2b4c-48fe-9ad6-b3e513fd4607",
+                    "Name": "UI_CHALLENGES_ROCKY_47_ASSASINATION_HEADSHOT_NAME",
+                    "ImageName": "images/challenges/profile_challenges/generic_location_47_headshot.jpg",
+                    "Description": "UI_CHALLENGES_ROCKY_47_ASSASINATION_HEADSHOT_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "parentlocation",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": ["$Value.IsTarget", true]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.IsHeadshot",
+                                                    true
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "assassination"]
+                },
+                {
+                    "Id": "70bfea02-e316-4e3d-ae42-a52731647d0e",
+                    "Name": "UI_CHALLENGES_ROCKY_KILLTARGETWMEATHOOK_NAME",
+                    "ImageName": "images/challenges/Rocky/Rocky_KillTargetwMeatHook.jpg",
+                    "Description": "UI_CHALLENGES_ROCKY_KILLTARGETWMEATHOOK_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "parentlocation",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": ["$Value.IsTarget", true]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "58a036dc-79d4-4d64-8bf5-3faafa3cfead"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "medium"]
+                },
+                {
+                    "Id": "bb9e24b5-0741-4f24-b2f0-6b437d21d091",
+                    "Name": "UI_CHALLENGES_ROCKY_47_ASSASINATION_FIBER_NAME",
+                    "ImageName": "images/challenges/profile_challenges/generic_location_47_fiberwire.jpg",
+                    "Description": "UI_CHALLENGES_ROCKY_47_ASSASINATION_FIBER_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "parentlocation",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": ["$Value.IsTarget", true]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemCategory",
+                                                    "fiberwire"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "assassination"]
+                },
+                {
+                    "Id": "d34be7aa-94d7-43e5-84a6-c472cfad2d7b",
+                    "Name": "UI_CHALLENGES_ROCKY_47_ASSASINATION_DROWN_NAME",
+                    "ImageName": "images/challenges/profile_challenges/generic_location_47_drown.jpg",
+                    "Description": "UI_CHALLENGES_ROCKY_47_ASSASINATION_DROWN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "parentlocation",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": ["$Value.IsTarget", true]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillMethodStrict",
+                                                    "accident_drown"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "assassination"]
+                },
+                {
+                    "Id": "da8be740-a942-476c-a97e-9d9876e1fe7f",
+                    "Name": "UI_CHALLENGES_ROCKY_47_ASSASINATION_POISON_NAME",
+                    "ImageName": "images/challenges/profile_challenges/generic_location_47_poison.jpg",
+                    "Description": "UI_CHALLENGES_ROCKY_47_ASSASINATION_POISON_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "parentlocation",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": ["$Value.IsTarget", true]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillClass",
+                                                    "poison"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "assassination"]
+                },
+                {
+                    "Id": "e9f62515-0803-41c6-88b2-ac9a5fc2b1f8",
+                    "Name": "UI_CHALLENGES_ROCKY_47_ASSASINATION_ACCIDENT_NAME",
+                    "ImageName": "images/challenges/profile_challenges/generic_location_47_accident.jpg",
+                    "Description": "UI_CHALLENGES_ROCKY_47_ASSASINATION_ACCIDENT_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "parentlocation",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": ["$Value.IsTarget", true]
+                                            },
+                                            {
+                                                "$eq": ["$Value.Accident", true]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "assassination"]
+                },
+                {
+                    "Id": "f1c44b70-324c-4497-9c5f-5aed7f0fd2c8",
+                    "Name": "UI_CHALLENGES_ROCKY_47_MASTER_ASSASSIN_NAME",
+                    "ImageName": "images/challenges/profile_challenges/generic_location_47_versatile.jpg",
+                    "Description": "UI_CHALLENGES_ROCKY_47_MASTER_ASSASSIN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "parentlocation",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "RequiredChallenges": [
+                                "0826ff92-2b4c-48fe-9ad6-b3e513fd4607",
+                                "da8be740-a942-476c-a97e-9d9876e1fe7f",
+                                "e9f62515-0803-41c6-88b2-ac9a5fc2b1f8",
+                                "d34be7aa-94d7-43e5-84a6-c472cfad2d7b",
+                                "bb9e24b5-0741-4f24-b2f0-6b437d21d091"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedChallenges": []
+                        },
+                        "ContextListeners": {
+                            "CompletedChallenges": {
+                                "comparand": "$.RequiredChallenges",
+                                "type": "challengetree"
+                            }
+                        },
+                        "Scope": "profile",
+                        "States": {
+                            "Start": {
+                                "ChallengeCompleted": [
+                                    {
+                                        "$pushunique": [
+                                            "CompletedChallenges",
+                                            "$Value.ChallengeId"
+                                        ]
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$all": {
+                                                "?": {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$.##"
+                                                            ]
+                                                        },
+                                                        "in": "$.CompletedChallenges"
+                                                    }
+                                                },
+                                                "in": "$.RequiredChallenges"
+                                            }
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "hard", "assassination"]
+                }
+            ]
+        },
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+            "Image": "images/challenges/categories/discovery/tile.jpg",
+            "Icon": "challenge_category_discovery",
+            "CategoryId": "discovery",
+            "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_EXPLORATION",
+            "Challenges": [
+                {
+                    "Id": "ad549a16-c8c7-40af-9265-f5c42065be87",
+                    "Name": "UI_CHALLENGES_DUGONG_HSUPICTURETAKEN_NAME",
+                    "ImageName": "images/challenges/Rocky/Rocky_LanceHsuPicture.jpg",
+                    "Description": "UI_CHALLENGES_DUGONG_HSUPICTURETAKEN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "HSUPICTURETAKEN": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "discovery"],
+                    "InclusionData": {
+                        "ContractIds": ["b2aac100-dfc7-4f85-b9cd-528114436f6c"]
+                    }
+                },
+                {
+                    "Id": "0421b082-32c1-4f16-8c85-31abe0f27f65",
+                    "Name": "UI_CHALLENGES_ROCKY_HIPPIESUB_NAME",
+                    "ImageName": "images/challenges/Rocky/Rocky_HippieSubExit.jpg",
+                    "Description": "UI_CHALLENGES_ROCKY_HIPPIESUB_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "parentlocation",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "YESHIPPIE": {
+                                    "Transition": "HIPPIEOUTFIT"
+                                }
+                            },
+                            "HIPPIEOUTFIT": {
+                                "exit_gate": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "59897578-7001-432e-b4e6-0f4a58d10c23"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "NOTHIPPIE": {
+                                    "Transition": "Start"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "discovery", "medium"]
+                },
+                {
+                    "Id": "0ca05d13-dbab-4b0f-8752-5b30c85cdca3",
+                    "Name": "UI_CHALLENGES_ROCKY_MILITABOATEXIT_NAME",
+                    "ImageName": "images/challenges/Rocky/Rocky_MilitiaBoatExit.jpg",
+                    "Description": "UI_CHALLENGES_ROCKY_MILITABOATEXIT_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "parentlocation",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "exit_gate": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "105a1c9a-6b89-4495-8220-056950e9eb0c"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "discovery", "medium"]
+                },
+                {
+                    "Id": "1517bef5-6202-4c2d-9a79-fad624d90148",
+                    "Name": "UI_CHALLENGES_ROCKY_FINDMEATHOOK_NAME",
+                    "ImageName": "images/challenges/Rocky/Rocky_FindMeatHook.jpg",
+                    "Description": "UI_CHALLENGES_ROCKY_FINDMEATHOOK_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "parentlocation",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "FOUNDMEATHOOK": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "discovery"]
+                },
+                {
+                    "Id": "1a1eec22-fba3-4806-8e1e-fb92a1bc27b6",
+                    "Name": "UI_CHALLENGES_ROCKY_SMITHDIARY_NAME",
+                    "ImageName": "images/challenges/Rocky/Rocky_SmithDiaries.jpg",
+                    "Description": "UI_CHALLENGES_ROCKY_SMITHDIARY_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "parentlocation",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 4
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal"
+                            }
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "DIARYFOUND": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "discovery"]
+                },
+                {
+                    "Id": "1c6b0a02-4791-4101-979c-b4ffdc460dcc",
+                    "Name": "UI_CHALLENGES_ROCKY_LADDER_B_NAME",
+                    "ImageName": "images/challenges/Rocky/Rocky_PersistentShortcut_B.jpg",
+                    "Description": "UI_CHALLENGES_ROCKY_LADDER_B_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "parentlocation",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Dugong_Ladder_B_Down": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "discovery", "shortcut"]
+                },
+                {
+                    "Id": "594170f9-4803-4284-8c23-a0e74b04cc6b",
+                    "Name": "UI_CHALLENGES_ROCKY_WORKSHOPBOATEXIT_NAME",
+                    "ImageName": "images/challenges/Rocky/Rocky_WorkshopBoatExit.jpg",
+                    "Description": "UI_CHALLENGES_ROCKY_WORKSHOPBOATEXIT_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "parentlocation",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "exit_gate": {
+                                    "Condition": {
+                                        "$or": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "f5e1c363-ab7a-445b-bed9-c90096d2ef04"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "2dfd2737-d24c-4269-ab2d-12d89f262afe"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "discovery", "medium"]
+                },
+                {
+                    "Id": "5f8c0e45-771e-441d-adc3-ea8a5c8813eb",
+                    "Name": "UI_CHALLENGES_ROCKY_FINDDURIAN_NAME",
+                    "ImageName": "images/challenges/Rocky/Rocky_FindDurian.jpg",
+                    "Description": "UI_CHALLENGES_ROCKY_FINDDURIAN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "parentlocation",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "DURIANFOUND": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "discovery"]
+                },
+                {
+                    "Id": "66aaf0a6-1203-4acc-aa51-da75cb995d0c",
+                    "Name": "UI_CHALLENGES_ROCKY_BONELOCKPICK_NAME",
+                    "ImageName": "images/challenges/Rocky/Rocky_BonyLockpick.jpg",
+                    "Description": "UI_CHALLENGES_ROCKY_BONELOCKPICK_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "parentlocation",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "BONYLOCKPICK": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "discovery"]
+                },
+                {
+                    "Id": "6b108609-cc2c-43f0-827f-99179d9a8b48",
+                    "Name": "UI_CHALLENGES_ROCKY_FINDMOLOTOV_NAME",
+                    "ImageName": "images/challenges/Rocky/Rocky_FindMolotov.jpg",
+                    "Description": "UI_CHALLENGES_ROCKY_FINDMOLOTOV_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "parentlocation",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "FOUNDMOLOTOV": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "discovery"]
+                },
+                {
+                    "Id": "9e1ff84d-323b-4d7d-897b-1010272e004d",
+                    "Name": "UI_CHALLENGES_ROCKY_AREA_DISCOVERED_NAME",
+                    "ImageName": "images/challenges/Rocky/Rocky_LocationDiscovery.jpg",
+                    "Description": "UI_CHALLENGES_ROCKY_AREA_DISCOVERED_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "parentlocation",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 12
+                        },
+                        "Context": {
+                            "AreaIDs": []
+                        },
+                        "ContextListeners": {
+                            "AreaIDs": {
+                                "type": "challengecounter",
+                                "count": "($.AreaIDs).Count",
+                                "total": "$.Goal",
+                                "text": "UI_CHALLENGES_ROCKY_AREA_DISCOVERED_NAME"
+                            }
+                        },
+                        "Scope": "profile",
+                        "States": {
+                            "Start": {
+                                "AreaDiscovered": [
+                                    {
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "AreaIDs",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "($.AreaIDs).Count",
+                                                "$.Goal"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "discovery"]
+                },
+                {
+                    "Id": "a84aef06-6003-412a-978d-70f28fe22fc1",
+                    "Name": "UI_CHALLENGES_ROCKY_HELICOPTEREXIT_NAME",
+                    "ImageName": "images/challenges/Rocky/Rocky_HelicopterExit.jpg",
+                    "Description": "UI_CHALLENGES_ROCKY_HELICOPTEREXIT_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "parentlocation",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "GreyExit": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "discovery", "medium"]
+                },
+                {
+                    "Id": "ac6f5524-82e2-4d41-a155-e7f916e4559c",
+                    "Name": "UI_CHALLENGES_ROCKY_LADDER_A_NAME",
+                    "ImageName": "images/challenges/Rocky/Rocky_PersistentShortcut_A.jpg",
+                    "Description": "UI_CHALLENGES_ROCKY_LADDER_A_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "parentlocation",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Dugong_Ladder_A_Down": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "discovery", "shortcut"]
+                },
+                {
+                    "Id": "bbc48bd0-54cd-416c-a037-a91f3ae8e980",
+                    "Name": "UI_CHALLENGES_ROCKY_MASTER_OF_DISGUISE_NAME",
+                    "ImageName": "images/challenges/profile_challenges/generic_location_47_chameleon.jpg",
+                    "Description": "UI_CHALLENGES_ROCKY_MASTER_OF_DISGUISE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "parentlocation",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "EligibleDisguises": [
+                                "c3af265c-7648-4ddb-a02b-ab605a053886",
+                                "afdb3b2b-7e5d-4c9a-be6e-4ebc41879e02",
+                                "d9d95b38-3708-4220-9838-597c078a1081",
+                                "9f95337d-0316-4cfc-9881-13080e2bc365",
+                                "f011f287-ea39-42a4-be1d-17ba5b783611",
+                                "1cec2601-c1ed-474f-ac70-ff8614799fcc",
+                                "052cbf5d-e268-479a-a705-17609d528182"
+                            ]
+                        },
+                        "Context": {
+                            "DisguiseEquipped": []
+                        },
+                        "ContextListeners": {
+                            "DisguiseEquipped": {
+                                "count": "($.DisguiseEquipped).Count",
+                                "total": "($.EligibleDisguises).Count",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "profile",
+                        "States": {
+                            "Start": {
+                                "Disguise": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": ["$.#", "$Value"]
+                                                },
+                                                "in": "$.EligibleDisguises"
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "DisguiseEquipped",
+                                                "$Value"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$all": {
+                                                "?": {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$.##"
+                                                            ]
+                                                        },
+                                                        "in": "$.DisguiseEquipped"
+                                                    }
+                                                },
+                                                "in": "$.EligibleDisguises"
+                                            }
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "hard", "discovery"]
+                },
+                {
+                    "Id": "d9b3cf85-d750-4003-8255-f4b3e252ad4b",
+                    "Name": "UI_CHALLENGES_ROCKY_COVEBOATEXIT_NAME",
+                    "ImageName": "images/challenges/Rocky/Rocky_CoveBoatExit.jpg",
+                    "Description": "UI_CHALLENGES_ROCKY_COVEBOATEXIT_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "parentlocation",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "exit_gate": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "b54d5f68-900f-4749-9465-7c596230392f"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "discovery", "medium"]
+                },
+                {
+                    "Id": "e7c13acf-4793-49f2-a65c-457ed02d21a7",
+                    "Name": "UI_CHALLENGES_ROCKY_BECOMEHIPPIE_NAME",
+                    "ImageName": "images/challenges/Rocky/Rocky_BecomeHippie.jpg",
+                    "Description": "UI_CHALLENGES_ROCKY_BECOMEHIPPIE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "parentlocation",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Disguise": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value",
+                                            "9f95337d-0316-4cfc-9881-13080e2bc365"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "discovery"]
+                }
+            ]
+        },
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+            "Image": "images/challenges/categories/feats/tile.jpg",
+            "Icon": "challenge_category_feats",
+            "CategoryId": "feats",
+            "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_COMMUNITY",
+            "Challenges": [
+                {
+                    "Id": "8d27e376-c658-4f1a-8b97-a76e99575539",
+                    "Name": "UI_CHALLENGES_DUGONG_BIGMCGUFFIN_NAME",
+                    "ImageName": "images/challenges/Rocky/Rocky_DestroyBigMcGuffin_Loud.jpg",
+                    "Description": "UI_CHALLENGES_DUGONG_BIGMCGUFFIN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "MCGUFFINDESTROYED": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "hard", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["b2aac100-dfc7-4f85-b9cd-528114436f6c"]
+                    }
+                },
+                {
+                    "Id": "99b26a0e-69ca-42a2-a7a0-b8e84448df2e",
+                    "Name": "UI_CHALLENGES_DUGONG_PRISONEREVIDENCE_NAME",
+                    "ImageName": "images/challenges/Rocky/Rocky_PrisonerEvidence.jpg",
+                    "Description": "UI_CHALLENGES_DUGONG_PRISONEREVIDENCE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "PROVIDEDEVIDENCE": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["b2aac100-dfc7-4f85-b9cd-528114436f6c"]
+                    }
+                },
+                {
+                    "Id": "a2c4a3ec-c15e-4530-ab40-8add6b5afd92",
+                    "Name": "UI_CHALLENGES_DUGONG_MEETINGTRIGGERED_NAME",
+                    "ImageName": "images/challenges/Rocky/Rocky_MeetingTriggered.jpg",
+                    "Description": "UI_CHALLENGES_DUGONG_MEETINGTRIGGERED_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "MEETINGTRIGGERED": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["b2aac100-dfc7-4f85-b9cd-528114436f6c"]
+                    }
+                },
+                {
+                    "Id": "d6a989ed-d156-4a09-bff7-9ef1dfbc1e8a",
+                    "Name": "UI_CHALLENGES_DUGONG_MCGUFFINPIECES_NAME",
+                    "ImageName": "images/challenges/Rocky/Rocky_GetBothMcGuffins.jpg",
+                    "Description": "UI_CHALLENGES_DUGONG_MCGUFFINPIECES_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 2
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal"
+                            }
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "GOTKEY": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "hard", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["b2aac100-dfc7-4f85-b9cd-528114436f6c"]
+                    }
+                },
+                {
+                    "Id": "dc6eaa8a-dd80-482d-997e-682831e53f7a",
+                    "Name": "UI_CHALLENGES_DUGONG_BIGMCGUFFINQUIET_NAME",
+                    "ImageName": "images/challenges/Rocky/Rocky_DestroyBigMcGuffin_Quiet.jpg",
+                    "Description": "UI_CHALLENGES_DUGONG_BIGMCGUFFINQUIET_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "MCGUFFINDESTROYEDQUIET": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "hard", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["b2aac100-dfc7-4f85-b9cd-528114436f6c"]
+                    }
+                },
+                {
+                    "Id": "8b7c9a5f-0800-414b-a1d3-3c5a1758b933",
+                    "Name": "UI_CHALLENGES_ROCKY_SMITH_NAME",
+                    "ImageName": "images/challenges/Rocky/Rocky_SmithReleased.jpg",
+                    "Description": "UI_CHALLENGES_ROCKY_SMITH_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "parentlocation",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "SMITHESCAPE": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "feats"]
+                },
+                {
+                    "Id": "ca9e885d-dd71-4609-8ec9-adc73a791b4b",
+                    "Name": "UI_CHALLENGES_DUGONG_HAPPYSLAPPING_NAME",
+                    "ImageName": "images/challenges/Rocky/Rocky_Slap5.jpg",
+                    "Description": "UI_CHALLENGES_DUGONG_HAPPYSLAPPING_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "parentlocation",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 4
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal"
+                            }
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "47SLAPPEDHARD": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "feats"]
+                },
+                {
+                    "Id": "cdfd8347-d908-41b6-aed8-353fb5657da1",
+                    "Name": "UI_CHALLENGES_ROCKY_STUDENT_NAME",
+                    "ImageName": "images/challenges/Rocky/Rocky_HelpStudent.jpg",
+                    "Description": "UI_CHALLENGES_ROCKY_STUDENT_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "parentlocation",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "STUDENTCOMPLETED": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "feats"]
+                },
+                {
+                    "Id": "dc53af70-4ade-4e8a-8010-85de1a8f5b75",
+                    "Name": "UI_CHALLENGES_ROCKY_FARAHCOCONUT_NAME",
+                    "ImageName": "images/challenges/Rocky/Rocky_FarahCoconut.jpg",
+                    "Description": "UI_CHALLENGES_ROCKY_FARAHCOCONUT_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "parentlocation",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "Pacify": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "232cf45d-d95f-4dd5-b20f-4f846739f435"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "22183fd3-d837-47c6-9c44-05637300af93"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats", "medium"]
+                }
+            ]
+        },
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PROFESSIONAL",
+            "Image": "images/challenges/categories/targets/tile.jpg",
+            "Icon": "challenge_category_targets",
+            "CategoryId": "targets",
+            "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_PROFESSIONAL",
+            "Challenges": [
+                {
+                    "Id": "b5213925-b20e-4ce9-9c70-d60b2771d541",
+                    "Name": "UI_CHALLENGES_DUGONG_ELIMINATE_NOELCREST_NAME",
+                    "ImageName": "images/challenges/Rocky/Rocky_EliminateCrest.jpg",
+                    "Description": "UI_CHALLENGES_DUGONG_ELIMINATE_NOELCREST_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PROFESSIONAL",
+                    "Icon": "challenge_category_targets",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "4f80ca40-a8f3-4a5e-9add-4c74d3bb5bcc"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "hard", "targets"],
+                    "InclusionData": {
+                        "ContractIds": ["b2aac100-dfc7-4f85-b9cd-528114436f6c"]
+                    }
+                },
+                {
+                    "Id": "cae0b1b1-a26f-49a0-8ea3-d0c49f677109",
+                    "Name": "UI_CHALLENGES_DUGONG_ELIMINATE_AKKA_NAME",
+                    "ImageName": "images/challenges/Rocky/Rocky_EliminateAkka.jpg",
+                    "Description": "UI_CHALLENGES_DUGONG_ELIMINATE_AKKA_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PROFESSIONAL",
+                    "Icon": "challenge_category_targets",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "666521d2-1efe-4d0a-b7f7-2afeb08262b6"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "hard", "targets"],
+                    "InclusionData": {
+                        "ContractIds": ["b2aac100-dfc7-4f85-b9cd-528114436f6c"]
+                    }
+                }
+            ]
+        },
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_CLASSIC",
+            "Image": "images/challenges/categories/classic/tile.jpg",
+            "Icon": "profile",
+            "CategoryId": "classic",
+            "Description": "",
+            "Challenges": [
+                {
+                    "Id": "425a7a49-1892-4a24-aa40-f46cdb8d6c7f",
+                    "Name": "UI_CHALLENGES_DUGONG_SILENT_ASSASSIN_SUIT_NAME",
+                    "ImageName": "images/challenges/profile_challenges/classics_normal_47_sa_suit.jpg",
+                    "Description": "UI_CHALLENGES_DUGONG_SILENT_ASSASSIN_SUIT_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_CLASSIC",
+                    "Icon": "profile",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "Witnesses": [],
+                            "Targets": [],
+                            "RecordingDestroyed": true,
+                            "LastAccidentTime": 0
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    true,
+                                                    "$.RecordingDestroyed"
+                                                ]
+                                            },
+                                            {
+                                                "$all": {
+                                                    "in": "$.Witnesses",
+                                                    "?": {
+                                                        "$any": {
+                                                            "in": "$.Targets",
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "$.##"
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "AccidentBodyFound": {
+                                    "$set": ["LastAccidentTime", "$Timestamp"]
+                                },
+                                "Witnesses": {
+                                    "Condition": {
+                                        "$any": {
+                                            "in": "$Value",
+                                            "?": {
+                                                "$pushunique": [
+                                                    "Witnesses",
+                                                    "$.#"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                "Spotted": {
+                                    "Condition": {
+                                        "$any": {
+                                            "in": "$Value",
+                                            "?": {
+                                                "$pushunique": [
+                                                    "Witnesses",
+                                                    "$.#"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                "ContractStart": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.IsHitmanSuit",
+                                                false
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ],
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$Value.KillContext",
+                                                            1
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.KillContext",
+                                                        1
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Targets",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$Value.IsTarget", true]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Targets",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "CrowdNPC_Died": {
+                                    "Transition": "Failure"
+                                },
+                                "MurderedBodySeen": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.IsWitnessTarget",
+                                                true
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Witnesses",
+                                                "$Value.Witness"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsWitnessTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$.LastAccidentTime",
+                                                            "$Timestamp"
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ],
+                                "SecuritySystemRecorder": [
+                                    {
+                                        "Actions": {
+                                            "$set": [
+                                                "RecordingDestroyed",
+                                                false
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$eq": ["$Value.event", "spotted"]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["RecordingDestroyed", true]
+                                        },
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "erased"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "destroyed"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "Disguise": {
+                                    "Transition": "Failure"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "hard", "suitonly", "classic"],
+                    "InclusionData": {
+                        "ContractIds": ["b2aac100-dfc7-4f85-b9cd-528114436f6c"]
+                    }
+                },
+                {
+                    "Id": "647ac859-f0ac-4a49-9138-f8d8dd8dfc1e",
+                    "Name": "UI_CHALLENGES_DUGONG_SILENT_ASSASSIN_NAME",
+                    "ImageName": "images/challenges/profile_challenges/classics_normal_47_silent_assassin.jpg",
+                    "Description": "UI_CHALLENGES_DUGONG_SILENT_ASSASSIN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_CLASSIC",
+                    "Icon": "profile",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "Witnesses": [],
+                            "KilledTargets": [],
+                            "RecordingDestroyed": true,
+                            "LastAccidentTime": 0
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    true,
+                                                    "$.RecordingDestroyed"
+                                                ]
+                                            },
+                                            {
+                                                "$all": {
+                                                    "in": "$.Witnesses",
+                                                    "?": {
+                                                        "$any": {
+                                                            "in": "$.KilledTargets",
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "$.##"
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "AccidentBodyFound": {
+                                    "$set": ["LastAccidentTime", "$Timestamp"]
+                                },
+                                "Witnesses": {
+                                    "Condition": {
+                                        "$any": {
+                                            "in": "$Value",
+                                            "?": {
+                                                "$pushunique": [
+                                                    "Witnesses",
+                                                    "$.#"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                "Spotted": {
+                                    "Condition": {
+                                        "$any": {
+                                            "in": "$Value",
+                                            "?": {
+                                                "$pushunique": [
+                                                    "Witnesses",
+                                                    "$.#"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$Value.KillContext",
+                                                            1
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.KillContext",
+                                                        1
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "KilledTargets",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$Value.IsTarget", true]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "KilledTargets",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "CrowdNPC_Died": {
+                                    "Transition": "Failure"
+                                },
+                                "MurderedBodySeen": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.IsWitnessTarget",
+                                                true
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Witnesses",
+                                                "$Value.Witness"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsWitnessTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$.LastAccidentTime",
+                                                            "$Timestamp"
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ],
+                                "SecuritySystemRecorder": [
+                                    {
+                                        "Actions": {
+                                            "$set": [
+                                                "RecordingDestroyed",
+                                                false
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$eq": ["$Value.event", "spotted"]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["RecordingDestroyed", true]
+                                        },
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "erased"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "destroyed"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "hard", "classic"],
+                    "InclusionData": {
+                        "ContractIds": ["b2aac100-dfc7-4f85-b9cd-528114436f6c"]
+                    }
+                },
+                {
+                    "Id": "745f3087-1765-49ab-9a0f-5a37c769471f",
+                    "Name": "UI_CHALLENGES_DUGONG_SUIT_ONLY_NAME",
+                    "ImageName": "images/challenges/profile_challenges/classics_normal_47_suit_only.jpg",
+                    "Description": "UI_CHALLENGES_DUGONG_SUIT_ONLY_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_CLASSIC",
+                    "Icon": "profile",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "Context": {},
+                        "States": {
+                            "Start": {
+                                "ContractStart": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.IsHitmanSuit",
+                                                false
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ],
+                                "Disguise": {
+                                    "Transition": "Failure"
+                                },
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "hard", "classic"],
+                    "InclusionData": {
+                        "ContractIds": ["b2aac100-dfc7-4f85-b9cd-528114436f6c"]
+                    }
+                },
+                {
+                    "Id": "82871d72-c1f2-4401-a33e-10730100af70",
+                    "Name": "UI_CHALLENGES_DUGONG_BIG4_NAME",
+                    "ImageName": "Images/Challenges/profile_challenges/classics_location_normal.jpg",
+                    "Description": "UI_CHALLENGES_DUGONG_BIG4_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_CLASSIC",
+                    "Icon": "profile",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "RequiredChallenges": [
+                                "647ac859-f0ac-4a49-9138-f8d8dd8dfc1e",
+                                "425a7a49-1892-4a24-aa40-f46cdb8d6c7f",
+                                "c143b485-92af-4994-8bfd-03251a1f3905",
+                                "745f3087-1765-49ab-9a0f-5a37c769471f"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedChallenges": []
+                        },
+                        "ContextListeners": {
+                            "CompletedChallenges": {
+                                "comparand": "$.RequiredChallenges",
+                                "type": "challengetree"
+                            }
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "ChallengeCompleted": [
+                                    {
+                                        "$pushunique": [
+                                            "CompletedChallenges",
+                                            "$Value.ChallengeId"
+                                        ]
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$all": {
+                                                "?": {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$.##"
+                                                            ]
+                                                        },
+                                                        "in": "$.CompletedChallenges"
+                                                    }
+                                                },
+                                                "in": "$.RequiredChallenges"
+                                            }
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "hard", "classic"],
+                    "InclusionData": {
+                        "ContractIds": ["b2aac100-dfc7-4f85-b9cd-528114436f6c"]
+                    }
+                },
+                {
+                    "Id": "c143b485-92af-4994-8bfd-03251a1f3905",
+                    "Name": "UI_CHALLENGES_DUGONG_SNIPER_ASSASSIN_NAME",
+                    "ImageName": "images/challenges/profile_challenges/classics_normal_47_sniper_assassin.jpg",
+                    "Description": "UI_CHALLENGES_DUGONG_SNIPER_ASSASSIN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_CLASSIC",
+                    "Icon": "profile",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "Witnesses": [],
+                            "Targets": [],
+                            "RecordingDestroyed": true,
+                            "SniperKillSierraCar": false
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    true,
+                                                    "$.RecordingDestroyed"
+                                                ]
+                                            },
+                                            {
+                                                "$all": {
+                                                    "in": "$.Witnesses",
+                                                    "?": {
+                                                        "$any": {
+                                                            "in": "$.Targets",
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "$.##"
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "Witnesses": {
+                                    "Condition": {
+                                        "$any": {
+                                            "in": "$Value",
+                                            "?": {
+                                                "$pushunique": [
+                                                    "Witnesses",
+                                                    "$.#"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                "Spotted": {
+                                    "Condition": {
+                                        "$any": {
+                                            "in": "$Value",
+                                            "?": {
+                                                "$pushunique": [
+                                                    "Witnesses",
+                                                    "$.#"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                "SniperKillSierraCar": {
+                                    "$set": ["SniperKillSierraCar", true]
+                                },
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$and": [
+                                                        {
+                                                            "$not": {
+                                                                "$contains": [
+                                                                    "$Value.KillItemCategory",
+                                                                    "sniperrifle"
+                                                                ]
+                                                            }
+                                                        },
+                                                        {
+                                                            "$eq": [
+                                                                "$Value.IsTarget",
+                                                                true
+                                                            ]
+                                                        },
+                                                        {
+                                                            "$or": [
+                                                                {
+                                                                    "$not": {
+                                                                        "$eq": [
+                                                                            "$Value.RepositoryId",
+                                                                            "c0ab162c-1502-40d5-801f-c5471289d6b7"
+                                                                        ]
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "$and": [
+                                                                        {
+                                                                            "$eq": [
+                                                                                "$Value.RepositoryId",
+                                                                                "c0ab162c-1502-40d5-801f-c5471289d6b7"
+                                                                            ]
+                                                                        },
+                                                                        {
+                                                                            "$eq": [
+                                                                                "$.SniperKillSierraCar",
+                                                                                false
+                                                                            ]
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "$and": [
+                                                        {
+                                                            "$eq": [
+                                                                "$Value.IsTarget",
+                                                                false
+                                                            ]
+                                                        },
+                                                        {
+                                                            "$not": {
+                                                                "$eq": [
+                                                                    "$Value.KillContext",
+                                                                    1
+                                                                ]
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.KillContext",
+                                                        1
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Targets",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$Value.IsTarget", true]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Targets",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "CrowdNPC_Died": {
+                                    "Transition": "Failure"
+                                },
+                                "SecuritySystemRecorder": [
+                                    {
+                                        "Actions": {
+                                            "$set": [
+                                                "RecordingDestroyed",
+                                                false
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$eq": ["$Value.event", "spotted"]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["RecordingDestroyed", true]
+                                        },
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "erased"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "destroyed"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "hard", "sniper", "classic"],
+                    "InclusionData": {
+                        "ContractIds": ["b2aac100-dfc7-4f85-b9cd-528114436f6c"]
+                    }
+                }
+            ]
+        }
+    ]
+}
