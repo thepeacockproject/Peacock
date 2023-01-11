@@ -329,12 +329,14 @@ function getContractOpportunityData(
         false,
     )
 
-    for (const ms of contract.Metadata.Opportunities) {
-        missionStories[ms].PreviouslyCompleted =
-            ms in userData.Extensions.opportunityprogression
-        const current = fastClone(missionStories[ms])
-        delete current.Location
-        result.push(current)
+    if (contract.Metadata.Opportunities) {
+        for (const ms of contract.Metadata.Opportunities) {
+            missionStories[ms].PreviouslyCompleted =
+                ms in userData.Extensions.opportunityprogression
+            const current = fastClone(missionStories[ms])
+            delete current.Location
+            result.push(current)
+        }
     }
 
     return result
