@@ -25,11 +25,12 @@ import {
     xpRequiredForLevel,
 } from "./utils"
 import { contractSessions, getCurrentState } from "./eventHandler"
-import { getConfig } from "./configSwizzleManager"
+import { getConfig, getVersionedConfig } from "./configSwizzleManager"
 import { _theLastYardbirdScpc, controller } from "./controller"
 import type {
     ContractSession,
     MissionManifestObjective,
+    PeacockLocationsData,
     RequestWithJwt,
     Seconds,
 } from "./types/types"
@@ -45,6 +46,8 @@ import { generateCompletionData } from "./contracts/dataGen"
 import { liveSplitManager } from "./livesplit/liveSplitManager"
 import { Playstyle, ScoringBonus, ScoringHeadline } from "./types/scoring"
 import { MissionEndRequestQuery } from "./types/gameSchemas"
+import { ChallengeFilterType } from "./candle/challengeHelpers"
+import { getCompletionPercent } from "./menus/destinations"
 
 /**
  * Checks the criteria of each possible play-style, ranking them by scoring.
@@ -261,9 +264,36 @@ export async function missionEnd(
             ? 0
             : sessionDetails.npcKills.size + sessionDetails.crowdNpcKills
 
-    // const allMissionStories = getConfig("MissionStories")
-    // const missionStories = (contractData.Metadata.Opportunities || []).map((missionStoryId) => allMissionStories[missionStoryId])
-
+    const locations = getVersionedConfig<PeacockLocationsData>(
+        "LocationsData",
+        req.gameVersion,
+        true,
+    )
+    const location = contractData.Metadata.Location
+    const parent = locations.children[location].Properties.ParentLocation
+    const locationChallenges =
+        controller.challengeService.getGroupedChallengeLists({
+            type: ChallengeFilterType.ParentLocation,
+            locationParentId: parent,
+        })
+    const contractChallenges =
+        controller.challengeService.getChallengesForContract(
+            sessionDetails.contractId,
+            req.gameVersion,
+        )
+    const challengeCompletion =
+        controller.challengeService.countTotalNCompletedChallenges(
+            locationChallenges,
+            userData.Id,
+            req.gameVersion,
+        )
+    const opportunities = contractData.Metadata.Opportunities
+    const opportunityCount = opportunities ? opportunities.length : 0
+    const opportunityCompleted = opportunities
+        ? opportunities.filter(function (ms) {
+              return ms in userData.Extensions.opportunityprogression
+          }).length
+        : 0
     const result = {
         MissionReward: {
             LocationProgression: {
@@ -284,12 +314,7 @@ export async function missionEnd(
                     .ProfileLevel,
                 XPGain: 0,
             },
-            Challenges: Object.values(
-                controller.challengeService.getChallengesForContract(
-                    sessionDetails.contractId,
-                    req.gameVersion,
-                ),
-            )
+            Challenges: Object.values(contractChallenges)
                 .flat()
                 // FIXME: This behaviour may not be accurate to original server
                 .filter(
@@ -319,19 +344,23 @@ export async function missionEnd(
                 req.jwt.unique_name,
                 req.gameVersion,
             ),
-            ChallengeCompletion: {
-                ChallengesCount: 1,
-                CompletedChallengesCount: 0,
-            },
-            ContractChallengeCompletion: {
-                ChallengesCount: 1,
-                CompletedChallengesCount: 0,
-            },
+            ChallengeCompletion: challengeCompletion,
+            ContractChallengeCompletion:
+                controller.challengeService.countTotalNCompletedChallenges(
+                    contractChallenges,
+                    userData.Id,
+                    req.gameVersion,
+                ),
             OpportunityStatistics: {
-                Count: (contractData.Metadata.Opportunities || []).length,
-                Completed: 0,
+                Count: opportunityCount,
+                Completed: opportunityCompleted,
             },
-            LocationCompletionPercent: 0,
+            LocationCompletionPercent: getCompletionPercent(
+                challengeCompletion.CompletedChallengesCount,
+                challengeCompletion.ChallengesCount,
+                opportunityCompleted,
+                opportunityCount,
+            ),
         },
         ScoreOverview: {
             XP: 0,
