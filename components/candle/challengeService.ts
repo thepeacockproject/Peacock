@@ -587,6 +587,41 @@ export class ChallengeService extends ChallengeRegistry {
         )
     }
 
+    getChallengeDataForLocation(
+        locationId: string,
+        gameVersion: GameVersion,
+        userId: string,
+    ): CompiledChallengeTreeCategory[] {
+        const locationsData = getVersionedConfig<PeacockLocationsData>(
+            "LocationsData",
+            gameVersion,
+            false,
+        )
+
+        const locationData = locationsData.children[locationId]
+
+        if (!locationData) {
+            log(
+                LogLevel.WARN,
+                `Failed to get location data in CSERV [${locationId}]`,
+            )
+            return []
+        }
+
+        const forLocation = this.getChallengesForLocation(
+            locationId,
+            gameVersion,
+        )
+
+        return this.reBatchIntoSwitchedData(
+            forLocation,
+            userId,
+            gameVersion,
+            locationData,
+            true,
+        )
+    }
+
     private reBatchIntoSwitchedData(
         challengeLists: GroupIndexedChallengeLists,
         userId: string,

@@ -138,6 +138,33 @@ menuDataRouter.get(
     "/dashboard/Dashboard_Category_Escalation/:subscriptionId/:type/:id/:mode",
     dashEscalations,
 )
+menuDataRouter.get(
+    "/ChallengeLocation",
+    (req: RequestWithJwt<{ locationId: string }>, res) => {
+        const location = getVersionedConfig<PeacockLocationsData>(
+            "LocationsData",
+            req.gameVersion,
+            true,
+        ).children[req.query.locationId]
+        res.json({
+            template: getVersionedConfig(
+                "ChallengeLocationTemplate",
+                req.gameVersion,
+                false,
+            ),
+            data: {
+                Name: location.DisplayNameLocKey,
+                Location: location,
+                Children:
+                    controller.challengeService.getChallengeDataForLocation(
+                        req.query.locationId,
+                        req.gameVersion,
+                        req.jwt.unique_name,
+                    ),
+            },
+        })
+    },
+)
 
 menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
     swapToBrowsingMenusStatus(req.gameVersion)
@@ -167,10 +194,11 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
     )
     const career = {}
     for (const parent in locations.parents) {
-        career[parent] = {}
-        career[parent].Children = []
-        career[parent].Location = locations.parents[parent]
-        career[parent].Name = locations.parents[parent].DisplayNameLocKey
+        career[parent] = {
+            Children: [],
+            Location: locations.parents[parent],
+            Name: locations.parents[parent].DisplayNameLocKey,
+        }
     }
     for (const child in locations.children) {
         if (
