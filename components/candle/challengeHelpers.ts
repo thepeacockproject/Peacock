@@ -66,6 +66,7 @@ export function compileRuntimeChallenge(
 export enum ChallengeFilterType {
     None = "None",
     Contract = "Contract",
+    Contracts = "Contracts",
     ParentLocation = "ParentLocation",
 }
 
@@ -80,9 +81,48 @@ export type ChallengeFilterOptions =
           locationParentId: string
       }
     | {
+          type: ChallengeFilterType.Contracts
+          contractIds: string[]
+          locationId: string
+          locationParentId: string
+      }
+    | {
           type: ChallengeFilterType.ParentLocation
           locationParentId: string
       }
+
+function isChallengeInContract(
+    contractId: string,
+    locationId: string,
+    locationParentId: string,
+    challenge: RegistryChallenge,
+) {
+    assert.ok(contractId)
+    assert.ok(locationId)
+    assert.ok(locationParentId)
+    if (!challenge) {
+        return false
+    }
+
+    // is this for the current contract?
+    const isForContract = (challenge.InclusionData?.ContractIds || []).includes(
+        contractId,
+    )
+
+    // is this a location-wide challenge?
+    const isForLocation = challenge.Type === "location"
+
+    // is this for the current location?
+    const isCurrentLocation =
+        // is this challenge for the current parent location?
+        challenge.ParentLocationId === locationParentId &&
+        // and, is this challenge's location the current sub-location
+        // or the parent location? (yup, that can happen)
+        (challenge.LocationId === locationId ||
+            challenge.LocationId === locationParentId)
+
+    return isForContract || (isForLocation && isCurrentLocation)
+}
 
 export function filterChallenge(
     options: ChallengeFilterOptions,
@@ -92,32 +132,22 @@ export function filterChallenge(
         case ChallengeFilterType.None:
             return true
         case ChallengeFilterType.Contract: {
-            assert.ok(options.contractId)
-            assert.ok(options.locationId)
-            assert.ok(options.locationParentId)
-
-            if (!challenge) {
-                return false
-            }
-
-            // is this for the current contract?
-            const isForContract = (
-                challenge.InclusionData?.ContractIds || []
-            ).includes(options.contractId)
-
-            // is this a location-wide challenge?
-            const isForLocation = challenge.Type === "location"
-
-            // is this for the current location?
-            const isCurrentLocation =
-                // is this challenge for the current parent location?
-                challenge.ParentLocationId === options.locationParentId &&
-                // and, is this challenge's location the current sub-location
-                // or the parent location? (yup, that can happen)
-                (challenge.LocationId === options.locationId ||
-                    challenge.LocationId === options.locationParentId)
-
-            return isForContract || (isForLocation && isCurrentLocation)
+            return isChallengeInContract(
+                options.contractId,
+                options.locationId,
+                options.locationParentId,
+                challenge,
+            )
+        }
+        case ChallengeFilterType.Contracts: {
+            return options.contractIds.some((contractId) =>
+                isChallengeInContract(
+                    contractId,
+                    options.locationId,
+                    options.locationParentId,
+                    challenge,
+                ),
+            )
         }
         case ChallengeFilterType.ParentLocation:
             assert.ok(options.locationParentId)

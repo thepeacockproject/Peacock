@@ -291,6 +291,37 @@ export class ChallengeService extends ChallengeRegistry {
         })
     }
 
+    getChallengesForLocation(
+        child: string,
+        gameVersion: GameVersion,
+    ): GroupIndexedChallengeLists {
+        const locations = getVersionedConfig<PeacockLocationsData>(
+            "LocationsData",
+            gameVersion,
+            true,
+        )
+        const parent = locations.children[child].Properties.ParentLocation
+        const location = locations.children[child]
+        assert.ok(location)
+
+        let contracts =
+            child === "LOCATION_AUSTRIA" ||
+            child === "LOCATION_SALTY_SEAGULL" ||
+            child === "LOCATION_CAGED_FALCON"
+                ? this.controller.missionsInLocations.sniper[child]
+                : this.controller.missionsInLocations[child]
+        if (!contracts) {
+            contracts = []
+        }
+
+        return this.getGroupedChallengeLists({
+            type: ChallengeFilterType.Contracts,
+            contractIds: contracts,
+            locationId: child,
+            locationParentId: parent,
+        })
+    }
+
     startContract(
         userId: string,
         sessionId: string,

@@ -86,7 +86,6 @@ import {
     StashpointQuery,
 } from "./types/gameSchemas"
 import assert from "assert"
-import { ChallengeFilterType } from "./candle/challengeHelpers"
 
 export const preMenuDataRouter = Router()
 const menuDataRouter = Router()
@@ -182,41 +181,25 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
         }
         const parent = locations.children[child].Properties.ParentLocation
         const location = locations.children[child]
-        let contracts =
-            child === "LOCATION_AUSTRIA" ||
-            child === "LOCATION_SALTY_SEAGULL" ||
-            child === "LOCATION_CAGED_FALCON"
-                ? controller.missionsInLocations.sniper[child]
-                : controller.missionsInLocations[child]
-        let completedChallengesCount = 0
-        let challengesCount = 0
+        const challenges = controller.challengeService.getChallengesForLocation(
+            child,
+            req.gameVersion,
+        )
+        const challengeCompletion =
+            controller.challengeService.countTotalNCompletedChallenges(
+                challenges,
+                req.jwt.unique_name,
+                req.gameVersion,
+            )
 
-        if (!contracts) {
-            contracts = []
-        }
-        for (const contract of contracts) {
-            const challenges =
-                controller.challengeService.getChallengesForContract(
-                    contract,
-                    req.gameVersion,
-                )
-            const challengeCompletion =
-                controller.challengeService.countTotalNCompletedChallenges(
-                    challenges,
-                    req.jwt.unique_name,
-                    req.gameVersion,
-                )
-            completedChallengesCount +=
-                challengeCompletion.CompletedChallengesCount
-            challengesCount += challengeCompletion.ChallengesCount
-        }
         career[parent].Children.push({
             IsLocked: location.Properties.IsLocked,
             Name: location.DisplayNameLocKey,
             Image: location.Properties.Icon,
             Icon: location.Type, // should be "location" for all locations
-            CompletedChallengesCount: completedChallengesCount,
-            ChallengesCount: challengesCount,
+            CompletedChallengesCount:
+                challengeCompletion.CompletedChallengesCount,
+            ChallengesCount: challengeCompletion.ChallengesCount,
             CategoryId: child,
             Description: `UI_${child}_PRIMARY_DESC`,
             Location: location,
@@ -230,7 +213,7 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
             ),
         })
     }
-    console.log(JSON.stringify(career["LOCATION_PARENT_COASTALTOWN"]))
+
     res.json({
         template: theTemplate,
         data: {
