@@ -192,7 +192,14 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
         req.gameVersion,
         true,
     )
-    const career = {}
+    const career = {
+        // TODO: Add data on elusive challenges. They are not shown on the Career->Challenges page. What the client does with this information is unclear. They are not supported by Peacock as of v5.6.2.
+        ELUSIVES_UNSUPPORTED: {
+            Children: [],
+            Name: "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+            Location: locations.parents["LOCATION_PARENT_ICA_FACILITY"],
+        },
+    }
     for (const parent in locations.parents) {
         career[parent] = {
             Children: [],
