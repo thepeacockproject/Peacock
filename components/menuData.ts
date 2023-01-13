@@ -86,6 +86,7 @@ import {
     StashpointQuery,
 } from "./types/gameSchemas"
 import assert from "assert"
+import { ChallengeFilterType } from "./candle/challengeHelpers"
 
 export const preMenuDataRouter = Router()
 const menuDataRouter = Router()
@@ -160,6 +161,71 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
         "d7e2607c-6916-48e2-9588-976c7d8998bb",
     )!
 
+    const locations = getVersionedConfig<PeacockLocationsData>(
+        "LocationsData",
+        req.gameVersion,
+        true,
+    )
+    const career = {}
+    for (const parent in locations.parents) {
+        career[parent] = {}
+        career[parent].Children = []
+        career[parent].Location = locations.parents[parent]
+        career[parent].Name = locations.parents[parent].DisplayNameLocKey
+    }
+    for (const child in locations.children) {
+        if (
+            child === "LOCATION_ICA_FACILITY_ARRIVAL" ||
+            child === "LOCATION_HOKKAIDO_SHIM_MAMUSHI"
+        ) {
+            continue
+        }
+        const parent = locations.children[child].Properties.ParentLocation
+        const location = locations.children[child]
+        let contracts = controller.missionsInLocations[child]
+        let completedChallengesCount = 0
+        let challengesCount = 0
+
+        if (!contracts) {
+            contracts = []
+        }
+        for (const contract of contracts) {
+            const challenges =
+                controller.challengeService.getChallengesForContract(
+                    contract,
+                    req.gameVersion,
+                )
+            const challengeCompletion =
+                controller.challengeService.countTotalNCompletedChallenges(
+                    challenges,
+                    req.jwt.unique_name,
+                    req.gameVersion,
+                )
+            completedChallengesCount +=
+                challengeCompletion.CompletedChallengesCount
+            challengesCount += challengeCompletion.ChallengesCount
+        }
+        career[parent].Children.push({
+            IsLocked: location.Properties.IsLocked,
+            Name: location.DisplayNameLocKey,
+            Image: location.Properties.Icon,
+            Icon: location.Type, // should be "location" for all locations
+            CompletedChallengesCount: completedChallengesCount,
+            ChallengesCount: challengesCount,
+            CategoryId: child,
+            Description: `UI_${child}_PRIMARY_DESC`,
+            Location: location,
+            ImageLocked: location.Properties.LockedIcon,
+            RequiredResources: location.Properties.RequiredResources,
+            IsPack: false, // should be false for all locations
+            CompletionData: generateCompletionData(
+                child,
+                req.jwt.unique_name,
+                req.gameVersion,
+            ),
+        })
+    }
+    console.log(JSON.stringify(career["LOCATION_PARENT_COASTALTOWN"]))
     res.json({
         template: theTemplate,
         data: {
@@ -187,7 +253,12 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
                 req.gameVersion,
             ),
             LocationsData: createLocationsData(req.gameVersion),
-            ProfileData: {},
+            ProfileData: {
+                ChallengeData: {
+                    Children: Object.values(career),
+                },
+                MasteryData: {},
+            },
             StoryData: makeCampaigns(req.gameVersion, req.jwt.unique_name),
             FilterData: getVersionedConfig(
                 "FilterData",

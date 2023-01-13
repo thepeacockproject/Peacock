@@ -290,9 +290,9 @@ export async function missionEnd(
     const opportunities = contractData.Metadata.Opportunities
     const opportunityCount = opportunities ? opportunities.length : 0
     const opportunityCompleted = opportunities
-        ? opportunities.filter((ms) => (
-              ms in userData.Extensions.opportunityprogression
-          )).length
+        ? opportunities.filter(
+              (ms) => ms in userData.Extensions.opportunityprogression,
+          ).length
         : 0
     const result = {
         MissionReward: {
