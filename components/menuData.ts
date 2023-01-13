@@ -182,7 +182,12 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
         }
         const parent = locations.children[child].Properties.ParentLocation
         const location = locations.children[child]
-        let contracts = controller.missionsInLocations[child]
+        let contracts =
+            child === "LOCATION_AUSTRIA" ||
+            child === "LOCATION_SALTY_SEAGULL" ||
+            child === "LOCATION_CAGED_FALCON"
+                ? controller.missionsInLocations.sniper[child]
+                : controller.missionsInLocations[child]
         let completedChallengesCount = 0
         let challengesCount = 0
 
