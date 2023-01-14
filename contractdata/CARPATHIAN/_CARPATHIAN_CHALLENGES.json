@@ -1,0 +1,1799 @@
+{
+    "meta": {
+        "Location": "LOCATION_PARENT_TRAPPED"
+    },
+    "groups": [
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+            "Image": "images/challenges/categories/assassination/tile.jpg",
+            "Icon": "challenge_category_assassination",
+            "CategoryId": "assassination",
+            "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_SIGNATUREKILL",
+            "Challenges": [
+                {
+                    "Id": "3d0ff5c3-6e51-4827-951f-d45d8d21b3ea",
+                    "Name": "UI_CHALLENGES_WOLVERINE_CONSTANT_SERUM_NAME",
+                    "ImageName": "images/challenges/Trapped/wolverine_constant_serum.jpg",
+                    "Description": "UI_CHALLENGES_WOLVERINE_CONSTANT_SERUM_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_TRAPPED",
+                    "ParentLocationId": "LOCATION_PARENT_TRAPPED",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "POISON_CONSTANT_EVENT": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "medium"],
+                    "InclusionData": {
+                        "ContractIds": ["a3e19d55-64a6-4282-bb3c-d18c3f3e6e29"]
+                    }
+                },
+                {
+                    "Id": "97b0f181-d018-4fe4-8fb2-8b1737ece7b9",
+                    "Name": "UI_CHALLENGES_TRAPPED_47_ASSASINATION_HEADSHOT_NAME",
+                    "ImageName": "images/challenges/profile_challenges/generic_location_47_headshot.jpg",
+                    "Description": "UI_CHALLENGES_TRAPPED_47_ASSASINATION_HEADSHOT_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_TRAPPED_WOLVERINE",
+                    "ParentLocationId": "LOCATION_PARENT_TRAPPED",
+                    "Type": "location",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": ["$Value.IsTarget", true]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.IsHeadshot",
+                                                    true
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "assassination"]
+                }
+            ]
+        },
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+            "Image": "images/challenges/categories/discovery/tile.jpg",
+            "Icon": "challenge_category_discovery",
+            "CategoryId": "discovery",
+            "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_EXPLORATION",
+            "Challenges": [
+                {
+                    "Id": "18636f91-e1a9-4091-935c-adbf6cc3de55",
+                    "Name": "UI_CHALLENGES_TRAPPED_DOOR_A_NAME",
+                    "ImageName": "images/challenges/Trapped/trapped_door_a.jpg",
+                    "Description": "UI_CHALLENGES_TRAPPED_DOOR_A_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_TRAPPED_WOLVERINE",
+                    "ParentLocationId": "LOCATION_PARENT_TRAPPED",
+                    "Type": "location",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Wolverine_Door_A_Open": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "discovery", "shortcut"]
+                },
+                {
+                    "Id": "221141ee-00eb-4f91-911c-870a86f3aa01",
+                    "Name": "UI_CHALLENGES_TRAPPED_BECOME_GUARD_UNIQUE_NAME",
+                    "ImageName": "images/challenges/Trapped/trapped_become_guard_unique.jpg",
+                    "Description": "UI_CHALLENGES_TRAPPED_BECOME_GUARD_UNIQUE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_TRAPPED_WOLVERINE",
+                    "ParentLocationId": "LOCATION_PARENT_TRAPPED",
+                    "Type": "location",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Target": "36402728-1197-4a3c-a8ac-1fed399a2344"
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Disguise": {
+                                    "Condition": {
+                                        "$eq": ["$.Target", "$Value"]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "discovery"]
+                },
+                {
+                    "Id": "459d0f57-04ce-42cf-9edb-22a10bfb43a1",
+                    "Name": "UI_CHALLENGES_TRAPPED_BECOME_GUARD_TIER_3_NAME",
+                    "ImageName": "images/challenges/Trapped/trapped_become_guard_tier_3.jpg",
+                    "Description": "UI_CHALLENGES_TRAPPED_BECOME_GUARD_TIER_3_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_TRAPPED_WOLVERINE",
+                    "ParentLocationId": "LOCATION_PARENT_TRAPPED",
+                    "Type": "location",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Target": "e77b5340-41d3-448a-84d3-a4f7f6426634"
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Disguise": {
+                                    "Condition": {
+                                        "$eq": ["$.Target", "$Value"]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "discovery"]
+                },
+                {
+                    "Id": "46efb488-b731-47f0-b0b3-ee0185a5185b",
+                    "Name": "UI_CHALLENGES_TRAPPED_BECOME_SCIENTIST_NAME",
+                    "ImageName": "images/challenges/Trapped/trapped_become_scientist.jpg",
+                    "Description": "UI_CHALLENGES_TRAPPED_BECOME_SCIENTIST_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_TRAPPED_WOLVERINE",
+                    "ParentLocationId": "LOCATION_PARENT_TRAPPED",
+                    "Type": "location",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Target": "abe4b536-1f09-421e-916b-20af142c6adb"
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Disguise": {
+                                    "Condition": {
+                                        "$eq": ["$.Target", "$Value"]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "discovery"]
+                },
+                {
+                    "Id": "5d5e9a47-7350-41f3-ba9a-576b94c6e994",
+                    "Name": "UI_CHALLENGES_TRAPPED_BECOME_GUARD_TIER_1_NAME",
+                    "ImageName": "images/challenges/Trapped/trapped_become_guard_tier_1.jpg",
+                    "Description": "UI_CHALLENGES_TRAPPED_BECOME_GUARD_TIER_1_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_TRAPPED_WOLVERINE",
+                    "ParentLocationId": "LOCATION_PARENT_TRAPPED",
+                    "Type": "location",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Target": "c3239200-0f56-4b45-9be5-e514bdf59d26"
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Disguise": {
+                                    "Condition": {
+                                        "$eq": ["$.Target", "$Value"]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "discovery"]
+                },
+                {
+                    "Id": "688c1211-2c11-4ee9-8a96-421aceb0ffb9",
+                    "Name": "UI_CHALLENGES_TRAPPED_GET_SMG_NAME",
+                    "ImageName": "images/challenges/Trapped/trapped_get_smg.jpg",
+                    "Description": "UI_CHALLENGES_TRAPPED_GET_SMG_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_TRAPPED_WOLVERINE",
+                    "ParentLocationId": "LOCATION_PARENT_TRAPPED",
+                    "Type": "location",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Target": "a494c3c8-9a41-4398-9542-559e6a5dc1cb"
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ItemPickedUp": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$.Target",
+                                            "$Value.RepositoryId"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "discovery"]
+                },
+                {
+                    "Id": "7c383e7c-07e9-4ffa-a0f2-e54d5885a19a",
+                    "Name": "UI_CHALLENGES_TRAPPED_MASTER_OF_DISGUISE_NAME",
+                    "ImageName": "images/challenges/profile_challenges/generic_location_47_chameleon.jpg",
+                    "Description": "UI_CHALLENGES_TRAPPED_MASTER_OF_DISGUISE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_TRAPPED_WOLVERINE",
+                    "ParentLocationId": "LOCATION_PARENT_TRAPPED",
+                    "Type": "location",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "EligibleDisguises": [
+                                "653ad7d6-7d5d-4554-9551-7573be7205be",
+                                "e77b5340-41d3-448a-84d3-a4f7f6426634",
+                                "36402728-1197-4a3c-a8ac-1fed399a2344",
+                                "68225457-66b3-457c-a6ec-065b001f5151",
+                                "c3239200-0f56-4b45-9be5-e514bdf59d26",
+                                "abe4b536-1f09-421e-916b-20af142c6adb",
+                                "81fc37ca-e20b-495f-961f-d5be311a6e6d"
+                            ]
+                        },
+                        "Context": {
+                            "DisguiseEquipped": []
+                        },
+                        "ContextListeners": {
+                            "DisguiseEquipped": {
+                                "count": "($.DisguiseEquipped).Count",
+                                "total": "($.EligibleDisguises).Count",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "profile",
+                        "States": {
+                            "Start": {
+                                "Disguise": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": ["$.#", "$Value"]
+                                                },
+                                                "in": "$.EligibleDisguises"
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "DisguiseEquipped",
+                                                "$Value"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$all": {
+                                                "?": {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$.##"
+                                                            ]
+                                                        },
+                                                        "in": "$.DisguiseEquipped"
+                                                    }
+                                                },
+                                                "in": "$.EligibleDisguises"
+                                            }
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "discovery"]
+                },
+                {
+                    "Id": "9d940a7c-3a1d-45b7-826d-8c239c0032e5",
+                    "Name": "UI_CHALLENGES_TRAPPED_BECOME_GUARD_TIER_2_NAME",
+                    "ImageName": "images/challenges/Trapped/trapped_become_guard_tier_2.jpg",
+                    "Description": "UI_CHALLENGES_TRAPPED_BECOME_GUARD_TIER_2_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_TRAPPED_WOLVERINE",
+                    "ParentLocationId": "LOCATION_PARENT_TRAPPED",
+                    "Type": "location",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Target": "68225457-66b3-457c-a6ec-065b001f5151"
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Disguise": {
+                                    "Condition": {
+                                        "$eq": ["$.Target", "$Value"]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "discovery"]
+                },
+                {
+                    "Id": "d6194c1a-4cba-47a3-b001-98137fea975e",
+                    "Name": "UI_CHALLENGES_TRAPPED_GET_GRENADE_NAME",
+                    "ImageName": "images/challenges/Trapped/trapped_get_grenade.jpg",
+                    "Description": "UI_CHALLENGES_TRAPPED_GET_GRENADE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_TRAPPED_WOLVERINE",
+                    "ParentLocationId": "LOCATION_PARENT_TRAPPED",
+                    "Type": "location",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Target": "3f9cf03f-b84f-4419-b831-4704cff9775c"
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ItemPickedUp": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$.Target",
+                                            "$Value.RepositoryId"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "discovery"]
+                },
+                {
+                    "Id": "e8bbf9e7-46c6-4b21-b63e-511ff6c8912b",
+                    "Name": "UI_CHALLENGES_TRAPPED_GET_SHOTGUN_NAME",
+                    "ImageName": "images/challenges/Trapped/trapped_get_shotgun.jpg",
+                    "Description": "UI_CHALLENGES_TRAPPED_GET_SHOTGUN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_TRAPPED_WOLVERINE",
+                    "ParentLocationId": "LOCATION_PARENT_TRAPPED",
+                    "Type": "location",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Target": "4e92b3c5-3358-44aa-8a87-f7f349f46f44"
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ItemPickedUp": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$.Target",
+                                            "$Value.RepositoryId"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "discovery"]
+                },
+                {
+                    "Id": "fcddb4fe-1a44-414d-b769-bef1307ed05b",
+                    "Name": "UI_CHALLENGES_TRAPPED_DOOR_B_NAME",
+                    "ImageName": "images/challenges/Trapped/trapped_door_b.jpg",
+                    "Description": "UI_CHALLENGES_TRAPPED_DOOR_B_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_TRAPPED_WOLVERINE",
+                    "ParentLocationId": "LOCATION_PARENT_TRAPPED",
+                    "Type": "location",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Wolverine_Door_B_Open": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "discovery", "shortcut"]
+                }
+            ]
+        },
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+            "Image": "images/challenges/categories/feats/tile.jpg",
+            "Icon": "challenge_category_feats",
+            "CategoryId": "feats",
+            "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_COMMUNITY",
+            "Challenges": [
+                {
+                    "Id": "22070cef-2ecb-4a65-ab16-cb4bfd63785e",
+                    "Name": "UI_CHALLENGES_WOLVERINE_COMPLETE_NAME",
+                    "ImageName": "images/contracts/wolverine/wolverine_tile.jpg",
+                    "Description": "UI_CHALLENGES_WOLVERINE_COMPLETE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [
+                        {
+                            "Properties": {
+                                "Gameplay": {},
+                                "Quality": 4,
+                                "Rarity": "common",
+                                "LoadoutSlot": "concealedweapon",
+                                "RepositoryId": "028bcbf4-a0a3-42b5-beaf-163a777164e8",
+                                "AllowUpSync": true
+                            },
+                            "Rarity": "common",
+                            "DisplayNameLocKey": "UI_FIREARMS_PISTOL_GOLD_BALLER_NAME",
+                            "Id": "FIREARMS_PISTOL_GOLD_BALLER",
+                            "Type": "weapon",
+                            "Subtype": "pistol",
+                            "GameAsset": null,
+                            "ImageId": "",
+                            "RMTPrice": -1,
+                            "GamePrice": -1,
+                            "IsPurchasable": false,
+                            "IsPublished": true,
+                            "IsDroppable": false,
+                            "Capabilities": [],
+                            "Qualities": {},
+                            "Guid": "71b2182b-3be8-4326-b2ba-7bc3a46ea82c"
+                        }
+                    ],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_TRAPPED",
+                    "ParentLocationId": "LOCATION_PARENT_TRAPPED",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$ContractId",
+                                            "a3e19d55-64a6-4282-bb3c-d18c3f3e6e29"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats", "medium"],
+                    "InclusionData": {
+                        "ContractIds": ["a3e19d55-64a6-4282-bb3c-d18c3f3e6e29"]
+                    }
+                },
+                {
+                    "Id": "a2a750bb-12ee-4731-893c-6ace08bf4a53",
+                    "Name": "UI_CHALLENGES_WOLVERINE_ENDING_HM_SERUM_NAME",
+                    "ImageName": "images/challenges/Trapped/wolverine_ending_hm_serum.jpg",
+                    "Description": "UI_CHALLENGES_WOLVERINE_ENDING_HM_SERUM_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_TRAPPED",
+                    "ParentLocationId": "LOCATION_PARENT_TRAPPED",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ENDING_HM_SERUM": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats", "medium"],
+                    "InclusionData": {
+                        "ContractIds": ["a3e19d55-64a6-4282-bb3c-d18c3f3e6e29"]
+                    }
+                },
+                {
+                    "Id": "260d3a23-a8ec-4d77-800c-c323158a7bd3",
+                    "Name": "UI_CONTRACT_BELLFLOWER_GROUP_TITLE",
+                    "ImageName": "images/contracts/escalation/ContractEscalation_Trapped_Bellflower_Reward_Items.jpg",
+                    "Description": "UI_CHALLENGES_ESCLATION_COMPLETE_LEVEL1_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [
+                        {
+                            "Properties": {
+                                "LoadoutSlot": "carriedweapon",
+                                "Rarity": "common",
+                                "RepositoryId": "cdab8f33-0491-497c-91c2-316c77d59e55",
+                                "Quality": "1"
+                            },
+                            "Rarity": "common",
+                            "DisplayNameLocKey": "UI_PROP_MELEE_KATANA_WHITE_NINJA_NAME",
+                            "Id": "PROP_MELEE_KATANA_WHITE_NINJA",
+                            "Type": "weapon",
+                            "Subtype": "melee",
+                            "GameAsset": null,
+                            "ImageId": "",
+                            "RMTPrice": -1,
+                            "GamePrice": -1,
+                            "IsPurchasable": false,
+                            "IsPublished": true,
+                            "IsDroppable": false,
+                            "Capabilities": [],
+                            "Qualities": {},
+                            "Guid": "0af3c113-fead-497d-9769-f576f026956d"
+                        },
+                        {
+                            "Properties": {
+                                "Gameplay": {},
+                                "Quality": 4,
+                                "Rarity": "common",
+                                "LoadoutSlot": "carriedweapon",
+                                "RepositoryId": "8d22cea9-68db-458d-a8ee-9937128f1729"
+                            },
+                            "Rarity": "common",
+                            "DisplayNameLocKey": "UI_FIREARMS_SNIPER_SIEGER_300_WHITE_NINJA_NAME",
+                            "Id": "FIREARMS_SNIPER_SIEGER_300_WHITE_NINJA",
+                            "Type": "weapon",
+                            "Subtype": "sniperrifle",
+                            "GameAsset": null,
+                            "ImageId": "",
+                            "RMTPrice": -1,
+                            "GamePrice": -1,
+                            "IsPurchasable": false,
+                            "IsPublished": true,
+                            "IsDroppable": false,
+                            "Capabilities": [],
+                            "Qualities": {},
+                            "Guid": "969ce4ac-24e4-4d3a-ba40-419d5160e97f"
+                        }
+                    ],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_TRAPPED",
+                    "ParentLocationId": "LOCATION_PARENT_TRAPPED",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$ContractId",
+                                            "645c9dd8-19e6-4cce-87ab-0e731fbaeab9"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["feats", "easy"],
+                    "InclusionData": {
+                        "ContractIds": ["078a50d1-6427-4fc3-9099-e46390e637a0"]
+                    }
+                },
+                {
+                    "Id": "77a47b92-c287-4ceb-bbda-a04e174a900e",
+                    "Name": "UI_CONTRACT_BELLFLOWER_GROUP_TITLE",
+                    "ImageName": "images/contracts/escalation/ContractEscalation_Trapped_Bellflower.jpg",
+                    "Description": "UI_CHALLENGES_ESCLATION_COMPLETE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_TRAPPED",
+                    "ParentLocationId": "LOCATION_PARENT_TRAPPED",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$ContractId",
+                                            "40651beb-edaa-41d0-aa9d-6bd4a14a8f81"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["feats", "hard"],
+                    "InclusionData": {
+                        "ContractIds": ["078a50d1-6427-4fc3-9099-e46390e637a0"]
+                    }
+                },
+                {
+                    "Id": "b9b3c47b-1236-4597-98e0-62829428cbab",
+                    "Name": "UI_CONTRACT_BELLFLOWER_GROUP_TITLE",
+                    "ImageName": "images/contracts/escalation/ContractEscalation_Trapped_Bellflower_Reward_Suit.jpg",
+                    "Description": "UI_CHALLENGES_ESCLATION_STARTED_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [
+                        {
+                            "Properties": {
+                                "Quality": 1,
+                                "Rarity": "common",
+                                "LoadoutSlot": "disguise",
+                                "RepositoryId": "44540c7c-fcbb-4de2-8983-523997584ed0",
+                                "OrderIndex": 1005,
+                                "AllowUpSync": true
+                            },
+                            "Rarity": "common",
+                            "DisplayNameLocKey": "UI_TOKEN_OUTFIT_HERO_WHITE_NINJA_SUIT_NAME",
+                            "Id": "TOKEN_OUTFIT_HERO_WHITE_NINJA_SUIT",
+                            "Type": "disguise",
+                            "Subtype": "deluxe",
+                            "GameAsset": null,
+                            "ImageId": "",
+                            "RMTPrice": 99,
+                            "GamePrice": 99,
+                            "IsPurchasable": false,
+                            "IsPublished": true,
+                            "IsDroppable": false,
+                            "Capabilities": [],
+                            "Qualities": {},
+                            "Guid": "d0f915f7-54a6-4e81-a5b4-358001e4f5a4"
+                        }
+                    ],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_TRAPPED",
+                    "ParentLocationId": "LOCATION_PARENT_TRAPPED",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractStart": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["feats", "easy"],
+                    "InclusionData": {
+                        "ContractIds": ["078a50d1-6427-4fc3-9099-e46390e637a0"]
+                    }
+                },
+                {
+                    "Id": "02fcea9d-18df-4c12-859b-4e46fc0cf2e2",
+                    "Name": "UI_CHALLENGES_TRAPPED_PUSH_GUARD_NAME",
+                    "ImageName": "images/challenges/Trapped/trapped_push_guard.jpg",
+                    "Description": "UI_CHALLENGES_TRAPPED_PUSH_GUARD_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_TRAPPED_WOLVERINE",
+                    "ParentLocationId": "LOCATION_PARENT_TRAPPED",
+                    "Type": "location",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Constants": {
+                            "Targets": [
+                                "006bff27-d8b9-480e-9308-fac9a447d038",
+                                "0f8fd017-f30f-48aa-bb95-f0eed8f99eb0",
+                                "1063ec04-ae7f-47ce-9f67-e3ed87b910fb",
+                                "10a1344f-25b5-4d9b-99df-cc1a3e132701",
+                                "16bc3b56-63a5-48fd-beab-d4d2adf13b29",
+                                "17aa42ce-9de5-42c3-a0d7-42650aeb5ccb",
+                                "28a8ac36-edba-4b02-81f9-4d8e85a6e37c",
+                                "29f7350c-f28d-4756-b03b-8158806c1a19",
+                                "2db48fc3-1f43-4681-82b4-26289c7373bc",
+                                "3354e12a-3e7b-4693-bb63-a73d12a682e3",
+                                "49c4b42b-773d-416a-a48d-5cb7f6254290",
+                                "4c549646-3605-406a-8eb6-a56da52045a1",
+                                "56ba1725-4d2b-4ba0-9842-79457af2eca3",
+                                "5a62d8d2-1208-4f11-b95d-8f6cb11cd02b",
+                                "5b82b41f-f95e-4403-919c-6a67522fc94e",
+                                "606d9bbb-76b7-4e0f-a24f-e5b7a1257313",
+                                "6504cb26-c5d0-4c99-9aa2-7df9d18c5201",
+                                "6c232a4d-cd64-42d8-a78f-e0570dae7cd2",
+                                "6ecd7f77-bebc-4f7a-939d-7e16f4b678b1",
+                                "71854eb2-8e6c-4d19-83d2-fbdc7879bf6f",
+                                "759c67d0-18e2-49b2-a417-5daa9a450819",
+                                "796b0ee9-9261-4e55-ab6f-5a4c53f86e4e",
+                                "7bba60be-4b86-4a3c-be67-3937ab982ef2",
+                                "8255c9aa-1a59-4750-89f1-46542207e00d",
+                                "82615a87-f968-4be8-82d9-eb8089ad92ee",
+                                "8d6aebab-d94a-4adf-8770-5985a3809ece",
+                                "9830d3c6-93e3-49c8-b0c8-abdf3dc018ce",
+                                "a0766e5c-fadb-4900-8cb1-c776b56fabf5",
+                                "a3570e03-43f8-46ae-896a-e0a5803cfb6f",
+                                "a6f7e9f3-e25c-48c6-8f0b-755a2e864123",
+                                "aaafb8c3-8697-4121-8c97-1ec2c3502742",
+                                "b3840fb0-e732-4f35-b858-fc4bed036e46",
+                                "bb3efb54-cb83-4c63-adda-12b7da545a77",
+                                "bb7b6b31-adce-4a50-91fe-7447128b874b",
+                                "bbfbf4da-e6e1-4f14-b2ee-9325f9615408",
+                                "bdf572b3-7e6e-46f6-98b6-887ec99804de",
+                                "c2dcbadf-4101-4172-b458-0f02b9145c0b",
+                                "c7840085-c12a-4438-b032-f54bbe006030",
+                                "c9e0a95c-48ba-4809-b443-cdc63a084484",
+                                "cd6e9ee7-282c-49fa-a537-1802b4749e2c",
+                                "ce95c773-3153-4909-a356-16f071297582",
+                                "ced15cfa-21f7-4078-9ee7-f8b3ef1b1b59",
+                                "cf3c9e6e-4e3c-43dd-a663-897ffaa165f2",
+                                "d47a96d9-91cb-42cf-8193-6bccc74a775e",
+                                "d4fea004-6a7d-409f-bf4b-b229ca3cb355",
+                                "dca83dc1-c96e-4b75-b252-8abddd08617d",
+                                "f423f166-ed6d-4c3b-8d55-cd1c8a8b84ac"
+                            ]
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "$.#"
+                                                        ]
+                                                    },
+                                                    "in": "$.Targets"
+                                                }
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillMethodStrict",
+                                                    "accident_push"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "feats"]
+                },
+                {
+                    "Id": "23f88163-097e-4c71-82e6-80f5f9624491",
+                    "Name": "UI_CHALLENGES_TRAPPED_CONSTRUCT_SILENCER_NAME",
+                    "ImageName": "images/challenges/Trapped/trapped_construct_silencer.jpg",
+                    "Description": "UI_CHALLENGES_TRAPPED_CONSTRUCT_SILENCER_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_TRAPPED_WOLVERINE",
+                    "ParentLocationId": "LOCATION_PARENT_TRAPPED",
+                    "Type": "location",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "CONSTRUCT_SILENCER": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats", "easy"]
+                },
+                {
+                    "Id": "2e876c4e-36d0-4840-8521-ca359d7d5c16",
+                    "Name": "UI_CHALLENGES_TRAPPED_SHOOT_TRAIN_SIGNAL_NAME",
+                    "ImageName": "images/challenges/Trapped/trapped_shoot_train_signal.jpg",
+                    "Description": "UI_CHALLENGES_TRAPPED_SHOOT_TRAIN_SIGNAL_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_TRAPPED_WOLVERINE",
+                    "ParentLocationId": "LOCATION_PARENT_TRAPPED",
+                    "Type": "location",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "TRAIN_SIGNAL_SHOT": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "feats"]
+                },
+                {
+                    "Id": "c36e81a3-5749-490d-bf31-697e4dead09d",
+                    "Name": "UI_CHALLENGES_TRAPPED_SODA_PACIFY_GUARD_NAME",
+                    "ImageName": "images/challenges/Trapped/trapped_soda_pacify_guard.jpg",
+                    "Description": "UI_CHALLENGES_TRAPPED_SODA_PACIFY_GUARD_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_TRAPPED_WOLVERINE",
+                    "ParentLocationId": "LOCATION_PARENT_TRAPPED",
+                    "Type": "location",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "Count": 0
+                        },
+                        "Constants": {
+                            "Goal": 3,
+                            "Targets": [
+                                "006bff27-d8b9-480e-9308-fac9a447d038",
+                                "0f8fd017-f30f-48aa-bb95-f0eed8f99eb0",
+                                "1063ec04-ae7f-47ce-9f67-e3ed87b910fb",
+                                "10a1344f-25b5-4d9b-99df-cc1a3e132701",
+                                "16bc3b56-63a5-48fd-beab-d4d2adf13b29",
+                                "17aa42ce-9de5-42c3-a0d7-42650aeb5ccb",
+                                "28a8ac36-edba-4b02-81f9-4d8e85a6e37c",
+                                "29f7350c-f28d-4756-b03b-8158806c1a19",
+                                "2db48fc3-1f43-4681-82b4-26289c7373bc",
+                                "3354e12a-3e7b-4693-bb63-a73d12a682e3",
+                                "49c4b42b-773d-416a-a48d-5cb7f6254290",
+                                "4c549646-3605-406a-8eb6-a56da52045a1",
+                                "56ba1725-4d2b-4ba0-9842-79457af2eca3",
+                                "5a62d8d2-1208-4f11-b95d-8f6cb11cd02b",
+                                "5b82b41f-f95e-4403-919c-6a67522fc94e",
+                                "606d9bbb-76b7-4e0f-a24f-e5b7a1257313",
+                                "6504cb26-c5d0-4c99-9aa2-7df9d18c5201",
+                                "6c232a4d-cd64-42d8-a78f-e0570dae7cd2",
+                                "6ecd7f77-bebc-4f7a-939d-7e16f4b678b1",
+                                "71854eb2-8e6c-4d19-83d2-fbdc7879bf6f",
+                                "759c67d0-18e2-49b2-a417-5daa9a450819",
+                                "796b0ee9-9261-4e55-ab6f-5a4c53f86e4e",
+                                "7bba60be-4b86-4a3c-be67-3937ab982ef2",
+                                "8255c9aa-1a59-4750-89f1-46542207e00d",
+                                "82615a87-f968-4be8-82d9-eb8089ad92ee",
+                                "8d6aebab-d94a-4adf-8770-5985a3809ece",
+                                "9830d3c6-93e3-49c8-b0c8-abdf3dc018ce",
+                                "a0766e5c-fadb-4900-8cb1-c776b56fabf5",
+                                "a3570e03-43f8-46ae-896a-e0a5803cfb6f",
+                                "a6f7e9f3-e25c-48c6-8f0b-755a2e864123",
+                                "aaafb8c3-8697-4121-8c97-1ec2c3502742",
+                                "b3840fb0-e732-4f35-b858-fc4bed036e46",
+                                "bb3efb54-cb83-4c63-adda-12b7da545a77",
+                                "bb7b6b31-adce-4a50-91fe-7447128b874b",
+                                "bbfbf4da-e6e1-4f14-b2ee-9325f9615408",
+                                "bdf572b3-7e6e-46f6-98b6-887ec99804de",
+                                "c2dcbadf-4101-4172-b458-0f02b9145c0b",
+                                "c7840085-c12a-4438-b032-f54bbe006030",
+                                "c9e0a95c-48ba-4809-b443-cdc63a084484",
+                                "cd6e9ee7-282c-49fa-a537-1802b4749e2c",
+                                "ce95c773-3153-4909-a356-16f071297582",
+                                "ced15cfa-21f7-4078-9ee7-f8b3ef1b1b59",
+                                "cf3c9e6e-4e3c-43dd-a663-897ffaa165f2",
+                                "d47a96d9-91cb-42cf-8193-6bccc74a775e",
+                                "d4fea004-6a7d-409f-bf4b-b229ca3cb355",
+                                "dca83dc1-c96e-4b75-b252-8abddd08617d",
+                                "f423f166-ed6d-4c3b-8d55-cd1c8a8b84ac"
+                            ],
+                            "Sodacans": [
+                                "004ecac9-6aee-4b30-a073-4399a94535d8",
+                                "4fbe2d58-5088-4155-805f-fe4c5789b8bb",
+                                "afd1f201-d2a5-4d40-80b1-d81b0d9d2541",
+                                "c19f796e-e23f-4429-a046-47ed3d324359",
+                                "de69ce1e-a24d-4acc-895f-4c3a71f47ba8"
+                            ]
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "$.Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Pacify": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$Value.RepositoryId",
+                                                                "$.#"
+                                                            ]
+                                                        },
+                                                        "in": "$.Targets"
+                                                    }
+                                                },
+                                                {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$Value.KillItemRepositoryId",
+                                                                "$.#"
+                                                            ]
+                                                        },
+                                                        "in": "$.Sodacans"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "feats"]
+                },
+                {
+                    "Id": "d73fdcb3-3c53-4df2-bc0c-0943ba249daf",
+                    "Name": "UI_CHALLENGES_TRAPPED_UNLOCK_KEYPAD_NAME",
+                    "ImageName": "images/challenges/Trapped/trapped_unlock_keypad.jpg",
+                    "Description": "UI_CHALLENGES_TRAPPED_UNLOCK_KEYPAD_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_TRAPPED_WOLVERINE",
+                    "ParentLocationId": "LOCATION_PARENT_TRAPPED",
+                    "Type": "location",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "UNLOCK_KEYPAD": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "feats"]
+                }
+            ]
+        },
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PROFESSIONAL",
+            "Image": "images/challenges/categories/targets/tile.jpg",
+            "Icon": "challenge_category_targets",
+            "CategoryId": "targets",
+            "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_PROFESSIONAL",
+            "Challenges": [
+                {
+                    "Id": "3210fa62-67a5-4e1f-ba50-02c451d47875",
+                    "Name": "UI_CHALLENGES_WOLVERINE_ELIMINATE_CONSTANT_NAME",
+                    "ImageName": "images/challenges/Trapped/wolverine_eliminate_constant.jpg",
+                    "Description": "UI_CHALLENGES_WOLVERINE_ELIMINATE_CONSTANT_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PROFESSIONAL",
+                    "Icon": "challenge_category_targets",
+                    "LocationId": "LOCATION_PARENT_TRAPPED",
+                    "ParentLocationId": "LOCATION_PARENT_TRAPPED",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "17c40b70-506a-494e-89ef-31360cdead47"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "CompleteObjective": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "hard", "targets"],
+                    "InclusionData": {
+                        "ContractIds": ["a3e19d55-64a6-4282-bb3c-d18c3f3e6e29"]
+                    }
+                }
+            ]
+        },
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_CLASSIC",
+            "Image": "images/challenges/categories/classic/tile.jpg",
+            "Icon": "profile",
+            "CategoryId": "classic",
+            "Description": "",
+            "Challenges": [
+                {
+                    "Id": "92643706-6f98-4b1c-9700-ee4819aaadb4",
+                    "Name": "UI_CHALLENGES_WOLVERINE_SILENT_ASSASSIN_NAME",
+                    "ImageName": "images/challenges/profile_challenges/classics_normal_47_silent_assassin.jpg",
+                    "Description": "UI_CHALLENGES_WOLVERINE_SILENT_ASSASSIN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_CLASSIC",
+                    "Icon": "profile",
+                    "LocationId": "LOCATION_PARENT_TRAPPED",
+                    "ParentLocationId": "LOCATION_PARENT_TRAPPED",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "Witnesses": [],
+                            "KilledTargets": [],
+                            "RecordingDestroyed": true,
+                            "LastAccidentTime": 0
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    true,
+                                                    "$.RecordingDestroyed"
+                                                ]
+                                            },
+                                            {
+                                                "$all": {
+                                                    "in": "$.Witnesses",
+                                                    "?": {
+                                                        "$any": {
+                                                            "in": "$.KilledTargets",
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "$.##"
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "AccidentBodyFound": {
+                                    "$set": ["LastAccidentTime", "$Timestamp"]
+                                },
+                                "Witnesses": {
+                                    "Condition": {
+                                        "$any": {
+                                            "in": "$Value",
+                                            "?": {
+                                                "$pushunique": [
+                                                    "Witnesses",
+                                                    "$.#"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                "Spotted": {
+                                    "Condition": {
+                                        "$any": {
+                                            "in": "$Value",
+                                            "?": {
+                                                "$pushunique": [
+                                                    "Witnesses",
+                                                    "$.#"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$Value.KillContext",
+                                                            1
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.KillContext",
+                                                        1
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "KilledTargets",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$Value.IsTarget", true]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "KilledTargets",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "CrowdNPC_Died": {
+                                    "Transition": "Failure"
+                                },
+                                "MurderedBodySeen": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.IsWitnessTarget",
+                                                true
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Witnesses",
+                                                "$Value.Witness"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsWitnessTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$.LastAccidentTime",
+                                                            "$Timestamp"
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ],
+                                "SecuritySystemRecorder": [
+                                    {
+                                        "Actions": {
+                                            "$set": [
+                                                "RecordingDestroyed",
+                                                false
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$eq": ["$Value.event", "spotted"]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["RecordingDestroyed", true]
+                                        },
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "erased"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "destroyed"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "hard", "classic"],
+                    "InclusionData": {
+                        "ContractIds": ["a3e19d55-64a6-4282-bb3c-d18c3f3e6e29"]
+                    }
+                },
+                {
+                    "Id": "a8af382f-1689-42ed-94e6-1ec1ab74bf1f",
+                    "Name": "UI_CHALLENGES_WOLVERINE_SUIT_ONLY_NAME",
+                    "ImageName": "images/challenges/profile_challenges/classics_normal_47_suit_only.jpg",
+                    "Description": "UI_CHALLENGES_WOLVERINE_SUIT_ONLY_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_CLASSIC",
+                    "Icon": "profile",
+                    "LocationId": "LOCATION_PARENT_TRAPPED",
+                    "ParentLocationId": "LOCATION_PARENT_TRAPPED",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "Context": {},
+                        "States": {
+                            "Start": {
+                                "ContractStart": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.IsHitmanSuit",
+                                                false
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ],
+                                "Disguise": {
+                                    "Transition": "Failure"
+                                },
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "hard", "classic"],
+                    "InclusionData": {
+                        "ContractIds": ["a3e19d55-64a6-4282-bb3c-d18c3f3e6e29"]
+                    }
+                },
+                {
+                    "Id": "f84b1f7c-540d-4237-a73b-cde321af6ff3",
+                    "Name": "UI_CHALLENGES_WOLVERINE_SILENT_ASSASSIN_SUIT_NAME",
+                    "ImageName": "images/challenges/profile_challenges/classics_normal_47_sa_suit.jpg",
+                    "Description": "UI_CHALLENGES_WOLVERINE_SILENT_ASSASSIN_SUIT_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_CLASSIC",
+                    "Icon": "profile",
+                    "LocationId": "LOCATION_PARENT_TRAPPED",
+                    "ParentLocationId": "LOCATION_PARENT_TRAPPED",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "Witnesses": [],
+                            "Targets": [],
+                            "RecordingDestroyed": true,
+                            "LastAccidentTime": 0
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    true,
+                                                    "$.RecordingDestroyed"
+                                                ]
+                                            },
+                                            {
+                                                "$all": {
+                                                    "in": "$.Witnesses",
+                                                    "?": {
+                                                        "$any": {
+                                                            "in": "$.Targets",
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "$.##"
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "AccidentBodyFound": {
+                                    "$set": ["LastAccidentTime", "$Timestamp"]
+                                },
+                                "Witnesses": {
+                                    "Condition": {
+                                        "$any": {
+                                            "in": "$Value",
+                                            "?": {
+                                                "$pushunique": [
+                                                    "Witnesses",
+                                                    "$.#"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                "Spotted": {
+                                    "Condition": {
+                                        "$any": {
+                                            "in": "$Value",
+                                            "?": {
+                                                "$pushunique": [
+                                                    "Witnesses",
+                                                    "$.#"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                "ContractStart": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.IsHitmanSuit",
+                                                false
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ],
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$Value.KillContext",
+                                                            1
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.KillContext",
+                                                        1
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Targets",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$Value.IsTarget", true]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Targets",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "CrowdNPC_Died": {
+                                    "Transition": "Failure"
+                                },
+                                "MurderedBodySeen": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.IsWitnessTarget",
+                                                true
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Witnesses",
+                                                "$Value.Witness"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsWitnessTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$.LastAccidentTime",
+                                                            "$Timestamp"
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ],
+                                "SecuritySystemRecorder": [
+                                    {
+                                        "Actions": {
+                                            "$set": [
+                                                "RecordingDestroyed",
+                                                false
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$eq": ["$Value.event", "spotted"]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["RecordingDestroyed", true]
+                                        },
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "erased"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "destroyed"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "Disguise": {
+                                    "Transition": "Failure"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "hard", "suitonly", "classic"],
+                    "InclusionData": {
+                        "ContractIds": ["a3e19d55-64a6-4282-bb3c-d18c3f3e6e29"]
+                    }
+                }
+            ]
+        }
+    ]
+}
