@@ -291,6 +291,37 @@ export class ChallengeService extends ChallengeRegistry {
         })
     }
 
+    getChallengesForLocation(
+        child: string,
+        gameVersion: GameVersion,
+    ): GroupIndexedChallengeLists {
+        const locations = getVersionedConfig<PeacockLocationsData>(
+            "LocationsData",
+            gameVersion,
+            true,
+        )
+        const parent = locations.children[child].Properties.ParentLocation
+        const location = locations.children[child]
+        assert.ok(location)
+
+        let contracts =
+            child === "LOCATION_AUSTRIA" ||
+            child === "LOCATION_SALTY_SEAGULL" ||
+            child === "LOCATION_CAGED_FALCON"
+                ? this.controller.missionsInLocations.sniper[child]
+                : this.controller.missionsInLocations[child]
+        if (!contracts) {
+            contracts = []
+        }
+
+        return this.getGroupedChallengeLists({
+            type: ChallengeFilterType.Contracts,
+            contractIds: contracts,
+            locationId: child,
+            locationParentId: parent,
+        })
+    }
+
     startContract(
         userId: string,
         sessionId: string,
@@ -546,6 +577,41 @@ export class ChallengeService extends ChallengeRegistry {
             type: ChallengeFilterType.ParentLocation,
             locationParentId,
         })
+
+        return this.reBatchIntoSwitchedData(
+            forLocation,
+            userId,
+            gameVersion,
+            locationData,
+            true,
+        )
+    }
+
+    getChallengeDataForLocation(
+        locationId: string,
+        gameVersion: GameVersion,
+        userId: string,
+    ): CompiledChallengeTreeCategory[] {
+        const locationsData = getVersionedConfig<PeacockLocationsData>(
+            "LocationsData",
+            gameVersion,
+            false,
+        )
+
+        const locationData = locationsData.children[locationId]
+
+        if (!locationData) {
+            log(
+                LogLevel.WARN,
+                `Failed to get location data in CSERV [${locationId}]`,
+            )
+            return []
+        }
+
+        const forLocation = this.getChallengesForLocation(
+            locationId,
+            gameVersion,
+        )
 
         return this.reBatchIntoSwitchedData(
             forLocation,
