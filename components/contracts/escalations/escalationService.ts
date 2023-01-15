@@ -17,7 +17,12 @@
  */
 
 import { contractIdToHitObject, controller } from "../../controller"
-import type { GameVersion, IHit, UserProfile } from "../../types/types"
+import type {
+    EscalationInfo,
+    GameVersion,
+    IHit,
+    UserProfile,
+} from "../../types/types"
 import { getUserData } from "../../databaseHandler"
 import { log, LogLevel } from "../../loggingInterop"
 import type { EscalationGroup } from "../escalationMappings"
@@ -152,7 +157,7 @@ export function getPlayEscalationInfo(
     userId: string,
     eGroupId: string,
     gameVersion: GameVersion,
-) {
+): EscalationInfo {
     if (!b) {
         return {}
     }

@@ -91,6 +91,7 @@ import FrankensteinMmMpTemplate from "../static/FrankensteinMmMpTemplate.json"
 import FrankensteinScoreOverviewTemplate from "../static/FrankensteinScoreOverviewTemplate.json"
 import FrankensteinPlanningTemplate from "../static/FrankensteinPlanningTemplate.json"
 import Videos from "../static/Videos.json"
+import ChallengeLocationTemplate from "../static/ChallengeLocationTemplate.json"
 import ContractSearchPageTemplate from "../static/ContractSearchPageTemplate.json"
 import ContractSearchResponseTemplate from "../static/ContractSearchResponseTemplate.json"
 import LegacyDebriefingChallengesTemplate from "../static/LegacyDebriefingChallengesTemplate.json"
@@ -185,6 +186,7 @@ const configs: Record<string, unknown> = {
     FrankensteinPlanningTemplate,
     FrankensteinScoreOverviewTemplate,
     Videos,
+    ChallengeLocationTemplate,
     ContractSearchPageTemplate,
     ContractSearchResponseTemplate,
     MasteryUnlockablesTemplate,

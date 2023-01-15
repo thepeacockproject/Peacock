@@ -138,6 +138,33 @@ menuDataRouter.get(
     "/dashboard/Dashboard_Category_Escalation/:subscriptionId/:type/:id/:mode",
     dashEscalations,
 )
+menuDataRouter.get(
+    "/ChallengeLocation",
+    (req: RequestWithJwt<{ locationId: string }>, res) => {
+        const location = getVersionedConfig<PeacockLocationsData>(
+            "LocationsData",
+            req.gameVersion,
+            true,
+        ).children[req.query.locationId]
+        res.json({
+            template: getVersionedConfig(
+                "ChallengeLocationTemplate",
+                req.gameVersion,
+                false,
+            ),
+            data: {
+                Name: location.DisplayNameLocKey,
+                Location: location,
+                Children:
+                    controller.challengeService.getChallengeDataForLocation(
+                        req.query.locationId,
+                        req.gameVersion,
+                        req.jwt.unique_name,
+                    ),
+            },
+        })
+    },
+)
 
 menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
     swapToBrowsingMenusStatus(req.gameVersion)
@@ -159,6 +186,72 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
     const contractCreationTutorial = controller.resolveContract(
         "d7e2607c-6916-48e2-9588-976c7d8998bb",
     )!
+
+    const locations = getVersionedConfig<PeacockLocationsData>(
+        "LocationsData",
+        req.gameVersion,
+        true,
+    )
+    const career = {
+        // TODO: Add data on elusive challenges. They are not shown on the Career->Challenges page. What the client does with this information is unclear. They are not supported by Peacock as of v5.6.2.
+        ELUSIVES_UNSUPPORTED:
+            req.gameVersion === "h3"
+                ? {
+                      Children: [],
+                      Name: "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+                      Location:
+                          locations.parents["LOCATION_PARENT_ICA_FACILITY"],
+                  }
+                : {},
+    }
+    for (const parent in locations.parents) {
+        career[parent] = {
+            Children: [],
+            Location: locations.parents[parent],
+            Name: locations.parents[parent].DisplayNameLocKey,
+        }
+    }
+    for (const child in locations.children) {
+        if (
+            child === "LOCATION_ICA_FACILITY_ARRIVAL" ||
+            child === "LOCATION_HOKKAIDO_SHIM_MAMUSHI"
+        ) {
+            continue
+        }
+        const parent = locations.children[child].Properties.ParentLocation
+        const location = locations.children[child]
+        const challenges = controller.challengeService.getChallengesForLocation(
+            child,
+            req.gameVersion,
+        )
+        const challengeCompletion =
+            controller.challengeService.countTotalNCompletedChallenges(
+                challenges,
+                req.jwt.unique_name,
+                req.gameVersion,
+            )
+
+        career[parent].Children.push({
+            IsLocked: location.Properties.IsLocked,
+            Name: location.DisplayNameLocKey,
+            Image: location.Properties.Icon,
+            Icon: location.Type, // should be "location" for all locations
+            CompletedChallengesCount:
+                challengeCompletion.CompletedChallengesCount,
+            ChallengesCount: challengeCompletion.ChallengesCount,
+            CategoryId: child,
+            Description: `UI_${child}_PRIMARY_DESC`,
+            Location: location,
+            ImageLocked: location.Properties.LockedIcon,
+            RequiredResources: location.Properties.RequiredResources,
+            IsPack: false, // should be false for all locations
+            CompletionData: generateCompletionData(
+                child,
+                req.jwt.unique_name,
+                req.gameVersion,
+            ),
+        })
+    }
 
     res.json({
         template: theTemplate,
@@ -187,7 +280,12 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
                 req.gameVersion,
             ),
             LocationsData: createLocationsData(req.gameVersion),
-            ProfileData: {},
+            ProfileData: {
+                ChallengeData: {
+                    Children: Object.values(career),
+                },
+                MasteryData: {},
+            },
             StoryData: makeCampaigns(req.gameVersion, req.jwt.unique_name),
             FilterData: getVersionedConfig(
                 "FilterData",
@@ -209,7 +307,7 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
                 XP: userdata.Extensions.progression.PlayerProfileXP.Total,
                 Level: userdata.Extensions.progression.PlayerProfileXP
                     .ProfileLevel,
-                MaxLevel: 5000,
+                MaxLevel: 7500,
             },
         },
     })
@@ -1634,7 +1732,7 @@ menuDataRouter.get("/GetPlayerProfileXpData", (req: RequestWithJwt, res) => {
                 XP: userData.Extensions.progression.PlayerProfileXP.Total,
                 Level: userData.Extensions.progression.PlayerProfileXP
                     .ProfileLevel,
-                MaxLevel: 5000,
+                MaxLevel: 7500,
             },
         },
     })

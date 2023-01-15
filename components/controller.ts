@@ -82,6 +82,7 @@ import { brotliDecompress } from "zlib"
 import assert from "assert"
 import { Response } from "express"
 import { MissionEndRequestQuery } from "./types/gameSchemas"
+import { ChallengeFilterType } from "./candle/challengeHelpers"
 
 /**
  * An array of string arrays that contains the IDs of the featured contracts.
@@ -619,6 +620,9 @@ export class Controller {
      * @returns The mission manifest object, or undefined if it wasn't found.
      */
     public resolveContract(id: string): MissionManifest | undefined {
+        if (!id) {
+            return undefined
+        }
         const optionalPluginJson = this.hooks.getContractManifest.call(id)
 
         if (optionalPluginJson) {
@@ -647,7 +651,7 @@ export class Controller {
         if (openCtJson) {
             return fastClone(openCtJson)
         }
-        log(LogLevel.WARN, `Contract ${id} not found!`)
+        log(LogLevel.TRACE, `Contract ${id} not found!`)
         return undefined
     }
 
@@ -1174,14 +1178,24 @@ export function contractIdToHitObject(
         log(LogLevel.ERROR, "No UC due to previous error?")
         return undefined
     }
+    const challenges = controller.challengeService.getGroupedChallengeLists({
+        type: ChallengeFilterType.ParentLocation,
+        locationParentId: parentLocation.Id,
+    })
+    const challengeCompletion =
+        controller.challengeService.countTotalNCompletedChallenges(
+            challenges,
+            userId,
+            gameVersion,
+        )
 
     return {
         Id: contract.Metadata.Id,
         UserCentricContract: userCentric,
         Location: parentLocation,
         SubLocation: subLocation,
-        ChallengesCompleted: 0,
-        ChallengesTotal: 0,
+        ChallengesCompleted: challengeCompletion.CompletedChallengesCount,
+        ChallengesTotal: challengeCompletion.ChallengesCount,
         LocationLevel: 1,
         LocationMaxLevel: 1,
         LocationCompletion: 0,

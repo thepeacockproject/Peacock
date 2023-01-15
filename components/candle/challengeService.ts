@@ -226,11 +226,9 @@ export class ChallengeService extends ChallengeRegistry {
     /**
      * Get challenge lists sorted into groups.
      *
-     * @param locationId The parent location's ID.
      * @param filter The filter to use.
      */
     getGroupedChallengeLists(
-        locationId: string,
         filter: ChallengeFilterOptions,
     ): GroupIndexedChallengeLists {
         let challenges: [string, RegistryChallenge[]][] = []
@@ -285,12 +283,43 @@ export class ChallengeService extends ChallengeRegistry {
 
         assert.ok(contractParentLocation)
 
-        return this.getGroupedChallengeLists(contractParentLocation, {
+        return this.getGroupedChallengeLists({
             type: ChallengeFilterType.Contract,
             contractId: contractId,
             locationId: contract.Metadata.Location,
             locationParentId: contractParentLocation,
             isEvergreen: contract.Metadata.Type === "evergreen",
+        })
+    }
+
+    getChallengesForLocation(
+        child: string,
+        gameVersion: GameVersion,
+    ): GroupIndexedChallengeLists {
+        const locations = getVersionedConfig<PeacockLocationsData>(
+            "LocationsData",
+            gameVersion,
+            true,
+        )
+        const parent = locations.children[child].Properties.ParentLocation
+        const location = locations.children[child]
+        assert.ok(location)
+
+        let contracts =
+            child === "LOCATION_AUSTRIA" ||
+            child === "LOCATION_SALTY_SEAGULL" ||
+            child === "LOCATION_CAGED_FALCON"
+                ? this.controller.missionsInLocations.sniper[child]
+                : this.controller.missionsInLocations[child]
+        if (!contracts) {
+            contracts = []
+        }
+
+        return this.getGroupedChallengeLists({
+            type: ChallengeFilterType.Contracts,
+            contractIds: contracts,
+            locationId: child,
+            locationParentId: parent,
         })
     }
 
@@ -545,10 +574,45 @@ export class ChallengeService extends ChallengeRegistry {
             return []
         }
 
-        const forLocation = this.getGroupedChallengeLists(locationParentId, {
+        const forLocation = this.getGroupedChallengeLists({
             type: ChallengeFilterType.ParentLocation,
             locationParentId,
         })
+
+        return this.reBatchIntoSwitchedData(
+            forLocation,
+            userId,
+            gameVersion,
+            locationData,
+            true,
+        )
+    }
+
+    getChallengeDataForLocation(
+        locationId: string,
+        gameVersion: GameVersion,
+        userId: string,
+    ): CompiledChallengeTreeCategory[] {
+        const locationsData = getVersionedConfig<PeacockLocationsData>(
+            "LocationsData",
+            gameVersion,
+            false,
+        )
+
+        const locationData = locationsData.children[locationId]
+
+        if (!locationData) {
+            log(
+                LogLevel.WARN,
+                `Failed to get location data in CSERV [${locationId}]`,
+            )
+            return []
+        }
+
+        const forLocation = this.getChallengesForLocation(
+            locationId,
+            gameVersion,
+        )
 
         return this.reBatchIntoSwitchedData(
             forLocation,
@@ -748,6 +812,40 @@ export class ChallengeService extends ChallengeRegistry {
                 challenge.Type === "contract"
                     ? generateUserCentric(contract, userId, gameVersion)
                     : (null as unknown as undefined),
+        }
+    }
+
+    /**
+     * Counts the number of challenges and completed challenges in a GroupIndexedChallengeLists object.
+     * @param challengeLists A GroupIndexedChallengeLists object, holding some challenges to be counted
+     * @param userId The userId of the user to acquire completion information
+     * @param gameVersion The version of the game
+     * @returns An object with two properties: ChallengesCount and CompletedChallengesCount.
+     */
+    countTotalNCompletedChallenges(
+        challengeLists: GroupIndexedChallengeLists,
+        userId: string,
+        gameVersion: GameVersion,
+    ): { ChallengesCount: number; CompletedChallengesCount: number } {
+        let challengesCount = 0
+        let completedChallengesCount = 0
+        for (const groupId in challengeLists) {
+            const challenges = challengeLists[groupId]
+            const challengeProgressionData = challenges.map((challengeData) =>
+                this.getPersistentChallengeProgression(
+                    userId,
+                    challengeData.Id,
+                    gameVersion,
+                ),
+            )
+            challengesCount += challenges.length
+            completedChallengesCount += challengeProgressionData.filter(
+                (progressionData) => progressionData.Completed,
+            ).length
+        }
+        return {
+            ChallengesCount: challengesCount,
+            CompletedChallengesCount: completedChallengesCount,
         }
     }
 

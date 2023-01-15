@@ -29,6 +29,7 @@ import type {
 import { controller } from "../controller"
 import { generateCompletionData } from "../contracts/dataGen"
 import { getUserData } from "components/databaseHandler"
+import { ChallengeFilterType } from "components/candle/challengeHelpers"
 
 type GameFacingDestination = {
     ChallengeCompletion: {
@@ -53,6 +54,14 @@ export function getDestinationCompletion(
     req: RequestWithJwt,
 ) {
     const userData = getUserData(req.jwt.unique_name, req.gameVersion)
+    const challenges = controller.challengeService.getGroupedChallengeLists({
+        type: ChallengeFilterType.ParentLocation,
+        locationParentId: parent.Id,
+    })
+
+    if (parent.Opportunities === undefined) {
+        parent.Opportunities = 0
+    }
 
     let opportunityCompletedCount = 0
     for (const ms in userData.Extensions.opportunityprogression) {
@@ -60,19 +69,52 @@ export function getDestinationCompletion(
             opportunityCompletedCount++
         }
     }
+    const challengeCompletion =
+        controller.challengeService.countTotalNCompletedChallenges(
+            challenges,
+            userData.Id,
+            req.gameVersion,
+        )
 
     return {
-        ChallengeCompletion: {
-            ChallengesCount: 0,
-            CompletedChallengesCount: 0, // TODO: Hook this up to challenge counts.
-        },
+        ChallengeCompletion: challengeCompletion,
         OpportunityStatistics: {
             Count: parent.Opportunities,
             Completed: opportunityCompletedCount,
         },
-        LocationCompletionPercent: 0,
+        LocationCompletionPercent: getCompletionPercent(
+            challengeCompletion.CompletedChallengesCount,
+            challengeCompletion.ChallengesCount,
+            opportunityCompletedCount,
+            parent.Opportunities,
+        ),
         Location: parent,
     }
+}
+
+export function getCompletionPercent(
+    challengeDone: number,
+    challengeTotal: number,
+    opportunityDone: number,
+    opportunityTotal: number,
+): number {
+    if (challengeDone === undefined) {
+        challengeDone = 0
+    }
+    if (challengeTotal === undefined) {
+        challengeTotal = 0
+    }
+    if (opportunityDone === undefined) {
+        opportunityDone = 0
+    }
+    if (opportunityTotal === undefined) {
+        opportunityTotal = 0
+    }
+    const totalCompletables = challengeTotal + opportunityTotal
+    const totalCompleted = challengeDone + opportunityDone
+    return totalCompletables === 0
+        ? 0
+        : (100 * totalCompleted) / totalCompletables
 }
 
 export function destinationsMenu(req: RequestWithJwt): GameFacingDestination[] {

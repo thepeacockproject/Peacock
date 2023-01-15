@@ -17,7 +17,7 @@
  */
 
 import { Router } from "express"
-import { nilUuid, ServerVer, uuidRegex } from "../utils"
+import { fastClone, nilUuid, ServerVer, uuidRegex } from "../utils"
 import { json as jsonMiddleware } from "body-parser"
 import {
     enqueueEvent,
@@ -32,6 +32,7 @@ import type {
     GameChanger,
     MissionManifest,
     MissionManifestObjective,
+    MissionStory,
     RequestWithJwt,
 } from "../types/types"
 import {
@@ -48,6 +49,7 @@ import { createSniperLoadouts } from "../menus/sniper"
 import { GetForPlay2Body } from "../types/gameSchemas"
 import assert from "assert"
 import { getCpd } from "../evergreen"
+import { getUserData } from "components/databaseHandler"
 
 const contractRoutingRouter = Router()
 
@@ -78,7 +80,6 @@ contractRoutingRouter.post(
         }
 
         // Add escalation data to Contract data HERE
-        // @ts-expect-error TypeScript going crazy
         contractData.Metadata = {
             ...contractData.Metadata,
             ...(await getPlayEscalationInfo(
@@ -88,6 +89,9 @@ contractRoutingRouter.post(
                 req.gameVersion,
             )),
             ...loadoutData,
+            ...{
+                OpportunityData: getContractOpportunityData(req, contractData),
+            },
         }
 
         const contractSesh = {
@@ -321,5 +325,38 @@ contractRoutingRouter.post(
         res.json(manifest)
     },
 )
+
+contractRoutingRouter.post(
+    "/GetContractOpportunities",
+    jsonMiddleware(),
+    (req: RequestWithJwt<never, { contractId: string }>, res) => {
+        const contract = controller.resolveContract(req.body.contractId)
+        res.json(getContractOpportunityData(req, contract))
+    },
+)
+
+function getContractOpportunityData(
+    req: RequestWithJwt,
+    contract: MissionManifest,
+): MissionStory[] {
+    const userData = getUserData(req.jwt.unique_name, req.gameVersion)
+    const result = []
+    const missionStories = getConfig<Record<string, MissionStory>>(
+        "MissionStories",
+        false,
+    )
+
+    if (contract.Metadata.Opportunities) {
+        for (const ms of contract.Metadata.Opportunities) {
+            missionStories[ms].PreviouslyCompleted =
+                ms in userData.Extensions.opportunityprogression
+            const current = fastClone(missionStories[ms])
+            delete current.Location
+            result.push(current)
+        }
+    }
+
+    return result
+}
 
 export { contractRoutingRouter }
