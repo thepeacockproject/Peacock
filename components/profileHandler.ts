@@ -747,6 +747,7 @@ profileRouter.post(
     "/ContractSessionsService/Load",
     jsonMiddleware(),
     async (req: RequestWithJwt<never, LoadSaveBody>, res) => {
+        const userData = getUserData(req.jwt.unique_name, req.gameVersion)
         if (
             !req.body.contractSessionId ||
             !req.body.saveToken ||
@@ -757,7 +758,11 @@ profileRouter.post(
         }
 
         try {
-            await loadSession(req.body.contractSessionId, req.body.saveToken)
+            await loadSession(
+                req.body.contractSessionId,
+                req.body.saveToken,
+                userData,
+            )
         } catch (e) {
             log(
                 LogLevel.DEBUG,
@@ -797,10 +802,23 @@ profileRouter.post(
 async function loadSession(
     sessionId: string,
     token: string,
+    userData: UserProfile,
     sessionData?: ContractSession,
 ): Promise<void> {
     if (!sessionData) {
         sessionData = await getContractSession(token + "_" + sessionId)
+    }
+    // Update challenge progression with the user's latest progression data
+    for (const cid in sessionData.challengeContexts) {
+        const scope =
+            controller.challengeService.getChallengeById(cid).Definition.Scope
+        if (
+            !userData.Extensions.ChallengeProgression[cid].Completed &&
+            (scope === "hit" || scope === "profile")
+        ) {
+            sessionData.challengeContexts[cid].context =
+                userData.Extensions.ChallengeProgression[cid].State
+        }
     }
 
     contractSessions.set(sessionId, sessionData)

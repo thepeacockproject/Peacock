@@ -335,7 +335,7 @@ export class ChallengeService extends ChallengeRegistry {
             contractId,
             gameVersion,
         )
-
+        const profile = getUserData(session.userId, session.gameVersion)
         for (const group of Object.keys(challengeGroups)) {
             for (const challenge of challengeGroups[group]) {
                 const progression = this.getPersistentChallengeProgression(
@@ -343,12 +343,17 @@ export class ChallengeService extends ChallengeRegistry {
                     challenge.Id,
                     gameVersion,
                 )
-
+                // For challenges with scopes being "profile" or "hit",
+                // update challenge progression with the user's progression data
                 const ctx =
-                    fastClone(
-                        (<ChallengeDefinitionLike>challenge.Definition)
-                            ?.Context || {},
-                    ) || {}
+                    challenge.Definition.Scope === "profile" ||
+                    challenge.Definition.Scope === "hit"
+                        ? profile.Extensions.ChallengeProgression[challenge.Id]
+                              .State
+                        : fastClone(
+                              (<ChallengeDefinitionLike>challenge.Definition)
+                                  ?.Context || {},
+                          ) || {}
 
                 challengeContexts[challenge.Id] = {
                     context: ctx,
@@ -406,8 +411,12 @@ export class ChallengeService extends ChallengeRegistry {
                     event.Value,
                     options,
                 )
-
-                if (challenge.Definition.Scope === "profile") {
+                // For challenges with scopes being "profile" or "hit",
+                // save challenge progression to the user's progression data
+                if (
+                    challenge.Definition.Scope === "profile" ||
+                    challenge.Definition.Scope === "hit"
+                ) {
                     const profile = getUserData(
                         session.userId,
                         session.gameVersion,
@@ -417,11 +426,12 @@ export class ChallengeService extends ChallengeRegistry {
                         result.context
 
                     writeUserData(session.userId, session.gameVersion)
-                } else {
-                    session.challengeContexts[challengeId].state = result.state
-                    session.challengeContexts[challengeId].context =
-                        result.context || challenge.Definition?.Context || {}
                 }
+                // Need to update session context for all challenges
+                // to correctly determine challenge completion
+                session.challengeContexts[challengeId].state = result.state
+                session.challengeContexts[challengeId].context =
+                    result.context || challenge.Definition?.Context || {}
 
                 if (previousState !== "Success" && result.state === "Success") {
                     this.onChallengeCompleted(session, challenge)
@@ -482,7 +492,18 @@ export class ChallengeService extends ChallengeRegistry {
         gameVersion: GameVersion,
         compiler: Compiler,
     ): CompiledChallengeTreeData[] {
+        const progression = getUserData(userId, gameVersion).Extensions
+            .ChallengeProgression
         return challenges.map((challengeData) => {
+            // Update challenge progression with the user's latest progression data
+            if (
+                !progression[challengeData.Id].Completed &&
+                (challengeData.Definition.Scope === "profile" ||
+                    challengeData.Definition.Scope === "hit")
+            ) {
+                challengeData.Definition.Context =
+                    progression[challengeData.Id].State
+            }
             const compiled = compiler(
                 challengeData,
                 this.getPersistentChallengeProgression(
