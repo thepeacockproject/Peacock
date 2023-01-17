@@ -95,7 +95,6 @@ export class IOIStrategy extends EntitlementStrategy {
 
 /**
  * Provider for HITMAN 2016 on Epic Games.
- * TODO: This does not work due to old Epic API version. We should probably not hard-code this!
  *
  * @internal
  */
@@ -121,7 +120,6 @@ export class SteamScpcStrategy extends EntitlementStrategy {
 
 /**
  * Provider for HITMAN 2016 on Steam.
- * TODO: This does not work because of the Steam API. We should probably not hard-code this!
  *
  * @internal
  */
@@ -144,7 +142,6 @@ export class SteamH1Strategy extends EntitlementStrategy {
 
 /**
  * Provider for HITMAN 2 on Steam.
- * TODO: This does not work because of the Steam API. We should probably not hard-code this!
  *
  * @internal
  */
