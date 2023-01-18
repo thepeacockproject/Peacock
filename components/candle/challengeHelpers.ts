@@ -104,20 +104,32 @@ function isChallengeInContract(
         return false
     }
 
+    if (
+        locationId === "LOCATION_HOKKAIDO_SHIM_MAMUSHI" &&
+        challenge.LocationId === "LOCATION_HOKKAIDO"
+    ) {
+        // Special case: winter festival has its own locationId, but for Hokkaido-wide challenges,
+        // the locationId is "LOCATION_HOKKAIDO",  not "LOCATION_PARENT_HOKKAIDO".
+        return true
+    }
+
     // is this for the current contract?
     const isForContract = (challenge.InclusionData?.ContractIds || []).includes(
         contractId,
     )
 
     // is this a location-wide challenge?
-    const isForLocation = challenge.Type === "location"
+    // "location" is more widely used, but "parentlocation" is used in ambrose and berlin, as well as some "Discover XX" challenges.
+    const isForLocation =
+        challenge.Type === "location" || challenge.Type === "parentlocation"
 
     // is this for the current location?
     const isCurrentLocation =
         // is this challenge for the current parent location?
         challenge.ParentLocationId === locationParentId &&
-        // and, is this challenge's location the current sub-location
-        // or the parent location? (yup, that can happen)
+        // and, is this challenge's location one of these things:
+        // 1. the current sub-location, e.g. "LOCATION_COASTALTOWN_NIGHT". This is the most common.
+        // 2. the parent location (yup, that can happen), e.g. "LOCATION_PARENT_HOKKAIDO" in Discover Hokkaido
         (challenge.LocationId === locationId ||
             challenge.LocationId === locationParentId)
 
