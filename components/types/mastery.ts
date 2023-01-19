@@ -3,7 +3,7 @@ import { CompletionData, Unlockable } from "./types"
 export interface MasteryDataTemplate {
     template: unknown
     data: {
-        Locacation: Unlockable
+        Location: Unlockable
         MasteryData: MasteryData[]
     }
 }

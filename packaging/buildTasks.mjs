@@ -47,10 +47,7 @@ async function createResourcesFolder(resources) {
 async function handleFile(resources, name, contents) {
     const targetName = createHash("md5").update(name).digest("hex")
 
-    await writeFile(
-        join(resources, `${targetName}.prp`),
-        packer.pack(contents),
-    )
+    await writeFile(join(resources, `${targetName}.prp`), packer.pack(contents))
 }
 
 export async function packResources() {

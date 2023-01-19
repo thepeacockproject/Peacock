@@ -4,7 +4,6 @@ import {
     getConfig,
     getVersionedConfig,
 } from "../../components/configSwizzleManager"
-import { Controller } from "../../components/controller"
 import { getUserData } from "../../components/databaseHandler"
 import {
     MasteryData,
@@ -20,13 +19,7 @@ import {
 import { xpRequiredForLevel } from "../../components/utils"
 
 export class MasteryService {
-    // @ts-expect-error Unused
-    private controller: Controller
     private masteryData: Map<string, MasteryPackage> = new Map()
-
-    constructor(controller: Controller) {
-        this.controller = controller
-    }
 
     registerMasteryData(masteryPackage: MasteryPackage) {
         this.masteryData.set(masteryPackage.Id, masteryPackage)
@@ -62,9 +55,10 @@ export class MasteryService {
             userId,
         )
 
-        return <MasteryDataTemplate>{
+        return {
             template: masteryDataTemplate,
             data: {
+                Location: subLocation,
                 MasteryData: masteryData,
             },
         }
@@ -89,17 +83,11 @@ export class MasteryService {
         //Gather all required data
         const lowerCaseLocationParentId = locationParentId.toLowerCase()
 
-        if (
-            !userProfile.Extensions.progression.Locations[
-                lowerCaseLocationParentId
-            ]
-        ) {
-            userProfile.Extensions.progression.Locations[
-                lowerCaseLocationParentId
-            ] = {
-                Xp: 0,
-                Level: 1,
-            }
+        userProfile.Extensions.progression.Locations[
+            lowerCaseLocationParentId
+        ] ??= {
+            Xp: 0,
+            Level: 1,
         }
 
         const locationData =
@@ -107,11 +95,7 @@ export class MasteryService {
                 lowerCaseLocationParentId
             ]
 
-        const maxLevel =
-            masteryData.MaxLevel ||
-            masteryData.Drops.reduce((currentMax, drop) => {
-                return drop.Level > currentMax ? drop.Level : currentMax
-            }, 1)
+        const maxLevel = masteryData.MaxLevel || 20
 
         const nextLevel: number = Math.max(
             0,
@@ -119,7 +103,7 @@ export class MasteryService {
         )
         const nextLevelXp: number = xpRequiredForLevel(nextLevel)
 
-        return <CompletionData>{
+        return {
             Level: locationData.Level,
             MaxLevel: maxLevel,
             XP: locationData.Xp,
@@ -179,7 +163,7 @@ export class MasteryService {
         }).map((drop) => {
             const unlockable: Unlockable = unlockableMap.get(drop.Id)
 
-            return <MasteryDrop>{
+            return {
                 IsLevelMarker: false,
                 Unlockable: unlockable,
                 Level: drop.Level,
@@ -188,7 +172,7 @@ export class MasteryService {
             }
         })
 
-        return <MasteryData[]>[
+        return [
             {
                 CompletionData: completionData,
                 Drops: drops,

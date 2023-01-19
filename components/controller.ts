@@ -482,7 +482,7 @@ export class Controller {
         await this._loadInternalContracts()
 
         this.challengeService = new ChallengeService(this)
-        this.masteryService = new MasteryService(this)
+        this.masteryService = new MasteryService()
 
         this._addElusiveTargets()
         this.index()
