@@ -99,9 +99,9 @@ export function generateCompletionData(
 ): CompletionData {
     const subLocation = getSubLocationByName(subLocationId, gameVersion)
 
-    const locationId = isParentLocation
-        ? subLocationId
-        : subLocation?.Properties?.ParentLocation
+    const locationId = subLocation
+        ? subLocation.Properties?.ParentLocation
+        : subLocationId
 
     const completionData = controller.masteryService.getCompletionData(
         locationId,
@@ -112,7 +112,7 @@ export function generateCompletionData(
     if (!completionData) {
         log(
             LogLevel.DEBUG,
-            "Could not get CompletionData for location ${locationId}",
+            `Could not get CompletionData for location ${locationId}`,
         )
 
         return <CompletionData>{
