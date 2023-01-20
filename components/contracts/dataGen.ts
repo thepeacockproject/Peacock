@@ -115,7 +115,7 @@ export function generateCompletionData(
             `Could not get CompletionData for location ${locationId}`,
         )
 
-        return <CompletionData>{
+        return {
             Level: 20,
             MaxLevel: 20,
             XP: 0,
@@ -231,14 +231,12 @@ export function generateUserCentric(
  * @param objectives The objectives.
  * @param gameChangers The game changers.
  * @param displayOrder The order in which to display the objectives.
- * @param IsEvergreenSafehouse Is the contract the safehouse?
  * @returns The converted objectives.
  */
 export function mapObjectives(
     objectives: MissionManifestObjective[],
     gameChangers: string[],
     displayOrder: GroupObjectiveDisplayOrderItem[],
-    IsEvergreenSafehouse = false,
 ): MissionManifestObjective[] {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const result = new Map<string, any>()
@@ -250,7 +248,6 @@ export function mapObjectives(
             true,
         )
         for (const gamechangerId of gameChangers) {
-            if (IsEvergreenSafehouse) break
             const gameChangerProps = gameChangerData[gamechangerId]
             if (gameChangerProps) {
                 if (gameChangerProps.IsHidden) {
