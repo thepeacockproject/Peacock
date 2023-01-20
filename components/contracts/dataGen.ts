@@ -97,24 +97,39 @@ export function generateCompletionData(
     gameVersion: GameVersion,
     isParentLocation = false,
 ): CompletionData {
-    // TODO(v6/v7): fetch actual statistics from the user's profile.
-
     const subLocation = getSubLocationByName(subLocationId, gameVersion)
 
-    return {
-        Level: 20,
-        MaxLevel: 20,
-        XP: 0,
-        Completion: 1,
-        XpLeft: 6000,
-        Id: isParentLocation
-            ? subLocationId
-            : subLocation?.Properties?.ParentLocation,
-        SubLocationId: subLocation?.Id,
-        HideProgression: false,
-        IsLocationProgression: true,
-        Name: null,
+    const locationId = subLocation
+        ? subLocation.Properties?.ParentLocation
+        : subLocationId
+
+    const completionData = controller.masteryService.getCompletionData(
+        locationId,
+        gameVersion,
+        userId,
+    )
+
+    if (!completionData) {
+        log(
+            LogLevel.DEBUG,
+            `Could not get CompletionData for location ${locationId}`,
+        )
+
+        return {
+            Level: 20,
+            MaxLevel: 20,
+            XP: 0,
+            Completion: 1,
+            XpLeft: 0,
+            Id: locationId,
+            SubLocationId: subLocation?.Id,
+            HideProgression: false,
+            IsLocationProgression: true,
+            Name: null,
+        }
     }
+
+    return completionData
 }
 
 /**
