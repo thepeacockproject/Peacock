@@ -233,6 +233,18 @@ export function newSession(
         throw new Error("no ct")
     }
 
+    if (
+        difficulty === 0 &&
+        (contract.Metadata.Type === "creation" ||
+            contract.Metadata.Type === "usercreated")
+    ) {
+        log(
+            LogLevel.DEBUG,
+            `Difficulty not set for user created contract ${contractId}, setting to 2`,
+        )
+        difficulty = 2
+    }
+
     swapToLocationStatus(
         contract.Metadata.ScenePath,
         contract.Metadata.Type,
