@@ -103,32 +103,67 @@ export function generateCompletionData(
         ? subLocation.Properties?.ParentLocation
         : subLocationId
 
-    const completionData = controller.masteryService.getCompletionData(
+    let completionData = controller.masteryService.getCompletionData(
         locationId,
+        subLocationId,
         gameVersion,
         userId,
     )
 
     if (!completionData) {
-        log(
-            LogLevel.DEBUG,
-            `Could not get CompletionData for location ${locationId}`,
-        )
+        if (locationId === "LOCATION_PARENT_ICA_FACILITY") {
+            // Note that ICA facility has a whopping FOUR levels of mastery, but it's hidden.
+            // On official servers this data would also progress as the player finishes corresponding challenges,
+            // but we can leave it static for now since it has no observable effects.
+            completionData = {
+                Level: 1,
+                MaxLevel: 4,
+                XP: 0,
+                Completion: 0.0,
+                XpLeft: 6000,
+                Id: locationId,
+                SubLocationId: subLocation?.Id,
+                HideProgression: true,
+                IsLocationProgression: true,
+                Name: null,
+            }
+        } else if (
+            locationId === "LOCATION_PARENT_AUSTRIA" ||
+            locationId === "LOCATION_PARENT_SALTY" ||
+            locationId === "LOCATION_PARENT_CAGED"
+        ) {
+            completionData = {
+                Level: 1,
+                MaxLevel: 1,
+                XP: 0,
+                Completion: 1.0,
+                XpLeft: 0,
+                Id: locationId,
+                SubLocationId: subLocation?.Id,
+                HideProgression: true,
+                IsLocationProgression: true,
+                Name: null,
+            }
+        } else {
+            log(
+                LogLevel.DEBUG,
+                `Could not get CompletionData for location ${locationId}`,
+            )
 
-        return {
-            Level: 20,
-            MaxLevel: 20,
-            XP: 0,
-            Completion: 1,
-            XpLeft: 0,
-            Id: locationId,
-            SubLocationId: subLocation?.Id,
-            HideProgression: false,
-            IsLocationProgression: true,
-            Name: null,
+            completionData = {
+                Level: 20,
+                MaxLevel: 20,
+                XP: 0,
+                Completion: 1,
+                XpLeft: 0,
+                Id: locationId,
+                SubLocationId: subLocation?.Id,
+                HideProgression: false,
+                IsLocationProgression: true,
+                Name: null,
+            }
         }
     }
-
     return completionData
 }
 

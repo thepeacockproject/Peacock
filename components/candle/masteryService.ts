@@ -66,6 +66,7 @@ export class MasteryService {
 
     getCompletionData(
         locationParentId: string,
+        subLocationId: string,
         gameVersion: GameVersion,
         userId: string,
     ): CompletionData {
@@ -110,7 +111,7 @@ export class MasteryService {
             Completion: locationData.Xp / nextLevelXp,
             XpLeft: nextLevelXp - locationData.Xp,
             Id: masteryData.Id,
-            SubLocationId: masteryData.Id,
+            SubLocationId: subLocationId,
             HideProgression: false,
             IsLocationProgression: true,
             Name: undefined,
@@ -147,6 +148,7 @@ export class MasteryService {
 
         //Map all the data into a new structure
         const completionData = this.getCompletionData(
+            locationParentId,
             locationParentId,
             gameVersion,
             userId,
