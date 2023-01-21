@@ -112,7 +112,7 @@ export class MasteryService {
             XpLeft: nextLevelXp - locationData.Xp,
             Id: masteryData.Id,
             SubLocationId: subLocationId,
-            HideProgression: false,
+            HideProgression: masteryData.HideProgression || false,
             IsLocationProgression: true,
             Name: undefined,
         }
@@ -130,6 +130,10 @@ export class MasteryService {
         //Get the mastery data
         const masteryData: MasteryPackage =
             this.masteryData.get(locationParentId)
+
+        if (masteryData.Drops.length === 0) {
+            return []
+        }
 
         //Put all Ids into a set for quick lookup
         const dropIdSet = new Set(masteryData.Drops.map((drop) => drop.Id))
