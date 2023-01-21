@@ -66,6 +66,7 @@ export class MasteryService {
 
     getCompletionData(
         locationParentId: string,
+        subLocationId: string,
         gameVersion: GameVersion,
         userId: string,
     ): CompletionData {
@@ -110,8 +111,8 @@ export class MasteryService {
             Completion: locationData.Xp / nextLevelXp,
             XpLeft: nextLevelXp - locationData.Xp,
             Id: masteryData.Id,
-            SubLocationId: masteryData.Id,
-            HideProgression: false,
+            SubLocationId: subLocationId,
+            HideProgression: masteryData.HideProgression || false,
             IsLocationProgression: true,
             Name: undefined,
         }
@@ -130,6 +131,10 @@ export class MasteryService {
         const masteryData: MasteryPackage =
             this.masteryData.get(locationParentId)
 
+        if (masteryData.Drops.length === 0) {
+            return []
+        }
+
         //Put all Ids into a set for quick lookup
         const dropIdSet = new Set(masteryData.Drops.map((drop) => drop.Id))
 
@@ -147,6 +152,7 @@ export class MasteryService {
 
         //Map all the data into a new structure
         const completionData = this.getCompletionData(
+            locationParentId,
             locationParentId,
             gameVersion,
             userId,

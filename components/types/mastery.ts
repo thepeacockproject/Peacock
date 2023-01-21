@@ -11,6 +11,7 @@ export interface MasteryDataTemplate {
 export interface MasteryPackage {
     Id: string
     MaxLevel?: number
+    HideProgression?: boolean
     Drops: {
         Id: string
         Level: number
