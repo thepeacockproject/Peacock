@@ -537,11 +537,13 @@ profileRouter.post(
         }
 
         for (const challenge of challenges) {
+            // TODO: Add actual support for shortcut challenges
             if (challenge.Challenge.Tags?.includes("shortcut")) {
                 challenge.Progression = {
                     ChallengeId: challenge.Challenge.Id,
                     ProfileId: req.jwt.unique_name,
                     Completed: true,
+                    Ticked: true,
                     State: {
                         CurrentState: "Success",
                     },

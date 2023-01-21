@@ -196,6 +196,7 @@ export class ChallengeService extends ChallengeRegistry {
 
         // apply default context if no progression exists
         data[challengeId] ??= {
+            Ticked: false,
             Completed: false,
             State: initialContext,
         }
@@ -215,6 +216,7 @@ export class ChallengeService extends ChallengeRegistry {
 
         return {
             Completed: data[challengeId].Completed,
+            Ticked: data[challengeId].Ticked,
             State: data[challengeId].State,
             ChallengeId: challengeId,
             ProfileId: userId,
@@ -890,6 +892,7 @@ export class ChallengeService extends ChallengeRegistry {
         userData.Extensions.ChallengeProgression[challenge.Id] ??= {
             State: {},
             Completed: false,
+            Ticked: false,
         }
 
         userData.Extensions.ChallengeProgression[challenge.Id].Completed = true

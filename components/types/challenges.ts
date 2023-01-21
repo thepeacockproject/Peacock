@@ -70,6 +70,7 @@ export interface ChallengePackage {
 }
 
 export type ProfileChallengeData = {
+    Ticked: boolean
     Completed: boolean
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     State: any
