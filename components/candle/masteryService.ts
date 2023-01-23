@@ -1,22 +1,15 @@
 import { getSubLocationByName } from "components/contracts/dataGen"
 import { log, LogLevel } from "components/loggingInterop"
-import {
-    getConfig,
-    getVersionedConfig,
-} from "../../components/configSwizzleManager"
-import { getUserData } from "../../components/databaseHandler"
+import { getConfig, getVersionedConfig } from "../configSwizzleManager"
+import { getUserData } from "../databaseHandler"
 import {
     MasteryData,
     MasteryDataTemplate,
     MasteryDrop,
     MasteryPackage,
-} from "../../components/types/mastery"
-import {
-    CompletionData,
-    GameVersion,
-    Unlockable,
-} from "../../components/types/types"
-import { xpRequiredForLevel } from "../../components/utils"
+} from "../types/mastery"
+import { CompletionData, GameVersion, Unlockable } from "../types/types"
+import { xpRequiredForLevel } from "../utils"
 
 export class MasteryService {
     private masteryData: Map<string, MasteryPackage> = new Map()
