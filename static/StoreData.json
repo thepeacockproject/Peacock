@@ -4,31 +4,52 @@
             "Name": "upgrade",
             "Items": [
                 {
-                    "ImageUrl": "images/store/upgrade_h3_standard.jpg",
+                    "ImageUrl": "images/store/upgrade_h3_woa.jpg",
                     "Price": null,
                     "Currency": null,
                     "Description": "",
-                    "Name": "GAME_STORE_METADATA_S3_BUNDLE_STANDARD_TITLE",
-                    "ShopId": "https://www.epicgames.com/store/product/hitman-3/",
+                    "Name": "GAME_STORE_METADATA_S3_BUNDLE_WOA_TITLE_LONG",
+                    "ShopId": "https://www.epicgames.com/store/p/hitman-3--woa",
                     "Categories": ["upgrade"],
                     "PackageName": "locationGolden",
                     "UserWhitelist": null,
                     "UserBlacklist": null,
+                    "Properties": {
+                        "SteamOpenUrl": "https://store.steampowered.com/sub/659133/"
+                    },
+                    "Entitlements": null
+                },
+                {
+                    "ImageUrl": "images/store/upgrade_h3_woa_addon.jpg",
+                    "Price": null,
+                    "Currency": null,
+                    "Description": "",
+                    "Name": "GAME_STORE_METADATA_S3_BUNDLE_WOA_UPGRADE_TITLE_LONG",
+                    "ShopId": "https://www.epicgames.com/store/p/hitman-3--woa-deluxe",
+                    "Categories": ["upgrade"],
+                    "PackageName": "",
+                    "UserWhitelist": ["h3standard"],
+                    "UserBlacklist": [
+                        "h3woaexpansionpartial",
+                        "h3woaexpansionfull"
+                    ],
                     "Properties": null,
                     "Entitlements": null
                 },
                 {
-                    "ImageUrl": "images/store/upgrade_h3_deluxe.jpg",
+                    "ImageUrl": "images/store/upgrade_h3_woa_addon.jpg",
                     "Price": null,
                     "Currency": null,
                     "Description": "",
-                    "Name": "GAME_STORE_METADATA_S3_BUNDLE_DELUXE_TITLE",
-                    "ShopId": "https://www.epicgames.com/store/p/hitman-3--deluxe-edition",
+                    "Name": "GAME_STORE_METADATA_S3_BUNDLE_WOA_UPGRADE_TITLE_LONG",
+                    "ShopId": "https://www.epicgames.com/store/p/hitman-3--woa-deluxe",
                     "Categories": ["upgrade"],
                     "PackageName": "h3expansion",
-                    "UserWhitelist": null,
-                    "UserBlacklist": ["h3standard", "h3expansion"],
-                    "Properties": null,
+                    "UserWhitelist": ["h3woaexpansionfull"],
+                    "UserBlacklist": null,
+                    "Properties": {
+                        "SteamOpenUrl": "https://store.steampowered.com/bundle/30199/HITMAN_World_of_Assassination_Deluxe_Pack"
+                    },
                     "Entitlements": null
                 },
                 {
@@ -40,54 +61,8 @@
                     "ShopId": "https://www.epicgames.com/store/p/hitman-3--hitman-3-deluxe-pack",
                     "Categories": ["upgrade"],
                     "PackageName": "h3expansion",
-                    "UserWhitelist": ["h3standard", "h3expansion"],
+                    "UserWhitelist": ["h3woaexpansionpartial"],
                     "UserBlacklist": null,
-                    "Properties": null,
-                    "Entitlements": null
-                },
-                {
-                    "ImageUrl": "images/store/upgrade_goty_legacy.jpg",
-                    "Price": null,
-                    "Currency": null,
-                    "Description": "",
-                    "Name": "GAME_STORE_METADATA_LEGACY_PACKAGE_LEGACY_GOTY_BUNDLE_TITLE",
-                    "ShopId": "https://www.epicgames.com/store/p/hitman-3--access-pass-hitman-1-goty-edition-01",
-                    "Categories": ["upgrade"],
-                    "PackageName": "h1legacyexpansion",
-                    "UserWhitelist": null,
-                    "UserBlacklist": null,
-                    "Properties": {
-                        "SmallTile": true
-                    },
-                    "Entitlements": null
-                },
-                {
-                    "ImageUrl": "images/store/upgrade_h2_standard_legacy.jpg",
-                    "Price": null,
-                    "Currency": null,
-                    "Description": "",
-                    "Name": "GAME_STORE_METADATA_LEGACY_S2_BUNDLE_STANDARD_TITLE",
-                    "ShopId": "https://www.epicgames.com/store/p/hitman-3--access-pass-hitman-2-standard-01 ",
-                    "Categories": ["upgrade"],
-                    "PackageName": "h2legacystandard",
-                    "UserWhitelist": null,
-                    "UserBlacklist": null,
-                    "Properties": {
-                        "SmallTile": true
-                    },
-                    "Entitlements": null
-                },
-                {
-                    "ImageUrl": "images/store/upgrade_h2_gold_legacy.jpg",
-                    "Price": null,
-                    "Currency": null,
-                    "Description": "",
-                    "Name": "GAME_STORE_METADATA_LEGACY_S2_BUNDLE_GOLD_TITLE",
-                    "ShopId": "https://www.epicgames.com/store/p/hitman-3--access-pass-hitman-2-gold-01",
-                    "Categories": ["upgrade"],
-                    "PackageName": "h2legacyexpansion",
-                    "UserWhitelist": null,
-                    "UserBlacklist": ["h2legacystandard", "h2legacyexpansion"],
                     "Properties": {
                         "SmallTile": true
                     },
@@ -102,18 +77,13 @@
                     "ShopId": "https://www.epicgames.com/store/p/hitman-3--access-pass-hitman-2-expansion-01",
                     "Categories": ["upgrade"],
                     "PackageName": "h2legacyexpansion",
-                    "UserWhitelist": ["h2legacystandard", "h2legacyexpansion"],
+                    "UserWhitelist": ["h3woaexpansionpartial"],
                     "UserBlacklist": null,
                     "Properties": {
                         "SmallTile": true
                     },
                     "Entitlements": null
-                }
-            ]
-        },
-        {
-            "Name": "deadlysins",
-            "Items": [
+                },
                 {
                     "ImageUrl": "images/store/addon_deadlysins_upgrade.jpg",
                     "Price": null,
@@ -121,14 +91,14 @@
                     "Description": "",
                     "Name": "GAME_STORE_METADATA_S3_BUNDLE_DEADLY_SINS_TITLE",
                     "ShopId": "https://www.epicgames.com/store/p/hitman-3--seven-deadly-sins-collection",
-                    "Categories": ["deadlysins"],
+                    "Categories": ["upgrade"],
                     "PackageName": "",
-                    "UserWhitelist": null,
+                    "UserWhitelist": ["h3woaexpansionpartial"],
                     "UserBlacklist": ["h3deadlysinsfull"],
                     "Properties": {
                         "PS5ServiceLabel": 1,
                         "PS5DiscServiceLabel": 3,
-                        "SmallTile": false
+                        "SmallTile": true
                     },
                     "Entitlements": null
                 },
@@ -139,28 +109,10 @@
                     "Description": "",
                     "Name": "GAME_STORE_METADATA_S3_BUNDLE_DEADLY_SINS_TITLE",
                     "ShopId": "https://www.epicgames.com/store/p/hitman-3--seven-deadly-sins-collection",
-                    "Categories": ["deadlysins"],
+                    "Categories": ["upgrade"],
                     "PackageName": "h3DeadlySinsGreed",
                     "UserWhitelist": ["h3deadlysinsfull"],
-                    "UserBlacklist": null,
-                    "Properties": {
-                        "PS5ServiceLabel": 1,
-                        "PS5DiscServiceLabel": 3,
-                        "SmallTile": false
-                    },
-                    "Entitlements": null
-                },
-                {
-                    "ImageUrl": "images/store/addon_deadlysins_greed.jpg",
-                    "Price": null,
-                    "Currency": null,
-                    "Description": "",
-                    "Name": "GAME_STORE_METADATA_S3_DLC_DEADLY_SINS_GREED_TITLE",
-                    "ShopId": "https://www.epicgames.com/store/p/hitman-3--seven-deadly-sins-act-1-greed",
-                    "Categories": ["deadlysins"],
-                    "PackageName": "h3DeadlySinsGreed",
-                    "UserWhitelist": null,
-                    "UserBlacklist": null,
+                    "UserBlacklist": ["h3woaexpansionfull"],
                     "Properties": {
                         "PS5ServiceLabel": 1,
                         "PS5DiscServiceLabel": 3,
@@ -169,109 +121,35 @@
                     "Entitlements": null
                 },
                 {
-                    "ImageUrl": "images/store/addon_deadlysins_pride.jpg",
+                    "ImageUrl": "images/store/upgrade_h3_vanity_concrete_art.jpg",
                     "Price": null,
                     "Currency": null,
                     "Description": "",
-                    "Name": "GAME_STORE_METADATA_S3_DLC_DEADLY_SINS_PRIDE_TITLE",
-                    "ShopId": "https://www.epicgames.com/store/p/hitman-3--seven-deadly-sins-act-2-pride",
-                    "Categories": ["deadlysins"],
-                    "PackageName": "h3DeadlySinsPride",
+                    "Name": "GAME_STORE_METADATA_S3_DLC_VANITY_CONCRETE_ART_TITLE",
+                    "ShopId": "https://www.epicgames.com/store/p/hitman-3--street-art-pack",
+                    "Categories": ["upgrade"],
+                    "PackageName": "h3VanityConcreteArt",
                     "UserWhitelist": null,
                     "UserBlacklist": null,
                     "Properties": {
-                        "PS5ServiceLabel": 1,
-                        "PS5DiscServiceLabel": 3,
+                        "disabled_SteamOpenUrl": "https://store.steampowered.com/sub/2184790/",
                         "SmallTile": true
                     },
                     "Entitlements": null
                 },
                 {
-                    "ImageUrl": "images/store/addon_deadlysins_sloth.jpg",
+                    "ImageUrl": "images/store/upgrade_h3_vanity_makeshift_scrap.jpg",
                     "Price": null,
                     "Currency": null,
                     "Description": "",
-                    "Name": "GAME_STORE_METADATA_S3_DLC_DEADLY_SINS_SLOTH_TITLE",
-                    "ShopId": "https://www.epicgames.com/store/p/hitman-3--seven-deadly-sins-act-3-sloth",
-                    "Categories": ["deadlysins"],
-                    "PackageName": "h3DeadlySinsSloth",
+                    "Name": "GAME_STORE_METADATA_S3_DLC_VANITY_MAKESHIFT_SCRAP_TITLE",
+                    "ShopId": "https://www.epicgames.com/store/p/hitman-3--makeshift-pack",
+                    "Categories": ["upgrade"],
+                    "PackageName": "h3VanityMakeshiftScrap",
                     "UserWhitelist": null,
                     "UserBlacklist": null,
                     "Properties": {
-                        "PS5ServiceLabel": 1,
-                        "PS5DiscServiceLabel": 3,
-                        "SmallTile": true
-                    },
-                    "Entitlements": null
-                },
-                {
-                    "ImageUrl": "images/store/addon_deadlysins_lust.jpg",
-                    "Price": null,
-                    "Currency": null,
-                    "Description": "",
-                    "Name": "GAME_STORE_METADATA_S3_DLC_DEADLY_SINS_LUST_TITLE",
-                    "ShopId": "https://www.epicgames.com/store/p/hitman-3--seven-deadly-sins-act-4-lust",
-                    "Categories": ["deadlysins"],
-                    "PackageName": "h3DeadlySinsLust",
-                    "UserWhitelist": null,
-                    "UserBlacklist": null,
-                    "Properties": {
-                        "PS5ServiceLabel": 1,
-                        "PS5DiscServiceLabel": 3,
-                        "SmallTile": true
-                    },
-                    "Entitlements": null
-                },
-                {
-                    "ImageUrl": "images/store/addon_deadlysins_gluttony.jpg",
-                    "Price": null,
-                    "Currency": null,
-                    "Description": "",
-                    "Name": "GAME_STORE_METADATA_S3_DLC_DEADLY_SINS_GLUTTONY_TITLE",
-                    "ShopId": "https://www.epicgames.com/store/p/hitman-3--seven-deadly-sins-act-5-gluttony",
-                    "Categories": ["deadlysins"],
-                    "PackageName": "h3DeadlySinsGluttony",
-                    "UserWhitelist": null,
-                    "UserBlacklist": null,
-                    "Properties": {
-                        "PS5ServiceLabel": 1,
-                        "PS5DiscServiceLabel": 3,
-                        "SmallTile": true
-                    },
-                    "Entitlements": null
-                },
-                {
-                    "ImageUrl": "images/store/addon_deadlysins_envy.jpg",
-                    "Price": null,
-                    "Currency": null,
-                    "Description": "",
-                    "Name": "GAME_STORE_METADATA_S3_DLC_DEADLY_SINS_ENVY_TITLE",
-                    "ShopId": "https://www.epicgames.com/store/p/hitman-3--seven-deadly-sins-act-6-envy",
-                    "Categories": ["deadlysins"],
-                    "PackageName": "h3DeadlySinsEnvy",
-                    "UserWhitelist": null,
-                    "UserBlacklist": null,
-                    "Properties": {
-                        "PS5ServiceLabel": 1,
-                        "PS5DiscServiceLabel": 3,
-                        "SmallTile": true
-                    },
-                    "Entitlements": null
-                },
-                {
-                    "ImageUrl": "images/store/addon_deadlysins_wrath.jpg",
-                    "Price": null,
-                    "Currency": null,
-                    "Description": "",
-                    "Name": "GAME_STORE_METADATA_S3_DLC_DEADLY_SINS_WRATH_TITLE",
-                    "ShopId": "https://www.epicgames.com/store/p/hitman-3--seven-deadly-sins-act-7-wrath",
-                    "Categories": ["deadlysins"],
-                    "PackageName": "h3DeadlySinsWrath",
-                    "UserWhitelist": null,
-                    "UserBlacklist": null,
-                    "Properties": {
-                        "PS5ServiceLabel": 1,
-                        "PS5DiscServiceLabel": 3,
+                        "disabled_SteamOpenUrl": "https://store.steampowered.com/sub/2184791/",
                         "SmallTile": true
                     },
                     "Entitlements": null
