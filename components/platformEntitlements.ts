@@ -71,6 +71,8 @@ export const H3_EPIC_ENTITLEMENTS = [
     "9e936ed2507a473db6f53ad24d2da587",
     // SINWRATH:
     "0403062df0d347619c8dcf043c65c02e",
+    // WOASTANDARD:
+    "a3509775467d4d6a8a7adffe518dc204",
     // WOADELUXE:
     "84a1a6fda4fb48afbb78ee9b2addd475",
     // MAKESHIFT:

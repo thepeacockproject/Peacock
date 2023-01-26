@@ -149,6 +149,7 @@ export function createInventory(
                 if (H1_REQUIEM_UNLOCKABLES.includes(id)) {
                     return (
                         e.includes("e698e1a4b63947b0bc9349a5ae2dc015") ||
+                        e.includes("a3509775467d4d6a8a7adffe518dc204") || // WoA Standard
                         e.includes("1843460")
                     )
                 }
@@ -156,6 +157,7 @@ export function createInventory(
                 if (H1_GOTY_UNLOCKABLES.includes(id)) {
                     return (
                         e.includes("894d1e6771044f48a8fdde934b8e443a") ||
+                        e.includes("a3509775467d4d6a8a7adffe518dc204") || // WoA Standard
                         e.includes("1843460") ||
                         e.includes("1829595")
                     )
@@ -208,6 +210,7 @@ export function createInventory(
             if (SIN_GREED_UNLOCKABLES.includes(id)) {
                 return (
                     e.includes("0e8632b4cdfb415e94291d97d727b98d") ||
+                    e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
                     e.includes("1829580")
                 )
             }
@@ -215,6 +218,7 @@ export function createInventory(
             if (SIN_PRIDE_UNLOCKABLES.includes(id)) {
                 return (
                     e.includes("3f9adc216dde44dda5e829f11740a0a2") ||
+                    e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
                     e.includes("1829581")
                 )
             }
@@ -222,6 +226,7 @@ export function createInventory(
             if (SIN_SLOTH_UNLOCKABLES.includes(id)) {
                 return (
                     e.includes("aece009ff59441c0b526f8aa69e24cfb") ||
+                    e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
                     e.includes("1829582")
                 )
             }
@@ -229,6 +234,7 @@ export function createInventory(
             if (SIN_LUST_UNLOCKABLES.includes(id)) {
                 return (
                     e.includes("dfe5aeb89976450ba1e0e2c208b63d33") ||
+                    e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
                     e.includes("1829583")
                 )
             }
@@ -236,6 +242,7 @@ export function createInventory(
             if (SIN_GLUTTONY_UNLOCKABLES.includes(id)) {
                 return (
                     e.includes("30107bff80024d1ab291f9cd3bac9fac") ||
+                    e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
                     e.includes("1829584")
                 )
             }
@@ -243,6 +250,7 @@ export function createInventory(
             if (SIN_ENVY_UNLOCKABLES.includes(id)) {
                 return (
                     e.includes("0403062df0d347619c8dcf043c65c02e") ||
+                    e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
                     e.includes("1829585")
                 )
             }
@@ -250,6 +258,7 @@ export function createInventory(
             if (SIN_WRATH_UNLOCKABLES.includes(id)) {
                 return (
                     e.includes("9e936ed2507a473db6f53ad24d2da587") ||
+                    e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
                     e.includes("1829586")
                 )
             }
