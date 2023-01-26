@@ -20,11 +20,13 @@ import { getVersionedConfig } from "./configSwizzleManager"
 import type { GameVersion, Unlockable } from "./types/types"
 import {
     brokenItems,
+    CONCRETEART_UNLOCKABLES,
     DELUXE_UNLOCKABLES,
     EXECUTIVE_UNLOCKABLES,
     H1_GOTY_UNLOCKABLES,
     H1_REQUIEM_UNLOCKABLES,
     H2_RACCOON_STINGRAY_UNLOCKABLES,
+    MAKESHIFT_UNLOCKABLES,
     SIN_ENVY_UNLOCKABLES,
     SIN_GLUTTONY_UNLOCKABLES,
     SIN_GREED_UNLOCKABLES,
@@ -121,10 +123,16 @@ export function createInventory(
                 return false
             }
 
+            if (unlockContainer.Unlockable.Type === "evergreenmastery") {
+                return false
+            }
+
+            // This way of doing entitlements is a mess, redo this! - AF
             if (gameVersion === "h3") {
                 if (WINTERSPORTS_UNLOCKABLES.includes(id)) {
                     return (
                         e.includes("afa4b921503f43339c360d4b53910791") ||
+                        e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
                         e.includes("1829590")
                     )
                 }
@@ -133,6 +141,7 @@ export function createInventory(
                     return (
                         e.includes("6408de14f7dc46b9a33adcf6cbc4d159") ||
                         e.includes("afa4b921503f43339c360d4b53910791") ||
+                        e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
                         e.includes("1829590")
                     )
                 }
@@ -155,6 +164,7 @@ export function createInventory(
                 if (H2_RACCOON_STINGRAY_UNLOCKABLES.includes(id)) {
                     return (
                         e.includes("afa4b921503f43339c360d4b53910791") ||
+                        e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
                         e.includes("1829590")
                     )
                 }
@@ -180,6 +190,7 @@ export function createInventory(
             if (DELUXE_UNLOCKABLES.includes(id)) {
                 return (
                     e.includes("bc610b36c75442299edcbe99f6f0fb60") ||
+                    e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
                     e.includes("1829591")
                 )
             }
@@ -247,6 +258,21 @@ export function createInventory(
                 return (
                     e.includes("5d06a6c6af9b4875b3530d5328f61287") ||
                     e.includes("1829596")
+                )
+            }
+
+            // The following two must be confirmed, epic entitlements may be in the wrong order! - AF
+            if (MAKESHIFT_UNLOCKABLES.includes(id)) {
+                return (
+                    e.includes("08d2bc4d20754191b6c488541d2b4fa1") ||
+                    e.includes("2184791")
+                )
+            }
+
+            if (CONCRETEART_UNLOCKABLES.includes(id)) {
+                return (
+                    e.includes("a1e9a63fa4f3425aa66b9b8fa3c9cc35") ||
+                    e.includes("2184790")
                 )
             }
 
