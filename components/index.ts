@@ -337,7 +337,7 @@ app.use(
                     break
                 case "fghi4567xQOCheZIin0pazB47qGUvZw4":
                 case STEAM_NAMESPACE_2021:
-                    req.serverVersion = "8-10"
+                    req.serverVersion = "8-11"
                     break
                 default:
                     res.status(400).json({ message: "no game data" })
@@ -447,7 +447,7 @@ app.use(
             }
 
             if (
-                ["6-74", "7-3", "7-17", "8-10"].includes(
+                ["6-74", "7-3", "7-17", "8-11"].includes(
                     <string>req.serverVersion,
                 )
             ) {
