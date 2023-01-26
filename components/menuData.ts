@@ -232,7 +232,7 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
                 req.gameVersion,
             )
 
-        career[parent].Children.push({
+        career[parent]?.Children.push({
             IsLocked: location.Properties.IsLocked,
             Name: location.DisplayNameLocKey,
             Image: location.Properties.Icon,

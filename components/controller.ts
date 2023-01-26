@@ -1201,11 +1201,20 @@ export function contractIdToHitObject(
     }
 
     const subLocation = getSubLocationFromContract(contract, gameVersion)
+    let parentLocId = subLocation?.Properties?.ParentLocation
+    if (parentLocId === "LOCATION_PARENT_ICA_SHIP_FACILITY") {
+        parentLocId = "LOCATION_PARENT_ICA_FACILITY"
+    }
+
+    if (parentLocId === "LOCATION_PARENT_COASTALTOWN_EBOLA") {
+        parentLocId = "LOCATION_PARENT_COASTALTOWN"
+    }
+
     const parentLocation = getVersionedConfig<PeacockLocationsData>(
         "LocationsData",
         gameVersion,
         false,
-    ).parents[subLocation?.Properties?.ParentLocation]
+    ).parents[parentLocId]
 
     // failed to find the location, must be from a newer game
     if (!subLocation && (gameVersion === "h1" || gameVersion === "h2")) {
@@ -1222,9 +1231,10 @@ export function contractIdToHitObject(
         log(LogLevel.ERROR, "No UC due to previous error?")
         return undefined
     }
+    // log(LogLevel.DEBUG, `${JSON.stringify(parentLocation)}`)
     const challenges = controller.challengeService.getGroupedChallengeLists({
         type: ChallengeFilterType.ParentLocation,
-        locationParentId: parentLocation.Id,
+        locationParentId: parentLocation?.Id,
     })
     const challengeCompletion =
         controller.challengeService.countTotalNCompletedChallenges(
