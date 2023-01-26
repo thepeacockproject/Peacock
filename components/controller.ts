@@ -1231,7 +1231,6 @@ export function contractIdToHitObject(
         log(LogLevel.ERROR, "No UC due to previous error?")
         return undefined
     }
-    // log(LogLevel.DEBUG, `${JSON.stringify(parentLocation)}`)
     const challenges = controller.challengeService.getGroupedChallengeLists({
         type: ChallengeFilterType.ParentLocation,
         locationParentId: parentLocation?.Id,
