@@ -84,6 +84,10 @@ export class MenuSystemDatabase {
                     configs.push(
                         "menusystem/elements/settings/data/isnonvroptionvisible.json",
                     )
+
+                    configs.push(
+                        "menusystem/elements/contract/hitscategory_elusive.json",
+                    )
                 }
 
                 if (gameVersion === "h3" || gameVersion === "h1") {
@@ -125,6 +129,11 @@ export class MenuSystemDatabase {
                             $then: "$eq($vrmode,off)",
                             $else: true,
                         },
+                    }
+                case "/elements/contract/hitscategory_elusive.json":
+                    return {
+                        $include:
+                            "menusystem/elements/contract/hitscategory.json",
                     }
                 case "/data/ishitman3available.json":
                     return {
