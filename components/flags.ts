@@ -33,10 +33,6 @@ const defaultFlags: Flags = {
         desc: "For Discord Rich Presence, if set to false, the time playing the current level will be shown, and if set to true, the total time using Peacock will be shown.",
         default: false,
     },
-    officialAuthentication: {
-        desc: "Use official servers for contract downloading",
-        default: true,
-    },
     liveSplit: {
         desc: "Toggle LiveSplit support on or off",
         default: false,
@@ -94,7 +90,7 @@ const defaultFlags: Flags = {
         default: false,
     },
     legacyContractDownloader: {
-        desc: "Use the legacy contract downloader in H3 - only works for the platform you are playing on.",
+        desc: "When set to true, the official servers will be used for contract downloading in H3, which only works for the platform you are playing on. When false, the HITMAPS servers will be used instead. Note that this option only pertains to H3. Official servers will be used for H1 and H2 regardless of the value of this option.",
         default: false,
     },
 }
