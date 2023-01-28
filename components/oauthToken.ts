@@ -104,10 +104,6 @@ export async function handleOauthToken(
 
     if (req.body.pId && !uuidRegex.test(req.body.pId)) {
         res.status(400).end() // pId is not a GUID
-        log(
-            LogLevel.ERROR,
-            `The pId ${JSON.stringify(req.body.pId)} is not a GUID.`,
-        )
         return
     }
 
