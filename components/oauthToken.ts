@@ -130,7 +130,7 @@ export async function handleOauthToken(
         )
         return
     }
-    console.log(external_appid)
+
     const isHitman3 =
         external_appid === "fghi4567xQOCheZIin0pazB47qGUvZw4" ||
         external_appid === STEAM_NAMESPACE_2021
@@ -185,7 +185,6 @@ export async function handleOauthToken(
         : external_appid === STEAM_NAMESPACE_2018
         ? "h2"
         : "h1"
-    console.log(gameVersion)
 
     if (!req.body.pId) {
         // if no profile id supplied
@@ -283,6 +282,7 @@ export async function handleOauthToken(
                     return []
                 }
             }
+
             if (gameVersion === "h2") {
                 return new SteamH2Strategy().get()
             }
