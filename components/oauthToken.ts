@@ -68,12 +68,6 @@ export async function handleOauthToken(
     if (req.body.grant_type === "external_steam") {
         if (!/^\d{1,20}$/.test(req.body.steam_userid)) {
             res.status(400).end() // invalid steam user id
-            log(
-                LogLevel.ERROR,
-                `Invalid steam user id ${JSON.stringify(
-                    req.body.steam_userid,
-                )}.`,
-            )
             return
         }
 
@@ -84,10 +78,6 @@ export async function handleOauthToken(
     } else if (req.body.grant_type === "external_epic") {
         if (!/^[\da-f]{32}$/.test(req.body.epic_userid)) {
             res.status(400).end() // invalid epic user id
-            log(
-                LogLevel.ERROR,
-                `Invalid epic user id ${JSON.stringify(req.body.epic_userid)}.`,
-            )
             return
         }
 
@@ -100,12 +90,6 @@ export async function handleOauthToken(
 
         if (!epic_token || !(epic_token.appid || epic_token.app)) {
             res.status(400).end() // invalid epic access token
-            log(
-                LogLevel.ERROR,
-                `Invalid epic access token ${JSON.stringify(
-                    req.body.access_token,
-                )}.`,
-            )
             return
         }
 
@@ -115,10 +99,6 @@ export async function handleOauthToken(
         external_users_folder = "epicids"
     } else {
         res.status(406).end() // unsupported auth method
-        log(
-            LogLevel.ERROR,
-            `Unsupported auth method ${JSON.stringify(req.body.grant_type)}.`,
-        )
         return
     }
 
