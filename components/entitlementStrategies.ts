@@ -74,6 +74,7 @@ export class IOIStrategy extends EntitlementStrategy {
     }
 
     override async get(userId: string) {
+        // Note: Relies on the "legacyContractDownloader" flag.
         if (!userAuths.has(userId)) {
             log(LogLevel.ERROR, `No data found for ${userId}.`)
             return []

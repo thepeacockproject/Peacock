@@ -60,44 +60,6 @@ export async function handleOauthToken(
         noTimestamp: true,
     }
 
-    //#region Refresh tokens
-    if (req.body.grant_type === "refresh_token") {
-        // send back the token from the request (re-signed so the timestamps update)
-        extractToken(req) // init req.jwt
-        // remove signOptions from existing jwt
-        // ts-expect-error Non-optional, we're reassigning.
-        delete req.jwt.nbf // notBefore
-        // ts-expect-error Non-optional, we're reassigning.
-        delete req.jwt.exp // expiresIn
-        // ts-expect-error Non-optional, we're reassigning.
-        delete req.jwt.iss // issuer
-        // ts-expect-error Non-optional, we're reassigning.
-        delete req.jwt.aud // audience
-
-        if (getFlag("officialAuthentication") === true && !isFrankenstein) {
-            if (userAuths.has(req.jwt.unique_name)) {
-                userAuths
-                    .get(req.jwt.unique_name)!
-                    ._doRefresh()
-                    .then(() => undefined)
-                    .catch(() => {
-                        log(LogLevel.WARN, "Failed authentication refresh.")
-                        userAuths.get(req.jwt.unique_name)!.initialized = false
-                    })
-            }
-        }
-
-        res.json({
-            access_token: sign(req.jwt, "secret", signOptions),
-            token_type: "bearer",
-            expires_in: 5000,
-            refresh_token: randomUUID(),
-        })
-
-        return
-    }
-    //#endregion
-
     let external_platform: "steam" | "epic",
         external_userid: string,
         external_users_folder: "steamids" | "epicids",
@@ -149,6 +111,47 @@ export async function handleOauthToken(
         external_appid === "fghi4567xQOCheZIin0pazB47qGUvZw4" ||
         external_appid === STEAM_NAMESPACE_2021
 
+    //#region Refresh tokens
+    if (req.body.grant_type === "refresh_token") {
+        // send back the token from the request (re-signed so the timestamps update)
+        extractToken(req) // init req.jwt
+        // remove signOptions from existing jwt
+        // ts-expect-error Non-optional, we're reassigning.
+        delete req.jwt.nbf // notBefore
+        // ts-expect-error Non-optional, we're reassigning.
+        delete req.jwt.exp // expiresIn
+        // ts-expect-error Non-optional, we're reassigning.
+        delete req.jwt.iss // issuer
+        // ts-expect-error Non-optional, we're reassigning.
+        delete req.jwt.aud // audience
+
+        if (
+            (getFlag("legacyContractDownloader") === true && isHitman3) ||
+            !isFrankenstein
+        ) {
+            if (userAuths.has(req.jwt.unique_name)) {
+                userAuths
+                    .get(req.jwt.unique_name)!
+                    ._doRefresh()
+                    .then(() => undefined)
+                    .catch(() => {
+                        log(LogLevel.WARN, "Failed authentication refresh.")
+                        userAuths.get(req.jwt.unique_name)!.initialized = false
+                    })
+            }
+        }
+
+        res.json({
+            access_token: sign(req.jwt, "secret", signOptions),
+            token_type: "bearer",
+            expires_in: 5000,
+            refresh_token: randomUUID(),
+        })
+
+        return
+    }
+    //#endregion
+
     const gameVersion: GameVersion = isFrankenstein
         ? "scpc"
         : isHitman3
@@ -197,7 +200,10 @@ export async function handleOauthToken(
         log(LogLevel.DEBUG, "Unable to load profile information.")
     }
 
-    if (getFlag("officialAuthentication") === true && !isFrankenstein) {
+    if (
+        (getFlag("legacyContractDownloader") === true && isHitman3) ||
+        !isFrankenstein
+    ) {
         const authContainer = new OfficialServerAuth(
             gameVersion,
             req.body.access_token,
