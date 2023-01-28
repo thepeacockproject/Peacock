@@ -982,7 +982,11 @@ export class Controller {
         userId: string,
     ): Promise<MissionManifest | undefined> {
         const remoteService =
-            gameVersion === "h2" ? "pc2-service" : "pc-service"
+            gameVersion === "h3"
+                ? "hm3-service"
+                : gameVersion === "h2"
+                ? "pc2-service"
+                : "pc-service"
 
         const user = userAuths.get(userId)
 
@@ -1201,20 +1205,12 @@ export function contractIdToHitObject(
     }
 
     const subLocation = getSubLocationFromContract(contract, gameVersion)
-    let parentLocId = subLocation?.Properties?.ParentLocation
-    if (parentLocId === "LOCATION_PARENT_ICA_SHIP_FACILITY") {
-        parentLocId = "LOCATION_PARENT_ICA_FACILITY"
-    }
-
-    if (parentLocId === "LOCATION_PARENT_COASTALTOWN_EBOLA") {
-        parentLocId = "LOCATION_PARENT_COASTALTOWN"
-    }
 
     const parentLocation = getVersionedConfig<PeacockLocationsData>(
         "LocationsData",
         gameVersion,
         false,
-    ).parents[parentLocId]
+    ).parents[subLocation?.Properties?.ParentLocation]
 
     // failed to find the location, must be from a newer game
     if (!subLocation && (gameVersion === "h1" || gameVersion === "h2")) {
