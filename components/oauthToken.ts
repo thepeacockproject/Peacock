@@ -309,6 +309,7 @@ export async function handleOauthToken(
         }
 
         userData.Extensions.entP = await getEntitlements()
+
         if (
             Object.prototype.hasOwnProperty.call(
                 userData.Extensions,
