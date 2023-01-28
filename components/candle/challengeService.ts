@@ -734,6 +734,7 @@ export class ChallengeService extends ChallengeRegistry {
         progression: ChallengeProgressionData,
         gameVersion: GameVersion,
         userId: string,
+        isDestination = false,
     ): CompiledChallengeTreeData {
         return {
             // GetChallengeTreeFor
@@ -746,7 +747,7 @@ export class ChallengeService extends ChallengeRegistry {
             },
             Drops: [],
             Completed: progression.Completed,
-            IsPlayable: challenge.IsPlayable || false,
+            IsPlayable: isDestination,
             IsLocked: challenge.IsLocked || false,
             HideProgression: false,
             CategoryName:
@@ -827,6 +828,7 @@ export class ChallengeService extends ChallengeRegistry {
                 progression,
                 gameVersion,
                 userId,
+                true, //isDestination
             ),
             UserCentricContract:
                 challenge.Type === "contract"
