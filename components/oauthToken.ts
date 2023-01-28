@@ -68,6 +68,12 @@ export async function handleOauthToken(
     if (req.body.grant_type === "external_steam") {
         if (!/^\d{1,20}$/.test(req.body.steam_userid)) {
             res.status(400).end() // invalid steam user id
+            log(
+                LogLevel.ERROR,
+                `Invalid steam user id ${JSON.stringify(
+                    req.body.steam_userid,
+                )}.`,
+            )
             return
         }
 
@@ -78,6 +84,10 @@ export async function handleOauthToken(
     } else if (req.body.grant_type === "external_epic") {
         if (!/^[\da-f]{32}$/.test(req.body.epic_userid)) {
             res.status(400).end() // invalid epic user id
+            log(
+                LogLevel.ERROR,
+                `Invalid epic user id ${JSON.stringify(req.body.epic_userid)}.`,
+            )
             return
         }
 
@@ -90,6 +100,12 @@ export async function handleOauthToken(
 
         if (!epic_token || !(epic_token.appid || epic_token.app)) {
             res.status(400).end() // invalid epic access token
+            log(
+                LogLevel.ERROR,
+                `Invalid epic access token ${JSON.stringify(
+                    req.body.access_token,
+                )}.`,
+            )
             return
         }
 
@@ -99,11 +115,19 @@ export async function handleOauthToken(
         external_users_folder = "epicids"
     } else {
         res.status(406).end() // unsupported auth method
+        log(
+            LogLevel.ERROR,
+            `Unsupported auth method ${JSON.stringify(req.body.grant_type)}.`,
+        )
         return
     }
 
     if (req.body.pId && !uuidRegex.test(req.body.pId)) {
         res.status(400).end() // pId is not a GUID
+        log(
+            LogLevel.ERROR,
+            `The pId ${JSON.stringify(req.body.pId)} is not a GUID.`,
+        )
         return
     }
 
@@ -126,7 +150,9 @@ export async function handleOauthToken(
         delete req.jwt.aud // audience
 
         if (
-            (getFlag("legacyContractDownloader") === true && isHitman3) ||
+            ((external_platform === "steam" ||
+                getFlag("legacyContractDownloader") === true) &&
+                isHitman3) ||
             !isFrankenstein
         ) {
             if (userAuths.has(req.jwt.unique_name)) {
@@ -199,9 +225,15 @@ export async function handleOauthToken(
     } catch (e) {
         log(LogLevel.DEBUG, "Unable to load profile information.")
     }
-
+    /* 
+       Never store user auth for scpc
+       Always store user auth for H1 & H2
+       If on steam or using legacy contract downloader, then store user auth for H3 
+    */
     if (
-        (getFlag("legacyContractDownloader") === true && isHitman3) ||
+        ((external_platform === "steam" ||
+            getFlag("legacyContractDownloader") === true) &&
+            isHitman3) ||
         !isFrankenstein
     ) {
         const authContainer = new OfficialServerAuth(
@@ -277,7 +309,6 @@ export async function handleOauthToken(
         }
 
         userData.Extensions.entP = await getEntitlements()
-
         if (
             Object.prototype.hasOwnProperty.call(
                 userData.Extensions,
