@@ -1,0 +1,287 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "_comment": "------ HIDDEN PRIMARY -----",
+                "Id": "9079018e-8fb0-4b9c-9c05-2d3c4f54de66",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "IgnoreIfInactive": true,
+                "ExcludeFromScoring": true,
+                "IsHidden": true,
+                "Type": "statemachine",
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "CompleteEvergreenPrimaryObj": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "------ ELIMINATE SYNDICATE TARGETS -----",
+                "Id": "b05e008a-6140-41ec-a933-155207587146",
+                "Category": "secondary",
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": false,
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": true
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Image": "images/evergreen/objective/evergreen_objective_primary_mild.jpg",
+                "BriefingName": "$loc UI_CONTRACT_EVERGREEN_MILD_BRIEFINGNAME",
+                "BriefingText": "$loc UI_CONTRACT_EVERGREEN_MILD_BRIEFINGTEXT",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_EVERGREEN_MILD_PRIMARY",
+                    "iconType": 0
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "ContextListeners": {
+                        "update_counter": {
+                            "type": "custom",
+                            "HUDTemplate": {
+                                "iconType": 0,
+                                "display": {
+                                    "$loc": {
+                                        "key": "UI_CONTRACT_EVERGREEN_MILD_PRIMARY",
+                                        "data": [
+                                            "$.TargetsKilled",
+                                            "$.TargetsTotal"
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "Context": {
+                        "update_counter": 1,
+                        "TargetsKilled": 0,
+                        "TargetsTotal": 0,
+                        "Targets": []
+                    },
+                    "States": {
+                        "Start": {
+                            "AddSyndicateTarget": [
+                                {
+                                    "Actions": {
+                                        "$pushunique": [
+                                            "Targets",
+                                            "$Value.repoID"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "Actions": {
+                                        "$inc": "TargetsTotal",
+                                        "$dec": "update_counter"
+                                    }
+                                }
+                            ],
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$inarray": {
+                                            "in": "$.Targets",
+                                            "?": {
+                                                "$eq": [
+                                                    "$.#",
+                                                    "$Value.RepositoryId"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "Actions": {
+                                        "$inc": "TargetsKilled",
+                                        "$dec": "update_counter"
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$.TargetsKilled",
+                                            "$.TargetsTotal"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ],
+                            "PrestigeObjFailedHC_Event": {
+                                "Transition": "Failure",
+                                "Actions": {
+                                    "$set": ["Targets", []]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/theark/mission_mild_whist.brick"
+        ],
+        "DevOnlyBricks": [
+            "assembly:/_pro/scenes/missions/theark/dev_mild_whist.brick"
+        ],
+        "GameModesBricks": null,
+        "EngineModesBricks": null,
+        "GameDifficulties": [
+            {
+                "Difficulty": "easy",
+                "Bricks": []
+            },
+            {
+                "Difficulty": "normal",
+                "Bricks": []
+            },
+            {
+                "Difficulty": "hard",
+                "Bricks": [
+                    "assembly:/_pro/scenes/missions/theark/difficulty_hard_northsea_magpie.brick"
+                ]
+            }
+        ],
+        "VR": null,
+        "GameChangers": [
+            "325740ad-7289-43d0-acfd-7133d695a586",
+            "d5b80447-6545-4336-aba7-4e389b0b877f",
+            "57dbb412-f797-4e77-9dac-cd3ba0d1675c",
+            "c941d5da-7fe5-4ffb-9445-8b61edaa8bb3",
+            "ebd4c2aa-5939-4223-a96b-81b270d47f21",
+            "33f264cb-185a-4cd6-939c-e39e95df1865",
+            "6e901627-d841-46ff-a0ce-c3dec11207b0",
+            "86cfa940-70e9-4e5e-bdc5-1ab11dceb9f5",
+            "e95b6d33-78fc-44f2-adf0-0672fdeb2550",
+            "bc9646d8-5fa0-45fd-821a-baeee7cd9b77",
+            "249c9866-33bd-4c90-8288-fc065ad80f5a",
+            "db28578b-5f77-4919-bb70-c0a7cdb49e00",
+            "398b1fe2-4fbc-4505-a3ab-961b4c9032b1",
+            "8e27516e-3b73-486c-9abb-d00689841795",
+            "4fab9aa7-0929-43d6-940c-cb29bfdb312c",
+            "f6c66887-c181-4b5f-8b9e-cb2ffef95735",
+            "e1825605-23d5-4bf7-88ae-ea7ec23e1291",
+            "074d076c-00bd-4758-b77d-62deacb0f669",
+            "8d776dfb-6f7c-4a11-be1a-a7639733b319",
+            "6a8fea03-ff58-448d-9369-a4e1b9ea1b6d",
+            "f209a5d9-4880-4b51-9cf2-5faaacb4a4e6",
+            "61e0090e-efee-44f6-a9ef-20513cbf2363",
+            "85881b8c-8ee5-4e34-bf73-24c7e41f00b4",
+            "091f64ab-55a0-4fe4-8abf-220270a81211",
+            "dc5cdaf6-7254-4ed1-ae18-845ee4ff2eb7",
+            "9edc7518-5b47-4ffb-a995-87b461092ba9",
+            "4fe457a9-fdf7-4de7-8f62-2a6a2d28b6c1",
+            "2aad5a65-5a9c-4a86-9287-2b8a6f8dd2e4",
+            "6c9fa748-c1b0-4a49-a052-35a66cb2188b",
+            "456e3c81-c3d4-49b4-a2b6-1bc7f7b4cef4",
+            "9dc9ef26-ce0e-4542-b8e2-2ba8e562b355",
+            "d2f8006c-a9ce-42d2-a433-67d84e3c4217",
+            "db9e3a01-f135-4b39-9132-316380a40661",
+            "06880ede-482a-40d4-9fc7-88606f228a5f",
+            "9106b979-7eaf-4a7d-ad3a-0f4531945a28",
+            "09771b41-c436-40f0-9f25-22a50da9b0dc",
+            "9d5212b3-d4cc-4f1d-9666-b4b2673a35b4",
+            "7f590b49-da75-4035-a5d8-1a5831ca5bd0",
+            "243488ef-c5b8-4e31-8a78-3e9e7a3fd81b",
+            "e364d1c4-85d4-4c68-b6de-58071b8b4166",
+            "ba7ca785-e249-472b-bf9c-a70d7f294bec",
+            "8060fb48-9523-4d92-82ef-43af7e7d7790",
+            "a913d3a1-52b6-4e50-bf56-5b39406cff47",
+            "a3061d5f-be3b-4668-8ac0-481ae349f9b7",
+            "875a2e98-a4ef-4d87-89f1-f878cd2e6401",
+            "57dc20af-b013-42f1-be07-3eb414513e17",
+            "b989127d-ae32-40ff-9e5f-e40e5aa92fba",
+            "508ec166-4457-46e5-877a-55d03b3d4925",
+            "732c0ad0-6578-47da-9361-1cfe64e4c8c0",
+            "77a28286-7fb5-4dae-8137-f9aec249c27d",
+            "af3724ed-42e4-4344-bf99-77fd5f12c020",
+            "2e21724a-0859-4e98-814e-bc1e489fd903",
+            "4621e821-125c-4b80-8447-88722b524ba4",
+            "a6e2156c-b7e4-4afe-92fb-f2b50f6aaa45",
+            "d082fd57-da97-4b42-aba6-c5b158f1a3cb",
+            "7bfb420d-f7ba-40db-afbe-398f661370fc",
+            "698dda86-2c0d-4267-bc82-ecf1bfc3c180",
+            "968b68fd-dc97-479e-8a04-afac1cff98e6",
+            "b12060d1-caa1-48ad-b73a-986edbcde7de",
+            "1587a876-c337-49b9-9511-461b8a3490c7",
+            "63ff95e7-2ae0-48ce-9592-0962ff5fa540",
+            "87316545-6b14-402f-8d90-1d4f3a590041",
+            "b25c884a-1c84-4513-914f-9ccb82e84210",
+            "ab897be7-5560-4742-9d60-bc7c5a98e699",
+            "90714d17-dc6f-471f-ae29-ccd682d2a404",
+            "71ee4770-bf3c-4993-9f79-9b681440b96b",
+            "07dde709-359b-4250-ae4f-3bfadd1cd337",
+            "3f2ecf0e-7c27-40da-a6b2-eb7990322b37",
+            "b8f1c2d3-4e3b-4a32-8d8a-b13e8b6d4f7d",
+            "46406d35-a2fd-4617-ab61-205535535342",
+            "a8848c26-b308-4664-9d06-e090fd2642d9",
+            "e5ed3372-c2a4-425d-9d06-7afc7be604de",
+            "d19c35c2-fde5-4a7a-8ebf-33d5b44e8b86",
+            "996efd7a-e620-43d3-8d20-f430b64cd079",
+            "5fb689f8-6894-4733-9a20-e79df5e53316",
+            "e225b335-37b5-487c-b646-6ea881ba28a5",
+            "5e17765c-76e0-4fca-b63e-5f3dc4dbf851",
+            "6c0c58a0-b616-4efd-abc7-22ff0b2579c6",
+            "b09a412b-e5de-4e6f-b41b-860b6393bd81",
+            "bfa7647d-de7f-4c05-ac9f-9d5a7fd5fc3a",
+            "7e33a41e-16de-446a-a29b-7b834ba57b1b",
+            "df6c8793-b73a-4a35-bcd5-001d150f3002",
+            "c53330eb-9a50-4517-9f44-cf7c52136899",
+            "77dd42a7-0c6e-4259-9079-1d69275bf23e",
+            "332f6a83-eb6e-4a88-8e31-abe2798c4b87",
+            "4448f502-409a-415e-9b3a-edefc81b26d6",
+            "a176c14c-a37c-4a53-8e10-2c8ec679ebf2",
+            "2243a7e5-2615-4edc-9a1c-f6d9bd2aa40e",
+            "38b344af-b3e8-45b8-9e8a-5b38797b34d6",
+            "41020fb3-649f-4a2d-8827-6b581e77eb74",
+            "3db84c39-aec2-46da-a1d7-3fff9cb98e56",
+            "2b68c44e-8a54-4974-adcc-97ea5aa0a530",
+            "28e73f98-e6f7-4d71-8c4b-95b04e4e1350",
+            "8e1008b1-1053-4f08-9e2a-55deba7883fd",
+            "a29a186f-38d4-4559-84cf-296e5d92d7e0",
+            "33809fbf-c91b-4252-8b3e-602282c22799",
+            "439d8f99-6283-4f33-962e-cf3fad89073c",
+            "4e706470-0415-4ef6-8f1e-fbdec8ad98f3"
+        ]
+    },
+    "Metadata": {
+        "Id": "37be638c-4265-4622-9326-8835b8535180",
+        "IsPublished": true,
+        "CreationTimestamp": "2021-02-19T10:35:07.5164467Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_EVERGREEN_MILD_TITLE",
+        "Description": "",
+        "CodeName_Hint": "Mild_Whist",
+        "Location": "LOCATION_SNUG_NORTHSEA_WHIST",
+        "ScenePath": "assembly:/_pro/scenes/missions/theark/scene_magpie_mild_whist.entity",
+        "TileImage": "images/test/placeholder.jpg",
+        "Type": "evergreen",
+        "Subtype": "specialassignment",
+        "Release": {
+            "Major": 3,
+            "Minor": 130,
+            "Build": -1,
+            "Revision": -1
+        },
+        "GameModes": null,
+        "EngineModes": null,
+        "IsVersus": false,
+        "UseContractProgressionData": true,
+        "CpdId": "f8ec92c2-4fa2-471e-ae08-545480c746ee",
+        "EvergreenMissionName": "Whist",
+        "EvergreenMissionType": "Mild",
+        "Entitlements": ["H2_LEGACY_STANDARD"],
+        "LastUpdate": "2023-01-27T15:19:32.95903Z",
+        "PublicId": "099512449447",
+        "IsFeatured": false,
+        "OpportunityData": []
+    },
+    "UserData": {}
+}
