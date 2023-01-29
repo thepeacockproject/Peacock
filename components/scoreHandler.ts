@@ -316,30 +316,18 @@ export async function missionEnd(
             },
             Challenges: Object.values(contractChallenges)
                 .flat()
-                // FIXME: This behaviour may not be accurate to original server
-                .filter((challengeData) =>
-                    controller.challengeService.fastGetIsCompleted(
+                .filter((challengeData) => {
+                    return controller.challengeService.fastGetIsUnticked(
                         userData,
                         challengeData.Id,
-                    ),
-                )
-                .map((challengeData) =>
-                    controller.challengeService.compileRegistryChallengeTreeData(
-                        controller.challengeService.getPersistentChallengeProgression(
-                            req.jwt.unique_name,
-                            challengeData.Id,
-                            req.gameVersion,
-                        )
-                    return progression.Completed && !progression.Ticked
+                    )
                 })
                 .map((challengeData) => {
                     const userId = req.jwt.unique_name
                     const gameVersion = req.gameVersion
-                    getUserData(
-                        userId,
-                        gameVersion,
-                    ).Extensions.ChallengeProgression[challengeData.Id].Ticked =
-                        true
+                    userData.Extensions.ChallengeProgression[
+                        challengeData.Id
+                    ].Ticked = true
                     writeUserData(userId, gameVersion)
                     return {
                         ChallengeId: challengeData.Id,
