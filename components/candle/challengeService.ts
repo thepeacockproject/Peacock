@@ -189,6 +189,24 @@ export class ChallengeService extends ChallengeRegistry {
         )
     }
 
+    /**
+     * Same concept as {@link fastGetIsCompleted},
+     * but for if a challenge is unticked.
+     *
+     * @param userData The user's data object. Will not be modified.
+     * @param challengeId The ID of the challenge.
+     * @returns Whether the challenge is completed and unticked.
+     * @see fastGetIsCompleted
+     */
+    fastGetIsUnticked(
+        userData: Readonly<UserProfile>,
+        challengeId: string,
+    ): boolean {
+        const progression =
+            userData.Extensions.ChallengeProgression[challengeId]
+        return (progression?.Completed && !progression.Ticked) || false
+    }
+
     getPersistentChallengeProgression(
         userId: string,
         challengeId: string,
@@ -217,6 +235,7 @@ export class ChallengeService extends ChallengeRegistry {
 
         // apply default context if no progression exists
         data[challengeId] ??= {
+            Ticked: false,
             Completed: false,
             State: initialContext,
         }
@@ -231,6 +250,7 @@ export class ChallengeService extends ChallengeRegistry {
 
         return {
             Completed: data[challengeId].Completed,
+            Ticked: data[challengeId].Ticked,
             State: data[challengeId].State,
             ChallengeId: challengeId,
             ProfileId: userId,
@@ -902,6 +922,7 @@ export class ChallengeService extends ChallengeRegistry {
         userData.Extensions.ChallengeProgression[challenge.Id] ??= {
             State: {},
             Completed: false,
+            Ticked: false,
         }
 
         userData.Extensions.ChallengeProgression[challenge.Id].Completed = true
