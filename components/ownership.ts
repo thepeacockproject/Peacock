@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2022 The Peacock Project Team
+ *     Copyright (C) 2021-2023 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -195,6 +195,26 @@ export const TRINITY_UNLOCKABLES = [
     "FIREARMS_PISTOL_DEATH_BALLER",
     "TOKEN_OUTFIT_HERO_DEATH_SUIT",
     "PROP_CONTAINER_SUITCASE_DEATH",
+]
+
+export const MAKESHIFT_UNLOCKABLES = [
+    "FIREARMS_HERO_PISTOL_MAKESHIFT",
+    "FIREARMS_HERO_SHOTGUN_MAKESHIFT",
+    "FIREARMS_HERO_RIFLE_MAKESHIFT",
+    "FIREARMS_HERO_SMG_TAC_SMG_MAKESHIFT",
+    "FIREARMS_HERO_SNIPER_MAKESHIFT",
+    "PROP_MELEE_KATANA_MAKESHIFT",
+    "TOKEN_OUTFIT_HERO_MAKESHIFT",
+]
+
+export const CONCRETEART_UNLOCKABLES = [
+    "FIREARMS_HERO_PISTOL_CONCRETEART",
+    "FIREARMS_HERO_SHOTGUN_CONCRETEART",
+    "FIREARMS_HERO_RIFLE_CONCRETEART",
+    "FIREARMS_HERO_SMG_TAC_SMG_CONCRETEART",
+    "FIREARMS_HERO_SNIPER_CONCRETEART",
+    "PROP_MELEE_BASEBALLBAT_CONCRETEART",
+    "TOKEN_OUTFIT_HERO_CONCRETEART",
 ]
 
 export const brokenItems = [

@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2022 The Peacock Project Team
+ *     Copyright (C) 2021-2023 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -982,7 +982,11 @@ export class Controller {
         userId: string,
     ): Promise<MissionManifest | undefined> {
         const remoteService =
-            gameVersion === "h2" ? "pc2-service" : "pc-service"
+            gameVersion === "h3"
+                ? "hm3-service"
+                : gameVersion === "h2"
+                ? "pc2-service"
+                : "pc-service"
 
         const user = userAuths.get(userId)
 
@@ -1201,6 +1205,7 @@ export function contractIdToHitObject(
     }
 
     const subLocation = getSubLocationFromContract(contract, gameVersion)
+
     const parentLocation = getVersionedConfig<PeacockLocationsData>(
         "LocationsData",
         gameVersion,
@@ -1222,10 +1227,12 @@ export function contractIdToHitObject(
         log(LogLevel.ERROR, "No UC due to previous error?")
         return undefined
     }
+
     const challenges = controller.challengeService.getGroupedChallengeLists({
         type: ChallengeFilterType.ParentLocation,
-        locationParentId: parentLocation.Id,
+        locationParentId: parentLocation?.Id,
     })
+
     const challengeCompletion =
         controller.challengeService.countTotalNCompletedChallenges(
             challenges,

@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2022 The Peacock Project Team
+ *     Copyright (C) 2021-2023 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -352,8 +352,8 @@ export class LiveSplitClient extends EventEmitter {
      * @internal
      */
     private async _waitForResponse(): LiveSplitResult {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        let listener: ((...args: any[]) => void) | undefined = undefined
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any,@typescript-eslint/no-empty-function
+        let listener: (...args: any[]) => void = () => {}
 
         const responseRecieved = new Promise<Awaited<LiveSplitResult>>(
             (resolve) => {

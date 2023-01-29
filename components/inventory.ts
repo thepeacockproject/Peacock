@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2022 The Peacock Project Team
+ *     Copyright (C) 2021-2023 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -20,11 +20,13 @@ import { getVersionedConfig } from "./configSwizzleManager"
 import type { GameVersion, Unlockable } from "./types/types"
 import {
     brokenItems,
+    CONCRETEART_UNLOCKABLES,
     DELUXE_UNLOCKABLES,
     EXECUTIVE_UNLOCKABLES,
     H1_GOTY_UNLOCKABLES,
     H1_REQUIEM_UNLOCKABLES,
     H2_RACCOON_STINGRAY_UNLOCKABLES,
+    MAKESHIFT_UNLOCKABLES,
     SIN_ENVY_UNLOCKABLES,
     SIN_GLUTTONY_UNLOCKABLES,
     SIN_GREED_UNLOCKABLES,
@@ -121,10 +123,16 @@ export function createInventory(
                 return false
             }
 
+            if (unlockContainer.Unlockable.Type === "evergreenmastery") {
+                return false
+            }
+
+            // This way of doing entitlements is a mess, redo this! - AF
             if (gameVersion === "h3") {
                 if (WINTERSPORTS_UNLOCKABLES.includes(id)) {
                     return (
                         e.includes("afa4b921503f43339c360d4b53910791") ||
+                        e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
                         e.includes("1829590")
                     )
                 }
@@ -133,6 +141,7 @@ export function createInventory(
                     return (
                         e.includes("6408de14f7dc46b9a33adcf6cbc4d159") ||
                         e.includes("afa4b921503f43339c360d4b53910791") ||
+                        e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
                         e.includes("1829590")
                     )
                 }
@@ -140,6 +149,7 @@ export function createInventory(
                 if (H1_REQUIEM_UNLOCKABLES.includes(id)) {
                     return (
                         e.includes("e698e1a4b63947b0bc9349a5ae2dc015") ||
+                        e.includes("a3509775467d4d6a8a7adffe518dc204") || // WoA Standard
                         e.includes("1843460")
                     )
                 }
@@ -147,6 +157,7 @@ export function createInventory(
                 if (H1_GOTY_UNLOCKABLES.includes(id)) {
                     return (
                         e.includes("894d1e6771044f48a8fdde934b8e443a") ||
+                        e.includes("a3509775467d4d6a8a7adffe518dc204") || // WoA Standard
                         e.includes("1843460") ||
                         e.includes("1829595")
                     )
@@ -155,6 +166,7 @@ export function createInventory(
                 if (H2_RACCOON_STINGRAY_UNLOCKABLES.includes(id)) {
                     return (
                         e.includes("afa4b921503f43339c360d4b53910791") ||
+                        e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
                         e.includes("1829590")
                     )
                 }
@@ -180,6 +192,7 @@ export function createInventory(
             if (DELUXE_UNLOCKABLES.includes(id)) {
                 return (
                     e.includes("bc610b36c75442299edcbe99f6f0fb60") ||
+                    e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
                     e.includes("1829591")
                 )
             }
@@ -197,6 +210,7 @@ export function createInventory(
             if (SIN_GREED_UNLOCKABLES.includes(id)) {
                 return (
                     e.includes("0e8632b4cdfb415e94291d97d727b98d") ||
+                    e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
                     e.includes("1829580")
                 )
             }
@@ -204,6 +218,7 @@ export function createInventory(
             if (SIN_PRIDE_UNLOCKABLES.includes(id)) {
                 return (
                     e.includes("3f9adc216dde44dda5e829f11740a0a2") ||
+                    e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
                     e.includes("1829581")
                 )
             }
@@ -211,6 +226,7 @@ export function createInventory(
             if (SIN_SLOTH_UNLOCKABLES.includes(id)) {
                 return (
                     e.includes("aece009ff59441c0b526f8aa69e24cfb") ||
+                    e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
                     e.includes("1829582")
                 )
             }
@@ -218,6 +234,7 @@ export function createInventory(
             if (SIN_LUST_UNLOCKABLES.includes(id)) {
                 return (
                     e.includes("dfe5aeb89976450ba1e0e2c208b63d33") ||
+                    e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
                     e.includes("1829583")
                 )
             }
@@ -225,6 +242,7 @@ export function createInventory(
             if (SIN_GLUTTONY_UNLOCKABLES.includes(id)) {
                 return (
                     e.includes("30107bff80024d1ab291f9cd3bac9fac") ||
+                    e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
                     e.includes("1829584")
                 )
             }
@@ -232,6 +250,7 @@ export function createInventory(
             if (SIN_ENVY_UNLOCKABLES.includes(id)) {
                 return (
                     e.includes("0403062df0d347619c8dcf043c65c02e") ||
+                    e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
                     e.includes("1829585")
                 )
             }
@@ -239,6 +258,7 @@ export function createInventory(
             if (SIN_WRATH_UNLOCKABLES.includes(id)) {
                 return (
                     e.includes("9e936ed2507a473db6f53ad24d2da587") ||
+                    e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
                     e.includes("1829586")
                 )
             }
@@ -247,6 +267,21 @@ export function createInventory(
                 return (
                     e.includes("5d06a6c6af9b4875b3530d5328f61287") ||
                     e.includes("1829596")
+                )
+            }
+
+            // The following two must be confirmed, epic entitlements may be in the wrong order! - AF
+            if (MAKESHIFT_UNLOCKABLES.includes(id)) {
+                return (
+                    e.includes("08d2bc4d20754191b6c488541d2b4fa1") ||
+                    e.includes("2184791")
+                )
+            }
+
+            if (CONCRETEART_UNLOCKABLES.includes(id)) {
+                return (
+                    e.includes("a1e9a63fa4f3425aa66b9b8fa3c9cc35") ||
+                    e.includes("2184790")
                 )
             }
 

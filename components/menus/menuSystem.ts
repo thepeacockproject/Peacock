@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2022 The Peacock Project Team
+ *     Copyright (C) 2021-2023 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -33,7 +33,7 @@ import { SyncBailHook, SyncHook } from "../hooksImpl"
 const menuSystemPreRouter = Router()
 const menuSystemRouter = Router()
 
-// /resources-8-10/
+// /resources-8-11/
 
 /**
  * A class for managing the menu system's fetched JSON data.
@@ -84,6 +84,10 @@ export class MenuSystemDatabase {
                     configs.push(
                         "menusystem/elements/settings/data/isnonvroptionvisible.json",
                     )
+
+                    configs.push(
+                        "menusystem/elements/contract/hitscategory_elusive.json",
+                    )
                 }
 
                 if (gameVersion === "h3" || gameVersion === "h1") {
@@ -125,6 +129,11 @@ export class MenuSystemDatabase {
                             $then: "$eq($vrmode,off)",
                             $else: true,
                         },
+                    }
+                case "/elements/contract/hitscategory_elusive.json":
+                    return {
+                        $include:
+                            "menusystem/elements/contract/hitscategory.json",
                     }
                 case "/data/ishitman3available.json":
                     return {
