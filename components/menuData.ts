@@ -217,11 +217,10 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
     }
 
     for (const child in locations.children) {
-        // continue
-
         if (
             child === "LOCATION_ICA_FACILITY_ARRIVAL" ||
-            child === "LOCATION_HOKKAIDO_SHIM_MAMUSHI"
+            child === "LOCATION_HOKKAIDO_SHIM_MAMUSHI" ||
+            child.search("SNUG_") > 0
         ) {
             continue
         }
