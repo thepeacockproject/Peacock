@@ -1193,7 +1193,10 @@ menuDataRouter.get(
 
 menuDataRouter.get(
     "/HitsCategory",
-    (req: RequestWithJwt<{ type: string; page?: number | string }>, res) => {
+    async (
+        req: RequestWithJwt<{ type: string; page?: number | string }>,
+        res,
+    ) => {
         const category = req.query.type
 
         const response: {
@@ -1215,7 +1218,7 @@ menuDataRouter.get(
 
         pageNumber = pageNumber < 0 ? 0 : pageNumber
 
-        response.data = hitsCategoryService.paginateHitsCategory(
+        response.data = await hitsCategoryService.paginateHitsCategory(
             category,
             pageNumber as number,
             req.gameVersion,

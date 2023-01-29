@@ -25,6 +25,8 @@ import {
 } from "../controller"
 import { getUserData } from "../databaseHandler"
 import { orderedETs } from "./elusiveTargets"
+import { userAuths } from "components/officialServerAuth"
+import { log, LogLevel } from "components/loggingInterop"
 
 function paginate<Element>(
     elements: Element[],
@@ -95,6 +97,7 @@ export class HitsCategoryService {
      * Hits categories that should not be automatically paginated.
      */
     public paginationExempt = ["Elusive_Target_Hits", "Arcade", "Sniper"]
+    public realtimeFetched = ["Trending", "MostPlayedLastWeek"]
 
     /**
      * The number of hits per page.
@@ -162,6 +165,34 @@ export class HitsCategoryService {
         // intentionally don't handle Arcade
     }
 
+    private async fetchFromOfficial(
+        categoryName: string,
+        pageNumber: number,
+        gameVersion: GameVersion,
+        userId: string,
+    ): Promise<HitsCategoryCategory> {
+        const remoteService =
+            gameVersion === "h3"
+                ? "hm3-service"
+                : gameVersion === "h2"
+                ? "pc2-service"
+                : "pc-service"
+        const user = userAuths.get(userId)
+
+        if (!user) {
+            log(LogLevel.WARN, `No authentication for user ${userId}!`)
+            return undefined
+        }
+
+        const resp = await user._useService<{
+            data: HitsCategoryCategory
+        }>(
+            `https://${remoteService}.hitman.io/profiles/page/HitsCategory?page=${pageNumber}&type=${categoryName}&mode=dataonly`,
+            true,
+        )
+        return resp.data.data
+    }
+
     /**
      * Generate a {@link HitsCategoryCategory} object for the current page.
      *
@@ -171,12 +202,20 @@ export class HitsCategoryService {
      * @param userId The current user's ID.
      * @returns The {@link HitsCategoryCategory} object.
      */
-    public paginateHitsCategory(
+    public async paginateHitsCategory(
         categoryName: string,
         pageNumber: number,
         gameVersion: GameVersion,
         userId: string,
-    ): HitsCategoryCategory {
+    ): Promise<HitsCategoryCategory> {
+        if (this.realtimeFetched.includes(categoryName)) {
+            return await this.fetchFromOfficial(
+                categoryName,
+                pageNumber,
+                gameVersion,
+                userId,
+            )
+        }
         const hitsCategory: HitsCategoryCategory = {
             Category: categoryName,
             Data: {
