@@ -424,6 +424,7 @@ export interface UserProfile {
         opportunityprogression: {
             [opportunityId: RepositoryId]: boolean
         }
+        CPD: CPDStore
     }
     ETag: string | null
     Gamertag: string
