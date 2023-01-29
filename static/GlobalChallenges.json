@@ -2815,7 +2815,7 @@
             },
             "Tags": ["story", "stats", "hideinhud", "shownotification"],
             "Drops": [],
-            "LastModified": "2021-01-06T23:00:29.1157565",
+            "LastModified": "2023-01-26T11:26:56.7485827",
             "Xp": 0,
             "XpModifier": {},
             "PlayableSince": null,
@@ -2833,11 +2833,13 @@
                     "orbis",
                     "featured",
                     "campaign",
-                    "vsrace"
+                    "vsrace",
+                    "evergreen"
                 ],
                 "Locations": null,
                 "GameModes": null
-            }
+            },
+            "OrderIndex": 10000
         }
     },
     {
@@ -3491,6 +3493,857 @@
                 "Locations": ["LOCATION_GOLDEN_GECKO"],
                 "GameModes": null
             }
+        }
+    },
+    {
+        "Challenge": {
+            "Id": "00553c51-40ee-462b-90f0-7f93f77606f7",
+            "GroupId": "00000000-0000-0000-0000-000000000000",
+            "Name": "UI_EVERGREEN_ACTION_XP_DIFFICULTY_BONUS",
+            "Type": "Hit",
+            "Description": "",
+            "ImageName": null,
+            "Definition": {
+                "ResetOnCycleCompletion": false,
+                "Repeatable": {
+                    "Base": 1,
+                    "Delta": 0
+                },
+                "Scope": "session",
+                "States": {
+                    "Start": {
+                        "ScoringScreenEndState_CampaignCompletedBonusXP_Professional": {
+                            "Transition": "Success"
+                        }
+                    }
+                }
+            },
+            "Tags": ["actionreward", "hard-", "mission"],
+            "Drops": [],
+            "LastModified": "2023-01-26T11:26:56.8989912",
+            "Xp": 3000,
+            "XpModifier": {},
+            "PlayableSince": null,
+            "PlayableUntil": null,
+            "InclusionData": {
+                "ContractIds": null,
+                "ContractTypes": ["evergreen"],
+                "Locations": null,
+                "GameModes": null
+            },
+            "OrderIndex": 10000
+        }
+    },
+    {
+        "Challenge": {
+            "Id": "092c8fbe-694f-4e05-a7b7-55d6d1627ceb",
+            "GroupId": "00000000-0000-0000-0000-000000000000",
+            "Name": "UI_EVERGREEN_ACTION_XP_COMPLETE_HOT",
+            "Type": "Hit",
+            "Description": "",
+            "ImageName": null,
+            "Definition": {
+                "ResetOnCycleCompletion": false,
+                "Repeatable": {
+                    "Base": 1,
+                    "Delta": 0
+                },
+                "Scope": "session",
+                "States": {
+                    "Start": {
+                        "ScoringScreenEndState_HotCompleted": {
+                            "Transition": "Success"
+                        }
+                    }
+                }
+            },
+            "Tags": ["actionreward", "easy", "mission"],
+            "Drops": [],
+            "LastModified": "2023-01-26T11:26:56.831653",
+            "Xp": 1000,
+            "XpModifier": {},
+            "PlayableSince": null,
+            "PlayableUntil": null,
+            "InclusionData": {
+                "ContractIds": null,
+                "ContractTypes": ["evergreen"],
+                "Locations": null,
+                "GameModes": null
+            },
+            "OrderIndex": 10000
+        }
+    },
+    {
+        "Challenge": {
+            "Id": "0df2ac61-87af-49dd-96a1-f602cb3d3254",
+            "GroupId": "00000000-0000-0000-0000-000000000000",
+            "Name": "UI_EVERGREEN_ACTION_XP_DEBUG",
+            "Type": "Hit",
+            "Description": "",
+            "ImageName": null,
+            "Definition": {
+                "ResetOnCycleCompletion": false,
+                "Repeatable": {
+                    "Base": 1,
+                    "Delta": 0
+                },
+                "Scope": "session",
+                "States": {
+                    "Start": {
+                        "Evergreen_DebugXP": {
+                            "Transition": "Success"
+                        }
+                    }
+                }
+            },
+            "Tags": ["actionreward", "easy", "mission"],
+            "Drops": [],
+            "LastModified": "2023-01-26T11:26:56.9266289",
+            "Xp": 1000,
+            "XpModifier": {},
+            "PlayableSince": null,
+            "PlayableUntil": null,
+            "InclusionData": {
+                "ContractIds": null,
+                "ContractTypes": ["evergreen"],
+                "Locations": null,
+                "GameModes": null
+            },
+            "OrderIndex": 10000
+        }
+    },
+    {
+        "Challenge": {
+            "Id": "1453c718-14bc-4070-b2c4-7bb5cf4a9014",
+            "GroupId": "00000000-0000-0000-0000-000000000000",
+            "Name": "UI_EVERGREEN_ACTION_XP_USE_BURNER_PHONE",
+            "Type": "Hit",
+            "Description": "",
+            "ImageName": null,
+            "Definition": {
+                "Context": {
+                    "enabled": false
+                },
+                "ResetOnCycleCompletion": false,
+                "Repeatable": {
+                    "Base": 1,
+                    "Delta": 0
+                },
+                "Scope": "session",
+                "States": {
+                    "Start": {
+                        "Evergreen_Phone_MeetingStarted": {
+                            "Condition": {
+                                "$eq": ["$.enabled", true]
+                            },
+                            "Transition": "Success"
+                        }
+                    }
+                }
+            },
+            "Tags": ["actionreward", "mediumxp", "infiltration"],
+            "Drops": [],
+            "LastModified": "2023-01-26T11:26:56.8815746",
+            "Xp": 50,
+            "XpModifier": {},
+            "PlayableSince": null,
+            "PlayableUntil": null,
+            "InclusionData": {
+                "ContractIds": null,
+                "ContractTypes": ["evergreen"],
+                "Locations": null,
+                "GameModes": null
+            },
+            "OrderIndex": 10000
+        }
+    },
+    {
+        "Challenge": {
+            "Id": "22f67f0a-b708-43f6-a18e-1e3600bae095",
+            "GroupId": "00000000-0000-0000-0000-000000000000",
+            "Name": "UI_EVERGREEN_ACTION_XP_HARDCORE_BONUS",
+            "Type": "Hit",
+            "Description": "",
+            "ImageName": null,
+            "Definition": {
+                "ResetOnCycleCompletion": false,
+                "Repeatable": {
+                    "Base": 1,
+                    "Delta": 0
+                },
+                "Scope": "session",
+                "States": {
+                    "Start": {
+                        "ScoringScreenEndState_CampaignCompletedHardcoreBonusXP_Hard": {
+                            "Transition": "Success"
+                        }
+                    }
+                }
+            },
+            "Tags": ["actionreward", "hard+", "mission"],
+            "Drops": [],
+            "LastModified": "2023-01-26T11:26:56.9161188",
+            "Xp": 6000,
+            "XpModifier": {},
+            "PlayableSince": null,
+            "PlayableUntil": null,
+            "InclusionData": {
+                "ContractIds": null,
+                "ContractTypes": ["evergreen"],
+                "Locations": null,
+                "GameModes": null
+            },
+            "OrderIndex": 10000
+        }
+    },
+    {
+        "Challenge": {
+            "Id": "2d4b54cf-f6c5-48d6-a9f2-c2839949ab24",
+            "GroupId": "00000000-0000-0000-0000-000000000000",
+            "Name": "UI_EVERGREEN_ACTION_XP_GET_MULE_MONEY",
+            "Type": "Hit",
+            "Description": "",
+            "ImageName": null,
+            "Definition": {
+                "ResetOnCycleCompletion": false,
+                "Repeatable": {
+                    "Base": 1,
+                    "Delta": 0
+                },
+                "Scope": "session",
+                "States": {
+                    "Start": {
+                        "Evergreen_MuleOnPickup": {
+                            "Transition": "Success"
+                        }
+                    }
+                }
+            },
+            "Tags": ["actionreward", "high+", "infiltration"],
+            "Drops": [],
+            "LastModified": "2023-01-26T11:26:56.8757576",
+            "Xp": 150,
+            "XpModifier": {},
+            "PlayableSince": null,
+            "PlayableUntil": null,
+            "InclusionData": {
+                "ContractIds": null,
+                "ContractTypes": ["evergreen"],
+                "Locations": null,
+                "GameModes": null
+            },
+            "OrderIndex": 10000
+        }
+    },
+    {
+        "Challenge": {
+            "Id": "3d1cdfab-3a2d-40ea-9917-3e31edfec13b",
+            "GroupId": "00000000-0000-0000-0000-000000000000",
+            "Name": "UI_EVERGREEN_ACTION_XP_FIND_SAFE_CLUES",
+            "Type": "Hit",
+            "Description": "",
+            "ImageName": null,
+            "Definition": {
+                "ResetOnCycleCompletion": false,
+                "Repeatable": {
+                    "Base": 1,
+                    "Delta": 0
+                },
+                "Scope": "session",
+                "States": {
+                    "Start": {
+                        "Evergreen_Safe_Open": {
+                            "Transition": "Success"
+                        }
+                    }
+                }
+            },
+            "Tags": ["actionreward", "very-high", "infiltration"],
+            "Drops": [],
+            "LastModified": "2023-01-26T11:26:56.8709919",
+            "Xp": 300,
+            "XpModifier": {},
+            "PlayableSince": null,
+            "PlayableUntil": null,
+            "InclusionData": {
+                "ContractIds": null,
+                "ContractTypes": ["evergreen"],
+                "Locations": null,
+                "GameModes": null
+            },
+            "OrderIndex": 10000
+        }
+    },
+    {
+        "Challenge": {
+            "Id": "41420d93-27f8-4031-826b-2311b080f3cb",
+            "GroupId": "00000000-0000-0000-0000-000000000000",
+            "Name": "UI_EVERGREEN_ACTION_XP_DIFFICULTY_BONUS",
+            "Type": "Hit",
+            "Description": "",
+            "ImageName": null,
+            "Definition": {
+                "ResetOnCycleCompletion": false,
+                "Repeatable": {
+                    "Base": 1,
+                    "Delta": 0
+                },
+                "Scope": "session",
+                "States": {
+                    "Start": {
+                        "ScoringScreenEndState_CampaignCompletedBonusXP_Hard": {
+                            "Transition": "Success"
+                        }
+                    }
+                }
+            },
+            "Tags": ["actionreward", "medium", "mission"],
+            "Drops": [],
+            "LastModified": "2023-01-26T11:26:56.8935623",
+            "Xp": 2000,
+            "XpModifier": {},
+            "PlayableSince": null,
+            "PlayableUntil": null,
+            "InclusionData": {
+                "ContractIds": null,
+                "ContractTypes": ["evergreen"],
+                "Locations": null,
+                "GameModes": null
+            },
+            "OrderIndex": 10000
+        }
+    },
+    {
+        "Challenge": {
+            "Id": "430acd08-9cef-4230-9b52-3730dfe25ddc",
+            "GroupId": "00000000-0000-0000-0000-000000000000",
+            "Name": "UI_EVERGREEN_ACTION_XP_COMPLETE_MILD",
+            "Type": "Hit",
+            "Description": "",
+            "ImageName": null,
+            "Definition": {
+                "ResetOnCycleCompletion": false,
+                "Repeatable": {
+                    "Base": 1,
+                    "Delta": 0
+                },
+                "Scope": "session",
+                "States": {
+                    "Start": {
+                        "ScoringScreenEndState_MildCompleted": {
+                            "Transition": "Success"
+                        }
+                    }
+                }
+            },
+            "Tags": ["actionreward", "very-high+", "mission"],
+            "Drops": [],
+            "LastModified": "2023-01-26T11:26:56.8265603",
+            "Xp": 500,
+            "XpModifier": {},
+            "PlayableSince": null,
+            "PlayableUntil": null,
+            "InclusionData": {
+                "ContractIds": null,
+                "ContractTypes": ["evergreen"],
+                "Locations": null,
+                "GameModes": null
+            },
+            "OrderIndex": 10000
+        }
+    },
+    {
+        "Challenge": {
+            "Id": "5987e7fa-5ac2-4740-b62a-f282ca5add22",
+            "GroupId": "00000000-0000-0000-0000-000000000000",
+            "Name": "UI_EVERGREEN_ACTION_XP_COMPLETE_PRESTIGE_OBJ",
+            "Type": "Hit",
+            "Description": "",
+            "ImageName": null,
+            "Definition": {
+                "ResetOnCycleCompletion": false,
+                "Repeatable": {
+                    "Base": 1,
+                    "Delta": 0
+                },
+                "Scope": "session",
+                "States": {
+                    "Start": {
+                        "PrestigeObjective_Completed": {
+                            "Transition": "Success"
+                        }
+                    }
+                }
+            },
+            "Tags": ["actionreward", "medium", "mission"],
+            "Drops": [],
+            "LastModified": "2023-01-26T11:26:56.8020001",
+            "Xp": 2000,
+            "XpModifier": {},
+            "PlayableSince": null,
+            "PlayableUntil": null,
+            "InclusionData": {
+                "ContractIds": null,
+                "ContractTypes": ["evergreen"],
+                "Locations": null,
+                "GameModes": null
+            },
+            "OrderIndex": 10000
+        }
+    },
+    {
+        "Challenge": {
+            "Id": "5c328b7a-4e14-4915-b248-8a3e94421cce",
+            "GroupId": "00000000-0000-0000-0000-000000000000",
+            "Name": "UI_EVERGREEN_ACTION_XP_PERFECT_RUN",
+            "Type": "Hit",
+            "Description": "",
+            "ImageName": null,
+            "Definition": {
+                "ResetOnCycleCompletion": false,
+                "Repeatable": {
+                    "Base": 1,
+                    "Delta": 0
+                },
+                "Scope": "session",
+                "States": {
+                    "Start": {
+                        "Evergreen_PerfectRunXP": {
+                            "Transition": "Success"
+                        }
+                    }
+                }
+            },
+            "Tags": ["actionreward", "medium+", "mission"],
+            "Drops": [],
+            "LastModified": "2023-01-26T11:26:56.9312732",
+            "Xp": 2500,
+            "XpModifier": {},
+            "PlayableSince": null,
+            "PlayableUntil": null,
+            "InclusionData": {
+                "ContractIds": null,
+                "ContractTypes": ["evergreen"],
+                "Locations": null,
+                "GameModes": null
+            },
+            "OrderIndex": 10000
+        }
+    },
+    {
+        "Challenge": {
+            "Id": "6cefdef4-c5e9-444b-acde-dcceadcdfb12",
+            "GroupId": "00000000-0000-0000-0000-000000000000",
+            "Name": "UI_EVERGREEN_ACTION_XP_DIFFICULTY_BONUS",
+            "Type": "Hit",
+            "Description": "",
+            "ImageName": null,
+            "Definition": {
+                "ResetOnCycleCompletion": false,
+                "Repeatable": {
+                    "Base": 1,
+                    "Delta": 0
+                },
+                "Scope": "session",
+                "States": {
+                    "Start": {
+                        "ScoringScreenEndState_CampaignCompletedBonusXP_Normal": {
+                            "Transition": "Success"
+                        }
+                    }
+                }
+            },
+            "Tags": ["actionreward", "easy", "mission"],
+            "Drops": [],
+            "LastModified": "2023-01-26T11:26:56.8877773",
+            "Xp": 1000,
+            "XpModifier": {},
+            "PlayableSince": null,
+            "PlayableUntil": null,
+            "InclusionData": {
+                "ContractIds": null,
+                "ContractTypes": ["evergreen"],
+                "Locations": null,
+                "GameModes": null
+            },
+            "OrderIndex": 10000
+        }
+    },
+    {
+        "Challenge": {
+            "Id": "6fe13c33-96c4-4b2d-9318-da7881b478ae",
+            "GroupId": "00000000-0000-0000-0000-000000000000",
+            "Name": "UI_EVERGREEN_ACTION_XP_COMPLETE_PAYOUT_OBJ",
+            "Type": "Hit",
+            "Description": "",
+            "ImageName": null,
+            "Definition": {
+                "ResetOnCycleCompletion": false,
+                "Repeatable": {
+                    "Base": 1,
+                    "Delta": 0
+                },
+                "Scope": "session",
+                "States": {
+                    "Start": {
+                        "PayoutObjective_Completed": {
+                            "Transition": "Success"
+                        }
+                    }
+                }
+            },
+            "Tags": ["actionreward", "easy", "mission"],
+            "Drops": [],
+            "LastModified": "2023-01-26T11:26:56.7988894",
+            "Xp": 1000,
+            "XpModifier": {},
+            "PlayableSince": null,
+            "PlayableUntil": null,
+            "InclusionData": {
+                "ContractIds": null,
+                "ContractTypes": ["evergreen"],
+                "Locations": null,
+                "GameModes": null
+            },
+            "OrderIndex": 10000
+        }
+    },
+    {
+        "Challenge": {
+            "Id": "78721f56-e256-4d01-a34b-3991da0856ca",
+            "GroupId": "00000000-0000-0000-0000-000000000000",
+            "Name": "UI_EVERGREEN_ACTION_XP_HARDCORE_BONUS",
+            "Type": "Hit",
+            "Description": "",
+            "ImageName": null,
+            "Definition": {
+                "ResetOnCycleCompletion": false,
+                "Repeatable": {
+                    "Base": 1,
+                    "Delta": 0
+                },
+                "Scope": "session",
+                "States": {
+                    "Start": {
+                        "ScoringScreenEndState_CampaignCompletedHardcoreBonusXP_Pro": {
+                            "Transition": "Success"
+                        }
+                    }
+                }
+            },
+            "Tags": ["actionreward", "very-hard", "mission"],
+            "Drops": [],
+            "LastModified": "2023-01-26T11:26:56.9215653",
+            "Xp": 8000,
+            "XpModifier": {},
+            "PlayableSince": null,
+            "PlayableUntil": null,
+            "InclusionData": {
+                "ContractIds": null,
+                "ContractTypes": ["evergreen"],
+                "Locations": null,
+                "GameModes": null
+            },
+            "OrderIndex": 10000
+        }
+    },
+    {
+        "Challenge": {
+            "Id": "96c5a5f9-a892-4343-87a5-225c4b7f7f5f",
+            "GroupId": "00000000-0000-0000-0000-000000000000",
+            "Name": "UI_EVERGREEN_ACTION_XP_KILL_MILD_TARGET",
+            "Type": "Hit",
+            "Description": "",
+            "ImageName": null,
+            "Definition": {
+                "ResetOnCycleCompletion": false,
+                "Repeatable": {
+                    "Base": 1,
+                    "Delta": 0
+                },
+                "Scope": "session",
+                "States": {
+                    "Start": {
+                        "Evergreen_Mission_Data": {
+                            "Actions": {
+                                "$set": ["ValidLocation", "$Value.IsMild"]
+                            }
+                        },
+                        "Kill": {
+                            "Condition": {
+                                "$and": [
+                                    {
+                                        "$eq": ["$Value.IsTarget", true]
+                                    },
+                                    {
+                                        "$eq": ["$.ValidLocation", true]
+                                    }
+                                ]
+                            },
+                            "Transition": "Success"
+                        }
+                    }
+                }
+            },
+            "Tags": ["actionreward", "quite-high+", "elimination"],
+            "Drops": [],
+            "LastModified": "2023-01-26T11:26:56.8402756",
+            "Xp": 250,
+            "XpModifier": {},
+            "PlayableSince": null,
+            "PlayableUntil": null,
+            "InclusionData": {
+                "ContractIds": null,
+                "ContractTypes": ["evergreen"],
+                "Locations": null,
+                "GameModes": null
+            },
+            "OrderIndex": 10000
+        }
+    },
+    {
+        "Challenge": {
+            "Id": "b4aeccbb-843f-4806-af69-6a6ac0711fbe",
+            "GroupId": "00000000-0000-0000-0000-000000000000",
+            "Name": "UI_EVERGREEN_ACTION_XP_OPEN_GEAR_CRATE",
+            "Type": "Hit",
+            "Description": "",
+            "ImageName": null,
+            "Definition": {
+                "ResetOnCycleCompletion": false,
+                "Repeatable": {
+                    "Base": 1,
+                    "Delta": 0
+                },
+                "Scope": "session",
+                "States": {
+                    "Start": {
+                        "Evergreen_Stash_ItemChosen": {
+                            "Transition": "Success"
+                        }
+                    }
+                }
+            },
+            "Tags": ["actionreward", "intermediate", "infiltration"],
+            "Drops": [],
+            "LastModified": "2023-01-26T11:26:56.8518103",
+            "Xp": 25,
+            "XpModifier": {},
+            "PlayableSince": null,
+            "PlayableUntil": null,
+            "InclusionData": {
+                "ContractIds": null,
+                "ContractTypes": ["evergreen"],
+                "Locations": null,
+                "GameModes": null
+            },
+            "OrderIndex": 10000
+        }
+    },
+    {
+        "Challenge": {
+            "Id": "c706ddd0-7c9e-4075-b4b0-4e734c8ccc5e",
+            "GroupId": "00000000-0000-0000-0000-000000000000",
+            "Name": "UI_EVERGREEN_ACTION_XP_KILL_HOT_LEADER",
+            "Type": "Hit",
+            "Description": "",
+            "ImageName": null,
+            "Definition": {
+                "ResetOnCycleCompletion": false,
+                "Repeatable": {
+                    "Base": 1,
+                    "Delta": 0
+                },
+                "Scope": "session",
+                "States": {
+                    "Start": {
+                        "Evergreen_Mission_Data": {
+                            "Condition": {
+                                "$eq": ["$Value.IsHot", true]
+                            },
+                            "Transition": "Active"
+                        }
+                    },
+                    "Active": {
+                        "Kill": {
+                            "Condition": {
+                                "$eq": ["$Value.IsTarget", true]
+                            },
+                            "Transition": "Success"
+                        }
+                    }
+                }
+            },
+            "Tags": ["actionreward", "easy", "elimination"],
+            "Drops": [],
+            "LastModified": "2023-01-26T11:26:56.8362802",
+            "Xp": 1000,
+            "XpModifier": {},
+            "PlayableSince": null,
+            "PlayableUntil": null,
+            "InclusionData": {
+                "ContractIds": null,
+                "ContractTypes": ["evergreen"],
+                "Locations": null,
+                "GameModes": null
+            },
+            "OrderIndex": 10000
+        }
+    },
+    {
+        "Challenge": {
+            "Id": "ced2d5a1-aea7-4128-9e60-36f2993e38f1",
+            "GroupId": "00000000-0000-0000-0000-000000000000",
+            "Name": "UI_EVERGREEN_ACTION_XP_HARDCORE_BONUS",
+            "Type": "Hit",
+            "Description": "",
+            "ImageName": null,
+            "Definition": {
+                "ResetOnCycleCompletion": false,
+                "Repeatable": {
+                    "Base": 1,
+                    "Delta": 0
+                },
+                "Scope": "session",
+                "States": {
+                    "Start": {
+                        "ScoringScreenEndState_CampaignCompletedHardcoreBonusXP": {
+                            "Transition": "Success"
+                        }
+                    }
+                }
+            },
+            "Tags": ["actionreward", "medium", "mission"],
+            "Drops": [],
+            "LastModified": "2023-01-26T11:26:56.9054829",
+            "Xp": 2000,
+            "XpModifier": {},
+            "PlayableSince": null,
+            "PlayableUntil": null,
+            "InclusionData": {
+                "ContractIds": null,
+                "ContractTypes": ["evergreen"],
+                "Locations": null,
+                "GameModes": null
+            },
+            "OrderIndex": 10000
+        }
+    },
+    {
+        "Challenge": {
+            "Id": "d990455c-1789-4586-b4f0-24698c63890b",
+            "GroupId": "00000000-0000-0000-0000-000000000000",
+            "Name": "UI_EVERGREEN_ACTION_XP_TAKEOUT_ASSASSIN",
+            "Type": "Hit",
+            "Description": "",
+            "ImageName": null,
+            "Definition": {
+                "ResetOnCycleCompletion": false,
+                "Repeatable": {
+                    "Base": 1,
+                    "Delta": 0
+                },
+                "Scope": "session",
+                "States": {
+                    "Start": {
+                        "AssassinDown": {
+                            "Transition": "Success"
+                        }
+                    }
+                }
+            },
+            "Tags": ["actionreward", "quite-high+", "elimination"],
+            "Drops": [],
+            "LastModified": "2023-01-26T11:26:56.8437537",
+            "Xp": 250,
+            "XpModifier": {},
+            "PlayableSince": null,
+            "PlayableUntil": null,
+            "InclusionData": {
+                "ContractIds": null,
+                "ContractTypes": ["evergreen"],
+                "Locations": null,
+                "GameModes": null
+            },
+            "OrderIndex": 10000
+        }
+    },
+    {
+        "Challenge": {
+            "Id": "e43c3cef-7b74-43b7-9439-e2971524914e",
+            "GroupId": "00000000-0000-0000-0000-000000000000",
+            "Name": "UI_EVERGREEN_ACTION_XP_HARDCORE_BONUS",
+            "Type": "Hit",
+            "Description": "",
+            "ImageName": null,
+            "Definition": {
+                "ResetOnCycleCompletion": false,
+                "Repeatable": {
+                    "Base": 1,
+                    "Delta": 0
+                },
+                "Scope": "session",
+                "States": {
+                    "Start": {
+                        "ScoringScreenEndState_CampaignCompletedHardcoreBonusXP_Normal": {
+                            "Transition": "Success"
+                        }
+                    }
+                }
+            },
+            "Tags": ["actionreward", "hard", "mission"],
+            "Drops": [],
+            "LastModified": "2023-01-26T11:26:56.9104858",
+            "Xp": 4000,
+            "XpModifier": {},
+            "PlayableSince": null,
+            "PlayableUntil": null,
+            "InclusionData": {
+                "ContractIds": null,
+                "ContractTypes": ["evergreen"],
+                "Locations": null,
+                "GameModes": null
+            },
+            "OrderIndex": 10000
+        }
+    },
+    {
+        "Challenge": {
+            "Id": "ed57a270-b42e-4c37-97c4-052dfb34baf7",
+            "GroupId": "00000000-0000-0000-0000-000000000000",
+            "Name": "UI_EVERGREEN_ACTION_XP_TAKEOUT_LOOKOUT",
+            "Type": "Hit",
+            "Description": "",
+            "ImageName": null,
+            "Definition": {
+                "ResetOnCycleCompletion": false,
+                "Repeatable": {
+                    "Base": 1,
+                    "Delta": 0
+                },
+                "Scope": "session",
+                "States": {
+                    "Start": {
+                        "LookoutDown": {
+                            "Transition": "Success"
+                        }
+                    }
+                }
+            },
+            "Tags": ["actionreward", "quite-high+", "elimination"],
+            "Drops": [],
+            "LastModified": "2023-01-26T11:26:56.8481222",
+            "Xp": 250,
+            "XpModifier": {},
+            "PlayableSince": null,
+            "PlayableUntil": null,
+            "InclusionData": {
+                "ContractIds": null,
+                "ContractTypes": ["evergreen"],
+                "Locations": null,
+                "GameModes": null
+            },
+            "OrderIndex": 10000
         }
     }
 ]
