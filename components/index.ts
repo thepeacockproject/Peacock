@@ -221,7 +221,7 @@ app.get("/files/privacypolicy/hm3/privacypolicy_*.json", (req, res) => {
 
 app.post(
     "/api/metrics/*",
-    jsonMiddleware(),
+    jsonMiddleware({ limit: "10Mb" }),
     (req: RequestWithJwt<never, S2CEventWithTimestamp[]>, res) => {
         req.body.forEach((event) => {
             controller.hooks.newMetricsEvent.call(event, req)
