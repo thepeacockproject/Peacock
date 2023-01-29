@@ -317,13 +317,11 @@ export async function missionEnd(
             Challenges: Object.values(contractChallenges)
                 .flat()
                 // FIXME: This behaviour may not be accurate to original server
-                .filter(
-                    (challengeData) =>
-                        controller.challengeService.getPersistentChallengeProgression(
-                            req.jwt.unique_name,
-                            challengeData.Id,
-                            req.gameVersion,
-                        ).Completed,
+                .filter((challengeData) =>
+                    controller.challengeService.fastGetIsCompleted(
+                        userData,
+                        challengeData.Id,
+                    ),
                 )
                 .map((challengeData) =>
                     controller.challengeService.compileRegistryChallengeTreeData(

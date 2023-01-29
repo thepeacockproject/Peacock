@@ -87,7 +87,6 @@ export function getSubLocationByName(
  * @param subLocationId The ID of the targeted sub-location.
  * @param userId The ID of the user.
  * @param gameVersion The game's version.
- * @param isParentLocation If this is meant to be focused on a parent location.
  * If true, the SubLocationId property will not be set.
  * @returns The completion data object.
  */
@@ -95,8 +94,6 @@ export function generateCompletionData(
     subLocationId: string,
     userId: string,
     gameVersion: GameVersion,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    _isParentLocation = false,
 ): CompletionData {
     const subLocation = getSubLocationByName(subLocationId, gameVersion)
 

@@ -28,6 +28,7 @@ import type {
     PeacockLocationsData,
     RegistryChallenge,
     Unlockable,
+    UserProfile,
 } from "../types/types"
 import { getUserData, writeUserData } from "../databaseHandler"
 
@@ -168,6 +169,26 @@ export class ChallengeService extends ChallengeRegistry {
         }
     }
 
+    /**
+     * Same concept as {@link getPersistentChallengeProgression},
+     * but significantly faster. Why? Because it doesn't need to load the user's
+     * data, check dependencies, etc. It's just a yes or no.
+     *
+     * @param userData The user's data object. Will not be modified.
+     * @param challengeId The ID of the challenge.
+     * @returns Whether the challenge is completed.
+     * @see getPersistentChallengeProgression
+     */
+    fastGetIsCompleted(
+        userData: Readonly<UserProfile>,
+        challengeId: string,
+    ): boolean {
+        return (
+            userData.Extensions.ChallengeProgression[challengeId]?.Completed ||
+            false
+        )
+    }
+
     getPersistentChallengeProgression(
         userId: string,
         challengeId: string,
@@ -204,12 +225,7 @@ export class ChallengeService extends ChallengeRegistry {
 
         if (dependencies.length > 0) {
             data[challengeId].State.CompletedChallenges = dependencies.filter(
-                (depId) =>
-                    this.getPersistentChallengeProgression(
-                        userId,
-                        depId,
-                        gameVersion,
-                    ).Completed,
+                (depId) => this.fastGetIsCompleted(userData, depId),
             )
         }
 
@@ -335,14 +351,13 @@ export class ChallengeService extends ChallengeRegistry {
             contractId,
             gameVersion,
         )
+
         const profile = getUserData(session.userId, session.gameVersion)
+
         for (const group of Object.keys(challengeGroups)) {
             for (const challenge of challengeGroups[group]) {
-                const progression = this.getPersistentChallengeProgression(
-                    userId,
-                    challenge.Id,
-                    gameVersion,
-                )
+                const isDone = this.fastGetIsCompleted(profile, challenge.Id)
+
                 // For challenges with scopes being "profile" or "hit",
                 // update challenge progression with the user's progression data
                 const ctx =
@@ -357,7 +372,7 @@ export class ChallengeService extends ChallengeRegistry {
 
                 challengeContexts[challenge.Id] = {
                     context: ctx,
-                    state: progression.Completed ? "Success" : "Start",
+                    state: isDone ? "Success" : "Start",
                     timers: [],
                 }
             }
@@ -375,6 +390,8 @@ export class ChallengeService extends ChallengeRegistry {
             return
         }
 
+        const userData = getUserData(session.userId, session.gameVersion)
+
         for (const challengeId of Object.keys(session.challengeContexts)) {
             const challenge = this.getChallengeById(challengeId)
             const data = session.challengeContexts[challengeId]
@@ -384,13 +401,7 @@ export class ChallengeService extends ChallengeRegistry {
                 continue
             }
 
-            if (
-                this.getPersistentChallengeProgression(
-                    session.userId,
-                    challengeId,
-                    session.gameVersion,
-                ).Completed
-            ) {
+            if (this.fastGetIsCompleted(userData, challengeId)) {
                 continue
             }
 
@@ -417,13 +428,9 @@ export class ChallengeService extends ChallengeRegistry {
                     challenge.Definition.Scope === "profile" ||
                     challenge.Definition.Scope === "hit"
                 ) {
-                    const profile = getUserData(
-                        session.userId,
-                        session.gameVersion,
-                    )
-
-                    profile.Extensions.ChallengeProgression[challengeId].State =
-                        result.context
+                    userData.Extensions.ChallengeProgression[
+                        challengeId
+                    ].State = result.context
 
                     writeUserData(session.userId, session.gameVersion)
                 }
@@ -535,14 +542,14 @@ export class ChallengeService extends ChallengeRegistry {
         const completed: string[] = []
         const missing: string[] = []
 
+        let userData: UserProfile | null = null
+
+        if (dependencies.length > 0) {
+            userData = getUserData(userId, gameVersion)
+        }
+
         for (const dependency of dependencies) {
-            if (
-                this.getPersistentChallengeProgression(
-                    userId,
-                    dependency,
-                    gameVersion,
-                ).Completed
-            ) {
+            if (this.fastGetIsCompleted(userData!, dependency)) {
                 completed.push(dependency)
                 continue
             }
@@ -766,7 +773,6 @@ export class ChallengeService extends ChallengeRegistry {
                 challenge.ParentLocationId,
                 userId,
                 gameVersion,
-                true,
             ),
         }
     }
@@ -839,6 +845,8 @@ export class ChallengeService extends ChallengeRegistry {
 
     /**
      * Counts the number of challenges and completed challenges in a GroupIndexedChallengeLists object.
+     * CAUTION: THIS IS SLOW. Use sparingly.
+     *
      * @param challengeLists A GroupIndexedChallengeLists object, holding some challenges to be counted
      * @param userId The userId of the user to acquire completion information
      * @param gameVersion The version of the game
@@ -849,22 +857,24 @@ export class ChallengeService extends ChallengeRegistry {
         userId: string,
         gameVersion: GameVersion,
     ): { ChallengesCount: number; CompletedChallengesCount: number } {
+        const userData = getUserData(userId, gameVersion)
+
+        userData.Extensions.ChallengeProgression ??= {}
+
         let challengesCount = 0
         let completedChallengesCount = 0
+
         for (const groupId in challengeLists) {
             const challenges = challengeLists[groupId]
             const challengeProgressionData = challenges.map((challengeData) =>
-                this.getPersistentChallengeProgression(
-                    userId,
-                    challengeData.Id,
-                    gameVersion,
-                ),
+                this.fastGetIsCompleted(userData, challengeData.Id),
             )
             challengesCount += challenges.length
             completedChallengesCount += challengeProgressionData.filter(
-                (progressionData) => progressionData.Completed,
+                (progressionData) => progressionData,
             ).length
         }
+
         return {
             ChallengesCount: challengesCount,
             CompletedChallengesCount: completedChallengesCount,
@@ -926,15 +936,9 @@ export class ChallengeService extends ChallengeRegistry {
             }
 
             // check if the dependency tree is completed
-            const completed = allDeps.every((depId) => {
-                const depProgression = this.getPersistentChallengeProgression(
-                    session.userId,
-                    depId,
-                    session.gameVersion,
-                )
-
-                return depProgression?.Completed
-            })
+            const completed = allDeps.every((depId) =>
+                this.fastGetIsCompleted(userData, depId),
+            )
 
             if (!completed) {
                 continue
