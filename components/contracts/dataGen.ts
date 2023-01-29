@@ -230,12 +230,14 @@ export function generateUserCentric(
  * @param objectives The objectives.
  * @param gameChangers The game changers.
  * @param displayOrder The order in which to display the objectives.
+ * @param isEvergreenSafehouse Is the contract the Safehouse?
  * @returns The converted objectives.
  */
 export function mapObjectives(
     objectives: MissionManifestObjective[],
     gameChangers: string[],
     displayOrder: GroupObjectiveDisplayOrderItem[],
+    isEvergreenSafehouse = false,
 ): MissionManifestObjective[] {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const result = new Map<string, any>()
@@ -247,6 +249,7 @@ export function mapObjectives(
             true,
         )
         for (const gamechangerId of gameChangers) {
+            if (isEvergreenSafehouse) break
             const gameChangerProps = gameChangerData[gamechangerId]
             if (gameChangerProps) {
                 if (gameChangerProps.IsHidden) {
@@ -404,6 +407,12 @@ export function mapObjectives(
                 resultIds.add(Id)
             }
         }
+    }
+
+    // This is something to get the main objective to show on the planning menu - AF
+    if (isEvergreenSafehouse) {
+        sortedResult.push(result.get("f9cfcf80-9977-4ad1-b3c7-0228a2026b9c"))
+        resultIds.add("f9cfcf80-9977-4ad1-b3c7-0228a2026b9c")
     }
 
     // add each objective or gamechanger that is not already in the result
