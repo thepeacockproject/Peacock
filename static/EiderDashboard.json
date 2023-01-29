@@ -307,6 +307,54 @@
                                 }
                             ]
                         }
+                    },
+                    {
+                        "view": "menu3.basic.MenuTileTall",
+                        "row": 0,
+                        "col": 8,
+                        "nrows": 3,
+                        "ncols": 2,
+                        "data": {
+                            "header": "$loc UI_MENU_PAGE_HUB_GAMEMODE",
+                            "title": "$loc UI_EVERGREEN_TITLE",
+                            "icon": "evergreen_gamemode",
+                            "image": "$res images/livetile/tile_gamemode_evergreen.jpg"
+                        },
+                        "actions": {
+                            "accept": [
+                                {
+                                    "link": {
+                                        "page": "gamemode_evergreen",
+                                        "args": {
+                                            "locationId": "LOCATION_PARENT_SNUG"
+                                        }
+                                    }
+                                }
+                            ],
+                            "select": {
+                                "replace-children": {
+                                    "target": "headline_container",
+                                    "children": [
+                                        {
+                                            "view": "menu3.basic.HeadlineElement",
+                                            "selectable": false,
+                                            "pressable": false,
+                                            "data": {
+                                                "header": "$loc UI_MENU_PAGE_HUB_GAMEMODE",
+                                                "title": "$loc UI_EVERGREEN_TITLE",
+                                                "typeicon": "evergreen_gamemode"
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            "deselect": {
+                                "replace-children": {
+                                    "target": "headline_container",
+                                    "children": []
+                                }
+                            }
+                        }
                     }
                 ]
             }
