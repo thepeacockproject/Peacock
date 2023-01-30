@@ -185,7 +185,9 @@ export function generateUserCentric(
             ElusiveContractState: "",
             IsFeatured: false,
             LastPlayedAt:
-                played[id] === undefined ? undefined : played[id]?.LastPlayedAt,
+                played[id] === undefined
+                    ? undefined
+                    : played[id]?.LastPlayedAt.toISOString(),
             // relevant for contracts
             Completed: played[id] === undefined ? false : played[id]?.Completed,
             LocationId: subLocation.Id,

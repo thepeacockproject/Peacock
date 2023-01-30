@@ -377,7 +377,7 @@ export interface UserProfile {
         PeacockFavoriteContracts: string[]
         PeacockPlayedContracts: {
             [contractId: string]: {
-                LastPlayedAt?: string
+                LastPlayedAt?: Date
                 Completed?: boolean
             }
         }

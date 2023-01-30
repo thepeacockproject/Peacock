@@ -268,9 +268,9 @@ export async function missionEnd(
             userData.Extensions.PeacockPlayedContracts[id] = {}
         }
         // todo: generate timestamp
-        userData.Extensions.PeacockPlayedContracts[id].LastPlayedAt =
-            "2020-01-01T00:00:00.0000000Z"
+        userData.Extensions.PeacockPlayedContracts[id].LastPlayedAt = new Date()
         userData.Extensions.PeacockPlayedContracts[id].Completed = true
+        writeUserData(req.jwt.unique_name, req.gameVersion)
     }
 
     const nonTargetKills =

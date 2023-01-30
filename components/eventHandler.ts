@@ -452,8 +452,8 @@ function contractFailed(
     if (!userData.Extensions.PeacockPlayedContracts[id]) {
         userData.Extensions.PeacockPlayedContracts[id] = {}
     }
-    userData.Extensions.PeacockPlayedContracts[id].LastPlayedAt =
-        "2020-01-01T00:00:00.0000000Z"
+    userData.Extensions.PeacockPlayedContracts[id].LastPlayedAt = new Date()
+    writeUserData(session.userId, session.gameVersion)
 
     enqueueEvent(session.userId, {
         CreatedAt: new Date().toISOString(),
