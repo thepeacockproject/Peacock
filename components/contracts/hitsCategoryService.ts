@@ -157,6 +157,18 @@ export class HitsCategoryService {
                 hitsCategory.CurrentSubType = "MyPlaylist_all"
             })
 
+        this.hitsCategories
+            .for("MyHistory")
+            .tap(tapName, (gameVersion, contracts, hitsCategory, userId) => {
+                const userProfile = getUserData(userId, gameVersion)
+                const played = Object.keys(
+                    userProfile?.Extensions.PeacockPlayedContracts,
+                )
+                contracts.push(...played)
+
+                hitsCategory.CurrentSubType = "MyHistory_all"
+            })
+
         // intentionally don't handle Trending
         // intentionally don't handle MostPlayedLastWeek
         // intentionally don't handle Arcade

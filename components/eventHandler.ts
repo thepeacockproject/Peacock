@@ -448,11 +448,13 @@ function contractFailed(
     const userData = getUserData(session.userId, session.gameVersion)
 
     const id = session.contractId
-    // todo: generate timestamp
+
     if (!userData.Extensions.PeacockPlayedContracts[id]) {
         userData.Extensions.PeacockPlayedContracts[id] = {}
     }
-    userData.Extensions.PeacockPlayedContracts[id].LastPlayedAt = new Date()
+
+    userData.Extensions.PeacockPlayedContracts[id].LastPlayedAt =
+        new Date().getTime()
     writeUserData(session.userId, session.gameVersion)
 
     enqueueEvent(session.userId, {

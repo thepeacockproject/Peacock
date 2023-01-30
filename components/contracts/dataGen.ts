@@ -187,7 +187,7 @@ export function generateUserCentric(
             LastPlayedAt:
                 played[id] === undefined
                     ? undefined
-                    : played[id]?.LastPlayedAt.toISOString(),
+                    : new Date(played[id]?.LastPlayedAt).toISOString(),
             // relevant for contracts
             Completed: played[id] === undefined ? false : played[id]?.Completed,
             LocationId: subLocation.Id,

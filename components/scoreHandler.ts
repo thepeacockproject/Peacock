@@ -267,8 +267,9 @@ export async function missionEnd(
         if (!userData.Extensions.PeacockPlayedContracts[id]) {
             userData.Extensions.PeacockPlayedContracts[id] = {}
         }
-        // todo: generate timestamp
-        userData.Extensions.PeacockPlayedContracts[id].LastPlayedAt = new Date()
+
+        userData.Extensions.PeacockPlayedContracts[id].LastPlayedAt =
+            new Date().getTime()
         userData.Extensions.PeacockPlayedContracts[id].Completed = true
         writeUserData(req.jwt.unique_name, req.gameVersion)
     }
