@@ -444,6 +444,21 @@ function contractFailed(
         liveSplitManager.failMission(0)
     }
 
+    // Need to mark the contract as played for the user
+    const userData = getUserData(session.userId, session.gameVersion)
+    if (!userData.Extensions.PeacockFailedContracts) {
+        userData.Extensions.PeacockFailedContracts = []
+    }
+    const id = session.contractId
+    if (
+        !userData.Extensions.PeacockFailedContracts?.includes(id) &&
+        !userData.Extensions.PeacockCompletedContracts?.includes(id)
+    ) {
+        // The user never played this contract before
+        userData.Extensions.PeacockFailedContracts.push(id)
+        writeUserData(session.userId, session.gameVersion)
+    }
+
     enqueueEvent(session.userId, {
         CreatedAt: new Date().toISOString(),
         Token: process.hrtime.bigint().toString(),

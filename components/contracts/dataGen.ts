@@ -148,6 +148,7 @@ export function generateUserCentric(
         return undefined
     }
 
+    const userData = getUserData(userId, gameVersion)
     const subLocation = getSubLocationFromContract(contractData, gameVersion)
 
     if (!subLocation) {
@@ -180,8 +181,18 @@ export function generateUserCentric(
             LocationHideProgression: false,
             ElusiveContractState: "",
             IsFeatured: false,
-            //LastPlayedAt: '2020-01-01T00:00:00.0000000Z', // ISO timestamp
-            Completed: false, // relevant for featured contracts
+            LastPlayedAt:
+                userData.Extensions.PeacockCompletedContracts?.includes(
+                    contractData.Metadata.Id,
+                ) ||
+                userData.Extensions.PeacockFailedContracts?.includes(
+                    contractData.Metadata.Id,
+                )
+                    ? "2020-01-01T00:00:00.0000000Z"
+                    : undefined, // Fake ISO timestamp
+            Completed: userData.Extensions.PeacockCompletedContracts?.includes(
+                contractData.Metadata.Id,
+            ), // relevant for contracts
             LocationId: subLocation.Id,
             ParentLocationId: subLocation.Properties.ParentLocation!,
             CompletionData: generateCompletionData(
@@ -195,8 +206,6 @@ export function generateUserCentric(
     }
 
     if (contractData.Metadata.Type === "escalation") {
-        const userData = getUserData(userId, gameVersion)
-
         const eGroupId = contractData.Metadata.InGroup
 
         if (eGroupId) {

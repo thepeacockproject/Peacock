@@ -257,6 +257,34 @@ export async function missionEnd(
         }
 
         writeUserData(req.jwt.unique_name, req.gameVersion)
+    } else if (
+        contractData.Metadata.Type === "featured" ||
+        contractData.Metadata.Type === "usercreated"
+    ) {
+        // Need to remove the contract from the failed list, if exists
+        if (!userData.Extensions.PeacockFailedContracts) {
+            userData.Extensions.PeacockFailedContracts = []
+        }
+
+        const id = contractData.Metadata.Id
+
+        const index = userData.Extensions.PeacockFailedContracts.indexOf(id)
+
+        if (index !== -1) {
+            userData.Extensions.PeacockFailedContracts.splice(index, 1)
+            writeUserData(req.jwt.unique_name, req.gameVersion)
+        }
+
+        // Need to mark the contract as completed
+        if (!userData.Extensions.PeacockCompletedContracts) {
+            userData.Extensions.PeacockCompletedContracts = []
+        }
+
+        if (!userData.Extensions.PeacockCompletedContracts?.includes(id)) {
+            // The user never completed this contract before
+            userData.Extensions.PeacockCompletedContracts.push(id)
+            writeUserData(req.jwt.unique_name, req.gameVersion)
+        }
     }
 
     const nonTargetKills =

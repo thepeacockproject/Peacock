@@ -375,6 +375,8 @@ export interface UserProfile {
             [escalationId: string]: number
         }
         PeacockFavoriteContracts: string[]
+        PeacockCompletedContracts: string[]
+        PeacockFailedContracts: string[]
         PeacockCompletedEscalations: string[]
         Saves: {
             [slot: string]: {
