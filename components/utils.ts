@@ -123,6 +123,7 @@ export function castUserProfile(profile: UserProfile): UserProfile {
         "entP",
         "PeacockEscalations",
         "PeacockFavoriteContracts",
+        "PeacockPlayedContracts",
         "PeacockCompletedEscalations",
         "CPD",
     ]) {
@@ -159,6 +160,10 @@ export function castUserProfile(profile: UserProfile): UserProfile {
 
             if (item === "CPD") {
                 j.Extensions.CPD = {}
+            }
+
+            if (item === "PeacockPlayedContracts") {
+                j.Extensions.PeacockPlayedContracts = {}
             }
 
             dirty = true

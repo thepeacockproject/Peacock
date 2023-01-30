@@ -446,9 +446,7 @@ function contractFailed(
 
     // Update the contract in the played list
     const userData = getUserData(session.userId, session.gameVersion)
-    if (!userData.Extensions.PeacockPlayedContracts) {
-        userData.Extensions.PeacockPlayedContracts = {}
-    }
+
     const id = session.contractId
     // todo: generate timestamp
     if (!userData.Extensions.PeacockPlayedContracts[id]) {

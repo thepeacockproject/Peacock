@@ -185,14 +185,9 @@ export function generateUserCentric(
             ElusiveContractState: "",
             IsFeatured: false,
             LastPlayedAt:
-                played === undefined || played[id] === undefined
-                    ? undefined
-                    : played[id]?.LastPlayedAt,
+                played[id] === undefined ? undefined : played[id]?.LastPlayedAt,
             // relevant for contracts
-            Completed:
-                played === undefined || played[id] === undefined
-                    ? undefined
-                    : played[id]?.Completed,
+            Completed: played[id] === undefined ? false : played[id]?.Completed,
             LocationId: subLocation.Id,
             ParentLocationId: subLocation.Properties.ParentLocation!,
             CompletionData: generateCompletionData(

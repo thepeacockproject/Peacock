@@ -263,9 +263,7 @@ export async function missionEnd(
     ) {
         // Update the contract in the played list
         const id = contractData.Metadata.Id
-        if (!userData.Extensions.PeacockPlayedContracts) {
-            userData.Extensions.PeacockPlayedContracts = {}
-        }
+
         if (!userData.Extensions.PeacockPlayedContracts[id]) {
             userData.Extensions.PeacockPlayedContracts[id] = {}
         }
