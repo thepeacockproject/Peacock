@@ -442,6 +442,18 @@ menuDataRouter.get("/SafehouseCategory", (req: RequestWithJwt, res) => {
     res.json(safehouseData)
 })
 
+menuDataRouter.get("/report", (req: RequestWithJwt, res) => {
+    res.json({
+        template: getVersionedConfig("ReportTemplate", req.gameVersion, false),
+        data: {
+            Reasons: [
+                { Id: 0, Title: "UI_MENU_REPORT_REASON_OFFENSIVE" },
+                { Id: 1, Title: "UI_MENU_REPORT_REASON_BUGGY" },
+            ],
+        },
+    })
+})
+
 menuDataRouter.get(
     "/stashpoint",
     (req: RequestWithJwt<StashpointQuery>, res) => {

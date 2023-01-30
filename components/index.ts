@@ -409,6 +409,10 @@ legacyRouter.use(
     "/authentication/api/userchannel/ContractSessionsService/",
     legacyContractRouter,
 )
+legacyRouter.use(
+    "/authentication/api/userchannel/ReportingService/",
+    legacyContractRouter,
+)
 
 primaryRouter.use(
     "/authentication/api/userchannel/MultiplayerService/",
@@ -417,6 +421,10 @@ primaryRouter.use(
 primaryRouter.use("/authentication/api/userchannel/EventsService/", eventRouter)
 primaryRouter.use(
     "/authentication/api/userchannel/ContractsService/",
+    contractRoutingRouter,
+)
+primaryRouter.use(
+    "/authentication/api/userchannel/ReportingService/",
     contractRoutingRouter,
 )
 primaryRouter.use("/authentication/api/userchannel/", profileRouter)
