@@ -169,6 +169,9 @@ export function generateUserCentric(
         )
     }
 
+    const played = userData.Extensions?.PeacockPlayedContracts
+    const id = contractData.Metadata.Id
+
     const uc: UserCentricContract = {
         Contract: contractData,
         Data: {
@@ -182,17 +185,14 @@ export function generateUserCentric(
             ElusiveContractState: "",
             IsFeatured: false,
             LastPlayedAt:
-                userData.Extensions.PeacockCompletedContracts?.includes(
-                    contractData.Metadata.Id,
-                ) ||
-                userData.Extensions.PeacockFailedContracts?.includes(
-                    contractData.Metadata.Id,
-                )
-                    ? "2020-01-01T00:00:00.0000000Z"
-                    : undefined, // Fake ISO timestamp
-            Completed: userData.Extensions.PeacockCompletedContracts?.includes(
-                contractData.Metadata.Id,
-            ), // relevant for contracts
+                played === undefined || played[id] === undefined
+                    ? undefined
+                    : played[id]?.LastPlayedAt,
+            // relevant for contracts
+            Completed:
+                played === undefined || played[id] === undefined
+                    ? undefined
+                    : played[id]?.Completed,
             LocationId: subLocation.Id,
             ParentLocationId: subLocation.Properties.ParentLocation!,
             CompletionData: generateCompletionData(

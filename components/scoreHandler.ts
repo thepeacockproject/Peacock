@@ -261,30 +261,18 @@ export async function missionEnd(
         contractData.Metadata.Type === "featured" ||
         contractData.Metadata.Type === "usercreated"
     ) {
-        // Need to remove the contract from the failed list, if exists
-        if (!userData.Extensions.PeacockFailedContracts) {
-            userData.Extensions.PeacockFailedContracts = []
-        }
-
+        // Update the contract in the played list
         const id = contractData.Metadata.Id
-
-        const index = userData.Extensions.PeacockFailedContracts.indexOf(id)
-
-        if (index !== -1) {
-            userData.Extensions.PeacockFailedContracts.splice(index, 1)
-            writeUserData(req.jwt.unique_name, req.gameVersion)
+        if (!userData.Extensions.PeacockPlayedContracts) {
+            userData.Extensions.PeacockPlayedContracts = {}
         }
-
-        // Need to mark the contract as completed
-        if (!userData.Extensions.PeacockCompletedContracts) {
-            userData.Extensions.PeacockCompletedContracts = []
+        if (!userData.Extensions.PeacockPlayedContracts[id]) {
+            userData.Extensions.PeacockPlayedContracts[id] = {}
         }
-
-        if (!userData.Extensions.PeacockCompletedContracts?.includes(id)) {
-            // The user never completed this contract before
-            userData.Extensions.PeacockCompletedContracts.push(id)
-            writeUserData(req.jwt.unique_name, req.gameVersion)
-        }
+        // todo: generate timestamp
+        userData.Extensions.PeacockPlayedContracts[id].LastPlayedAt =
+            "2020-01-01T00:00:00.0000000Z"
+        userData.Extensions.PeacockPlayedContracts[id].Completed = true
     }
 
     const nonTargetKills =
