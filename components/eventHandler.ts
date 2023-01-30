@@ -444,18 +444,25 @@ function contractFailed(
         liveSplitManager.failMission(0)
     }
 
-    // Update the contract in the played list
-    const userData = getUserData(session.userId, session.gameVersion)
+    const contractData = controller.resolveContract(session.contractId)
 
-    const id = session.contractId
+    // If this is a contract, update the contract in the played list
+    if (
+        contractData.Metadata.Type === "featured" ||
+        contractData.Metadata.Type === "usercreated"
+    ) {
+        const userData = getUserData(session.userId, session.gameVersion)
 
-    if (!userData.Extensions.PeacockPlayedContracts[id]) {
-        userData.Extensions.PeacockPlayedContracts[id] = {}
+        const id = session.contractId
+
+        if (!userData.Extensions.PeacockPlayedContracts[id]) {
+            userData.Extensions.PeacockPlayedContracts[id] = {}
+        }
+
+        userData.Extensions.PeacockPlayedContracts[id].LastPlayedAt =
+            new Date().getTime()
+        writeUserData(session.userId, session.gameVersion)
     }
-
-    userData.Extensions.PeacockPlayedContracts[id].LastPlayedAt =
-        new Date().getTime()
-    writeUserData(session.userId, session.gameVersion)
 
     enqueueEvent(session.userId, {
         CreatedAt: new Date().toISOString(),
