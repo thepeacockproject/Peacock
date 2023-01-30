@@ -409,10 +409,6 @@ legacyRouter.use(
     "/authentication/api/userchannel/ContractSessionsService/",
     legacyContractRouter,
 )
-legacyRouter.use(
-    "/authentication/api/userchannel/ReportingService/",
-    legacyContractRouter,
-)
 
 primaryRouter.use(
     "/authentication/api/userchannel/MultiplayerService/",

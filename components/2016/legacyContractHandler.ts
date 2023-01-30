@@ -106,17 +106,6 @@ legacyContractRouter.post(
 )
 
 legacyContractRouter.post(
-    "/ReportContract",
-    jsonMiddleware(),
-    (
-        req: RequestWithJwt<never, { contractId: string; reason: number }>,
-        res,
-    ) => {
-        res.json({})
-    },
-)
-
-legacyContractRouter.post(
     "/Start",
     jsonMiddleware(),
     (req: RequestWithJwt, res) => {
