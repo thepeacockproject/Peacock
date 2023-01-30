@@ -135,14 +135,17 @@ export class HitsCategoryService {
                 for (const contract of controller.contracts.values()) {
                     contracts.push(contract.Metadata.Id)
                 }
+
+                hitsCategory.CurrentSubType = "MyContracts_all"
             })
 
         this.hitsCategories
             .for("Featured")
-            .tap(tapName, (gameVersion, contracts) => {
+            .tap(tapName, (gameVersion, contracts, hitsCategory) => {
                 for (const fcGroup of featuredContractGroups) {
                     contracts.push(...fcGroup)
                 }
+                hitsCategory.CurrentSubType = "Featured"
             })
 
         this.hitsCategories
@@ -161,10 +164,11 @@ export class HitsCategoryService {
             .for("MyHistory")
             .tap(tapName, (gameVersion, contracts, hitsCategory, userId) => {
                 const userProfile = getUserData(userId, gameVersion)
-                const played = Object.keys(
-                    userProfile?.Extensions.PeacockPlayedContracts,
-                )
-                contracts.push(...played)
+                const played = userProfile?.Extensions.PeacockPlayedContracts
+                const sorted = Object.keys(played).sort((a, b) => {
+                    return played[b].LastPlayedAt - played[a].LastPlayedAt
+                })
+                contracts.push(...sorted)
 
                 hitsCategory.CurrentSubType = "MyHistory_all"
             })
