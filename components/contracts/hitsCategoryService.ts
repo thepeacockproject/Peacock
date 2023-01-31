@@ -93,8 +93,8 @@ export class HitsCategoryService {
     public hitsCategories: HookMap<
         SyncHook<
             [
-                /** gameVersion */ GameVersion,
                 /** contractIds */ string[],
+                /** gameVersion */ GameVersion,
                 /** userId */ string,
                 /** filter */ ContractFilter,
             ]
@@ -123,39 +123,35 @@ export class HitsCategoryService {
     _useDefaultHitsCategories(): void {
         const tapName = "HitsCategoryServiceImpl"
 
-        this.hitsCategories
-            .for("Sniper")
-            .tap(tapName, (gameVersion, contracts) => {
-                contracts.push("ff9f46cf-00bd-4c12-b887-eac491c3a96d")
-                contracts.push("00e57709-e049-44c9-a2c3-7655e19884fb")
-                contracts.push("25b20d86-bb5a-4ebd-b6bb-81ed2779c180")
-            })
+        this.hitsCategories.for("Sniper").tap(tapName, (contracts) => {
+            contracts.push("ff9f46cf-00bd-4c12-b887-eac491c3a96d")
+            contracts.push("00e57709-e049-44c9-a2c3-7655e19884fb")
+            contracts.push("25b20d86-bb5a-4ebd-b6bb-81ed2779c180")
+        })
 
         this.hitsCategories
             .for("Elusive_Target_Hits")
-            .tap(tapName, (gameVersion, contracts) => {
+            .tap(tapName, (contracts) => {
                 contracts.push(...orderedETs)
             })
 
         this.hitsCategories
             .for("MyContracts")
-            .tap(tapName, (gameVersion, contracts, userId, filter) => {
+            .tap(tapName, (contracts, gameVersion, userId, filter) => {
                 this.writeMyContracts(gameVersion, contracts, userId, filter)
             })
 
-        this.hitsCategories
-            .for("Featured")
-            .tap(tapName, (gameVersion, contracts) => {
-                for (const fcGroup of featuredContractGroups) {
-                    contracts.push(...fcGroup)
-                }
-            })
+        this.hitsCategories.for("Featured").tap(tapName, (contracts) => {
+            for (const fcGroup of featuredContractGroups) {
+                contracts.push(...fcGroup)
+            }
+        })
 
         // My Favorites
 
         this.hitsCategories
             .for("MyPlaylist")
-            .tap(tapName, (gameVersion, contracts, userId, filter) => {
+            .tap(tapName, (contracts, gameVersion, userId, filter) => {
                 contracts.push(
                     ...this.getMyPlaylist(gameVersion, userId, filter),
                 )
@@ -165,7 +161,7 @@ export class HitsCategoryService {
 
         this.hitsCategories
             .for("MyHistory")
-            .tap(tapName, (gameVersion, contracts, userId, filter) => {
+            .tap(tapName, (contracts, gameVersion, userId, filter) => {
                 contracts.push(
                     ...this.getMyHistory(gameVersion, userId, filter),
                 )
@@ -302,7 +298,7 @@ export class HitsCategoryService {
 
         const hits: string[] = []
 
-        hook.call(gameVersion, hits, userId, filter)
+        hook.call(hits, gameVersion, userId, filter)
 
         const hitObjectList = hits
             .map((id) => contractIdToHitObject(id, gameVersion, userId))
