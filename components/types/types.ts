@@ -357,6 +357,11 @@ export interface PlayerProfileView {
     }
 }
 
+export interface ContractHistory {
+    LastPlayedAt?: number
+    Completed?: boolean
+}
+
 export interface UserProfile {
     Id: string
     LinkedAccounts: {
@@ -376,10 +381,7 @@ export interface UserProfile {
         }
         PeacockFavoriteContracts: string[]
         PeacockPlayedContracts: {
-            [contractId: string]: {
-                LastPlayedAt?: number
-                Completed?: boolean
-            }
+            [contractId: string]: ContractHistory
         }
         PeacockCompletedEscalations: string[]
         Saves: {
