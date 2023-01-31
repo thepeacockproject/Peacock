@@ -307,12 +307,10 @@ export class HitsCategoryService {
         if (!this.paginationExempt.includes(category)) {
             const paginated = paginate(hitObjectList, this.hitsPerPage)
 
-            // ts-expect-error Type things.
             hitsCategory.Data.Hits = paginated[pageNumber]
             hitsCategory.Data.HasMore = paginated.length > pageNumber + 1
             hitsCategory.CurrentSubType = `${category}_${filter}`
         } else {
-            // ts-expect-error Type things.
             hitsCategory.Data.Hits = hitObjectList
             hitsCategory.CurrentSubType = category
         }
