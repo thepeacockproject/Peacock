@@ -176,7 +176,6 @@ export function createLocationsData(
 
     for (const sublocationId of allSublocationIds) {
         if (
-            sublocationId === "LOCATION_HOKKAIDO_SHIM_MAMUSHI" ||
             sublocationId === "LOCATION_TRAPPED_WOLVERINE" ||
             sublocationId.search("SNUG") > 0
         ) {
