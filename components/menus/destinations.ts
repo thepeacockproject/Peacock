@@ -177,10 +177,11 @@ export function createLocationsData(
     for (const sublocationId of allSublocationIds) {
         if (
             sublocationId === "LOCATION_TRAPPED_WOLVERINE" ||
-            sublocationId.search("SNUG") > 0
+            sublocationId.includes("SNUG")
         ) {
             continue
         }
+
         const sublocation = locData.children[sublocationId]
         const parentLocation =
             locData.parents[sublocation.Properties.ParentLocation]
