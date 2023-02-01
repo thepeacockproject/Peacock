@@ -56,7 +56,7 @@ const contractRoutingRouter = Router()
 contractRoutingRouter.post(
     "/GetForPlay2",
     jsonMiddleware(),
-    (req: RequestWithJwt<never, GetForPlay2Body>, res) => {
+    async (req: RequestWithJwt<never, GetForPlay2Body>, res) => {
         if (!req.body.id || !uuidRegex.test(req.body.id)) {
             res.status(400).end()
             return // user sent some nasty info

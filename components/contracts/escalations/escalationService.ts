@@ -21,6 +21,7 @@ import type {
     EscalationInfo,
     GameVersion,
     IHit,
+    MissionManifest,
     UserProfile,
 } from "../../types/types"
 import { getUserData } from "../../databaseHandler"
