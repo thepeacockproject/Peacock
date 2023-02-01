@@ -412,6 +412,7 @@ export class Controller {
 
     public challengeService: ChallengeService
     public masteryService: MasteryService
+    escalationMappings: Map<string, Record<string, string>> = new Map()
     /**
      * A list of Simple Mod Framework mods installed.
      */
