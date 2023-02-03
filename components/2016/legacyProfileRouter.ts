@@ -122,6 +122,8 @@ legacyProfileRouter.post(
                 ChallengeId: challenge.Id,
                 ProfileId: req.jwt.unique_name,
                 Completed: false,
+                // Here we don't care about "Ticked" and the client will ignore it
+                Ticked: false,
                 State: {},
                 ETag: `W/"datetime'${encodeURIComponent(
                     new Date().toISOString(),

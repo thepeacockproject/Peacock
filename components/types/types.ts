@@ -424,6 +424,7 @@ export interface UserProfile {
         opportunityprogression: {
             [opportunityId: RepositoryId]: boolean
         }
+        CPD: CPDStore
     }
     ETag: string | null
     Gamertag: string
@@ -1105,6 +1106,7 @@ export interface ChallengeProgressionData {
     ChallengeId: string
     ProfileId: string
     Completed: boolean
+    Ticked: boolean
     State: Record<string, unknown>
     CompletedAt: Date | string | null
     MustBeSaved: boolean

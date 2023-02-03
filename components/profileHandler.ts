@@ -493,11 +493,37 @@ profileRouter.post(
             return res.json([])
         }
 
-        let challenges: CompiledChallengeRuntimeData[] = getVersionedConfig(
-            "GlobalChallenges",
-            req.gameVersion,
-            true,
-        )
+        let challenges: CompiledChallengeRuntimeData[] = (
+            getVersionedConfig(
+                "GlobalChallenges",
+                req.gameVersion,
+                true,
+            ) as CompiledChallengeRuntimeData[]
+        ).filter((val) => {
+            if (!val.Challenge.InclusionData) return true
+            let include = false
+            const incData = val.Challenge.InclusionData
+
+            if (!include && incData.ContractIds) {
+                include = incData.ContractIds.includes(json.Metadata.Id)
+            }
+
+            if (!include && incData.ContractTypes) {
+                include = incData.ContractTypes.includes(json.Metadata.Type)
+            }
+
+            if (!include && incData.Locations) {
+                include = incData.Locations.includes(json.Metadata.Location)
+            }
+
+            if (!include && incData.GameModes) {
+                include = json.Metadata.Gamemodes.some((r) =>
+                    incData.GameModes.includes(r),
+                )
+            }
+
+            return include
+        })
 
         challenges.push(
             ...Object.values(
@@ -537,11 +563,13 @@ profileRouter.post(
         }
 
         for (const challenge of challenges) {
+            // TODO: Add actual support for shortcut challenges
             if (challenge.Challenge.Tags?.includes("shortcut")) {
                 challenge.Progression = {
                     ChallengeId: challenge.Challenge.Id,
                     ProfileId: req.jwt.unique_name,
                     Completed: true,
+                    Ticked: true,
                     State: {
                         CurrentState: "Success",
                     },

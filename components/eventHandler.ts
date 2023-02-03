@@ -19,6 +19,7 @@
 import { Router } from "express"
 import {
     ClientToServerEvent,
+    ContractProgressionData,
     ContractSession,
     GameVersion,
     MissionManifestObjective,
@@ -60,6 +61,7 @@ import {
     WitnessesC2SEvent,
 } from "./types/events"
 import picocolors from "picocolors"
+import { setCpd } from "./evergreen"
 
 const eventRouter = Router()
 
@@ -492,6 +494,9 @@ function saveEvents(
         session.duration = event.Timestamp
         session.lastUpdate = new Date()
 
+        const contract = controller.resolveContract(session.contractId)
+        const contractType = contract?.Metadata?.Type?.toLowerCase()
+
         // @ts-expect-error Issue with request type mismatch.
         controller.hooks.newEvent.call(event, req, session)
 
@@ -515,7 +520,7 @@ function saveEvents(
                 )
 
                 if (val.state === "Failure") {
-                    if (PEACOCK_DEV) {
+                    if (PEACOCK_DEV && contractType !== "evergreen") {
                         log(LogLevel.DEBUG, `Objective failed: ${objectiveId}`)
                     }
 
@@ -558,9 +563,6 @@ function saveEvents(
             response.push(process.hrtime.bigint().toString())
             return
         }
-
-        const contract = controller.resolveContract(session.contractId)
-        const contractType = contract?.Metadata?.Type?.toLowerCase()
 
         if (handleMultiplayerEvent(event, session)) {
             processed.push(event.Name)
@@ -754,7 +756,15 @@ function saveEvents(
                 writeUserData(req.jwt.unique_name, req.gameVersion)
                 break
             }
-            // We don't care about events below this point.
+            // Evergreen
+            case "CpdSet":
+                setCpd(
+                    event.Value as ContractProgressionData,
+                    userId,
+                    contract.Metadata.CpdId,
+                )
+                break
+            // Sinkhole events we don't care about
             case "ItemPickedUp":
                 log(
                     LogLevel.INFO,

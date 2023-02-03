@@ -316,27 +316,32 @@ export async function missionEnd(
             },
             Challenges: Object.values(contractChallenges)
                 .flat()
-                // FIXME: This behaviour may not be accurate to original server
-                .filter(
-                    (challengeData) =>
-                        controller.challengeService.getPersistentChallengeProgression(
-                            req.jwt.unique_name,
-                            challengeData.Id,
-                            req.gameVersion,
-                        ).Completed,
-                )
-                .map((challengeData) =>
-                    controller.challengeService.compileRegistryChallengeTreeData(
-                        challengeData,
-                        controller.challengeService.getPersistentChallengeProgression(
-                            req.jwt.unique_name,
-                            challengeData.Id,
-                            req.gameVersion,
-                        ),
-                        req.gameVersion,
-                        req.jwt.unique_name,
-                    ),
-                ),
+                .filter((challengeData) => {
+                    return controller.challengeService.fastGetIsUnticked(
+                        userData,
+                        challengeData.Id,
+                    )
+                })
+                .map((challengeData) => {
+                    const userId = req.jwt.unique_name
+                    const gameVersion = req.gameVersion
+                    userData.Extensions.ChallengeProgression[
+                        challengeData.Id
+                    ].Ticked = true
+                    writeUserData(userId, gameVersion)
+                    return {
+                        ChallengeId: challengeData.Id,
+                        ChallengeTags: challengeData.Tags,
+                        ChallengeName: challengeData.Name,
+                        ChallengeImageUrl: challengeData.ImageName,
+                        ChallengeDescription: challengeData.Description,
+                        XPGain: challengeData.Rewards.MasteryXP,
+                        IsGlobal: challengeData.Name.includes("GLOBAL"),
+                        IsActionReward:
+                            challengeData.Tags.includes("actionreward"),
+                        Drops: challengeData.Drops,
+                    }
+                }),
             Drops: [],
             OpportunityRewards: [], // ?
             CompletionData: generateCompletionData(

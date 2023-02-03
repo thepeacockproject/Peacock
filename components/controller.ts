@@ -1227,10 +1227,12 @@ export function contractIdToHitObject(
         log(LogLevel.ERROR, "No UC due to previous error?")
         return undefined
     }
+
     const challenges = controller.challengeService.getGroupedChallengeLists({
         type: ChallengeFilterType.ParentLocation,
         locationParentId: parentLocation?.Id,
     })
+
     const challengeCompletion =
         controller.challengeService.countTotalNCompletedChallenges(
             challenges,

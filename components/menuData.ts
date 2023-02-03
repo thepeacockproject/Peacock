@@ -140,6 +140,7 @@ menuDataRouter.get(
     "/dashboard/Dashboard_Category_Escalation/:subscriptionId/:type/:id/:mode",
     dashEscalations,
 )
+
 menuDataRouter.get(
     "/ChallengeLocation",
     (req: RequestWithJwt<{ locationId: string }>, res) => {
@@ -148,6 +149,7 @@ menuDataRouter.get(
             req.gameVersion,
             true,
         ).children[req.query.locationId]
+
         res.json({
             template: getVersionedConfig(
                 "ChallengeLocationTemplate",
@@ -206,6 +208,7 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
                   }
                 : {},
     }
+
     for (const parent in locations.parents) {
         career[parent] = {
             Children: [],
@@ -213,13 +216,16 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
             Name: locations.parents[parent].DisplayNameLocKey,
         }
     }
+
     for (const child in locations.children) {
         if (
             child === "LOCATION_ICA_FACILITY_ARRIVAL" ||
-            child === "LOCATION_HOKKAIDO_SHIM_MAMUSHI"
+            child === "LOCATION_HOKKAIDO_SHIM_MAMUSHI" ||
+            child.search("SNUG_") > 0
         ) {
             continue
         }
+
         const parent = locations.children[child].Properties.ParentLocation
         const location = locations.children[child]
         const challenges = controller.challengeService.getChallengesForLocation(
@@ -577,6 +583,8 @@ menuDataRouter.get(
         const { contractId } = getSession(req.jwt.unique_name)
         const contractData = controller.resolveContract(contractId)
 
+        const userData = getUserData(req.jwt.unique_name, req.gameVersion)
+
         res.json({
             template: {
                 controller: "group",
@@ -617,13 +625,11 @@ menuDataRouter.get(
                 )
                     .flat()
                     // FIXME: This behaviour may not be accurate to original server
-                    .filter(
-                        (challengeData) =>
-                            controller.challengeService.getPersistentChallengeProgression(
-                                req.jwt.unique_name,
-                                challengeData.Id,
-                                req.gameVersion,
-                            ).Completed,
+                    .filter((challengeData) =>
+                        controller.challengeService.fastGetIsCompleted(
+                            userData,
+                            challengeData.Id,
+                        ),
                     )
                     .map((challengeData) =>
                         controller.challengeService.compileRegistryChallengeTreeData(
