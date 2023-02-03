@@ -224,6 +224,8 @@ export const brokenItems = [
     "051825b9-44f2-4b3d-8ab1-8d4a07393c76",
     // eiffel tower melee weapon
     "a8a8f0da-a69b-428d-b8c1-faf8660ec318",
+    // PROP_DEVICE_REMOTE_EXPLOSIVE_ANCESTRAL (doesn't exist as of 3.140)
+    "099afc37-609b-48c9-9278-d3389b45829b",
 ]
 
 /**
