@@ -86,7 +86,15 @@ export function createInventory(
     // ts-expect-error It cannot be undefined.
     const filtered: InventoryItem[] = allunlockables
         .map((unlockable) => {
-            if (brokenItems.includes(unlockable.Guid)) {
+            if (
+                brokenItems.includes(unlockable.Guid) ||
+                // Remove TOKEN_OUTFIT_NEWZEALAND_HERO_NEWZEALANDSUIT
+                // Duplicate of TOKEN_OUTFIT_WET_SUIT, which is an unlock of The Mills Reverie challenge.
+                unlockable.Guid === "3a4bcbbf-d451-4853-8a85-649120e384df" ||
+                // Remove TOKEN_OUTFIT_COLORADO_HERO_RABIESSUIT
+                // Duplicate of TOKEN_OUTFIT_COLORADO_HERO_COLORADOSUIT.
+                unlockable.Guid === "e3234256-c061-48e6-b543-008d990affa1"
+            ) {
                 return undefined
             }
 
@@ -118,11 +126,6 @@ export function createInventory(
 
             const e = entP
             const { Id: id } = unlockContainer!.Unlockable
-
-            // Duplicate of TOKEN_OUTFIT_WET_SUIT, which is an unlock of The Mills Reverie challenge.
-            if (id === "TOKEN_OUTFIT_NEWZEALAND_HERO_NEWZEALANDSUIT") {
-                return false
-            }
 
             if (!e) {
                 return false
