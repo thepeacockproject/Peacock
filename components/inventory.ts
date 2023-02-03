@@ -119,6 +119,11 @@ export function createInventory(
             const e = entP
             const { Id: id } = unlockContainer!.Unlockable
 
+            // Duplicate of TOKEN_OUTFIT_WET_SUIT, which is an unlock of The Mills Reverie challenge.
+            if (id === "TOKEN_OUTFIT_NEWZEALAND_HERO_NEWZEALANDSUIT") {
+                return false
+            }
+
             if (!e) {
                 return false
             }
