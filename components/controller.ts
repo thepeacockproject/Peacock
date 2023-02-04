@@ -393,6 +393,10 @@ export class Controller {
      * Note: if you are adding a contract, please use {@link addMission}!
      */
     public contracts: Map<string, MissionManifest> = new Map()
+
+    // Converts a contract's repo ID to public ID.
+    public contractIdRepoToPublic: Map<string, string> = new Map()
+
     public challengeService: ChallengeService
     public masteryService: MasteryService
     /**

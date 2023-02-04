@@ -189,11 +189,21 @@ export class HitsCategoryService {
             `https://${remoteService}.hitman.io/profiles/page/HitsCategory?page=${pageNumber}&type=${categoryName}&mode=dataonly`,
             true,
         )
+        const hits = resp.data.data.Data.Hits
         Controller.preserveContracts(
-            resp.data.data.Data.Hits.map(
+            hits.map(
                 (hit) => hit.UserCentricContract.Contract.Metadata.PublicId,
             ),
         )
+
+        // Stores the repo ID —— public ID lookup for the planning page to use.
+        hits.forEach((hit) =>
+            controller.contractIdRepoToPublic.set(
+                hit.UserCentricContract.Contract.Metadata.Id,
+                hit.UserCentricContract.Contract.Metadata.PublicId,
+            ),
+        )
+
         return resp.data.data
     }
 
