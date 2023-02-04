@@ -19,6 +19,7 @@
 import { Response, Router } from "express"
 import {
     gameDifficulty,
+    getRemoteService,
     PEACOCKVERSTRING,
     unlockOrderComparer,
     uuidRegex,
@@ -31,6 +32,7 @@ import {
     controller,
     isSuit,
     peacockRecentEscalations,
+    preserveContracts,
 } from "./controller"
 import { makeCampaigns } from "./menus/campaigns"
 import {
@@ -40,6 +42,7 @@ import {
 } from "./menus/destinations"
 import type {
     CommonSelectScreenConfig,
+    contractSearchResult,
     GameVersion,
     HitsCategoryCategory,
     IHit,
@@ -88,6 +91,7 @@ import {
     StashpointQuery,
 } from "./types/gameSchemas"
 import assert from "assert"
+import { userAuths } from "./officialServerAuth"
 
 export const preMenuDataRouter = Router()
 const menuDataRouter = Router()
@@ -1515,32 +1519,34 @@ menuDataRouter.post(
             specialContracts,
         )
 
-        const contracts: { UserCentricContract: UserCentricContract }[] = []
+        let searchResult: contractSearchResult = undefined
 
-        for (const contract of specialContracts) {
-            const userCentric = generateUserCentric(
-                controller.resolveContract(contract),
-                req.jwt.unique_name,
-                req.gameVersion,
-            )
+        if (specialContracts.length > 0) {
+            // Handled by a plugin
 
-            if (!userCentric) {
-                log(LogLevel.ERROR, "UC is null! (contract not registered?)")
-                continue
+            const contracts: { UserCentricContract: UserCentricContract }[] = []
+
+            for (const contract of specialContracts) {
+                const userCentric = generateUserCentric(
+                    controller.resolveContract(contract),
+                    req.jwt.unique_name,
+                    req.gameVersion,
+                )
+
+                if (!userCentric) {
+                    log(
+                        LogLevel.ERROR,
+                        "UC is null! (contract not registered?)",
+                    )
+                    continue
+                }
+
+                contracts.push({
+                    UserCentricContract: userCentric,
+                })
             }
 
-            contracts.push({
-                UserCentricContract: userCentric,
-            })
-        }
-
-        res.json({
-            template: getVersionedConfig(
-                "ContractSearchResponseTemplate",
-                req.gameVersion,
-                false,
-            ),
-            data: {
+            searchResult = {
                 Data: {
                     Contracts: contracts,
                     TotalCount: contracts.length,
@@ -1549,7 +1555,76 @@ menuDataRouter.post(
                     HasPrevious: false,
                     HasMore: false,
                 },
-            },
+            }
+        } else {
+            // No plugins handle this. Getting search results from official
+            searchResult = await officialSearchContract(
+                req.jwt.unique_name,
+                req.gameVersion,
+                req.body,
+                0,
+            )
+        }
+
+        res.json({
+            template: getVersionedConfig(
+                "ContractSearchResponseTemplate",
+                req.gameVersion,
+                false,
+            ),
+            data: searchResult,
+        })
+    },
+)
+
+async function officialSearchContract(
+    userId: string,
+    gameVersion: GameVersion,
+    filters: string[],
+    pageNumber: number,
+): Promise<contractSearchResult> {
+    const remoteService = getRemoteService(gameVersion)
+    const user = userAuths.get(userId)
+
+    if (!user) {
+        log(LogLevel.WARN, `No authentication for user ${userId}!`)
+        return undefined
+    }
+
+    const resp = await user._useService<{
+        data: contractSearchResult
+    }>(
+        pageNumber === 0
+            ? `https://${remoteService}.hitman.io/profiles/page/ContractSearch?sorting=`
+            : `https://${remoteService}.hitman.io/profiles/page/ContractSearchPaginate?page=${pageNumber}&sorting=`,
+        false,
+        filters,
+    )
+
+    preserveContracts(
+        resp.data.data.Data.Contracts.map(
+            (c) => c.UserCentricContract.Contract.Metadata.PublicId,
+        ),
+    )
+
+    controller.storeIdRepoToPublic(
+        resp.data.data.Data.Contracts.map((c) => c.UserCentricContract),
+    )
+    return resp.data.data
+}
+
+menuDataRouter.post(
+    "/ContractSearchPaginate",
+    jsonMiddleware(),
+    async (req: RequestWithJwt<{ page: number }, string[]>, res) => {
+        res.json({
+            template: getConfig("ContractSearchPaginateTemplate", false),
+            data: await officialSearchContract(
+                req.jwt.unique_name,
+                req.gameVersion,
+                req.body,
+                req.query.page,
+            ),
         })
     },
 )

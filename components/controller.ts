@@ -862,16 +862,6 @@ export class Controller {
         this._internalElusives = undefined
     }
 
-    public static async preserveContracts(publicIds: string[]): Promise<void> {
-        for (const id of publicIds) {
-            await axios.default.get<Response>(hitmapUrl, {
-                params: {
-                    publicId: addDashesToPublicId(id),
-                },
-            })
-        }
-    }
-
     /**
      * Fetch a contract from HITMAPS.
      *
@@ -1139,6 +1129,15 @@ export class Controller {
         this._internalContracts = decompressed.b
         this._internalElusives = decompressed.el
     }
+
+    public storeIdRepoToPublic(contracts: UserCentricContract[]): void {
+        contracts.forEach((c) =>
+            controller.contractIdRepoToPublic.set(
+                c.Contract.Metadata.Id,
+                c.Contract.Metadata.PublicId,
+            ),
+        )
+    }
 }
 
 /**
@@ -1263,6 +1262,20 @@ export function contractIdToHitObject(
         LocationCompletion: 0,
         LocationXPLeft: 6000,
         LocationHideProgression: false,
+    }
+}
+
+/**
+ * Sends an array of publicIds to the contract preservation backend.
+ * @param publicIds The contract publicIds to send.
+ */
+export async function preserveContracts(publicIds: string[]): Promise<void> {
+    for (const id of publicIds) {
+        await axios.default.get<Response>(hitmapUrl, {
+            params: {
+                publicId: addDashesToPublicId(id),
+            },
+        })
     }
 }
 

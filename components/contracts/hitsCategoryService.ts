@@ -20,9 +20,9 @@ import { HookMap, SyncHook } from "../hooksImpl"
 import { GameVersion, HitsCategoryCategory } from "../types/types"
 import {
     contractIdToHitObject,
-    Controller,
     controller,
     featuredContractGroups,
+    preserveContracts,
 } from "../controller"
 import { getUserData } from "../databaseHandler"
 import { orderedETs } from "./elusiveTargets"
@@ -186,7 +186,7 @@ export class HitsCategoryService {
             true,
         )
         const hits = resp.data.data.Data.Hits
-        Controller.preserveContracts(
+        preserveContracts(
             hits.map(
                 (hit) => hit.UserCentricContract.Contract.Metadata.PublicId,
             ),
@@ -198,6 +198,9 @@ export class HitsCategoryService {
                 hit.UserCentricContract.Contract.Metadata.Id,
                 hit.UserCentricContract.Contract.Metadata.PublicId,
             ),
+        )
+        controller.storeIdRepoToPublic(
+            hits.map((hit) => hit.UserCentricContract),
         )
 
         return resp.data.data
