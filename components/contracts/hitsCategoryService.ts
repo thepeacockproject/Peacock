@@ -28,6 +28,7 @@ import { getUserData } from "../databaseHandler"
 import { orderedETs } from "./elusiveTargets"
 import { userAuths } from "components/officialServerAuth"
 import { log, LogLevel } from "components/loggingInterop"
+import { getRemoteService } from "components/utils"
 
 function paginate<Element>(
     elements: Element[],
@@ -170,12 +171,7 @@ export class HitsCategoryService {
         gameVersion: GameVersion,
         userId: string,
     ): Promise<HitsCategoryCategory> {
-        const remoteService =
-            gameVersion === "h3"
-                ? "hm3-service"
-                : gameVersion === "h2"
-                ? "pc2-service"
-                : "pc-service"
+        const remoteService = getRemoteService(gameVersion)
         const user = userAuths.get(userId)
 
         if (!user) {

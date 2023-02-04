@@ -19,6 +19,7 @@
 import { decode } from "jsonwebtoken"
 import type { NextFunction, Response } from "express"
 import type {
+    GameVersion,
     MissionManifestObjective,
     RepositoryId,
     RequestWithJwt,
@@ -71,6 +72,14 @@ export async function checkForUpdates(): Promise<void> {
     } catch (e) {
         log(LogLevel.WARN, "Failed to check for updates!")
     }
+}
+
+export function getRemoteService(gameVersion: GameVersion): string {
+    return gameVersion === "h3"
+        ? "hm3-service"
+        : gameVersion === "h2"
+        ? "pc2-service"
+        : "pc-service"
 }
 
 /**

@@ -56,7 +56,12 @@ import * as axios from "axios"
 import * as ini from "js-ini"
 import * as statemachineParser from "@peacockproject/statemachine-parser"
 import * as utils from "./utils"
-import { addDashesToPublicId, fastClone, hitmapUrl } from "./utils"
+import {
+    addDashesToPublicId,
+    fastClone,
+    getRemoteService,
+    hitmapUrl,
+} from "./utils"
 import * as sessionSerialization from "./sessionSerialization"
 import * as databaseHandler from "./databaseHandler"
 import * as playnext from "./menus/playnext"
@@ -992,12 +997,7 @@ export class Controller {
         gameVersion: GameVersion,
         userId: string,
     ): Promise<MissionManifest | undefined> {
-        const remoteService =
-            gameVersion === "h3"
-                ? "hm3-service"
-                : gameVersion === "h2"
-                ? "pc2-service"
-                : "pc-service"
+        const remoteService = getRemoteService(gameVersion)
 
         const user = userAuths.get(userId)
 
