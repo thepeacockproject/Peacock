@@ -56,7 +56,7 @@ import * as axios from "axios"
 import * as ini from "js-ini"
 import * as statemachineParser from "@peacockproject/statemachine-parser"
 import * as utils from "./utils"
-import { addDashesToPublicId, fastClone } from "./utils"
+import { addDashesToPublicId, fastClone, hitmapUrl } from "./utils"
 import * as sessionSerialization from "./sessionSerialization"
 import * as databaseHandler from "./databaseHandler"
 import * as playnext from "./menus/playnext"
@@ -853,6 +853,16 @@ export class Controller {
         this._internalElusives = undefined
     }
 
+    public static async preserveContracts(publicIds: string[]): Promise<void> {
+        for (const id of publicIds) {
+            await axios.default.get<Response>(hitmapUrl, {
+                params: {
+                    publicId: addDashesToPublicId(id),
+                },
+            })
+        }
+    }
+
     /**
      * Fetch a contract from HITMAPS.
      *
@@ -873,14 +883,11 @@ export class Controller {
             ErrorReason?: string | null
         }
 
-        const resp = await axios.default.get<Response>(
-            `https://backend.rdil.rocks/partners/hitmaps/contract`,
-            {
-                params: {
-                    publicId: id,
-                },
+        const resp = await axios.default.get<Response>(hitmapUrl, {
+            params: {
+                publicId: id,
             },
-        )
+        })
 
         const fetchedData = resp.data
         const hasData = !!fetchedData?.contract?.Contract

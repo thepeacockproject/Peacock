@@ -224,6 +224,8 @@ export function getDefaultSuitFor(location: string) {
 
 export const nilUuid = "00000000-0000-0000-0000-000000000000"
 
+export const hitmapUrl = "https://backend.rdil.rocks/partners/hitmaps/contract"
+
 export function isObjectiveActive(
     objective: MissionManifestObjective,
     doneObjectives: Set<RepositoryId>,

@@ -20,6 +20,7 @@ import { HookMap, SyncHook } from "../hooksImpl"
 import { GameVersion, HitsCategoryCategory } from "../types/types"
 import {
     contractIdToHitObject,
+    Controller,
     controller,
     featuredContractGroups,
 } from "../controller"
@@ -160,8 +161,6 @@ export class HitsCategoryService {
                 hitsCategory.CurrentSubType = "MyPlaylist_all"
             })
 
-        // intentionally don't handle Trending
-        // intentionally don't handle MostPlayedLastWeek
         // intentionally don't handle Arcade
     }
 
@@ -189,6 +188,11 @@ export class HitsCategoryService {
         }>(
             `https://${remoteService}.hitman.io/profiles/page/HitsCategory?page=${pageNumber}&type=${categoryName}&mode=dataonly`,
             true,
+        )
+        Controller.preserveContracts(
+            resp.data.data.Data.Hits.map(
+                (hit) => hit.UserCentricContract.Contract.Metadata.PublicId,
+            ),
         )
         return resp.data.data
     }
