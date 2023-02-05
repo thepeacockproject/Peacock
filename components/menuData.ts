@@ -19,7 +19,6 @@
 import { Response, Router } from "express"
 import {
     gameDifficulty,
-    getRemoteService,
     PEACOCKVERSTRING,
     unlockOrderComparer,
     uuidRegex,
@@ -32,7 +31,6 @@ import {
     controller,
     isSuit,
     peacockRecentEscalations,
-    preserveContracts,
 } from "./controller"
 import { makeCampaigns } from "./menus/campaigns"
 import {
@@ -65,7 +63,10 @@ import {
     generateUserCentric,
 } from "./contracts/dataGen"
 import { log, LogLevel } from "./loggingInterop"
-import { contractsModeHome } from "./contracts/contractsModeRouting"
+import {
+    contractsModeHome,
+    officialSearchContract,
+} from "./contracts/contractsModeRouting"
 import random from "random"
 import { getUserData } from "./databaseHandler"
 import {
@@ -91,7 +92,6 @@ import {
     StashpointQuery,
 } from "./types/gameSchemas"
 import assert from "assert"
-import { userAuths } from "./officialServerAuth"
 
 export const preMenuDataRouter = Router()
 const menuDataRouter = Router()
@@ -1576,42 +1576,6 @@ menuDataRouter.post(
         })
     },
 )
-
-async function officialSearchContract(
-    userId: string,
-    gameVersion: GameVersion,
-    filters: string[],
-    pageNumber: number,
-): Promise<contractSearchResult> {
-    const remoteService = getRemoteService(gameVersion)
-    const user = userAuths.get(userId)
-
-    if (!user) {
-        log(LogLevel.WARN, `No authentication for user ${userId}!`)
-        return undefined
-    }
-
-    const resp = await user._useService<{
-        data: contractSearchResult
-    }>(
-        pageNumber === 0
-            ? `https://${remoteService}.hitman.io/profiles/page/ContractSearch?sorting=`
-            : `https://${remoteService}.hitman.io/profiles/page/ContractSearchPaginate?page=${pageNumber}&sorting=`,
-        false,
-        filters,
-    )
-
-    preserveContracts(
-        resp.data.data.Data.Contracts.map(
-            (c) => c.UserCentricContract.Contract.Metadata.PublicId,
-        ),
-    )
-
-    controller.storeIdToPublicId(
-        resp.data.data.Data.Contracts.map((c) => c.UserCentricContract),
-    )
-    return resp.data.data
-}
 
 menuDataRouter.post(
     "/ContractSearchPaginate",
