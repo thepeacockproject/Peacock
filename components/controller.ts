@@ -60,7 +60,7 @@ import {
     addDashesToPublicId,
     fastClone,
     getRemoteService,
-    hitmapUrl,
+    hitmapsUrl,
 } from "./utils"
 import * as sessionSerialization from "./sessionSerialization"
 import * as databaseHandler from "./databaseHandler"
@@ -882,7 +882,7 @@ export class Controller {
             ErrorReason?: string | null
         }
 
-        const resp = await axios.default.get<Response>(hitmapUrl, {
+        const resp = await axios.default.get<Response>(hitmapsUrl, {
             params: {
                 publicId: id,
             },
@@ -1271,7 +1271,7 @@ export function contractIdToHitObject(
  */
 export async function preserveContracts(publicIds: string[]): Promise<void> {
     for (const id of publicIds) {
-        await axios.default.get<Response>(hitmapUrl, {
+        await axios.default.get<Response>(hitmapsUrl, {
             params: {
                 publicId: addDashesToPublicId(id),
             },
