@@ -199,9 +199,7 @@ export class HitsCategoryService {
                 hit.UserCentricContract.Contract.Metadata.PublicId,
             ),
         )
-        controller.storeIdToPublicId(
-            hits.map((hit) => hit.UserCentricContract),
-        )
+        controller.storeIdToPublicId(hits.map((hit) => hit.UserCentricContract))
 
         return resp.data.data
     }
