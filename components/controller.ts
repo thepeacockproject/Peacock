@@ -737,7 +737,7 @@ export class Controller {
             `User ${userId} is downloading contract ${pubId}...`,
         )
 
-        let contractData: MissionManifest | undefined
+        let contractData: MissionManifest | undefined = undefined
 
         if (
             gameVersion === "h3" &&
@@ -747,8 +747,15 @@ export class Controller {
 
             if (result) {
                 contractData = result
+            } else {
+                log(
+                    LogLevel.WARN,
+                    `Failed to download from HITMAP servers. Trying official servers instead...`,
+                )
             }
-        } else {
+        }
+
+        if (!contractData) {
             contractData = await Controller._officialFetchContract(
                 pubId,
                 gameVersion,
