@@ -194,12 +194,12 @@ export class HitsCategoryService {
 
         // Stores the repo ID —— public ID lookup for the planning page to use.
         hits.forEach((hit) =>
-            controller.contractIdRepoToPublic.set(
+            controller.contractIdToPublicId.set(
                 hit.UserCentricContract.Contract.Metadata.Id,
                 hit.UserCentricContract.Contract.Metadata.PublicId,
             ),
         )
-        controller.storeIdRepoToPublic(
+        controller.storeIdToPublicId(
             hits.map((hit) => hit.UserCentricContract),
         )
 

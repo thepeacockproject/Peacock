@@ -97,7 +97,7 @@ export async function planningView(
             LogLevel.WARN,
             `Trying to download contract ${req.query.contractid} due to it not found locally.`,
         )
-        const publicId = controller.contractIdRepoToPublic.get(
+        const publicId = controller.contractIdToPublicId.get(
             req.query.contractid,
         )
         if (publicId) {

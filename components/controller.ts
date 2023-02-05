@@ -399,8 +399,8 @@ export class Controller {
      */
     public contracts: Map<string, MissionManifest> = new Map()
 
-    // Converts a contract's repo ID to public ID.
-    public contractIdRepoToPublic: Map<string, string> = new Map()
+    // Converts a contract's ID to public ID.
+    public contractIdToPublicId: Map<string, string> = new Map()
 
     public challengeService: ChallengeService
     public masteryService: MasteryService
@@ -1130,9 +1130,9 @@ export class Controller {
         this._internalElusives = decompressed.el
     }
 
-    public storeIdRepoToPublic(contracts: UserCentricContract[]): void {
+    public storeIdToPublicId(contracts: UserCentricContract[]): void {
         contracts.forEach((c) =>
-            controller.contractIdRepoToPublic.set(
+            controller.contractIdToPublicId.set(
                 c.Contract.Metadata.Id,
                 c.Contract.Metadata.PublicId,
             ),
