@@ -226,6 +226,12 @@ export const brokenItems = [
     "a8a8f0da-a69b-428d-b8c1-faf8660ec318",
     // PROP_DEVICE_REMOTE_EXPLOSIVE_ANCESTRAL (doesn't exist as of 3.140)
     "099afc37-609b-48c9-9278-d3389b45829b",
+    // Remove TOKEN_OUTFIT_NEWZEALAND_HERO_NEWZEALANDSUIT
+    // Duplicate of TOKEN_OUTFIT_WET_SUIT, which is an unlock of The Mills Reverie challenge.
+    "3a4bcbbf-d451-4853-8a85-649120e384df",
+    // Remove TOKEN_OUTFIT_COLORADO_HERO_RABIESSUIT
+    // Duplicate of TOKEN_OUTFIT_COLORADO_HERO_COLORADOSUIT.
+    "e3234256-c061-48e6-b543-008d990affa1",
 ]
 
 /**
