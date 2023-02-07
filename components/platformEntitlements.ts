@@ -17,7 +17,7 @@
  */
 
 import type { Response } from "express"
-import axios from "axios"
+import axios, { AxiosError } from "axios"
 import type { NamespaceEntitlementEpic, RequestWithJwt } from "./types/types"
 import { getUserData } from "./databaseHandler"
 import { log, LogLevel } from "./loggingInterop"
@@ -177,11 +177,20 @@ export async function getEpicEntitlements(
 
         try {
             result = (await axios(url, v)).data as NamespaceEntitlementEpic[]
-        } catch (AxiosError) {
-            log(
-                LogLevel.ERROR,
-                `Failed to get entitlements from Epic: got ${AxiosError.response.status} ${AxiosError.response.statusText}`,
-            )
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                log(
+                    LogLevel.ERROR,
+                    `Failed to get entitlements from Epic: got ${error.response.status} ${error.response.statusText}.`,
+                )
+            } else {
+                log(
+                    LogLevel.ERROR,
+                    `Failed to get entitlements from Epic: ${JSON.stringify(
+                        error,
+                    )}.`,
+                )
+            }
         }
 
         return result

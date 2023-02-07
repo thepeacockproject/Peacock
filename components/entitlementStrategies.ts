@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { AxiosResponse } from "axios"
+import { AxiosError, AxiosResponse } from "axios"
 import { log, LogLevel } from "./loggingInterop"
 import { userAuths } from "./officialServerAuth"
 import {
@@ -93,11 +93,20 @@ export class IOIStrategy extends EntitlementStrategy {
                     issuerId: this.issuerId,
                 },
             )
-        } catch (AxiosError) {
-            log(
-                LogLevel.ERROR,
-                `Failed to get entitlements from Steam: got ${AxiosError.response.status} ${AxiosError.response.statusText}`,
-            )
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                log(
+                    LogLevel.ERROR,
+                    `Failed to get entitlements from Steam: got ${error.response.status} ${error.response.statusText}.`,
+                )
+            } else {
+                log(
+                    LogLevel.ERROR,
+                    `Failed to get entitlements from Steam: ${JSON.stringify(
+                        error,
+                    )}.`,
+                )
+            }
         }
 
         return resp?.data || []
