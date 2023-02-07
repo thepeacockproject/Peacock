@@ -153,6 +153,7 @@ export function getPlatformEntitlements(
  * @param epicUid The user's Epic ID.
  * @param epicAuth The user's Epic authentication token.
  * @see https://dev.epicgames.com/docs/services/en-US/WebAPIRef/EcomWebAPI/index.html
+ * @returns A string array with the user's entitlements, or an empty array if failed to acquire entitlements.
  */
 export async function getEpicEntitlements(
     namespace: string,
@@ -172,15 +173,28 @@ export async function getEpicEntitlements(
             .map((e) => `${namespace}:${e}`)
             .join(`&nsCatalogItemId=`)}`
 
-        return (await axios(url, v)).data as NamespaceEntitlementEpic[]
+        let result: NamespaceEntitlementEpic[] = undefined
+
+        try {
+            result = (await axios(url, v)).data as NamespaceEntitlementEpic[]
+        } catch (AxiosError) {
+            log(
+                LogLevel.ERROR,
+                `Failed to get entitlements from Epic: got ${AxiosError.response.status} ${AxiosError.response.statusText}`,
+            )
+        }
+
+        return result
     }
 
     const actuallyOwned = new Set<string>()
     const res = await getEnts(H3_EPIC_ENTITLEMENTS)
 
-    for (const ent of res) {
-        if (ent.owned) {
-            actuallyOwned.add(ent.itemId)
+    if (res) {
+        for (const ent of res) {
+            if (ent.owned) {
+                actuallyOwned.add(ent.itemId)
+            }
         }
     }
 

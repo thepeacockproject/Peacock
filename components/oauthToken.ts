@@ -297,9 +297,25 @@ export async function handleOauthToken(
         return []
     }
 
-    userData.Extensions.entP = await getEntitlements()
-
-    writeNewUserData(req.body.pId, userData, gameVersion)
+    const newEntP = await getEntitlements()
+    if (newEntP.length === 0) {
+        if (userData.Extensions.entP) {
+            log(
+                LogLevel.WARN,
+                `Error getting latest entitlement data for user ${req.body.pId}. Recently acquired DLCs might not be displayed!`,
+            )
+        } else {
+            log(
+                LogLevel.ERROR,
+                `Error getting entitlement data for new user ${req.body.pId}!`,
+            )
+            userData.Extensions.entP = newEntP
+            writeNewUserData(req.body.pId, userData, gameVersion)
+        }
+    } else {
+        userData.Extensions.entP = newEntP
+        writeNewUserData(req.body.pId, userData, gameVersion)
+    }
 
     // Format here follows steam_external, Epic jwt has some different fields
     const userinfo = {
