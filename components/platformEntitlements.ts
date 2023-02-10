@@ -173,7 +173,7 @@ export async function getEpicEntitlements(
             .map((e) => `${namespace}:${e}`)
             .join(`&nsCatalogItemId=`)}`
 
-        let result: NamespaceEntitlementEpic[] = undefined
+        let result: NamespaceEntitlementEpic[] | undefined = undefined
 
         try {
             result = (await axios(url, v)).data as NamespaceEntitlementEpic[]
