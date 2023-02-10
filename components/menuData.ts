@@ -286,7 +286,7 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
                 req.jwt.unique_name,
                 req.gameVersion,
             ),
-            LocationsData: createLocationsData(req.gameVersion),
+            LocationsData: createLocationsData(req.gameVersion, true),
             ProfileData: {
                 ChallengeData: {
                     Children: Object.values(career),
@@ -1492,7 +1492,7 @@ menuDataRouter.get("/contractsearchpage", (req: RequestWithJwt, res) => {
                 req.jwt.unique_name,
                 req.gameVersion,
             ),
-            LocationsData: createLocationsData(req.gameVersion),
+            LocationsData: createLocationsData(req.gameVersion, true),
             FilterData: getVersionedConfig(
                 "FilterData",
                 req.gameVersion,
