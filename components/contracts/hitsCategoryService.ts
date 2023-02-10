@@ -27,14 +27,14 @@ import {
     controller,
     featuredContractGroups,
 } from "../controller"
-import { getUserData } from "../databaseHandler"
+import { getUserData, writeUserData } from "../databaseHandler"
 import { orderedETs } from "./elusiveTargets"
 
 /**
  * The filters supported for HitsCategories.
  * Supported for "MyPlaylist" "MyHistory" and "MyContracts".
  */
-type ContractFilter = "all" | "completed" | "failed" | string
+type ContractFilter = "default" | "all" | "completed" | "failed" | string
 
 function paginate<Element>(
     elements: Element[],
@@ -214,6 +214,32 @@ export class HitsCategoryService {
     }
 
     /**
+     * This function will get or set the default filter of a category for a user, depending on the "type" passed.
+     * If the type is "default", then it will get the default filter and return it.
+     * Otherwise, it will set the default filter to the type passed, and return the type itself.
+     * @param gameVersion The GameVersion that the user is playing on.
+     * @param userId The ID of the user.
+     * @param type The type of the filter.
+     * @param category The category in question.
+     * @returns The filter to use for this request.
+     */
+    private getOrSetDefaultFilter(
+        gameVersion: GameVersion,
+        userId: string,
+        type: ContractFilter,
+        category: string,
+    ): string {
+        const user = getUserData(userId, gameVersion)
+        if (type === "default") {
+            type = user.Extensions.gamepersistentdata.HitsFilterType[category]
+        } else {
+            user.Extensions.gamepersistentdata.HitsFilterType[category] = type
+            writeUserData(userId, gameVersion)
+        }
+        return type
+    }
+
+    /**
      * Gets the contracts array with the repoId of all contracts of the specified type that the player has played before, sorted by LastPlayedTime.
      * @param gameVersion The gameVersion the player is playing on.
      * @param userId The Id of the user.
@@ -281,7 +307,14 @@ export class HitsCategoryService {
             categoryName === "Elusive_Target_Hits"
                 ? categoryName
                 : categoryTypes[0]
-        const filter = categoryTypes.length === 2 ? categoryTypes[1] : "all"
+        let filter = categoryTypes.length === 2 ? categoryTypes[1] : "default"
+
+        filter = this.getOrSetDefaultFilter(
+            gameVersion,
+            userId,
+            filter,
+            category,
+        )
 
         const hitsCategory: HitsCategoryCategory = {
             Category: category,

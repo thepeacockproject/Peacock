@@ -428,6 +428,12 @@ export interface UserProfile {
         gamepersistentdata: {
             __stats?: unknown
             PersistentBool: Record<string, unknown>
+            HitsFilterType: {
+                // "all" / "completed" / "failed"
+                MyHistory: string
+                MyContracts: string
+                MyPlaylist: string
+            }
         }
         opportunityprogression: {
             [opportunityId: RepositoryId]: boolean

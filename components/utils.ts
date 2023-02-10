@@ -170,6 +170,21 @@ export function castUserProfile(profile: UserProfile): UserProfile {
         }
     }
 
+    // Fix Extensions.gamepersistentdata.HitsFilterType.
+    // None of the old profiles should have "MyPlaylist".
+    if (
+        !Object.prototype.hasOwnProperty.call(
+            j.Extensions.gamepersistentdata.HitsFilterType,
+            "MyPlaylist",
+        )
+    ) {
+        j.Extensions.gamepersistentdata.HitsFilterType = {
+            MyHistory: "all",
+            MyContracts: "all",
+            MyPlaylist: "all",
+        }
+    }
+
     if (dirty) {
         writeFileSync(`userdata/users/${j.Id}.json`, JSON.stringify(j))
         log(LogLevel.INFO, "Profile successfully repaired!")
