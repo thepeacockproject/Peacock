@@ -443,10 +443,7 @@ function contractFailed(
     const contractData = controller.resolveContract(session.contractId)
 
     // If this is a contract, update the contract in the played list
-    if (
-        contractData.Metadata.Type === "featured" ||
-        contractData.Metadata.Type === "usercreated"
-    ) {
+    if (contractTypes.includes(contractData.Metadata.Type)) {
         const userData = getUserData(session.userId, session.gameVersion)
 
         const id = session.contractId

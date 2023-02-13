@@ -49,7 +49,7 @@ export const PEACOCKVERSTRING = HUMAN_VERSION
 export const uuidRegex =
     /^[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$/
 
-export const contractTypes = ["featured", "usercreated", "creation"]
+export const contractTypes = ["featured", "usercreated"]
 
 export async function checkForUpdates(): Promise<void> {
     if (getFlag("updateChecking") === false) {

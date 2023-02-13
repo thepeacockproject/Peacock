@@ -18,6 +18,7 @@
 
 import type { Response } from "express"
 import {
+    contractTypes,
     difficultyToString,
     handleAxiosError,
     isObjectiveActive,
@@ -257,10 +258,7 @@ export async function missionEnd(
         }
 
         writeUserData(req.jwt.unique_name, req.gameVersion)
-    } else if (
-        contractData.Metadata.Type === "featured" ||
-        contractData.Metadata.Type === "usercreated"
-    ) {
+    } else if (contractTypes.includes(contractData.Metadata.Type)) {
         // Update the contract in the played list
         const id = contractData.Metadata.Id
 
