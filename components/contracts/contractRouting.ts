@@ -17,7 +17,13 @@
  */
 
 import { Router } from "express"
-import { fastClone, nilUuid, ServerVer, uuidRegex } from "../utils"
+import {
+    contractTypes,
+    fastClone,
+    nilUuid,
+    ServerVer,
+    uuidRegex,
+} from "../utils"
 import { json as jsonMiddleware } from "body-parser"
 import {
     enqueueEvent,
@@ -92,6 +98,11 @@ contractRoutingRouter.post(
             ...{
                 OpportunityData: getContractOpportunityData(req, contractData),
             },
+        }
+
+        // Edit usercreated contract data HERE
+        if (contractTypes.includes(contractData.Metadata.Type)) {
+            contractData.Data.EnableSaving = false
         }
 
         const contractSesh = {
