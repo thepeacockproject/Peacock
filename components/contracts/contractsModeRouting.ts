@@ -23,7 +23,7 @@ import { getUserData } from "../databaseHandler"
 import { generateUserCentric } from "./dataGen"
 import { controller } from "../controller"
 import { createLocationsData } from "../menus/destinations"
-import { contractCreationTutorialId } from "components/utils"
+import { contractCreationTutorialId } from "../utils"
 
 export function contractsModeHome(req: RequestWithJwt, res: Response): void {
     const contractsHomeTemplate = getConfig("ContractsTemplate", false)
