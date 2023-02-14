@@ -160,6 +160,7 @@ export async function getEpicEntitlements(
     epicUid: string,
     epicAuth: string,
 ): Promise<string[]> {
+    return H3_EPIC_ENTITLEMENTS
     async function getEnts(
         ents: string[],
     ): Promise<NamespaceEntitlementEpic[]> {
