@@ -16,6 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { AxiosError, AxiosResponse } from "axios"
 import { log, LogLevel } from "./loggingInterop"
 import { userAuths } from "./officialServerAuth"
 import {
@@ -76,19 +77,37 @@ export class IOIStrategy extends EntitlementStrategy {
     override async get(userId: string) {
         // Note: Relies on the "legacyContractDownloader" flag.
         if (!userAuths.has(userId)) {
-            log(LogLevel.ERROR, `No data found for ${userId}.`)
+            log(LogLevel.ERROR, `No user data found for ${userId}.`)
             return []
         }
 
         const user = userAuths.get(userId)
 
-        const resp = await user?._useService<string[]>(
-            `https://${this._remoteService}.hitman.io/authentication/api/userchannel/ProfileService/GetPlatformEntitlements`,
-            false,
-            {
-                issuerId: this.issuerId,
-            },
-        )
+        let resp: AxiosResponse<string[]> = undefined
+
+        try {
+            resp = await user?._useService<string[]>(
+                `https://${this._remoteService}.hitman.io/authentication/api/userchannel/ProfileService/GetPlatformEntitlements`,
+                false,
+                {
+                    issuerId: this.issuerId,
+                },
+            )
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                log(
+                    LogLevel.ERROR,
+                    `Failed to get entitlements from Steam: got ${error.response.status} ${error.response.statusText}.`,
+                )
+            } else {
+                log(
+                    LogLevel.ERROR,
+                    `Failed to get entitlements from Steam: ${JSON.stringify(
+                        error,
+                    )}.`,
+                )
+            }
+        }
 
         return resp?.data || []
     }

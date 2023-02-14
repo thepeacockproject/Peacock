@@ -49,6 +49,10 @@ export const PEACOCKVERSTRING = HUMAN_VERSION
 export const uuidRegex =
     /^[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$/
 
+export const contractTypes = ["featured", "usercreated", "creation"]
+
+export const contractCreationTutorialId = "d7e2607c-6916-48e2-9588-976c7d8998bb"
+
 export async function checkForUpdates(): Promise<void> {
     if (getFlag("updateChecking") === false) {
         return
@@ -120,7 +124,6 @@ export function castUserProfile(profile: UserProfile): UserProfile {
     let dirty = false
 
     for (const item of [
-        "entP",
         "PeacockEscalations",
         "PeacockFavoriteContracts",
         "PeacockCompletedEscalations",
@@ -136,14 +139,6 @@ export function castUserProfile(profile: UserProfile): UserProfile {
                 LogLevel.WARN,
                 `Attempting to repair the profile automatically...`,
             )
-
-            if (item === "entP") {
-                log(
-                    LogLevel.ERROR,
-                    "Can't repair this issue, please let us know in the Discord!",
-                )
-                process.exit(1)
-            }
 
             if (item === "PeacockEscalations") {
                 j.Extensions.PeacockEscalations = {}

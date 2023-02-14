@@ -31,7 +31,7 @@ import {
     Seconds,
     ServerToClientEvent,
 } from "./types/types"
-import { extractToken, ServerVer } from "./utils"
+import { contractTypes, extractToken, ServerVer } from "./utils"
 import { json as jsonMiddleware } from "body-parser"
 import { log, LogLevel } from "./loggingInterop"
 import { getUserData, writeUserData } from "./databaseHandler"
@@ -236,11 +236,7 @@ export function newSession(
         throw new Error("no ct")
     }
 
-    if (
-        difficulty === 0 &&
-        (contract.Metadata.Type === "creation" ||
-            contract.Metadata.Type === "usercreated")
-    ) {
+    if (difficulty === 0 && contractTypes.includes(contract.Metadata.Type)) {
         log(
             LogLevel.DEBUG,
             `Difficulty not set for user created contract ${contractId}, setting to 2`,

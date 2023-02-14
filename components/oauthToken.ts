@@ -224,11 +224,13 @@ export async function handleOauthToken(
         await authContainer._initiallyAuthenticate(req)
     }
 
-    if (getUserData(req.body.pId, gameVersion) === undefined) {
+    let userData = getUserData(req.body.pId, gameVersion)
+
+    if (userData === undefined) {
         // User does not exist, create new profile from default:
         log(LogLevel.DEBUG, `Create new profile ${req.body.pId}`)
 
-        const userData = getVersionedConfig(
+        userData = getVersionedConfig(
             "UserDefault",
             gameVersion,
             true,
@@ -242,50 +244,6 @@ export async function handleOauthToken(
             userData.EpicId = req.body.epic_userid
         }
 
-        // eslint-disable-next-line no-inner-declarations
-        async function getEntitlements(): Promise<string[]> {
-            if (isFrankenstein) {
-                return new SteamScpcStrategy().get()
-            }
-
-            if (gameVersion === "h1") {
-                if (external_platform === "steam") {
-                    return new SteamH1Strategy().get()
-                } else if (external_platform === "epic") {
-                    return new EpicH1Strategy().get()
-                } else {
-                    log(LogLevel.ERROR, "Unsupported platform.")
-                    return []
-                }
-            }
-
-            if (gameVersion === "h2") {
-                return new SteamH2Strategy().get()
-            }
-
-            if (gameVersion === "h3") {
-                if (external_platform === "epic") {
-                    return await new EpicH3Strategy().get(
-                        req.body.access_token,
-                        req.body.epic_userid,
-                    )
-                } else if (external_platform === "steam") {
-                    return await new IOIStrategy(
-                        gameVersion,
-                        STEAM_NAMESPACE_2021,
-                    ).get(req.body.pId)
-                } else {
-                    log(LogLevel.ERROR, "Unsupported platform.")
-                    return []
-                }
-            }
-
-            log(LogLevel.ERROR, "Unsupported platform.")
-            return []
-        }
-
-        userData.Extensions.entP = await getEntitlements()
-
         if (
             Object.prototype.hasOwnProperty.call(
                 userData.Extensions,
@@ -295,7 +253,67 @@ export async function handleOauthToken(
             // @ts-expect-error No longer in the typedefs.
             delete userData.Extensions.inventory
         }
+    }
 
+    // eslint-disable-next-line no-inner-declarations
+    async function getEntitlements(): Promise<string[]> {
+        if (isFrankenstein) {
+            return new SteamScpcStrategy().get()
+        }
+
+        if (gameVersion === "h1") {
+            if (external_platform === "steam") {
+                return new SteamH1Strategy().get()
+            } else if (external_platform === "epic") {
+                return new EpicH1Strategy().get()
+            } else {
+                log(LogLevel.ERROR, "Unsupported platform.")
+                return []
+            }
+        }
+
+        if (gameVersion === "h2") {
+            return new SteamH2Strategy().get()
+        }
+
+        if (gameVersion === "h3") {
+            if (external_platform === "epic") {
+                return await new EpicH3Strategy().get(
+                    req.body.access_token,
+                    req.body.epic_userid,
+                )
+            } else if (external_platform === "steam") {
+                return await new IOIStrategy(
+                    gameVersion,
+                    STEAM_NAMESPACE_2021,
+                ).get(req.body.pId)
+            } else {
+                log(LogLevel.ERROR, "Unsupported platform.")
+                return []
+            }
+        }
+
+        log(LogLevel.ERROR, "Unsupported platform.")
+        return []
+    }
+
+    const newEntP = await getEntitlements()
+    if (newEntP.length === 0) {
+        if (userData.Extensions.entP) {
+            log(
+                LogLevel.WARN,
+                `Error getting latest entitlement data for user ${req.body.pId}. Recently acquired DLCs might not be displayed!`,
+            )
+        } else {
+            log(
+                LogLevel.ERROR,
+                `Error getting entitlement data for new user ${req.body.pId}!`,
+            )
+            userData.Extensions.entP = newEntP
+            writeNewUserData(req.body.pId, userData, gameVersion)
+        }
+    } else {
+        userData.Extensions.entP = newEntP
         writeNewUserData(req.body.pId, userData, gameVersion)
     }
 

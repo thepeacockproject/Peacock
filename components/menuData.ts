@@ -18,6 +18,7 @@
 
 import { Response, Router } from "express"
 import {
+    contractCreationTutorialId,
     gameDifficulty,
     PEACOCKVERSTRING,
     unlockOrderComparer,
@@ -187,7 +188,7 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
     }
 
     const contractCreationTutorial = controller.resolveContract(
-        "d7e2607c-6916-48e2-9588-976c7d8998bb",
+        contractCreationTutorialId,
     )!
 
     const locations = getVersionedConfig<PeacockLocationsData>(
@@ -1477,7 +1478,7 @@ preMenuDataRouter.get(
 
 menuDataRouter.get("/contractsearchpage", (req: RequestWithJwt, res) => {
     const createContractTutorial = controller.resolveContract(
-        "d7e2607c-6916-48e2-9588-976c7d8998bb",
+        contractCreationTutorialId,
     )
 
     res.json({
@@ -1641,7 +1642,8 @@ menuDataRouter.get("/contractcreation/create", (req: RequestWithJwt, res) => {
                         }
                     }),
                 ContractConditions: complications(timeLimitStr),
-                PublishingDisabled: false,
+                PublishingDisabled:
+                    sesh.contractId === contractCreationTutorialId,
                 Creator: req.jwt.unique_name,
                 ContractId: cUuid,
                 ContractPublicId: joined,
