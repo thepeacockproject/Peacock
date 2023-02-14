@@ -65,7 +65,10 @@ export function getDestinationCompletion(
 
     let opportunityCompletedCount = 0
     for (const ms in userData.Extensions.opportunityprogression) {
-        if (missionStories[ms].Location === parent.Id) {
+        if (
+            Object.keys(missionStories).includes(ms) &&
+            missionStories[ms].Location === parent.Id
+        ) {
             opportunityCompletedCount++
         }
     }
