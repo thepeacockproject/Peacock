@@ -161,7 +161,7 @@ export function createLocationsData(
     const locData = getVersionedConfig<PeacockLocationsData>(
         "LocationsData",
         gameVersion,
-        true,
+        false,
     )
 
     const allSublocationIds = Object.keys(locData.children)
