@@ -43,6 +43,12 @@ export const orderedMissions: string[] = [
     "a3e19d55-64a6-4282-bb3c-d18c3f3e6e29",
 ]
 
+export const orderedPZMissions: string[] = [
+    "024b6964-a3bb-4457-b085-08f9a7dc7fb7",
+    "7e3f758a-2435-42de-93bd-d8f0b72c63a4",
+    "ada6205e-6ee8-4189-9cdb-4947cccd84f4",
+]
+
 /**
  * Gets the ID for a season.
  *
