@@ -47,6 +47,7 @@ export const orderedPZMissions: string[] = [
     "024b6964-a3bb-4457-b085-08f9a7dc7fb7",
     "7e3f758a-2435-42de-93bd-d8f0b72c63a4",
     "ada6205e-6ee8-4189-9cdb-4947cccd84f4",
+    "a2befcec-7799-4987-9215-6a152cb6a320",
 ]
 
 /**

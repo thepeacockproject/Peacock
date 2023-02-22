@@ -1280,7 +1280,7 @@ menuDataRouter.get(
         //#region PZ missions
         const pzIdIndex = orderedPZMissions.indexOf(req.query.contractId)
 
-        if (pzIdIndex !== -1) {
+        if (pzIdIndex !== -1 && pzIdIndex !== orderedPZMissions.length - 1) {
             const nextMissionId = orderedPZMissions[pzIdIndex + 1]
             cats.push(
                 createPlayNextTile(
