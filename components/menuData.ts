@@ -66,6 +66,7 @@ import { contractsModeHome } from "./contracts/contractsModeRouting"
 import random from "random"
 import { getUserData } from "./databaseHandler"
 import {
+    createMainOpportunityTile,
     createPlayNextTile,
     getSeasonId,
     orderedMissions,
@@ -1273,6 +1274,8 @@ menuDataRouter.get(
                     ),
                 )
             }
+
+            cats.push(createMainOpportunityTile(req.query.contractId))
         }
         //#endregion
 

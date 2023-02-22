@@ -16,9 +16,14 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { getConfig } from "../configSwizzleManager"
 import { generateUserCentric } from "../contracts/dataGen"
 import { controller } from "../controller"
-import type { GameVersion, PlayNextCampaignDetails } from "../types/types"
+import type {
+    GameVersion,
+    MissionStory,
+    PlayNextCampaignDetails,
+} from "../types/types"
 
 export const orderedMissions: string[] = [
     "00000000-0000-0000-0000-000000000200",
@@ -96,5 +101,36 @@ export function createPlayNextTile(
                 CategoryType: "NextMission",
             },
         ],
+    }
+}
+
+/**
+ * Generates tiles for recommended mission stories given a contract ID.
+ *
+ * @param contractId The contract ID.
+ * @returns The tile object.
+ */
+export function createMainOpportunityTile(contractId: string) {
+    const contractData = controller.resolveContract(contractId)
+
+    const missionStories = getConfig<Record<string, MissionStory>>(
+        "MissionStories",
+        false,
+    )
+
+    return {
+        CategoryType: "MainOpportunity",
+        CategoryName: "UI_PLAYNEXT_MAINOPPORTUNITY_CATEGORY_NAME",
+        Items: (contractData.Metadata.Opportunities || [])
+            .filter((value) => missionStories[value].IsMainOpportunity)
+            .map((value) => ({
+                ItemType: null,
+                ContentType: "Opportunity",
+                Content: {
+                    RepositoryId: value,
+                    ContractId: contractId,
+                },
+                CategoryType: "MainOpportunity",
+            })),
     }
 }
