@@ -64,7 +64,12 @@ export async function checkForUpdates(): Promise<void> {
         )
         const current = res.data
 
-        if (current === PEACOCKVER) {
+        if (PEACOCKVER < 0 && current < -PEACOCKVER) {
+            log(
+                LogLevel.INFO,
+                `Thank you for trying out this testing version of Peacock! Please report any bugs by posting in the #help channel on Discord or by submitting an issue on GitHub.`,
+            )
+        } else if (PEACOCKVER > 0 && current === PEACOCKVER) {
             log(LogLevel.DEBUG, "Peacock is up to date.")
         } else {
             log(
