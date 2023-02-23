@@ -244,10 +244,16 @@ export function mapObjectives(
     const gameChangerObjectives: MissionManifestObjective[] = []
 
     if (gameChangers && gameChangers.length > 0) {
-        const gameChangerData = getConfig<Record<string, GameChanger>>(
-            "GameChangerProperties",
-            true,
-        )
+        const gameChangerData: Record<string, GameChanger> = {
+            ...getConfig<Record<string, GameChanger>>(
+                "GameChangerProperties",
+                true,
+            ),
+            ...getConfig<Record<string, GameChanger>>(
+                "PeacockGameChangerProperties",
+                true,
+            ),
+        }
         for (const gamechangerId of gameChangers) {
             if (isEvergreenSafehouse) break
             const gameChangerProps = gameChangerData[gamechangerId]
