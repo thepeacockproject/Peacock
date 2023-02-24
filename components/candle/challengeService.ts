@@ -128,11 +128,17 @@ export abstract class ChallengeRegistry {
         return this.challenges.get(challengeId)
     }
 
+    /**
+     * Gets a challenge group by its parent location and group ID.
+     * @param groupId The group ID of the challenge group.
+     * @param location The parent location for this challenge group.
+     * @returns A `SavedChallengeGroup` if such a group exists, or `undefined` if not.
+     */
     getGroupByIdLoc(
         groupId: string,
         location: string,
     ): SavedChallengeGroup | undefined {
-        return this.groups.get(location).get(groupId)
+        return this.groups?.get(location)?.get(groupId)
     }
 
     getDependenciesForChallenge(challengeId: string): readonly string[] {
@@ -314,6 +320,7 @@ export class ChallengeService extends ChallengeRegistry {
                             : undefined
                     })
                     .filter(Boolean) as RegistryChallenge[]
+
                 challenges.push([groupId, [...groupChallenges]])
             }
         }
