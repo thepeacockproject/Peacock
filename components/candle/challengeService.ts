@@ -138,7 +138,7 @@ export abstract class ChallengeRegistry {
         groupId: string,
         location: string,
     ): SavedChallengeGroup | undefined {
-        return this.groups?.get(location)?.get(groupId)
+        return this.groups.get(location)?.get(groupId)
     }
 
     getDependenciesForChallenge(challengeId: string): readonly string[] {
@@ -300,7 +300,7 @@ export class ChallengeService extends ChallengeRegistry {
         let challenges: [string, RegistryChallenge[]][] = []
 
         for (const groupId of this.groups.get(location).keys()) {
-            const groupContents = this.groupContents.get(location).get(groupId)
+            const groupContents = this.groupContents.get(location)?.get(groupId)
             if (groupContents) {
                 let groupChallenges: RegistryChallenge[] | string[] = [
                     ...groupContents,
