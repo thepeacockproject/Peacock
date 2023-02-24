@@ -4,7 +4,6 @@ on:
   push:
     branches: [ "v6", v* ]
   pull_request:
-    # The branches below must be a subset of the branches above
     branches: [ "v6" ]
 
 jobs:
@@ -19,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ 'csharp', 'javascript' ]
+        language: [ "csharp", "javascript" ]
 
     steps:
     - name: Checkout repository
