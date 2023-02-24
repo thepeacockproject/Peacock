@@ -714,7 +714,7 @@ export class ChallengeService extends ChallengeRegistry {
      * @param userId The id of the user.
      * @param gameVersion The current game version.
      * @param location A location as an `Unlockable`. Might be a parent location or a sublocation, depending on `isDestination`.
-     * @param isDestination True if the challenge lists are for a destination.
+     * @param isDestination Will also get escalation challenges if set to true.
      * @returns An array of `CompiledChallengeTreeCategory` objects.
      */
     private reBatchIntoSwitchedData(
@@ -732,9 +732,7 @@ export class ChallengeService extends ChallengeRegistry {
         return entries.map(([groupId, challenges], index) => {
             const groupData = this.getGroupByIdLoc(
                 groupId,
-                isDestination
-                    ? location.Id
-                    : location.Properties.ParentLocation,
+                location.Properties.ParentLocation ?? location.Id,
             )
             const challengeProgressionData = challenges.map((challengeData) =>
                 this.getPersistentChallengeProgression(
@@ -746,15 +744,11 @@ export class ChallengeService extends ChallengeRegistry {
 
             const lastGroup = this.getGroupByIdLoc(
                 Object.keys(challengeLists)[index - 1],
-                isDestination
-                    ? location.Id
-                    : location.Properties.ParentLocation,
+                location.Properties.ParentLocation ?? location.Id,
             )
             const nextGroup = this.getGroupByIdLoc(
                 Object.keys(challengeLists)[index + 1],
-                isDestination
-                    ? location.Id
-                    : location.Properties.ParentLocation,
+                location.Properties.ParentLocation ?? location.Id,
             )
 
             const completion = generateCompletionData(
