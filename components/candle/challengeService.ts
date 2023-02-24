@@ -299,10 +299,7 @@ export class ChallengeService extends ChallengeRegistry {
                 let groupChallenges: RegistryChallenge[] | string[] = [
                     ...groupContents,
                 ]
-                log(
-                    LogLevel.DEBUG,
-                    `Before filtering, challenge group ${groupId} has ${groupChallenges.length} challenges.`,
-                )
+
                 groupChallenges = groupChallenges
                     .map((challengeId) => {
                         const challenge = this.getChallengeById(challengeId)
@@ -317,10 +314,6 @@ export class ChallengeService extends ChallengeRegistry {
                             : undefined
                     })
                     .filter(Boolean) as RegistryChallenge[]
-                log(
-                    LogLevel.DEBUG,
-                    `After filtering, challenge group ${groupId} has ${groupChallenges.length} challenges.`,
-                )
                 challenges.push([groupId, [...groupChallenges]])
             }
         }
@@ -353,7 +346,6 @@ export class ChallengeService extends ChallengeRegistry {
                 type: ChallengeFilterType.Contract,
                 contractId: contractId,
                 locationId: contract.Metadata.Location,
-                locationParentId: contractParentLocation,
             },
             contractParentLocation,
         )
@@ -387,7 +379,6 @@ export class ChallengeService extends ChallengeRegistry {
                 type: ChallengeFilterType.Contracts,
                 contractIds: contracts,
                 locationId: child,
-                locationParentId: parent,
             },
             parent,
         )
@@ -658,8 +649,7 @@ export class ChallengeService extends ChallengeRegistry {
 
         const forLocation = this.getGroupedChallengeLists(
             {
-                type: ChallengeFilterType.ParentLocation,
-                locationParentId,
+                type: ChallengeFilterType.None,
             },
             locationParentId,
         )

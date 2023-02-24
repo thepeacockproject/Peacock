@@ -1238,8 +1238,7 @@ export function contractIdToHitObject(
 
     const challenges = controller.challengeService.getGroupedChallengeLists(
         {
-            type: ChallengeFilterType.ParentLocation,
-            locationParentId: parentLocation?.Id,
+            type: ChallengeFilterType.None,
         },
         parentLocation?.Id,
     )
