@@ -959,12 +959,13 @@ export class Controller {
                 continue
             }
 
-            this.challengeService.registerGroup(group)
+            this.challengeService.registerGroup(group, data.meta.Location)
 
             for (const challenge of group.Challenges) {
                 this.challengeService.registerChallenge(
                     challenge,
                     group.CategoryId,
+                    data.meta.Location,
                 )
             }
         }
@@ -1235,10 +1236,13 @@ export function contractIdToHitObject(
         return undefined
     }
 
-    const challenges = controller.challengeService.getGroupedChallengeLists({
-        type: ChallengeFilterType.ParentLocation,
-        locationParentId: parentLocation?.Id,
-    })
+    const challenges = controller.challengeService.getGroupedChallengeLists(
+        {
+            type: ChallengeFilterType.ParentLocation,
+            locationParentId: parentLocation?.Id,
+        },
+        parentLocation?.Id,
+    )
 
     const challengeCompletion =
         controller.challengeService.countTotalNCompletedChallenges(
