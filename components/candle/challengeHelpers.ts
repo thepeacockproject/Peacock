@@ -67,7 +67,6 @@ export enum ChallengeFilterType {
     None = "None",
     Contract = "Contract",
     Contracts = "Contracts",
-    ParentLocation = "ParentLocation",
 }
 
 export type ChallengeFilterOptions =
