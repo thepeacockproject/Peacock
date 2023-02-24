@@ -54,10 +54,12 @@ export function getDestinationCompletion(
     req: RequestWithJwt,
 ) {
     const userData = getUserData(req.jwt.unique_name, req.gameVersion)
-    const challenges = controller.challengeService.getGroupedChallengeLists({
-        type: ChallengeFilterType.ParentLocation,
-        locationParentId: parent.Id,
-    })
+    const challenges = controller.challengeService.getGroupedChallengeLists(
+        {
+            type: ChallengeFilterType.None,
+        },
+        parent.Id,
+    )
 
     if (parent.Opportunities === undefined) {
         parent.Opportunities = 0
