@@ -590,6 +590,13 @@ export class ChallengeService extends ChallengeRegistry {
         userId: string,
         gameVersion: GameVersion,
     ): ChallengeTreeWaterfallState {
+        const userData = getUserData(userId, gameVersion)
+
+        // Always return null for completed challenges
+        if (this.fastGetIsCompleted(userData!, challengeData.Id)) {
+            return null
+        }
+
         // Handle challenge dependencies
         const dependencies = this.getDependenciesForChallenge(challengeData.Id)
         const completed: string[] = []
@@ -840,7 +847,7 @@ export class ChallengeService extends ChallengeRegistry {
                 userId,
                 gameVersion,
             ),
-            DifficultyLevels: [],
+            DifficultyLevels: challenge.DifficultyLevels,
             CompletionData: generateCompletionData(
                 challenge.ParentLocationId,
                 userId,
