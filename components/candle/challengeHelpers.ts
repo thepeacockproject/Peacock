@@ -25,6 +25,8 @@ import {
     RegistryChallenge,
 } from "../types/types"
 import assert from "assert"
+import { SavedChallengeGroup } from "components/types/challenges"
+import { controller } from "components/controller"
 
 export function compileScoringChallenge(
     challenge: RegistryChallenge,
@@ -68,6 +70,7 @@ export function compileRuntimeChallenge(
 export enum ChallengeFilterType {
     None = "None",
     Contract = "Contract",
+    /** Only used for the CAREER -> CHALLENGES page */
     Contracts = "Contracts",
 }
 
@@ -112,12 +115,14 @@ export function inclusionDataCheck(
  * @param contractId The id of the contract.
  * @param locationId The sublocation ID of the challenge.
  * @param challenge The challenge in question.
+ * @param forCareer Whether the result is used to decide what is shown the CAREER -> CHALLENGES page. Defaulted to false.
  * @returns A boolean value, denoting the result.
  */
 function isChallengeInContract(
     contractId: string,
     locationId: string,
     challenge: RegistryChallenge,
+    forCareer = false,
 ): boolean {
     assert.ok(contractId)
     assert.ok(locationId)
@@ -132,6 +137,23 @@ function isChallengeInContract(
         // Special case: winter festival has its own locationId, but for Hokkaido-wide challenges,
         // the locationId is "LOCATION_HOKKAIDO",  not "LOCATION_PARENT_HOKKAIDO".
         return true
+    }
+
+    if (challenge.Type === "global") {
+        return inclusionDataCheck(
+            // Global challenges should not be shown for "tutorial" missions unless for the career page,
+            // despite the InclusionData somehow saying otherwise.
+            forCareer
+                ? challenge.InclusionData
+                : {
+                      ...challenge.InclusionData,
+                      ContractTypes:
+                          challenge.InclusionData.ContractTypes.filter(
+                              (type) => type !== "tutorial",
+                          ),
+                  },
+            controller.resolveContract(contractId),
+        )
     }
 
     // Is this for the current contract?
@@ -175,8 +197,25 @@ export function filterChallenge(
                     contractId,
                     options.locationId,
                     challenge,
+                    true,
                 ),
             )
         }
+    }
+}
+
+/**
+ * Merges the Challenge field two SavedChallengeGroup objects and returns a new object. Does not modify the original objects. For all the other fields, the values of g1 is used.
+ * @param g1 One of the SavedChallengeGroup objects.
+ * @param g2 The other SavedChallengeGroup object.
+ * @returns A new object with the Challenge arrays merged.
+ */
+export function mergeSavedChallengeGroups(
+    g1: SavedChallengeGroup,
+    g2: SavedChallengeGroup,
+): SavedChallengeGroup {
+    return {
+        ...g1,
+        Challenges: [...(g1?.Challenges ?? []), ...(g2?.Challenges ?? [])],
     }
 }

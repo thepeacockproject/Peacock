@@ -53,6 +53,7 @@ import {
     ChallengeFilterOptions,
     ChallengeFilterType,
     filterChallenge,
+    mergeSavedChallengeGroups,
 } from "./challengeHelpers"
 import assert from "assert"
 import { getVersionedConfig } from "../configSwizzleManager"
@@ -138,7 +139,30 @@ export abstract class ChallengeRegistry {
         groupId: string,
         location: string,
     ): SavedChallengeGroup | undefined {
+        // Included by default. Filtered later.
+        if (groupId === "classic") {
+            return mergeSavedChallengeGroups(
+                this.groups.get(location)?.get(groupId),
+                this.groups.get("GLOBAL_CLASSIC_CHALLENGES")?.get(groupId),
+            )
+        }
         return this.groups.get(location)?.get(groupId)
+    }
+
+    getGroupContentByIdLoc(
+        groupId: string,
+        location: string,
+    ): Set<string> | undefined {
+        // Included by default. Filtered later.
+        if (groupId === "classic") {
+            return new Set([
+                ...(this.groupContents.get(location)?.get(groupId) ?? []),
+                ...(this.groupContents
+                    .get("GLOBAL_CLASSIC_CHALLENGES")
+                    ?.get(groupId) ?? []),
+            ])
+        }
+        return this.groupContents.get(location)?.get(groupId)
     }
 
     getDependenciesForChallenge(challengeId: string): readonly string[] {
@@ -300,7 +324,7 @@ export class ChallengeService extends ChallengeRegistry {
         let challenges: [string, RegistryChallenge[]][] = []
 
         for (const groupId of this.groups.get(location).keys()) {
-            const groupContents = this.groupContents.get(location)?.get(groupId)
+            const groupContents = this.getGroupContentByIdLoc(groupId, location)
             if (groupContents) {
                 let groupChallenges: RegistryChallenge[] | string[] = [
                     ...groupContents,
@@ -602,12 +626,6 @@ export class ChallengeService extends ChallengeRegistry {
         const completed: string[] = []
         const missing: string[] = []
 
-        let userData: UserProfile | null = null
-
-        if (dependencies.length > 0) {
-            userData = getUserData(userId, gameVersion)
-        }
-
         for (const dependency of dependencies) {
             if (this.fastGetIsCompleted(userData!, dependency)) {
                 completed.push(dependency)
@@ -620,6 +638,15 @@ export class ChallengeService extends ChallengeRegistry {
         const { challengeCountData } =
             ChallengeService._parseContextListeners(challengeData)
 
+        // If this challenge is counting something, AND it relies on other challenges (e.g. SA5, SA12, ...)
+        // Then the "count & total" return format prevails.
+        if (challengeCountData.total > 0) {
+            return {
+                count: challengeCountData.count,
+                total: challengeCountData.total,
+            }
+        }
+
         if (dependencies.length > 0) {
             return {
                 count: completed.length,
@@ -627,13 +654,6 @@ export class ChallengeService extends ChallengeRegistry {
                 total: dependencies.length,
                 missing: missing.length,
                 all: dependencies,
-            }
-        }
-
-        if (challengeCountData.total > 0) {
-            return {
-                count: challengeCountData.count,
-                total: challengeCountData.total,
             }
         }
 
@@ -833,11 +853,7 @@ export class ChallengeService extends ChallengeRegistry {
             IsPlayable: isDestination,
             IsLocked: challenge.IsLocked || false,
             HideProgression: false,
-            CategoryName:
-                this.getGroupByIdLoc(
-                    challenge.inGroup!,
-                    challenge.ParentLocationId,
-                )?.Name || "NOTFOUND",
+            CategoryName: challenge.CategoryName ?? "NOTFOUND",
             Icon: challenge.Icon,
             LocationId: challenge.LocationId,
             ParentLocationId: challenge.ParentLocationId,
@@ -847,12 +863,15 @@ export class ChallengeService extends ChallengeRegistry {
                 userId,
                 gameVersion,
             ),
-            DifficultyLevels: challenge.DifficultyLevels?? [],
-            CompletionData: generateCompletionData(
-                challenge.ParentLocationId,
-                userId,
-                gameVersion,
-            ),
+            DifficultyLevels: challenge.DifficultyLevels ?? [],
+            // Only include CompletionData if ParentLocationId is not an empty string
+            ...(challenge.ParentLocationId !== "" && {
+                CompletionData: generateCompletionData(
+                    challenge.ParentLocationId,
+                    userId,
+                    gameVersion,
+                ),
+            }),
         }
     }
 
@@ -994,7 +1013,7 @@ export class ChallengeService extends ChallengeRegistry {
             session.gameVersion,
         )
 
-        // find any dependency trees that depend on the challenge
+        // Check if completing this challenge also completes any dependency trees depending on it
         for (const depTreeId of this._dependencyTree.keys()) {
             if (this.fastGetIsCompleted(userData, depTreeId)) {
                 // Skip completed trees
@@ -1019,10 +1038,20 @@ export class ChallengeService extends ChallengeRegistry {
                 continue
             }
 
-            // check if the dependency tree is completed
-            const completed = allDeps.every((depId) =>
-                this.fastGetIsCompleted(userData, depId),
-            )
+            // Check if the dependency tree is completed now
+
+            const dep = this.getChallengeById(depTreeId)
+
+            const { challengeCountData } =
+                ChallengeService._parseContextListeners(dep)
+
+            // First check for challengecounter, then challengetree
+            const completed =
+                (challengeCountData.total > 0 &&
+                    challengeCountData.count >= challengeCountData.total - 1) || // The current challenge has not been counted yet
+                allDeps.every((depId) =>
+                    this.fastGetIsCompleted(userData, depId),
+                )
 
             if (!completed) {
                 continue
