@@ -996,7 +996,10 @@ export class ChallengeService extends ChallengeRegistry {
 
         // find any dependency trees that depend on the challenge
         for (const depTreeId of this._dependencyTree.keys()) {
-            const allDeps = this._dependencyTree.get(depTreeId)
+            if (this.fastGetIsCompleted(userData, depTreeId)) {
+                // Skip completed trees
+                continue
+            }
 
             if (depTreeId === challenge.Id) {
                 // we're checking the tree of the challenge that was just completed,
@@ -1005,6 +1008,7 @@ export class ChallengeService extends ChallengeRegistry {
                 continue
             }
 
+            const allDeps = this._dependencyTree.get(depTreeId)
             assert.ok(allDeps, `No dep tree for ${depTreeId}`)
 
             if (!allDeps.includes(challenge.Id)) {
