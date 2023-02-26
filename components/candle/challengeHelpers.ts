@@ -20,6 +20,8 @@ import {
     ChallengeProgressionData,
     CompiledChallengeRewardData,
     CompiledChallengeRuntimeData,
+    InclusionData,
+    MissionManifest,
     RegistryChallenge,
 } from "../types/types"
 import assert from "assert"
@@ -83,6 +85,26 @@ export type ChallengeFilterOptions =
           contractIds: string[]
           locationId: string
       }
+
+/**
+ * Checks if the metadata of a contract matches the definition in the InclusionData of a challenge.
+ * @param challenge The challenge in question. Will return true if this is null.
+ * @param contract The contract in question.
+ * @returns A boolean as the result.
+ */
+export function inclusionDataCheck(
+    incData: InclusionData,
+    contract: MissionManifest,
+): boolean {
+    if (!incData) return true
+
+    return (
+        incData.ContractIds?.includes(contract.Metadata.Id) ||
+        incData.ContractTypes?.includes(contract.Metadata.Type) ||
+        incData.Locations?.includes(contract.Metadata.Location) ||
+        contract.Metadata?.Gamemodes?.some((r) => incData.GameModes.includes(r))
+    )
+}
 
 /**
  * Judges whether a challenge should be included in the challenges list of a contract.

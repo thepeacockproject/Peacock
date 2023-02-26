@@ -16,7 +16,11 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { ContextScopedStorageLocation, MissionManifestObjective } from "./types"
+import {
+    ContextScopedStorageLocation,
+    InclusionData,
+    MissionManifestObjective,
+} from "./types"
 
 export interface SavedChallenge {
     Id: string
@@ -42,12 +46,7 @@ export interface SavedChallenge {
         Scope: ContextScopedStorageLocation
     }
     Tags: string[]
-    InclusionData?: {
-        ContractIds?: string[]
-        ContractTypes?: string[]
-        Locations?: string[]
-        GameModes?: string[]
-    }
+    InclusionData?: InclusionData
 }
 
 export interface SavedChallengeGroup {
