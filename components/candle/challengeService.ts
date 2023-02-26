@@ -140,7 +140,7 @@ export abstract class ChallengeRegistry {
         location: string,
     ): SavedChallengeGroup | undefined {
         // Included by default. Filtered later.
-        if (groupId === "classic") {
+        if (groupId === "classic" && location !== "GLOBAL_CLASSIC_CHALLENGES") {
             return mergeSavedChallengeGroups(
                 this.groups.get(location)?.get(groupId),
                 this.groups.get("GLOBAL_CLASSIC_CHALLENGES")?.get(groupId),
@@ -149,12 +149,12 @@ export abstract class ChallengeRegistry {
         return this.groups.get(location)?.get(groupId)
     }
 
-    getGroupContentByIdLoc(
+    public getGroupContentByIdLoc(
         groupId: string,
         location: string,
     ): Set<string> | undefined {
         // Included by default. Filtered later.
-        if (groupId === "classic") {
+        if (groupId === "classic" && location !== "GLOBAL_CLASSIC_CHALLENGES") {
             return new Set([
                 ...(this.groupContents.get(location)?.get(groupId) ?? []),
                 ...(this.groupContents
@@ -518,7 +518,11 @@ export class ChallengeService extends ChallengeRegistry {
                     result.context || challenge.Definition?.Context || {}
 
                 if (previousState !== "Success" && result.state === "Success") {
-                    this.onChallengeCompleted(session, challenge)
+                    this.onChallengeCompleted(
+                        session.userId,
+                        session.gameVersion,
+                        challenge,
+                    )
                 }
             } catch (e) {
                 log(LogLevel.ERROR, e)
@@ -979,8 +983,70 @@ export class ChallengeService extends ChallengeRegistry {
         }
     }
 
+    /**
+     * Checks if the conditions to complete a challenge are met. If so, calls `onChallengeCompleted` for it.
+     * @param challengeId The id of the challenge.
+     * @param userData The profile of the user.
+     * @param parentId A parent challenge of this challenge, the completion of which might cause this challenge to complete. Pass `undefined` if such a parent is unknown or doesn't exist.
+     * @param gameVersion The game version.
+     */
+    public tryToCompleteChallenge(
+        challengeId: string,
+        userData: UserProfile,
+        parentId: string,
+        gameVersion: GameVersion,
+    ): void {
+        if (this.fastGetIsCompleted(userData, challengeId)) {
+            // Skip completed trees
+            return
+        }
+
+        if (challengeId === parentId) {
+            // we're checking the tree of the challenge that was just completed,
+            // so we need to skip it, or we'll get an infinite loop and hit
+            // the max call stack size
+            return
+        }
+
+        const allDeps = this._dependencyTree.get(challengeId)
+        assert.ok(allDeps, `No dep tree for ${challengeId}`)
+
+        if (!allDeps.includes(parentId)) {
+            // we don't care about this tree, it doesn't depend on the challenge
+            // note: without this check, a race condition can occur where two
+            // trees basically bounce back and forth between each other, causing
+            // an infinite loop
+            return
+        }
+
+        // Check if the dependency tree is completed now
+
+        const dep = this.getChallengeById(challengeId)
+
+        const { challengeCountData } =
+            ChallengeService._parseContextListeners(dep)
+
+        // First check for challengecounter, then challengetree
+        const completed =
+            (challengeCountData.total > 0 &&
+                challengeCountData.count >= challengeCountData.total - 1) || // The current challenge has not been counted yet
+            allDeps.every((depId) => this.fastGetIsCompleted(userData, depId))
+
+        if (!completed) {
+            return
+        }
+
+        this.onChallengeCompleted(
+            userData.Id,
+            gameVersion,
+            this.getChallengeById(challengeId),
+            parentId,
+        )
+    }
+
     private onChallengeCompleted(
-        session: ContractSession,
+        userId: string,
+        gameVersion: GameVersion,
         challenge: RegistryChallenge,
         waterfallParent?: string,
     ): void {
@@ -993,7 +1059,7 @@ export class ChallengeService extends ChallengeRegistry {
             log(LogLevel.DEBUG, `Challenge ${challenge.Id} completed`)
         }
 
-        const userData = getUserData(session.userId, session.gameVersion)
+        const userData = getUserData(userId, gameVersion)
 
         userData.Extensions.ChallengeProgression ??= {}
 
@@ -1005,62 +1071,17 @@ export class ChallengeService extends ChallengeRegistry {
 
         userData.Extensions.ChallengeProgression[challenge.Id].Completed = true
 
-        writeUserData(session.userId, session.gameVersion)
+        writeUserData(userId, gameVersion)
 
-        this.hooks.onChallengeCompleted.call(
-            session.userId,
-            challenge,
-            session.gameVersion,
-        )
+        this.hooks.onChallengeCompleted.call(userId, challenge, gameVersion)
 
         // Check if completing this challenge also completes any dependency trees depending on it
         for (const depTreeId of this._dependencyTree.keys()) {
-            if (this.fastGetIsCompleted(userData, depTreeId)) {
-                // Skip completed trees
-                continue
-            }
-
-            if (depTreeId === challenge.Id) {
-                // we're checking the tree of the challenge that was just completed,
-                // so we need to skip it, or we'll get an infinite loop and hit
-                // the max call stack size
-                continue
-            }
-
-            const allDeps = this._dependencyTree.get(depTreeId)
-            assert.ok(allDeps, `No dep tree for ${depTreeId}`)
-
-            if (!allDeps.includes(challenge.Id)) {
-                // we don't care about this tree, it doesn't depend on the challenge
-                // note: without this check, a race condition can occur where two
-                // trees basically bounce back and forth between each other, causing
-                // an infinite loop
-                continue
-            }
-
-            // Check if the dependency tree is completed now
-
-            const dep = this.getChallengeById(depTreeId)
-
-            const { challengeCountData } =
-                ChallengeService._parseContextListeners(dep)
-
-            // First check for challengecounter, then challengetree
-            const completed =
-                (challengeCountData.total > 0 &&
-                    challengeCountData.count >= challengeCountData.total - 1) || // The current challenge has not been counted yet
-                allDeps.every((depId) =>
-                    this.fastGetIsCompleted(userData, depId),
-                )
-
-            if (!completed) {
-                continue
-            }
-
-            this.onChallengeCompleted(
-                session,
-                this.getChallengeById(depTreeId),
+            this.tryToCompleteChallenge(
+                depTreeId,
+                userData,
                 challenge.Id,
+                gameVersion,
             )
         }
     }
