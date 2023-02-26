@@ -847,7 +847,7 @@ export class ChallengeService extends ChallengeRegistry {
                 userId,
                 gameVersion,
             ),
-            DifficultyLevels: challenge.DifficultyLevels,
+            DifficultyLevels: challenge.DifficultyLevels?? [],
             CompletionData: generateCompletionData(
                 challenge.ParentLocationId,
                 userId,
