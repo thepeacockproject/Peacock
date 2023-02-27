@@ -118,6 +118,19 @@ export function xpRequiredForLevel(level: number): number {
     return level * 6000 - 6000
 }
 
+/**
+ * Returns whether a location is a sniper location. Works for both parent and child locations.
+ * @param location The location ID string.
+ * @returns A boolean denoting the result.
+ */
+export function isSniperLocation(location: string): boolean {
+    return (
+        location.includes("AUSTRIA") ||
+        location.includes("SALTY") ||
+        location.includes("CAGED")
+    )
+}
+
 export function castUserProfile(profile: UserProfile): UserProfile {
     const j = fastClone(profile)
 

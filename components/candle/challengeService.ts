@@ -48,7 +48,7 @@ import {
     HandleEventOptions,
 } from "@peacockproject/statemachine-parser"
 import { SavedChallengeGroup } from "../types/challenges"
-import { fastClone } from "../utils"
+import { fastClone, isSniperLocation } from "../utils"
 import {
     ChallengeFilterOptions,
     ChallengeFilterType,
@@ -371,12 +371,9 @@ export class ChallengeService extends ChallengeRegistry {
         const location = locations.children[child]
         assert.ok(location)
 
-        let contracts =
-            child === "LOCATION_AUSTRIA" ||
-            child === "LOCATION_SALTY_SEAGULL" ||
-            child === "LOCATION_CAGED_FALCON"
-                ? this.controller.missionsInLocations.sniper[child]
-                : this.controller.missionsInLocations[child]
+        let contracts = isSniperLocation(child)
+            ? this.controller.missionsInLocations.sniper[child]
+            : this.controller.missionsInLocations[child]
         if (!contracts) {
             contracts = []
         }
