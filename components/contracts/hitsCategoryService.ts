@@ -25,6 +25,7 @@ import {
 } from "../controller"
 import { getUserData } from "../databaseHandler"
 import { orderedETs } from "./elusiveTargets"
+import { fastClone } from "components/utils"
 
 function paginate<Element>(
     elements: Element[],
@@ -141,7 +142,8 @@ export class HitsCategoryService {
             .for("Featured")
             .tap(tapName, (gameVersion, contracts) => {
                 const cagedBull = "ee0411d6-b3e7-4320-b56b-25c45d8a9d61"
-                for (const fcGroup of featuredContractGroups) {
+                const clonedGroups = fastClone(featuredContractGroups)
+                for (const fcGroup of clonedGroups) {
                     if (gameVersion === "h1" && fcGroup.includes(cagedBull)) {
                         fcGroup.splice(
                             fcGroup.findIndex((id) => id === cagedBull),
