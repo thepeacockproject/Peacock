@@ -101,7 +101,7 @@ export function generateCompletionData(
         ? subLocation.Properties?.ParentLocation
         : subLocationId
 
-    const completionData = controller.masteryService.getCompletionData(
+    const completionData = controller.masteryService.getLocationCompletion(
         locationId,
         subLocation?.Id,
         gameVersion,
@@ -109,11 +109,7 @@ export function generateCompletionData(
     )
 
     if (!completionData) {
-        log(
-            LogLevel.DEBUG,
-            `Could not get CompletionData for location ${locationId}`,
-        )
-
+        // Should only reach here for sniper locations.
         return {
             Level: 1,
             MaxLevel: 1,

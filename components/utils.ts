@@ -119,6 +119,16 @@ export function xpRequiredForLevel(level: number): number {
 }
 
 /**
+ * Get the number of xp needed to reach a level in niper missions.
+ * Assuming the same xp for all levels. Might not be accurate.
+ * @param level The level in question.
+ * @returns The xp, as a number.
+ */
+export function xpRequiredForSniper(level: number): number {
+    return level * 50000 - 50000
+}
+
+/**
  * Returns whether a location is a sniper location. Works for both parent and child locations.
  * @param location The location ID string.
  * @returns A boolean denoting the result.

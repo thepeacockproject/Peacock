@@ -1847,31 +1847,29 @@ menuDataRouter.get(
             )
         }
 
+        const unlockable =
+            sniperLoadouts[location][req.query.unlockableId]["MainUnlockable"]
+
         res.json({
             template: masteryUnlockTemplate,
             data: {
-                CompletionData: generateCompletionData(
-                    location,
+                CompletionData: controller.masteryService.getFirearmCompletion(
+                    req.query.unlockableId,
+                    unlockable.Properties.Name,
                     req.jwt.unique_name,
                     req.gameVersion,
                 ),
                 Drops: [
                     {
                         IsLevelMarker: false,
-                        Unlockable:
-                            sniperLoadouts[location][req.query.unlockableId][
-                                "Unlockable"
-                            ],
+                        Unlockable: unlockable,
                         Level: 20,
                         IsLocked: false,
                         TypeLocaKey:
                             "UI_MENU_PAGE_MASTERY_UNLOCKABLE_NAME_weapon",
                     },
                 ],
-                Unlockable:
-                    sniperLoadouts[location][req.query.unlockableId][
-                        "MainUnlockable"
-                    ],
+                Unlockable: unlockable,
             },
         })
     },
