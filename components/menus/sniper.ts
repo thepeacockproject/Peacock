@@ -32,14 +32,17 @@ export type SniperLoadoutConfig = {
 }
 
 /**
- * Creates the sniper loadouts data for a contract.
+ * Creates the sniper loadouts data for a contract. Returns loadouts for all three
+ * characters because multiplayer and singleplayer share the same request.
+ * (Official only returns one because multiplayer is not supported)
  *
  * @author Anthony Fuller
  * @param userId The id of the user.
  * @param gameVersion The game version.
  * @param contractData The contract's data.
  * @param loadoutData Should the output just contain loadout data in an array?
- * @returns An array containing the sniper loadouts data for all three characters if the contract is a sniper mission, or an empty array otherwise.
+ * @returns An array containing the sniper loadouts data for all three characters
+ * if the contract is a sniper mission, or an empty array otherwise.
  */
 export function createSniperLoadouts(
     userId: string,
