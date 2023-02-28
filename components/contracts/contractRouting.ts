@@ -54,7 +54,7 @@ import {
 import { createSniperLoadouts } from "../menus/sniper"
 import { GetForPlay2Body } from "../types/gameSchemas"
 import assert from "assert"
-import { getUserData } from "components/databaseHandler"
+import { getUserData } from "../databaseHandler"
 import { getCpd } from "../evergreen"
 
 const contractRoutingRouter = Router()

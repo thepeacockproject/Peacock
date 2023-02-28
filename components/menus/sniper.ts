@@ -16,8 +16,8 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { controller } from "components/controller"
-import { nilUuid } from "components/utils"
+import { controller } from "../controller"
+import { nilUuid } from "../utils"
 import { getConfig } from "../configSwizzleManager"
 import type {
     GameVersion,
