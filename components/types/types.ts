@@ -1322,7 +1322,7 @@ export type SafehouseCategory = {
 export type SniperLoadout = {
     ID: string
     InstanceID: string
-    Unlockable: Unlockable
+    Unlockable: Unlockable[]
     MainUnlockable: Unlockable
 }
 

@@ -17,6 +17,7 @@
  */
 
 import { controller } from "components/controller"
+import { nilUuid } from "components/utils"
 import { getConfig } from "../configSwizzleManager"
 import type {
     GameVersion,
@@ -64,9 +65,9 @@ export function createSniperLoadouts(
                                 {
                                     Item: {
                                         InstanceId: character.InstanceID,
-                                        ProfileId:
-                                            "00000000-0000-0000-0000-000000000000",
-                                        Unlockable: character.Unlockable,
+                                        ProfileId: nilUuid,
+                                        // TODO: All mastery upgrades are unlocked. Change this when adding sniper progression.
+                                        Unlockable: character.Unlockable[18],
                                         Properties: {},
                                     },
                                     ItemDetails: {
@@ -96,11 +97,10 @@ export function createSniperLoadouts(
                             Page: 0,
                             Recommended: {
                                 item: {
-                                    InstanceId:
-                                        "00000000-0000-0000-0000-000000000000",
-                                    ProfileId:
-                                        "00000000-0000-0000-0000-000000000000",
-                                    Unlockable: character.Unlockable,
+                                    InstanceId: nilUuid,
+                                    ProfileId: nilUuid,
+                                    // TODO: All mastery upgrades are unlocked. Change this when adding sniper progression.
+                                    Unlockable: character.Unlockable[18],
                                     Properties: {},
                                 },
                                 type: "carriedweapon",
