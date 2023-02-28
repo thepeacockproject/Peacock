@@ -790,7 +790,11 @@ export interface MissionManifestMetadata {
             },
         ]
     }[]
-    CharacterLoadoutData?: unknown
+    CharacterLoadoutData?: {
+        Id: string
+        Loadout: unknown
+        CompletionData: CompletionData
+    }[]
     SpawnSelectionType?: "random" | string
     Gamemodes?: ("versus" | string)[]
     Enginemodes?: ("singleplayer" | "multiplayer" | string)[]

@@ -16,9 +16,10 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { controller } from "components/controller"
 import { getConfig } from "../configSwizzleManager"
 import type {
-    CompletionData,
+    GameVersion,
     MissionManifest,
     SniperLoadout,
 } from "../types/types"
@@ -30,14 +31,18 @@ export type SniperLoadoutConfig = {
 }
 
 /**
- * Creates the sniper loadouts data.
+ * Creates the sniper loadouts data for a contract.
  *
  * @author Anthony Fuller
+ * @param userId The id of the user.
+ * @param gameVersion The game version.
  * @param contractData The contract's data.
  * @param loadoutData Should the output just contain loadout data in an array?
- * @returns The sniper loadouts data.
+ * @returns An array containing the sniper loadouts data for all three characters if the contract is a sniper mission, or an empty array otherwise.
  */
 export function createSniperLoadouts(
+    userId: string,
+    gameVersion: GameVersion,
     contractData: MissionManifest,
     loadoutData = false,
 ) {
@@ -109,19 +114,12 @@ export function createSniperLoadouts(
                     ],
                     LimitedLoadoutUnlockLevel: 0 as number | undefined,
                 },
-                // TODO(Anthony): Use the function to get these details.
-                CompletionData: {
-                    Level: 20,
-                    MaxLevel: 20,
-                    XP: 0,
-                    Completion: 1,
-                    XpLeft: 0,
-                    Id: index,
-                    SubLocationId: "",
-                    HideProgression: false,
-                    IsLocationProgression: false,
-                    Name: index,
-                } as CompletionData,
+                CompletionData: controller.masteryService.getFirearmCompletion(
+                    index,
+                    character.MainUnlockable.Properties.Name,
+                    userId,
+                    gameVersion,
+                ),
             }
 
             if (loadoutData) {

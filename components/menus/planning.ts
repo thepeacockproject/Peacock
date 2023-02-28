@@ -247,7 +247,11 @@ export async function planningView(
         userCentric.Contract.Metadata.Type = "mission"
     }
 
-    const sniperLoadouts = createSniperLoadouts(contractData)
+    const sniperLoadouts = createSniperLoadouts(
+        req.jwt.unique_name,
+        req.gameVersion,
+        contractData,
+    )
 
     if (req.gameVersion === "scpc") {
         sniperLoadouts.forEach((loadout) => {
