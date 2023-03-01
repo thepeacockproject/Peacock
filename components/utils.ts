@@ -119,7 +119,7 @@ export function xpRequiredForLevel(level: number): number {
 }
 
 /**
- * Get the number of xp needed to reach a level in niper missions.
+ * Get the number of xp needed to reach a level in sniper missions.
  * Assuming the same xp for all levels. Might not be accurate.
  * @param level The level in question.
  * @returns The xp, as a number.
