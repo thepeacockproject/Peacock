@@ -143,6 +143,7 @@ export class HitsCategoryService {
             .tap(tapName, (gameVersion, contracts) => {
                 const cagedBull = "ee0411d6-b3e7-4320-b56b-25c45d8a9d61"
                 const clonedGroups = fastClone(featuredContractGroups)
+
                 for (const fcGroup of clonedGroups) {
                     if (gameVersion === "h1" && fcGroup.includes(cagedBull)) {
                         fcGroup.splice(
@@ -150,6 +151,7 @@ export class HitsCategoryService {
                             1,
                         )
                     }
+
                     contracts.push(...fcGroup)
                 }
             })
