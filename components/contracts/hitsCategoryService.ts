@@ -29,6 +29,7 @@ import {
 } from "../controller"
 import { getUserData, writeUserData } from "../databaseHandler"
 import { orderedETs } from "./elusiveTargets"
+import { fastClone } from "../utils"
 
 /**
  * The filters supported for HitsCategories.
@@ -141,11 +142,23 @@ export class HitsCategoryService {
                 this.writeMyContracts(gameVersion, contracts, userId, filter)
             })
 
-        this.hitsCategories.for("Featured").tap(tapName, (contracts) => {
-            for (const fcGroup of featuredContractGroups) {
-                contracts.push(...fcGroup)
-            }
-        })
+        this.hitsCategories
+            .for("Featured")
+            .tap(tapName, (contracts, gameVersion) => {
+                const cagedBull = "ee0411d6-b3e7-4320-b56b-25c45d8a9d61"
+                const clonedGroups = fastClone(featuredContractGroups)
+
+                for (const fcGroup of clonedGroups) {
+                    if (gameVersion === "h1" && fcGroup.includes(cagedBull)) {
+                        fcGroup.splice(
+                            fcGroup.findIndex((id) => id === cagedBull),
+                            1,
+                        )
+                    }
+
+                    contracts.push(...fcGroup)
+                }
+            })
 
         // My Favorites
 

@@ -51,6 +51,8 @@ export const uuidRegex =
 
 export const contractTypes = ["featured", "usercreated"]
 
+export const contractCreationTutorialId = "d7e2607c-6916-48e2-9588-976c7d8998bb"
+
 export async function checkForUpdates(): Promise<void> {
     if (getFlag("updateChecking") === false) {
         return
@@ -62,7 +64,12 @@ export async function checkForUpdates(): Promise<void> {
         )
         const current = res.data
 
-        if (current === PEACOCKVER) {
+        if (PEACOCKVER < 0 && current < -PEACOCKVER) {
+            log(
+                LogLevel.INFO,
+                `Thank you for trying out this testing version of Peacock! Please report any bugs by posting in the #help channel on Discord or by submitting an issue on GitHub.`,
+            )
+        } else if (PEACOCKVER > 0 && current === PEACOCKVER) {
             log(LogLevel.DEBUG, "Peacock is up to date.")
         } else {
             log(

@@ -62,7 +62,9 @@ export async function planningView(
     const isForReset = req.query.resetescalation === "true"
 
     for (const ms in userData.Extensions.opportunityprogression) {
-        missionStories[ms].PreviouslyCompleted = true
+        if (Object.keys(missionStories).includes(ms)) {
+            missionStories[ms].PreviouslyCompleted = true
+        }
     }
 
     if (isForReset) {

@@ -285,10 +285,12 @@ export async function missionEnd(
     const location = contractData.Metadata.Location
     const parent = locations.children[location].Properties.ParentLocation
     const locationChallenges =
-        controller.challengeService.getGroupedChallengeLists({
-            type: ChallengeFilterType.ParentLocation,
-            locationParentId: parent,
-        })
+        controller.challengeService.getGroupedChallengeLists(
+            {
+                type: ChallengeFilterType.None,
+            },
+            parent,
+        )
     const contractChallenges =
         controller.challengeService.getChallengesForContract(
             sessionDetails.contractId,
