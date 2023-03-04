@@ -27,9 +27,9 @@ import { getUserData } from "../databaseHandler"
 import { generateUserCentric } from "./dataGen"
 import { controller, preserveContracts } from "../controller"
 import { createLocationsData } from "../menus/destinations"
-import { getRemoteService } from "components/utils"
 import { userAuths } from "components/officialServerAuth"
 import { log, LogLevel } from "components/loggingInterop"
+import { getRemoteService, contractCreationTutorialId } from "../utils"
 
 export function contractsModeHome(req: RequestWithJwt, res: Response): void {
     const contractsHomeTemplate = getConfig("ContractsTemplate", false)
@@ -37,7 +37,7 @@ export function contractsModeHome(req: RequestWithJwt, res: Response): void {
     const userData = getUserData(req.jwt.unique_name, req.gameVersion)
 
     const contractCreationTutorial = controller.resolveContract(
-        "d7e2607c-6916-48e2-9588-976c7d8998bb",
+        contractCreationTutorialId,
     )
 
     res.json({

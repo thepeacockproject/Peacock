@@ -67,7 +67,6 @@ export enum ChallengeFilterType {
     None = "None",
     Contract = "Contract",
     Contracts = "Contracts",
-    ParentLocation = "ParentLocation",
 }
 
 export type ChallengeFilterOptions =
@@ -78,28 +77,28 @@ export type ChallengeFilterOptions =
           type: ChallengeFilterType.Contract
           contractId: string
           locationId: string
-          locationParentId: string
       }
     | {
           type: ChallengeFilterType.Contracts
           contractIds: string[]
           locationId: string
-          locationParentId: string
-      }
-    | {
-          type: ChallengeFilterType.ParentLocation
-          locationParentId: string
       }
 
+/**
+ * Judges whether a challenge should be included in the challenges list of a contract.
+ * @requires The challenge and the contract share the same parent location.
+ * @param contractId The id of the contract.
+ * @param locationId The sublocation ID of the challenge.
+ * @param challenge The challenge in question.
+ * @returns A boolean value, denoting the result.
+ */
 function isChallengeInContract(
     contractId: string,
     locationId: string,
-    locationParentId: string,
     challenge: RegistryChallenge,
-) {
+): boolean {
     assert.ok(contractId)
     assert.ok(locationId)
-    assert.ok(locationParentId)
     if (!challenge) {
         return false
     }
@@ -113,25 +112,23 @@ function isChallengeInContract(
         return true
     }
 
-    // is this for the current contract?
+    // Is this for the current contract?
     const isForContract = (challenge.InclusionData?.ContractIds || []).includes(
         contractId,
     )
 
-    // is this a location-wide challenge?
-    // "location" is more widely used, but "parentlocation" is used in ambrose and berlin, as well as some "Discover XX" challenges.
+    // Is this a location-wide challenge?
+    // "location" is more widely used, but "parentlocation" is used in Ambrose and Berlin, as well as some "Discover XX" challenges.
     const isForLocation =
         challenge.Type === "location" || challenge.Type === "parentlocation"
 
-    // is this for the current location?
+    // Is this for the current location?
     const isCurrentLocation =
-        // is this challenge for the current parent location?
-        challenge.ParentLocationId === locationParentId &&
-        // and, is this challenge's location one of these things:
-        // 1. the current sub-location, e.g. "LOCATION_COASTALTOWN_NIGHT". This is the most common.
-        // 2. the parent location (yup, that can happen), e.g. "LOCATION_PARENT_HOKKAIDO" in Discover Hokkaido
-        (challenge.LocationId === locationId ||
-            challenge.LocationId === locationParentId)
+        // Is this challenge's location one of these things:
+        // 1. The current sub-location, e.g. "LOCATION_COASTALTOWN_NIGHT". This is the most common.
+        // 2. The parent location (yup, that can happen), e.g. "LOCATION_PARENT_HOKKAIDO" in Discover Hokkaido.
+        challenge.LocationId === locationId ||
+        challenge.LocationId === challenge.ParentLocationId
 
     return isForContract || (isForLocation && isCurrentLocation)
 }
@@ -147,7 +144,6 @@ export function filterChallenge(
             return isChallengeInContract(
                 options.contractId,
                 options.locationId,
-                options.locationParentId,
                 challenge,
             )
         }
@@ -156,16 +152,9 @@ export function filterChallenge(
                 isChallengeInContract(
                     contractId,
                     options.locationId,
-                    options.locationParentId,
                     challenge,
                 ),
             )
         }
-        case ChallengeFilterType.ParentLocation:
-            assert.ok(options.locationParentId)
-
-            return (
-                (challenge?.ParentLocationId || "") === options.locationParentId
-            )
     }
 }
