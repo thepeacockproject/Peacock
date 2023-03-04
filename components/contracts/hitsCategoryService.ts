@@ -26,9 +26,9 @@ import {
 } from "../controller"
 import { getUserData } from "../databaseHandler"
 import { orderedETs } from "./elusiveTargets"
-import { userAuths } from "components/officialServerAuth"
-import { log, LogLevel } from "components/loggingInterop"
-import { fastClone, getRemoteService } from "components/utils"
+import { userAuths } from "../officialServerAuth"
+import { log, LogLevel } from "../loggingInterop"
+import { fastClone, getRemoteService } from "../utils"
 
 function paginate<Element>(
     elements: Element[],

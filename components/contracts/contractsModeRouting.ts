@@ -27,8 +27,8 @@ import { getUserData } from "../databaseHandler"
 import { generateUserCentric } from "./dataGen"
 import { controller, preserveContracts } from "../controller"
 import { createLocationsData } from "../menus/destinations"
-import { userAuths } from "components/officialServerAuth"
-import { log, LogLevel } from "components/loggingInterop"
+import { userAuths } from "../officialServerAuth"
+import { log, LogLevel } from "../loggingInterop"
 import { getRemoteService, contractCreationTutorialId } from "../utils"
 
 export function contractsModeHome(req: RequestWithJwt, res: Response): void {
