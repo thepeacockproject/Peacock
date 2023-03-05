@@ -36,7 +36,7 @@ async function fetchContractCAndPFromIOI(axiosClient, contractId, gameVersion) {
     const body =
         gameVersion === "h1"
             ? { contractId }
-            : { contractId, difficultyLevel: 2 }
+            : { contractId, difficultyLevel: 4 }
 
     const { data } = await axiosClient.post(url, body)
 
@@ -228,6 +228,7 @@ async function extract(locationParent, jwt, gameVersion) {
         {
             meta: {
                 Location: locationParent,
+                GameVersion: gameVersion,
             },
             groups,
         },
