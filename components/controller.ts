@@ -959,13 +959,18 @@ export class Controller {
                 continue
             }
 
-            this.challengeService.registerGroup(group, data.meta.Location)
+            this.challengeService.registerGroup(
+                group,
+                data.meta.Location,
+                data.meta.GameVersion,
+            )
 
             for (const challenge of group.Challenges) {
                 this.challengeService.registerChallenge(
                     challenge,
                     group.CategoryId,
                     data.meta.Location,
+                    data.meta.GameVersion,
                 )
             }
         }

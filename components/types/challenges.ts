@@ -16,7 +16,11 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { ContextScopedStorageLocation, MissionManifestObjective } from "./types"
+import {
+    ContextScopedStorageLocation,
+    GameVersion,
+    MissionManifestObjective,
+} from "./types"
 
 export interface SavedChallenge {
     Id: string
@@ -66,6 +70,7 @@ export interface ChallengePackage {
          * The parent location.
          */
         Location: string
+        GameVersion: GameVersion
     }
 }
 

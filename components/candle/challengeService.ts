@@ -80,11 +80,25 @@ export abstract class ChallengeRegistry {
     protected challenges: Map<string, RegistryChallenge> = new Map()
 
     /** A map of parentLocationIds to maps of groupIds to SavedChallengeGroup objects for this group of this parent location. */
-    protected groups: Map<string, Map<string, SavedChallengeGroup>> = new Map()
+    protected groups: Map<
+        GameVersion,
+        Map<string, Map<string, SavedChallengeGroup>>
+    > = new Map([
+        ["h1", new Map()],
+        ["h2", new Map()],
+        ["h3", new Map()],
+    ])
 
     /** A map of parentLocationIds to maps of groupIds to sets of challenge Ids in this group of this parent location. */
 
-    protected groupContents: Map<string, Map<string, Set<string>>> = new Map()
+    protected groupContents: Map<
+        GameVersion,
+        Map<string, Map<string, Set<string>>>
+    > = new Map([
+        ["h1", new Map()],
+        ["h2", new Map()],
+        ["h3", new Map()],
+    ])
     /**
      * A map of a challenge ID to a list of challenge IDs that it depends on.
      */
@@ -97,15 +111,20 @@ export abstract class ChallengeRegistry {
         challenge: RegistryChallenge,
         groupId: string,
         location: string,
+        gameVersion: GameVersion,
     ): void {
+        if (!this.groupContents.has(gameVersion)) {
+            return
+        }
+        const gameChallenges = this.groupContents.get(gameVersion)
         challenge.inGroup = groupId
         this.challenges.set(challenge.Id, challenge)
 
-        if (!this.groupContents.has(location)) {
-            this.groupContents.set(location, new Map())
+        if (!gameChallenges.has(location)) {
+            gameChallenges.set(location, new Map())
         }
 
-        const locationMap = this.groupContents.get(location)!
+        const locationMap = gameChallenges.get(location)!
 
         if (!locationMap.has(groupId)) {
             locationMap.set(groupId, new Set())
@@ -117,11 +136,19 @@ export abstract class ChallengeRegistry {
         this.checkHeuristics(challenge)
     }
 
-    registerGroup(group: SavedChallengeGroup, location: string): void {
-        if (!this.groups.has(location)) {
-            this.groups.set(location, new Map())
+    registerGroup(
+        group: SavedChallengeGroup,
+        location: string,
+        gameVersion: GameVersion,
+    ): void {
+        if (!this.groups.has(gameVersion)) {
+            return
         }
-        this.groups.get(location).set(group.CategoryId, group)
+        const gameGroups = this.groups.get(gameVersion)
+        if (!gameGroups.has(location)) {
+            gameGroups.set(location, new Map())
+        }
+        gameGroups.get(location).set(group.CategoryId, group)
     }
 
     getChallengeById(challengeId: string): RegistryChallenge | undefined {
@@ -137,8 +164,13 @@ export abstract class ChallengeRegistry {
     getGroupByIdLoc(
         groupId: string,
         location: string,
+        gameVersion: GameVersion,
     ): SavedChallengeGroup | undefined {
-        return this.groups.get(location)?.get(groupId)
+        if (!this.groups.has(gameVersion)) {
+            return
+        }
+        const gameGroups = this.groups.get(gameVersion)
+        return gameGroups.get(location)?.get(groupId)
     }
 
     getDependenciesForChallenge(challengeId: string): readonly string[] {
