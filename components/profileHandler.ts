@@ -46,7 +46,10 @@ import { controller } from "./controller"
 import { loadouts } from "./loadouts"
 import { getFlag } from "./flags"
 import { menuSystemDatabase } from "./menus/menuSystem"
-import { compileRuntimeChallenge } from "./candle/challengeHelpers"
+import {
+    compileRuntimeChallenge,
+    inclusionDataCheck,
+} from "./candle/challengeHelpers"
 import { LoadSaveBody } from "./types/gameSchemas"
 
 const profileRouter = Router()
@@ -499,31 +502,7 @@ profileRouter.post(
                 req.gameVersion,
                 true,
             ) as CompiledChallengeRuntimeData[]
-        ).filter((val) => {
-            if (!val.Challenge.InclusionData) return true
-            let include = false
-            const incData = val.Challenge.InclusionData
-
-            if (!include && incData.ContractIds) {
-                include = incData.ContractIds.includes(json.Metadata.Id)
-            }
-
-            if (!include && incData.ContractTypes) {
-                include = incData.ContractTypes.includes(json.Metadata.Type)
-            }
-
-            if (!include && incData.Locations) {
-                include = incData.Locations.includes(json.Metadata.Location)
-            }
-
-            if (!include && incData.GameModes) {
-                include = json.Metadata.Gamemodes.some((r) =>
-                    incData.GameModes.includes(r),
-                )
-            }
-
-            return include
-        })
+        ).filter((val) => inclusionDataCheck(val.Challenge.InclusionData, json))
 
         challenges.push(
             ...Object.values(

@@ -1,0 +1,1373 @@
+{
+    "meta": {
+        "Location": "GLOBAL_CLASSIC_CHALLENGES"
+    },
+    "groups": [
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_CLASSIC",
+            "Image": "images/challenges/categories/classic/tile.jpg",
+            "Icon": "profile",
+            "CategoryId": "classic",
+            "Description": "",
+            "Challenges": [
+                {
+                    "Id": "1c7d6618-26c2-4b9a-86f0-c3afa127fc8d",
+                    "Name": "UI_CHALLENGES_CLASSIC_SA_TIER_I_NAME",
+                    "ImageName": "images/challenges/profile_challenges/classics_sa_tier_1.jpg",
+                    "Description": "UI_CHALLENGES_CLASSIC_SA_TIER_I_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        {
+                            "Properties": {
+                                "Quality": 5,
+                                "LoadoutSlot": "gear",
+                                "Rarity": "common",
+                                "RepositoryId": "2eacd4f6-0018-41a5-800d-5fd85f9ecefe"
+                            },
+                            "Rarity": "common",
+                            "DisplayNameLocKey": "UI_PROP_TOOL_LOCK_PICK_CLASSIC_NAME",
+                            "Id": "PROP_TOOL_LOCK_PICK_CLASSIC",
+                            "Type": "gear",
+                            "Subtype": "tool",
+                            "GameAsset": null,
+                            "ImageId": "",
+                            "RMTPrice": 149,
+                            "GamePrice": 149,
+                            "IsPurchasable": false,
+                            "IsPublished": true,
+                            "IsDroppable": false,
+                            "Capabilities": [],
+                            "Qualities": {},
+                            "Guid": "4844b4fd-48b0-4434-890a-de1b3a5357cc"
+                        }
+                    ],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_CLASSIC",
+                    "Icon": "profile",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 80001,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 5,
+                            "RequiredChallenges": [
+                                "415fe342-2a3e-45a7-9629-1d9d073878d3",
+                                "00000006-0000-0000-0000-000000000001",
+                                "a8ed014b-7445-4e22-9d83-53e44b18341b",
+                                "38df4127-57ab-4ac6-9205-06986132bc7f",
+                                "56ac7bf9-2e82-425b-b644-3b1d61fe10c4",
+                                "d004cf4e-48cc-4261-b99a-45e3949bdf8b",
+                                "48e5f6c5-7116-4ea4-a932-8e8ea6aa481c",
+                                "7bd1dbeb-4b2f-4c57-9741-5c5e28b53c23",
+                                "597307e4-e92b-4781-981b-1bd20ffc786a",
+                                "e27f2f6e-aef1-4147-ba18-388af0e8da4b",
+                                "2c5e1a00-4927-4504-af4c-7630d2088673",
+                                "61ff5f2a-92ef-47d4-a5da-15d28665906b",
+                                "9232950e-30e4-4ca9-87cf-920351d9789a",
+                                "a464f48d-5059-4559-9a00-fc2c59251672",
+                                "d53b6f4a-a334-41d1-b4a9-09e756fa6365",
+                                "655da1b2-bdae-4fcf-ad67-4b4f40b43066",
+                                "29042c88-fdbf-4990-bde7-0584027edb7f",
+                                "eed87874-5a23-4230-a5ba-220e90372721",
+                                "ced93d8f-0000-0000-0000-000000000001",
+                                "5146dec1-9b6e-4037-9462-134348b1722d",
+                                "f620c1ba-4ae4-4aea-b96a-f684557f0836",
+                                "a3204230-2eaf-4fbd-976d-448290a69a4a",
+                                "9ed92086-de16-4907-a536-1a30d704f667",
+                                "d7ef79ee-58cc-4f47-9196-b5222e0c4317",
+                                "a4eefaf7-b885-4f0f-a947-8eb1ae865cd9",
+                                "2db8ca18-bd44-483d-b7d9-eb726b259583",
+                                "2f47d774-7033-4089-8e52-e3a1bd667859",
+                                "c66e9212-b53f-452b-af99-14fed11b6e6a",
+                                "acfac6e4-3e98-4dac-a5dd-43155ce82f3d",
+                                "7c09b3db-71ea-4f3b-9719-052bdb57ed05",
+                                "c929980a-6f5b-4677-9666-4350344f658c",
+                                "7d3eb67f-395d-4d96-85a3-0cfb8cda162a",
+                                "c4f0976d-ecda-4ae0-80e2-ff4e074177cf",
+                                "0b63d39b-c53e-4fa4-a2a3-310a973eb819",
+                                "40ba6b62-de82-4b94-ace9-c34917b36cc9",
+                                "e5931ee2-09b0-4690-b1d1-854b4e94c955",
+                                "0af3980d-6bcb-42f6-ac4c-d0241606500a",
+                                "92643706-6f98-4b1c-9700-ee4819aaadb4",
+                                "647ac859-f0ac-4a49-9138-f8d8dd8dfc1e"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedChallenges": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.CompletedChallenges).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "profile",
+                        "States": {
+                            "Start": {
+                                "ChallengeCompleted": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$Value.ChallengeId"
+                                                    ]
+                                                },
+                                                "in": "$.RequiredChallenges"
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "CompletedChallenges",
+                                                "$Value.ChallengeId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$ge": [
+                                                "($.CompletedChallenges).Count",
+                                                "$.Goal"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "classic"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": [
+                            "mission",
+                            "escalation",
+                            "elusive",
+                            "featured",
+                            "tutorial"
+                        ],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "9da94512-ad16-441d-9f7d-56826802203a",
+                    "Name": "UI_CHALLENGES_CLASSIC_SA_TIER_II_NAME",
+                    "ImageName": "images/challenges/profile_challenges/classics_sa_tier_2.jpg",
+                    "Description": "UI_CHALLENGES_CLASSIC_SA_TIER_II_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        {
+                            "Properties": {
+                                "Quality": 1,
+                                "LoadoutSlot": "gear",
+                                "Rarity": "common",
+                                "GameAssets": [
+                                    "PROP_TOOL_COIN",
+                                    "PROP_TOOL_COIN",
+                                    "PROP_TOOL_COIN"
+                                ],
+                                "RepositoryId": "98bf7fc1-7857-4999-bc99-586c49f24017",
+                                "RepositoryAssets": [
+                                    "98bf7fc1-7857-4999-bc99-586c49f24017",
+                                    "98bf7fc1-7857-4999-bc99-586c49f24017",
+                                    "98bf7fc1-7857-4999-bc99-586c49f24017"
+                                ]
+                            },
+                            "Rarity": "common",
+                            "DisplayNameLocKey": "UI_PROP_TOOL_COIN_CLASSIC_NAME",
+                            "Id": "PROP_TOOL_COIN_CLASSIC",
+                            "Type": "gear",
+                            "Subtype": "distraction",
+                            "GameAsset": null,
+                            "ImageId": "",
+                            "RMTPrice": -1,
+                            "GamePrice": -1,
+                            "IsPurchasable": false,
+                            "IsPublished": true,
+                            "IsDroppable": false,
+                            "Capabilities": [],
+                            "Qualities": {},
+                            "Guid": "0537b7ff-d076-4b8f-9f37-63f1a350c1e9"
+                        }
+                    ],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_CLASSIC",
+                    "Icon": "profile",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 80002,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 12,
+                            "RequiredChallenges": [
+                                "415fe342-2a3e-45a7-9629-1d9d073878d3",
+                                "00000006-0000-0000-0000-000000000001",
+                                "a8ed014b-7445-4e22-9d83-53e44b18341b",
+                                "38df4127-57ab-4ac6-9205-06986132bc7f",
+                                "56ac7bf9-2e82-425b-b644-3b1d61fe10c4",
+                                "d004cf4e-48cc-4261-b99a-45e3949bdf8b",
+                                "48e5f6c5-7116-4ea4-a932-8e8ea6aa481c",
+                                "7bd1dbeb-4b2f-4c57-9741-5c5e28b53c23",
+                                "597307e4-e92b-4781-981b-1bd20ffc786a",
+                                "e27f2f6e-aef1-4147-ba18-388af0e8da4b",
+                                "2c5e1a00-4927-4504-af4c-7630d2088673",
+                                "61ff5f2a-92ef-47d4-a5da-15d28665906b",
+                                "9232950e-30e4-4ca9-87cf-920351d9789a",
+                                "a464f48d-5059-4559-9a00-fc2c59251672",
+                                "d53b6f4a-a334-41d1-b4a9-09e756fa6365",
+                                "655da1b2-bdae-4fcf-ad67-4b4f40b43066",
+                                "29042c88-fdbf-4990-bde7-0584027edb7f",
+                                "eed87874-5a23-4230-a5ba-220e90372721",
+                                "ced93d8f-0000-0000-0000-000000000001",
+                                "5146dec1-9b6e-4037-9462-134348b1722d",
+                                "f620c1ba-4ae4-4aea-b96a-f684557f0836",
+                                "a3204230-2eaf-4fbd-976d-448290a69a4a",
+                                "9ed92086-de16-4907-a536-1a30d704f667",
+                                "d7ef79ee-58cc-4f47-9196-b5222e0c4317",
+                                "a4eefaf7-b885-4f0f-a947-8eb1ae865cd9",
+                                "2db8ca18-bd44-483d-b7d9-eb726b259583",
+                                "2f47d774-7033-4089-8e52-e3a1bd667859",
+                                "c66e9212-b53f-452b-af99-14fed11b6e6a",
+                                "acfac6e4-3e98-4dac-a5dd-43155ce82f3d",
+                                "7c09b3db-71ea-4f3b-9719-052bdb57ed05",
+                                "c929980a-6f5b-4677-9666-4350344f658c",
+                                "7d3eb67f-395d-4d96-85a3-0cfb8cda162a",
+                                "c4f0976d-ecda-4ae0-80e2-ff4e074177cf",
+                                "0b63d39b-c53e-4fa4-a2a3-310a973eb819",
+                                "40ba6b62-de82-4b94-ace9-c34917b36cc9",
+                                "e5931ee2-09b0-4690-b1d1-854b4e94c955",
+                                "0af3980d-6bcb-42f6-ac4c-d0241606500a",
+                                "92643706-6f98-4b1c-9700-ee4819aaadb4",
+                                "647ac859-f0ac-4a49-9138-f8d8dd8dfc1e"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedChallenges": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.CompletedChallenges).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "profile",
+                        "States": {
+                            "Start": {
+                                "ChallengeCompleted": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$Value.ChallengeId"
+                                                    ]
+                                                },
+                                                "in": "$.RequiredChallenges"
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "CompletedChallenges",
+                                                "$Value.ChallengeId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$ge": [
+                                                "($.CompletedChallenges).Count",
+                                                "$.Goal"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "classic"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": [
+                            "mission",
+                            "escalation",
+                            "elusive",
+                            "featured",
+                            "tutorial"
+                        ],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "08b7c331-d1a3-4e41-b463-c75b57b936e5",
+                    "Name": "UI_CHALLENGES_CLASSIC_SA_TIER_III_NAME",
+                    "ImageName": "images/challenges/profile_challenges/classics_sa_tier_3.jpg",
+                    "Description": "UI_CHALLENGES_CLASSIC_SA_TIER_III_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        {
+                            "Properties": {
+                                "Quality": 2,
+                                "LoadoutSlot": "gear",
+                                "Rarity": "common",
+                                "RepositoryId": "edd82229-9984-45db-802f-8584ecf38ef3"
+                            },
+                            "Rarity": "common",
+                            "DisplayNameLocKey": "UI_PROP_MELEE_CLASSIC_FIBER_WIRE_NAME",
+                            "Id": "PROP_MELEE_CLASSIC_FIBER_WIRE",
+                            "Type": "weapon",
+                            "Subtype": "melee",
+                            "GameAsset": null,
+                            "ImageId": "",
+                            "RMTPrice": -1,
+                            "GamePrice": -1,
+                            "IsPurchasable": false,
+                            "IsPublished": true,
+                            "IsDroppable": false,
+                            "Capabilities": [],
+                            "Qualities": {},
+                            "Guid": "8b3d6856-88b4-4910-96b5-5ab520b81400"
+                        }
+                    ],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_CLASSIC",
+                    "Icon": "profile",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 80003,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 17,
+                            "RequiredChallenges": [
+                                "415fe342-2a3e-45a7-9629-1d9d073878d3",
+                                "00000006-0000-0000-0000-000000000001",
+                                "a8ed014b-7445-4e22-9d83-53e44b18341b",
+                                "38df4127-57ab-4ac6-9205-06986132bc7f",
+                                "56ac7bf9-2e82-425b-b644-3b1d61fe10c4",
+                                "d004cf4e-48cc-4261-b99a-45e3949bdf8b",
+                                "48e5f6c5-7116-4ea4-a932-8e8ea6aa481c",
+                                "7bd1dbeb-4b2f-4c57-9741-5c5e28b53c23",
+                                "597307e4-e92b-4781-981b-1bd20ffc786a",
+                                "e27f2f6e-aef1-4147-ba18-388af0e8da4b",
+                                "2c5e1a00-4927-4504-af4c-7630d2088673",
+                                "61ff5f2a-92ef-47d4-a5da-15d28665906b",
+                                "9232950e-30e4-4ca9-87cf-920351d9789a",
+                                "a464f48d-5059-4559-9a00-fc2c59251672",
+                                "d53b6f4a-a334-41d1-b4a9-09e756fa6365",
+                                "655da1b2-bdae-4fcf-ad67-4b4f40b43066",
+                                "29042c88-fdbf-4990-bde7-0584027edb7f",
+                                "eed87874-5a23-4230-a5ba-220e90372721",
+                                "ced93d8f-0000-0000-0000-000000000001",
+                                "5146dec1-9b6e-4037-9462-134348b1722d",
+                                "f620c1ba-4ae4-4aea-b96a-f684557f0836",
+                                "a3204230-2eaf-4fbd-976d-448290a69a4a",
+                                "9ed92086-de16-4907-a536-1a30d704f667",
+                                "d7ef79ee-58cc-4f47-9196-b5222e0c4317",
+                                "a4eefaf7-b885-4f0f-a947-8eb1ae865cd9",
+                                "2db8ca18-bd44-483d-b7d9-eb726b259583",
+                                "2f47d774-7033-4089-8e52-e3a1bd667859",
+                                "c66e9212-b53f-452b-af99-14fed11b6e6a",
+                                "acfac6e4-3e98-4dac-a5dd-43155ce82f3d",
+                                "7c09b3db-71ea-4f3b-9719-052bdb57ed05",
+                                "c929980a-6f5b-4677-9666-4350344f658c",
+                                "7d3eb67f-395d-4d96-85a3-0cfb8cda162a",
+                                "c4f0976d-ecda-4ae0-80e2-ff4e074177cf",
+                                "0b63d39b-c53e-4fa4-a2a3-310a973eb819",
+                                "40ba6b62-de82-4b94-ace9-c34917b36cc9",
+                                "e5931ee2-09b0-4690-b1d1-854b4e94c955",
+                                "0af3980d-6bcb-42f6-ac4c-d0241606500a",
+                                "92643706-6f98-4b1c-9700-ee4819aaadb4",
+                                "647ac859-f0ac-4a49-9138-f8d8dd8dfc1e"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedChallenges": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.CompletedChallenges).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "profile",
+                        "States": {
+                            "Start": {
+                                "ChallengeCompleted": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$Value.ChallengeId"
+                                                    ]
+                                                },
+                                                "in": "$.RequiredChallenges"
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "CompletedChallenges",
+                                                "$Value.ChallengeId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$ge": [
+                                                "($.CompletedChallenges).Count",
+                                                "$.Goal"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "classic"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": [
+                            "mission",
+                            "escalation",
+                            "elusive",
+                            "featured",
+                            "tutorial"
+                        ],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "84176d41-94a2-433d-90da-02334291642d",
+                    "Name": "UI_CHALLENGES_CLASSIC_SASO_TIER_I_NAME",
+                    "ImageName": "images/challenges/profile_challenges/classics_saso_tier_1.jpg",
+                    "Description": "UI_CHALLENGES_CLASSIC_SASO_TIER_I_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        {
+                            "Properties": {
+                                "Quality": 4,
+                                "LoadoutSlot": "gear",
+                                "Rarity": "common",
+                                "RepositoryId": "49765e76-dea7-4ad4-b502-2bad7727a15f"
+                            },
+                            "Rarity": "common",
+                            "DisplayNameLocKey": "UI_PROP_POISON_CLASSIC_PILLS_LETHAL_NAME",
+                            "Id": "PROP_POISON_CLASSIC_PILLS_LETHAL",
+                            "Type": "gear",
+                            "Subtype": "poison",
+                            "GameAsset": null,
+                            "ImageId": "",
+                            "RMTPrice": 149,
+                            "GamePrice": 149,
+                            "IsPurchasable": false,
+                            "IsPublished": true,
+                            "IsDroppable": false,
+                            "Capabilities": [],
+                            "Qualities": {},
+                            "Guid": "430d62f7-8e7a-458d-8998-faff764d2dcc"
+                        }
+                    ],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_CLASSIC",
+                    "Icon": "profile",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 80101,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 5,
+                            "RequiredChallenges": [
+                                "11f14b4d-f86f-4545-ac32-27d95d484729",
+                                "00000006-0000-0000-0000-000000000002",
+                                "adca040b-61da-4eae-afaa-232f30c187c4",
+                                "66a0fca7-59eb-4697-b643-5d0d08b439c3",
+                                "08457a95-ab19-4d46-b825-4150f310f217",
+                                "c2739bf2-d5f1-486c-8f5a-e766d699e1a0",
+                                "7107ff08-2d82-4abd-83e5-57d0e1b919ff",
+                                "9696ce8f-f505-4d91-80fe-d4e9d51a5b5b",
+                                "99e006bc-7437-4058-ba4c-a38beb6d63f3",
+                                "8d43608c-5706-4311-8f71-038e90574b34",
+                                "10c23230-bd47-4386-846e-9a2b8e3b51d9",
+                                "b7d311d8-c71a-4cfd-a768-7367f9b5e366",
+                                "64ec75c2-2c6e-4578-a0d4-d9d31d7cc70c",
+                                "507257e0-53b2-4385-9a88-c3a25637f008",
+                                "529dbda2-c03e-4702-83be-45ec5c892d04",
+                                "dd0b94a4-bc53-44f2-bef6-12de2637c4da",
+                                "119553ef-4ea6-4366-8303-49fb3d082eea",
+                                "969f8855-6727-4cf4-bfa9-a40e4460f7ae",
+                                "5e92a9eb-599f-49cb-9e69-4baaf9d0bdc2",
+                                "2d17c8fc-bf8e-4d00-aaf8-2ecd065374f3",
+                                "8955135e-6aaf-422f-b6bc-75d298d3acf0",
+                                "a23b0f09-a4ae-44a8-be7b-65afb47325f6",
+                                "4ada947d-4934-4732-9612-ec5e382e7f34",
+                                "5f801945-7315-470d-a602-f7891030fb63",
+                                "aadedeb0-3005-4693-ae1d-1d86f2aa06e4",
+                                "19ef07a7-65ed-454c-a789-f843f7e12939",
+                                "cda55c37-7605-4239-9aad-8c162d0cdaa9",
+                                "9aa98c98-2f2b-41c7-9ebe-7550bc90953d",
+                                "8752b6fc-f435-4a33-a0f2-277f7f90bd60",
+                                "c8cf11a8-d0c6-4dd9-aad4-cf2f36f5bead",
+                                "0d02acc0-badc-41d0-a60a-b9376a0949bb",
+                                "682fe23c-5d0a-414c-8b88-cb4472856a1b",
+                                "6ca5490e-b6c1-420d-b4bd-3469ef253983",
+                                "53a17fb0-f6ef-449f-a346-ff0b52c918e7",
+                                "246f098c-3e1d-428e-bcf5-5fce86e2a5b8",
+                                "cba9f315-1e45-45a1-997a-15ed7743449d",
+                                "f84b1f7c-540d-4237-a73b-cde321af6ff3",
+                                "425a7a49-1892-4a24-aa40-f46cdb8d6c7f"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedChallenges": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.CompletedChallenges).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "profile",
+                        "States": {
+                            "Start": {
+                                "ChallengeCompleted": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$Value.ChallengeId"
+                                                    ]
+                                                },
+                                                "in": "$.RequiredChallenges"
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "CompletedChallenges",
+                                                "$Value.ChallengeId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$ge": [
+                                                "($.CompletedChallenges).Count",
+                                                "$.Goal"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "classic"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": [
+                            "mission",
+                            "escalation",
+                            "elusive",
+                            "featured",
+                            "tutorial"
+                        ],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "33744252-626d-45dc-94b1-c116be0a7a98",
+                    "Name": "UI_CHALLENGES_CLASSIC_SASO_TIER_II_NAME",
+                    "ImageName": "images/challenges/profile_challenges/classics_saso_tier_2.jpg",
+                    "Description": "UI_CHALLENGES_CLASSIC_SASO_TIER_II_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        {
+                            "Properties": {
+                                "Gameplay": {},
+                                "Quality": 4,
+                                "Rarity": "common",
+                                "LoadoutSlot": "concealedweapon",
+                                "RepositoryId": "ff340698-bc83-479c-8917-16d99b39406c"
+                            },
+                            "Rarity": "common",
+                            "DisplayNameLocKey": "UI_FIREARMS_PISTOL_CLASSIC_SILVERBALLER_NAME",
+                            "Id": "FIREARMS_PISTOL_CLASSIC_SILVERBALLER",
+                            "Type": "weapon",
+                            "Subtype": "pistol",
+                            "GameAsset": null,
+                            "ImageId": "",
+                            "RMTPrice": -1,
+                            "GamePrice": -1,
+                            "IsPurchasable": false,
+                            "IsPublished": true,
+                            "IsDroppable": false,
+                            "Capabilities": [],
+                            "Qualities": {},
+                            "Guid": "04473fcf-8f9d-4e8e-a774-2c4ca81cff94"
+                        }
+                    ],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_CLASSIC",
+                    "Icon": "profile",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 80102,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 12,
+                            "RequiredChallenges": [
+                                "11f14b4d-f86f-4545-ac32-27d95d484729",
+                                "00000006-0000-0000-0000-000000000002",
+                                "adca040b-61da-4eae-afaa-232f30c187c4",
+                                "66a0fca7-59eb-4697-b643-5d0d08b439c3",
+                                "08457a95-ab19-4d46-b825-4150f310f217",
+                                "c2739bf2-d5f1-486c-8f5a-e766d699e1a0",
+                                "7107ff08-2d82-4abd-83e5-57d0e1b919ff",
+                                "9696ce8f-f505-4d91-80fe-d4e9d51a5b5b",
+                                "99e006bc-7437-4058-ba4c-a38beb6d63f3",
+                                "8d43608c-5706-4311-8f71-038e90574b34",
+                                "10c23230-bd47-4386-846e-9a2b8e3b51d9",
+                                "b7d311d8-c71a-4cfd-a768-7367f9b5e366",
+                                "64ec75c2-2c6e-4578-a0d4-d9d31d7cc70c",
+                                "507257e0-53b2-4385-9a88-c3a25637f008",
+                                "529dbda2-c03e-4702-83be-45ec5c892d04",
+                                "dd0b94a4-bc53-44f2-bef6-12de2637c4da",
+                                "119553ef-4ea6-4366-8303-49fb3d082eea",
+                                "969f8855-6727-4cf4-bfa9-a40e4460f7ae",
+                                "5e92a9eb-599f-49cb-9e69-4baaf9d0bdc2",
+                                "2d17c8fc-bf8e-4d00-aaf8-2ecd065374f3",
+                                "8955135e-6aaf-422f-b6bc-75d298d3acf0",
+                                "a23b0f09-a4ae-44a8-be7b-65afb47325f6",
+                                "4ada947d-4934-4732-9612-ec5e382e7f34",
+                                "5f801945-7315-470d-a602-f7891030fb63",
+                                "aadedeb0-3005-4693-ae1d-1d86f2aa06e4",
+                                "19ef07a7-65ed-454c-a789-f843f7e12939",
+                                "cda55c37-7605-4239-9aad-8c162d0cdaa9",
+                                "9aa98c98-2f2b-41c7-9ebe-7550bc90953d",
+                                "8752b6fc-f435-4a33-a0f2-277f7f90bd60",
+                                "c8cf11a8-d0c6-4dd9-aad4-cf2f36f5bead",
+                                "0d02acc0-badc-41d0-a60a-b9376a0949bb",
+                                "682fe23c-5d0a-414c-8b88-cb4472856a1b",
+                                "6ca5490e-b6c1-420d-b4bd-3469ef253983",
+                                "53a17fb0-f6ef-449f-a346-ff0b52c918e7",
+                                "246f098c-3e1d-428e-bcf5-5fce86e2a5b8",
+                                "cba9f315-1e45-45a1-997a-15ed7743449d",
+                                "f84b1f7c-540d-4237-a73b-cde321af6ff3",
+                                "425a7a49-1892-4a24-aa40-f46cdb8d6c7f"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedChallenges": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.CompletedChallenges).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "profile",
+                        "States": {
+                            "Start": {
+                                "ChallengeCompleted": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$Value.ChallengeId"
+                                                    ]
+                                                },
+                                                "in": "$.RequiredChallenges"
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "CompletedChallenges",
+                                                "$Value.ChallengeId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$ge": [
+                                                "($.CompletedChallenges).Count",
+                                                "$.Goal"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "classic"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": [
+                            "mission",
+                            "escalation",
+                            "elusive",
+                            "featured",
+                            "tutorial"
+                        ],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "d60f3366-c54a-45b0-b76f-2c62968fbb0d",
+                    "Name": "UI_CHALLENGES_CLASSIC_SASO_TIER_III_NAME",
+                    "ImageName": "images/challenges/profile_challenges/classics_saso_tier_3.jpg",
+                    "Description": "UI_CHALLENGES_CLASSIC_SASO_TIER_III_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        {
+                            "Properties": {
+                                "Quality": 1,
+                                "Rarity": "common",
+                                "LoadoutSlot": "disguise",
+                                "RepositoryId": "8a710d65-eccc-478d-88fa-ee64d45dcfb3",
+                                "OrderIndex": 260,
+                                "AllowUpSync": true
+                            },
+                            "Rarity": "common",
+                            "DisplayNameLocKey": "UI_TOKEN_OUTFIT_CLASSICS_REWARD_BLACK_SUIT_NAME",
+                            "Id": "TOKEN_OUTFIT_CLASSICS_REWARD_BLACK_SUIT",
+                            "Type": "disguise",
+                            "Subtype": "formal",
+                            "GameAsset": null,
+                            "ImageId": "",
+                            "RMTPrice": 99,
+                            "GamePrice": 99,
+                            "IsPurchasable": false,
+                            "IsPublished": true,
+                            "IsDroppable": false,
+                            "Capabilities": [],
+                            "Qualities": {},
+                            "Guid": "8b4c23b9-7ebc-4e6d-b1b8-a360b3b9da63"
+                        }
+                    ],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_CLASSIC",
+                    "Icon": "profile",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 80103,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 17,
+                            "RequiredChallenges": [
+                                "11f14b4d-f86f-4545-ac32-27d95d484729",
+                                "00000006-0000-0000-0000-000000000002",
+                                "adca040b-61da-4eae-afaa-232f30c187c4",
+                                "66a0fca7-59eb-4697-b643-5d0d08b439c3",
+                                "08457a95-ab19-4d46-b825-4150f310f217",
+                                "c2739bf2-d5f1-486c-8f5a-e766d699e1a0",
+                                "7107ff08-2d82-4abd-83e5-57d0e1b919ff",
+                                "9696ce8f-f505-4d91-80fe-d4e9d51a5b5b",
+                                "99e006bc-7437-4058-ba4c-a38beb6d63f3",
+                                "8d43608c-5706-4311-8f71-038e90574b34",
+                                "10c23230-bd47-4386-846e-9a2b8e3b51d9",
+                                "b7d311d8-c71a-4cfd-a768-7367f9b5e366",
+                                "64ec75c2-2c6e-4578-a0d4-d9d31d7cc70c",
+                                "507257e0-53b2-4385-9a88-c3a25637f008",
+                                "529dbda2-c03e-4702-83be-45ec5c892d04",
+                                "dd0b94a4-bc53-44f2-bef6-12de2637c4da",
+                                "119553ef-4ea6-4366-8303-49fb3d082eea",
+                                "969f8855-6727-4cf4-bfa9-a40e4460f7ae",
+                                "5e92a9eb-599f-49cb-9e69-4baaf9d0bdc2",
+                                "2d17c8fc-bf8e-4d00-aaf8-2ecd065374f3",
+                                "8955135e-6aaf-422f-b6bc-75d298d3acf0",
+                                "a23b0f09-a4ae-44a8-be7b-65afb47325f6",
+                                "4ada947d-4934-4732-9612-ec5e382e7f34",
+                                "5f801945-7315-470d-a602-f7891030fb63",
+                                "aadedeb0-3005-4693-ae1d-1d86f2aa06e4",
+                                "19ef07a7-65ed-454c-a789-f843f7e12939",
+                                "cda55c37-7605-4239-9aad-8c162d0cdaa9",
+                                "9aa98c98-2f2b-41c7-9ebe-7550bc90953d",
+                                "8752b6fc-f435-4a33-a0f2-277f7f90bd60",
+                                "c8cf11a8-d0c6-4dd9-aad4-cf2f36f5bead",
+                                "0d02acc0-badc-41d0-a60a-b9376a0949bb",
+                                "682fe23c-5d0a-414c-8b88-cb4472856a1b",
+                                "6ca5490e-b6c1-420d-b4bd-3469ef253983",
+                                "53a17fb0-f6ef-449f-a346-ff0b52c918e7",
+                                "246f098c-3e1d-428e-bcf5-5fce86e2a5b8",
+                                "cba9f315-1e45-45a1-997a-15ed7743449d",
+                                "f84b1f7c-540d-4237-a73b-cde321af6ff3",
+                                "425a7a49-1892-4a24-aa40-f46cdb8d6c7f"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedChallenges": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.CompletedChallenges).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "profile",
+                        "States": {
+                            "Start": {
+                                "ChallengeCompleted": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$Value.ChallengeId"
+                                                    ]
+                                                },
+                                                "in": "$.RequiredChallenges"
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "CompletedChallenges",
+                                                "$Value.ChallengeId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$ge": [
+                                                "($.CompletedChallenges).Count",
+                                                "$.Goal"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "classic"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": [
+                            "mission",
+                            "escalation",
+                            "elusive",
+                            "featured",
+                            "tutorial"
+                        ],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "be7c8370-317b-444c-aa70-bb58c125d31d",
+                    "Name": "UI_CHALLENGES_CLASSIC_SNIPER_TIER_I_NAME",
+                    "ImageName": "images/challenges/profile_challenges/classics_sniper_tier_1.jpg",
+                    "Description": "UI_CHALLENGES_CLASSIC_SNIPER_TIER_I_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        {
+                            "Properties": {
+                                "Quality": 2,
+                                "LoadoutSlot": "gear",
+                                "Rarity": "common",
+                                "GameAssets": [
+                                    "PROP_DEVICE_ICA_CLASSIC_RUBBERDUCK_PROXIMITY_EXPLOSIVE"
+                                ],
+                                "RepositoryId": "0bc37bb7-dcd8-4348-a338-22fd8676a416",
+                                "RepositoryAssets": [
+                                    "0bc37bb7-dcd8-4348-a338-22fd8676a416"
+                                ],
+                                "UnlockOrder": 20
+                            },
+                            "Rarity": "common",
+                            "DisplayNameLocKey": "UI_PROP_DEVICE_ICA_CLASSIC_RUBBERDUCK_PROXIMITY_EXPLOSIVE_NAME",
+                            "Id": "PROP_DEVICE_ICA_CLASSIC_RUBBERDUCK_PROXIMITY_EXPLOSIVE",
+                            "Type": "gear",
+                            "Subtype": "explosive",
+                            "GameAsset": null,
+                            "ImageId": "",
+                            "RMTPrice": 149,
+                            "GamePrice": 149,
+                            "IsPurchasable": false,
+                            "IsPublished": true,
+                            "IsDroppable": false,
+                            "Capabilities": [],
+                            "Qualities": {},
+                            "Guid": "959cd59c-056e-4a77-b175-ac48e2480972"
+                        }
+                    ],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_CLASSIC",
+                    "Icon": "profile",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 80201,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 5,
+                            "RequiredChallenges": [
+                                "990c2b85-e6ed-46e7-913f-7bd0ba54cb92",
+                                "98f40445-5350-4669-838c-467c9bb588cb",
+                                "0a4678f9-025f-4497-8a30-8efaac9bbca4",
+                                "25a17321-b065-4d4e-9a73-6fcc97940dcd",
+                                "9e133eb9-ed43-424b-b9e5-2398923efe50",
+                                "aa210ee2-bb45-4819-abba-af4094917d92",
+                                "78cd6055-0f50-48a3-9c97-4c0dd2b200af",
+                                "6dfc70aa-05dd-4ae7-897e-ad4fb303b223",
+                                "29acb552-1c22-4995-bbb7-d29e827b26b2",
+                                "9ff18ae7-9c5e-45a2-8753-7d40752ab992",
+                                "a7eee40e-0fa0-418d-be84-22135176764f",
+                                "8a017de7-d90e-4b7a-8b95-ddafaac6c000",
+                                "0700c419-2b8d-415c-99be-ddbb1120c55a",
+                                "c88429f2-481d-46cc-b479-ffdabe0e0e34",
+                                "37faedc3-5ad8-4eba-94ff-484abddb395d",
+                                "7fb6e4dc-aabd-4f98-b35d-2f0a839b716f",
+                                "ced93d8f-0000-0000-0000-000000000003",
+                                "17fdac23-9554-4714-9853-bc8c0ff905fc",
+                                "b6caebc2-0768-4898-8c23-fa1d82be63f8",
+                                "10f16536-a4cc-4d77-ae00-465fc9b5c051",
+                                "ef63ffff-50f6-44e9-8a33-675c6010a0e7",
+                                "c423d9c6-65bb-4efc-8dcc-99ae1f849615",
+                                "f4e0158e-1f39-4604-b181-49375f82000f",
+                                "671c906c-4bab-4996-a899-de42fb5acfa2",
+                                "96e0a1cb-cf2d-45bf-ad36-6c889860304c",
+                                "f978b895-f0a0-4a73-a9ed-9e06a653c679",
+                                "3735dfb7-fc3c-46a3-b167-961d26844791",
+                                "fb6b9533-a9d1-41dc-8627-124be6df1b33",
+                                "11c8167e-d159-463e-b828-2715888928eb",
+                                "d794359b-9537-40ec-9591-f24627766bb4",
+                                "5b9eaeb1-eae8-4029-ad55-ccf4beab5f6b",
+                                "2694b2ff-224c-4bde-858d-1671a1dbc580",
+                                "7e1efe31-5212-4be9-b9e9-0775c44ebde0",
+                                "b6a3ae7c-dbd3-45ac-bb47-e413ac5ac232",
+                                "c143b485-92af-4994-8bfd-03251a1f3905"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedChallenges": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.CompletedChallenges).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "profile",
+                        "States": {
+                            "Start": {
+                                "ChallengeCompleted": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$Value.ChallengeId"
+                                                    ]
+                                                },
+                                                "in": "$.RequiredChallenges"
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "CompletedChallenges",
+                                                "$Value.ChallengeId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$ge": [
+                                                "($.CompletedChallenges).Count",
+                                                "$.Goal"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "classic"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": [
+                            "mission",
+                            "escalation",
+                            "elusive",
+                            "featured",
+                            "tutorial"
+                        ],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "e2b09f8e-38de-41d7-8f26-815bfd3faa65",
+                    "Name": "UI_CHALLENGES_CLASSIC_SNIPER_TIER_II_NAME",
+                    "ImageName": "images/challenges/profile_challenges/classics_sniper_tier_2.jpg",
+                    "Description": "UI_CHALLENGES_CLASSIC_SNIPER_TIER_II_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        {
+                            "Properties": {
+                                "Quality": 3,
+                                "LoadoutSlot": "gear",
+                                "IsContainer": true,
+                                "Rarity": "common",
+                                "RepositoryId": "c1238ece-fcbf-4ab9-bcfb-9371d5e3b576"
+                            },
+                            "Rarity": "common",
+                            "DisplayNameLocKey": "UI_PROP_CONTAINER_SUITCASE_ICA_CLASSIC_NAME",
+                            "Id": "PROP_CONTAINER_SUITCASE_ICA_CLASSIC",
+                            "Type": "gear",
+                            "Subtype": "container",
+                            "GameAsset": null,
+                            "ImageId": "",
+                            "RMTPrice": 149,
+                            "GamePrice": 149,
+                            "IsPurchasable": false,
+                            "IsPublished": true,
+                            "IsDroppable": false,
+                            "Capabilities": [],
+                            "Qualities": {},
+                            "Guid": "41b58e50-8db9-4c4f-906f-aaadd37d549e"
+                        }
+                    ],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_CLASSIC",
+                    "Icon": "profile",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 80202,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 12,
+                            "RequiredChallenges": [
+                                "990c2b85-e6ed-46e7-913f-7bd0ba54cb92",
+                                "98f40445-5350-4669-838c-467c9bb588cb",
+                                "0a4678f9-025f-4497-8a30-8efaac9bbca4",
+                                "25a17321-b065-4d4e-9a73-6fcc97940dcd",
+                                "9e133eb9-ed43-424b-b9e5-2398923efe50",
+                                "aa210ee2-bb45-4819-abba-af4094917d92",
+                                "78cd6055-0f50-48a3-9c97-4c0dd2b200af",
+                                "6dfc70aa-05dd-4ae7-897e-ad4fb303b223",
+                                "29acb552-1c22-4995-bbb7-d29e827b26b2",
+                                "9ff18ae7-9c5e-45a2-8753-7d40752ab992",
+                                "a7eee40e-0fa0-418d-be84-22135176764f",
+                                "8a017de7-d90e-4b7a-8b95-ddafaac6c000",
+                                "0700c419-2b8d-415c-99be-ddbb1120c55a",
+                                "c88429f2-481d-46cc-b479-ffdabe0e0e34",
+                                "37faedc3-5ad8-4eba-94ff-484abddb395d",
+                                "7fb6e4dc-aabd-4f98-b35d-2f0a839b716f",
+                                "ced93d8f-0000-0000-0000-000000000003",
+                                "17fdac23-9554-4714-9853-bc8c0ff905fc",
+                                "b6caebc2-0768-4898-8c23-fa1d82be63f8",
+                                "10f16536-a4cc-4d77-ae00-465fc9b5c051",
+                                "ef63ffff-50f6-44e9-8a33-675c6010a0e7",
+                                "c423d9c6-65bb-4efc-8dcc-99ae1f849615",
+                                "f4e0158e-1f39-4604-b181-49375f82000f",
+                                "671c906c-4bab-4996-a899-de42fb5acfa2",
+                                "96e0a1cb-cf2d-45bf-ad36-6c889860304c",
+                                "f978b895-f0a0-4a73-a9ed-9e06a653c679",
+                                "3735dfb7-fc3c-46a3-b167-961d26844791",
+                                "fb6b9533-a9d1-41dc-8627-124be6df1b33",
+                                "11c8167e-d159-463e-b828-2715888928eb",
+                                "d794359b-9537-40ec-9591-f24627766bb4",
+                                "5b9eaeb1-eae8-4029-ad55-ccf4beab5f6b",
+                                "2694b2ff-224c-4bde-858d-1671a1dbc580",
+                                "7e1efe31-5212-4be9-b9e9-0775c44ebde0",
+                                "b6a3ae7c-dbd3-45ac-bb47-e413ac5ac232",
+                                "c143b485-92af-4994-8bfd-03251a1f3905"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedChallenges": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.CompletedChallenges).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "profile",
+                        "States": {
+                            "Start": {
+                                "ChallengeCompleted": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$Value.ChallengeId"
+                                                    ]
+                                                },
+                                                "in": "$.RequiredChallenges"
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "CompletedChallenges",
+                                                "$Value.ChallengeId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$ge": [
+                                                "($.CompletedChallenges).Count",
+                                                "$.Goal"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "classic"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": [
+                            "mission",
+                            "escalation",
+                            "elusive",
+                            "featured",
+                            "tutorial"
+                        ],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "d644b9c3-48ee-413e-9ad8-876b334fd511",
+                    "Name": "UI_CHALLENGES_CLASSIC_SNIPER_TIER_III_NAME",
+                    "ImageName": "images/challenges/profile_challenges/classics_sniper_tier_3.jpg",
+                    "Description": "UI_CHALLENGES_CLASSIC_SNIPER_TIER_III_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        {
+                            "Properties": {
+                                "Gameplay": {},
+                                "Quality": 4,
+                                "Rarity": "common",
+                                "LoadoutSlot": "carriedweapon",
+                                "RepositoryId": "0e3dc26a-9eed-4aa1-b81e-d0c597b36737"
+                            },
+                            "Rarity": "common",
+                            "DisplayNameLocKey": "UI_FIREARMS_SNIPER_HEAVY_ICA_WOODSMAN_COVERT_NAME",
+                            "Id": "FIREARMS_SNIPER_HEAVY_ICA_WOODSMAN_COVERT",
+                            "Type": "weapon",
+                            "Subtype": "sniperrifle",
+                            "GameAsset": null,
+                            "ImageId": "",
+                            "RMTPrice": -1,
+                            "GamePrice": -1,
+                            "IsPurchasable": false,
+                            "IsPublished": true,
+                            "IsDroppable": false,
+                            "Capabilities": [],
+                            "Qualities": {},
+                            "Guid": "573da62c-8628-4463-ba85-6f2f75526129"
+                        }
+                    ],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_CLASSIC",
+                    "Icon": "profile",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 80203,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 17,
+                            "RequiredChallenges": [
+                                "990c2b85-e6ed-46e7-913f-7bd0ba54cb92",
+                                "98f40445-5350-4669-838c-467c9bb588cb",
+                                "0a4678f9-025f-4497-8a30-8efaac9bbca4",
+                                "25a17321-b065-4d4e-9a73-6fcc97940dcd",
+                                "9e133eb9-ed43-424b-b9e5-2398923efe50",
+                                "aa210ee2-bb45-4819-abba-af4094917d92",
+                                "78cd6055-0f50-48a3-9c97-4c0dd2b200af",
+                                "6dfc70aa-05dd-4ae7-897e-ad4fb303b223",
+                                "29acb552-1c22-4995-bbb7-d29e827b26b2",
+                                "9ff18ae7-9c5e-45a2-8753-7d40752ab992",
+                                "a7eee40e-0fa0-418d-be84-22135176764f",
+                                "8a017de7-d90e-4b7a-8b95-ddafaac6c000",
+                                "0700c419-2b8d-415c-99be-ddbb1120c55a",
+                                "c88429f2-481d-46cc-b479-ffdabe0e0e34",
+                                "37faedc3-5ad8-4eba-94ff-484abddb395d",
+                                "7fb6e4dc-aabd-4f98-b35d-2f0a839b716f",
+                                "ced93d8f-0000-0000-0000-000000000003",
+                                "17fdac23-9554-4714-9853-bc8c0ff905fc",
+                                "b6caebc2-0768-4898-8c23-fa1d82be63f8",
+                                "10f16536-a4cc-4d77-ae00-465fc9b5c051",
+                                "ef63ffff-50f6-44e9-8a33-675c6010a0e7",
+                                "c423d9c6-65bb-4efc-8dcc-99ae1f849615",
+                                "f4e0158e-1f39-4604-b181-49375f82000f",
+                                "671c906c-4bab-4996-a899-de42fb5acfa2",
+                                "96e0a1cb-cf2d-45bf-ad36-6c889860304c",
+                                "f978b895-f0a0-4a73-a9ed-9e06a653c679",
+                                "3735dfb7-fc3c-46a3-b167-961d26844791",
+                                "fb6b9533-a9d1-41dc-8627-124be6df1b33",
+                                "11c8167e-d159-463e-b828-2715888928eb",
+                                "d794359b-9537-40ec-9591-f24627766bb4",
+                                "5b9eaeb1-eae8-4029-ad55-ccf4beab5f6b",
+                                "2694b2ff-224c-4bde-858d-1671a1dbc580",
+                                "7e1efe31-5212-4be9-b9e9-0775c44ebde0",
+                                "b6a3ae7c-dbd3-45ac-bb47-e413ac5ac232",
+                                "c143b485-92af-4994-8bfd-03251a1f3905"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedChallenges": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.CompletedChallenges).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "profile",
+                        "States": {
+                            "Start": {
+                                "ChallengeCompleted": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$Value.ChallengeId"
+                                                    ]
+                                                },
+                                                "in": "$.RequiredChallenges"
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "CompletedChallenges",
+                                                "$Value.ChallengeId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$ge": [
+                                                "($.CompletedChallenges).Count",
+                                                "$.Goal"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "classic"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": [
+                            "mission",
+                            "escalation",
+                            "elusive",
+                            "featured",
+                            "tutorial"
+                        ],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                }
+            ]
+        }
+    ]
+}
