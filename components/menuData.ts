@@ -18,6 +18,7 @@
 
 import { Response, Router } from "express"
 import {
+    contractCreationTutorialId,
     gameDifficulty,
     PEACOCKVERSTRING,
     unlockOrderComparer,
@@ -65,9 +66,11 @@ import { contractsModeHome } from "./contracts/contractsModeRouting"
 import random from "random"
 import { getUserData } from "./databaseHandler"
 import {
+    createMainOpportunityTile,
     createPlayNextTile,
     getSeasonId,
     orderedMissions,
+    orderedPZMissions,
 } from "./menus/playnext"
 import { randomUUID } from "crypto"
 import { planningView } from "./menus/planning"
@@ -187,7 +190,7 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
     }
 
     const contractCreationTutorial = controller.resolveContract(
-        "d7e2607c-6916-48e2-9588-976c7d8998bb",
+        contractCreationTutorialId,
     )!
 
     const locations = getVersionedConfig<PeacockLocationsData>(
@@ -286,7 +289,7 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
                 req.jwt.unique_name,
                 req.gameVersion,
             ),
-            LocationsData: createLocationsData(req.gameVersion),
+            LocationsData: createLocationsData(req.gameVersion, true),
             ProfileData: {
                 ChallengeData: {
                     Children: Object.values(career),
@@ -1253,11 +1256,11 @@ menuDataRouter.get(
             return
         }
 
-        const currentIdIndex = orderedMissions.indexOf(req.query.contractId)
-
         const cats = []
 
         //#region Main story missions
+        const currentIdIndex = orderedMissions.indexOf(req.query.contractId)
+
         if (
             currentIdIndex !== -1 &&
             currentIdIndex !== orderedMissions.length - 1
@@ -1284,6 +1287,45 @@ menuDataRouter.get(
                     ),
                 )
             }
+
+            cats.push(createMainOpportunityTile(req.query.contractId))
+        }
+        //#endregion
+
+        //#region PZ missions
+        const pzIdIndex = orderedPZMissions.indexOf(req.query.contractId)
+
+        if (pzIdIndex !== -1 && pzIdIndex !== orderedPZMissions.length - 1) {
+            const nextMissionId = orderedPZMissions[pzIdIndex + 1]
+            cats.push(
+                createPlayNextTile(
+                    req.jwt.unique_name,
+                    nextMissionId,
+                    req.gameVersion,
+                    {
+                        CampaignName: "UI_CONTRACT_CAMPAIGN_WHITE_SPIDER_TITLE",
+                        ParentCampaignName: "UI_MENU_PAGE_SIDE_MISSIONS_TITLE",
+                    },
+                ),
+            )
+        }
+        //#endregion
+
+        //#region Atlantide
+
+        if (req.query.contractId === "f1ba328f-e3dd-4ef8-bb26-0363499fdd95") {
+            const nextMissionId = "0b616e62-af0c-495b-82e3-b778e82b5912"
+            cats.push(
+                createPlayNextTile(
+                    req.jwt.unique_name,
+                    nextMissionId,
+                    req.gameVersion,
+                    {
+                        CampaignName: "UI_MENU_PAGE_SPECIAL_ASSIGNMENTS_TITLE",
+                        ParentCampaignName: "UI_MENU_PAGE_SIDE_MISSIONS_TITLE",
+                    },
+                ),
+            )
         }
         //#endregion
 
@@ -1489,7 +1531,7 @@ preMenuDataRouter.get(
 
 menuDataRouter.get("/contractsearchpage", (req: RequestWithJwt, res) => {
     const createContractTutorial = controller.resolveContract(
-        "d7e2607c-6916-48e2-9588-976c7d8998bb",
+        contractCreationTutorialId,
     )
 
     res.json({
@@ -1504,7 +1546,7 @@ menuDataRouter.get("/contractsearchpage", (req: RequestWithJwt, res) => {
                 req.jwt.unique_name,
                 req.gameVersion,
             ),
-            LocationsData: createLocationsData(req.gameVersion),
+            LocationsData: createLocationsData(req.gameVersion, true),
             FilterData: getVersionedConfig(
                 "FilterData",
                 req.gameVersion,
@@ -1653,7 +1695,8 @@ menuDataRouter.get("/contractcreation/create", (req: RequestWithJwt, res) => {
                         }
                     }),
                 ContractConditions: complications(timeLimitStr),
-                PublishingDisabled: false,
+                PublishingDisabled:
+                    sesh.contractId === contractCreationTutorialId,
                 Creator: req.jwt.unique_name,
                 ContractId: cUuid,
                 ContractPublicId: joined,

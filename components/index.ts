@@ -521,6 +521,7 @@ function startServer(options: { hmr: boolean; pluginDevHost: boolean }): void {
     // make sure required folder structure is in place
     for (const dir of [
         "contractSessions",
+        "plugins",
         "userdata",
         "contracts",
         join("userdata", "epicids"),

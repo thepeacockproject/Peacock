@@ -737,7 +737,7 @@ export class Controller {
             `User ${userId} is downloading contract ${pubId}...`,
         )
 
-        let contractData: MissionManifest | undefined
+        let contractData: MissionManifest | undefined = undefined
 
         if (
             gameVersion === "h3" &&
@@ -747,8 +747,15 @@ export class Controller {
 
             if (result) {
                 contractData = result
+            } else {
+                log(
+                    LogLevel.WARN,
+                    `Failed to download from HITMAP servers. Trying official servers instead...`,
+                )
             }
-        } else {
+        }
+
+        if (!contractData) {
             contractData = await Controller._officialFetchContract(
                 pubId,
                 gameVersion,
@@ -952,12 +959,13 @@ export class Controller {
                 continue
             }
 
-            this.challengeService.registerGroup(group)
+            this.challengeService.registerGroup(group, data.meta.Location)
 
             for (const challenge of group.Challenges) {
                 this.challengeService.registerChallenge(
                     challenge,
                     group.CategoryId,
+                    data.meta.Location,
                 )
             }
         }
@@ -1228,10 +1236,12 @@ export function contractIdToHitObject(
         return undefined
     }
 
-    const challenges = controller.challengeService.getGroupedChallengeLists({
-        type: ChallengeFilterType.ParentLocation,
-        locationParentId: parentLocation?.Id,
-    })
+    const challenges = controller.challengeService.getGroupedChallengeLists(
+        {
+            type: ChallengeFilterType.None,
+        },
+        parentLocation?.Id,
+    )
 
     const challengeCompletion =
         controller.challengeService.countTotalNCompletedChallenges(
