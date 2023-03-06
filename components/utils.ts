@@ -19,6 +19,7 @@
 import { decode } from "jsonwebtoken"
 import type { NextFunction, Response } from "express"
 import type {
+    GameVersion,
     MissionManifestObjective,
     RepositoryId,
     RequestWithJwt,
@@ -49,6 +50,10 @@ export const PEACOCKVERSTRING = HUMAN_VERSION
 export const uuidRegex =
     /^[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$/
 
+export const contractTypes = ["featured", "usercreated", "creation"]
+
+export const contractCreationTutorialId = "d7e2607c-6916-48e2-9588-976c7d8998bb"
+
 export async function checkForUpdates(): Promise<void> {
     if (getFlag("updateChecking") === false) {
         return
@@ -60,7 +65,12 @@ export async function checkForUpdates(): Promise<void> {
         )
         const current = res.data
 
-        if (current === PEACOCKVER) {
+        if (PEACOCKVER < 0 && current < -PEACOCKVER) {
+            log(
+                LogLevel.INFO,
+                `Thank you for trying out this testing version of Peacock! Please report any bugs by posting in the #help channel on Discord or by submitting an issue on GitHub.`,
+            )
+        } else if (PEACOCKVER > 0 && current === PEACOCKVER) {
             log(LogLevel.DEBUG, "Peacock is up to date.")
         } else {
             log(
@@ -71,6 +81,14 @@ export async function checkForUpdates(): Promise<void> {
     } catch (e) {
         log(LogLevel.WARN, "Failed to check for updates!")
     }
+}
+
+export function getRemoteService(gameVersion: GameVersion): string {
+    return gameVersion === "h3"
+        ? "hm3-service"
+        : gameVersion === "h2"
+        ? "pc2-service"
+        : "pc-service"
 }
 
 /**
@@ -120,7 +138,6 @@ export function castUserProfile(profile: UserProfile): UserProfile {
     let dirty = false
 
     for (const item of [
-        "entP",
         "PeacockEscalations",
         "PeacockFavoriteContracts",
         "PeacockCompletedEscalations",
@@ -136,14 +153,6 @@ export function castUserProfile(profile: UserProfile): UserProfile {
                 LogLevel.WARN,
                 `Attempting to repair the profile automatically...`,
             )
-
-            if (item === "entP") {
-                log(
-                    LogLevel.ERROR,
-                    "Can't repair this issue, please let us know in the Discord!",
-                )
-                process.exit(1)
-            }
 
             if (item === "PeacockEscalations") {
                 j.Extensions.PeacockEscalations = {}
@@ -223,6 +232,8 @@ export function getDefaultSuitFor(location: string) {
 }
 
 export const nilUuid = "00000000-0000-0000-0000-000000000000"
+
+export const hitmapsUrl = "https://backend.rdil.rocks/partners/hitmaps/contract"
 
 export function isObjectiveActive(
     objective: MissionManifestObjective,

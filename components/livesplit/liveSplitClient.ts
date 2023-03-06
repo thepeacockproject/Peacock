@@ -170,7 +170,7 @@ export class LiveSplitClient extends EventEmitter {
     }
 
     /**
-     * Unsplit.
+     * Un-split.
      */
     async unsplit(): LiveSplitResult {
         return await this.send("unsplit", false)
@@ -337,7 +337,7 @@ export class LiveSplitClient extends EventEmitter {
     /**
      * Get previous split name.
      */
-    async getPreviousSplitname(): LiveSplitResult {
+    async getPreviousSplitName(): LiveSplitResult {
         return await this.send("getprevioussplitname", true)
     }
 

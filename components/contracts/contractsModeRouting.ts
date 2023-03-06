@@ -16,13 +16,20 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type { RequestWithJwt } from "../types/types"
+import type {
+    contractSearchResult,
+    GameVersion,
+    RequestWithJwt,
+} from "../types/types"
 import type { Response } from "express"
 import { getConfig, getVersionedConfig } from "../configSwizzleManager"
 import { getUserData } from "../databaseHandler"
 import { generateUserCentric } from "./dataGen"
-import { controller } from "../controller"
+import { controller, preserveContracts } from "../controller"
 import { createLocationsData } from "../menus/destinations"
+import { userAuths } from "../officialServerAuth"
+import { log, LogLevel } from "../loggingInterop"
+import { getRemoteService, contractCreationTutorialId } from "../utils"
 
 export function contractsModeHome(req: RequestWithJwt, res: Response): void {
     const contractsHomeTemplate = getConfig("ContractsTemplate", false)
@@ -30,7 +37,7 @@ export function contractsModeHome(req: RequestWithJwt, res: Response): void {
     const userData = getUserData(req.jwt.unique_name, req.gameVersion)
 
     const contractCreationTutorial = controller.resolveContract(
-        "d7e2607c-6916-48e2-9588-976c7d8998bb",
+        contractCreationTutorialId,
     )
 
     res.json({
@@ -55,4 +62,40 @@ export function contractsModeHome(req: RequestWithJwt, res: Response): void {
             },
         },
     })
+}
+
+export async function officialSearchContract(
+    userId: string,
+    gameVersion: GameVersion,
+    filters: string[],
+    pageNumber: number,
+): Promise<contractSearchResult> {
+    const remoteService = getRemoteService(gameVersion)
+    const user = userAuths.get(userId)
+
+    if (!user) {
+        log(LogLevel.WARN, `No authentication for user ${userId}!`)
+        return undefined
+    }
+
+    const resp = await user._useService<{
+        data: contractSearchResult
+    }>(
+        pageNumber === 0
+            ? `https://${remoteService}.hitman.io/profiles/page/ContractSearch?sorting=`
+            : `https://${remoteService}.hitman.io/profiles/page/ContractSearchPaginate?page=${pageNumber}&sorting=`,
+        false,
+        filters,
+    )
+
+    preserveContracts(
+        resp.data.data.Data.Contracts.map(
+            (c) => c.UserCentricContract.Contract.Metadata.PublicId,
+        ),
+    )
+
+    controller.storeIdToPublicId(
+        resp.data.data.Data.Contracts.map((c) => c.UserCentricContract),
+    )
+    return resp.data.data
 }
