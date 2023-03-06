@@ -112,6 +112,13 @@ export function createInventory(
                 return false
             }
 
+            if (
+                unlockContainer.Unlockable.Type === "disguise" &&
+                !unlockContainer.Unlockable.Properties.OrderIndex
+            ) {
+                return false
+            }
+
             if (gameVersion === "h1") {
                 return true
             }
