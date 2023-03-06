@@ -183,6 +183,22 @@ export type MissionType =
     | "evergreen"
 
 /**
+ * The data acquired when using the "contract search" functionality.
+ */
+export interface contractSearchResult {
+    Data: {
+        Contracts: {
+            UserCentricContract: UserCentricContract
+        }[]
+        ErrorReason: string
+        HasMore: boolean
+        HasPrevious: boolean
+        Page: number
+        TotalCount: number
+    }
+}
+
+/**
  * The last kill in a contract session.
  *
  * @see ContractSession
@@ -553,6 +569,9 @@ export interface Unlockable {
         /**
          * Inclusion data for an unlockable. The only known use for this is
          * sniper rifle unlockables for Sniper Assassin mode.
+         *
+         * With the `InclusionData` type added,
+         * I think this line can be `InclusionData: InclusionData`. --Moony
          */
         InclusionData?: {
             ContractTypes?: MissionType[] | null
@@ -1077,6 +1096,13 @@ export interface CompiledChallengeTreeData {
     UserCentricContract?: UserCentricContract
 }
 
+export interface InclusionData {
+    ContractIds?: string[]
+    ContractTypes?: MissionType[]
+    Locations?: string[]
+    GameModes?: string[]
+}
+
 export interface CompiledChallengeIngameData {
     Id: string
     GroupId?: string
@@ -1092,12 +1118,7 @@ export interface CompiledChallengeIngameData {
     PlayableUntil?: string | null
     Xp: number
     XpModifier: unknown
-    InclusionData?: {
-        ContractIds?: string[]
-        ContractTypes?: string[]
-        Locations?: string[]
-        GameModes?: string[]
-    }
+    InclusionData?: InclusionData
     CrowdChoice?: {
         Tag: string
     }
