@@ -183,6 +183,22 @@ export type MissionType =
     | "evergreen"
 
 /**
+ * The data acquired when using the "contract search" functionality.
+ */
+export interface contractSearchResult {
+    Data: {
+        Contracts: {
+            UserCentricContract: UserCentricContract
+        }[]
+        ErrorReason: string
+        HasMore: boolean
+        HasPrevious: boolean
+        Page: number
+        TotalCount: number
+    }
+}
+
+/**
  * The last kill in a contract session.
  *
  * @see ContractSession

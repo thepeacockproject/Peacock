@@ -41,6 +41,8 @@ import {
 } from "./menus/destinations"
 import type {
     CommonSelectScreenConfig,
+    contractSearchResult,
+    GameVersion,
     HitsCategoryCategory,
     IHit,
     MissionManifest,
@@ -62,7 +64,10 @@ import {
     generateUserCentric,
 } from "./contracts/dataGen"
 import { log, LogLevel } from "./loggingInterop"
-import { contractsModeHome } from "./contracts/contractsModeRouting"
+import {
+    contractsModeHome,
+    officialSearchContract,
+} from "./contracts/contractsModeRouting"
 import random from "random"
 import { getUserData } from "./databaseHandler"
 import {
@@ -1131,79 +1136,80 @@ menuDataRouter.get(
     },
 )
 
+async function lookupContractPublicId(
+    publicid: string,
+    userId: string,
+    gameVersion: GameVersion,
+) {
+    const publicIdRegex = /\d{12}/
+
+    while (publicid.includes("-")) {
+        publicid = publicid.replace("-", "")
+    }
+
+    if (!publicIdRegex.test(publicid)) {
+        return {
+            PublicId: publicid,
+            ErrorReason: "notfound",
+        }
+    }
+
+    const contract = await controller.contractByPubId(
+        publicid,
+        userId,
+        gameVersion,
+    )
+
+    if (!contract) {
+        return {
+            PublicId: publicid,
+            ErrorReason: "notfound",
+        }
+    }
+
+    const location = (
+        getVersionedConfig(
+            "allunlockables",
+            gameVersion,
+            false,
+        ) as readonly Unlockable[]
+    ).find((entry) => entry.Id === contract.Metadata.Location)
+
+    return {
+        Contract: contract,
+        Location: location,
+        UserCentricContract: generateUserCentric(contract, userId, gameVersion),
+    }
+}
+
 menuDataRouter.get(
     "/LookupContractPublicId",
     async (req: RequestWithJwt<{ publicid: string }>, res) => {
-        const publicIdRegex = /\d{12}/
-        let publicid = req.query.publicid
-        const templateLookupContractById = getVersionedConfig(
-            "LookupContractByIdTemplate",
-            req.gameVersion,
-            false,
-        )
-
-        if (!publicid) {
+        if (!req.query.publicid) {
             return res.status(400).send("no public id specified!")
         }
 
-        while (publicid.includes("-")) {
-            publicid = publicid.replace("-", "")
-        }
-
-        if (!publicIdRegex.test(publicid)) {
-            res.json({
-                template: templateLookupContractById,
-                data: {
-                    PublicId: req.query.publicid,
-                    ErrorReason: "notfound",
-                },
-            })
-            return
-        }
-
-        const contract = await controller.contractByPubId(
-            publicid,
-            req.jwt.unique_name,
-            req.gameVersion,
-        )
-
-        if (!contract) {
-            res.json({
-                template: templateLookupContractById,
-                data: {
-                    PublicId: req.query.publicid,
-                    ErrorReason: "notfound",
-                },
-            })
-            return
-        }
-
-        const location = (
-            getVersionedConfig(
-                "allunlockables",
+        res.json({
+            template: getVersionedConfig(
+                "LookupContractByIdTemplate",
                 req.gameVersion,
                 false,
-            ) as readonly Unlockable[]
-        ).find((entry) => entry.Id === contract.Metadata.Location)
-
-        res.json({
-            template: templateLookupContractById,
-            data: {
-                Contract: contract,
-                Location: location,
-                UserCentricContract: generateUserCentric(
-                    contract,
-                    req.jwt.unique_name,
-                    req.gameVersion,
-                ),
-            },
+            ),
+            data: await lookupContractPublicId(
+                req.query.publicid,
+                req.jwt.unique_name,
+                req.gameVersion,
+            ),
         })
     },
 )
 
 menuDataRouter.get(
     "/HitsCategory",
-    (req: RequestWithJwt<{ type: string; page?: number | string }>, res) => {
+    async (
+        req: RequestWithJwt<{ type: string; page?: number | string }>,
+        res,
+    ) => {
         const category = req.query.type
 
         const response: {
@@ -1225,7 +1231,7 @@ menuDataRouter.get(
 
         pageNumber = pageNumber < 0 ? 0 : pageNumber
 
-        response.data = hitsCategoryService.paginateHitsCategory(
+        response.data = await hitsCategoryService.paginateHitsCategory(
             category,
             pageNumber as number,
             req.gameVersion,
@@ -1555,32 +1561,34 @@ menuDataRouter.post(
             specialContracts,
         )
 
-        const contracts: { UserCentricContract: UserCentricContract }[] = []
+        let searchResult: contractSearchResult = undefined
 
-        for (const contract of specialContracts) {
-            const userCentric = generateUserCentric(
-                controller.resolveContract(contract),
-                req.jwt.unique_name,
-                req.gameVersion,
-            )
+        if (specialContracts.length > 0) {
+            // Handled by a plugin
 
-            if (!userCentric) {
-                log(LogLevel.ERROR, "UC is null! (contract not registered?)")
-                continue
+            const contracts: { UserCentricContract: UserCentricContract }[] = []
+
+            for (const contract of specialContracts) {
+                const userCentric = generateUserCentric(
+                    controller.resolveContract(contract),
+                    req.jwt.unique_name,
+                    req.gameVersion,
+                )
+
+                if (!userCentric) {
+                    log(
+                        LogLevel.ERROR,
+                        "UC is null! (contract not registered?)",
+                    )
+                    continue
+                }
+
+                contracts.push({
+                    UserCentricContract: userCentric,
+                })
             }
 
-            contracts.push({
-                UserCentricContract: userCentric,
-            })
-        }
-
-        res.json({
-            template: getVersionedConfig(
-                "ContractSearchResponseTemplate",
-                req.gameVersion,
-                false,
-            ),
-            data: {
+            searchResult = {
                 Data: {
                     Contracts: contracts,
                     TotalCount: contracts.length,
@@ -1589,7 +1597,40 @@ menuDataRouter.post(
                     HasPrevious: false,
                     HasMore: false,
                 },
-            },
+            }
+        } else {
+            // No plugins handle this. Getting search results from official
+            searchResult = await officialSearchContract(
+                req.jwt.unique_name,
+                req.gameVersion,
+                req.body,
+                0,
+            )
+        }
+
+        res.json({
+            template: getVersionedConfig(
+                "ContractSearchResponseTemplate",
+                req.gameVersion,
+                false,
+            ),
+            data: searchResult,
+        })
+    },
+)
+
+menuDataRouter.post(
+    "/ContractSearchPaginate",
+    jsonMiddleware(),
+    async (req: RequestWithJwt<{ page: number }, string[]>, res) => {
+        res.json({
+            template: getConfig("ContractSearchPaginateTemplate", false),
+            data: await officialSearchContract(
+                req.jwt.unique_name,
+                req.gameVersion,
+                req.body,
+                req.query.page,
+            ),
         })
     },
 )

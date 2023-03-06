@@ -32,7 +32,12 @@ import {
 } from "../contracts/dataGen"
 import { getConfig } from "../configSwizzleManager"
 import { getUserData, writeUserData } from "../databaseHandler"
-import { getDefaultSuitFor, nilUuid, unlockOrderComparer } from "../utils"
+import {
+    fastClone,
+    getDefaultSuitFor,
+    nilUuid,
+    unlockOrderComparer,
+} from "../utils"
 
 import type { Response } from "express"
 import { createInventory } from "../inventory"
@@ -81,7 +86,7 @@ export async function planningView(
             controller.escalationMappings[escalationGroupId]["1"]
     }
 
-    const contractData =
+    let contractData =
         req.gameVersion === "h1" &&
         req.query.contractid === "42bac555-bbb9-429d-a8ce-f1ffdf94211c"
             ? _legacyBull
@@ -90,7 +95,27 @@ export async function planningView(
             : controller.resolveContract(req.query.contractid)
 
     if (!contractData) {
-        log(LogLevel.ERROR, `Not found: ${req.query.contractid}.`)
+        log(
+            LogLevel.WARN,
+            `Trying to download contract ${req.query.contractid} due to it not found locally.`,
+        )
+        const publicId = controller.contractIdToPublicId.get(
+            req.query.contractid,
+        )
+        if (publicId) {
+            const officialJson = await controller.downloadContract(
+                req.jwt.unique_name,
+                publicId,
+                req.gameVersion,
+            )
+            if (officialJson) {
+                contractData = fastClone(officialJson)
+            }
+        }
+    }
+
+    if (!contractData) {
+        log(LogLevel.ERROR, `Not found: ${req.query.contractid}, .`)
         res.status(400).send("no ct")
         return
     }
