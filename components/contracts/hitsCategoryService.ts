@@ -22,9 +22,13 @@ import {
     contractIdToHitObject,
     controller,
     featuredContractGroups,
+    preserveContracts,
 } from "../controller"
 import { getUserData } from "../databaseHandler"
 import { orderedETs } from "./elusiveTargets"
+import { userAuths } from "../officialServerAuth"
+import { log, LogLevel } from "../loggingInterop"
+import { fastClone, getRemoteService } from "../utils"
 
 function paginate<Element>(
     elements: Element[],
@@ -95,6 +99,7 @@ export class HitsCategoryService {
      * Hits categories that should not be automatically paginated.
      */
     public paginationExempt = ["Elusive_Target_Hits", "Arcade", "Sniper"]
+    public realtimeFetched = ["Trending", "MostPlayedLastWeek"]
 
     /**
      * The number of hits per page.
@@ -140,7 +145,17 @@ export class HitsCategoryService {
         this.hitsCategories
             .for("Featured")
             .tap(tapName, (gameVersion, contracts) => {
-                for (const fcGroup of featuredContractGroups) {
+                const cagedBull = "ee0411d6-b3e7-4320-b56b-25c45d8a9d61"
+                const clonedGroups = fastClone(featuredContractGroups)
+
+                for (const fcGroup of clonedGroups) {
+                    if (gameVersion === "h1" && fcGroup.includes(cagedBull)) {
+                        fcGroup.splice(
+                            fcGroup.findIndex((id) => id === cagedBull),
+                            1,
+                        )
+                    }
+
                     contracts.push(...fcGroup)
                 }
             })
@@ -157,9 +172,46 @@ export class HitsCategoryService {
                 hitsCategory.CurrentSubType = "MyPlaylist_all"
             })
 
-        // intentionally don't handle Trending
-        // intentionally don't handle MostPlayedLastWeek
         // intentionally don't handle Arcade
+    }
+
+    private async fetchFromOfficial(
+        categoryName: string,
+        pageNumber: number,
+        gameVersion: GameVersion,
+        userId: string,
+    ): Promise<HitsCategoryCategory> {
+        const remoteService = getRemoteService(gameVersion)
+        const user = userAuths.get(userId)
+
+        if (!user) {
+            log(LogLevel.WARN, `No authentication for user ${userId}!`)
+            return undefined
+        }
+
+        const resp = await user._useService<{
+            data: HitsCategoryCategory
+        }>(
+            `https://${remoteService}.hitman.io/profiles/page/HitsCategory?page=${pageNumber}&type=${categoryName}&mode=dataonly`,
+            true,
+        )
+        const hits = resp.data.data.Data.Hits
+        preserveContracts(
+            hits.map(
+                (hit) => hit.UserCentricContract.Contract.Metadata.PublicId,
+            ),
+        )
+
+        // Stores the repo ID —— public ID lookup for the planning page to use.
+        hits.forEach((hit) =>
+            controller.contractIdToPublicId.set(
+                hit.UserCentricContract.Contract.Metadata.Id,
+                hit.UserCentricContract.Contract.Metadata.PublicId,
+            ),
+        )
+        controller.storeIdToPublicId(hits.map((hit) => hit.UserCentricContract))
+
+        return resp.data.data
     }
 
     /**
@@ -171,12 +223,20 @@ export class HitsCategoryService {
      * @param userId The current user's ID.
      * @returns The {@link HitsCategoryCategory} object.
      */
-    public paginateHitsCategory(
+    public async paginateHitsCategory(
         categoryName: string,
         pageNumber: number,
         gameVersion: GameVersion,
         userId: string,
-    ): HitsCategoryCategory {
+    ): Promise<HitsCategoryCategory> {
+        if (this.realtimeFetched.includes(categoryName)) {
+            return await this.fetchFromOfficial(
+                categoryName,
+                pageNumber,
+                gameVersion,
+                userId,
+            )
+        }
         const hitsCategory: HitsCategoryCategory = {
             Category: categoryName,
             Data: {
