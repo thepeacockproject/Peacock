@@ -78,9 +78,24 @@ type GroupIndexedChallengeLists = {
  * A base class providing challenge registration support.
  */
 export abstract class ChallengeRegistry {
-    protected challenges: Map<string, RegistryChallenge> = new Map()
+    /**
+     * @Key1 Game version.
+     * @Key2 The challenge Id.
+     * @Value A `RegistryChallenge` object.
+     */
+    protected challenges: Map<GameVersion, Map<string, RegistryChallenge>> =
+        new Map([
+            ["h1", new Map()],
+            ["h2", new Map()],
+            ["h3", new Map()],
+        ])
 
-    /** A map of parentLocationIds to maps of groupIds to SavedChallengeGroup objects for this group of this parent location. */
+    /**
+     * @Key1 Game version.
+     * @Key2 The parent location Id.
+     * @Key3 The group Id.
+     * @Value A `SavedChallengeGroup` object.
+     */
     protected groups: Map<
         GameVersion,
         Map<string, Map<string, SavedChallengeGroup>>
@@ -90,8 +105,12 @@ export abstract class ChallengeRegistry {
         ["h3", new Map()],
     ])
 
-    /** A map of parentLocationIds to maps of groupIds to sets of challenge Ids in this group of this parent location. */
-
+    /**
+     * @Key1 Game version.
+     * @Key2 The parent location Id.
+     * @Key3 The group Id.
+     * @Value A `Set` of challenge Ids.
+     */
     protected groupContents: Map<
         GameVersion,
         Map<string, Map<string, Set<string>>>
@@ -100,11 +119,20 @@ export abstract class ChallengeRegistry {
         ["h2", new Map()],
         ["h3", new Map()],
     ])
+
     /**
-     * A map of a challenge ID to a list of challenge IDs that it depends on.
+     * @Key1 Game version.
+     * @Key2 The challenge Id.
+     * @Value An array  of challenge Ids that Key2 depends on.
      */
-    protected readonly _dependencyTree: Map<string, readonly string[]> =
-        new Map()
+    protected readonly _dependencyTree: Map<
+        GameVersion,
+        Map<string, readonly string[]>
+    > = new Map([
+        ["h1", new Map()],
+        ["h2", new Map()],
+        ["h3", new Map()],
+    ])
 
     protected constructor(protected readonly controller: Controller) {}
 
@@ -119,7 +147,7 @@ export abstract class ChallengeRegistry {
         }
         const gameChallenges = this.groupContents.get(gameVersion)
         challenge.inGroup = groupId
-        this.challenges.set(challenge.Id, challenge)
+        this.challenges.get(gameVersion)?.set(challenge.Id, challenge)
 
         if (!gameChallenges.has(location)) {
             gameChallenges.set(location, new Map())
@@ -134,7 +162,7 @@ export abstract class ChallengeRegistry {
         const set = locationMap.get(groupId)!
         set.add(challenge.Id)
 
-        this.checkHeuristics(challenge)
+        this.checkHeuristics(challenge, gameVersion)
     }
 
     registerGroup(
@@ -152,8 +180,11 @@ export abstract class ChallengeRegistry {
         gameGroups.get(location).set(group.CategoryId, group)
     }
 
-    getChallengeById(challengeId: string): RegistryChallenge | undefined {
-        return this.challenges.get(challengeId)
+    getChallengeById(
+        challengeId: string,
+        gameVersion: GameVersion,
+    ): RegistryChallenge | undefined {
+        return this.challenges.get(gameVersion)?.get(challengeId)
     }
 
     /**
@@ -202,18 +233,23 @@ export abstract class ChallengeRegistry {
         return gameChalGC.get(location)?.get(groupId)
     }
 
-    getDependenciesForChallenge(challengeId: string): readonly string[] {
-        return this._dependencyTree.get(challengeId) || []
+    getDependenciesForChallenge(
+        challengeId: string,
+        gameVersion: GameVersion,
+    ): readonly string[] {
+        return this._dependencyTree.get(gameVersion)?.get(challengeId) || []
     }
 
-    protected checkHeuristics(challenge: RegistryChallenge): void {
+    protected checkHeuristics(
+        challenge: RegistryChallenge,
+        gameVersion: GameVersion,
+    ): void {
         const ctxListeners = ChallengeRegistry._parseContextListeners(challenge)
 
         if (ctxListeners.challengeTreeIds.length > 0) {
-            this._dependencyTree.set(
-                challenge.Id,
-                ctxListeners.challengeTreeIds,
-            )
+            this._dependencyTree
+                .get(gameVersion)
+                ?.set(challenge.Id, ctxListeners.challengeTreeIds)
         }
     }
 
@@ -301,7 +337,7 @@ export class ChallengeService extends ChallengeRegistry {
     ): ChallengeProgressionData {
         const userData = getUserData(userId, gameVersion)
 
-        const challenge = this.getChallengeById(challengeId)
+        const challenge = this.getChallengeById(challengeId, gameVersion)
 
         userData.Extensions.ChallengeProgression ??= {}
 
@@ -327,7 +363,10 @@ export class ChallengeService extends ChallengeRegistry {
             State: initialContext,
         }
 
-        const dependencies = this.getDependenciesForChallenge(challengeId)
+        const dependencies = this.getDependenciesForChallenge(
+            challengeId,
+            gameVersion,
+        )
 
         if (dependencies.length > 0) {
             data[challengeId].State.CompletedChallenges = dependencies.filter(
@@ -361,6 +400,10 @@ export class ChallengeService extends ChallengeRegistry {
     ): GroupIndexedChallengeLists {
         let challenges: [string, RegistryChallenge[]][] = []
 
+        if (!this.groups.has(gameVersion)) {
+            return {}
+        }
+
         for (const groupId of this.groups
             .get(gameVersion)
             .get(location)
@@ -377,7 +420,10 @@ export class ChallengeService extends ChallengeRegistry {
 
                 groupChallenges = groupChallenges
                     .map((challengeId) => {
-                        const challenge = this.getChallengeById(challengeId)
+                        const challenge = this.getChallengeById(
+                            challengeId,
+                            gameVersion,
+                        )
 
                         // early return if the challenge is falsy
                         if (!challenge) {
@@ -517,7 +563,10 @@ export class ChallengeService extends ChallengeRegistry {
         const userData = getUserData(session.userId, session.gameVersion)
 
         for (const challengeId of Object.keys(session.challengeContexts)) {
-            const challenge = this.getChallengeById(challengeId)
+            const challenge = this.getChallengeById(
+                challengeId,
+                session.gameVersion,
+            )
             const data = session.challengeContexts[challengeId]
 
             if (!challenge) {
@@ -673,7 +722,10 @@ export class ChallengeService extends ChallengeRegistry {
         }
 
         // Handle challenge dependencies
-        const dependencies = this.getDependenciesForChallenge(challengeData.Id)
+        const dependencies = this.getDependenciesForChallenge(
+            challengeData.Id,
+            gameVersion,
+        )
         const completed: string[] = []
         const missing: string[] = []
 
@@ -1059,7 +1111,7 @@ export class ChallengeService extends ChallengeRegistry {
             return
         }
 
-        const allDeps = this._dependencyTree.get(challengeId)
+        const allDeps = this._dependencyTree.get(gameVersion)?.get(challengeId)
         assert.ok(allDeps, `No dep tree for ${challengeId}`)
 
         if (!allDeps.includes(parentId)) {
@@ -1072,7 +1124,7 @@ export class ChallengeService extends ChallengeRegistry {
 
         // Check if the dependency tree is completed now
 
-        const dep = this.getChallengeById(challengeId)
+        const dep = this.getChallengeById(challengeId, gameVersion)
 
         const { challengeCountData } =
             ChallengeService._parseContextListeners(dep)
@@ -1090,7 +1142,7 @@ export class ChallengeService extends ChallengeRegistry {
         this.onChallengeCompleted(
             userData.Id,
             gameVersion,
-            this.getChallengeById(challengeId),
+            this.getChallengeById(challengeId, gameVersion),
             parentId,
         )
     }
