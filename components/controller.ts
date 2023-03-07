@@ -56,7 +56,12 @@ import * as axios from "axios"
 import * as ini from "js-ini"
 import * as statemachineParser from "@peacockproject/statemachine-parser"
 import * as utils from "./utils"
-import { addDashesToPublicId, fastClone } from "./utils"
+import {
+    addDashesToPublicId,
+    fastClone,
+    getRemoteService,
+    hitmapsUrl,
+} from "./utils"
 import * as sessionSerialization from "./sessionSerialization"
 import * as databaseHandler from "./databaseHandler"
 import * as playnext from "./menus/playnext"
@@ -393,6 +398,10 @@ export class Controller {
      * Note: if you are adding a contract, please use {@link addMission}!
      */
     public contracts: Map<string, MissionManifest> = new Map()
+
+    // Converts a contract's ID to public ID.
+    public contractIdToPublicId: Map<string, string> = new Map()
+
     public challengeService: ChallengeService
     public masteryService: MasteryService
     /**
@@ -880,14 +889,11 @@ export class Controller {
             ErrorReason?: string | null
         }
 
-        const resp = await axios.default.get<Response>(
-            `https://backend.rdil.rocks/partners/hitmaps/contract`,
-            {
-                params: {
-                    publicId: id,
-                },
+        const resp = await axios.default.get<Response>(hitmapsUrl, {
+            params: {
+                publicId: id,
             },
-        )
+        })
 
         const fetchedData = resp.data
         const hasData = !!fetchedData?.contract?.Contract
@@ -989,12 +995,7 @@ export class Controller {
         gameVersion: GameVersion,
         userId: string,
     ): Promise<MissionManifest | undefined> {
-        const remoteService =
-            gameVersion === "h3"
-                ? "hm3-service"
-                : gameVersion === "h2"
-                ? "pc2-service"
-                : "pc-service"
+        const remoteService = getRemoteService(gameVersion)
 
         const user = userAuths.get(userId)
 
@@ -1136,6 +1137,15 @@ export class Controller {
         this._internalContracts = decompressed.b
         this._internalElusives = decompressed.el
     }
+
+    public storeIdToPublicId(contracts: UserCentricContract[]): void {
+        contracts.forEach((c) =>
+            controller.contractIdToPublicId.set(
+                c.Contract.Metadata.Id,
+                c.Contract.Metadata.PublicId,
+            ),
+        )
+    }
 }
 
 /**
@@ -1262,6 +1272,20 @@ export function contractIdToHitObject(
         LocationCompletion: 0,
         LocationXPLeft: 6000,
         LocationHideProgression: false,
+    }
+}
+
+/**
+ * Sends an array of publicIds to the contract preservation backend.
+ * @param publicIds The contract publicIds to send.
+ */
+export async function preserveContracts(publicIds: string[]): Promise<void> {
+    for (const id of publicIds) {
+        await axios.default.get<Response>(hitmapsUrl, {
+            params: {
+                publicId: addDashesToPublicId(id),
+            },
+        })
     }
 }
 

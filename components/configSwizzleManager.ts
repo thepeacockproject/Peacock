@@ -93,6 +93,7 @@ import FrankensteinPlanningTemplate from "../static/FrankensteinPlanningTemplate
 import Videos from "../static/Videos.json"
 import ChallengeLocationTemplate from "../static/ChallengeLocationTemplate.json"
 import ContractSearchPageTemplate from "../static/ContractSearchPageTemplate.json"
+import ContractSearchPaginateTemplate from "../static/ContractSearchPaginateTemplate.json"
 import ContractSearchResponseTemplate from "../static/ContractSearchResponseTemplate.json"
 import LegacyDebriefingChallengesTemplate from "../static/LegacyDebriefingChallengesTemplate.json"
 import DebriefingChallengesTemplate from "../static/DebriefingChallengesTemplate.json"
@@ -189,6 +190,7 @@ const configs: Record<string, unknown> = {
     Videos,
     ChallengeLocationTemplate,
     ContractSearchPageTemplate,
+    ContractSearchPaginateTemplate,
     ContractSearchResponseTemplate,
     MasteryUnlockablesTemplate,
     SniperLoadouts,
