@@ -1256,6 +1256,7 @@ export function contractIdToHitObject(
             type: ChallengeFilterType.None,
         },
         parentLocation?.Id,
+        gameVersion,
     )
 
     const challengeCompletion =

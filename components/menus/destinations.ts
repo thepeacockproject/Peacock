@@ -59,6 +59,7 @@ export function getDestinationCompletion(
             type: ChallengeFilterType.None,
         },
         parent.Id,
+        req.gameVersion,
     )
 
     if (parent.Opportunities === undefined) {

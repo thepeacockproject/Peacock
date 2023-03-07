@@ -277,6 +277,7 @@ export async function missionEnd(
                 type: ChallengeFilterType.None,
             },
             parent,
+            req.gameVersion,
         )
     const contractChallenges =
         controller.challengeService.getChallengesForContract(

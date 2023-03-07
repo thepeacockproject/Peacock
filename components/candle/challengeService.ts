@@ -195,7 +195,8 @@ export abstract class ChallengeRegistry {
         if (groupId === "classic" && location !== "GLOBAL_CLASSIC_CHALLENGES") {
             return new Set([
                 ...(gameChalGC.get(location)?.get(groupId) ?? []),
-                ...(gameChalGC.get("GLOBAL_CLASSIC_CHALLENGES")?.get(groupId) ?? []),
+                ...(gameChalGC.get("GLOBAL_CLASSIC_CHALLENGES")?.get(groupId) ??
+                    []),
             ])
         }
         return gameChalGC.get(location)?.get(groupId)
@@ -356,11 +357,19 @@ export class ChallengeService extends ChallengeRegistry {
     getGroupedChallengeLists(
         filter: ChallengeFilterOptions,
         location: string,
+        gameVersion: GameVersion,
     ): GroupIndexedChallengeLists {
         let challenges: [string, RegistryChallenge[]][] = []
 
-        for (const groupId of this.groups.get(location).keys()) {
-            const groupContents = this.getGroupContentByIdLoc(groupId, location)
+        for (const groupId of this.groups
+            .get(gameVersion)
+            .get(location)
+            .keys()) {
+            const groupContents = this.getGroupContentByIdLoc(
+                groupId,
+                location,
+                gameVersion,
+            )
             if (groupContents) {
                 let groupChallenges: RegistryChallenge[] | string[] = [
                     ...groupContents,
@@ -415,6 +424,7 @@ export class ChallengeService extends ChallengeRegistry {
                 locationId: contract.Metadata.Location,
             },
             contractParentLocation,
+            gameVersion,
         )
     }
 
@@ -448,6 +458,7 @@ export class ChallengeService extends ChallengeRegistry {
                 locationId: child,
             },
             parent,
+            gameVersion,
         )
     }
 
@@ -726,6 +737,7 @@ export class ChallengeService extends ChallengeRegistry {
                 type: ChallengeFilterType.None,
             },
             locationParentId,
+            gameVersion,
         )
 
         return this.reBatchIntoSwitchedData(
@@ -797,6 +809,7 @@ export class ChallengeService extends ChallengeRegistry {
             const groupData = this.getGroupByIdLoc(
                 groupId,
                 location.Properties.ParentLocation ?? location.Id,
+                gameVersion,
             )
             const challengeProgressionData = challenges.map((challengeData) =>
                 this.getPersistentChallengeProgression(
@@ -809,10 +822,12 @@ export class ChallengeService extends ChallengeRegistry {
             const lastGroup = this.getGroupByIdLoc(
                 Object.keys(challengeLists)[index - 1],
                 location.Properties.ParentLocation ?? location.Id,
+                gameVersion,
             )
             const nextGroup = this.getGroupByIdLoc(
                 Object.keys(challengeLists)[index + 1],
                 location.Properties.ParentLocation ?? location.Id,
+                gameVersion,
             )
 
             const completion = generateCompletionData(
