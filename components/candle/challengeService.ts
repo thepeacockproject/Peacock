@@ -123,7 +123,7 @@ export abstract class ChallengeRegistry {
     /**
      * @Key1 Game version.
      * @Key2 The challenge Id.
-     * @Value An array  of challenge Ids that Key2 depends on.
+     * @Value An `array` of challenge Ids that Key2 depends on.
      */
     protected readonly _dependencyTree: Map<
         GameVersion,
