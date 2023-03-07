@@ -27,6 +27,7 @@ import {
 import assert from "assert"
 import { SavedChallengeGroup } from "components/types/challenges"
 import { controller } from "components/controller"
+import { gameDifficulty } from "components/utils"
 
 export function compileScoringChallenge(
     challenge: RegistryChallenge,
@@ -43,6 +44,7 @@ export function compileScoringChallenge(
 export function compileRuntimeChallenge(
     challenge: RegistryChallenge,
     progression: ChallengeProgressionData,
+    difficulty: number,
 ): CompiledChallengeRuntimeData {
     return {
         // GetActiveChallengesAndProgression
@@ -54,7 +56,11 @@ export function compileRuntimeChallenge(
             Description: challenge.Description,
             ImageName: challenge.ImageName,
             InclusionData: challenge.InclusionData || undefined,
-            Definition: challenge.Definition,
+            ...((challenge.DifficultyLevels.length === 0 ||
+                gameDifficulty[challenge.DifficultyLevels[0]] <=
+                    gameDifficulty[difficulty]) && {
+                Definition: challenge.Definition,
+            }),
             Tags: challenge.Tags,
             Drops: challenge.Drops,
             LastModified: "2021-01-06T23:00:32.0117635", // this is a lie 👍

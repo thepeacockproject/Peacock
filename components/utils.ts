@@ -285,6 +285,7 @@ export const gameDifficulty = {
      * Casual mode.
      */
     casual: 1,
+    easy: 1,
     /**
      * Professional (normal) mode.
      */
@@ -293,6 +294,7 @@ export const gameDifficulty = {
      * Master mode.
      */
     master: 4,
+    hard: 4,
 } as const
 
 export function difficultyToString(difficulty: number): string {

@@ -475,7 +475,10 @@ profileRouter.post(
     "/ChallengesService/GetActiveChallengesAndProgression",
     jsonMiddleware(),
     (
-        req: RequestWithJwt<Record<string, never>, { contractId: string }>,
+        req: RequestWithJwt<
+            Record<string, never>,
+            { contractId: string; difficultyLevel: number }
+        >,
         res,
     ) => {
         if (!uuidRegex.test(req.body.contractId)) {
@@ -520,6 +523,7 @@ profileRouter.post(
                             challengeData.Id,
                             req.gameVersion,
                         ),
+                        req.body.difficultyLevel,
                     )
                 }),
         )
