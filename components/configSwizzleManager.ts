@@ -95,6 +95,7 @@ import ChallengeLocationTemplate from "../static/ChallengeLocationTemplate.json"
 import H2ChallengeLocationTemplate from "../static/H2ChallengeLocationTemplate.json"
 import LegacyChallengeLocationTemplate from "../static/LegacyChallengeLocationTemplate.json"
 import ContractSearchPageTemplate from "../static/ContractSearchPageTemplate.json"
+import ContractSearchPaginateTemplate from "../static/ContractSearchPaginateTemplate.json"
 import ContractSearchResponseTemplate from "../static/ContractSearchResponseTemplate.json"
 import LegacyDebriefingChallengesTemplate from "../static/LegacyDebriefingChallengesTemplate.json"
 import DebriefingChallengesTemplate from "../static/DebriefingChallengesTemplate.json"
@@ -193,6 +194,7 @@ const configs: Record<string, unknown> = {
     H2ChallengeLocationTemplate,
     LegacyChallengeLocationTemplate,
     ContractSearchPageTemplate,
+    ContractSearchPaginateTemplate,
     ContractSearchResponseTemplate,
     MasteryUnlockablesTemplate,
     SniperLoadouts,

@@ -19,6 +19,7 @@
 import {
     ContextScopedStorageLocation,
     GameVersion,
+    InclusionData,
     MissionManifestObjective,
 } from "./types"
 
@@ -46,12 +47,7 @@ export interface SavedChallenge {
         Scope: ContextScopedStorageLocation
     }
     Tags: string[]
-    InclusionData?: {
-        ContractIds?: string[]
-        ContractTypes?: string[]
-        Locations?: string[]
-        GameModes?: string[]
-    }
+    InclusionData?: InclusionData
 }
 
 export interface SavedChallengeGroup {

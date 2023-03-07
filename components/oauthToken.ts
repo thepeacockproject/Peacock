@@ -35,7 +35,6 @@ import {
 } from "./databaseHandler"
 import { OfficialServerAuth, userAuths } from "./officialServerAuth"
 import { randomUUID } from "crypto"
-import { getFlag } from "./flags"
 import { clearInventoryFor } from "./inventory"
 import {
     EpicH1Strategy,
@@ -125,12 +124,7 @@ export async function handleOauthToken(
         // ts-expect-error Non-optional, we're reassigning.
         delete req.jwt.aud // audience
 
-        if (
-            ((external_platform === "steam" ||
-                getFlag("legacyContractDownloader") === true) &&
-                isHitman3) ||
-            !isFrankenstein
-        ) {
+        if (!isFrankenstein) {
             if (userAuths.has(req.jwt.unique_name)) {
                 userAuths
                     .get(req.jwt.unique_name)!
@@ -206,12 +200,7 @@ export async function handleOauthToken(
        Always store user auth for H1 & H2
        If on steam or using legacy contract downloader, then store user auth for H3 
     */
-    if (
-        ((external_platform === "steam" ||
-            getFlag("legacyContractDownloader") === true) &&
-            isHitman3) ||
-        !isFrankenstein
-    ) {
+    if (!isFrankenstein) {
         const authContainer = new OfficialServerAuth(
             gameVersion,
             req.body.access_token,

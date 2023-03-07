@@ -27,6 +27,7 @@ import {
     STEAM_NAMESPACE_2016,
 } from "./platformEntitlements"
 import { GameVersion } from "./types/types"
+import { getRemoteService } from "./utils"
 
 /**
  * The base class for an entitlement strategy.
@@ -66,12 +67,7 @@ export class IOIStrategy extends EntitlementStrategy {
     constructor(gameVersion: GameVersion, private readonly issuerId: string) {
         super()
         this.issuerId = issuerId
-        this._remoteService =
-            gameVersion === "h3"
-                ? "hm3-service"
-                : gameVersion === "h2"
-                ? "pc2-service"
-                : "pc-service"
+        this._remoteService = getRemoteService(gameVersion)
     }
 
     override async get(userId: string) {
