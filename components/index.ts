@@ -80,6 +80,7 @@ import { multiplayerRouter } from "./multiplayer/multiplayerService"
 import { multiplayerMenuDataRouter } from "./multiplayer/multiplayerMenuData"
 import { pack, unpack } from "msgpackr"
 import { liveSplitManager } from "./livesplit/liveSplitManager"
+import { reportRouter } from "./contracts/reportRouting"
 
 // welcome to the bleeding edge
 setFlagsFromString("--harmony")
@@ -421,7 +422,7 @@ primaryRouter.use(
 )
 primaryRouter.use(
     "/authentication/api/userchannel/ReportingService/",
-    contractRoutingRouter,
+    reportRouter,
 )
 primaryRouter.use("/authentication/api/userchannel/", profileRouter)
 primaryRouter.use("/profiles/page/", preMenuDataRouter)
