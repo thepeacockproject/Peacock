@@ -1,7 +1,7 @@
 {
     "meta": {
         "Location": "LOCATION_PARENT_ICA_FACILITY",
-        "GameVersion": "h3"
+        "GameVersion": "h2"
     },
     "groups": [
         {
@@ -29,7 +29,6 @@
                     "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
                     "Type": "contract",
                     "DifficultyLevels": [],
-                    "OrderIndex": 10000,
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
@@ -81,7 +80,6 @@
                     "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
                     "Type": "contract",
                     "DifficultyLevels": [],
-                    "OrderIndex": 10000,
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
@@ -133,7 +131,6 @@
                     "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
                     "Type": "contract",
                     "DifficultyLevels": [],
-                    "OrderIndex": 10000,
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
@@ -203,7 +200,6 @@
                     "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
                     "Type": "contract",
                     "DifficultyLevels": [],
-                    "OrderIndex": 10000,
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
@@ -255,7 +251,6 @@
                     "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
                     "Type": "contract",
                     "DifficultyLevels": [],
-                    "OrderIndex": 10000,
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
@@ -307,7 +302,6 @@
                     "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
                     "Type": "contract",
                     "DifficultyLevels": [],
-                    "OrderIndex": 10000,
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
@@ -359,7 +353,6 @@
                     "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
                     "Type": "contract",
                     "DifficultyLevels": [],
-                    "OrderIndex": 10000,
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
@@ -414,7 +407,6 @@
                     "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
                     "Type": "contract",
                     "DifficultyLevels": [],
-                    "OrderIndex": 10000,
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
@@ -466,7 +458,6 @@
                     "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
                     "Type": "contract",
                     "DifficultyLevels": [],
-                    "OrderIndex": 10000,
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
@@ -521,7 +512,6 @@
                     "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
                     "Type": "contract",
                     "DifficultyLevels": [],
-                    "OrderIndex": 10000,
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
@@ -602,6 +592,47 @@
             "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_EXPLORATION",
             "Challenges": [
                 {
+                    "Id": "210f75bf-8094-4a4a-90f3-da23b4e73ad9",
+                    "Name": "UI_CHALLENGES_GRADUATION_CHESS_PUZZLE_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_c_chess_puzzle.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_CHESS_PUZZLE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "setpieces": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.name_metricvalue",
+                                            "Chess_GoodMove"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "discovery"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
                     "Id": "5b630176-2d35-4328-b1b2-51df4c2c0bb3",
                     "Name": "UI_CHALLENGES_GRADUATION_OPP_DISGUISE_KGB_NAME",
                     "ImageName": "images/challenges/lat73/graduation_c_disguise_kgb.jpg",
@@ -619,7 +650,6 @@
                     "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
                     "Type": "contract",
                     "DifficultyLevels": [],
-                    "OrderIndex": 10000,
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
@@ -661,7 +691,6 @@
                     "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
                     "Type": "contract",
                     "DifficultyLevels": [],
-                    "OrderIndex": 10000,
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
@@ -703,7 +732,6 @@
                     "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
                     "Type": "contract",
                     "DifficultyLevels": [],
-                    "OrderIndex": 10000,
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
@@ -745,7 +773,6 @@
                     "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
                     "Type": "contract",
                     "DifficultyLevels": [],
-                    "OrderIndex": 10000,
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
@@ -787,7 +814,6 @@
                     "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
                     "Type": "contract",
                     "DifficultyLevels": [],
-                    "OrderIndex": 10000,
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
@@ -829,7 +855,6 @@
                     "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
                     "Type": "contract",
                     "DifficultyLevels": [],
-                    "OrderIndex": 10000,
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
@@ -871,7 +896,6 @@
                     "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
                     "Type": "contract",
                     "DifficultyLevels": [],
-                    "OrderIndex": 10000,
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
@@ -930,7 +954,6 @@
                     "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
                     "Type": "contract",
                     "DifficultyLevels": [],
-                    "OrderIndex": 10000,
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
@@ -972,7 +995,6 @@
                     "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
                     "Type": "location",
                     "DifficultyLevels": [],
-                    "OrderIndex": 10000,
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
@@ -1044,7 +1066,6 @@
                     "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
                     "Type": "contract",
                     "DifficultyLevels": [],
-                    "OrderIndex": 10000,
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
@@ -1086,7 +1107,6 @@
                     "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
                     "Type": "contract",
                     "DifficultyLevels": [],
-                    "OrderIndex": 10000,
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
@@ -1139,7 +1159,6 @@
                     "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
                     "Type": "contract",
                     "DifficultyLevels": [],
-                    "OrderIndex": 10000,
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
@@ -1175,7 +1194,6 @@
                     "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
                     "Type": "contract",
                     "DifficultyLevels": [],
-                    "OrderIndex": 10000,
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
@@ -1217,7 +1235,6 @@
                     "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
                     "Type": "contract",
                     "DifficultyLevels": [],
-                    "OrderIndex": 10000,
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
@@ -1259,7 +1276,6 @@
                     "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
                     "Type": "contract",
                     "DifficultyLevels": [],
-                    "OrderIndex": 10000,
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
@@ -1321,7 +1337,6 @@
                     "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
                     "Type": "contract",
                     "DifficultyLevels": [],
-                    "OrderIndex": 10000,
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
@@ -1364,7 +1379,6 @@
                     "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
                     "Type": "contract",
                     "DifficultyLevels": [],
-                    "OrderIndex": 10000,
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
@@ -1423,7 +1437,6 @@
                     "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
                     "Type": "contract",
                     "DifficultyLevels": [],
-                    "OrderIndex": 10000,
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
@@ -1476,7 +1489,6 @@
                     "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
                     "Type": "contract",
                     "DifficultyLevels": [],
-                    "OrderIndex": 10000,
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
@@ -1519,7 +1531,6 @@
                     "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
                     "Type": "contract",
                     "DifficultyLevels": [],
-                    "OrderIndex": 10000,
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
@@ -1580,7 +1591,6 @@
                     "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
                     "Type": "contract",
                     "DifficultyLevels": [],
-                    "OrderIndex": 10000,
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
@@ -1596,6 +1606,7 @@
                                 "4be75ba3-4916-4660-9f5b-8f12b3250c7a",
                                 "62f8d41c-ef58-4213-8fa7-b2d68191e092",
                                 "85bbb639-40e3-4aa5-87aa-388a1cad2404",
+                                "068dc309-f4e7-4551-9719-31e064f4cc6e",
                                 "228996e6-5fff-4f76-95de-484ee941c0ab"
                             ]
                         },
@@ -1664,7 +1675,6 @@
                     "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
                     "Type": "contract",
                     "DifficultyLevels": [],
-                    "OrderIndex": 10000,
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
@@ -1676,48 +1686,6 @@
                                         "$eq": [
                                             "$Value.Event_metricvalue",
                                             "Story_Jet"
-                                        ]
-                                    },
-                                    "Transition": "Success"
-                                }
-                            }
-                        }
-                    },
-                    "Tags": ["story", "easy", "feats"],
-                    "InclusionData": {
-                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
-                    }
-                },
-                {
-                    "Id": "210f75bf-8094-4a4a-90f3-da23b4e73ad9",
-                    "Name": "UI_CHALLENGES_GRADUATION_CHESS_PUZZLE_NAME",
-                    "ImageName": "images/challenges/lat73/graduation_c_chess_puzzle.jpg",
-                    "Description": "UI_CHALLENGES_GRADUATION_CHESS_PUZZLE_DESC",
-                    "Rewards": {
-                        "MasteryXP": 1000
-                    },
-                    "Drops": [],
-                    "IsPlayable": true,
-                    "IsLocked": false,
-                    "HideProgression": true,
-                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
-                    "Icon": "challenge_category_feats",
-                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
-                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
-                    "Type": "contract",
-                    "DifficultyLevels": [],
-                    "OrderIndex": 10000,
-                    "XpModifier": {},
-                    "RuntimeType": "Hit",
-                    "Definition": {
-                        "Scope": "session",
-                        "States": {
-                            "Start": {
-                                "setpieces": {
-                                    "Condition": {
-                                        "$eq": [
-                                            "$Value.name_metricvalue",
-                                            "Chess_GoodMove"
                                         ]
                                     },
                                     "Transition": "Success"
@@ -1748,7 +1716,6 @@
                     "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
                     "Type": "contract",
                     "DifficultyLevels": [],
-                    "OrderIndex": 10000,
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
@@ -1773,40 +1740,36 @@
                     }
                 },
                 {
-                    "Id": "3168e255-aeef-4b40-8d28-9800e4521d47",
-                    "Name": "UI_CHALLENGES_PROLOGUE_MISSION_COMPLETED_NAME",
-                    "ImageName": "images/challenges/lat73/prologue_c_mission_completed.jpg",
-                    "Description": "UI_CHALLENGES_PROLOGUE_MISSION_COMPLETED_DESC",
+                    "Id": "5fea8bbc-66cc-407c-b6fc-00036a418891",
+                    "Name": "UI_CHALLENGES_GRADUATION_BIG3_STORY_NAME",
+                    "ImageName": "images/challenges/lat73/all_graduation_story_bjective.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_BIG3_STORY_DESC",
                     "Rewards": {
-                        "MasteryXP": 1000
+                        "MasteryXP": 2000
                     },
                     "Drops": [
                         {
                             "Properties": {
-                                "Name": "054f443b-824f-4913-8b29-64dfcd82b089_greenland_hero_trainingsuit_m_hpa745_name_",
-                                "Description": "054f443b-824f-4913-8b29-64dfcd82b089_greenland_hero_trainingsuit_m_hpa745_description_",
-                                "Quality": 4,
+                                "Quality": 5,
+                                "LoadoutSlot": "gear",
                                 "Rarity": "common",
-                                "LoadoutSlot": "disguise",
-                                "IsConsumable": false,
-                                "RepositoryId": "054f443b-824f-4913-8b29-64dfcd82b089",
-                                "OrderIndex": 753
+                                "RepositoryId": "b39d7a0d-e839-417b-880c-cf9b165d4e11"
                             },
                             "Rarity": "common",
-                            "DisplayNameLocKey": "UI_TOKEN_OUTFIT_GREENLAND_HERO_TRAININGSUIT_NAME",
-                            "Id": "TOKEN_OUTFIT_GREENLAND_HERO_TRAININGSUIT",
-                            "Type": "disguise",
-                            "Subtype": "tactical",
+                            "DisplayNameLocKey": "UI_PROP_TOOL_LOCK_PICK_NAME",
+                            "Id": "PROP_TOOL_LOCK_PICK",
+                            "Type": "gear",
+                            "Subtype": "tool",
                             "GameAsset": null,
                             "ImageId": "",
-                            "RMTPrice": -1,
-                            "GamePrice": -1,
+                            "RMTPrice": 149,
+                            "GamePrice": 149,
                             "IsPurchasable": false,
                             "IsPublished": true,
                             "IsDroppable": false,
                             "Capabilities": [],
                             "Qualities": {},
-                            "Guid": "3af7dc77-f7f0-4ed0-a31b-b42f6327d4b9"
+                            "Guid": "7850fd23-3a73-44b9-89f6-2ce634e003b9"
                         }
                     ],
                     "IsPlayable": true,
@@ -1818,20 +1781,59 @@
                     "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
                     "Type": "contract",
                     "DifficultyLevels": [],
-                    "OrderIndex": 10000,
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
-                        "Scope": "session",
+                        "Constants": {
+                            "RequiredChallenges": [
+                                "1b3c8b9b-17a5-407f-ad4f-4bdca3779a8f",
+                                "294ad6dc-829d-4f29-8721-f86735603009",
+                                "bab13148-ca59-4214-b332-e7060429fff4"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedChallenges": []
+                        },
+                        "ContextListeners": {
+                            "CompletedChallenges": {
+                                "comparand": "$.RequiredChallenges",
+                                "type": "challengetree"
+                            }
+                        },
+                        "Scope": "hit",
                         "States": {
                             "Start": {
-                                "ContractEnd": {
-                                    "Transition": "Success"
-                                }
+                                "ChallengeCompleted": [
+                                    {
+                                        "$pushunique": [
+                                            "CompletedChallenges",
+                                            "$Value.ChallengeId"
+                                        ]
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$all": {
+                                                "?": {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$.##"
+                                                            ]
+                                                        },
+                                                        "in": "$.CompletedChallenges"
+                                                    }
+                                                },
+                                                "in": "$.RequiredChallenges"
+                                            }
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
                             }
                         }
                     },
-                    "Tags": ["story", "easy", "feats"],
+                    "Tags": ["story", "medium", "feats"],
                     "InclusionData": {
                         "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
                     }
@@ -1854,7 +1856,6 @@
                     "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
                     "Type": "contract",
                     "DifficultyLevels": [],
-                    "OrderIndex": 10000,
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
@@ -1975,7 +1976,6 @@
                     "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
                     "Type": "contract",
                     "DifficultyLevels": [],
-                    "OrderIndex": 10000,
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
@@ -2017,7 +2017,6 @@
                     "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
                     "Type": "contract",
                     "DifficultyLevels": [],
-                    "OrderIndex": 10000,
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
@@ -2105,7 +2104,6 @@
                     "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
                     "Type": "contract",
                     "DifficultyLevels": [],
-                    "OrderIndex": 10000,
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
@@ -2148,7 +2146,6 @@
                     "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
                     "Type": "contract",
                     "DifficultyLevels": [],
-                    "OrderIndex": 10000,
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
@@ -2172,104 +2169,6 @@
                     "InclusionData": {
                         "ContractIds": ["c469d91d-01fc-4314-b22c-71cb804e92c0"]
                     }
-                },
-                {
-                    "Id": "5fea8bbc-66cc-407c-b6fc-00036a418891",
-                    "Name": "UI_CHALLENGES_GRADUATION_BIG3_STORY_NAME",
-                    "ImageName": "images/challenges/lat73/all_graduation_story_bjective.jpg",
-                    "Description": "UI_CHALLENGES_GRADUATION_BIG3_STORY_DESC",
-                    "Rewards": {
-                        "MasteryXP": 2000
-                    },
-                    "Drops": [
-                        {
-                            "Properties": {
-                                "Quality": 5,
-                                "LoadoutSlot": "gear",
-                                "Rarity": "common",
-                                "RepositoryId": "b39d7a0d-e839-417b-880c-cf9b165d4e11"
-                            },
-                            "Rarity": "common",
-                            "DisplayNameLocKey": "UI_PROP_TOOL_LOCK_PICK_NAME",
-                            "Id": "PROP_TOOL_LOCK_PICK",
-                            "Type": "gear",
-                            "Subtype": "tool",
-                            "GameAsset": null,
-                            "ImageId": "",
-                            "RMTPrice": 149,
-                            "GamePrice": 149,
-                            "IsPurchasable": false,
-                            "IsPublished": true,
-                            "IsDroppable": false,
-                            "Capabilities": [],
-                            "Qualities": {},
-                            "Guid": "7850fd23-3a73-44b9-89f6-2ce634e003b9"
-                        }
-                    ],
-                    "IsPlayable": true,
-                    "IsLocked": false,
-                    "HideProgression": true,
-                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
-                    "Icon": "challenge_category_feats",
-                    "LocationId": "LOCATION_ICA_FACILITY",
-                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
-                    "Type": "location",
-                    "DifficultyLevels": [],
-                    "OrderIndex": 10000,
-                    "XpModifier": {},
-                    "RuntimeType": "Hit",
-                    "Definition": {
-                        "Constants": {
-                            "RequiredChallenges": [
-                                "1b3c8b9b-17a5-407f-ad4f-4bdca3779a8f",
-                                "294ad6dc-829d-4f29-8721-f86735603009",
-                                "bab13148-ca59-4214-b332-e7060429fff4",
-                                "210f75bf-8094-4a4a-90f3-da23b4e73ad9"
-                            ]
-                        },
-                        "Context": {
-                            "CompletedChallenges": []
-                        },
-                        "ContextListeners": {
-                            "CompletedChallenges": {
-                                "comparand": "$.RequiredChallenges",
-                                "type": "challengetree"
-                            }
-                        },
-                        "Scope": "hit",
-                        "States": {
-                            "Start": {
-                                "ChallengeCompleted": [
-                                    {
-                                        "$pushunique": [
-                                            "CompletedChallenges",
-                                            "$Value.ChallengeId"
-                                        ]
-                                    },
-                                    {
-                                        "Condition": {
-                                            "$all": {
-                                                "?": {
-                                                    "$any": {
-                                                        "?": {
-                                                            "$eq": [
-                                                                "$.#",
-                                                                "$.##"
-                                                            ]
-                                                        },
-                                                        "in": "$.CompletedChallenges"
-                                                    }
-                                                },
-                                                "in": "$.RequiredChallenges"
-                                            }
-                                        },
-                                        "Transition": "Success"
-                                    }
-                                ]
-                            }
-                        }
-                    },
-                    "Tags": ["story", "medium", "feats"]
                 }
             ]
         },
@@ -2281,12 +2180,12 @@
             "Description": "",
             "Challenges": [
                 {
-                    "Id": "85bbb639-40e3-4aa5-87aa-388a1cad2404",
-                    "Name": "UI_CHALLENGES_GRADUATION_47_SUIT_ONLY_NAME",
-                    "ImageName": "images/challenges/profile_challenges/classics_normal_47_suit_only.jpg",
-                    "Description": "UI_CHALLENGES_GRADUATION_47_SUIT_ONLY_DESC",
+                    "Id": "068dc309-f4e7-4551-9719-31e064f4cc6e",
+                    "Name": "UI_CHALLENGES_GRADUATION_47_NO_EVIDENCE_NAME",
+                    "ImageName": "images/challenges/profile_challenges/classics_normal_47_no_evidence.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_47_NO_EVIDENCE_DESC",
                     "Rewards": {
-                        "MasteryXP": 4000
+                        "MasteryXP": 1000
                     },
                     "Drops": [],
                     "IsPlayable": true,
@@ -2298,7 +2197,209 @@
                     "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
                     "Type": "contract",
                     "DifficultyLevels": [],
-                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "RecordingDestroyed": true,
+                            "LastSeenTime": 0,
+                            "Witnesses": [],
+                            "Kills": []
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    true,
+                                                    "$.RecordingDestroyed"
+                                                ]
+                                            },
+                                            {
+                                                "$all": {
+                                                    "in": "$.Witnesses",
+                                                    "?": {
+                                                        "$any": {
+                                                            "in": "$.Kills",
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "$.##"
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "SecuritySystemRecorder": [
+                                    {
+                                        "Actions": {
+                                            "$set": [
+                                                "RecordingDestroyed",
+                                                false
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$eq": ["$Value.event", "spotted"]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["RecordingDestroyed", true]
+                                        },
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "erased"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "destroyed"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "Kill": [
+                                    {
+                                        "$pushunique": [
+                                            "Kills",
+                                            "$Value.RepositoryId"
+                                        ]
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.Accident",
+                                                        false
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "CheckNoticedKill"
+                                    }
+                                ],
+                                "MurderedBodySeen": [
+                                    {
+                                        "$set": ["LastSeenTime", "$Timestamp"]
+                                    },
+                                    {
+                                        "$pushunique": [
+                                            "Witnesses",
+                                            "$Value.Witness"
+                                        ]
+                                    }
+                                ],
+                                "BodyFound": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$Timestamp",
+                                                            "$.LastSeenTime"
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "$or": [
+                                                        {
+                                                            "$eq": [
+                                                                "$Value.DeadBody.IsCrowdActor",
+                                                                true
+                                                            ]
+                                                        },
+                                                        {
+                                                            "$eq": [
+                                                                "$Value.DeadBody.DeathContext",
+                                                                4
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ]
+                            },
+                            "CheckNoticedKill": {
+                                "Unnoticed_Kill": {
+                                    "Transition": "Start"
+                                },
+                                "DeadBodySeen": {
+                                    "Transition": "Failure"
+                                },
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    true,
+                                                    "$.RecordingDestroyed"
+                                                ]
+                                            },
+                                            {
+                                                "$all": {
+                                                    "in": "$.Witnesses",
+                                                    "?": {
+                                                        "$any": {
+                                                            "in": "$.Kills",
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "$.##"
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "classic"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "85bbb639-40e3-4aa5-87aa-388a1cad2404",
+                    "Name": "UI_CHALLENGES_GRADUATION_47_SUIT_ONLY_NAME",
+                    "ImageName": "images/challenges/profile_challenges/classics_normal_47_suit_only.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_47_SUIT_ONLY_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_CLASSIC",
+                    "Icon": "profile",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
@@ -2344,7 +2445,7 @@
                             }
                         }
                     },
-                    "Tags": ["story", "hard", "classic"],
+                    "Tags": ["story", "easy", "classic"],
                     "InclusionData": {
                         "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
                     }
@@ -2355,7 +2456,7 @@
                     "ImageName": "images/challenges/profile_challenges/classics_normal_47_sa_suit.jpg",
                     "Description": "UI_CHALLENGES_GRADUATION_SILENT_ASSASSIN_SUIT_ONLY_DESC",
                     "Rewards": {
-                        "MasteryXP": 4000
+                        "MasteryXP": 2000
                     },
                     "Drops": [],
                     "IsPlayable": true,
@@ -2367,7 +2468,6 @@
                     "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
                     "Type": "contract",
                     "DifficultyLevels": [],
-                    "OrderIndex": 10000,
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
@@ -2587,7 +2687,7 @@
                             }
                         }
                     },
-                    "Tags": ["story", "classic", "hard", "suitonly"],
+                    "Tags": ["story", "classic", "medium", "suitonly"],
                     "InclusionData": {
                         "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
                     }
@@ -2610,7 +2710,6 @@
                     "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
                     "Type": "contract",
                     "DifficultyLevels": [],
-                    "OrderIndex": 10000,
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {

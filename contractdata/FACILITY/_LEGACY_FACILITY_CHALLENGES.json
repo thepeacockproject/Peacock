@@ -1,0 +1,2691 @@
+{
+    "meta": {
+        "Location": "LOCATION_PARENT_ICA_FACILITY",
+        "GameVersion": "h1"
+    },
+    "groups": [
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+            "Image": "images/challenges/categories/assassination/tile.jpg",
+            "Icon": "challenge_category_assassination",
+            "CategoryId": "assassination",
+            "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_SIGNATUREKILL",
+            "Challenges": [
+                {
+                    "Id": "eed87874-5a23-4230-a5ba-220e90372721",
+                    "Name": "UI_CHALLENGES_GRADUATION_SILENT_ASSASSIN_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_c_silent_assassin.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_SILENT_ASSASSIN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_TUTORIAL",
+                    "TypeTitle": "UI_CONTRACT_POLARBEAR_GRADUATION_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "RecordingDestroyed": true
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [true, "$.RecordingDestroyed"]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$Value.KillContext",
+                                                            1
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.Accident",
+                                                        false
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "CheckNoticedKill"
+                                    }
+                                ],
+                                "CrowdNPC_Died": {
+                                    "Transition": "Failure"
+                                },
+                                "BodyFound": {
+                                    "Transition": "Failure"
+                                },
+                                "SecuritySystemRecorder": [
+                                    {
+                                        "Actions": {
+                                            "$set": [
+                                                "RecordingDestroyed",
+                                                false
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$eq": ["$Value.event", "spotted"]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["RecordingDestroyed", true]
+                                        },
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "erased"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "destroyed"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "Spotted": {
+                                    "Transition": "Failure"
+                                }
+                            },
+                            "CheckNoticedKill": {
+                                "Unnoticed_Kill": {
+                                    "Transition": "Start"
+                                },
+                                "DeadBodySeen": {
+                                    "Transition": "Failure"
+                                },
+                                "Spotted": {
+                                    "Transition": "Failure"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "068dc309-f4e7-4551-9719-31e064f4cc6e",
+                    "Name": "UI_CHALLENGES_GRADUATION_47_NO_EVIDENCE_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_c_47_no_evidence.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_47_NO_EVIDENCE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_TUTORIAL",
+                    "TypeTitle": "UI_CONTRACT_POLARBEAR_GRADUATION_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "RecordingDestroyed": true
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [true, "$.RecordingDestroyed"]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "SecuritySystemRecorder": [
+                                    {
+                                        "Actions": {
+                                            "$set": [
+                                                "RecordingDestroyed",
+                                                false
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$eq": ["$Value.event", "spotted"]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["RecordingDestroyed", true]
+                                        },
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "erased"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "destroyed"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.Accident",
+                                                        false
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "CheckNoticedKill"
+                                    }
+                                ],
+                                "BodyFound": {
+                                    "Transition": "Failure"
+                                }
+                            },
+                            "CheckNoticedKill": {
+                                "Unnoticed_Kill": {
+                                    "Transition": "Start"
+                                },
+                                "DeadBodySeen": {
+                                    "Transition": "Failure"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "85bbb639-40e3-4aa5-87aa-388a1cad2404",
+                    "Name": "UI_CHALLENGES_GRADUATION_47_SUIT_ONLY_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_c_47_suit_only.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_47_SUIT_ONLY_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_TUTORIAL",
+                    "TypeTitle": "UI_CONTRACT_POLARBEAR_GRADUATION_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "Context": {
+                            "Collection": [
+                                "4fc9396e-2619-4e66-a51e-2bd366230da7",
+                                "28d1aef1-45ba-4e8d-9bca-7cd8b4e5b4f8",
+                                "feef1171-9faa-4c95-b80e-22ae3c9bbec1",
+                                "989928f2-06d6-42f3-871a-353f07def969",
+                                "5e292dfb-646c-4a5b-9233-f4fbe5d5c033",
+                                "08f9f972-9229-432f-9092-2787883774e6",
+                                "054f443b-824f-4913-8b29-64dfcd82b089",
+                                "75759271-e236-4b33-8dd5-7e502c958d05",
+                                "58161492-10c8-4fce-860c-89e9b0a764fb",
+                                "00000000-0000-0000-0000-000000000000"
+                            ]
+                        },
+                        "States": {
+                            "Start": {
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$all": {
+                                            "?": {
+                                                "$not": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$Value.Disguise"
+                                                    ]
+                                                }
+                                            },
+                                            "in": "$.Collection"
+                                        }
+                                    },
+                                    "Transition": "Failure"
+                                },
+                                "Disguise": {
+                                    "Transition": "Failure"
+                                },
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "24806303-11f7-4c71-a3fc-412f8095726c",
+                    "Name": "UI_CHALLENGES_GRADUATION_THE_MECHANIC_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_c_the_mechanic.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_THE_MECHANIC_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_TUTORIAL",
+                    "TypeTitle": "UI_CONTRACT_POLARBEAR_GRADUATION_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": ["$Value.IsTarget", true]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "8f6ea4f1-32a8-4e57-a39d-90a2c2ff2bb0"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": ["$Value.Accident", true]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "228996e6-5fff-4f76-95de-484ee941c0ab",
+                    "Name": "UI_CHALLENGES_GRADUATION_DEATH_BYPROXY_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_c_death_byproxy.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_DEATH_BYPROXY_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_TUTORIAL",
+                    "TypeTitle": "UI_CONTRACT_POLARBEAR_GRADUATION_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "KGB_Fix_Fuse"
+                                        ]
+                                    },
+                                    "Transition": "IsKnightDied"
+                                }
+                            },
+                            "IsKnightDied": {
+                                "$timer": {
+                                    "Condition": {
+                                        "$after": 5
+                                    },
+                                    "Transition": "Start"
+                                },
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "579f2544-1970-4865-afa3-ad4566e5f98d"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceId",
+                                                    "0955e3c3-8b58-468f-81df-0e66ffbac677"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "e20675e2-7504-4692-92ad-4e75fd7b9d64",
+                    "Name": "UI_CHALLENGES_GRADUATION_PROJECTOR_KILL_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_c_projector_kill.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_PROJECTOR_KILL_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_TUTORIAL",
+                    "TypeTitle": "UI_CONTRACT_POLARBEAR_GRADUATION_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "KGB_Fix_Fuse"
+                                        ]
+                                    },
+                                    "Transition": "IsKnightDied"
+                                },
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "579f2544-1970-4865-afa3-ad4566e5f98d"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceId",
+                                                    "0955e3c3-8b58-468f-81df-0e66ffbac677"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            },
+                            "IsKnightDied": {
+                                "$timer": {
+                                    "Condition": {
+                                        "$after": 5
+                                    },
+                                    "Transition": "Start"
+                                },
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "579f2544-1970-4865-afa3-ad4566e5f98d"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceId",
+                                                    "0955e3c3-8b58-468f-81df-0e66ffbac677"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "4be75ba3-4916-4660-9f5b-8f12b3250c7a",
+                    "Name": "UI_CHALLENGES_GRADUATION_DROWN_KILL_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_c_drown_kill.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_DROWN_KILL_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_TUTORIAL",
+                    "TypeTitle": "UI_CONTRACT_POLARBEAR_GRADUATION_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "579f2544-1970-4865-afa3-ad4566e5f98d"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceType",
+                                                    "7b28519a-3c66-4498-a61b-ae6926a85594"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "969f8855-6727-4cf4-bfa9-a40e4460f7ae",
+                    "Name": "UI_CHALLENGES_GRADUATION_SILENT_ASSASSIN_SUIT_ONLY_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_c_sa_suit_only.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_SILENT_ASSASSIN_SUIT_ONLY_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_TUTORIAL",
+                    "TypeTitle": "UI_CONTRACT_POLARBEAR_GRADUATION_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "RecordingDestroyed": true,
+                            "Collection": [
+                                "4fc9396e-2619-4e66-a51e-2bd366230da7",
+                                "28d1aef1-45ba-4e8d-9bca-7cd8b4e5b4f8",
+                                "feef1171-9faa-4c95-b80e-22ae3c9bbec1",
+                                "989928f2-06d6-42f3-871a-353f07def969",
+                                "5e292dfb-646c-4a5b-9233-f4fbe5d5c033",
+                                "08f9f972-9229-432f-9092-2787883774e6",
+                                "054f443b-824f-4913-8b29-64dfcd82b089",
+                                "75759271-e236-4b33-8dd5-7e502c958d05",
+                                "58161492-10c8-4fce-860c-89e9b0a764fb",
+                                "00000000-0000-0000-0000-000000000000"
+                            ]
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [true, "$.RecordingDestroyed"]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$all": {
+                                            "?": {
+                                                "$not": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$Value.Disguise"
+                                                    ]
+                                                }
+                                            },
+                                            "in": "$.Collection"
+                                        }
+                                    },
+                                    "Transition": "Failure"
+                                },
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$Value.KillContext",
+                                                            1
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.Accident",
+                                                        false
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "CheckNoticedKill"
+                                    }
+                                ],
+                                "CrowdNPC_Died": {
+                                    "Transition": "Failure"
+                                },
+                                "BodyFound": {
+                                    "Transition": "Failure"
+                                },
+                                "SecuritySystemRecorder": [
+                                    {
+                                        "Actions": {
+                                            "$set": [
+                                                "RecordingDestroyed",
+                                                false
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$eq": ["$Value.event", "spotted"]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["RecordingDestroyed", true]
+                                        },
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "erased"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "destroyed"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "Spotted": {
+                                    "Transition": "Failure"
+                                },
+                                "Disguise": {
+                                    "Transition": "Failure"
+                                }
+                            },
+                            "CheckNoticedKill": {
+                                "Unnoticed_Kill": {
+                                    "Transition": "Start"
+                                },
+                                "DeadBodySeen": {
+                                    "Transition": "Failure"
+                                },
+                                "Spotted": {
+                                    "Transition": "Failure"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "suitonly"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "62f8d41c-ef58-4213-8fa7-b2d68191e092",
+                    "Name": "UI_CHALLENGES_GRADUATION_THAT_SPOT_LIGHT_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_c_spot_light.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_THAT_SPOT_LIGHT_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_TUTORIAL",
+                    "TypeTitle": "UI_CONTRACT_POLARBEAR_GRADUATION_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "579f2544-1970-4865-afa3-ad4566e5f98d"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceType",
+                                                    "a43ee7ae-44ff-44d8-80fb-5f28f55ca7e5"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "3f2bfeb7-4cb0-4a56-b37b-dd5768b04a03",
+                    "Name": "UI_CHALLENGES_GRADUATION_SEAT_EJECT_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_c_seat_eject.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_SEAT_EJECT_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_TUTORIAL",
+                    "TypeTitle": "UI_CONTRACT_POLARBEAR_GRADUATION_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "579f2544-1970-4865-afa3-ad4566e5f98d"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceId",
+                                                    "f41da13a-dd22-4cff-864d-0010609b8309"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "77729582-ddf2-4fcc-9307-f6d6d867edb8",
+                    "Name": "UI_CHALLENGES_GRADUATION_THE_SECURITY_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_c_the_security.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_THE_SECURITY_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_TUTORIAL",
+                    "TypeTitle": "UI_CONTRACT_POLARBEAR_GRADUATION_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": ["$Value.IsTarget", true]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "f7acaf86-205c-4ac4-98c7-2c418007299c"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemCategory",
+                                                    "pistol"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "5434404c-1db9-48d7-8f30-fbf0b342938a",
+                    "Name": "UI_CHALLENGES_GRADUATION_THE_SOVIET_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_c_the_soviet.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_THE_SOVIET_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_TUTORIAL",
+                    "TypeTitle": "UI_CONTRACT_POLARBEAR_GRADUATION_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": ["$Value.IsTarget", true]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "5c419edc-203d-4736-8cd9-bed24e34171c"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemCategory",
+                                                    "assaultrifle"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                }
+            ]
+        },
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+            "Image": "images/challenges/categories/discovery/tile.jpg",
+            "Icon": "challenge_category_discovery",
+            "CategoryId": "discovery",
+            "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_EXPLORATION",
+            "Challenges": [
+                {
+                    "Id": "72db2871-a24c-4fa9-8f78-25c9a004ee02",
+                    "Name": "UI_CHALLENGES_GRADUATION_OPP_DISGUISE_SECUIRTYGUARD_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_c_disguise_securityguard.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_OPP_DISGUISE_SECUIRTYGUARD_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_TUTORIAL",
+                    "TypeTitle": "UI_CONTRACT_POLARBEAR_GRADUATION_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Disguise": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value",
+                                            "f7acaf86-205c-4ac4-98c7-2c418007299c"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "discovery"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "c508908e-2cef-4679-8499-2f6c9873fde8",
+                    "Name": "UI_CHALLENGES_GRADUATION_OPP_FIND_SLIDES_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_c_find_slides.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_OPP_FIND_SLIDES_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_TUTORIAL",
+                    "TypeTitle": "UI_CONTRACT_POLARBEAR_GRADUATION_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ItemPickedUp": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "c9f0b076-0ade-4795-b3ae-901b58292e69"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "discovery"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "ccc19da4-6a05-4355-8cb2-4466ceb5b4fb",
+                    "Name": "UI_CHALLENGES_GRADUATION_OPP_DISGUISE_MECHANIC_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_c_disguise_mechaic.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_OPP_DISGUISE_MECHANIC_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_TUTORIAL",
+                    "TypeTitle": "UI_CONTRACT_POLARBEAR_GRADUATION_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Disguise": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value",
+                                            "8f6ea4f1-32a8-4e57-a39d-90a2c2ff2bb0"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "discovery"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "5b630176-2d35-4328-b1b2-51df4c2c0bb3",
+                    "Name": "UI_CHALLENGES_GRADUATION_OPP_DISGUISE_KGB_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_c_disguise_kgb.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_OPP_DISGUISE_KGB_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_TUTORIAL",
+                    "TypeTitle": "UI_CONTRACT_POLARBEAR_GRADUATION_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Disguise": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value",
+                                            "abb1e004-7fdf-462b-96b3-074e3390c171"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "discovery"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "fdea3ead-783c-45da-b31a-713faa0bf07c",
+                    "Name": "UI_CHALLENGES_GRADUATION_OPP_DISGUISE_SOVIET_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_c_disguise_soviet.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_OPP_DISGUISE_SOVIET_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_TUTORIAL",
+                    "TypeTitle": "UI_CONTRACT_POLARBEAR_GRADUATION_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Disguise": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value",
+                                            "5c419edc-203d-4736-8cd9-bed24e34171c"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "discovery"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "07d1e677-5ae5-4910-a3df-9cba3ec416e6",
+                    "Name": "UI_CHALLENGES_GRADUATION_FAKE_CALL_ESCORT_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_c_fake_call_escort.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_FAKE_CALL_ESCORT_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_TUTORIAL",
+                    "TypeTitle": "UI_CONTRACT_POLARBEAR_GRADUATION_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "579f2544-1970-4865-afa3-ad4566e5f98d"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                },
+                                "OpportunityEvents": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.Event",
+                                                    "Completed"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "dd238889-0e34-44eb-82db-c1b5484d388c"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "discovery"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "956ef58b-c2d6-4ce6-b03b-a07aaa07869e",
+                    "Name": "UI_CHALLENGES_GRADUATION_EXP_SABOTAGE_PLANE_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_c_sabotage_plane.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_EXP_SABOTAGE_PLANE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_TUTORIAL",
+                    "TypeTitle": "UI_CONTRACT_POLARBEAR_GRADUATION_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "setpieces": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "37036571-b683-4a48-8ca1-730ba79b5079"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "discovery"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "eb565979-a252-4fcd-aec0-b81bf54caea4",
+                    "Name": "UI_CHALLENGES_GRADUATION_DELIVER_VODKA_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_c_deliver_vodka.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_DELIVER_VODKA_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_TUTORIAL",
+                    "TypeTitle": "UI_CONTRACT_POLARBEAR_GRADUATION_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ItemPickedUp": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "195dcd6b-6663-4768-9e0a-c94e244cbea4"
+                                        ]
+                                    },
+                                    "Transition": "State_Delivery"
+                                },
+                                "Spotted": {
+                                    "Transition": "Failure"
+                                }
+                            },
+                            "State_Delivery": {
+                                "setpieces": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "6edc921c-9051-4fe3-b327-117ca15728df"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "Spotted": {
+                                    "Transition": "Failure"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "discovery"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "93dec9b4-d9d2-4cca-8a85-d4ff49e23039",
+                    "Name": "UI_CHALLENGES_GRADUATION_PLAYSLIDES_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_c_playsildes.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_PLAYSLIDES_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_TUTORIAL",
+                    "TypeTitle": "UI_CONTRACT_POLARBEAR_GRADUATION_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "setpieces": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "9a81c4d6-85d2-4694-90d2-8f18fbf9c60b"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "discovery"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "210f75bf-8094-4a4a-90f3-da23b4e73ad9",
+                    "Name": "UI_CHALLENGES_GRADUATION_CHESS_PUZZLE_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_c_chess_puzzle.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_CHESS_PUZZLE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_TUTORIAL",
+                    "TypeTitle": "UI_CONTRACT_POLARBEAR_GRADUATION_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "setpieces": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.name_metricvalue",
+                                            "Chess_GoodMove"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "discovery"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "7e8f3cf1-fff8-4dc6-9157-e87e316159b6",
+                    "Name": "UI_CHALLENGES_GRADUATION_TARGET_SICK_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_c_target_sick.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_TARGET_SICK_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_TUTORIAL",
+                    "TypeTitle": "UI_CONTRACT_POLARBEAR_GRADUATION_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Actorsick": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.actor_R_ID",
+                                            "579f2544-1970-4865-afa3-ad4566e5f98d"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "discovery"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "d51d2d4a-6cf3-4643-a0c6-ed17a1f0a80a",
+                    "Name": "UI_CHALLENGES_GRADUATION_OPP_INVESTIGATE_PLANE_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_c_opp_investigate_plane.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_OPP_INVESTIGATE_PLANE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_TUTORIAL",
+                    "TypeTitle": "UI_CONTRACT_POLARBEAR_GRADUATION_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "setpieces": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "885d3ac3-aff7-4dca-942b-fecbc3fc688a"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "discovery"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                }
+            ]
+        },
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+            "Image": "images/challenges/categories/feats/tile.jpg",
+            "Icon": "challenge_category_feats",
+            "CategoryId": "feats",
+            "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_COMMUNITY",
+            "Challenges": [
+                {
+                    "Id": "c984bb30-920c-4d0e-9088-06f7c9b4629e",
+                    "Name": "UI_CHALLENGES_PROLOGUE_POISON_SICK_NAME",
+                    "ImageName": "images/challenges/lat73/prologue_c_poison_sick.jpg",
+                    "Description": "UI_CHALLENGES_PROLOGUE_POISON_SICK_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_TUTORIAL",
+                    "TypeTitle": "UI_CONTRACT_POLARBEAR_MODULE_002_B_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Actorsick": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.actor_R_ID",
+                                            "3d25ee6c-61fa-4ba5-8f19-fedd905fd8fb"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["clean", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["b573932d-7a34-44f1-bcf4-ea8f79f75710"]
+                    }
+                },
+                {
+                    "Id": "cf5a7ad8-6e45-4577-a7e9-30e3fb428ca9",
+                    "Name": "UI_CHALLENGES_PROLOGUE_GENERATOR_NAME",
+                    "ImageName": "images/challenges/lat73/prologue_c_generator.jpg",
+                    "Description": "UI_CHALLENGES_PROLOGUE_GENERATOR_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_TUTORIAL",
+                    "TypeTitle": "UI_CONTRACT_POLARBEAR_MODULE_002_B_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "DistractionStart": {
+                                "$timer": {
+                                    "Condition": {
+                                        "$after": 200
+                                    },
+                                    "Transition": "Start"
+                                },
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "Guard_In_box"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            },
+                            "Start": {
+                                "setpieces": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "56cbc68a-92a3-4a9d-bc0f-1e07160148ec"
+                                        ]
+                                    },
+                                    "Transition": "DistractionStart"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["b573932d-7a34-44f1-bcf4-ea8f79f75710"]
+                    }
+                },
+                {
+                    "Id": "eb6129de-ee3b-488a-bd02-50aa5c0a92bb",
+                    "Name": "UI_CHALLENGES_PROLOGUE_COIN_DISTRACTION_NAME",
+                    "ImageName": "images/challenges/lat73/prologue_c_coin_distraction.jpg",
+                    "Description": "UI_CHALLENGES_PROLOGUE_COIN_DISTRACTION_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_TUTORIAL",
+                    "TypeTitle": "UI_CONTRACT_POLARBEAR_MODULE_002_B_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "DistractionStart": {
+                                "$timer": {
+                                    "Condition": {
+                                        "$after": 3
+                                    },
+                                    "Transition": "Start"
+                                },
+                                "Investigate_Curious": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "$Value.InvestigationType",
+                                                0
+                                            ]
+                                        }
+                                    },
+                                    "Transition": "Success"
+                                }
+                            },
+                            "Start": {
+                                "ItemDropped": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "dda002e9-02b1-4208-82a5-cf059f3c79cf"
+                                        ]
+                                    },
+                                    "Transition": "DistractionStart"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["b573932d-7a34-44f1-bcf4-ea8f79f75710"]
+                    }
+                },
+                {
+                    "Id": "df35b620-ca4d-40f1-ae50-9297585ede5d",
+                    "Name": "UI_CHALLENGES_PROLOGUE_NORFOLK_MEETING_NAME",
+                    "ImageName": "images/challenges/lat73/prologue_c_norfolk_meeting.jpg",
+                    "Description": "UI_CHALLENGES_PROLOGUE_NORFOLK_MEETING_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_TUTORIAL",
+                    "TypeTitle": "UI_CONTRACT_POLARBEAR_MODULE_002_B_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "47_Norfolk_meeting_start"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["clean", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["b573932d-7a34-44f1-bcf4-ea8f79f75710"]
+                    }
+                },
+                {
+                    "Id": "0b0289de-73c9-42e5-8133-b2dbe46b454b",
+                    "Name": "UI_CHALLENGES_PROLOGUE_FIBERWIRE_KILL_NAME",
+                    "ImageName": "images/challenges/lat73/prologue_c_fiberwire_kill.jpg",
+                    "Description": "UI_CHALLENGES_PROLOGUE_FIBERWIRE_KILL_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_TUTORIAL",
+                    "TypeTitle": "UI_CONTRACT_POLARBEAR_MODULE_002_B_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "3d25ee6c-61fa-4ba5-8f19-fedd905fd8fb"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemCategory",
+                                                    "fiberwire"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["b573932d-7a34-44f1-bcf4-ea8f79f75710"]
+                    }
+                },
+                {
+                    "Id": "37f6512d-36e7-419a-a1b2-c0da87e6655f",
+                    "Name": "UI_CHALLENGES_PROLOGUE_TARGET_DROWN_NAME",
+                    "ImageName": "images/challenges/lat73/prologue_c_target_drown.jpg",
+                    "Description": "UI_CHALLENGES_PROLOGUE_TARGET_DROWN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_TUTORIAL",
+                    "TypeTitle": "UI_CONTRACT_POLARBEAR_MODULE_002_B_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "3d25ee6c-61fa-4ba5-8f19-fedd905fd8fb"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceType",
+                                                    "7b28519a-3c66-4498-a61b-ae6926a85594"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["b573932d-7a34-44f1-bcf4-ea8f79f75710"]
+                    }
+                },
+                {
+                    "Id": "18f5e1fd-736c-44de-a4e1-c3e70357ec7c",
+                    "Name": "UI_CHALLENGES_PROLOGUE_BOARD_AS_GUARD_NAME",
+                    "ImageName": "images/challenges/lat73/prologue_c_board_as_guard.jpg",
+                    "Description": "UI_CHALLENGES_PROLOGUE_BOARD_AS_GUARD_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_TUTORIAL",
+                    "TypeTitle": "UI_CONTRACT_POLARBEAR_MODULE_002_B_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "Board_Yacht_asGuard"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["b573932d-7a34-44f1-bcf4-ea8f79f75710"]
+                    }
+                },
+                {
+                    "Id": "c70e38d8-b858-47ed-9257-c43f563e5871",
+                    "Name": "UI_CHALLENGES_PROLOGUE_DIGUISE_PICKED_NAME",
+                    "ImageName": "images/challenges/lat73/prologue_c_disguise_picked.jpg",
+                    "Description": "UI_CHALLENGES_PROLOGUE_DIGUISE_PICKED_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_TUTORIAL",
+                    "TypeTitle": "UI_CONTRACT_POLARBEAR_MODULE_002_B_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "InValidBox": {
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "Out_Waiter_Disguise_Box"
+                                        ]
+                                    },
+                                    "Transition": "Start"
+                                },
+                                "Disguise": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value",
+                                            "bbffa24b-fa46-4f9d-a73d-71de56ff3bfe"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            },
+                            "Start": {
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "In_Waiter_Disguise_Box"
+                                        ]
+                                    },
+                                    "Transition": "InValidBox"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["b573932d-7a34-44f1-bcf4-ea8f79f75710"]
+                    }
+                },
+                {
+                    "Id": "5c312f4a-5895-42ab-bce7-cd6c166113b1",
+                    "Name": "UI_CHALLENGES_PROLOGUE_ITEM_FOUND_NAME",
+                    "ImageName": "images/challenges/lat73/prologue_c_item_found.jpg",
+                    "Description": "UI_CHALLENGES_PROLOGUE_ITEM_FOUND_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_TUTORIAL",
+                    "TypeTitle": "UI_CONTRACT_POLARBEAR_MODULE_002_B_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Guard_FoundItem": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["b573932d-7a34-44f1-bcf4-ea8f79f75710"]
+                    }
+                },
+                {
+                    "Id": "df10cfd0-545e-40db-afca-cf5c178870a5",
+                    "Name": "UI_CHALLENGES_PROLOGUE_TARGET_EXPLOSION_NAME",
+                    "ImageName": "images/challenges/lat73/prologue_c_target_explosion.jpg",
+                    "Description": "UI_CHALLENGES_PROLOGUE_TARGET_EXPLOSION_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_TUTORIAL",
+                    "TypeTitle": "UI_CONTRACT_POLARBEAR_MODULE_002_B_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "3d25ee6c-61fa-4ba5-8f19-fedd905fd8fb"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "7d0c107e-4279-4fda-a7e2-77359271cb9a"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["clean", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["b573932d-7a34-44f1-bcf4-ea8f79f75710"]
+                    }
+                },
+                {
+                    "Id": "a9faeb2f-a4d6-4bd6-b97d-d005e21f7db6",
+                    "Name": "UI_CHALLENGES_PROLOGUE_RAT_POISON_NAME",
+                    "ImageName": "images/challenges/lat73/prologue_c_rat_poison.jpg",
+                    "Description": "UI_CHALLENGES_PROLOGUE_RAT_POISON_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_TUTORIAL",
+                    "TypeTitle": "UI_CONTRACT_POLARBEAR_MODULE_002_B_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ItemPickedUp": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "8b37a3a8-8a20-4262-81c5-0fcd15f4bba9"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["b573932d-7a34-44f1-bcf4-ea8f79f75710"]
+                    }
+                },
+                {
+                    "Id": "8eca1722-68c7-4bdd-9317-f13fad851552",
+                    "Name": "UI_CHALLENGES_PROLOGUE_HIDEBODY_NAME",
+                    "ImageName": "images/challenges/lat73/prologue_c_hidebody.jpg",
+                    "Description": "UI_CHALLENGES_PROLOGUE_HIDEBODY_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_TUTORIAL",
+                    "TypeTitle": "UI_CONTRACT_POLARBEAR_MODULE_002_B_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "BodyHidden": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "3d25ee6c-61fa-4ba5-8f19-fedd905fd8fb"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["b573932d-7a34-44f1-bcf4-ea8f79f75710"]
+                    }
+                },
+                {
+                    "Id": "57e399bc-e449-4805-bbae-f7cd257925fe",
+                    "Name": "UI_CHALLENGES_PROLOGUE_LIFERAFT_KILL_NAME",
+                    "ImageName": "images/challenges/lat73/prologue_c_liferaft_kill.jpg",
+                    "Description": "UI_CHALLENGES_PROLOGUE_LIFERAFT_KILL_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_TUTORIAL",
+                    "TypeTitle": "UI_CONTRACT_POLARBEAR_MODULE_002_B_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "3d25ee6c-61fa-4ba5-8f19-fedd905fd8fb"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceType",
+                                                    "99743df5-fef0-4c20-a1b6-deb34f094a44"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["clean", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["b573932d-7a34-44f1-bcf4-ea8f79f75710"]
+                    }
+                },
+                {
+                    "Id": "055ad61d-04bb-4a19-a44f-6ef4db545438",
+                    "Name": "UI_CHALLENGES_GRADUATION_47_MASTER_OF_TRADE_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_c_47_master_of_trade.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_47_MASTER_OF_TRADE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_TUTORIAL",
+                    "TypeTitle": "UI_CONTRACT_POLARBEAR_GRADUATION_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "CompletedChallenges": []
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "ChallengeCompleted": [
+                                    {
+                                        "$pushunique": [
+                                            "CompletedChallenges",
+                                            "$Value.ChallengeId"
+                                        ]
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$all": {
+                                                "?": {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$.##"
+                                                            ]
+                                                        },
+                                                        "in": "$.CompletedChallenges"
+                                                    }
+                                                },
+                                                "in": [
+                                                    "eed87874-5a23-4230-a5ba-220e90372721",
+                                                    "969f8855-6727-4cf4-bfa9-a40e4460f7ae",
+                                                    "24806303-11f7-4c71-a3fc-412f8095726c",
+                                                    "77729582-ddf2-4fcc-9307-f6d6d867edb8",
+                                                    "5434404c-1db9-48d7-8f30-fbf0b342938a",
+                                                    "3f2bfeb7-4cb0-4a56-b37b-dd5768b04a03",
+                                                    "e20675e2-7504-4692-92ad-4e75fd7b9d64",
+                                                    "4be75ba3-4916-4660-9f5b-8f12b3250c7a",
+                                                    "62f8d41c-ef58-4213-8fa7-b2d68191e092",
+                                                    "85bbb639-40e3-4aa5-87aa-388a1cad2404",
+                                                    "068dc309-f4e7-4551-9719-31e064f4cc6e",
+                                                    "228996e6-5fff-4f76-95de-484ee941c0ab"
+                                                ]
+                                            }
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "71b47237-cbf0-4b18-be34-81226026a4c9",
+                    "Name": "UI_CHALLENGES_POLARBEAR_HAMMER_TIME_NAME",
+                    "ImageName": "images/challenges/lat73/polarbear_hammer_time.jpg",
+                    "Description": "UI_CHALLENGES_POLARBEAR_HAMMER_TIME_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_TUTORIAL",
+                    "TypeTitle": "UI_CONTRACT_POLARBEAR_GRADUATION_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                },
+                                "Pacify": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "$Value.KillItemRepositoryId",
+                                                "3c24c96a-557c-472a-9d71-1a235d7383a7"
+                                            ]
+                                        }
+                                    },
+                                    "Transition": "Failure"
+                                },
+                                "Kill": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$any": {
+                                                "?": {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$.##"
+                                                            ]
+                                                        },
+                                                        "in": "$Value.DamageEvents"
+                                                    }
+                                                },
+                                                "in": ["Subdue", "CoupDeGrace"]
+                                            }
+                                        }
+                                    },
+                                    "Transition": "Failure"
+                                },
+                                "ItemDropped": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "3c24c96a-557c-472a-9d71-1a235d7383a7"
+                                            ]
+                                        }
+                                    },
+                                    "Transition": "Distraction_State"
+                                }
+                            },
+                            "Distraction_State": {
+                                "$timer": {
+                                    "Condition": {
+                                        "$after": 2
+                                    },
+                                    "Transition": "Start"
+                                },
+                                "Investigate_Curious": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "$Value.InvestigationType",
+                                                0
+                                            ]
+                                        }
+                                    },
+                                    "Transition": "Failure"
+                                },
+                                "Pacify": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "$Value.KillItemRepositoryId",
+                                                "3c24c96a-557c-472a-9d71-1a235d7383a7"
+                                            ]
+                                        }
+                                    },
+                                    "Transition": "Failure"
+                                },
+                                "Kill": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "$Value.KillItemRepositoryId",
+                                                "3c24c96a-557c-472a-9d71-1a235d7383a7"
+                                            ]
+                                        }
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["feats"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "c00464a6-19e5-49fa-8b83-fe32e8278741",
+                    "Name": "UI_CHALLENGES_GRADUATION_47_MASTER_OF_DISGUISE_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_c_47_master_of_disguise.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_47_MASTER_OF_DISGUISE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_TUTORIAL",
+                    "TypeTitle": "UI_CONTRACT_POLARBEAR_GRADUATION_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "DisguiseList": []
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "Disguise": [
+                                    {
+                                        "$pushunique": [
+                                            "DisguiseList",
+                                            "$Value"
+                                        ]
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$all": {
+                                                "?": {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$.##"
+                                                            ]
+                                                        },
+                                                        "in": "$.DisguiseList"
+                                                    }
+                                                },
+                                                "in": [
+                                                    "8f6ea4f1-32a8-4e57-a39d-90a2c2ff2bb0",
+                                                    "f7acaf86-205c-4ac4-98c7-2c418007299c",
+                                                    "abb1e004-7fdf-462b-96b3-074e3390c171",
+                                                    "5c419edc-203d-4736-8cd9-bed24e34171c"
+                                                ]
+                                            }
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "ec46536e-f632-47aa-ab92-7041d9728640",
+                    "Name": "UI_CONTRACT_SNOWDROP_GROUP_TITLE",
+                    "ImageName": "images/contracts/escalation/ContractEscalation_Snowdrop.jpg",
+                    "Description": "UI_CHALLENGES_ESCLATION_COMPLETE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_ESCALATION",
+                    "TypeTitle": "UI_CONTRACT_SNOWDROP_GROUP_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$ContractId",
+                                            "e71bb57e-cba6-4b47-bdb1-2c89319d7e45"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["feats"],
+                    "InclusionData": {
+                        "ContractIds": ["aee6a16f-6525-4d63-a37f-225e293c6118"]
+                    }
+                },
+                {
+                    "Id": "f6a2aae0-6c20-47a1-b647-74263476db69",
+                    "Name": "UI_CONTRACT_WOLFSBANE_GROUP_TITLE",
+                    "ImageName": "images/contracts/escalation/ContractEscalation_Wolfsbane.jpg",
+                    "Description": "UI_CHALLENGES_ESCLATION_COMPLETE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_ESCALATION",
+                    "TypeTitle": "UI_CONTRACT_WOLFSBANE_GROUP_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$ContractId",
+                                            "dac764bf-d07f-461b-8f51-a511ed64a20a"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["feats"],
+                    "InclusionData": {
+                        "ContractIds": ["c469d91d-01fc-4314-b22c-71cb804e92c0"]
+                    }
+                },
+                {
+                    "Id": "239dd317-ea34-4689-b730-0726b51f71bd",
+                    "Name": "UI_CHALLENGES_GLOBAL_All_ESCALATION_MONTH1_NAME",
+                    "ImageName": "images/challenges/profile_challenges/escalation_month1.jpg",
+                    "Description": "UI_CHALLENGES_GLOBAL_All_ESCALATION_MONTH1_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        {
+                            "Id": "FIREARMS_HERO_SMG_TACTICAL_012_ST_AIM_SU_SKIN03",
+                            "Type": "weapon",
+                            "Subtype": "smg",
+                            "GameAsset": null,
+                            "ImageId": "",
+                            "RMTPrice": 99,
+                            "GamePrice": 99,
+                            "IsPurchasable": false,
+                            "IsPublished": true,
+                            "IsDroppable": false,
+                            "Capabilities": [],
+                            "Qualities": {},
+                            "Properties": {
+                                "Gameplay": {
+                                    "range": 0.4,
+                                    "damage": 0.35,
+                                    "clipsize": 0.75,
+                                    "rateoffire": 0.85
+                                },
+                                "Name": "Firearms_hero_smg_tactical_shared_skin03_name",
+                                "Description": "Firearms_hero_smg_tactical_shared_skin03_description",
+                                "Quality": 4,
+                                "Rarity": "legendary",
+                                "LoadoutSlot": "carriedweapon",
+                                "RepositoryId": "b1cb79d7-9960-4d5c-8b43-81213c8594cd"
+                            },
+                            "Guid": "0d4b19b3-386b-493a-b8fd-024712b78c3d",
+                            "Rarity": "legendary",
+                            "DisplayNameLocKey": "UI_FIREARMS_HERO_SMG_TACTICAL_012_ST_AIM_SU_SKIN03_NAME"
+                        }
+                    ],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_GLOBAL",
+                    "TypeTitle": "UI_MENU_PAGE_CHALLENGE_TITLE_GLOBAL",
+                    "TypeIcon": "challenge",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "Completed": [],
+                            "Count": 0,
+                            "Goal": 10
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count",
+                                            "$pushunique": [
+                                                "Completed",
+                                                "$ContractId"
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$ContractId"
+                                                            ]
+                                                        },
+                                                        "in": [
+                                                            "4aba4161-608c-4f2c-b1b7-e6669a5eac44",
+                                                            "a08d65bc-3a72-4202-8d8e-c03444d2ba51",
+                                                            "6d60b35a-c41a-45a3-bfc8-16b6959ffdb9",
+                                                            "0ec2eabf-a9a5-4660-a143-ec194abe27ea",
+                                                            "49b24fc5-582b-4314-88a5-f282171b9a56",
+                                                            "8e16b428-5de7-4c56-a3ab-a1e244488ebc",
+                                                            "739e624b-2851-4925-bb5c-f86e8d196aeb",
+                                                            "29bc2f85-79ea-45b3-a9e0-bd4abcee1e67",
+                                                            "23ded45d-c08c-4077-bdc8-ec4118bc70ce",
+                                                            "390c756e-9fce-4100-8063-4b89eebfd91b",
+                                                            "e71bb57e-cba6-4b47-bdb1-2c89319d7e45",
+                                                            "dac764bf-d07f-461b-8f51-a511ed64a20a",
+                                                            "5f96ef53-926c-4e49-b3ec-93b2fbe51ccf",
+                                                            "689774c7-7059-42b5-96f8-a78f9fb31240",
+                                                            "7bf14497-f478-4cd7-b35f-b04933ca80bb",
+                                                            "8500f8dc-d6d8-4fb1-9df2-e8159d8a740e",
+                                                            "0aac363d-3e5d-4e9e-8d27-b890c0a8d3b5",
+                                                            "e2d7929f-9774-499a-bee6-7484719db474",
+                                                            "d3ea9e2e-85dc-41f1-b1bf-a478879ff8ba",
+                                                            "da459b80-2cb2-4c99-b57d-9531c10e34ac",
+                                                            "cdf92d1d-b08d-4427-aa40-56bbfa5a10d3",
+                                                            "59b2c722-9728-4e8f-a432-3ccb1d6a31f6",
+                                                            "3e5d074c-ec66-4b27-bacf-9e96a01cdd62",
+                                                            "ad80e67c-fa4c-4c29-b834-9b1f23bcf02a",
+                                                            "4b30ac0d-be8b-43f0-8894-277ad4bb8074",
+                                                            "40b08d95-82cf-4053-869e-0a110beb6dbb",
+                                                            "0519bc57-8666-49c5-aaef-52423707c3a7",
+                                                            "220d41ad-105f-44a4-b532-3f1942da88c3",
+                                                            "bff960fb-8206-47b7-8163-6dcd71c781f4",
+                                                            "e1d60c32-e4aa-4461-8139-2a37e90b6eb3",
+                                                            "daa5596e-61a8-4a1b-b979-fb5501c3d956",
+                                                            "911476b2-fd26-4e4e-a8c3-3201a27a6cc2",
+                                                            "5f2e6507-61a8-4e9b-9965-39dbedd9f122",
+                                                            "15998e88-bf9e-490b-8f91-a218ee2a5739",
+                                                            "cf8fc99a-a0d3-4e9c-871e-c01556ff3183",
+                                                            "e6ec6b2e-4f6b-44c7-bb3d-ace5482471bc",
+                                                            "4ed3bdfe-ecfc-41ab-ba6d-25d053838e15",
+                                                            "d48ed63e-2542-4215-8e6c-6ad3c29feb42",
+                                                            "150cfa6d-6be8-4b79-930d-07bd3ccde952",
+                                                            "8eed3a7f-b903-412d-85b6-e4262e7246d7",
+                                                            "8039ecb0-d903-4b7c-bfed-63c70f895e6f",
+                                                            "0f71205e-689a-4bb4-b3cf-bc7808d2b048",
+                                                            "de38d516-b4ab-4539-b9b1-89b475f372bb",
+                                                            "fc6ec4fe-59c7-4c2f-8dd1-00635e29239f",
+                                                            "2e83eda3-230f-429c-965a-c89e7ada97e3",
+                                                            "a6807292-1bc5-4fbb-9421-af3f5a2ee5d1",
+                                                            "7ec4bbd5-6c02-4640-b5dd-4e604081b4d2",
+                                                            "541bcd99-44dc-4e0a-8520-15a528223cac",
+                                                            "35ed4c87-e6af-4279-8555-22d167b59197",
+                                                            "b007a400-66b8-43c3-a919-3195e343f7b1",
+                                                            "aa456df8-2294-4e29-a792-fc0f46576830",
+                                                            "0a6f7d38-4bc3-49c2-ab06-7fd99b2bc6b3",
+                                                            "e33119f9-074c-40ab-bcdc-a814c94af747",
+                                                            "32c0c431-259c-45d7-ba47-5244a6b54818",
+                                                            "5db4c764-7ab7-40c1-8688-e2b98176fa35",
+                                                            "e2dd58f3-f5ff-41b3-9ba9-4d0420fc773b",
+                                                            "5cb1a153-3b56-417a-8e75-10066bf397b6"
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$any": {
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "$ContractId"
+                                                                ]
+                                                            },
+                                                            "in": "$.Completed"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats", "escalation"]
+                }
+            ]
+        }
+    ]
+}
