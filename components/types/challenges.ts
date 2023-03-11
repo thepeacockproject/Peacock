@@ -39,8 +39,9 @@ export interface SavedChallenge {
     Icon: string
     LocationId: string
     ParentLocationId: string
-    Type: "Hit" | string
-    RuntimeType: "contract" | string
+    // H1 challenges do not have Type
+    Type?: "contract" | string
+    RuntimeType: "Hit" | string
     XpModifier?: unknown
     DifficultyLevels: string[]
     Definition: MissionManifestObjective["Definition"] & {
