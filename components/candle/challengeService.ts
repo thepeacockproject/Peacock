@@ -451,6 +451,7 @@ export class ChallengeService extends ChallengeRegistry {
     getChallengesForContract(
         contractId: string,
         gameVersion: GameVersion,
+        difficulty = 4,
     ): GroupIndexedChallengeLists {
         const contract = this.controller.resolveContract(contractId)
 
@@ -468,6 +469,7 @@ export class ChallengeService extends ChallengeRegistry {
                 type: ChallengeFilterType.Contract,
                 contractId: contractId,
                 locationId: contract.Metadata.Location,
+                difficulty,
             },
             contractParentLocation,
             gameVersion,
@@ -632,12 +634,14 @@ export class ChallengeService extends ChallengeRegistry {
      * @param contractId The ID of the contract.
      * @param gameVersion The game version requesting the challenges.
      * @param userId The user requesting the challenges' ID.
+     * @param difficulty The upper bound on the difficulty of the challenges to return, defaulted to 4 (return challenges of all difficulties).
      * @returns The challenge tree.
      */
     getChallengeTreeForContract(
         contractId: string,
         gameVersion: GameVersion,
         userId: string,
+        difficulty = 4,
     ): CompiledChallengeTreeCategory[] {
         const contractData = this.controller.resolveContract(contractId)
 
@@ -661,6 +665,7 @@ export class ChallengeService extends ChallengeRegistry {
         const forContract = this.getChallengesForContract(
             contractId,
             gameVersion,
+            difficulty,
         )
         return this.reBatchIntoSwitchedData(
             forContract,
@@ -857,6 +862,12 @@ export class ChallengeService extends ChallengeRegistry {
             ? this.compileRegistryDestinationChallengeData.bind(this)
             : this.compileRegistryChallengeTreeData.bind(this)
 
+        const completion = generateCompletionData(
+            location?.Id,
+            userId,
+            gameVersion,
+        )
+
         return entries.map(([groupId, challenges], index) => {
             const groupData = this.getGroupByIdLoc(
                 groupId,
@@ -879,12 +890,6 @@ export class ChallengeService extends ChallengeRegistry {
             const nextGroup = this.getGroupByIdLoc(
                 Object.keys(challengeLists)[index + 1],
                 location.Properties.ParentLocation ?? location.Id,
-                gameVersion,
-            )
-
-            const completion = generateCompletionData(
-                location?.Id,
-                userId,
                 gameVersion,
             )
 

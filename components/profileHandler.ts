@@ -18,7 +18,7 @@
 
 import { Router } from "express"
 import path from "path"
-import { castUserProfile, gameDifficulty, nilUuid, uuidRegex } from "./utils"
+import { castUserProfile, nilUuid, uuidRegex } from "./utils"
 import { json as jsonMiddleware } from "body-parser"
 import { getPlatformEntitlements } from "./platformEntitlements"
 import { contractSessions, newSession } from "./eventHandler"
@@ -49,6 +49,7 @@ import { menuSystemDatabase } from "./menus/menuSystem"
 import {
     compileRuntimeChallenge,
     inclusionDataCheck,
+    isChallengeForDifficulty,
 } from "./candle/challengeHelpers"
 import { LoadSaveBody } from "./types/gameSchemas"
 
@@ -515,12 +516,11 @@ profileRouter.post(
                 ),
             )
                 .flat()
-                .filter(
-                    (challengeData) =>
-                        !challengeData.DifficultyLevels ||
-                        challengeData.DifficultyLevels.length === 0 ||
-                        gameDifficulty[challengeData.DifficultyLevels[0]] <=
-                            req.body.difficultyLevel,
+                .filter((challengeData) =>
+                    isChallengeForDifficulty(
+                        req.body.difficultyLevel,
+                        challengeData,
+                    ),
                 )
                 .map((challengeData) => {
                     return compileRuntimeChallenge(
@@ -599,6 +599,7 @@ profileRouter.post(
                         req.body.contractId,
                         req.gameVersion,
                         req.jwt.unique_name,
+                        req.body.difficultyLevel,
                     ),
             },
             LevelsDefinition: {
