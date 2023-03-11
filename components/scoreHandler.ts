@@ -283,6 +283,7 @@ export async function missionEnd(
         controller.challengeService.getChallengesForContract(
             sessionDetails.contractId,
             req.gameVersion,
+            sessionDetails.difficulty,
         )
     const challengeCompletion =
         controller.challengeService.countTotalNCompletedChallenges(

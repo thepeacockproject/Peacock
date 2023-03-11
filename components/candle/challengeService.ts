@@ -522,6 +522,7 @@ export class ChallengeService extends ChallengeRegistry {
         const challengeGroups = this.getChallengesForContract(
             contractId,
             gameVersion,
+            session.difficulty,
         )
 
         const profile = getUserData(session.userId, session.gameVersion)
@@ -1184,7 +1185,7 @@ export class ChallengeService extends ChallengeRegistry {
         this.hooks.onChallengeCompleted.call(userId, challenge, gameVersion)
 
         // Check if completing this challenge also completes any dependency trees depending on it
-        for (const depTreeId of this._dependencyTree.keys()) {
+        for (const depTreeId of this._dependencyTree.get(gameVersion).keys()) {
             this.tryToCompleteChallenge(
                 depTreeId,
                 userData,

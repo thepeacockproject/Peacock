@@ -49,7 +49,6 @@ import { menuSystemDatabase } from "./menus/menuSystem"
 import {
     compileRuntimeChallenge,
     inclusionDataCheck,
-    isChallengeForDifficulty,
 } from "./candle/challengeHelpers"
 import { LoadSaveBody } from "./types/gameSchemas"
 
@@ -513,15 +512,10 @@ profileRouter.post(
                 controller.challengeService.getChallengesForContract(
                     json.Metadata.Id,
                     req.gameVersion,
+                    req.body.difficultyLevel,
                 ),
             )
                 .flat()
-                .filter((challengeData) =>
-                    isChallengeForDifficulty(
-                        req.body.difficultyLevel,
-                        challengeData,
-                    ),
-                )
                 .map((challengeData) => {
                     return compileRuntimeChallenge(
                         challengeData,

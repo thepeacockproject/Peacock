@@ -100,7 +100,6 @@ legacyProfileRouter.post(
                                 challengeData.Id,
                                 req.gameVersion,
                             ),
-                            0, //TODO: not sure what to do here, need to fix later
                         ).Challenge,
                 ),
         )
