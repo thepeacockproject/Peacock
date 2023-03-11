@@ -223,6 +223,25 @@ export class HitsCategoryService {
         )
         controller.storeIdToPublicId(hits.map((hit) => hit.UserCentricContract))
 
+        // Fix completion status for retrieved contracts
+        const userProfile = getUserData(userId, gameVersion)
+        const played = userProfile?.Extensions.PeacockPlayedContracts
+
+        hits.forEach((hit) => {
+            if (Object.keys(played).includes(hit.Id)) {
+                // Replace with data stored by Peacock
+                hit.UserCentricContract.Data.LastPlayedAt = new Date(
+                    played[hit.Id].LastPlayedAt,
+                ).toISOString()
+                hit.UserCentricContract.Data.Completed =
+                    played[hit.Id].Completed
+            } else {
+                // Never played on Peacock
+                delete hit.UserCentricContract.Data.LastPlayedAt
+                hit.UserCentricContract.Data.Completed = false
+            }
+        })
+
         return resp.data.data
     }
 
