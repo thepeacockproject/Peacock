@@ -48,6 +48,10 @@ export interface SavedChallenge {
     }
     Tags: string[]
     InclusionData?: InclusionData
+    // H1 exclusive
+    TypeHeader?: string
+    TypeIcon?: string
+    TypeTitle?: string
 }
 
 export interface SavedChallengeGroup {

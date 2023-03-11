@@ -984,6 +984,9 @@ export class ChallengeService extends ChallengeRegistry {
                     userId,
                     gameVersion,
                 ),
+                TypeHeader: challenge.TypeHeader,
+                TypeIcon: challenge.TypeIcon,
+                TypeTitle: challenge.TypeTitle,
             }),
         }
     }
