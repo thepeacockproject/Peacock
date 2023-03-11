@@ -18,7 +18,7 @@
 
 import { Router } from "express"
 import path from "path"
-import { castUserProfile, nilUuid, uuidRegex } from "./utils"
+import { castUserProfile, gameDifficulty, nilUuid, uuidRegex } from "./utils"
 import { json as jsonMiddleware } from "body-parser"
 import { getPlatformEntitlements } from "./platformEntitlements"
 import { contractSessions, newSession } from "./eventHandler"
@@ -515,6 +515,13 @@ profileRouter.post(
                 ),
             )
                 .flat()
+                .filter(
+                    (challengeData) =>
+                        !challengeData.DifficultyLevels ||
+                        challengeData.DifficultyLevels.length === 0 ||
+                        gameDifficulty[challengeData.DifficultyLevels[0]] <=
+                            req.body.difficultyLevel,
+                )
                 .map((challengeData) => {
                     return compileRuntimeChallenge(
                         challengeData,
@@ -523,7 +530,6 @@ profileRouter.post(
                             challengeData.Id,
                             req.gameVersion,
                         ),
-                        req.body.difficultyLevel,
                     )
                 }),
         )
