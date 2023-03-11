@@ -25,9 +25,9 @@ import {
     RegistryChallenge,
 } from "../types/types"
 import assert from "assert"
-import { SavedChallengeGroup } from "components/types/challenges"
-import { controller } from "components/controller"
-import { gameDifficulty } from "components/utils"
+import { SavedChallengeGroup } from "../types/challenges"
+import { controller } from "../controller"
+import { gameDifficulty } from "../utils"
 
 export function compileScoringChallenge(
     challenge: RegistryChallenge,
