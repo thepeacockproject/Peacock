@@ -139,6 +139,9 @@ export abstract class ChallengeRegistry {
         groupId: string,
         location: string,
     ): SavedChallengeGroup | undefined {
+        if (groupId?.includes("featured")) {
+            return this.groups.get("GLOBAL_FEATURED_CHALLENGES")?.get(groupId)
+        }
         // Included by default. Filtered later.
         if (groupId === "classic" && location !== "GLOBAL_CLASSIC_CHALLENGES") {
             return mergeSavedChallengeGroups(
@@ -153,6 +156,11 @@ export abstract class ChallengeRegistry {
         groupId: string,
         location: string,
     ): Set<string> | undefined {
+        if (groupId?.includes("featured")) {
+            return this.groupContents
+                .get("GLOBAL_FEATURED_CHALLENGES")
+                ?.get(groupId)
+        }
         // Included by default. Filtered later.
         if (groupId === "classic" && location !== "GLOBAL_CLASSIC_CHALLENGES") {
             return new Set([
@@ -310,19 +318,20 @@ export class ChallengeService extends ChallengeRegistry {
     }
 
     /**
+     * This is a helper function for @see getGroupedChallengeLists. It is not expected to be used elsewhere.
+     *
      * Filter all challenges in a parent location using a given filter, sort them into groups,
-     * and return them as a `GroupIndexedChallengeLists`.
+     * and write them into the `challenges` array provided.
      *
      * @param filter The filter to use.
      * @param location The parent location whose challenges to get.
-     * @returns A GroupIndexedChallengeLists containing the resulting challenge groups.
+     * @param challenges The array to write results to.
      */
-    getGroupedChallengeLists(
+    getGroupedChallengesByLoc(
         filter: ChallengeFilterOptions,
         location: string,
-    ): GroupIndexedChallengeLists {
-        let challenges: [string, RegistryChallenge[]][] = []
-
+        challenges: [string, RegistryChallenge[]][],
+    ) {
         for (const groupId of this.groups.get(location).keys()) {
             const groupContents = this.getGroupContentByIdLoc(groupId, location)
             if (groupContents) {
@@ -347,6 +356,31 @@ export class ChallengeService extends ChallengeRegistry {
 
                 challenges.push([groupId, [...groupChallenges]])
             }
+        }
+    }
+
+    /**
+     * Filter all challenges in a parent location using a given filter, sort them into groups,
+     * and return them as a `GroupIndexedChallengeLists`.
+     *
+     * @param filter The filter to use.
+     * @param location The parent location whose challenges to get.
+     * @returns A GroupIndexedChallengeLists containing the resulting challenge groups.
+     */
+    getGroupedChallengeLists(
+        filter: ChallengeFilterOptions,
+        location: string,
+    ): GroupIndexedChallengeLists {
+        let challenges: [string, RegistryChallenge[]][] = []
+
+        this.getGroupedChallengesByLoc(filter, location, challenges)
+
+        if (filter.type === ChallengeFilterType.Contract && filter.isFeatured) {
+            this.getGroupedChallengesByLoc(
+                filter,
+                "GLOBAL_FEATURED_CHALLENGES",
+                challenges,
+            )
         }
 
         // remove empty groups
@@ -377,6 +411,7 @@ export class ChallengeService extends ChallengeRegistry {
                 type: ChallengeFilterType.Contract,
                 contractId: contractId,
                 locationId: contract.Metadata.Location,
+                isFeatured: contract.Metadata.Type === "featured",
             },
             contractParentLocation,
         )
@@ -787,10 +822,10 @@ export class ChallengeService extends ChallengeRegistry {
 
             return {
                 Name: groupData?.Name,
-                Description: groupData.Description,
-                Image: groupData.Image,
-                CategoryId: groupData.CategoryId,
-                Icon: groupData.Icon,
+                Description: groupData?.Description,
+                Image: groupData?.Image,
+                CategoryId: groupData?.CategoryId,
+                Icon: groupData?.Icon,
                 ChallengesCount: challenges.length,
                 CompletedChallengesCount: challengeProgressionData.filter(
                     (progressionData) => progressionData.Completed,
