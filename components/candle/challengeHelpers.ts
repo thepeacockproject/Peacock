@@ -216,7 +216,7 @@ export function filterChallenge(
                 isChallengeInContract(
                     contractId,
                     options.locationId,
-                    4, // Get challenges of all difficulties
+                    gameDifficulty.master, // Get challenges of all difficulties
                     challenge,
                     true,
                 ),
