@@ -523,6 +523,7 @@ export class ChallengeService extends ChallengeRegistry {
                     currentState: data.state,
                     timers: data.timers,
                     timestamp: event.Timestamp,
+                    contractId: session.contractId,
                 }
 
                 const previousState = data.state
