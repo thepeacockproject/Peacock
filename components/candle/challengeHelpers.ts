@@ -105,7 +105,9 @@ export function inclusionDataCheck(
         incData.ContractIds?.includes(contract.Metadata.Id) ||
         incData.ContractTypes?.includes(contract.Metadata.Type) ||
         incData.Locations?.includes(contract.Metadata.Location) ||
-        contract.Metadata?.Gamemodes?.some((r) => incData.GameModes.includes(r))
+        contract.Metadata?.Gamemodes?.some((r) =>
+            incData.GameModes?.includes(r),
+        )
     )
 }
 
