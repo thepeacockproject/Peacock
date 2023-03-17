@@ -692,12 +692,11 @@ export async function missionEnd(
         controller.masteryService.getMasteryPackage(locationParentId)
 
     //TODO: Make a constant out of the 20
-    const locationLevelInfo = Array.from(
-        { length: masteryData.MaxLevel || 20 },
-        (_, i) => {
-            return xpRequiredForLevel(i + 1)
-        },
-    )
+    const maxLevel = masteryData.MaxLevel || 20
+
+    const locationLevelInfo = Array.from({ length: maxLevel }, (_, i) => {
+        return xpRequiredForLevel(i + 1)
+    })
 
     const completionData = generateCompletionData(
         contractData.Metadata.Location,
@@ -773,19 +772,16 @@ export async function missionEnd(
         timeTotal,
     )
 
-    //TODO: Update global challenges, since the Official versions have changed.
-
     //Setup the result
     const result: MissionEndResponse = {
         MissionReward: {
             LocationProgression: {
                 LevelInfo: locationLevelInfo,
-                //TODO: Never larger than max level mastery XP
                 XP: completionData.XP,
                 Level: completionData.Level,
                 Completion: completionData.Completion,
-                //TODO: Is always 0 if max mastery is reached
-                XPGain: masteryXpGain,
+                //NOTE: Official makes this 0 if maximum Mastery is reached
+                XPGain: completionData.Level === maxLevel ? 0 : totalXpGain,
                 HideProgression: masteryData.HideProgression || false,
             },
             ProfileProgression: {
@@ -809,11 +805,10 @@ export async function missionEnd(
             LocationCompletionPercent: locationPercentageComplete,
         },
         ScoreOverview: {
-            //TODO: Never larger than max level mastery XP
             XP: completionData.XP,
             Level: completionData.Level,
             Completion: completionData.Completion,
-            //TODO: Is always 0?
+            //NOTE: Official appears to always make this 0
             XPGain: 0,
             ChallengesCompleted: justTickedChallenges,
             LocationHideProgression: masteryData.HideProgression || false,

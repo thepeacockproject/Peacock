@@ -49,7 +49,7 @@ import {
     HandleEventOptions,
 } from "@peacockproject/statemachine-parser"
 import { SavedChallengeGroup } from "../types/challenges"
-import { fastClone } from "../utils"
+import { fastClone, xpRequiredForLevel } from "../utils"
 import {
     ChallengeFilterOptions,
     ChallengeFilterType,
@@ -1157,28 +1157,17 @@ export class ChallengeService extends ChallengeRegistry {
             session.challengeContexts[challenge.Id].timers = []
         }
 
-        //NOTE: Immediately grant the XP
-        if (challenge.Rewards?.MasteryXP > 0) {
-            log(
-                LogLevel.DEBUG,
-                `Granting user ${challenge.Rewards.MasteryXP} mastery XP`,
-            )
+        //NOTE: Official will always grant XP to both Location Mastery and the Player Profile
+        const totalXp =
+            (challenge.Xp || 0) + (challenge.Rewards?.MasteryXP || 0)
 
-            this.grantLocationMasteryXp(
-                challenge.Rewards.MasteryXP,
-                session,
-                userData,
-            )
-        }
+        this.grantLocationMasteryXp(totalXp, session, userData)
+        this.grantUserXp(totalXp, userData)
 
         if (challenge.Rewards?.MasteryXP > 0 || challenge.Xp > 0) {
             log(LogLevel.DEBUG, `Granting user ${challenge.Xp} XP`)
 
             //NOTE: Mastery XP is always added to the User XP as well
-            this.grantUserXp(
-                (challenge.Xp || 0) + (challenge.Rewards?.MasteryXP || 0),
-                userData,
-            )
         }
 
         writeUserData(userId, gameVersion)
@@ -1242,15 +1231,17 @@ export class ChallengeService extends ChallengeRegistry {
                 parentLocationIdLowerCase
             ]
 
-        locationData.Xp += masteryXp
-        locationData.Level = Math.max(
-            1,
-            Math.min(
-                Math.floor(locationData.Xp / 6000) + 1,
-                masteryData.MaxLevel || 20,
-            ),
+        const maxLevel = masteryData.MaxLevel || 20
+
+        locationData.Xp = Math.min(
+            0,
+            Math.max(locationData.Xp + masteryXp, xpRequiredForLevel(maxLevel)),
         )
 
+        locationData.Level = Math.max(
+            1,
+            Math.min(Math.floor(locationData.Xp / 6000) + 1, maxLevel),
+        )
         return true
     }
 
