@@ -39,7 +39,7 @@ import {
     getSubLocationByName,
     getSubLocationFromContract,
 } from "../contracts/dataGen"
-import { log, logDebug, LogLevel } from "../loggingInterop"
+import { log, LogLevel } from "../loggingInterop"
 import {
     parseContextListeners,
     ParsedContextListenerInfo,
@@ -1180,17 +1180,6 @@ export class ChallengeService extends ChallengeRegistry {
                 userData,
             )
         }
-
-        logDebug(
-            challenge.Definition.Scope,
-            userData.Extensions.ChallengeProgression
-                ? userData.Extensions.ChallengeProgression[challenge.Id]
-                : undefined,
-            userData.Extensions.progression.Locations[
-                "location_parent_coastaltown"
-            ],
-            userData.Extensions.progression.PlayerProfileXP,
-        )
 
         writeUserData(userId, gameVersion)
 

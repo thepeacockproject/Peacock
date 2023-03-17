@@ -63,12 +63,6 @@ import {
 } from "./types/score"
 import { MasteryData } from "./types/mastery"
 
-interface IGetLevelInfoResult {
-    level: number
-    completion: number
-    xpLeft: number
-}
-
 /**
  * Checks the criteria of each possible play-style, ranking them by scoring.
  *
@@ -222,7 +216,7 @@ export function calculateXp(
         const challenge =
             controller.challengeService.getChallengeById(challengeId)
 
-        if (!challenge || !challenge.Xp || !challenge.Name.includes("GLOBAL")) {
+        if (!challenge || !challenge.Xp || !challenge.Tags.includes("global")) {
             continue
         }
 
@@ -235,16 +229,14 @@ export function calculateXp(
             ChallengeName: challenge.Name,
             ChallengeImageUrl: challenge.ImageName,
             ChallengeDescription: challenge.Description,
-            XPGain: challengeXp,
+            //TODO: We probably have to use Repeatable here somehow to determine when to "repeat" a challenge.
+            XPGain: challengeXp * data.timesCompleted,
             IsGlobal: true,
             IsActionReward: challenge.Tags.includes("actionreward"),
             Drops: challenge.Drops,
         }
 
-        //NOTE: Official adds the same challenge multiple times
-        for (let i = 0; i < data.timesCompleted; i++) {
-            completedChallenges.push(challengeData)
-        }
+        completedChallenges.push(challengeData)
     }
 
     return {
@@ -496,39 +488,6 @@ export function calculateScore(
     }
 }
 
-function getLevelInfo(
-    levelInfo: number[],
-    targetXp: number,
-): IGetLevelInfoResult {
-    let level = 1
-    let completion = 0
-    let xpLeft = 0
-
-    for (let i = level; i <= levelInfo.length; i++) {
-        if (i === levelInfo.length) {
-            level = levelInfo.length
-            completion = 1
-            xpLeft = 0
-
-            break
-        } else if (targetXp <= levelInfo[i]) {
-            level = i
-            completion =
-                (targetXp - levelInfo[i - 1]) /
-                (levelInfo[i] - levelInfo[i - 1])
-            xpLeft = levelInfo[i] - targetXp
-
-            break
-        }
-    }
-
-    return {
-        level: level,
-        completion: completion,
-        xpLeft: xpLeft,
-    }
-}
-
 export async function missionEnd(
     req: RequestWithJwt<MissionEndRequestQuery>,
     res: Response,
@@ -638,7 +597,7 @@ export async function missionEnd(
             {
                 type: ChallengeFilterType.None,
             },
-            parent,
+            locationParentId,
         )
     const contractChallenges =
         controller.challengeService.getChallengesForContract(
@@ -682,13 +641,13 @@ export async function missionEnd(
     //Calculate XP based on all challenges, including the global ones.
     const calculateXpResult: CalculateXpResult = calculateXp(sessionDetails)
     let justTickedChallenges = 0
-    let earnedMasteryXp = 0
+    let masteryXpGain = 0
 
     Object.values(contractChallenges)
         .flat()
         .filter((challengeData) => {
             return (
-                !challengeData.Name.includes("GLOBAL") &&
+                !challengeData.Tags.includes("global") &&
                 controller.challengeService.fastGetIsUnticked(
                     userData,
                     challengeData.Id,
@@ -705,7 +664,7 @@ export async function missionEnd(
 
             justTickedChallenges++
 
-            earnedMasteryXp += challengeData.Rewards.MasteryXP
+            masteryXpGain += challengeData.Rewards.MasteryXP
 
             calculateXpResult.completedChallenges.push({
                 ChallengeId: challengeData.Id,
@@ -720,9 +679,14 @@ export async function missionEnd(
             })
         })
 
+    //NOTE: Official doesn't seem to make up it's mind whether or not XPGain is the same for both Mastery and Profile...
+    const totalXpGain = calculateXpResult.xp + masteryXpGain
+
     //Calculate the old location progression based on the current one and process it
-    const oldLocationXp = locationProgressionData.Xp - earnedMasteryXp
+    const oldLocationXp = locationProgressionData.Xp - masteryXpGain
+    const oldLocationLevel = Math.floor(oldLocationXp / 6000) + 1
     const newLocationXp = locationProgressionData.Xp
+    const newLocationLevel = Math.floor(newLocationXp / 6000) + 1
 
     const masteryData =
         controller.masteryService.getMasteryPackage(locationParentId)
@@ -735,16 +699,6 @@ export async function missionEnd(
         },
     )
 
-    const oldLocationLevelInfo: IGetLevelInfoResult = getLevelInfo(
-        locationLevelInfo,
-        oldLocationXp,
-    )
-
-    const newLocationLevelInfo: IGetLevelInfoResult = getLevelInfo(
-        locationLevelInfo,
-        newLocationXp,
-    )
-
     const completionData = generateCompletionData(
         contractData.Metadata.Location,
         req.jwt.unique_name,
@@ -752,20 +706,28 @@ export async function missionEnd(
     )
 
     //Calculate the old playerprofile progression based on the current one and process it
-    const newPlayerProfileLevel =
-        Math.floor(playerProgressionData.Total / 6000) + 1
+    const oldPlayerProfileXp = playerProgressionData.Total - totalXpGain
+    const oldPlayerProfileLevel = Math.floor(oldPlayerProfileXp / 6000) + 1
     const newPlayerProfileXp = playerProgressionData.Total
+    const newPlayerProfileLevel = Math.floor(newPlayerProfileXp / 6000) + 1
 
     //NOTE: We assume the ProfileLevel is currently already up-to-date
-    const profileLevelInfo = [
-        xpRequiredForLevel(newPlayerProfileLevel),
-        xpRequiredForLevel(newPlayerProfileLevel + 1),
-    ]
+    const profileLevelInfo = []
+
+    for (
+        let level = oldPlayerProfileLevel;
+        level <= newPlayerProfileLevel + 1;
+        level++
+    ) {
+        profileLevelInfo.push(xpRequiredForLevel(level))
+    }
+
+    const profileLevelInfoOffset = oldPlayerProfileLevel - 1
 
     //Drops
     let drops: MissionEndDrop[] = []
 
-    if (newLocationLevelInfo.level - oldLocationLevelInfo.level > 0) {
+    if (newLocationLevel - oldLocationLevel > 0) {
         const masteryData =
             controller.masteryService.getMasteryDataForDestination(
                 locationParentId,
@@ -774,9 +736,7 @@ export async function missionEnd(
             ) as MasteryData[]
 
         drops = masteryData[0].Drops.filter(
-            (e) =>
-                e.Level > oldLocationLevelInfo.level &&
-                e.Level <= newLocationLevelInfo.level,
+            (e) => e.Level > oldLocationLevel && e.Level <= newLocationLevel,
         ).map((e) => {
             return {
                 Unlockable: e.Unlockable,
@@ -821,19 +781,19 @@ export async function missionEnd(
             LocationProgression: {
                 LevelInfo: locationLevelInfo,
                 //TODO: Never larger than max level mastery XP
-                XP: newLocationXp,
-                Level: newLocationLevelInfo.level,
-                Completion: newLocationLevelInfo.completion,
+                XP: completionData.XP,
+                Level: completionData.Level,
+                Completion: completionData.Completion,
                 //TODO: Is always 0 if max mastery is reached
-                XPGain: earnedMasteryXp,
+                XPGain: masteryXpGain,
                 HideProgression: masteryData.HideProgression || false,
             },
             ProfileProgression: {
                 LevelInfo: profileLevelInfo,
-                LevelInfoOffset: newPlayerProfileLevel - 1,
+                LevelInfoOffset: profileLevelInfoOffset,
                 XP: newPlayerProfileXp,
                 Level: newPlayerProfileLevel,
-                XPGain: calculateXpResult.xp,
+                XPGain: totalXpGain,
             },
             Challenges: calculateXpResult.completedChallenges,
             Drops: drops,
@@ -850,11 +810,11 @@ export async function missionEnd(
         },
         ScoreOverview: {
             //TODO: Never larger than max level mastery XP
-            XP: newLocationXp,
-            Level: newLocationLevelInfo.level,
-            Completion: newLocationLevelInfo.completion,
-            //TODO: Is always 0 if max mastery is reached
-            XPGain: earnedMasteryXp,
+            XP: completionData.XP,
+            Level: completionData.Level,
+            Completion: completionData.Completion,
+            //TODO: Is always 0?
+            XPGain: 0,
             ChallengesCompleted: justTickedChallenges,
             LocationHideProgression: masteryData.HideProgression || false,
             ProdileId1: req.jwt.unique_name,
