@@ -35,6 +35,7 @@ import { getConfig } from "./configSwizzleManager"
 import { _theLastYardbirdScpc, controller } from "./controller"
 import type {
     ContractSession,
+    GameChanger,
     GameVersion,
     MissionManifest,
     MissionManifestObjective,
@@ -76,6 +77,7 @@ import { MasteryData } from "./types/mastery"
  * @param session The contract session.
  * @returns The play-styles, ranked from best fit to worst fit.
  */
+//TODO: This could use an update with more playstyles
 export function calculatePlaystyle(
     session: Partial<{ kills: Set<RatingKill> }>,
 ): Playstyle[] {
@@ -728,11 +730,89 @@ export async function missionEnd(
 
     const profileLevelInfoOffset = oldPlayerProfileLevel - 1
 
+    //Time
+    const timeTotal: Seconds =
+        (sessionDetails.timerEnd as number) -
+        (sessionDetails.timerStart as number)
+
+    //Playstyle
+    const calculatedPlaystyles = calculatePlaystyle(sessionDetails)
+
+    let playstyle =
+        calculatedPlaystyles[0].Score !== 0
+            ? calculatedPlaystyles[0]
+            : undefined
+
+    //Calculate score and summary
+    const calculateScoreResult = calculateScore(
+        req.gameVersion,
+        req.query.contractSessionId,
+        sessionDetails,
+        contractData,
+        timeTotal,
+    )
+
     //Evergreen
-    const evergreenData: MissionEndEvergreen = <MissionEndEvergreen>{}
+    const evergreenData: MissionEndEvergreen = <MissionEndEvergreen>{
+        PayoutsCompleted: [],
+        PayoutsFailed: [],
+    }
 
     if (contractData.Metadata.Type === "evergreen") {
-        evergreenData.Payout = sessionDetails.evergreen.payout
+        const gameChangerProperties = getConfig<Record<string, GameChanger>>(
+            "EvergreenGameChangerProperties",
+            true,
+        )
+
+        let totalPayout = 0
+
+        //ASSUMPTION: All payout objectives have a "condition"-category objective
+        //and a "secondary"-category objective with a "MyPayout" in the context.
+        Object.keys(gameChangerProperties).forEach((e) => {
+            const gameChanger = gameChangerProperties[e]
+
+            const conditionObjective = gameChanger.Objectives.find(
+                (e) => e.Category === "condition",
+            )
+
+            const secondaryObjective = gameChanger.Objectives.find(
+                (e) =>
+                    e.Category === "secondary" &&
+                    e.Definition.Context["MyPayout"],
+            )
+
+            if (
+                conditionObjective &&
+                secondaryObjective &&
+                sessionDetails.objectiveStates.get(conditionObjective.Id) ===
+                    "Success"
+            ) {
+                const payoutObjective = {
+                    Name: gameChanger.Name,
+                    Payout: parseInt(
+                        sessionDetails.objectiveContexts.get(
+                            secondaryObjective.Id,
+                        )["MyPayout"] || 0,
+                    ),
+                    IsPrestige: gameChanger.IsPrestigeObjective || false,
+                }
+
+                if (
+                    sessionDetails.objectiveStates.get(
+                        secondaryObjective.Id,
+                    ) === "Success"
+                ) {
+                    totalPayout += payoutObjective.Payout
+                    evergreenData.PayoutsCompleted.push(payoutObjective)
+                } else {
+                    evergreenData.PayoutsFailed.push(payoutObjective)
+                }
+            }
+        })
+
+        logDebug("Payout", sessionDetails.evergreen.payout, totalPayout)
+
+        evergreenData.Payout = totalPayout
         evergreenData.EndStateEventName =
             sessionDetails.evergreen.scoringScreenEndState
 
@@ -760,23 +840,17 @@ export async function missionEnd(
         )
         newLocationLevel = locationProgressionData.Level
 
-        //Debug
-        logDebug(
-            sessionDetails.failedObjectives,
-            sessionDetails.completedObjectives,
-            sessionDetails.objectiveContexts,
-            sessionDetails.objectiveStates,
-        )
+        //Override the silent assassin rank
+        if (calculateScoreResult.silentAssassin) {
+            playstyle = {
+                Id: "595f6ff1-85bf-4e4f-a9ee-76038a455648",
+                Name: "UI_PLAYSTYLE_ICA_STEALTH_ASSASSIN",
+                Type: "STEALTH_ASSASSIN",
+                Score: 0,
+            }
+        }
 
-        evergreenData.PayoutsCompleted = [
-            {
-                Name: "UI_CONTRACT_EVERGREEN_ELIMINATIONPAYOUT_TITLE",
-                Payout: 0,
-                IsPrestige: false,
-            },
-        ]
-
-        evergreenData.PayoutsFailed = []
+        calculateScoreResult.silentAssassin = false
     }
 
     //Drops
@@ -798,26 +872,6 @@ export async function missionEnd(
             }
         })
     }
-
-    //Time
-    const timeTotal: Seconds =
-        (sessionDetails.timerEnd as number) -
-        (sessionDetails.timerStart as number)
-
-    //Playstyle
-    const calculatedPlaystyles = calculatePlaystyle(sessionDetails)
-
-    const playstyle =
-        calculatedPlaystyles[0].Score !== 0 ? calculatePlaystyle[0] : undefined
-
-    //Calculate score and summary
-    const calculateScoreResult = calculateScore(
-        req.gameVersion,
-        req.query.contractSessionId,
-        sessionDetails,
-        contractData,
-        timeTotal,
-    )
 
     //Setup the result
     const result: MissionEndResponse = {
@@ -974,8 +1028,6 @@ export async function missionEnd(
         }
     }
     //#endregion
-
-    logDebug(result)
 
     res.json({
         template:

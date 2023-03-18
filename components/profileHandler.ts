@@ -547,21 +547,41 @@ profileRouter.post(
             })
         }
 
+        const unlockAllShortcuts = getFlag("gameplayUnlockAllShortcuts")
+
         for (const challenge of challenges) {
-            challenge.Progression = Object.assign(
-                {
+            if (
+                unlockAllShortcuts &&
+                challenge.Challenge.Tags?.includes("shortcut")
+            ) {
+                challenge.Progression = {
                     ChallengeId: challenge.Challenge.Id,
                     ProfileId: req.jwt.unique_name,
-                    Completed: false,
-                    State: {},
-                    ETag: `W/"datetime'${encodeURIComponent(
-                        new Date().toISOString(),
-                    )}'"`,
-                    CompletedAt: null,
+                    Completed: true,
+                    Ticked: true,
+                    State: {
+                        CurrentState: "Success",
+                    },
+                    // @ts-expect-error typescript hates dates
+                    CompletedAt: new Date(new Date() - 10).toISOString(),
                     MustBeSaved: false,
-                },
-                challenge.Progression,
-            )
+                }
+            } else {
+                challenge.Progression = Object.assign(
+                    {
+                        ChallengeId: challenge.Challenge.Id,
+                        ProfileId: req.jwt.unique_name,
+                        Completed: false,
+                        State: {},
+                        ETag: `W/"datetime'${encodeURIComponent(
+                            new Date().toISOString(),
+                        )}'"`,
+                        CompletedAt: null,
+                        MustBeSaved: false,
+                    },
+                    challenge.Progression,
+                )
+            }
         }
 
         res.json(challenges)
@@ -582,6 +602,7 @@ profileRouter.post(
                     ),
             },
             LevelsDefinition: {
+                //TODO: Add Evergreen LevelInfo here?
                 Location: [0],
                 PlayerProfile: {
                     Version: 1,

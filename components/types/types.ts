@@ -379,6 +379,18 @@ export interface PlayerProfileView {
         PlayerProfileXp: {
             Total: number
             Level: number
+            Seasons: {
+                Number: number
+                Locations: {
+                    LocationId: string
+                    Xp: number
+                    ActionXp: number
+                    LocationProgression?: {
+                        Level: number
+                        MaxLevel: number
+                    }
+                }[]
+            }[]
         }
     }
 }
@@ -425,6 +437,11 @@ export interface UserProfile {
                  * The total amount of XP a user has obtained.
                  */
                 Total: number
+                Sublocations: {
+                    Location: string
+                    Xp: number
+                    ActionXp: number
+                }[]
             }
             Locations: {
                 [location: string]: {
