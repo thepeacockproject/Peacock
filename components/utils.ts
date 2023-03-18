@@ -139,7 +139,7 @@ export function getMaxProfileLevel(gameVersion: GameVersion): number {
  * Minimum level returned is 1.
  */
 export function levelForXp(xp: number): number {
-    return Math.floor(xp / XP_PER_LEVEL) + 1
+    return Math.min(1, Math.floor(xp / XP_PER_LEVEL) + 1)
 }
 
 /**
@@ -150,6 +150,7 @@ export function xpRequiredForLevel(level: number): number {
     return Math.max(0, (level - 1) * XP_PER_LEVEL)
 }
 
+//TODO: Determine some mathematical function
 export const EVERGREEN_LEVEL_INFO: number[] = [
     0, 5000, 10000, 17000, 24000, 31000, 38000, 45000, 52000, 61000, 70000,
     79000, 88000, 97000, 106000, 115000, 124000, 133000, 142000, 154000, 166000,
