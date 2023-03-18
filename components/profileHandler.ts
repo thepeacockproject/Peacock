@@ -18,7 +18,13 @@
 
 import { Router } from "express"
 import path from "path"
-import { castUserProfile, nilUuid, uuidRegex } from "./utils"
+import {
+    castUserProfile,
+    getMaxProfileLevel,
+    nilUuid,
+    uuidRegex,
+    XP_PER_LEVEL,
+} from "./utils"
 import { json as jsonMiddleware } from "body-parser"
 import { getPlatformEntitlements } from "./platformEntitlements"
 import { contractSessions, newSession } from "./eventHandler"
@@ -542,36 +548,20 @@ profileRouter.post(
         }
 
         for (const challenge of challenges) {
-            // TODO: Add actual support for shortcut challenges
-            if (challenge.Challenge.Tags?.includes("shortcut")) {
-                challenge.Progression = {
+            challenge.Progression = Object.assign(
+                {
                     ChallengeId: challenge.Challenge.Id,
                     ProfileId: req.jwt.unique_name,
-                    Completed: true,
-                    Ticked: true,
-                    State: {
-                        CurrentState: "Success",
-                    },
-                    // @ts-expect-error typescript hates dates
-                    CompletedAt: new Date(new Date() - 10).toISOString(),
+                    Completed: false,
+                    State: {},
+                    ETag: `W/"datetime'${encodeURIComponent(
+                        new Date().toISOString(),
+                    )}'"`,
+                    CompletedAt: null,
                     MustBeSaved: false,
-                }
-            } else {
-                challenge.Progression = Object.assign(
-                    {
-                        ChallengeId: challenge.Challenge.Id,
-                        ProfileId: req.jwt.unique_name,
-                        Completed: false,
-                        State: {},
-                        ETag: `W/"datetime'${encodeURIComponent(
-                            new Date().toISOString(),
-                        )}'"`,
-                        CompletedAt: null,
-                        MustBeSaved: false,
-                    },
-                    challenge.Progression,
-                )
-            }
+                },
+                challenge.Progression,
+            )
         }
 
         res.json(challenges)
@@ -595,8 +585,8 @@ profileRouter.post(
                 Location: [0],
                 PlayerProfile: {
                     Version: 1,
-                    XpPerLevel: 6000,
-                    MaxLevel: 7500,
+                    XpPerLevel: XP_PER_LEVEL,
+                    MaxLevel: getMaxProfileLevel(req.gameVersion),
                 },
             },
         })
@@ -817,6 +807,13 @@ async function loadSession(
     }
     // Update challenge progression with the user's latest progression data
     for (const cid in sessionData.challengeContexts) {
+        // Make sure the ChallengeProgression is available, otherwise loading might fail!
+        userData.Extensions.ChallengeProgression[cid] ??= {
+            State: {},
+            Completed: false,
+            Ticked: false,
+        }
+
         const scope =
             controller.challengeService.getChallengeById(cid).Definition.Scope
         if (

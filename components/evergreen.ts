@@ -51,5 +51,11 @@ export async function getCpd(
         return defaultCPD
     }
 
+    //NOTE: Update the EvergreenLevel with the latest Mastery Level
+    //TODO: Get rid of hard-coded values
+    userData.Extensions.CPD[cpdID]["EvergreenLevel"] =
+        userData.Extensions.progression.Locations["location_parent_snug"]
+            ?.Level || 1
+
     return userData.Extensions.CPD[cpdID]
 }
