@@ -49,11 +49,21 @@ import {
     HandleEventOptions,
 } from "@peacockproject/statemachine-parser"
 import { SavedChallengeGroup } from "../types/challenges"
-import { fastClone, xpRequiredForLevel } from "../utils"
+import {
+    clampValue,
+    DEFAULT_MASTERY_MAXLEVEL,
+    evergreenLevelForXp,
+    fastClone,
+    getMaxProfileLevel,
+    levelForXp,
+    xpRequiredForEvergreenLevel,
+    xpRequiredForLevel,
+} from "../utils"
 import {
     ChallengeFilterOptions,
     ChallengeFilterType,
     filterChallenge,
+    inclusionDataCheck,
     mergeSavedChallengeGroups,
 } from "./challengeHelpers"
 import assert from "assert"
@@ -447,36 +457,10 @@ export class ChallengeService extends ChallengeRegistry {
         //TODO: Add this to getChallengesForContract without breaking the rest of Peacock?
         challengeGroups["global"] = this.getGroupByIdLoc(
             "global",
-            "global",
-        ).Challenges.filter((val) => {
-            if (!val.InclusionData) return true
-            let include = false
-            const incData = val.InclusionData
-
-            if (!include && incData.ContractIds) {
-                include = incData.ContractIds.includes(contractId)
-            }
-
-            if (!include && incData.ContractTypes) {
-                include = incData.ContractTypes.includes(
-                    contractJson.Metadata.Type,
-                )
-            }
-
-            if (!include && incData.Locations) {
-                include = incData.Locations.includes(
-                    contractJson.Metadata.Location,
-                )
-            }
-
-            if (!include && incData.GameModes) {
-                include = contractJson.Metadata.Gamemodes.some((r) =>
-                    incData.GameModes.includes(r),
-                )
-            }
-
-            return include
-        })
+            "GLOBAL",
+        ).Challenges.filter((val) =>
+            inclusionDataCheck(val.InclusionData, contractJson),
+        )
 
         const profile = getUserData(session.userId, session.gameVersion)
 
@@ -1152,9 +1136,6 @@ export class ChallengeService extends ChallengeRegistry {
         //TODO: Figure out what Base/Delta means. For now if Repeatable is set, we restart the challenge.
         if (challenge.Definition.Repeatable) {
             session.challengeContexts[challenge.Id].state = "Start"
-
-            //NOTE: We have to clear timers, otherwise the statemachine won't handle it properly.
-            session.challengeContexts[challenge.Id].timers = []
         }
 
         //NOTE: Official will always grant XP to both Location Mastery and the Player Profile
@@ -1162,13 +1143,7 @@ export class ChallengeService extends ChallengeRegistry {
             (challenge.Xp || 0) + (challenge.Rewards?.MasteryXP || 0)
 
         this.grantLocationMasteryXp(totalXp, session, userData)
-        this.grantUserXp(totalXp, userData)
-
-        if (challenge.Rewards?.MasteryXP > 0 || challenge.Xp > 0) {
-            log(LogLevel.DEBUG, `Granting user ${challenge.Xp} XP`)
-
-            //NOTE: Mastery XP is always added to the User XP as well
-        }
+        this.grantUserXp(totalXp, session, userData)
 
         writeUserData(userId, gameVersion)
 
@@ -1231,27 +1206,39 @@ export class ChallengeService extends ChallengeRegistry {
                 parentLocationIdLowerCase
             ]
 
-        const maxLevel = masteryData.MaxLevel || 20
+        const maxLevel = masteryData.MaxLevel || DEFAULT_MASTERY_MAXLEVEL
 
-        locationData.Xp = Math.min(
+        locationData.Xp = clampValue(
+            locationData.Xp + masteryXp,
             0,
-            Math.max(locationData.Xp + masteryXp, xpRequiredForLevel(maxLevel)),
+            contract.Metadata.Type !== "evergreen"
+                ? xpRequiredForLevel(maxLevel)
+                : xpRequiredForEvergreenLevel(maxLevel),
         )
 
-        locationData.Level = Math.max(
+        locationData.Level = clampValue(
+            contract.Metadata.Type !== "evergreen"
+                ? levelForXp(locationData.Xp)
+                : evergreenLevelForXp(locationData.Xp),
             1,
-            Math.min(Math.floor(locationData.Xp / 6000) + 1, maxLevel),
+            maxLevel,
         )
+
         return true
     }
 
-    grantUserXp(xp: number, userProfile: UserProfile): boolean {
+    grantUserXp(
+        xp: number,
+        contractSession: ContractSession,
+        userProfile: UserProfile,
+    ): boolean {
         const profileData = userProfile.Extensions.progression.PlayerProfileXP
 
         profileData.Total += xp
-        profileData.ProfileLevel = Math.max(
+        profileData.ProfileLevel = clampValue(
+            levelForXp(profileData.Total),
             1,
-            Math.min(Math.floor(profileData.Total / 6000) + 1, 7500),
+            getMaxProfileLevel(contractSession.gameVersion),
         )
 
         return true

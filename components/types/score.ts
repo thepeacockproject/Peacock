@@ -44,8 +44,14 @@ export interface MissionEndAchievedMastery {
 export interface MissionEndEvergreen {
     Payout: number
     EndStateEventName?: string
-    PayoutsCompleted: string[]
-    PayoutsFailed: string[]
+    PayoutsCompleted: MissionEndEvergreenPayout[]
+    PayoutsFailed: MissionEndEvergreenPayout[]
+}
+
+export interface MissionEndEvergreenPayout {
+    Name: string
+    Payout: number
+    IsPrestige: boolean
 }
 
 export interface MissionEndResponse {

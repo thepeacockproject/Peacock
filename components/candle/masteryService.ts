@@ -27,7 +27,12 @@ import {
     MasteryPackage,
 } from "../types/mastery"
 import { CompletionData, GameVersion, Unlockable } from "../types/types"
-import { xpRequiredForLevel } from "../utils"
+import {
+    clampValue,
+    DEFAULT_MASTERY_MAXLEVEL,
+    xpRequiredForLevel,
+    XP_PER_LEVEL,
+} from "../utils"
 
 export class MasteryService {
     private masteryData: Map<string, MasteryPackage> = new Map()
@@ -107,11 +112,12 @@ export class MasteryService {
                 lowerCaseLocationParentId
             ]
 
-        const maxLevel = masteryData.MaxLevel || 20
+        const maxLevel = masteryData.MaxLevel || DEFAULT_MASTERY_MAXLEVEL
 
-        const nextLevel: number = Math.max(
-            0,
-            Math.min(locationData.Level + 1, maxLevel),
+        const nextLevel: number = clampValue(
+            locationData.Level + 1,
+            1,
+            maxLevel,
         )
         const nextLevelXp: number = xpRequiredForLevel(nextLevel)
 
@@ -119,8 +125,8 @@ export class MasteryService {
             Level: locationData.Level,
             MaxLevel: maxLevel,
             XP: locationData.Xp,
-            //TODO: Ewww, magic values.
-            Completion: (6000 - (nextLevelXp - locationData.Xp)) / 6000,
+            Completion:
+                (XP_PER_LEVEL - (nextLevelXp - locationData.Xp)) / XP_PER_LEVEL,
             XpLeft: nextLevelXp - locationData.Xp,
             Id: masteryData.Id,
             SubLocationId: subLocationId,

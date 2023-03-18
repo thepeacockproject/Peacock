@@ -953,7 +953,7 @@ export class Controller {
                     },
                 ],
                 meta: {
-                    Location: "global",
+                    Location: "GLOBAL",
                 },
             })
         }

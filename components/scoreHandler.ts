@@ -18,10 +18,16 @@
 
 import type { Response } from "express"
 import {
+    clampValue,
+    DEFAULT_MASTERY_MAXLEVEL,
     difficultyToString,
+    evergreenLevelForXp,
+    EVERGREEN_LEVEL_INFO,
     handleAxiosError,
     isObjectiveActive,
+    levelForXp,
     PEACOCKVERSTRING,
+    xpRequiredForEvergreenLevel,
     xpRequiredForLevel,
 } from "./utils"
 import { contractSessions, getCurrentState } from "./eventHandler"
@@ -230,7 +236,7 @@ export function calculateXp(
             ChallengeImageUrl: challenge.ImageName,
             ChallengeDescription: challenge.Description,
             //TODO: We probably have to use Repeatable here somehow to determine when to "repeat" a challenge.
-            XPGain: challengeXp * data.timesCompleted,
+            XPGain: challengeXp,
             IsGlobal: true,
             IsActionReward: challenge.Tags.includes("actionreward"),
             Drops: challenge.Drops,
@@ -373,7 +379,7 @@ export function calculateScore(
         }
     }
 
-    totalScore = Math.max(totalScore, 0)
+    totalScore = Math.max(0, totalScore)
 
     scoringHeadlines.push(
         Object.assign(Object.assign({}, headlineObjTemplate), {
@@ -684,17 +690,16 @@ export async function missionEnd(
 
     //Calculate the old location progression based on the current one and process it
     const oldLocationXp = locationProgressionData.Xp - masteryXpGain
-    const oldLocationLevel = Math.floor(oldLocationXp / 6000) + 1
+    let oldLocationLevel = levelForXp(oldLocationXp)
     const newLocationXp = locationProgressionData.Xp
-    const newLocationLevel = Math.floor(newLocationXp / 6000) + 1
+    let newLocationLevel = levelForXp(newLocationXp)
 
     const masteryData =
         controller.masteryService.getMasteryPackage(locationParentId)
 
-    //TODO: Make a constant out of the 20
-    const maxLevel = masteryData.MaxLevel || 20
+    const maxLevel = masteryData.MaxLevel || DEFAULT_MASTERY_MAXLEVEL
 
-    const locationLevelInfo = Array.from({ length: maxLevel }, (_, i) => {
+    let locationLevelInfo = Array.from({ length: maxLevel }, (_, i) => {
         return xpRequiredForLevel(i + 1)
     })
 
@@ -706,9 +711,9 @@ export async function missionEnd(
 
     //Calculate the old playerprofile progression based on the current one and process it
     const oldPlayerProfileXp = playerProgressionData.Total - totalXpGain
-    const oldPlayerProfileLevel = Math.floor(oldPlayerProfileXp / 6000) + 1
+    const oldPlayerProfileLevel = levelForXp(oldPlayerProfileXp)
     const newPlayerProfileXp = playerProgressionData.Total
-    const newPlayerProfileLevel = Math.floor(newPlayerProfileXp / 6000) + 1
+    const newPlayerProfileLevel = levelForXp(newPlayerProfileXp)
 
     //NOTE: We assume the ProfileLevel is currently already up-to-date
     const profileLevelInfo = []
@@ -722,6 +727,57 @@ export async function missionEnd(
     }
 
     const profileLevelInfoOffset = oldPlayerProfileLevel - 1
+
+    //Evergreen
+    const evergreenData: MissionEndEvergreen = <MissionEndEvergreen>{}
+
+    if (contractData.Metadata.Type === "evergreen") {
+        evergreenData.Payout = sessionDetails.evergreen.payout
+        evergreenData.EndStateEventName =
+            sessionDetails.evergreen.scoringScreenEndState
+
+        locationLevelInfo = EVERGREEN_LEVEL_INFO
+
+        const currentLevelRequiredXp = xpRequiredForEvergreenLevel(
+            locationProgressionData.Level,
+        )
+        const nextLevelRequiredXp = clampValue(
+            xpRequiredForEvergreenLevel(locationProgressionData.Level + 1),
+            1,
+            100,
+        )
+
+        //Override completion data for proper animations
+        completionData.XP = locationProgressionData.Xp
+        completionData.Level = locationProgressionData.Level
+        completionData.Completion =
+            (currentLevelRequiredXp - locationProgressionData.Xp) /
+            (nextLevelRequiredXp - currentLevelRequiredXp)
+
+        //Override the location levels to trigger potential drops
+        oldLocationLevel = evergreenLevelForXp(
+            locationProgressionData.Xp - totalXpGain,
+        )
+        newLocationLevel = locationProgressionData.Level
+
+        //Debug
+        logDebug(
+            sessionDetails.failedObjectives,
+            sessionDetails.completedObjectives,
+            sessionDetails.objectiveContexts,
+            sessionDetails.objectiveStates,
+        )
+
+        evergreenData.PayoutsCompleted = [
+            {
+                Name: "UI_CONTRACT_EVERGREEN_ELIMINATIONPAYOUT_TITLE",
+                Payout: 0,
+                IsPrestige: false,
+            },
+        ]
+
+        evergreenData.PayoutsFailed = []
+    }
 
     //Drops
     let drops: MissionEndDrop[] = []
@@ -753,15 +809,6 @@ export async function missionEnd(
 
     const playstyle =
         calculatedPlaystyles[0].Score !== 0 ? calculatePlaystyle[0] : undefined
-
-    //Evergreen
-    let evergreenData: MissionEndEvergreen
-
-    if (contractData.Metadata.Type === "evergreen") {
-        evergreenData.Payout = sessionDetails.evergreen.payout
-        evergreenData.EndStateEventName =
-            sessionDetails.evergreen.scoringScreenEndState
-    }
 
     //Calculate score and summary
     const calculateScoreResult = calculateScore(
