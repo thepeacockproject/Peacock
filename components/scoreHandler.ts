@@ -706,7 +706,7 @@ export async function missionEnd(
     if (masteryData) {
         maxLevel = masteryData.MaxLevel || DEFAULT_MASTERY_MAXLEVEL
 
-        Array.from({ length: maxLevel }, (_, i) => {
+        locationLevelInfo = Array.from({ length: maxLevel }, (_, i) => {
             return xpRequiredForLevel(i + 1)
         })
     }
