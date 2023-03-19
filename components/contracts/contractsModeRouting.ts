@@ -29,7 +29,11 @@ import { controller, preserveContracts } from "../controller"
 import { createLocationsData } from "../menus/destinations"
 import { userAuths } from "../officialServerAuth"
 import { log, LogLevel } from "../loggingInterop"
-import { getRemoteService, contractCreationTutorialId } from "../utils"
+import {
+    getRemoteService,
+    contractCreationTutorialId,
+    getMaxProfileLevel,
+} from "../utils"
 
 export function contractsModeHome(req: RequestWithJwt, res: Response): void {
     const contractsHomeTemplate = getConfig("ContractsTemplate", false)
@@ -58,7 +62,7 @@ export function contractsModeHome(req: RequestWithJwt, res: Response): void {
                 XP: userData.Extensions.progression.PlayerProfileXP.Total,
                 Level: userData.Extensions.progression.PlayerProfileXP
                     .ProfileLevel,
-                MaxLevel: 7500,
+                MaxLevel: getMaxProfileLevel(req.gameVersion),
             },
         },
     })

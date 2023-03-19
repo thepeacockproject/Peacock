@@ -20,6 +20,7 @@ import { Response, Router } from "express"
 import {
     contractCreationTutorialId,
     gameDifficulty,
+    getMaxProfileLevel,
     PEACOCKVERSTRING,
     unlockOrderComparer,
     uuidRegex,
@@ -322,7 +323,7 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
                 XP: userdata.Extensions.progression.PlayerProfileXP.Total,
                 Level: userdata.Extensions.progression.PlayerProfileXP
                     .ProfileLevel,
-                MaxLevel: 7500,
+                MaxLevel: getMaxProfileLevel(req.gameVersion),
             },
         },
     })
@@ -1812,6 +1813,7 @@ menuDataRouter.post(
     createLoadSaveMiddleware("SaveMenuTemplate"),
 )
 
+//TODO: Add statistics
 menuDataRouter.get("/PlayerProfile", (req: RequestWithJwt, res) => {
     const playerProfilePage = getConfig<PlayerProfileView>(
         "PlayerProfilePage",
@@ -1823,6 +1825,28 @@ menuDataRouter.get("/PlayerProfile", (req: RequestWithJwt, res) => {
         userProfile.Extensions.progression.PlayerProfileXP.Total
     playerProfilePage.data.PlayerProfileXp.Level =
         userProfile.Extensions.progression.PlayerProfileXP.ProfileLevel
+
+    const subLocationMap = new Map(
+        userProfile.Extensions.progression.PlayerProfileXP.Sublocations.map(
+            (obj) => [obj.Location, obj],
+        ),
+    )
+
+    playerProfilePage.data.PlayerProfileXp.Seasons.forEach((e) =>
+        e.Locations.forEach((f) => {
+            const subLocationData = subLocationMap.get(f.LocationId)
+
+            f.Xp = subLocationData?.Xp || 0
+            f.ActionXp = subLocationData?.ActionXp || 0
+
+            if (f.LocationProgression) {
+                f.LocationProgression.Level =
+                    userProfile.Extensions.progression.Locations[
+                        f.LocationId.toLocaleLowerCase()
+                    ]?.Level || 1
+            }
+        }),
+    )
 
     res.json(playerProfilePage)
 })
@@ -1849,7 +1873,7 @@ menuDataRouter.get("/GetPlayerProfileXpData", (req: RequestWithJwt, res) => {
                 XP: userData.Extensions.progression.PlayerProfileXP.Total,
                 Level: userData.Extensions.progression.PlayerProfileXP
                     .ProfileLevel,
-                MaxLevel: 7500,
+                MaxLevel: getMaxProfileLevel(req.gameVersion),
             },
         },
     })
