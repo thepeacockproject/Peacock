@@ -1190,10 +1190,6 @@ export class ChallengeService extends ChallengeRegistry {
         const masteryData =
             this.controller.masteryService.getMasteryPackage(parentLocationId)
 
-        if (!masteryData) {
-            return false
-        }
-
         const parentLocationIdLowerCase = parentLocationId.toLocaleLowerCase()
 
         //Update the Location data
@@ -1209,23 +1205,25 @@ export class ChallengeService extends ChallengeRegistry {
                 parentLocationIdLowerCase
             ]
 
-        const maxLevel = masteryData.MaxLevel || DEFAULT_MASTERY_MAXLEVEL
+        const maxLevel = masteryData?.MaxLevel || DEFAULT_MASTERY_MAXLEVEL
 
-        locationData.Xp = clampValue(
-            locationData.Xp + masteryXp + actionXp,
-            0,
-            contract.Metadata.Type !== "evergreen"
-                ? xpRequiredForLevel(maxLevel)
-                : xpRequiredForEvergreenLevel(maxLevel),
-        )
+        if (masteryData) {
+            locationData.Xp = clampValue(
+                locationData.Xp + masteryXp + actionXp,
+                0,
+                contract.Metadata.Type !== "evergreen"
+                    ? xpRequiredForLevel(maxLevel)
+                    : xpRequiredForEvergreenLevel(maxLevel),
+            )
 
-        locationData.Level = clampValue(
-            contract.Metadata.Type !== "evergreen"
-                ? levelForXp(locationData.Xp)
-                : evergreenLevelForXp(locationData.Xp),
-            1,
-            maxLevel,
-        )
+            locationData.Level = clampValue(
+                contract.Metadata.Type !== "evergreen"
+                    ? levelForXp(locationData.Xp)
+                    : evergreenLevelForXp(locationData.Xp),
+                1,
+                maxLevel,
+            )
+        }
 
         //Update the SubLocation data
         const profileData = userProfile.Extensions.progression.PlayerProfileXP
@@ -1244,13 +1242,16 @@ export class ChallengeService extends ChallengeRegistry {
             profileData.Sublocations.push(foundSubLocation)
         }
 
-        foundSubLocation.Xp = clampValue(
-            foundSubLocation.Xp + masteryXp,
-            0,
-            contract.Metadata.Type !== "evergreen"
-                ? xpRequiredForLevel(maxLevel)
-                : xpRequiredForEvergreenLevel(maxLevel),
-        )
+        if (masteryData) {
+            foundSubLocation.Xp = clampValue(
+                foundSubLocation.Xp + masteryXp,
+                0,
+                contract.Metadata.Type !== "evergreen"
+                    ? xpRequiredForLevel(maxLevel)
+                    : xpRequiredForEvergreenLevel(maxLevel),
+            )
+        }
+
         foundSubLocation.ActionXp += actionXp
 
         //Update the EvergreenLevel with the latest Mastery Level

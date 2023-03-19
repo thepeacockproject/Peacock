@@ -18,6 +18,7 @@
 
 export type MissionEndRequestQuery = Partial<{
     contractSessionId: string
+    masteryUnlockableId?: string
 }>
 
 /**
