@@ -74,6 +74,14 @@ export interface MissionEndResponse {
         Challenges: MissionEndChallenge[]
         Drops: MissionEndDrop[]
         OpportunityRewards: unknown[] //?
+        UnlockableProgression?: {
+            LevelInfo: number[]
+            XP: number
+            Level: number
+            XPGain: number
+            Id: string
+            Name: string
+        }
         CompletionData: CompletionData
         ChallengeCompletion: {
             ChallengesCount: number
@@ -97,11 +105,11 @@ export interface MissionEndResponse {
         ChallengesCompleted: number
         LocationHideProgression: boolean
         ProdileId1?: string
-        stars: number
+        stars?: number
         ScoreDetails: {
             Headlines: ScoringHeadline[]
         }
-        ContractScore: {
+        ContractScore?: {
             Total: number
             AchievedMasteries: MissionEndAchievedMastery[]
             AwardedBonuses: ScoringBonus[]
@@ -110,6 +118,18 @@ export interface MissionEndResponse {
             StarCount: number
             FailedBonuses: ScoringBonus[]
             SilentAssassin: boolean
+        }
+        SniperChallengeScore?: {
+            FinalScore: number
+            BaseScore: number
+            TotalChallengeMultiplier: number
+            BulletsMissed: number
+            BulletsMissedPenalty: number
+            TimeTaken: number
+            TimeBonus: number
+            SilentAssassin: boolean
+            SilentAssassinBonus: number
+            SilentAssassinMultiplier: number
         }
         SilentAssassin: boolean
         NewRank: number

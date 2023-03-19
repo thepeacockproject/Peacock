@@ -139,7 +139,7 @@ export function getMaxProfileLevel(gameVersion: GameVersion): number {
  * Minimum level returned is 1.
  */
 export function levelForXp(xp: number): number {
-    return Math.min(1, Math.floor(xp / XP_PER_LEVEL) + 1)
+    return Math.max(1, Math.floor(xp / XP_PER_LEVEL) + 1)
 }
 
 /**
@@ -181,6 +181,13 @@ export function evergreenLevelForXp(xp: number): number {
 export function xpRequiredForEvergreenLevel(level: number): number {
     return EVERGREEN_LEVEL_INFO[level - 1]
 }
+
+//TODO: Determine some mathematical function
+export const SNIPER_LEVEL_INFO: number[] = [
+    0, 50000, 150000, 500000, 1000000, 1700000, 2500000, 3500000, 5000000,
+    7000000, 9500000, 12500000, 16000000, 20000000, 25000000, 31000000,
+    38000000, 47000000, 58000000, 70000000,
+]
 
 /**
  * Clamps the given value between a minimum and maximum value

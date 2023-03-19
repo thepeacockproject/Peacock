@@ -27,6 +27,7 @@ import {
     isObjectiveActive,
     levelForXp,
     PEACOCKVERSTRING,
+    SNIPER_LEVEL_INFO,
     xpRequiredForEvergreenLevel,
     xpRequiredForLevel,
 } from "./utils"
@@ -699,11 +700,16 @@ export async function missionEnd(
     const masteryData =
         controller.masteryService.getMasteryPackage(locationParentId)
 
-    const maxLevel = masteryData.MaxLevel || DEFAULT_MASTERY_MAXLEVEL
+    let maxLevel = 1
+    let locationLevelInfo = [0]
 
-    let locationLevelInfo = Array.from({ length: maxLevel }, (_, i) => {
-        return xpRequiredForLevel(i + 1)
-    })
+    if (masteryData) {
+        maxLevel = masteryData.MaxLevel || DEFAULT_MASTERY_MAXLEVEL
+
+        Array.from({ length: maxLevel }, (_, i) => {
+            return xpRequiredForLevel(i + 1)
+        })
+    }
 
     const completionData = generateCompletionData(
         contractData.Metadata.Location,
@@ -751,6 +757,17 @@ export async function missionEnd(
         contractData,
         timeTotal,
     )
+
+    let contractScore = {
+        Total: calculateScoreResult.scoreWithBonus,
+        AchievedMasteries: calculateScoreResult.achievedMasteries,
+        AwardedBonuses: calculateScoreResult.awardedBonuses,
+        TotalNoMultipliers: calculateScoreResult.score,
+        TimeUsedSecs: timeTotal,
+        StarCount: calculateScoreResult.stars,
+        FailedBonuses: calculateScoreResult.failedBonuses,
+        SilentAssassin: calculateScoreResult.silentAssassin,
+    }
 
     //Evergreen
     const evergreenData: MissionEndEvergreen = <MissionEndEvergreen>{
@@ -851,6 +868,120 @@ export async function missionEnd(
         }
 
         calculateScoreResult.silentAssassin = false
+
+        //Overide the calculated score
+        calculateScoreResult.stars = undefined
+    }
+
+    //Sniper
+    let unlockableProgression = undefined
+    let sniperChallengeScore = undefined
+
+    //TODO: Calculate proper Sniper XP and Score
+    //TODO: Move most of this to its own calculateSniperScore function
+    if (contractData.Metadata.Type === "sniper") {
+        const sniperLoadouts = getConfig("SniperLoadouts", true)
+
+        const mainUnlockableProperties =
+            sniperLoadouts[contractData.Metadata.Location][
+                req.query.masteryUnlockableId
+            ].MainUnlockable.Properties
+
+        unlockableProgression = {
+            LevelInfo: SNIPER_LEVEL_INFO,
+            XP: SNIPER_LEVEL_INFO[SNIPER_LEVEL_INFO.length - 1],
+            Level: SNIPER_LEVEL_INFO.length,
+            XPGain: 0,
+            Id: mainUnlockableProperties.ProgressionKey,
+            Name: mainUnlockableProperties.Name,
+        }
+
+        sniperChallengeScore = {
+            FinalScore: 112000,
+            BaseScore: 112000,
+            TotalChallengeMultiplier: 1.0,
+            BulletsMissed: 0,
+            BulletsMissedPenalty: 0,
+            TimeTaken: timeTotal,
+            TimeBonus: 0,
+            SilentAssassin: false,
+            SilentAssassinBonus: 0,
+            SilentAssassinMultiplier: 1.0,
+        }
+
+        //Override the contract score
+        contractScore = undefined
+
+        //Override the playstyle
+        playstyle = undefined
+
+        //Override the calculated score
+        const timeMinutes = Math.floor(timeTotal / 60)
+        const timeSeconds = Math.floor(timeTotal % 60)
+        const timeMiliseconds = Math.floor(
+            ((timeTotal % 60) - timeSeconds) * 1000,
+        )
+
+        const defaultHeadline: Partial<ScoringHeadline> = {
+            type: "summary",
+            count: "",
+            scoreIsFloatingType: false,
+            fractionNumerator: 0,
+            fractionDenominator: 0,
+            scoreTotal: 0,
+        }
+
+        const headlines = [
+            {
+                headline: "UI_SNIPERSCORING_SUMMARY_BASESCORE",
+                scoreTotal: 112000,
+            },
+            {
+                headline: "UI_SNIPERSCORING_SUMMARY_BULLETS_MISSED_PENALTY",
+                scoreTotal: 0,
+            },
+            {
+                headline: "UI_SNIPERSCORING_SUMMARY_TIME_BONUS",
+                count: `${String(timeMinutes).padStart(2, "0")}:${String(
+                    timeSeconds,
+                ).padStart(2, "0")}.${String(timeMiliseconds).padStart(
+                    3,
+                    "0",
+                )}`,
+                scoreTotal: 0,
+            },
+            {
+                headline: "UI_SNIPERSCORING_SUMMARY_SILENT_ASSASIN_BONUS",
+                scoreTotal: 0,
+            },
+            {
+                headline: "UI_SNIPERSCORING_SUMMARY_SUBTOTAL",
+                scoreTotal: 112000,
+            },
+            {
+                headline: "UI_SNIPERSCORING_SUMMARY_CHALLENGE_MULTIPLIER",
+                scoreIsFloatingType: true,
+                scoreTotal: 1.0,
+            },
+            {
+                headline: "UI_SNIPERSCORING_SUMMARY_SILENT_ASSASIN_MULTIPLIER",
+                scoreIsFloatingType: true,
+                scoreTotal: 1.0,
+            },
+            {
+                type: "total",
+                headline: "UI_SNIPERSCORING_SUMMARY_TOTAL",
+                scoreTotal: 112000,
+            },
+        ]
+
+        calculateScoreResult.stars = undefined
+        calculateScoreResult.scoringHeadlines = headlines.map((e) => {
+            return Object.assign(
+                Object.assign({}, defaultHeadline),
+                e,
+            ) as ScoringHeadline
+        })
     }
 
     //Drops
@@ -864,13 +995,16 @@ export async function missionEnd(
                 req.jwt.unique_name,
             ) as MasteryData[]
 
-        drops = masteryData[0].Drops.filter(
-            (e) => e.Level > oldLocationLevel && e.Level <= newLocationLevel,
-        ).map((e) => {
-            return {
-                Unlockable: e.Unlockable,
-            }
-        })
+        if (masteryData) {
+            drops = masteryData[0].Drops.filter(
+                (e) =>
+                    e.Level > oldLocationLevel && e.Level <= newLocationLevel,
+            ).map((e) => {
+                return {
+                    Unlockable: e.Unlockable,
+                }
+            })
+        }
     }
 
     //Setup the result
@@ -883,7 +1017,7 @@ export async function missionEnd(
                 Completion: completionData.Completion,
                 //NOTE: Official makes this 0 if maximum Mastery is reached
                 XPGain: completionData.Level === maxLevel ? 0 : totalXpGain,
-                HideProgression: masteryData.HideProgression || false,
+                HideProgression: masteryData?.HideProgression || false,
             },
             ProfileProgression: {
                 LevelInfo: profileLevelInfo,
@@ -896,6 +1030,7 @@ export async function missionEnd(
             Drops: drops,
             //TODO: Do these exist? Appears to be optional.
             OpportunityRewards: [],
+            UnlockableProgression: unlockableProgression,
             CompletionData: completionData,
             ChallengeCompletion: locationChallengeCompletion,
             ContractChallengeCompletion: contractChallengeCompletion,
@@ -912,23 +1047,18 @@ export async function missionEnd(
             //NOTE: Official appears to always make this 0
             XPGain: 0,
             ChallengesCompleted: justTickedChallenges,
-            LocationHideProgression: masteryData.HideProgression || false,
+            LocationHideProgression: masteryData?.HideProgression || false,
             ProdileId1: req.jwt.unique_name,
             stars: calculateScoreResult.stars,
             ScoreDetails: {
                 Headlines: calculateScoreResult.scoringHeadlines,
             },
-            ContractScore: {
-                Total: calculateScoreResult.scoreWithBonus,
-                AchievedMasteries: calculateScoreResult.achievedMasteries,
-                AwardedBonuses: calculateScoreResult.awardedBonuses,
-                TotalNoMultipliers: calculateScoreResult.score,
-                TimeUsedSecs: timeTotal,
-                StarCount: calculateScoreResult.stars,
-                FailedBonuses: calculateScoreResult.failedBonuses,
-                SilentAssassin: calculateScoreResult.silentAssassin,
-            },
-            SilentAssassin: calculateScoreResult.silentAssassin,
+            ContractScore: contractScore,
+            SniperChallengeScore: sniperChallengeScore,
+            SilentAssassin:
+                contractScore?.SilentAssassin ||
+                sniperChallengeScore?.silentAssassin ||
+                false,
             //TODO: Use data from the leaderboard?
             NewRank: 1,
             RankCount: 1,
