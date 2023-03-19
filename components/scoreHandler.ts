@@ -51,7 +51,7 @@ import {
 import { getUserData, writeUserData } from "./databaseHandler"
 import axios from "axios"
 import { getFlag } from "./flags"
-import { log, logDebug, LogLevel } from "./loggingInterop"
+import { log, LogLevel } from "./loggingInterop"
 import {
     generateCompletionData,
     getSubLocationByName,
@@ -815,6 +815,7 @@ export async function missionEnd(
                 }
 
                 if (
+                    !sessionDetails.evergreen.failed &&
                     sessionDetails.objectiveStates.get(
                         secondaryObjective.Id,
                     ) === "Success"
@@ -826,8 +827,6 @@ export async function missionEnd(
                 }
             }
         })
-
-        logDebug("Payout", sessionDetails.evergreen.payout, totalPayout)
 
         evergreenData.Payout = totalPayout
         evergreenData.EndStateEventName =
@@ -995,7 +994,7 @@ export async function missionEnd(
                 req.jwt.unique_name,
             ) as MasteryData[]
 
-        if (masteryData) {
+        if (masteryData.length > 0) {
             drops = masteryData[0].Drops.filter(
                 (e) =>
                     e.Level > oldLocationLevel && e.Level <= newLocationLevel,
