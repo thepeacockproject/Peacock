@@ -451,6 +451,7 @@ export class ChallengeService extends ChallengeRegistry {
             session.evergreen = {
                 payout: 0,
                 scoringScreenEndState: undefined,
+                failed: false,
             }
         }
 
@@ -1242,16 +1243,7 @@ export class ChallengeService extends ChallengeRegistry {
             profileData.Sublocations.push(foundSubLocation)
         }
 
-        if (masteryData) {
-            foundSubLocation.Xp = clampValue(
-                foundSubLocation.Xp + masteryXp,
-                0,
-                contract.Metadata.Type !== "evergreen"
-                    ? xpRequiredForLevel(maxLevel)
-                    : xpRequiredForEvergreenLevel(maxLevel),
-            )
-        }
-
+        foundSubLocation.Xp += masteryXp
         foundSubLocation.ActionXp += actionXp
 
         //Update the EvergreenLevel with the latest Mastery Level

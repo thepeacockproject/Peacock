@@ -562,11 +562,21 @@ function saveEvents(
             session,
         )
 
+        if (event.Name.startsWith("ScoringScreenEndState_")) {
+            session.evergreen.scoringScreenEndState = event.Name
+
+            processed.push(event.Name)
+            response.push(process.hrtime.bigint().toString())
+
+            return
+        }
+
         // these events are important but may be fired after the timer is over
         const canGetAfterTimerOver = [
             "ContractEnd",
             "ObjectiveCompleted",
             "CpdSet",
+            "MissionFailed_Event",
         ]
 
         if (
@@ -580,15 +590,6 @@ function saveEvents(
         }
 
         if (handleMultiplayerEvent(event, session)) {
-            processed.push(event.Name)
-            response.push(process.hrtime.bigint().toString())
-
-            return
-        }
-
-        if (event.Name.startsWith("ScoringScreenEndState_")) {
-            session.evergreen.scoringScreenEndState = event.Name
-
             processed.push(event.Name)
             response.push(process.hrtime.bigint().toString())
 
@@ -795,6 +796,11 @@ function saveEvents(
                 session.evergreen.payout = (<Evergreen_Payout_DataC2SEvent>(
                     event
                 )).Value.Total_Payout
+                break
+            case "MissionFailed_Event":
+                if (session.evergreen) {
+                    session.evergreen.failed = true
+                }
                 break
             // Sinkhole events we don't care about
             case "ItemPickedUp":

@@ -273,6 +273,7 @@ export interface ContractSession {
     evergreen?: {
         payout: number
         scoringScreenEndState: string
+        failed: boolean
     }
 }
 
