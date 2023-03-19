@@ -35,6 +35,7 @@ import { getUserData, writeUserData } from "../databaseHandler"
 import {
     fastClone,
     getDefaultSuitFor,
+    getMaxProfileLevel,
     nilUuid,
     unlockOrderComparer,
 } from "../utils"
@@ -471,7 +472,7 @@ export async function planningView(
                 XP: userData.Extensions.progression.PlayerProfileXP.Total,
                 Level: userData.Extensions.progression.PlayerProfileXP
                     .ProfileLevel,
-                MaxLevel: 7500,
+                MaxLevel: getMaxProfileLevel(req.gameVersion),
             },
         },
     })

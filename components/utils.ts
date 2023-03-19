@@ -123,8 +123,77 @@ export function extractToken(
     next?.("router")
 }
 
+export const DEFAULT_MASTERY_MAXLEVEL = 20
+export const XP_PER_LEVEL = 6000
+
+export function getMaxProfileLevel(gameVersion: GameVersion): number {
+    if (gameVersion === "h3") {
+        return 7500
+    }
+
+    return 5000
+}
+
+/**
+ * Calculates the level for the given XP based on XP_PER_LEVEL.
+ * Minimum level returned is 1.
+ */
+export function levelForXp(xp: number): number {
+    return Math.max(1, Math.floor(xp / XP_PER_LEVEL) + 1)
+}
+
+/**
+ * Calculates the required XP for the given level based on XP_PER_LEVEL.
+ * Minimum XP returned is 0.
+ */
 export function xpRequiredForLevel(level: number): number {
-    return level * 6000 - 6000
+    return Math.max(0, (level - 1) * XP_PER_LEVEL)
+}
+
+//TODO: Determine some mathematical function
+export const EVERGREEN_LEVEL_INFO: number[] = [
+    0, 5000, 10000, 17000, 24000, 31000, 38000, 45000, 52000, 61000, 70000,
+    79000, 88000, 97000, 106000, 115000, 124000, 133000, 142000, 154000, 166000,
+    178000, 190000, 202000, 214000, 226000, 238000, 250000, 262000, 280000,
+    298000, 316000, 334000, 352000, 370000, 388000, 406000, 424000, 442000,
+    468000, 494000, 520000, 546000, 572000, 598000, 624000, 650000, 676000,
+    702000, 736000, 770000, 804000, 838000, 872000, 906000, 940000, 974000,
+    1008000, 1042000, 1082000, 1122000, 1162000, 1202000, 1242000, 1282000,
+    1322000, 1362000, 1402000, 1442000, 1492000, 1542000, 1592000, 1642000,
+    1692000, 1742000, 1792000, 1842000, 1892000, 1942000, 2002000, 2062000,
+    2122000, 2182000, 2242000, 2302000, 2362000, 2422000, 2482000, 2542000,
+    2692000, 2842000, 2992000, 3142000, 3292000, 3442000, 3592000, 3742000,
+    3892000, 4042000, 4192000,
+]
+
+export function evergreenLevelForXp(xp: number): number {
+    for (let i = 1; i < EVERGREEN_LEVEL_INFO.length; i++) {
+        if (xp >= EVERGREEN_LEVEL_INFO[i]) {
+            continue
+        }
+
+        return i
+    }
+
+    return 1
+}
+
+export function xpRequiredForEvergreenLevel(level: number): number {
+    return EVERGREEN_LEVEL_INFO[level - 1]
+}
+
+//TODO: Determine some mathematical function
+export const SNIPER_LEVEL_INFO: number[] = [
+    0, 50000, 150000, 500000, 1000000, 1700000, 2500000, 3500000, 5000000,
+    7000000, 9500000, 12500000, 16000000, 20000000, 25000000, 31000000,
+    38000000, 47000000, 58000000, 70000000,
+]
+
+/**
+ * Clamps the given value between a minimum and maximum value
+ */
+export function clampValue(value: number, min: number, max: number) {
+    return Math.max(min, Math.min(value, max))
 }
 
 export function castUserProfile(profile: UserProfile): UserProfile {
