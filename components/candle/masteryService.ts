@@ -178,7 +178,12 @@ export class MasteryService {
         gameVersion: GameVersion,
     ): CompletionData {
         return {
-            ...this.getCompletionData(userId, gameVersion, progressionKey, 20),
+            ...this.getCompletionData(
+                userId,
+                gameVersion,
+                progressionKey,
+                DEFAULT_MASTERY_MAXLEVEL,
+            ),
             Id: progressionKey,
             SubLocationId: "",
             HideProgression: false,
