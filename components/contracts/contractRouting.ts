@@ -336,17 +336,6 @@ contractRoutingRouter.post(
 )
 
 contractRoutingRouter.post(
-    "/ReportContract",
-    jsonMiddleware(),
-    (
-        req: RequestWithJwt<never, { contractId: string; reason: number }>,
-        res,
-    ) => {
-        res.json({})
-    },
-)
-
-contractRoutingRouter.post(
     "/GetContractOpportunities",
     jsonMiddleware(),
     (req: RequestWithJwt<never, { contractId: string }>, res) => {
