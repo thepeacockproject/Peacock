@@ -21,7 +21,13 @@ module.exports = {
         node: true,
         es2021: true,
     },
-    plugins: ["@typescript-eslint", "promise", "react-hooks", "prettier"],
+    plugins: [
+        "@typescript-eslint",
+        "promise",
+        "react-hooks",
+        "prettier",
+        "custom-rules",
+    ],
     extends: [
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended",
@@ -62,5 +68,6 @@ module.exports = {
         "promise/valid-params": "warn",
         "react-hooks/rules-of-hooks": "error",
         "react-hooks/exhaustive-deps": "warn",
+        "custom-rules/import-components": "error"
     },
 }
