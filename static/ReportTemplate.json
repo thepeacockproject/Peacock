@@ -1,0 +1,128 @@
+{
+    "buttons": [
+        {
+            "actiontype": "accept",
+            "actionlabel": "$loc UI_BUTTON_PROMPTS_ACTION_SELECT"
+        },
+        {
+            "actiontype": "cancel",
+            "actionlabel": "$loc UI_BUTTON_PROMPTS_ACTION_BACK"
+        }
+    ],
+    "onpageopened": {
+        "show-background-layers": {
+            "show-background": {
+                "$if $arg _isingame": { "$then": false, "$else": true }
+            },
+            "show-world-map": false,
+            "show-overlay": false
+        }
+    },
+    "body": {
+        "controller": "list",
+        "children": [
+            {
+                "controller": "list",
+                "id": "category_container",
+                "_comment": "the container that will be dynamically updated with the contents of the selected category"
+            },
+            {
+                "view": "menu3.containers.ScrollingTabsContainer",
+                "direction": "horizontal",
+                "data": {
+                    "direction": "horizontal",
+                    "topnavigation": {
+                        "title": "$arg contracttitle",
+                        "icon": "usercreated"
+                    }
+                },
+                "ncols": 10,
+                "_comment": "note the below two fields, the container tells the category controller which container is to be used",
+                "controller": "category",
+                "container": "category_container",
+                "children": [
+                    {
+                        "view": "menu3.basic.CategoryElement",
+                        "id": "category_background",
+                        "data": {
+                            "title": "$loc UI_MENU_PAGE_TITLE_REPORTING",
+                            "icon": "background"
+                        },
+                        "children": [
+                            {
+                                "view": "menu3.TextboxElement",
+                                "selectable": false,
+                                "_col": 1.25,
+                                "row": 1,
+                                "ncols": 4,
+                                "data": {
+                                    "text": "$loc UI_MENU_REPORT_HEADLINE_REASON",
+                                    "size": 40,
+                                    "color": "FFFFFF"
+                                }
+                            },
+                            {
+                                "controller": "list",
+                                "view": "menu3.containers.ScrollingListContainer",
+                                "row": 1.5,
+                                "nrows": 2.5,
+                                "ncols": 10,
+                                "direction": "vertical",
+                                "data": { "direction": "vertical" },
+                                "children": {
+                                    "$each $.Reasons": {
+                                        "view": "menu3.basic.OptionsListElement",
+                                        "data": {
+                                            "showningame": {
+                                                "$if $arg _isingame": {
+                                                    "$then": true,
+                                                    "$else": false
+                                                }
+                                            },
+                                            "title": "$loc $.Title",
+                                            "icon": "arrowright"
+                                        },
+                                        "actions": {
+                                            "accept": {
+                                                "show-modal": {
+                                                    "config": {
+                                                        "view": "menu3.modal.ModalDialogGeneric",
+                                                        "buttons": [
+                                                            "$loc UI_DIALOG_CONFIRM",
+                                                            {
+                                                                "label": "$loc UI_DIALOG_CANCEL",
+                                                                "type": "cancel"
+                                                            }
+                                                        ],
+                                                        "data": {
+                                                            "title": "$loc UI_DIALOG_REPORT_CONTRACT_TITLE",
+                                                            "description": "$loc UI_DIALOG_CONFIRM_REPORT_TEXT"
+                                                        }
+                                                    },
+                                                    "onbutton": [
+                                                        {
+                                                            "report-pressed": {
+                                                                "contractid": "$arg contractid",
+                                                                "reason": "$.Id"
+                                                            }
+                                                        },
+                                                        {
+                                                            "set-selected": {}
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "on-report-saved": {
+                                                "request-back": {}
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

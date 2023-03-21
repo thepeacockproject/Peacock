@@ -396,6 +396,11 @@ export interface PlayerProfileView {
     }
 }
 
+export interface ContractHistory {
+    LastPlayedAt?: number
+    Completed?: boolean
+}
+
 export interface UserProfile {
     Id: string
     LinkedAccounts: {
@@ -414,6 +419,9 @@ export interface UserProfile {
             [escalationId: string]: number
         }
         PeacockFavoriteContracts: string[]
+        PeacockPlayedContracts: {
+            [contractId: string]: ContractHistory
+        }
         PeacockCompletedEscalations: string[]
         Saves: {
             [slot: string]: {
@@ -464,6 +472,12 @@ export interface UserProfile {
         gamepersistentdata: {
             __stats?: unknown
             PersistentBool: Record<string, unknown>
+            HitsFilterType: {
+                // "all" / "completed" / "failed"
+                MyHistory: string
+                MyContracts: string
+                MyPlaylist: string
+            }
         }
         opportunityprogression: {
             [opportunityId: RepositoryId]: boolean

@@ -670,7 +670,6 @@ export class Controller {
         if (openCtJson) {
             return fastClone(openCtJson)
         }
-        log(LogLevel.TRACE, `Contract ${id} not found!`)
         return undefined
     }
 
