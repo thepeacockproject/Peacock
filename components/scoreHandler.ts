@@ -20,6 +20,7 @@ import type { Response } from "express"
 import {
     clampValue,
     DEFAULT_MASTERY_MAXLEVEL,
+    contractTypes,
     difficultyToString,
     evergreenLevelForXp,
     EVERGREEN_LEVEL_INFO,
@@ -571,6 +572,18 @@ export async function missionEnd(
             userData.Extensions.PeacockEscalations[eGroupId] += 1
         }
 
+        writeUserData(req.jwt.unique_name, req.gameVersion)
+    } else if (contractTypes.includes(contractData.Metadata.Type)) {
+        // Update the contract in the played list
+        const id = contractData.Metadata.Id
+
+        if (!userData.Extensions.PeacockPlayedContracts[id]) {
+            userData.Extensions.PeacockPlayedContracts[id] = {}
+        }
+
+        userData.Extensions.PeacockPlayedContracts[id].LastPlayedAt =
+            new Date().getTime()
+        userData.Extensions.PeacockPlayedContracts[id].Completed = true
         writeUserData(req.jwt.unique_name, req.gameVersion)
     }
 

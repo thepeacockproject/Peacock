@@ -50,7 +50,7 @@ export const PEACOCKVERSTRING = HUMAN_VERSION
 export const uuidRegex =
     /^[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$/
 
-export const contractTypes = ["featured", "usercreated", "creation"]
+export const contractTypes = ["featured", "usercreated"]
 
 export const contractCreationTutorialId = "d7e2607c-6916-48e2-9588-976c7d8998bb"
 
@@ -209,6 +209,7 @@ export function castUserProfile(profile: UserProfile): UserProfile {
     for (const item of [
         "PeacockEscalations",
         "PeacockFavoriteContracts",
+        "PeacockPlayedContracts",
         "PeacockCompletedEscalations",
         "CPD",
     ]) {
@@ -239,7 +240,26 @@ export function castUserProfile(profile: UserProfile): UserProfile {
                 j.Extensions.CPD = {}
             }
 
+            if (item === "PeacockPlayedContracts") {
+                j.Extensions.PeacockPlayedContracts = {}
+            }
+
             dirty = true
+        }
+    }
+
+    // Fix Extensions.gamepersistentdata.HitsFilterType.
+    // None of the old profiles should have "MyPlaylist".
+    if (
+        !Object.prototype.hasOwnProperty.call(
+            j.Extensions.gamepersistentdata.HitsFilterType,
+            "MyPlaylist",
+        )
+    ) {
+        j.Extensions.gamepersistentdata.HitsFilterType = {
+            MyHistory: "all",
+            MyContracts: "all",
+            MyPlaylist: "all",
         }
     }
 
