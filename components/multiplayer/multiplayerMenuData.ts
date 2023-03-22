@@ -27,7 +27,7 @@ import {
 import { Router } from "express"
 import { getConfig } from "../configSwizzleManager"
 import { MultiplayerPreset } from "./multiplayerService"
-import { generateUserCentric } from "components/contracts/dataGen"
+import { generateUserCentric } from "../contracts/dataGen"
 import { controller } from "../controller"
 import {
     MissionEndRequestQuery,

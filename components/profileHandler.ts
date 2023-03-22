@@ -18,7 +18,13 @@
 
 import { Router } from "express"
 import path from "path"
-import { castUserProfile, nilUuid, uuidRegex } from "./utils"
+import {
+    castUserProfile,
+    getMaxProfileLevel,
+    nilUuid,
+    uuidRegex,
+    XP_PER_LEVEL,
+} from "./utils"
 import { json as jsonMiddleware } from "body-parser"
 import { getPlatformEntitlements } from "./platformEntitlements"
 import { contractSessions, newSession } from "./eventHandler"
@@ -545,9 +551,13 @@ profileRouter.post(
             })
         }
 
+        const unlockAllShortcuts = getFlag("gameplayUnlockAllShortcuts")
+
         for (const challenge of challenges) {
-            // TODO: Add actual support for shortcut challenges
-            if (challenge.Challenge.Tags?.includes("shortcut")) {
+            if (
+                unlockAllShortcuts &&
+                challenge.Challenge.Tags?.includes("shortcut")
+            ) {
                 challenge.Progression = {
                     ChallengeId: challenge.Challenge.Id,
                     ProfileId: req.jwt.unique_name,
@@ -597,11 +607,12 @@ profileRouter.post(
                     ),
             },
             LevelsDefinition: {
+                //TODO: Add Evergreen LevelInfo here?
                 Location: [0],
                 PlayerProfile: {
                     Version: 1,
-                    XpPerLevel: 6000,
-                    MaxLevel: 7500,
+                    XpPerLevel: XP_PER_LEVEL,
+                    MaxLevel: getMaxProfileLevel(req.gameVersion),
                 },
             },
         })
@@ -822,6 +833,13 @@ async function loadSession(
     }
     // Update challenge progression with the user's latest progression data
     for (const cid in sessionData.challengeContexts) {
+        // Make sure the ChallengeProgression is available, otherwise loading might fail!
+        userData.Extensions.ChallengeProgression[cid] ??= {
+            State: {},
+            Completed: false,
+            Ticked: false,
+        }
+
         const scope = controller.challengeService.getChallengeById(
             cid,
             sessionData.gameVersion,

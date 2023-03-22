@@ -42,10 +42,15 @@ export interface SavedChallenge {
     // H1 challenges do not have Type
     Type?: "contract" | string
     RuntimeType: "Hit" | string
+    Xp: number
     XpModifier?: unknown
     DifficultyLevels: string[]
     Definition: MissionManifestObjective["Definition"] & {
         Scope: ContextScopedStorageLocation
+        Repeatable?: {
+            Base: number
+            Delta: number
+        }
     }
     Tags: string[]
     InclusionData?: InclusionData

@@ -28,8 +28,8 @@ import type {
 } from "../types/types"
 import { controller } from "../controller"
 import { generateCompletionData } from "../contracts/dataGen"
-import { getUserData } from "components/databaseHandler"
-import { ChallengeFilterType } from "components/candle/challengeHelpers"
+import { getUserData } from "../databaseHandler"
+import { ChallengeFilterType } from "../candle/challengeHelpers"
 
 type GameFacingDestination = {
     ChallengeCompletion: {
