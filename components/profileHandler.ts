@@ -29,7 +29,7 @@ import { json as jsonMiddleware } from "body-parser"
 import { getPlatformEntitlements } from "./platformEntitlements"
 import { contractSessions, newSession } from "./eventHandler"
 import type {
-    CompiledChallengeRuntimeData,
+    CompiledChallengeIngameData,
     ContractSession,
     GameVersion,
     RequestWithJwt,
@@ -505,13 +505,13 @@ profileRouter.post(
             return res.json([])
         }
 
-        let challenges: CompiledChallengeRuntimeData[] = (
-            getVersionedConfig(
-                "GlobalChallenges",
-                req.gameVersion,
-                true,
-            ) as CompiledChallengeRuntimeData[]
-        ).filter((val) => inclusionDataCheck(val.Challenge.InclusionData, json))
+        let challenges = getVersionedConfig<CompiledChallengeIngameData[]>(
+            "GlobalChallenges",
+            req.gameVersion,
+            true,
+        )
+            .filter((val) => inclusionDataCheck(val.InclusionData, json))
+            .map((item) => ({ Challenge: item, Progression: undefined }))
 
         challenges.push(
             ...Object.values(

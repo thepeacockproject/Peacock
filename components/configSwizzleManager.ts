@@ -48,6 +48,7 @@ import Playstyles from "../static/Playstyles.json"
 import HubPageData from "../static/HubPageData.json"
 import DashboardCategoryEscalation from "../static/DashboardCategoryEscalation.json"
 import GlobalChallenges from "../static/GlobalChallenges.json"
+import H2GlobalChallenges from "../static/H2GlobalChallenges.json"
 import ContractsTemplate from "../static/ContractsTemplate.json"
 import CreateContractPlanningTemplate from "../static/CreateContractPlanningTemplate.json"
 import CreateContractReturnTemplate from "../static/CreateContractReturnTemplate.json"
@@ -146,6 +147,7 @@ const configs: Record<string, unknown> = {
     HubPageData,
     DashboardCategoryEscalation,
     GlobalChallenges,
+    H2GlobalChallenges,
     ContractsTemplate,
     CreateContractPlanningTemplate,
     CreateContractReturnTemplate,
