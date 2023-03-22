@@ -18,7 +18,6 @@
 
 import type { Response } from "express"
 import {
-    clampValue,
     DEFAULT_MASTERY_MAXLEVEL,
     contractTypes,
     difficultyToString,
@@ -28,9 +27,7 @@ import {
     isObjectiveActive,
     levelForXp,
     PEACOCKVERSTRING,
-    SNIPER_LEVEL_INFO,
-    xpRequiredForEvergreenLevel,
-    xpRequiredForLevel,
+    SNIPER_LEVEL_INFO, xpRequiredForLevel
 } from "./utils"
 import { contractSessions, getCurrentState } from "./eventHandler"
 import { getConfig } from "./configSwizzleManager"
@@ -846,22 +843,6 @@ export async function missionEnd(
             sessionDetails.evergreen.scoringScreenEndState
 
         locationLevelInfo = EVERGREEN_LEVEL_INFO
-
-        const currentLevelRequiredXp = xpRequiredForEvergreenLevel(
-            locationProgressionData.Level,
-        )
-        const nextLevelRequiredXp = clampValue(
-            xpRequiredForEvergreenLevel(locationProgressionData.Level + 1),
-            1,
-            100,
-        )
-
-        //Override completion data for proper animations
-        completionData.XP = locationProgressionData.Xp
-        completionData.Level = locationProgressionData.Level
-        completionData.Completion =
-            (currentLevelRequiredXp - locationProgressionData.Xp) /
-            (nextLevelRequiredXp - currentLevelRequiredXp)
 
         //Override the location levels to trigger potential drops
         oldLocationLevel = evergreenLevelForXp(

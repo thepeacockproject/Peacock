@@ -30,6 +30,7 @@ import { CompletionData, GameVersion, Unlockable } from "../types/types"
 import {
     clampValue,
     DEFAULT_MASTERY_MAXLEVEL,
+    xpRequiredForEvergreenLevel,
     xpRequiredForLevel,
     xpRequiredForSniperLevel,
 } from "../utils"
@@ -92,6 +93,7 @@ export class MasteryService {
         gameVersion: GameVersion,
         completionId: string,
         maxLevel: number,
+        levelToXpRequired: (level: number) => number,
     ) {
         //Get the user profile
         const userProfile = getUserData(userId, gameVersion)
@@ -111,13 +113,9 @@ export class MasteryService {
             maxLevel,
         )
 
-        const nextLevelXp: number = completionId.includes("LOCATION")
-            ? xpRequiredForLevel(nextLevel)
-            : xpRequiredForSniperLevel(nextLevel)
+        const nextLevelXp: number = levelToXpRequired(nextLevel)
 
-        const thisLevelXp: number = completionId.includes("LOCATION")
-            ? xpRequiredForLevel(completionData.Level)
-            : xpRequiredForSniperLevel(completionData.Level)
+        const thisLevelXp: number = levelToXpRequired(completionData.Level)
 
         return {
             Level: completionData.Level,
@@ -157,6 +155,9 @@ export class MasteryService {
                 gameVersion,
                 locationParentId.toLowerCase(),
                 masteryData.MaxLevel || DEFAULT_MASTERY_MAXLEVEL,
+                locationParentId.includes("SNUG")
+                    ? xpRequiredForEvergreenLevel
+                    : xpRequiredForLevel,
             ),
             Id: masteryData.Id,
             SubLocationId: subLocationId,
@@ -186,6 +187,7 @@ export class MasteryService {
                 gameVersion,
                 progressionKey,
                 DEFAULT_MASTERY_MAXLEVEL,
+                xpRequiredForSniperLevel,
             ),
             Id: progressionKey,
             SubLocationId: "",
