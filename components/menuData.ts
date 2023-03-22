@@ -19,6 +19,7 @@
 import { Response, Router } from "express"
 import {
     contractCreationTutorialId,
+    DEFAULT_MASTERY_MAXLEVEL,
     gameDifficulty,
     getMaxProfileLevel,
     PEACOCKVERSTRING,
@@ -1946,7 +1947,9 @@ menuDataRouter.get(
                 Drops: unlockables.map((unlockable) => ({
                     IsLevelMarker: false,
                     Unlockable: unlockable,
-                    Level: unlockable.Properties.UnlockOrder ?? 20,
+                    Level:
+                        unlockable.Properties.UnlockOrder ??
+                        DEFAULT_MASTERY_MAXLEVEL,
                     // TODO: Everything is unlocked. Change this when adding sniper progression
                     IsLocked: false,
                     TypeLocaKey: "UI_MENU_PAGE_MASTERY_UNLOCKABLE_NAME_weapon",
