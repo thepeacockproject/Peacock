@@ -19,6 +19,8 @@
 import type { NextFunction, Response } from "express"
 import type { RequestWithJwt } from "./types/types"
 import picocolors from "picocolors"
+import winston from "winston"
+import "winston-daily-rotate-file"
 
 /**
  * Represents the different log levels.
@@ -27,30 +29,72 @@ export enum LogLevel {
     /**
      * For errors. Displays in red.
      */
-    ERROR,
+    ERROR = "error",
     /**
      * For warnings. Displays in yellow.
      */
-    WARN,
+    WARN = "warn",
     /**
      * For information. Displays in blue.
      * This is also the fallback for invalid log level values.
      */
-    INFO,
+    INFO = "info",
     /**
      * For debugging.
      * Displays in light blue, but only if the `DEBUG` environment variable is set to "*", "yes", "true", or "peacock".
      */
-    DEBUG,
+    DEBUG = "debug",
     /**
      * For outputting stacktraces.
      */
-    TRACE,
+    TRACE = "trace",
 }
 
 const isDebug = ["*", "true", "peacock", "yes"].includes(
     process.env.DEBUG || "false",
 )
+
+const isTest = ["*", "true", "peacock", "yes"].includes(
+    process.env.TEST || "false",
+)
+
+const transports = []
+
+if (!isTest) {
+    const fileTransport = new winston.transports.DailyRotateFile({
+        filename: "logs/peacock-%DATE%.json",
+        datePattern: "YYYYMMDDHHmmss",
+        frequency: "1d",
+        maxFiles: process.env.LOG_MAX_FILES,
+        level: LogLevel.TRACE,
+        format: winston.format.printf((info) => {
+            return JSON.stringify(info.data)
+        }),
+    })
+
+    transports.push(fileTransport)
+}
+
+const consoleTransport = new winston.transports.Console({
+    format: winston.format.printf((info) => {
+        if (info.data.stack) {
+            return `${info.message}\n${info.data.stack}`
+        }
+
+        return info.message
+    }),
+})
+
+transports.push(consoleTransport)
+
+const winstonLogLevel = {}
+Object.values(LogLevel).forEach((e, i) => (winstonLogLevel[e] = i))
+
+const logger = winston.createLogger({
+    levels: winstonLogLevel,
+    level: isDebug || isTest ? LogLevel.TRACE : LogLevel.INFO,
+    transports: transports,
+})
 
 /**
  * Adds leading zeros to a number so that the length of the string will always
@@ -81,7 +125,8 @@ export function logDebug(...args: unknown[]): void {
  * @see LogLevel
  */
 export function log(level: LogLevel, data: string): void {
-    const m = data ?? "No message specified"
+    const message = data ?? "No message specified"
+
     const now = new Date()
     const stampParts: number[] = [
         now.getHours(),
@@ -93,41 +138,49 @@ export function log(level: LogLevel, data: string): void {
         .map((part) => zeroPad(part, 2))
         .join(":")}:${millis}`
 
-    const header = picocolors.gray(timestamp)
-    let outputTransport: (
-        message?: unknown,
-        ...optionalParams: unknown[]
-    ) => void
+    const timestampColored = picocolors.gray(timestamp)
+
     let levelString: string
+    let levelStringColored: string
+    let stack = undefined
 
     switch (level) {
         case LogLevel.ERROR:
-            outputTransport = console.error
-            levelString = picocolors.red("Error")
+            levelString = "Error"
+            levelStringColored = picocolors.red(levelString)
             break
         case LogLevel.WARN:
-            outputTransport = console.warn
-            levelString = picocolors.yellow("Warn")
+            levelString = "Warn"
+            levelStringColored = picocolors.yellow(levelString)
             break
         case LogLevel.INFO:
         default:
-            outputTransport = console.log
-            levelString = picocolors.blue("Info")
+            levelString = "Info"
+            levelStringColored = picocolors.blue(levelString)
             break
         case LogLevel.DEBUG:
-            if (!isDebug) {
-                return
-            }
-            outputTransport = console.log
-            levelString = picocolors.blueBright("Debug")
+            levelString = "Debug"
+            levelStringColored = picocolors.blueBright(levelString)
             break
         case LogLevel.TRACE:
-            outputTransport = console.trace
-            levelString = picocolors.bgYellow("Trace")
+            levelString = "Trace"
+            levelStringColored = picocolors.bgYellow(levelString)
+            stack = new Error("Trace").stack
             break
     }
 
-    outputTransport(`[${header}] [${levelString}] ${m}`)
+    logger.log(
+        level,
+        `[${timestampColored}] [${levelStringColored}] ${message}`,
+        {
+            data: {
+                timestamp: timestamp,
+                level: levelString,
+                message: message,
+                stack: stack,
+            },
+        },
+    )
 }
 
 /**

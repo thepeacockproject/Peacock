@@ -34,6 +34,7 @@ global.HUMAN_VERSION = version
 global.REV_IDENT = revisionIdent
 
 process.env.DEBUG = "peacock"
+process.env.LOG_MAX_FILES = ""
 
 // now we launch the server
 
