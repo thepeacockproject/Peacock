@@ -31,8 +31,7 @@ import {
     clampValue,
     DEFAULT_MASTERY_MAXLEVEL,
     xpRequiredForLevel,
-    xpRequiredForSniper,
-    XP_PER_LEVEL,
+    xpRequiredForSniperLevel,
 } from "../utils"
 
 export class MasteryService {
@@ -103,26 +102,30 @@ export class MasteryService {
             Level: 1,
         }
 
-        const locationData =
+        const completionData =
             userProfile.Extensions.progression.Locations[completionId]
 
         const nextLevel: number = clampValue(
-            locationData.Level + 1,
+            completionData.Level + 1,
             1,
             maxLevel,
         )
 
         const nextLevelXp: number = completionId.includes("LOCATION")
             ? xpRequiredForLevel(nextLevel)
-            : xpRequiredForSniper(nextLevel)
+            : xpRequiredForSniperLevel(nextLevel)
+
+        const thisLevelXp: number = completionId.includes("LOCATION")
+            ? xpRequiredForLevel(completionData.Level)
+            : xpRequiredForSniperLevel(completionData.Level)
 
         return {
-            Level: locationData.Level,
+            Level: completionData.Level,
             MaxLevel: maxLevel,
-            XP: locationData.Xp,
+            XP: completionData.Xp,
             Completion:
-                (XP_PER_LEVEL - (nextLevelXp - locationData.Xp)) / XP_PER_LEVEL,
-            XpLeft: nextLevelXp - locationData.Xp,
+                (completionData.Xp - thisLevelXp) / (nextLevelXp - thisLevelXp),
+            XpLeft: nextLevelXp - completionData.Xp,
         }
     }
 

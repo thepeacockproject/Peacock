@@ -190,20 +190,19 @@ export const SNIPER_LEVEL_INFO: number[] = [
 ]
 
 /**
+ * Get the number of xp needed to reach a level in sniper missions.
+ * @param level The level in question.
+ * @returns The xp, as a number.
+ */
+export function xpRequiredForSniperLevel(level: number): number {
+    return SNIPER_LEVEL_INFO[level - 1]
+}
+
+/**
  * Clamps the given value between a minimum and maximum value
  */
 export function clampValue(value: number, min: number, max: number) {
     return Math.max(min, Math.min(value, max))
-}
-
-/**
- * Get the number of xp needed to reach a level in sniper missions.
- * Assuming the same xp for all levels. Might not be accurate.
- * @param level The level in question.
- * @returns The xp, as a number.
- */
-export function xpRequiredForSniper(level: number): number {
-    return level * 50000 - 50000
 }
 
 /**
