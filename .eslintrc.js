@@ -68,6 +68,6 @@ module.exports = {
         "promise/valid-params": "warn",
         "react-hooks/rules-of-hooks": "error",
         "react-hooks/exhaustive-deps": "warn",
-        "custom-rules/import-components": "error"
+        "custom-rules/import-components": "error",
     },
 }
