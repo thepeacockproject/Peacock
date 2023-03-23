@@ -910,16 +910,12 @@ export class Controller {
     /**
      * Get all global challenges and register a simplified version of them.
      * @param gameVersion A GameVersion object representing the version of the game.
-     * 
+     *
      */
-    private registerGlobalChallenges(
-        gameVersion: GameVersion,
-    ) {
-        const regGlobalChallenges = getVersionedConfig<CompiledChallengeIngameData[]>(
-            "GlobalChallenges",
-            gameVersion,
-            true,
-        ).map((e) => {
+    private registerGlobalChallenges(gameVersion: GameVersion) {
+        const regGlobalChallenges = getVersionedConfig<
+            CompiledChallengeIngameData[]
+        >("GlobalChallenges", gameVersion, true).map((e) => {
             const tags = e.Tags || []
             tags.push("global")
 
@@ -965,9 +961,7 @@ export class Controller {
         )
 
         for (const gameVersion of versions) {
-            this.registerGlobalChallenges(
-                gameVersion,
-            )
+            this.registerGlobalChallenges(gameVersion)
         }
 
         // Load mastery resources

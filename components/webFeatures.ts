@@ -56,10 +56,7 @@ webFeaturesRouter.get("/codenames", (req, res) => {
 webFeaturesRouter.get(
     "/local-users",
     (req: Request<unknown, unknown, unknown, { gv: GameVersion }>, res) => {
-        if (
-            !req.query.gv ||
-            !versions.includes(req.query.gv ?? null)
-        ) {
+        if (!req.query.gv || !versions.includes(req.query.gv ?? null)) {
             res.json([])
             return
         }
