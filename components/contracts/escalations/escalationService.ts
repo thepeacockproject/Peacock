@@ -16,11 +16,10 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { contractIdToHitObject, controller } from "../../controller"
+import { controller } from "../../controller"
 import type {
     EscalationInfo,
     GameVersion,
-    IHit,
     MissionManifest,
     UserProfile,
 } from "../../types/types"
@@ -89,42 +88,12 @@ export function resetUserEscalationProgress(
 
 /**
  * Translates a contract ID to the escalation group contract that it is in's ID.
- *
+ * @deprecated: Use the "InGroup" field instead.
  * @param id The contract ID.
  * @returns The escalation's group contract ID or null if it isn't in a group.
  */
 export function contractIdToEscalationGroupId(id: string): string | undefined {
-    for (const [groupId, levels] of controller.escalationMappings.entries()) {
-        for (const level of Object.values(levels)) {
-            if (level === id) {
-                return groupId
-            }
-        }
-    }
-
-    return undefined
-}
-
-export function getMenuDetailsForEscalation(
-    groupContractId: string,
-    userId: string,
-    gameVersion: GameVersion,
-): IHit | undefined {
-    const userData = getUserData(userId, gameVersion)
-
-    const level = getUserEscalationProgress(userData, groupContractId)
-    const escalationLevels = controller.escalationMappings.get(groupContractId)
-
-    if (gameVersion === "h1" && no2016.includes(groupContractId)) {
-        return undefined
-    }
-
-    // not great for performance, but it's fine for now
-    if (!controller.resolveContract(escalationLevels[level])) {
-        return undefined
-    }
-
-    return contractIdToHitObject(escalationLevels[level], gameVersion, userId)
+    return controller.resolveContract(id)?.Metadata.InGroup
 }
 
 /**
@@ -134,13 +103,7 @@ export function getMenuDetailsForEscalation(
  * @returns The number of levels.
  */
 export function getLevelCount(groupContract: MissionManifest): number {
-    let levels = 1
-
-    while (groupContract.Metadata.GroupDefinition.Order[levels]) {
-        levels++
-    }
-
-    return levels
+    return groupContract.Metadata.GroupDefinition.Order.length
 }
 
 /**

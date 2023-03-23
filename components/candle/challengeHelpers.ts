@@ -24,7 +24,6 @@ import {
     MissionManifest,
     RegistryChallenge,
 } from "../types/types"
-import assert from "assert"
 import { SavedChallengeGroup } from "../types/challenges"
 import { controller } from "../controller"
 
@@ -100,6 +99,7 @@ export function inclusionDataCheck(
     contract: MissionManifest,
 ): boolean {
     if (!incData) return true
+    if (!contract) return false
 
     return (
         incData.ContractIds?.includes(contract.Metadata.Id) ||
@@ -126,8 +126,11 @@ function isChallengeInContract(
     challenge: RegistryChallenge,
     forCareer = false,
 ): boolean {
-    assert.ok(contractId)
-    assert.ok(locationId)
+    // Currently don't have all the escalation groups
+    if (!contractId || !locationId) {
+        return false
+    }
+
     if (!challenge) {
         return false
     }

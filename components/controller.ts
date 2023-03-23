@@ -633,6 +633,13 @@ export class Controller {
         return manifest
     }
 
+    private getGroupContract(json: MissionManifest) {
+        if (json.Metadata.Type === "escalation") {
+            return this.resolveContract(json.Metadata.InGroup) ?? json
+        }
+        return json
+    }
+
     /**
      * Get a contract by its ID.
      *
@@ -642,9 +649,13 @@ export class Controller {
      * 3. Files in the `contracts` folder.
      *
      * @param id The contract's ID.
+     * @param getGroup When `id` points one of the levels in a contract group, controls whether to get the group contract instead of the individual mission. Defaulted to false. WARNING: If you set this to true, what is returned is not what is pointed to by the inputted `id`.
      * @returns The mission manifest object, or undefined if it wasn't found.
      */
-    public resolveContract(id: string): MissionManifest | undefined {
+    public resolveContract(
+        id: string,
+        getGroup = false,
+    ): MissionManifest | undefined {
         if (!id) {
             return undefined
         }
@@ -652,7 +663,11 @@ export class Controller {
         const optionalPluginJson = this.hooks.getContractManifest.call(id)
 
         if (optionalPluginJson) {
-            return fastClone(optionalPluginJson)
+            return fastClone(
+                getGroup
+                    ? this.getGroupContract(optionalPluginJson)
+                    : optionalPluginJson,
+            )
         }
 
         const registryJson: MissionManifest | undefined = internalContracts[id]
@@ -662,10 +677,12 @@ export class Controller {
 
             if (registryJson.Metadata.Type === "elusive") {
                 dereferenced.Metadata.Type = "mission"
-                return dereferenced
+                return getGroup
+                    ? this.getGroupContract(dereferenced)
+                    : dereferenced
             }
 
-            return dereferenced
+            return getGroup ? this.getGroupContract(dereferenced) : dereferenced
         }
 
         const openCtJson = this.contracts.has(id)
@@ -673,7 +690,9 @@ export class Controller {
             : undefined
 
         if (openCtJson) {
-            return fastClone(openCtJson)
+            return fastClone(
+                getGroup ? this.getGroupContract(openCtJson) : openCtJson,
+            )
         }
         return undefined
     }

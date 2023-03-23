@@ -203,28 +203,28 @@ export function generateUserCentric(
     }
 
     if (contractData.Metadata.Type === "escalation") {
-        const eGroupId = contractData.Metadata.InGroup
+        const eGroupId =
+            contractData.Metadata.InGroup ?? contractData.Metadata.Id
 
-        if (eGroupId) {
-            const p = getUserEscalationProgress(userData, eGroupId)
+        const p = getUserEscalationProgress(userData, eGroupId)
 
-            log(
-                LogLevel.DEBUG,
-                `Get EscalationUCProps - group: ${eGroupId} prog: ${p}`,
-            )
+        log(
+            LogLevel.DEBUG,
+            `Get EscalationUCProps - group: ${eGroupId} prog: ${p}`,
+        )
 
-            // I have absolutely no idea why,
-            // but this is incorrect on the destinations
-            // screen unless we do proper count - 1
-            // ANOTHER NOTE - Anthony:
-            // this currently doesn't mark it as completed when it is,
-            // unknown to why
-            uc.Data.EscalationCompletedLevels = p - 1
-            uc.Data.EscalationTotalLevels = getLevelCount(
-                controller.resolveContract(eGroupId),
-            )
-            uc.Data.InGroup = eGroupId
-        }
+        // I have absolutely no idea why,
+        // but this is incorrect on the destinations
+        // screen unless we do proper count - 1
+        // ANOTHER NOTE - Anthony:
+        // this currently doesn't mark it as completed when it is,
+        // unknown to why
+        uc.Data.EscalationCompletedLevels = p - 1
+        uc.Data.EscalationTotalLevels = getLevelCount(
+            controller.resolveContract(eGroupId),
+        )
+        uc.Data.EscalationCompleted = p === uc.Data.EscalationTotalLevels
+        uc.Data.InGroup = eGroupId
     }
 
     return uc

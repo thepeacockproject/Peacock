@@ -377,7 +377,7 @@ export class ChallengeService extends ChallengeRegistry {
         contractId: string,
         gameVersion: GameVersion,
     ): GroupIndexedChallengeLists {
-        const contract = this.controller.resolveContract(contractId)
+        const contract = this.controller.resolveContract(contractId, true)
 
         assert.ok(contract)
 
@@ -391,7 +391,7 @@ export class ChallengeService extends ChallengeRegistry {
         return this.getGroupedChallengeLists(
             {
                 type: ChallengeFilterType.Contract,
-                contractId: contractId,
+                contractId: contract.Metadata.Id,
                 locationId: contract.Metadata.Location,
             },
             contractParentLocation,
@@ -416,7 +416,9 @@ export class ChallengeService extends ChallengeRegistry {
             child === "LOCATION_SALTY_SEAGULL" ||
             child === "LOCATION_CAGED_FALCON"
                 ? this.controller.missionsInLocations.sniper[child]
-                : this.controller.missionsInLocations[child]
+                : this.controller.missionsInLocations[child]?.concat(
+                      this.controller.missionsInLocations.escalations[child],
+                  )
         if (!contracts) {
             contracts = []
         }
@@ -595,7 +597,7 @@ export class ChallengeService extends ChallengeRegistry {
         gameVersion: GameVersion,
         userId: string,
     ): CompiledChallengeTreeCategory[] {
-        const contractData = this.controller.resolveContract(contractId)
+        const contractData = this.controller.resolveContract(contractId, true)
 
         if (!contractData) {
             return []
@@ -615,7 +617,7 @@ export class ChallengeService extends ChallengeRegistry {
         }
 
         const forContract = this.getChallengesForContract(
-            contractId,
+            contractData.Metadata.Id,
             gameVersion,
         )
         return this.reBatchIntoSwitchedData(

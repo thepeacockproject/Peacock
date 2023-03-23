@@ -665,6 +665,7 @@ export interface UserCentricContract {
         CompletionData?: CompletionData
         DlcName: string
         DlcImage: string
+        EscalationCompleted?: boolean
         EscalationCompletedLevels?: number
         EscalationTotalLevels?: number
         InGroup?: string
