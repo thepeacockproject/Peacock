@@ -28,8 +28,8 @@ import type {
 } from "../types/types"
 import { controller } from "../controller"
 import { generateCompletionData } from "../contracts/dataGen"
-import { getUserData } from "components/databaseHandler"
-import { ChallengeFilterType } from "components/candle/challengeHelpers"
+import { getUserData } from "../databaseHandler"
+import { ChallengeFilterType } from "../candle/challengeHelpers"
 
 type GameFacingDestination = {
     ChallengeCompletion: {
@@ -54,10 +54,12 @@ export function getDestinationCompletion(
     req: RequestWithJwt,
 ) {
     const userData = getUserData(req.jwt.unique_name, req.gameVersion)
-    const challenges = controller.challengeService.getGroupedChallengeLists({
-        type: ChallengeFilterType.ParentLocation,
-        locationParentId: parent.Id,
-    })
+    const challenges = controller.challengeService.getGroupedChallengeLists(
+        {
+            type: ChallengeFilterType.None,
+        },
+        parent.Id,
+    )
 
     if (parent.Opportunities === undefined) {
         parent.Opportunities = 0
@@ -65,7 +67,10 @@ export function getDestinationCompletion(
 
     let opportunityCompletedCount = 0
     for (const ms in userData.Extensions.opportunityprogression) {
-        if (missionStories[ms].Location === parent.Id) {
+        if (
+            Object.keys(missionStories).includes(ms) &&
+            missionStories[ms].Location === parent.Id
+        ) {
             opportunityCompletedCount++
         }
     }
@@ -161,7 +166,7 @@ export function createLocationsData(
     const locData = getVersionedConfig<PeacockLocationsData>(
         "LocationsData",
         gameVersion,
-        true,
+        false,
     )
 
     const allSublocationIds = Object.keys(locData.children)
@@ -175,6 +180,13 @@ export function createLocationsData(
     }
 
     for (const sublocationId of allSublocationIds) {
+        if (
+            sublocationId === "LOCATION_TRAPPED_WOLVERINE" ||
+            sublocationId.includes("SNUG")
+        ) {
+            continue
+        }
+
         const sublocation = locData.children[sublocationId]
         const parentLocation =
             locData.parents[sublocation.Properties.ParentLocation]

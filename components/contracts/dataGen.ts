@@ -148,6 +148,7 @@ export function generateUserCentric(
         return undefined
     }
 
+    const userData = getUserData(userId, gameVersion)
     const subLocation = getSubLocationFromContract(contractData, gameVersion)
 
     if (!subLocation) {
@@ -168,6 +169,9 @@ export function generateUserCentric(
         )
     }
 
+    const played = userData.Extensions?.PeacockPlayedContracts
+    const id = contractData.Metadata.Id
+
     const uc: UserCentricContract = {
         Contract: contractData,
         Data: {
@@ -180,8 +184,12 @@ export function generateUserCentric(
             LocationHideProgression: false,
             ElusiveContractState: "",
             IsFeatured: false,
-            //LastPlayedAt: '2020-01-01T00:00:00.0000000Z', // ISO timestamp
-            Completed: false, // relevant for featured contracts
+            LastPlayedAt:
+                played[id] === undefined
+                    ? undefined
+                    : new Date(played[id]?.LastPlayedAt).toISOString(),
+            // relevant for contracts
+            Completed: played[id] === undefined ? false : played[id]?.Completed,
             LocationId: subLocation.Id,
             ParentLocationId: subLocation.Properties.ParentLocation!,
             CompletionData: generateCompletionData(
@@ -195,8 +203,6 @@ export function generateUserCentric(
     }
 
     if (contractData.Metadata.Type === "escalation") {
-        const userData = getUserData(userId, gameVersion)
-
         const eGroupId = contractData.Metadata.InGroup
 
         if (eGroupId) {
@@ -244,10 +250,16 @@ export function mapObjectives(
     const gameChangerObjectives: MissionManifestObjective[] = []
 
     if (gameChangers && gameChangers.length > 0) {
-        const gameChangerData = getConfig<Record<string, GameChanger>>(
-            "GameChangerProperties",
-            true,
-        )
+        const gameChangerData: Record<string, GameChanger> = {
+            ...getConfig<Record<string, GameChanger>>(
+                "GameChangerProperties",
+                true,
+            ),
+            ...getConfig<Record<string, GameChanger>>(
+                "PeacockGameChangerProperties",
+                true,
+            ),
+        }
         for (const gamechangerId of gameChangers) {
             if (isEvergreenSafehouse) break
             const gameChangerProps = gameChangerData[gamechangerId]

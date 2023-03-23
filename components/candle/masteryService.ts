@@ -16,8 +16,8 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { getSubLocationByName } from "components/contracts/dataGen"
-import { log, LogLevel } from "components/loggingInterop"
+import { getSubLocationByName } from "../contracts/dataGen"
+import { log, LogLevel } from "../loggingInterop"
 import { getConfig, getVersionedConfig } from "../configSwizzleManager"
 import { getUserData } from "../databaseHandler"
 import {
@@ -27,7 +27,12 @@ import {
     MasteryPackage,
 } from "../types/mastery"
 import { CompletionData, GameVersion, Unlockable } from "../types/types"
-import { xpRequiredForLevel } from "../utils"
+import {
+    clampValue,
+    DEFAULT_MASTERY_MAXLEVEL,
+    xpRequiredForLevel,
+    XP_PER_LEVEL,
+} from "../utils"
 
 export class MasteryService {
     private masteryData: Map<string, MasteryPackage> = new Map()
@@ -81,13 +86,13 @@ export class MasteryService {
         gameVersion: GameVersion,
         userId: string,
     ): CompletionData {
-        if (!this.masteryData.has(locationParentId)) {
-            return undefined
-        }
-
         //Get the mastery data
         const masteryData: MasteryPackage =
-            this.masteryData.get(locationParentId)
+            this.getMasteryPackage(locationParentId)
+
+        if (!masteryData) {
+            return undefined
+        }
 
         //Get the user profile
         const userProfile = getUserData(userId, gameVersion)
@@ -107,11 +112,12 @@ export class MasteryService {
                 lowerCaseLocationParentId
             ]
 
-        const maxLevel = masteryData.MaxLevel || 20
+        const maxLevel = masteryData.MaxLevel || DEFAULT_MASTERY_MAXLEVEL
 
-        const nextLevel: number = Math.max(
-            0,
-            Math.min(locationData.Level + 1, maxLevel),
+        const nextLevel: number = clampValue(
+            locationData.Level + 1,
+            1,
+            maxLevel,
         )
         const nextLevelXp: number = xpRequiredForLevel(nextLevel)
 
@@ -119,7 +125,8 @@ export class MasteryService {
             Level: locationData.Level,
             MaxLevel: maxLevel,
             XP: locationData.Xp,
-            Completion: locationData.Xp / nextLevelXp,
+            Completion:
+                (XP_PER_LEVEL - (nextLevelXp - locationData.Xp)) / XP_PER_LEVEL,
             XpLeft: nextLevelXp - locationData.Xp,
             Id: masteryData.Id,
             SubLocationId: subLocationId,
@@ -129,20 +136,24 @@ export class MasteryService {
         }
     }
 
+    getMasteryPackage(locationParentId: string): MasteryPackage {
+        if (!this.masteryData.has(locationParentId)) {
+            return undefined
+        }
+
+        return this.masteryData.get(locationParentId)
+    }
+
     private getMasteryData(
         locationParentId: string,
         gameVersion: GameVersion,
         userId: string,
     ): MasteryData[] {
-        if (!this.masteryData.has(locationParentId)) {
-            return []
-        }
-
         //Get the mastery data
         const masteryData: MasteryPackage =
-            this.masteryData.get(locationParentId)
+            this.getMasteryPackage(locationParentId)
 
-        if (masteryData.Drops.length === 0) {
+        if (!masteryData || masteryData.Drops.length === 0) {
             return []
         }
 

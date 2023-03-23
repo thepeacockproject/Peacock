@@ -31,7 +31,7 @@ import {
     Seconds,
     ServerToClientEvent,
 } from "./types/types"
-import { extractToken, ServerVer } from "./utils"
+import { contractTypes, extractToken, gameDifficulty, ServerVer } from "./utils"
 import { json as jsonMiddleware } from "body-parser"
 import { log, LogLevel } from "./loggingInterop"
 import { getUserData, writeUserData } from "./databaseHandler"
@@ -47,6 +47,7 @@ import {
     AmbientChangedC2SEvent,
     BodyHiddenC2SEvent,
     ContractStartC2SEvent,
+    Evergreen_Payout_DataC2SEvent,
     HeroSpawn_LocationC2SEvent,
     ItemDroppedC2SEvent,
     ItemPickedUpC2SEvent,
@@ -236,11 +237,7 @@ export function newSession(
         throw new Error("no ct")
     }
 
-    if (
-        difficulty === 0 &&
-        (contract.Metadata.Type === "creation" ||
-            contract.Metadata.Type === "usercreated")
-    ) {
+    if (difficulty === 0 && contractTypes.includes(contract.Metadata.Type)) {
         log(
             LogLevel.DEBUG,
             `Difficulty not set for user created contract ${contractId}, setting to 2`,
@@ -444,6 +441,23 @@ function contractFailed(
         liveSplitManager.failMission(0)
     }
 
+    const contractData = controller.resolveContract(session.contractId)
+
+    // If this is a contract, update the contract in the played list
+    if (contractTypes.includes(contractData.Metadata.Type)) {
+        const userData = getUserData(session.userId, session.gameVersion)
+
+        const id = session.contractId
+
+        if (!userData.Extensions.PeacockPlayedContracts[id]) {
+            userData.Extensions.PeacockPlayedContracts[id] = {}
+        }
+
+        userData.Extensions.PeacockPlayedContracts[id].LastPlayedAt =
+            new Date().getTime()
+        writeUserData(session.userId, session.gameVersion)
+    }
+
     enqueueEvent(session.userId, {
         CreatedAt: new Date().toISOString(),
         Token: process.hrtime.bigint().toString(),
@@ -475,7 +489,25 @@ function saveEvents(
     const processed: string[] = []
     const userData = getUserData(req.jwt.unique_name, req.gameVersion)
     events.forEach((event) => {
-        const session = contractSessions.get(event.ContractSessionId)
+        let session = contractSessions.get(event.ContractSessionId)
+
+        if (!session) {
+            log(
+                LogLevel.WARN,
+                "Creating a fake session to avoid problems... scoring will not work!",
+            )
+
+            newSession(
+                event.ContractSessionId,
+                event.ContractId,
+                req.jwt.unique_name,
+                gameDifficulty.normal,
+                req.gameVersion,
+                false,
+            )
+
+            session = contractSessions.get(event.ContractSessionId)
+        }
 
         if (
             !session ||
@@ -547,11 +579,21 @@ function saveEvents(
             session,
         )
 
+        if (event.Name.startsWith("ScoringScreenEndState_")) {
+            session.evergreen.scoringScreenEndState = event.Name
+
+            processed.push(event.Name)
+            response.push(process.hrtime.bigint().toString())
+
+            return
+        }
+
         // these events are important but may be fired after the timer is over
         const canGetAfterTimerOver = [
             "ContractEnd",
             "ObjectiveCompleted",
             "CpdSet",
+            "MissionFailed_Event",
         ]
 
         if (
@@ -566,6 +608,9 @@ function saveEvents(
 
         if (handleMultiplayerEvent(event, session)) {
             processed.push(event.Name)
+            response.push(process.hrtime.bigint().toString())
+
+            return
         }
 
         switch (event.Name) {
@@ -763,6 +808,16 @@ function saveEvents(
                     userId,
                     contract.Metadata.CpdId,
                 )
+                break
+            case "Evergreen_Payout_Data":
+                session.evergreen.payout = (<Evergreen_Payout_DataC2SEvent>(
+                    event
+                )).Value.Total_Payout
+                break
+            case "MissionFailed_Event":
+                if (session.evergreen) {
+                    session.evergreen.failed = true
+                }
                 break
             // Sinkhole events we don't care about
             case "ItemPickedUp":

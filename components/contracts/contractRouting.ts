@@ -17,7 +17,13 @@
  */
 
 import { Router } from "express"
-import { fastClone, nilUuid, ServerVer, uuidRegex } from "../utils"
+import {
+    contractTypes,
+    fastClone,
+    nilUuid,
+    ServerVer,
+    uuidRegex,
+} from "../utils"
 import { json as jsonMiddleware } from "body-parser"
 import {
     enqueueEvent,
@@ -48,7 +54,7 @@ import {
 import { createSniperLoadouts } from "../menus/sniper"
 import { GetForPlay2Body } from "../types/gameSchemas"
 import assert from "assert"
-import { getUserData } from "components/databaseHandler"
+import { getUserData } from "../databaseHandler"
 import { getCpd } from "../evergreen"
 
 const contractRoutingRouter = Router()
@@ -93,6 +99,11 @@ contractRoutingRouter.post(
             ...{
                 OpportunityData: getContractOpportunityData(req, contractData),
             },
+        }
+
+        // Edit usercreated contract data HERE
+        if (contractTypes.includes(contractData.Metadata.Type)) {
+            contractData.Data.EnableSaving = false
         }
 
         const contractSesh = {
@@ -347,6 +358,9 @@ function getContractOpportunityData(
 
     if (contract.Metadata.Opportunities) {
         for (const ms of contract.Metadata.Opportunities) {
+            if (!Object.keys(missionStories).includes(ms)) {
+                continue
+            }
             missionStories[ms].PreviouslyCompleted =
                 ms in userData.Extensions.opportunityprogression
             const current = fastClone(missionStories[ms])

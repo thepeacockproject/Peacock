@@ -183,6 +183,22 @@ export type MissionType =
     | "evergreen"
 
 /**
+ * The data acquired when using the "contract search" functionality.
+ */
+export interface contractSearchResult {
+    Data: {
+        Contracts: {
+            UserCentricContract: UserCentricContract
+        }[]
+        ErrorReason: string
+        HasMore: boolean
+        HasPrevious: boolean
+        Page: number
+        TotalCount: number
+    }
+}
+
+/**
  * The last kill in a contract session.
  *
  * @see ContractSession
@@ -246,7 +262,18 @@ export interface ContractSession {
             context: unknown
             state: string
             timers: Timer[]
+            timesCompleted: number
         }
+    }
+    /**
+     * Session Evergreen details.
+     *
+     * @since v6.0.0
+     */
+    evergreen?: {
+        payout: number
+        scoringScreenEndState: string
+        failed: boolean
     }
 }
 
@@ -353,8 +380,25 @@ export interface PlayerProfileView {
         PlayerProfileXp: {
             Total: number
             Level: number
+            Seasons: {
+                Number: number
+                Locations: {
+                    LocationId: string
+                    Xp: number
+                    ActionXp: number
+                    LocationProgression?: {
+                        Level: number
+                        MaxLevel: number
+                    }
+                }[]
+            }[]
         }
     }
+}
+
+export interface ContractHistory {
+    LastPlayedAt?: number
+    Completed?: boolean
 }
 
 export interface UserProfile {
@@ -375,6 +419,9 @@ export interface UserProfile {
             [escalationId: string]: number
         }
         PeacockFavoriteContracts: string[]
+        PeacockPlayedContracts: {
+            [contractId: string]: ContractHistory
+        }
         PeacockCompletedEscalations: string[]
         Saves: {
             [slot: string]: {
@@ -399,6 +446,11 @@ export interface UserProfile {
                  * The total amount of XP a user has obtained.
                  */
                 Total: number
+                Sublocations: {
+                    Location: string
+                    Xp: number
+                    ActionXp: number
+                }[]
             }
             Locations: {
                 [location: string]: {
@@ -420,6 +472,12 @@ export interface UserProfile {
         gamepersistentdata: {
             __stats?: unknown
             PersistentBool: Record<string, unknown>
+            HitsFilterType: {
+                // "all" / "completed" / "failed"
+                MyHistory: string
+                MyContracts: string
+                MyPlaylist: string
+            }
         }
         opportunityprogression: {
             [opportunityId: RepositoryId]: boolean
@@ -553,6 +611,9 @@ export interface Unlockable {
         /**
          * Inclusion data for an unlockable. The only known use for this is
          * sniper rifle unlockables for Sniper Assassin mode.
+         *
+         * With the `InclusionData` type added,
+         * I think this line can be `InclusionData: InclusionData`. --Moony
          */
         InclusionData?: {
             ContractTypes?: MissionType[] | null
@@ -1073,6 +1134,13 @@ export interface CompiledChallengeTreeData {
     UserCentricContract?: UserCentricContract
 }
 
+export interface InclusionData {
+    ContractIds?: string[]
+    ContractTypes?: MissionType[]
+    Locations?: string[]
+    GameModes?: string[]
+}
+
 export interface CompiledChallengeIngameData {
     Id: string
     GroupId?: string
@@ -1088,12 +1156,7 @@ export interface CompiledChallengeIngameData {
     PlayableUntil?: string | null
     Xp: number
     XpModifier: unknown
-    InclusionData?: {
-        ContractIds?: string[]
-        ContractTypes?: string[]
-        Locations?: string[]
-        GameModes?: string[]
-    }
+    InclusionData?: InclusionData
     CrowdChoice?: {
         Tag: string
     }
