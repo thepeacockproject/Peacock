@@ -38,6 +38,27 @@ import {
     WINTERSPORTS_UNLOCKABLES,
 } from "./ownership"
 import { EPIC_NAMESPACE_2016 } from "./platformEntitlements"
+import { controller } from "./controller"
+import { getUserData } from "./databaseHandler"
+
+const DELUXE_DATA = [
+    ...CONCRETEART_UNLOCKABLES,
+    ...DELUXE_UNLOCKABLES,
+    ...EXECUTIVE_UNLOCKABLES,
+    ...H1_GOTY_UNLOCKABLES,
+    ...H1_REQUIEM_UNLOCKABLES,
+    ...H2_RACCOON_STINGRAY_UNLOCKABLES,
+    ...MAKESHIFT_UNLOCKABLES,
+    ...SIN_ENVY_UNLOCKABLES,
+    ...SIN_GLUTTONY_UNLOCKABLES,
+    ...SIN_GREED_UNLOCKABLES,
+    ...SIN_LUST_UNLOCKABLES,
+    ...SIN_PRIDE_UNLOCKABLES,
+    ...SIN_SLOTH_UNLOCKABLES,
+    ...SIN_WRATH_UNLOCKABLES,
+    ...TRINITY_UNLOCKABLES,
+    ...WINTERSPORTS_UNLOCKABLES,
+]
 
 /**
  * An inventory item.
@@ -76,6 +97,9 @@ export function createInventory(
         return inventoryUserCache.get(profileId)!
     }
 
+    // Get user data to check on location progression
+    const userData = getUserData(profileId, gameVersion)
+
     // add all unlockables to player's inventory
     const allunlockables = getVersionedConfig<Unlockable[]>(
         "allunlockables",
@@ -83,8 +107,66 @@ export function createInventory(
         true,
     ).filter((u) => u.Type !== "location") // locations not in inventory
 
+    // list of all items that are unlockable via package, like starter items
+    const packageUnlockables = allunlockables.reduce((acc, unlockable) => {
+        if (unlockable.Type === "package") {
+            acc.push(...unlockable.Properties.Unlocks)
+        }
+        return acc
+    }, [])
+
+    /**
+     * Seperates unlockable types and looksup for progression level
+     * on unlockables that are locked behind mastery progression level
+     */
+    const [unlockedItems, otherItems]: [Unlockable[], Unlockable[]] =
+        allunlockables.reduce(
+            (acc, unlockable) => {
+                const ulockableMasteryData =
+                    controller.masteryService.getMasteryForUnlockable(
+                        unlockable,
+                    )
+
+                // If the unlockable is mastery locked, checks if its unlocked based on user location progression
+                if (ulockableMasteryData) {
+                    const locationData = userData.Extensions.progression
+                        .Locations[ulockableMasteryData.Location] ?? {
+                        Xp: 0,
+                        Level: 1,
+                    }
+
+                    if (locationData.Level >= ulockableMasteryData.Level) {
+                        acc[0].push(unlockable)
+                    }
+                } else {
+                    const isPackageOrFromPackage =
+                        unlockable.Type === "package" ||
+                        packageUnlockables.includes(unlockable.Id)
+                    const isEvergreen =
+                        unlockable.Type === "evergreenmastery" ||
+                        unlockable.Subtype === "evergreen"
+                    const isDeluxe = DELUXE_DATA.includes(unlockable.Id)
+
+                    if (isPackageOrFromPackage || isEvergreen || isDeluxe) {
+                        acc[0].push(unlockable)
+                    } else {
+                        /**
+                         *  If the unlockable is anything else (contracts, elusive targets, classic challanges, etc)
+                         *
+                         * Note entirely sure what to do with these. Ill adde them anyway but seems like some of them are not even unlockable going
+                         * from the wiki entry for them. Others I suppose will need to be wired to contracts and stuff
+                         */
+                        acc[1].push(unlockable)
+                    }
+                }
+
+                return acc
+            },
+            [[], []],
+        )
+
     // ts-expect-error It cannot be undefined.
-    const filtered: InventoryItem[] = allunlockables
+    const filtered: InventoryItem[] = [...unlockedItems, ...otherItems]
         .map((unlockable) => {
             if (brokenItems.includes(unlockable.Guid)) {
                 return undefined

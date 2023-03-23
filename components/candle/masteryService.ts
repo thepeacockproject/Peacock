@@ -41,6 +41,32 @@ export class MasteryService {
         this.masteryData.set(masteryPackage.Id, masteryPackage)
     }
 
+    /**
+     * Returns mastery data for unlockable, if there's any
+     * @param unlockable
+     * @returns { Location: string, Level: number  } | undefined
+     */
+    getMasteryForUnlockable(unlockable: Unlockable) {
+        return [...this.masteryData.values()].reduce(
+            (acc, { Id: location, Drops }) => {
+                const dropData = Drops.find((drop) => drop.Id === unlockable.Id)
+                if (dropData) {
+                    return {
+                        Location: location.toLowerCase(),
+                        Level: dropData.Level,
+                    }
+                }
+                return acc
+            },
+            undefined,
+        ) as
+            | {
+                  Location: string
+                  Level: number
+              }
+            | undefined
+    }
+
     getMasteryDataForDestination(
         locationParentId: string,
         gameVersion: GameVersion,
