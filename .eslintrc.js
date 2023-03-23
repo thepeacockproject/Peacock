@@ -42,8 +42,6 @@ module.exports = {
             "./tsconfig.json",
             // web UI
             "./webui/tsconfig.json",
-            // tests
-            "./tests/tsconfig.json",
         ],
     },
     rules: {

@@ -35,7 +35,12 @@ export type StashpointQuery = Partial<{
 
 export type PlanningQuery = Partial<{
     contractid: string
-    resetescalation: string
+    resetescalation: "true" | "false"
+    /**
+     * This is observed to be true for the planning page that shows after the mission end page when finishing a level of an escalation.
+     */
+    forcecurrentcontract: "true" | "false"
+    errorhandling: "true" | "false"
 }>
 
 export type GetForPlay2Body = Partial<{

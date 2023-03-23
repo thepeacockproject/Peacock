@@ -55,10 +55,7 @@ import type {
     Unlockable,
     UserCentricContract,
 } from "./types/types"
-import {
-    getMenuDetailsForEscalation,
-    getUserEscalationProgress,
-} from "./contracts/escalations/escalationService"
+import { getUserEscalationProgress } from "./contracts/escalations/escalationService"
 import {
     complications,
     generateCompletionData,
@@ -1040,10 +1037,10 @@ menuDataRouter.get(
             ]
 
             for (const escalation of allUniqueEscalations) {
-                const details = getMenuDetailsForEscalation(
+                const details = contractIdToHitObject(
                     escalation,
-                    req.jwt.unique_name,
                     req.gameVersion,
+                    req.jwt.unique_name,
                 )
 
                 if (details) {
