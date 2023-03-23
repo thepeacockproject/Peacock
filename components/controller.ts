@@ -63,6 +63,7 @@ import {
     fastClone,
     getRemoteService,
     hitmapsUrl,
+    versions,
 } from "./utils"
 import * as sessionSerialization from "./sessionSerialization"
 import * as databaseHandler from "./databaseHandler"
@@ -963,7 +964,6 @@ export class Controller {
             },
         )
 
-        const versions: GameVersion[] = ["h1", "h2", "h3"]
         for (const gameVersion of versions) {
             this.registerGlobalChallenges(
                 gameVersion,

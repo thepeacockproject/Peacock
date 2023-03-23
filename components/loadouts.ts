@@ -27,6 +27,7 @@ import { Request, Router } from "express"
 import { json as jsonMiddleware } from "body-parser"
 import { writeFile } from "atomically"
 import { nanoid } from "nanoid"
+import { versions } from "./utils"
 
 const LOADOUT_PROFILES_FILE = "userdata/users/lop.json"
 
@@ -95,7 +96,7 @@ export class Loadouts {
         let dirty = false
 
         // make sure they all have IDs
-        for (const gameVersion of ["h1", "h2", "h3"]) {
+        for (const gameVersion of versions) {
             for (const loadout of this._loadouts[gameVersion].loadouts) {
                 if (!loadout.id) {
                     dirty = true
@@ -228,7 +229,7 @@ loadoutRouter.patch(
         }
 
         // validate gameVersion
-        if (!["h1", "h2", "h3"].includes(req.body.gameVersion)) {
+        if (!versions.includes(req.body.gameVersion)) {
             res.status(400).json({ error: "invalid gv" })
             return
         }
@@ -266,7 +267,7 @@ loadoutRouter.patch(
 )
 
 loadoutRouter.post("/create", jsonMiddleware(), async (req, res) => {
-    if (!["h1", "h2", "h3"].includes(req.body.gameVersion)) {
+    if (!versions.includes(req.body.gameVersion)) {
         res.status(400).json({ message: "invalid gv" })
         return
     }

@@ -21,7 +21,7 @@ import { getConfig } from "./configSwizzleManager"
 import { readFileSync } from "atomically"
 import { GameVersion, UserProfile } from "./types/types"
 import { join } from "path"
-import { uuidRegex } from "./utils"
+import { uuidRegex, versions } from "./utils"
 import { getUserData, loadUserData, writeUserData } from "./databaseHandler"
 import { readdirSync } from "fs"
 import { getLevelCount } from "./contracts/escalations/escalationService"
@@ -58,7 +58,7 @@ webFeaturesRouter.get(
     (req: Request<unknown, unknown, unknown, { gv: GameVersion }>, res) => {
         if (
             !req.query.gv ||
-            !["h1", "h2", "h3"].includes(req.query.gv ?? null)
+            !versions.includes(req.query.gv ?? null)
         ) {
             res.json([])
             return
@@ -98,7 +98,7 @@ function validateUserAndGv(
     req: Request<unknown, unknown, unknown, { gv: GameVersion; user: string }>,
     res: Response,
 ): boolean {
-    if (!req.query.gv || !["h1", "h2", "h3"].includes(req.query.gv ?? null)) {
+    if (!req.query.gv || !versions.includes(req.query.gv ?? null)) {
         formErrorMessage(
             res,
             'The request must contain a valid game version among "h1", "h2", and "h3".',

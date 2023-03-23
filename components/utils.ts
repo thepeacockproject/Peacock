@@ -52,6 +52,8 @@ export const uuidRegex =
 
 export const contractTypes = ["featured", "usercreated"]
 
+export const versions: GameVersion[] = ["h1", "h2", "h3"]
+
 export const contractCreationTutorialId = "d7e2607c-6916-48e2-9588-976c7d8998bb"
 
 export async function checkForUpdates(): Promise<void> {
