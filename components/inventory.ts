@@ -122,20 +122,20 @@ export function createInventory(
     const [unlockedItems, otherItems]: [Unlockable[], Unlockable[]] =
         allunlockables.reduce(
             (acc, unlockable) => {
-                const ulockableMasteryData =
+                const unlockableMasteryData =
                     controller.masteryService.getMasteryForUnlockable(
                         unlockable,
                     )
 
                 // If the unlockable is mastery locked, checks if its unlocked based on user location progression
-                if (ulockableMasteryData) {
+                if (unlockableMasteryData) {
                     const locationData = userData.Extensions.progression
-                        .Locations[ulockableMasteryData.Location] ?? {
+                        .Locations[unlockableMasteryData.Location] ?? {
                         Xp: 0,
                         Level: 1,
                     }
 
-                    if (locationData.Level >= ulockableMasteryData.Level) {
+                    if (locationData.Level >= unlockableMasteryData.Level) {
                         acc[0].push(unlockable)
                     }
                 } else {
