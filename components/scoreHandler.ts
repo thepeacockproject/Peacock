@@ -694,6 +694,7 @@ export async function missionEnd(
         contractData.Metadata.Location,
         req.jwt.unique_name,
         req.gameVersion,
+        contractData.Metadata.Type,
     )
 
     //Calculate the old location progression based on the current one and process it

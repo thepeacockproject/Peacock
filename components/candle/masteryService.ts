@@ -133,6 +133,7 @@ export class MasteryService {
      * @param subLocationId The id of the sublocation.
      * @param gameVersion The game version.
      * @param userId The id of the user.
+     * @param contractType The type of the contract, only used to distinguish evergreen from other types (default).
      * @returns The CompletionData object.
      */
     getLocationCompletion(
@@ -140,6 +141,7 @@ export class MasteryService {
         subLocationId: string,
         gameVersion: GameVersion,
         userId: string,
+        contractType = "mission",
     ): CompletionData {
         //Get the mastery data
         const masteryData: MasteryPackage =
@@ -155,7 +157,7 @@ export class MasteryService {
                 gameVersion,
                 locationParentId.toLowerCase(),
                 masteryData.MaxLevel || DEFAULT_MASTERY_MAXLEVEL,
-                locationParentId.includes("SNUG")
+                contractType === "evergreen"
                     ? xpRequiredForEvergreenLevel
                     : xpRequiredForLevel,
             ),
