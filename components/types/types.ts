@@ -851,7 +851,11 @@ export interface MissionManifestMetadata {
             },
         ]
     }[]
-    CharacterLoadoutData?: unknown
+    CharacterLoadoutData?: {
+        Id: string
+        Loadout: unknown
+        CompletionData: CompletionData
+    }[]
     SpawnSelectionType?: "random" | string
     Gamemodes?: ("versus" | string)[]
     Enginemodes?: ("singleplayer" | "multiplayer" | string)[]
@@ -1381,7 +1385,7 @@ export type SafehouseCategory = {
 export type SniperLoadout = {
     ID: string
     InstanceID: string
-    Unlockable: Unlockable
+    Unlockable: Unlockable[]
     MainUnlockable: Unlockable
 }
 

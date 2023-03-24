@@ -19,6 +19,7 @@
 import { Response, Router } from "express"
 import {
     contractCreationTutorialId,
+    DEFAULT_MASTERY_MAXLEVEL,
     gameDifficulty,
     getMaxProfileLevel,
     PEACOCKVERSTRING,
@@ -96,6 +97,7 @@ import {
     StashpointQuery,
 } from "./types/gameSchemas"
 import assert from "assert"
+import { SniperLoadoutConfig } from "./menus/sniper"
 
 export const preMenuDataRouter = Router()
 const menuDataRouter = Router()
@@ -1895,7 +1897,6 @@ menuDataRouter.get(
 menuDataRouter.get(
     "/MasteryUnlockable",
     (req: RequestWithJwt<MasteryUnlockableQuery>, res) => {
-        let sniperLoadouts = getConfig("SniperLoadouts", false)
         let masteryUnlockTemplate = getConfig(
             "MasteryUnlockablesTemplate",
             false,
@@ -1914,6 +1915,11 @@ menuDataRouter.get(
             }
         })()
 
+        let sniperLoadout = getConfig<SniperLoadoutConfig>(
+            "SniperLoadouts",
+            false,
+        )[location][req.query.unlockableId]
+
         if (req.gameVersion === "scpc") {
             masteryUnlockTemplate = JSON.parse(
                 JSON.stringify(masteryUnlockTemplate).replace(
@@ -1922,36 +1928,33 @@ menuDataRouter.get(
                 ),
             )
 
-            sniperLoadouts = JSON.parse(
-                JSON.stringify(sniperLoadouts).replace(/hawk\/+/g, ""),
+            sniperLoadout = JSON.parse(
+                JSON.stringify(sniperLoadout).replace(/hawk\/+/g, ""),
             )
         }
+
+        const unlockables = sniperLoadout.Unlockable
 
         res.json({
             template: masteryUnlockTemplate,
             data: {
-                CompletionData: generateCompletionData(
-                    location,
+                CompletionData: controller.masteryService.getFirearmCompletion(
+                    req.query.unlockableId,
+                    sniperLoadout.MainUnlockable.Properties.Name,
                     req.jwt.unique_name,
                     req.gameVersion,
                 ),
-                Drops: [
-                    {
-                        IsLevelMarker: false,
-                        Unlockable:
-                            sniperLoadouts[location][req.query.unlockableId][
-                                "Unlockable"
-                            ],
-                        Level: 20,
-                        IsLocked: false,
-                        TypeLocaKey:
-                            "UI_MENU_PAGE_MASTERY_UNLOCKABLE_NAME_weapon",
-                    },
-                ],
-                Unlockable:
-                    sniperLoadouts[location][req.query.unlockableId][
-                        "MainUnlockable"
-                    ],
+                Drops: unlockables.map((unlockable) => ({
+                    IsLevelMarker: false,
+                    Unlockable: unlockable,
+                    Level:
+                        unlockable.Properties.UnlockOrder ??
+                        DEFAULT_MASTERY_MAXLEVEL,
+                    // TODO: Everything is unlocked. Change this when adding sniper progression
+                    IsLocked: false,
+                    TypeLocaKey: "UI_MENU_PAGE_MASTERY_UNLOCKABLE_NAME_weapon",
+                })),
+                Unlockable: sniperLoadout.MainUnlockable,
             },
         })
     },

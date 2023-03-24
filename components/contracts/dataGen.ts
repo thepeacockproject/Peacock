@@ -87,13 +87,14 @@ export function getSubLocationByName(
  * @param subLocationId The ID of the targeted sub-location.
  * @param userId The ID of the user.
  * @param gameVersion The game's version.
- * If true, the SubLocationId property will not be set.
+ * @param contractType The type of the contract, only used to distinguish evergreen from other types (default).
  * @returns The completion data object.
  */
 export function generateCompletionData(
     subLocationId: string,
     userId: string,
     gameVersion: GameVersion,
+    contractType = "mission",
 ): CompletionData {
     const subLocation = getSubLocationByName(subLocationId, gameVersion)
 
@@ -101,19 +102,16 @@ export function generateCompletionData(
         ? subLocation.Properties?.ParentLocation
         : subLocationId
 
-    const completionData = controller.masteryService.getCompletionData(
+    const completionData = controller.masteryService.getLocationCompletion(
         locationId,
         subLocation?.Id,
         gameVersion,
         userId,
+        contractType,
     )
 
     if (!completionData) {
-        log(
-            LogLevel.DEBUG,
-            `Could not get CompletionData for location ${locationId}`,
-        )
-
+        // Should only reach here for sniper locations.
         return {
             Level: 1,
             MaxLevel: 1,

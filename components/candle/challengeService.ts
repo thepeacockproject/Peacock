@@ -58,6 +58,7 @@ import {
     levelForXp,
     xpRequiredForEvergreenLevel,
     xpRequiredForLevel,
+    isSniperLocation,
 } from "../utils"
 import {
     ChallengeFilterOptions,
@@ -411,12 +412,9 @@ export class ChallengeService extends ChallengeRegistry {
         const location = locations.children[child]
         assert.ok(location)
 
-        let contracts =
-            child === "LOCATION_AUSTRIA" ||
-            child === "LOCATION_SALTY_SEAGULL" ||
-            child === "LOCATION_CAGED_FALCON"
-                ? this.controller.missionsInLocations.sniper[child]
-                : this.controller.missionsInLocations[child]
+        let contracts = isSniperLocation(child)
+            ? this.controller.missionsInLocations.sniper[child]
+            : this.controller.missionsInLocations[child]
         if (!contracts) {
             contracts = []
         }
