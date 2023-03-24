@@ -66,6 +66,13 @@ export function withLookupDialog(
         false,
     ).find((entry) => entry.Id === contract.Metadata.Location)
 
+    // Must toggle before generating the user centric contract.
+    const flag = toggleFavorite(
+        req.jwt.unique_name,
+        req.query.contractId,
+        req.gameVersion,
+    )
+
     const result: Result = {
         template: lookupFavoriteTemplate,
         data: {
@@ -77,13 +84,8 @@ export function withLookupDialog(
                 req.gameVersion,
             ),
         },
+        ...(flag && { AddedSuccessfully: true }),
     }
-
-    result.data.AddedSuccessfully = toggleFavorite(
-        req.jwt.unique_name,
-        req.query.contractId,
-        req.gameVersion,
-    )
 
     res.json(result)
 }

@@ -659,6 +659,12 @@ export interface UserCentricContract {
         ElusiveContractState: string
         LastPlayedAt?: string
         IsFeatured?: boolean
+        // For favorite contracts
+        PlaylistData?: {
+            IsAdded: boolean
+            // Not sure if this is important
+            AddedTime: string
+        }
         Completed?: boolean
         LocationId: string
         ParentLocationId: string
