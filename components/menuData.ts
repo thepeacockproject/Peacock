@@ -80,7 +80,11 @@ import {
 } from "./menus/playnext"
 import { randomUUID } from "crypto"
 import { planningView } from "./menus/planning"
-import { directRoute, withLookupDialog } from "./menus/favoriteContracts"
+import {
+    deleteMultiple,
+    directRoute,
+    withLookupDialog,
+} from "./menus/favoriteContracts"
 import { swapToBrowsingMenusStatus } from "./discordRp"
 import axios from "axios"
 import { getFlag } from "./flags"
@@ -1859,8 +1863,14 @@ menuDataRouter.get(
 
 menuDataRouter.get(
     // this one is sane Kappa
-    "/contractplaylist/addordelete/{contractId}",
+    "/contractplaylist/addordelete/:contractId",
     directRoute,
+)
+
+menuDataRouter.post(
+    "/contractplaylist/deletemultiple",
+    jsonMiddleware(),
+    deleteMultiple,
 )
 
 menuDataRouter.get("/GetPlayerProfileXpData", (req: RequestWithJwt, res) => {

@@ -149,3 +149,34 @@ export function directRoute(req: RequestWithJwt, res: Response): void {
         },
     })
 }
+
+/**
+ * Takes an array of contract IDs and deletes them from the user's favorites.
+ * @param req The request.
+ * @param res The response.
+ */
+export function deleteMultiple(
+    req: RequestWithJwt<{ mode?: string }, string[]>,
+    res: Response,
+): void {
+    const userProfile = getUserData(req.jwt.unique_name, req.gameVersion)
+
+    // Perform some verification
+    const success = req.body?.every((id) =>
+        userProfile.Extensions.PeacockFavoriteContracts.includes(id),
+    )
+
+    if (success) {
+        req.body?.forEach((id) =>
+            toggleFavorite(req.jwt.unique_name, id, req.gameVersion),
+        )
+    }
+
+    res.json({
+        template: null,
+        data: {
+            ContractIds: req.body,
+            Success: success,
+        },
+    })
+}
