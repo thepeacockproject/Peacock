@@ -106,7 +106,7 @@ const defaultFlags: Flags = {
         default: false,
     },
     enableMasteryProgression: {
-        desc: "When set to false, mastery progression will be disabled and all unlockabled will be awarded at the beggining",
+        desc: "When set to false, mastery progression will be disabled and all unlockables will be awarded at the beginning",
         default: true,
     },
 }
