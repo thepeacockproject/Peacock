@@ -71,7 +71,6 @@ import {
     MissionEndChallenge,
 } from "./types/score"
 import { MasteryData } from "./types/mastery"
-import { clearInventoryFor } from "./inventory"
 
 /**
  * Checks the criteria of each possible play-style, ranking them by scoring.

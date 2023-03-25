@@ -1150,7 +1150,7 @@ export interface CompiledChallengeIngameData {
     ImageName?: string
     Definition: CompiledIoiStatemachine
     Tags?: string[]
-    Drops?: string[]
+    Drops?: Unlockable[]
     LastModified?: string
     PlayableSince?: string | null
     PlayableUntil?: string | null
