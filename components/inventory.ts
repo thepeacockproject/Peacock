@@ -89,30 +89,6 @@ export function clearInventoryCache(): void {
     inventoryUserCache.clear()
 }
 
-export function awardDropsToUser(profileId: string, drops: Unlockable[]): void {
-    if (inventoryUserCache.has(profileId)) {
-        const inventoryItems: InventoryItem[] = drops.map((unlockable) => ({
-            InstanceId: unlockable.Guid,
-            ProfileId: profileId,
-            Unlockable: unlockable,
-            Properties: {},
-        }))
-        // Not sure if duplicates could crawl in, so avoiding them in the first place
-        inventoryUserCache.set(profileId, [
-            ...new Set([
-                ...inventoryUserCache.get(profileId),
-                ...inventoryItems,
-            ]),
-        ])
-    } else {
-        /**
-         * @TODO Dont think theres a situation where the user doesnt have an inventory, but I may be wrong so leaving this for now.
-         * Can delete if unecessary
-         */
-        log(LogLevel.DEBUG, "No inventory for provided user")
-    }
-}
-
 export function createInventory(
     profileId: string,
     gameVersion: GameVersion,
@@ -421,4 +397,38 @@ export function createInventory(
 
     inventoryUserCache.set(profileId, filtered)
     return filtered
+}
+
+export function awardDropsToUser(profileId: string, drops: Unlockable[]): void {
+    if (inventoryUserCache.has(profileId)) {
+        const inventoryItems: InventoryItem[] = drops.map((unlockable) => ({
+            InstanceId: unlockable.Guid,
+            ProfileId: profileId,
+            Unlockable: unlockable,
+            Properties: {},
+        }))
+        inventoryUserCache.set(profileId, [
+            ...new Set([
+                ...inventoryUserCache.get(profileId),
+                ...inventoryItems,
+            ]),
+        ])
+    } else {
+        /**
+         * @TODO Dont think theres a situation where the user doesnt have an inventory, but I may be wrong so leaving this for now.
+         * Can delete if unecessary
+         */
+        log(LogLevel.DEBUG, "No inventory for provided user")
+    }
+}
+
+export function getDataForUnlockables(
+    gameVersion,
+    unlockableIds: string[],
+): Unlockable[] {
+    return getVersionedConfig<Unlockable[]>(
+        "allunlockables",
+        gameVersion,
+        true,
+    ).filter((unlockable) => unlockableIds.includes(unlockable.Id))
 }

@@ -69,7 +69,7 @@ import {
 import assert from "assert"
 import { getVersionedConfig } from "../configSwizzleManager"
 import { SyncHook } from "../hooksImpl"
-import { awardDropsToUser } from "../inventory"
+import { awardDropsToUser, getDataForUnlockables } from "../inventory"
 
 type ChallengeDefinitionLike = {
     Context?: Record<string, unknown>
@@ -1130,6 +1130,7 @@ export class ChallengeService extends ChallengeRegistry {
         }
 
         const userData = getUserData(userId, gameVersion)
+        const drops: Unlockable[] = []
 
         //ASSUMED: Challenges that are not global should always be completed
         if (!challenge.Tags.includes("global")) {
@@ -1154,9 +1155,9 @@ export class ChallengeService extends ChallengeRegistry {
             session.challengeContexts[challenge.Id].state = "Start"
         }
 
-        // If the completed challange has unlockables, award them to the user
+        // Add challenge rewards to pool
         if (challenge.Drops?.length) {
-            awardDropsToUser(userId, challenge.Drops)
+            drops.push(...challenge.Drops)
         }
 
         //NOTE: Official will always grant XP to both Location Mastery and the Player Profile
@@ -1164,8 +1165,20 @@ export class ChallengeService extends ChallengeRegistry {
         const masteryXp = challenge.Rewards?.MasteryXP || 0
         const xp = actionXp + masteryXp
 
-        this.grantLocationMasteryXp(masteryXp, actionXp, session, userData)
+        this.grantLocationMasteryXp(
+            gameVersion,
+            masteryXp,
+            actionXp,
+            session,
+            userData,
+            drops,
+        )
         this.grantUserXp(xp, session, userData)
+
+        // If there are unclockable rewards, award them to the user
+        if (drops.length) {
+            awardDropsToUser(userId, drops)
+        }
 
         writeUserData(userId, gameVersion)
 
@@ -1184,10 +1197,12 @@ export class ChallengeService extends ChallengeRegistry {
     }
 
     grantLocationMasteryXp(
+        gameVersion: GameVersion,
         masteryXp: number,
         actionXp: number,
         contractSession: ContractSession,
         userProfile: UserProfile,
+        drops: Unlockable[],
     ): boolean {
         const contract = controller.resolveContract(contractSession.contractId)
 
@@ -1229,6 +1244,8 @@ export class ChallengeService extends ChallengeRegistry {
         const maxLevel = masteryData?.MaxLevel || DEFAULT_MASTERY_MAXLEVEL
 
         if (masteryData) {
+            const previousLevel = locationData.Level
+
             locationData.Xp = clampValue(
                 locationData.Xp + masteryXp + actionXp,
                 0,
@@ -1244,6 +1261,21 @@ export class ChallengeService extends ChallengeRegistry {
                 1,
                 maxLevel,
             )
+
+            // Add mastery progression rewards to pool
+            if (locationData.Level > previousLevel) {
+                const unlockableIds = masteryData.Drops.filter(
+                    (drop) =>
+                        drop.Level > previousLevel &&
+                        drop.Level <= locationData.Level,
+                ).map((drop) => drop.Id)
+
+                const unlockables = getDataForUnlockables(
+                    gameVersion,
+                    unlockableIds,
+                )
+                drops.push(...unlockables)
+            }
         }
 
         //Update the SubLocation data
