@@ -40,6 +40,7 @@ import {
 import { EPIC_NAMESPACE_2016 } from "./platformEntitlements"
 import { controller } from "./controller"
 import { getUserData } from "./databaseHandler"
+import { log, LogLevel } from "./loggingInterop"
 
 const DELUXE_DATA = [
     ...CONCRETEART_UNLOCKABLES,
@@ -88,6 +89,30 @@ export function clearInventoryCache(): void {
     inventoryUserCache.clear()
 }
 
+export function awardDropsToUser(profileId: string, drops: Unlockable[]): void {
+    if (inventoryUserCache.has(profileId)) {
+        const inventoryItems: InventoryItem[] = drops.map((unlockable) => ({
+            InstanceId: unlockable.Guid,
+            ProfileId: profileId,
+            Unlockable: unlockable,
+            Properties: {},
+        }))
+        // Not sure if duplicates could crawl in, so avoiding them in the first place
+        inventoryUserCache.set(profileId, [
+            ...new Set([
+                ...inventoryUserCache.get(profileId),
+                ...inventoryItems,
+            ]),
+        ])
+    } else {
+        /**
+         * @TODO Dont think theres a situation where the user doesnt have an inventory, but I may be wrong so leaving this for now.
+         * Can delete if unecessary
+         */
+        log(LogLevel.DEBUG, "No inventory for provided user")
+    }
+}
+
 export function createInventory(
     profileId: string,
     gameVersion: GameVersion,
@@ -115,6 +140,9 @@ export function createInventory(
         return acc
     }, [])
 
+    const challengesUnlockables =
+        controller.challengeService.getChallengesUnlockables()
+
     /**
      * Seperates unlockable types and looksup for progression level
      * on unlockables that are locked behind mastery progression level
@@ -122,13 +150,26 @@ export function createInventory(
     const [unlockedItems, otherItems]: [Unlockable[], Unlockable[]] =
         allunlockables.reduce(
             (acc, unlockable) => {
+                // If unlockable is challenge reward, returns the challenge id
+                const unclockableChallengeId =
+                    challengesUnlockables[unlockable.Id]
+
                 const unlockableMasteryData =
                     controller.masteryService.getMasteryForUnlockable(
                         unlockable,
                     )
 
+                // If the unlockable is challenge reward, check if user has the challenge completed
+                if (unclockableChallengeId) {
+                    const challenge =
+                        userData.Extensions?.ChallengeProgression?.[
+                            unclockableChallengeId
+                        ]
+
+                    if (challenge?.Completed) acc[0].push(unlockable)
+                }
                 // If the unlockable is mastery locked, checks if its unlocked based on user location progression
-                if (unlockableMasteryData) {
+                else if (unlockableMasteryData) {
                     const locationData = userData.Extensions.progression
                         .Locations[unlockableMasteryData.Location] ?? {
                         Xp: 0,
@@ -151,10 +192,7 @@ export function createInventory(
                         acc[0].push(unlockable)
                     } else {
                         /**
-                         *  If the unlockable is anything else (contracts, elusive targets, classic challanges, etc)
-                         *
-                         * Note entirely sure what to do with these. Ill adde them anyway but seems like some of them are not even unlockable going
-                         * from the wiki entry for them. Others I suppose will need to be wired to contracts and stuff
+                         *  List of untracked items (to award to user until they are tracked to corresponding challanges)
                          */
                         acc[1].push(unlockable)
                     }

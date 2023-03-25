@@ -69,6 +69,7 @@ import {
 import assert from "assert"
 import { getVersionedConfig } from "../configSwizzleManager"
 import { SyncHook } from "../hooksImpl"
+import { awardDropsToUser } from "../inventory"
 
 type ChallengeDefinitionLike = {
     Context?: Record<string, unknown>
@@ -138,6 +139,20 @@ export abstract class ChallengeRegistry {
 
     getChallengeById(challengeId: string): RegistryChallenge | undefined {
         return this.challenges.get(challengeId)
+    }
+
+    /**
+     * Returns a list of all challenges unlockables
+     */
+    getChallengesUnlockables() {
+        return [...this.challenges.values()].reduce((acc, challenge) => {
+            if (challenge?.Drops?.length) {
+                challenge?.Drops.forEach(
+                    (drop) => (acc[drop.Id] = challenge.Id),
+                )
+            }
+            return acc
+        }, {})
     }
 
     /**
@@ -1137,6 +1152,11 @@ export class ChallengeService extends ChallengeRegistry {
         //TODO: Figure out what Base/Delta means. For now if Repeatable is set, we restart the challenge.
         if (challenge.Definition.Repeatable) {
             session.challengeContexts[challenge.Id].state = "Start"
+        }
+
+        // If the completed challange has unlockables, award them to the user
+        if (challenge.Drops?.length) {
+            awardDropsToUser(userId, challenge.Drops)
         }
 
         //NOTE: Official will always grant XP to both Location Mastery and the Player Profile

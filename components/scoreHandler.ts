@@ -1020,15 +1020,6 @@ export async function missionEnd(
         }
     }
 
-    /**
-     * Clears inventory if new unlockables have been unlocked, so the inventory is recreated with them instead of fetching from the cache
-     *
-     * Im tempted to avoid doing this if the mission type is evergreen, because I dont think we need to clear inventory for freelancer, but would need to test (would save some cpu usage)
-     */
-    if (drops.length) {
-        clearInventoryFor(req.jwt.unique_name)
-    }
-
     //Setup the result
     const result: MissionEndResponse = {
         MissionReward: {
