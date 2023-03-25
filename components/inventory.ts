@@ -430,7 +430,7 @@ export function awardDropsToUser(profileId: string, drops: Unlockable[]): void {
 }
 
 export function getDataForUnlockables(
-    gameVersion,
+    gameVersion: GameVersion,
     unlockableIds: string[],
 ): Unlockable[] {
     return getVersionedConfig<Unlockable[]>(
@@ -438,4 +438,15 @@ export function getDataForUnlockables(
         gameVersion,
         true,
     ).filter((unlockable) => unlockableIds.includes(unlockable.Id))
+}
+
+export function getUnlockableById(
+    gameVersion: GameVersion,
+    unlockableId: string,
+): Unlockable | undefined {
+    return getVersionedConfig<Unlockable[]>(
+        "allunlockables",
+        gameVersion,
+        true,
+    ).find((unlockable) => unlockable.Id === unlockableId)
 }

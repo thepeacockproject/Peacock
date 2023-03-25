@@ -41,7 +41,7 @@ import {
 } from "../utils"
 
 import type { Response } from "express"
-import { createInventory } from "../inventory"
+import { createInventory, getUnlockableById } from "../inventory"
 import { createSniperLoadouts } from "./sniper"
 import { getFlag } from "../flags"
 import { loadouts } from "../loadouts"
@@ -62,6 +62,8 @@ export async function planningView(
         "MissionStories",
         false,
     )
+
+    const locationData = getConfig("LocationsData", true)
 
     const userData = getUserData(req.jwt.unique_name, req.gameVersion)
 
@@ -282,6 +284,116 @@ export async function planningView(
         })
     }
 
+    let loadoutSlots = [
+        {
+            SlotName: "carriedweapon",
+            SlotId: "0",
+            Recommended: null,
+        },
+        {
+            SlotName: "carrieditem",
+            SlotId: "1",
+            Recommended: null,
+        },
+        {
+            SlotName: "concealedweapon",
+            SlotId: "2",
+            Recommended: {
+                item:
+                    contractData.Peacock?.noCarriedWeapon === true
+                        ? null
+                        : typedInv.find(
+                              (item) => item.Unlockable.Id === pistol,
+                          ),
+                type: "concealedweapon",
+            },
+        },
+        {
+            SlotName: "disguise",
+            SlotId: "3",
+            Recommended: {
+                item: typedInv.find((item) => item.Unlockable.Id === suit),
+                type: "disguise",
+            },
+        },
+        {
+            SlotName: "gear",
+            SlotId: "4",
+            Recommended: {
+                item:
+                    contractData.Peacock?.noGear === true
+                        ? null
+                        : typedInv.find((item) => item.Unlockable.Id === tool1),
+                type: "gear",
+            },
+        },
+        {
+            SlotName: "gear",
+            SlotId: "5",
+            Recommended: {
+                item:
+                    contractData.Peacock?.noGear === true
+                        ? null
+                        : typedInv.find((item) => item.Unlockable.Id === tool2),
+                type: "gear",
+            },
+        },
+        {
+            SlotName: "stashpoint",
+            SlotId: "6",
+            Recommended: null,
+        },
+        briefcaseId && {
+            SlotName: briefcaseProp,
+            SlotId: briefcaseId,
+            Recommended: {
+                item: {
+                    ...i,
+                    Properties: {},
+                },
+                type: i.Unlockable.Id,
+                owned: true,
+            },
+            IsContainer: true,
+        },
+    ].filter(Boolean)
+
+    /**
+     * Handles loadout lock for Miami and Hokkaido
+     */
+    const locationProperties =
+        locationData[
+            contractData.Metadata.Location.includes("PARENT")
+                ? "parents"
+                : "children"
+        ][contractData.Metadata.Location]?.Properties
+
+    if (locationProperties) {
+        const loadoutUnlockable = getUnlockableById(
+            req.gameVersion,
+            locationProperties?.NormalLoadoutUnlock,
+        )
+
+        const locationMasteryData =
+            loadoutUnlockable &&
+            controller.masteryService.getMasteryForUnlockable(loadoutUnlockable)
+
+        const locationProgression = userData.Extensions.progression.Locations[
+            locationMasteryData?.Location
+        ] ?? {
+            Xp: 0,
+            Level: 1,
+        }
+
+        if (
+            locationMasteryData &&
+            locationProgression.Level < locationMasteryData.Level
+        )
+            loadoutSlots = loadoutSlots.filter(
+                (slot) => !["2", "4", "5"].includes(slot.SlotId),
+            )
+    }
+
     res.json({
         template:
             req.gameVersion === "h1"
@@ -353,94 +465,7 @@ export async function planningView(
                           .sort(unlockOrderComparer),
             Location: sublocation,
             LoadoutData:
-                contractData.Metadata.Type === "sniper"
-                    ? null
-                    : [
-                          {
-                              SlotName: "carriedweapon",
-                              SlotId: "0",
-                              Recommended: null,
-                          },
-                          {
-                              SlotName: "carrieditem",
-                              SlotId: "1",
-                              Recommended: null,
-                          },
-                          {
-                              SlotName: "concealedweapon",
-                              SlotId: "2",
-                              Recommended: {
-                                  item:
-                                      contractData.Peacock?.noCarriedWeapon ===
-                                      true
-                                          ? null
-                                          : typedInv.find(
-                                                (item) =>
-                                                    item.Unlockable.Id ===
-                                                    pistol,
-                                            ),
-                                  type: "concealedweapon",
-                              },
-                          },
-                          {
-                              SlotName: "disguise",
-                              SlotId: "3",
-                              Recommended: {
-                                  item: typedInv.find(
-                                      (item) => item.Unlockable.Id === suit,
-                                  ),
-                                  type: "disguise",
-                              },
-                          },
-                          {
-                              SlotName: "gear",
-                              SlotId: "4",
-                              Recommended: {
-                                  item:
-                                      contractData.Peacock?.noGear === true
-                                          ? null
-                                          : typedInv.find(
-                                                (item) =>
-                                                    item.Unlockable.Id ===
-                                                    tool1,
-                                            ),
-                                  type: "gear",
-                              },
-                          },
-                          {
-                              SlotName: "gear",
-                              SlotId: "5",
-                              Recommended: {
-                                  item:
-                                      contractData.Peacock?.noGear === true
-                                          ? null
-                                          : typedInv.find(
-                                                (item) =>
-                                                    item.Unlockable.Id ===
-                                                    tool2,
-                                            ),
-                                  type: "gear",
-                              },
-                          },
-                          {
-                              SlotName: "stashpoint",
-                              SlotId: "6",
-                              Recommended: null,
-                          },
-                          briefcaseId && {
-                              SlotName: briefcaseProp,
-                              SlotId: briefcaseId,
-                              Recommended: {
-                                  item: {
-                                      ...i,
-                                      Properties: {},
-                                  },
-                                  type: i.Unlockable.Id,
-                                  owned: true,
-                              },
-                              IsContainer: true,
-                          },
-                      ].filter(Boolean),
+                contractData.Metadata.Type === "sniper" ? null : loadoutSlots,
             LimitedLoadoutUnlockLevel: 0, // Hokkaido
             CharacterLoadoutData:
                 sniperLoadouts.length !== 0 ? sniperLoadouts : null,
