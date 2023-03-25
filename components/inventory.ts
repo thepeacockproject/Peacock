@@ -41,6 +41,7 @@ import { EPIC_NAMESPACE_2016 } from "./platformEntitlements"
 import { controller } from "./controller"
 import { getUserData } from "./databaseHandler"
 import { log, LogLevel } from "./loggingInterop"
+import { getFlag } from "./flags"
 
 const DELUXE_DATA = [
     ...CONCRETEART_UNLOCKABLES,
@@ -108,79 +109,85 @@ export function createInventory(
         true,
     ).filter((u) => u.Type !== "location") // locations not in inventory
 
-    // list of all items that are unlockable via package, like starter items
-    const packageUnlockables = allunlockables.reduce((acc, unlockable) => {
-        if (unlockable.Type === "package") {
-            acc.push(...unlockable.Properties.Unlocks)
-        }
-        return acc
-    }, [])
+    let unlockables: Unlockable[] = allunlockables
 
-    const challengesUnlockables =
-        controller.challengeService.getChallengesUnlockables()
+    if (getFlag("enableMasteryProgression")) {
+        // list of all items that are unlockable via package, like starter items
+        const packageUnlockables = allunlockables.reduce((acc, unlockable) => {
+            if (unlockable.Type === "package") {
+                acc.push(...unlockable.Properties.Unlocks)
+            }
+            return acc
+        }, [])
 
-    /**
-     * Seperates unlockable types and looksup for progression level
-     * on unlockables that are locked behind mastery progression level
-     */
-    const [unlockedItems, otherItems]: [Unlockable[], Unlockable[]] =
-        allunlockables.reduce(
-            (acc, unlockable) => {
-                // If unlockable is challenge reward, returns the challenge id
-                const unclockableChallengeId =
-                    challengesUnlockables[unlockable.Id]
+        const challengesUnlockables =
+            controller.challengeService.getChallengesUnlockables()
 
-                const unlockableMasteryData =
-                    controller.masteryService.getMasteryForUnlockable(
-                        unlockable,
-                    )
+        /**
+         * Seperates unlockable types and looksup for progression level
+         * on unlockables that are locked behind mastery progression level
+         */
+        const [unlockedItems, otherItems]: [Unlockable[], Unlockable[]] =
+            allunlockables.reduce(
+                (acc, unlockable) => {
+                    // If unlockable is challenge reward, returns the challenge id
+                    const unclockableChallengeId =
+                        challengesUnlockables[unlockable.Id]
 
-                // If the unlockable is challenge reward, check if user has the challenge completed
-                if (unclockableChallengeId) {
-                    const challenge =
-                        userData.Extensions?.ChallengeProgression?.[
-                            unclockableChallengeId
-                        ]
+                    const unlockableMasteryData =
+                        controller.masteryService.getMasteryForUnlockable(
+                            unlockable,
+                        )
 
-                    if (challenge?.Completed) acc[0].push(unlockable)
-                }
-                // If the unlockable is mastery locked, checks if its unlocked based on user location progression
-                else if (unlockableMasteryData) {
-                    const locationData = userData.Extensions.progression
-                        .Locations[unlockableMasteryData.Location] ?? {
-                        Xp: 0,
-                        Level: 1,
+                    // If the unlockable is challenge reward, check if user has the challenge completed
+                    if (unclockableChallengeId) {
+                        const challenge =
+                            userData.Extensions?.ChallengeProgression?.[
+                                unclockableChallengeId
+                            ]
+
+                        if (challenge?.Completed) acc[0].push(unlockable)
                     }
+                    // If the unlockable is mastery locked, checks if its unlocked based on user location progression
+                    else if (unlockableMasteryData) {
+                        const locationData = userData.Extensions.progression
+                            .Locations[unlockableMasteryData.Location] ?? {
+                            Xp: 0,
+                            Level: 1,
+                        }
 
-                    if (locationData.Level >= unlockableMasteryData.Level) {
-                        acc[0].push(unlockable)
-                    }
-                } else {
-                    const isPackageOrFromPackage =
-                        unlockable.Type === "package" ||
-                        packageUnlockables.includes(unlockable.Id)
-                    const isEvergreen =
-                        unlockable.Type === "evergreenmastery" ||
-                        unlockable.Subtype === "evergreen"
-                    const isDeluxe = DELUXE_DATA.includes(unlockable.Id)
-
-                    if (isPackageOrFromPackage || isEvergreen || isDeluxe) {
-                        acc[0].push(unlockable)
+                        if (locationData.Level >= unlockableMasteryData.Level) {
+                            acc[0].push(unlockable)
+                        }
                     } else {
-                        /**
-                         *  List of untracked items (to award to user until they are tracked to corresponding challanges)
-                         */
-                        acc[1].push(unlockable)
-                    }
-                }
+                        const isPackageOrFromPackage =
+                            unlockable.Type === "package" ||
+                            packageUnlockables.includes(unlockable.Id)
+                        const isEvergreen =
+                            unlockable.Type === "evergreenmastery" ||
+                            unlockable.Subtype === "evergreen"
+                        const isDeluxe = DELUXE_DATA.includes(unlockable.Id)
 
-                return acc
-            },
-            [[], []],
-        )
+                        if (isPackageOrFromPackage || isEvergreen || isDeluxe) {
+                            acc[0].push(unlockable)
+                        } else {
+                            /**
+                             *  List of untracked items (to award to user until they are tracked to corresponding challanges)
+                             */
+                            acc[1].push(unlockable)
+                        }
+                    }
+
+                    return acc
+                },
+                [[], []],
+            )
+
+        unlockables = [...unlockedItems, ...otherItems]
+    }
 
     // ts-expect-error It cannot be undefined.
-    const filtered: InventoryItem[] = [...unlockedItems, ...otherItems]
+    const filtered: InventoryItem[] = unlockables
         .map((unlockable) => {
             if (brokenItems.includes(unlockable.Guid)) {
                 return undefined

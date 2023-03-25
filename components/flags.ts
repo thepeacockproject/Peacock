@@ -105,6 +105,10 @@ const defaultFlags: Flags = {
         desc: "When set to true, all Freelancer unlocks will always be available.",
         default: false,
     },
+    enableMasteryProgression: {
+        desc: "When set to false, mastery progression will be disabled and all unlockabled will be awarded at the beggining",
+        default: true,
+    },
 }
 
 const OLD_FLAGS_FILE = "flags.json5"
