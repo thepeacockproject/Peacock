@@ -63,7 +63,7 @@ export async function planningView(
         false,
     )
 
-    const locationData = getConfig("LocationsData", true)
+    const locationData = getConfig<any>("LocationsData", true)
 
     const userData = getUserData(req.jwt.unique_name, req.gameVersion)
 
@@ -361,37 +361,34 @@ export async function planningView(
     /**
      * Handles loadout lock for Miami and Hokkaido
      */
-    const locationProperties =
-        locationData[
-            contractData.Metadata.Location.includes("PARENT")
-                ? "parents"
-                : "children"
-        ][contractData.Metadata.Location]?.Properties
+    const parentLocationProperties =
+        locationData.parents[sublocation?.Properties?.ParentLocation]
+            ?.Properties
 
-    if (locationProperties) {
+    if (parentLocationProperties) {
         const loadoutUnlockable = getUnlockableById(
             req.gameVersion,
-            locationProperties?.NormalLoadoutUnlock,
+            parentLocationProperties?.NormalLoadoutUnlock,
         )
 
-        const locationMasteryData =
-            loadoutUnlockable &&
-            controller.masteryService.getMasteryForUnlockable(loadoutUnlockable)
+        if (loadoutUnlockable) {
+            const locationMasteryData =
+                loadoutUnlockable &&
+                controller.masteryService.getMasteryForUnlockable(
+                    loadoutUnlockable,
+                )
 
-        const locationProgression = userData.Extensions.progression.Locations[
-            locationMasteryData?.Location
-        ] ?? {
-            Xp: 0,
-            Level: 1,
+            const locationProgression = userData.Extensions.progression
+                .Locations[locationMasteryData?.Location] ?? {
+                Xp: 0,
+                Level: 1,
+            }
+
+            if (locationProgression.Level < locationMasteryData.Level)
+                loadoutSlots = loadoutSlots.filter(
+                    (slot) => !["2", "4", "5"].includes(slot.SlotId),
+                )
         }
-
-        if (
-            locationMasteryData &&
-            locationProgression.Level < locationMasteryData.Level
-        )
-            loadoutSlots = loadoutSlots.filter(
-                (slot) => !["2", "4", "5"].includes(slot.SlotId),
-            )
     }
 
     res.json({
