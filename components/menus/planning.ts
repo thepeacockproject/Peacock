@@ -372,20 +372,20 @@ export async function planningView(
         )
 
         if (loadoutUnlockable) {
-            const loudoutMasteryData =
+            const loadoutMasteryData =
                 controller.masteryService.getMasteryForUnlockable(
                     loadoutUnlockable,
                 )
 
-            const locationProgression = (loudoutMasteryData &&
+            const locationProgression = (loadoutMasteryData &&
                 userData.Extensions.progression.Locations[
-                    loudoutMasteryData.Location
+                    loadoutMasteryData.Location
                 ]) ?? {
                 Xp: 0,
                 Level: 1,
             }
 
-            if (locationProgression.Level < loudoutMasteryData.Level)
+            if (locationProgression.Level < loadoutMasteryData.Level)
                 loadoutSlots = loadoutSlots.filter(
                     (slot) => !["2", "4", "5"].includes(slot.SlotId),
                 )
