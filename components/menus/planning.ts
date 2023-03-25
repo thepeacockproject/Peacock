@@ -365,26 +365,27 @@ export async function planningView(
         locationData.parents[sublocation?.Properties?.ParentLocation]
             ?.Properties
 
-    if (parentLocationProperties) {
+    if (parentLocationProperties?.LimitedLoadout) {
         const loadoutUnlockable = getUnlockableById(
             req.gameVersion,
-            parentLocationProperties?.NormalLoadoutUnlock,
+            parentLocationProperties.NormalLoadoutUnlock,
         )
 
         if (loadoutUnlockable) {
-            const locationMasteryData =
-                loadoutUnlockable &&
+            const loudoutMasteryData =
                 controller.masteryService.getMasteryForUnlockable(
                     loadoutUnlockable,
                 )
 
-            const locationProgression = userData.Extensions.progression
-                .Locations[locationMasteryData?.Location] ?? {
+            const locationProgression = (loudoutMasteryData &&
+                userData.Extensions.progression.Locations[
+                    loudoutMasteryData.Location
+                ]) ?? {
                 Xp: 0,
                 Level: 1,
             }
 
-            if (locationProgression.Level < locationMasteryData.Level)
+            if (locationProgression.Level < loudoutMasteryData.Level)
                 loadoutSlots = loadoutSlots.filter(
                     (slot) => !["2", "4", "5"].includes(slot.SlotId),
                 )
