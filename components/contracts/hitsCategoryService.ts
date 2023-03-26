@@ -223,9 +223,10 @@ export class HitsCategoryService {
         )
         controller.storeIdToPublicId(hits.map((hit) => hit.UserCentricContract))
 
-        // Fix completion status for retrieved contracts
+        // Fix completion and favorite status for retrieved contracts
         const userProfile = getUserData(userId, gameVersion)
         const played = userProfile?.Extensions.PeacockPlayedContracts
+        const favorites = userProfile?.Extensions.PeacockFavoriteContracts
 
         hits.forEach((hit) => {
             if (Object.keys(played).includes(hit.Id)) {
@@ -240,6 +241,9 @@ export class HitsCategoryService {
                 delete hit.UserCentricContract.Data.LastPlayedAt
                 hit.UserCentricContract.Data.Completed = false
             }
+
+            hit.UserCentricContract.Data.PlaylistData.IsAdded =
+                favorites.includes(hit.Id)
         })
 
         return resp.data.data

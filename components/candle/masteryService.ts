@@ -30,8 +30,9 @@ import { CompletionData, GameVersion, Unlockable } from "../types/types"
 import {
     clampValue,
     DEFAULT_MASTERY_MAXLEVEL,
+    xpRequiredForEvergreenLevel,
     xpRequiredForLevel,
-    XP_PER_LEVEL,
+    xpRequiredForSniperLevel,
 } from "../utils"
 
 export class MasteryService {
@@ -80,11 +81,67 @@ export class MasteryService {
         }
     }
 
-    getCompletionData(
+    /**
+     * Get generic completion data stored in a user's profile. Called by both `getLocationCompletion` and `getFirearmCompletion`.
+     * @param userId The id of the user.
+     * @param gameVersion The game version.
+     * @param completionId An Id used to look up completion data in the user's profile. Can be `parentLocationId` or `progressionKey`.
+     * @param maxLevel The max level for this progression.
+     */
+    private getCompletionData(
+        userId: string,
+        gameVersion: GameVersion,
+        completionId: string,
+        maxLevel: number,
+        levelToXpRequired: (level: number) => number,
+    ) {
+        //Get the user profile
+        const userProfile = getUserData(userId, gameVersion)
+
+        // Generate default completion before trying to acquire it
+        userProfile.Extensions.progression.Locations[completionId] ??= {
+            Xp: 0,
+            Level: 1,
+        }
+
+        const completionData =
+            userProfile.Extensions.progression.Locations[completionId]
+
+        const nextLevel: number = clampValue(
+            completionData.Level + 1,
+            1,
+            maxLevel,
+        )
+
+        const nextLevelXp: number = levelToXpRequired(nextLevel)
+
+        const thisLevelXp: number = levelToXpRequired(completionData.Level)
+
+        return {
+            Level: completionData.Level,
+            MaxLevel: maxLevel,
+            XP: completionData.Xp,
+            Completion:
+                (completionData.Xp - thisLevelXp) / (nextLevelXp - thisLevelXp),
+            XpLeft: nextLevelXp - completionData.Xp,
+        }
+    }
+
+    /**
+     * Get the completion data for a location.
+     * @param locationParentId The parent Id of the location.
+     * @param subLocationId The id of the sublocation.
+     * @param gameVersion The game version.
+     * @param userId The id of the user.
+     * @param contractType The type of the contract, only used to distinguish evergreen from other types (default).
+     * @returns The CompletionData object.
+     */
+    getLocationCompletion(
         locationParentId: string,
         subLocationId: string,
         gameVersion: GameVersion,
         userId: string,
+        contractType = "mission",
     ): CompletionData {
         //Get the mastery data
         const masteryData: MasteryPackage =
@@ -94,45 +151,51 @@ export class MasteryService {
             return undefined
         }
 
-        //Get the user profile
-        const userProfile = getUserData(userId, gameVersion)
-
-        //Gather all required data
-        const lowerCaseLocationParentId = locationParentId.toLowerCase()
-
-        userProfile.Extensions.progression.Locations[
-            lowerCaseLocationParentId
-        ] ??= {
-            Xp: 0,
-            Level: 1,
-        }
-
-        const locationData =
-            userProfile.Extensions.progression.Locations[
-                lowerCaseLocationParentId
-            ]
-
-        const maxLevel = masteryData.MaxLevel || DEFAULT_MASTERY_MAXLEVEL
-
-        const nextLevel: number = clampValue(
-            locationData.Level + 1,
-            1,
-            maxLevel,
-        )
-        const nextLevelXp: number = xpRequiredForLevel(nextLevel)
-
         return {
-            Level: locationData.Level,
-            MaxLevel: maxLevel,
-            XP: locationData.Xp,
-            Completion:
-                (XP_PER_LEVEL - (nextLevelXp - locationData.Xp)) / XP_PER_LEVEL,
-            XpLeft: nextLevelXp - locationData.Xp,
+            ...this.getCompletionData(
+                userId,
+                gameVersion,
+                locationParentId.toLowerCase(),
+                masteryData.MaxLevel || DEFAULT_MASTERY_MAXLEVEL,
+                contractType === "evergreen"
+                    ? xpRequiredForEvergreenLevel
+                    : xpRequiredForLevel,
+            ),
             Id: masteryData.Id,
             SubLocationId: subLocationId,
             HideProgression: masteryData.HideProgression || false,
             IsLocationProgression: true,
             Name: undefined,
+        }
+    }
+
+    /**
+     * Get the completion data for a firearm. Used for sniper assassin mastery.
+     * @param progressionKey The Id of the progression. E.g. FIREARMS_SC_HERO_SNIPER_HM.
+     * @param unlockableName The name of the unlockable.
+     * @param userId The id of the user.
+     * @param gameVersion The game version.
+     * @returns The CompletionData object.
+     */
+    getFirearmCompletion(
+        progressionKey: string,
+        unlockableName: string,
+        userId: string,
+        gameVersion: GameVersion,
+    ): CompletionData {
+        return {
+            ...this.getCompletionData(
+                userId,
+                gameVersion,
+                progressionKey,
+                DEFAULT_MASTERY_MAXLEVEL,
+                xpRequiredForSniperLevel,
+            ),
+            Id: progressionKey,
+            SubLocationId: "",
+            HideProgression: false,
+            IsLocationProgression: false,
+            Name: unlockableName,
         }
     }
 
@@ -173,7 +236,7 @@ export class MasteryService {
         )
 
         //Map all the data into a new structure
-        const completionData = this.getCompletionData(
+        const completionData = this.getLocationCompletion(
             locationParentId,
             locationParentId,
             gameVersion,

@@ -4,4 +4,7 @@ Object.assign(globalThis, {
     REV_IDENT: 1,
 })
 
+process.env.TEST = "peacock"
+process.env.LOG_LEVEL_FILE = "none"
+
 export {}
