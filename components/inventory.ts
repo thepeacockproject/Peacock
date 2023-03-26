@@ -42,6 +42,7 @@ import { controller } from "./controller"
 import { getUserData } from "./databaseHandler"
 import { log, LogLevel } from "./loggingInterop"
 import { getFlag } from "./flags"
+import { UnlockableMasteryData } from "./types/mastery"
 
 const DELUXE_DATA = [
     ...CONCRETEART_UNLOCKABLES,
@@ -112,13 +113,7 @@ export function createInventory(
     let unlockables: Unlockable[] = allunlockables
 
     if (getFlag("enableMasteryProgression")) {
-        // list of all items that are unlockable via package, like starter items
-        const packageUnlockables = allunlockables.reduce((acc, unlockable) => {
-            if (unlockable.Type === "package") {
-                acc.push(...unlockable.Properties.Unlocks)
-            }
-            return acc
-        }, [])
+        const packagedUnlocks: Map<string, boolean> = new Map()
 
         const challengesUnlockables =
             controller.challengeService.getChallengesUnlockables()
@@ -128,60 +123,101 @@ export function createInventory(
          * on unlockables that are locked behind mastery progression level
          */
         const [unlockedItems, otherItems]: [Unlockable[], Unlockable[]] =
-            allunlockables.reduce(
-                (acc, unlockable) => {
-                    // If unlockable is challenge reward, returns the challenge id
-                    const unclockableChallengeId =
-                        challengesUnlockables[unlockable.Id]
+            allunlockables
+                // Sorts packages and evergreen gear wrappers first, so related unlockables can be targeted after
+                .sort((_, b) =>
+                    b.Type === "package" ||
+                    (b.Type === "evergreenmastery" && b.Properties.Unlocks)
+                        ? 1
+                        : -1,
+                )
+                .reduce(
+                    (acc, unlockable) => {
+                        let unclockableChallengeId: string
+                        let unlockableMasteryData: UnlockableMasteryData
 
-                    const unlockableMasteryData =
-                        controller.masteryService.getMasteryForUnlockable(
-                            unlockable,
-                        )
-
-                    // If the unlockable is challenge reward, check if user has the challenge completed
-                    if (unclockableChallengeId) {
-                        const challenge =
-                            userData.Extensions?.ChallengeProgression?.[
-                                unclockableChallengeId
-                            ]
-
-                        if (challenge?.Completed) acc[0].push(unlockable)
-                    }
-                    // If the unlockable is mastery locked, checks if its unlocked based on user location progression
-                    else if (unlockableMasteryData) {
-                        const locationData = userData.Extensions.progression
-                            .Locations[unlockableMasteryData.Location] ?? {
-                            Xp: 0,
-                            Level: 1,
+                        // Handles unlockables that belong to a package or unlocked gear from evergreen
+                        if (packagedUnlocks.has(unlockable.Id)) {
+                            packagedUnlocks.get(unlockable.Id) &&
+                                acc[0].push(unlockable)
                         }
 
-                        if (locationData.Level >= unlockableMasteryData.Level) {
+                        // Handles packages
+                        else if (unlockable.Type === "package") {
+                            for (const pkgUnlockableId of unlockable.Properties
+                                .Unlocks) {
+                                packagedUnlocks.set(pkgUnlockableId, true)
+                            }
+
                             acc[0].push(unlockable)
                         }
-                    } else {
-                        const isPackageOrFromPackage =
-                            unlockable.Type === "package" ||
-                            packageUnlockables.includes(unlockable.Id)
-                        const isEvergreen =
-                            unlockable.Type === "evergreenmastery" ||
-                            unlockable.Subtype === "evergreen"
-                        const isDeluxe = DELUXE_DATA.includes(unlockable.Id)
 
-                        if (isPackageOrFromPackage || isEvergreen || isDeluxe) {
-                            acc[0].push(unlockable)
+                        // If the unlockable is challenge reward, check if user has the challenge completed
+                        else if (
+                            (unclockableChallengeId =
+                                challengesUnlockables[unlockable.Id])
+                        ) {
+                            const challenge =
+                                userData.Extensions?.ChallengeProgression?.[
+                                    unclockableChallengeId
+                                ]
+
+                            if (challenge?.Completed) acc[0].push(unlockable)
+                        }
+
+                        // If the unlockable is mastery locked, checks if its unlocked based on user location progression
+                        else if (
+                            (unlockableMasteryData =
+                                controller.masteryService.getMasteryForUnlockable(
+                                    unlockable,
+                                ))
+                        ) {
+                            const locationData = userData.Extensions.progression
+                                .Locations[unlockableMasteryData.Location] ?? {
+                                Xp: 0,
+                                Level: 1,
+                            }
+
+                            const canUnlock =
+                                locationData.Level >=
+                                unlockableMasteryData.Level
+
+                            if (canUnlock) {
+                                acc[0].push(unlockable)
+                            }
+
+                            // If the unlock is an evergreen package, adds its unlockables to the list
+                            if (
+                                unlockable.Type === "evergreenmastery" &&
+                                unlockable.Properties.Unlocks
+                            )
+                                for (const evergreenGearId of unlockable
+                                    .Properties.Unlocks) {
+                                    packagedUnlocks.set(
+                                        evergreenGearId,
+                                        canUnlock,
+                                    )
+                                }
                         } else {
-                            /**
-                             *  List of untracked items (to award to user until they are tracked to corresponding challanges)
-                             */
-                            acc[1].push(unlockable)
-                        }
-                    }
+                            const isEvergreen =
+                                unlockable.Type === "evergreenmastery" ||
+                                unlockable.Subtype === "evergreen"
+                            const isDeluxe = DELUXE_DATA.includes(unlockable.Id)
 
-                    return acc
-                },
-                [[], []],
-            )
+                            if (isEvergreen || isDeluxe) {
+                                acc[0].push(unlockable)
+                            } else {
+                                /**
+                                 *  List of untracked items (to award to user until they are tracked to corresponding challanges)
+                                 */
+                                acc[1].push(unlockable)
+                            }
+                        }
+
+                        return acc
+                    },
+                    [[], []],
+                )
 
         unlockables = [...unlockedItems, ...otherItems]
     }

@@ -1274,6 +1274,26 @@ export class ChallengeService extends ChallengeRegistry {
                     gameVersion,
                     unlockableIds,
                 )
+
+                // If missions type is evergreen, checks if any of the unlockables has unlockable gear, and award those too
+                if (contract.Metadata.Type === "evergreen") {
+                    const evergreenGearUnlockables = unlockables.reduce(
+                        (acc, u) => {
+                            if (u.Properties.Unlocks)
+                                acc.push(...u.Properties.Unlocks)
+                            return acc
+                        },
+                        [],
+                    )
+                    evergreenGearUnlockables.length &&
+                        unlockables.push(
+                            ...getDataForUnlockables(
+                                gameVersion,
+                                evergreenGearUnlockables,
+                            ),
+                        )
+                }
+
                 drops.push(...unlockables)
             }
         }
