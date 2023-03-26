@@ -758,17 +758,6 @@ export async function missionEnd(
         timeTotal,
     )
 
-    let contractScore = {
-        Total: calculateScoreResult.scoreWithBonus,
-        AchievedMasteries: calculateScoreResult.achievedMasteries,
-        AwardedBonuses: calculateScoreResult.awardedBonuses,
-        TotalNoMultipliers: calculateScoreResult.score,
-        TimeUsedSecs: timeTotal,
-        StarCount: calculateScoreResult.stars,
-        FailedBonuses: calculateScoreResult.failedBonuses,
-        SilentAssassin: calculateScoreResult.silentAssassin,
-    }
-
     //Evergreen
     const evergreenData: MissionEndEvergreen = <MissionEndEvergreen>{
         PayoutsCompleted: [],
@@ -848,7 +837,7 @@ export async function missionEnd(
             }
         }
 
-        contractScore.SilentAssassin = false
+        calculateScoreResult.silentAssassin = false
 
         //Overide the calculated score
         calculateScoreResult.stars = undefined
@@ -857,6 +846,17 @@ export async function missionEnd(
     //Sniper
     let unlockableProgression = undefined
     let sniperChallengeScore = undefined
+
+    let contractScore = {
+        Total: calculateScoreResult.scoreWithBonus,
+        AchievedMasteries: calculateScoreResult.achievedMasteries,
+        AwardedBonuses: calculateScoreResult.awardedBonuses,
+        TotalNoMultipliers: calculateScoreResult.score,
+        TimeUsedSecs: timeTotal,
+        StarCount: calculateScoreResult.stars,
+        FailedBonuses: calculateScoreResult.failedBonuses,
+        SilentAssassin: calculateScoreResult.silentAssassin,
+    }
 
     //TODO: Calculate proper Sniper XP and Score
     //TODO: Move most of this to its own calculateSniperScore function
