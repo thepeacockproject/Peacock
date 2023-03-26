@@ -1166,7 +1166,6 @@ export class ChallengeService extends ChallengeRegistry {
         const xp = actionXp + masteryXp
 
         this.grantLocationMasteryXp(
-            gameVersion,
             masteryXp,
             actionXp,
             session,
@@ -1197,7 +1196,6 @@ export class ChallengeService extends ChallengeRegistry {
     }
 
     grantLocationMasteryXp(
-        gameVersion: GameVersion,
         masteryXp: number,
         actionXp: number,
         contractSession: ContractSession,
@@ -1271,7 +1269,7 @@ export class ChallengeService extends ChallengeRegistry {
                 ).map((drop) => drop.Id)
 
                 const unlockables = getDataForUnlockables(
-                    gameVersion,
+                    contractSession.gameVersion,
                     unlockableIds,
                 )
 
@@ -1288,7 +1286,7 @@ export class ChallengeService extends ChallengeRegistry {
                     evergreenGearUnlockables.length &&
                         unlockables.push(
                             ...getDataForUnlockables(
-                                gameVersion,
+                                contractSession.gameVersion,
                                 evergreenGearUnlockables,
                             ),
                         )
