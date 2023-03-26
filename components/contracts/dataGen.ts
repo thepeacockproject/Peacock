@@ -187,6 +187,12 @@ export function generateUserCentric(
                     ? undefined
                     : new Date(played[id]?.LastPlayedAt).toISOString(),
             // relevant for contracts
+            // Favorite contracts
+            PlaylistData: {
+                IsAdded:
+                    userData.Extensions?.PeacockFavoriteContracts?.includes(id),
+                AddedTime: "0001-01-01T00:00:00Z",
+            },
             Completed: played[id] === undefined ? false : played[id]?.Completed,
             LocationId: subLocation.Id,
             ParentLocationId: subLocation.Properties.ParentLocation!,
