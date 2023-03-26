@@ -848,7 +848,7 @@ export async function missionEnd(
             }
         }
 
-        calculateScoreResult.silentAssassin = false
+        contractScore.SilentAssassin = false
 
         //Overide the calculated score
         calculateScoreResult.stars = undefined
