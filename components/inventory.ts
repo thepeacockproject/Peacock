@@ -133,7 +133,7 @@ export function createInventory(
                 )
                 .reduce(
                     (acc, unlockable) => {
-                        let unclockableChallengeId: string
+                        let unlockableChallengeId: string
                         let unlockableMasteryData: UnlockableMasteryData
 
                         // Handles unlockables that belong to a package or unlocked gear from evergreen
@@ -154,12 +154,12 @@ export function createInventory(
 
                         // If the unlockable is challenge reward, check if user has the challenge completed
                         else if (
-                            (unclockableChallengeId =
+                            (unlockableChallengeId =
                                 challengesUnlockables[unlockable.Id])
                         ) {
                             const challenge =
                                 userData.Extensions?.ChallengeProgression?.[
-                                    unclockableChallengeId
+                                    unlockableChallengeId
                                 ]
 
                             if (challenge?.Completed) acc[0].push(unlockable)
