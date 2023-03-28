@@ -1128,7 +1128,6 @@ export class ChallengeService extends ChallengeRegistry {
         }
 
         const userData = getUserData(userId, gameVersion)
-        const drops: Unlockable[] = []
 
         //ASSUMED: Challenges that are not global should always be completed
         if (!challenge.Tags.includes("global")) {
@@ -1153,29 +1152,17 @@ export class ChallengeService extends ChallengeRegistry {
             session.challengeContexts[challenge.Id].state = "Start"
         }
 
-        // Add challenge rewards to pool
-        if (challenge.Drops?.length) {
-            drops.push(...challenge.Drops)
-        }
-
         //NOTE: Official will always grant XP to both Location Mastery and the Player Profile
         const actionXp = challenge.Xp || 0
         const masteryXp = challenge.Rewards?.MasteryXP || 0
-        const xp = actionXp + masteryXp
 
-        this.grantLocationMasteryXp(
-            masteryXp,
+        controller.progressionService.grantProfileProgression(
             actionXp,
+            masteryXp,
+            challenge?.Drops ?? [],
             session,
             userData,
-            drops,
         )
-        this.grantUserXp(xp, session, userData)
-
-        // If there are unclockable rewards, award them to the user
-        if (drops.length) {
-            awardDropsToUser(userId, drops)
-        }
 
         writeUserData(userId, gameVersion)
 
@@ -1191,154 +1178,5 @@ export class ChallengeService extends ChallengeRegistry {
                 gameVersion,
             )
         }
-    }
-
-    grantLocationMasteryXp(
-        masteryXp: number,
-        actionXp: number,
-        contractSession: ContractSession,
-        userProfile: UserProfile,
-        drops: Unlockable[],
-    ): boolean {
-        const contract = controller.resolveContract(contractSession.contractId)
-
-        if (!contract) {
-            return false
-        }
-
-        const subLocation = getSubLocationByName(
-            contract.Metadata.Location,
-            contractSession.gameVersion,
-        )
-
-        const parentLocationId = subLocation
-            ? subLocation.Properties?.ParentLocation
-            : contract.Metadata.Location
-
-        if (!parentLocationId) {
-            return false
-        }
-
-        const masteryData =
-            this.controller.masteryService.getMasteryPackage(parentLocationId)
-
-        const parentLocationIdLowerCase = parentLocationId.toLocaleLowerCase()
-
-        //Update the Location data
-        userProfile.Extensions.progression.Locations[
-            parentLocationIdLowerCase
-        ] ??= {
-            Xp: 0,
-            Level: 1,
-        }
-
-        const locationData =
-            userProfile.Extensions.progression.Locations[
-                parentLocationIdLowerCase
-            ]
-
-        const maxLevel = masteryData?.MaxLevel || DEFAULT_MASTERY_MAXLEVEL
-
-        if (masteryData) {
-            const previousLevel = locationData.Level
-
-            locationData.Xp = clampValue(
-                locationData.Xp + masteryXp + actionXp,
-                0,
-                contract.Metadata.Type !== "evergreen"
-                    ? xpRequiredForLevel(maxLevel)
-                    : xpRequiredForEvergreenLevel(maxLevel),
-            )
-
-            locationData.Level = clampValue(
-                contract.Metadata.Type !== "evergreen"
-                    ? levelForXp(locationData.Xp)
-                    : evergreenLevelForXp(locationData.Xp),
-                1,
-                maxLevel,
-            )
-
-            // Add mastery progression rewards to pool
-            if (locationData.Level > previousLevel) {
-                const unlockableIds = masteryData.Drops.filter(
-                    (drop) =>
-                        drop.Level > previousLevel &&
-                        drop.Level <= locationData.Level,
-                ).map((drop) => drop.Id)
-
-                const unlockables = getDataForUnlockables(
-                    contractSession.gameVersion,
-                    unlockableIds,
-                )
-
-                // If missions type is evergreen, checks if any of the unlockables has unlockable gear, and award those too
-                if (contract.Metadata.Type === "evergreen") {
-                    const evergreenGearUnlockables = unlockables.reduce(
-                        (acc, u) => {
-                            if (u.Properties.Unlocks)
-                                acc.push(...u.Properties.Unlocks)
-                            return acc
-                        },
-                        [],
-                    )
-                    evergreenGearUnlockables.length &&
-                        unlockables.push(
-                            ...getDataForUnlockables(
-                                contractSession.gameVersion,
-                                evergreenGearUnlockables,
-                            ),
-                        )
-                }
-
-                drops.push(...unlockables)
-            }
-        }
-
-        //Update the SubLocation data
-        const profileData = userProfile.Extensions.progression.PlayerProfileXP
-
-        let foundSubLocation = profileData.Sublocations.find(
-            (e) => e.Location === parentLocationId,
-        )
-
-        if (!foundSubLocation) {
-            foundSubLocation = {
-                Location: parentLocationId,
-                Xp: 0,
-                ActionXp: 0,
-            }
-
-            profileData.Sublocations.push(foundSubLocation)
-        }
-
-        foundSubLocation.Xp += masteryXp
-        foundSubLocation.ActionXp += actionXp
-
-        //Update the EvergreenLevel with the latest Mastery Level
-        if (contract.Metadata.Type === "evergreen") {
-            userProfile.Extensions.CPD[contract.Metadata.CpdId][
-                "EvergreenLevel"
-            ] = locationData.Level
-        }
-
-        return true
-    }
-
-    //TODO: Combine with grantLocationMasteryXp?
-    grantUserXp(
-        xp: number,
-        contractSession: ContractSession,
-        userProfile: UserProfile,
-    ): boolean {
-        const profileData = userProfile.Extensions.progression.PlayerProfileXP
-
-        profileData.Total += xp
-        profileData.ProfileLevel = clampValue(
-            levelForXp(profileData.Total),
-            1,
-            getMaxProfileLevel(contractSession.gameVersion),
-        )
-
-        return true
     }
 }

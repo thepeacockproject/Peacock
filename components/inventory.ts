@@ -119,7 +119,7 @@ export function createInventory(
             controller.challengeService.getChallengesUnlockables()
 
         /**
-         * Seperates unlockable types and looksup for progression level
+         * Separates unlockable types and lookup for progression level
          * on unlockables that are locked behind mastery progression level
          */
         const [unlockedItems, otherItems]: [Unlockable[], Unlockable[]] =
@@ -172,11 +172,11 @@ export function createInventory(
                                     unlockable,
                                 ))
                         ) {
-                            const locationData = userData.Extensions.progression
-                                .Locations[unlockableMasteryData.Location] ?? {
-                                Xp: 0,
-                                Level: 1,
-                            }
+                            const locationData =
+                                controller.progressionService.getMasteryProgressionForLocation(
+                                    userData,
+                                    unlockableMasteryData.Location,
+                                )
 
                             const canUnlock =
                                 locationData.Level >=
@@ -208,7 +208,7 @@ export function createInventory(
                                 acc[0].push(unlockable)
                             } else {
                                 /**
-                                 *  List of untracked items (to award to user until they are tracked to corresponding challanges)
+                                 *  List of untracked items (to award to user until they are tracked to corresponding challenges)
                                  */
                                 acc[1].push(unlockable)
                             }
@@ -458,8 +458,8 @@ export function awardDropsToUser(profileId: string, drops: Unlockable[]): void {
         ])
     } else {
         /**
-         * @TODO Dont think theres a situation where the user doesnt have an inventory, but I may be wrong so leaving this for now.
-         * Can delete if unecessary
+         * @TODO Don't think theres a situation where the user doesn't have an inventory, but I may be wrong so leaving this for now.
+         * Can delete if unnecessary
          */
         log(LogLevel.DEBUG, "No inventory for provided user")
     }

@@ -92,6 +92,7 @@ import { MissionEndRequestQuery } from "./types/gameSchemas"
 import { ChallengeFilterType } from "./candle/challengeHelpers"
 import { MasteryService } from "./candle/masteryService"
 import { MasteryPackage } from "./types/mastery"
+import { ProgressionService } from "./candle/progressionService"
 
 /**
  * An array of string arrays that contains the IDs of the featured contracts.
@@ -406,6 +407,7 @@ export class Controller {
 
     public challengeService: ChallengeService
     public masteryService: MasteryService
+    public progressionService: ProgressionService
     /**
      * A list of Simple Mod Framework mods installed.
      */
@@ -494,6 +496,7 @@ export class Controller {
 
         this.challengeService = new ChallengeService(this)
         this.masteryService = new MasteryService()
+        this.progressionService = new ProgressionService()
 
         this._addElusiveTargets()
         this.index()
