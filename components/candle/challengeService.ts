@@ -36,7 +36,6 @@ import { controller, Controller } from "../controller"
 import {
     generateCompletionData,
     generateUserCentric,
-    getSubLocationByName,
     getSubLocationFromContract,
 } from "../contracts/dataGen"
 import { log, LogLevel } from "../loggingInterop"
@@ -49,17 +48,7 @@ import {
     HandleEventOptions,
 } from "@peacockproject/statemachine-parser"
 import { SavedChallengeGroup } from "../types/challenges"
-import {
-    clampValue,
-    DEFAULT_MASTERY_MAXLEVEL,
-    evergreenLevelForXp,
-    fastClone,
-    getMaxProfileLevel,
-    levelForXp,
-    xpRequiredForEvergreenLevel,
-    xpRequiredForLevel,
-    isSniperLocation,
-} from "../utils"
+import { fastClone, isSniperLocation } from "../utils"
 import {
     ChallengeFilterOptions,
     ChallengeFilterType,
@@ -70,7 +59,6 @@ import {
 import assert from "assert"
 import { getVersionedConfig } from "../configSwizzleManager"
 import { SyncHook } from "../hooksImpl"
-import { awardDropsToUser, getDataForUnlockables } from "../inventory"
 
 type ChallengeDefinitionLike = {
     Context?: Record<string, unknown>
