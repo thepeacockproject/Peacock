@@ -19,6 +19,7 @@
 import { decode } from "jsonwebtoken"
 import type { NextFunction, Response } from "express"
 import type {
+    GameVersion,
     MissionManifestObjective,
     RepositoryId,
     RequestWithJwt,
@@ -49,6 +50,10 @@ export const PEACOCKVERSTRING = HUMAN_VERSION
 export const uuidRegex =
     /^[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$/
 
+export const contractTypes = ["featured", "usercreated"]
+
+export const contractCreationTutorialId = "d7e2607c-6916-48e2-9588-976c7d8998bb"
+
 export async function checkForUpdates(): Promise<void> {
     if (getFlag("updateChecking") === false) {
         return
@@ -60,7 +65,12 @@ export async function checkForUpdates(): Promise<void> {
         )
         const current = res.data
 
-        if (current === PEACOCKVER) {
+        if (PEACOCKVER < 0 && current < -PEACOCKVER) {
+            log(
+                LogLevel.INFO,
+                `Thank you for trying out this testing version of Peacock! Please report any bugs by posting in the #help channel on Discord or by submitting an issue on GitHub.`,
+            )
+        } else if (PEACOCKVER > 0 && current === PEACOCKVER) {
             log(LogLevel.DEBUG, "Peacock is up to date.")
         } else {
             log(
@@ -71,6 +81,14 @@ export async function checkForUpdates(): Promise<void> {
     } catch (e) {
         log(LogLevel.WARN, "Failed to check for updates!")
     }
+}
+
+export function getRemoteService(gameVersion: GameVersion): string {
+    return gameVersion === "h3"
+        ? "hm3-service"
+        : gameVersion === "h2"
+        ? "pc2-service"
+        : "pc-service"
 }
 
 /**
@@ -105,8 +123,99 @@ export function extractToken(
     next?.("router")
 }
 
+export const DEFAULT_MASTERY_MAXLEVEL = 20
+export const XP_PER_LEVEL = 6000
+
+export function getMaxProfileLevel(gameVersion: GameVersion): number {
+    if (gameVersion === "h3") {
+        return 7500
+    }
+
+    return 5000
+}
+
+/**
+ * Calculates the level for the given XP based on XP_PER_LEVEL.
+ * Minimum level returned is 1.
+ */
+export function levelForXp(xp: number): number {
+    return Math.max(1, Math.floor(xp / XP_PER_LEVEL) + 1)
+}
+
+/**
+ * Calculates the required XP for the given level based on XP_PER_LEVEL.
+ * Minimum XP returned is 0.
+ */
 export function xpRequiredForLevel(level: number): number {
-    return level * 6000 - 6000
+    return Math.max(0, (level - 1) * XP_PER_LEVEL)
+}
+
+//TODO: Determine some mathematical function
+export const EVERGREEN_LEVEL_INFO: number[] = [
+    0, 5000, 10000, 17000, 24000, 31000, 38000, 45000, 52000, 61000, 70000,
+    79000, 88000, 97000, 106000, 115000, 124000, 133000, 142000, 154000, 166000,
+    178000, 190000, 202000, 214000, 226000, 238000, 250000, 262000, 280000,
+    298000, 316000, 334000, 352000, 370000, 388000, 406000, 424000, 442000,
+    468000, 494000, 520000, 546000, 572000, 598000, 624000, 650000, 676000,
+    702000, 736000, 770000, 804000, 838000, 872000, 906000, 940000, 974000,
+    1008000, 1042000, 1082000, 1122000, 1162000, 1202000, 1242000, 1282000,
+    1322000, 1362000, 1402000, 1442000, 1492000, 1542000, 1592000, 1642000,
+    1692000, 1742000, 1792000, 1842000, 1892000, 1942000, 2002000, 2062000,
+    2122000, 2182000, 2242000, 2302000, 2362000, 2422000, 2482000, 2542000,
+    2692000, 2842000, 2992000, 3142000, 3292000, 3442000, 3592000, 3742000,
+    3892000, 4042000, 4192000,
+]
+
+export function evergreenLevelForXp(xp: number): number {
+    for (let i = 1; i < EVERGREEN_LEVEL_INFO.length; i++) {
+        if (xp >= EVERGREEN_LEVEL_INFO[i]) {
+            continue
+        }
+
+        return i
+    }
+
+    return 1
+}
+
+export function xpRequiredForEvergreenLevel(level: number): number {
+    return EVERGREEN_LEVEL_INFO[level - 1]
+}
+
+//TODO: Determine some mathematical function
+export const SNIPER_LEVEL_INFO: number[] = [
+    0, 50000, 150000, 500000, 1000000, 1700000, 2500000, 3500000, 5000000,
+    7000000, 9500000, 12500000, 16000000, 20000000, 25000000, 31000000,
+    38000000, 47000000, 58000000, 70000000,
+]
+
+/**
+ * Get the number of xp needed to reach a level in sniper missions.
+ * @param level The level in question.
+ * @returns The xp, as a number.
+ */
+export function xpRequiredForSniperLevel(level: number): number {
+    return SNIPER_LEVEL_INFO[level - 1]
+}
+
+/**
+ * Clamps the given value between a minimum and maximum value
+ */
+export function clampValue(value: number, min: number, max: number) {
+    return Math.max(min, Math.min(value, max))
+}
+
+/**
+ * Returns whether a location is a sniper location. Works for both parent and child locations.
+ * @param location The location ID string.
+ * @returns A boolean denoting the result.
+ */
+export function isSniperLocation(location: string): boolean {
+    return (
+        location.includes("AUSTRIA") ||
+        location.includes("SALTY") ||
+        location.includes("CAGED")
+    )
 }
 
 export function castUserProfile(profile: UserProfile): UserProfile {
@@ -120,9 +229,9 @@ export function castUserProfile(profile: UserProfile): UserProfile {
     let dirty = false
 
     for (const item of [
-        "entP",
         "PeacockEscalations",
         "PeacockFavoriteContracts",
+        "PeacockPlayedContracts",
         "PeacockCompletedEscalations",
         "CPD",
     ]) {
@@ -136,14 +245,6 @@ export function castUserProfile(profile: UserProfile): UserProfile {
                 LogLevel.WARN,
                 `Attempting to repair the profile automatically...`,
             )
-
-            if (item === "entP") {
-                log(
-                    LogLevel.ERROR,
-                    "Can't repair this issue, please let us know in the Discord!",
-                )
-                process.exit(1)
-            }
 
             if (item === "PeacockEscalations") {
                 j.Extensions.PeacockEscalations = {}
@@ -161,7 +262,26 @@ export function castUserProfile(profile: UserProfile): UserProfile {
                 j.Extensions.CPD = {}
             }
 
+            if (item === "PeacockPlayedContracts") {
+                j.Extensions.PeacockPlayedContracts = {}
+            }
+
             dirty = true
+        }
+    }
+
+    // Fix Extensions.gamepersistentdata.HitsFilterType.
+    // None of the old profiles should have "MyPlaylist".
+    if (
+        !Object.prototype.hasOwnProperty.call(
+            j.Extensions.gamepersistentdata.HitsFilterType,
+            "MyPlaylist",
+        )
+    ) {
+        j.Extensions.gamepersistentdata.HitsFilterType = {
+            MyHistory: "all",
+            MyContracts: "all",
+            MyPlaylist: "all",
         }
     }
 
@@ -223,6 +343,8 @@ export function getDefaultSuitFor(location: string) {
 }
 
 export const nilUuid = "00000000-0000-0000-0000-000000000000"
+
+export const hitmapsUrl = "https://backend.rdil.rocks/partners/hitmaps/contract"
 
 export function isObjectiveActive(
     objective: MissionManifestObjective,

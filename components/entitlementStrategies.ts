@@ -16,6 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { AxiosError, AxiosResponse } from "axios"
 import { log, LogLevel } from "./loggingInterop"
 import { userAuths } from "./officialServerAuth"
 import {
@@ -26,6 +27,7 @@ import {
     STEAM_NAMESPACE_2016,
 } from "./platformEntitlements"
 import { GameVersion } from "./types/types"
+import { getRemoteService } from "./utils"
 
 /**
  * The base class for an entitlement strategy.
@@ -65,30 +67,43 @@ export class IOIStrategy extends EntitlementStrategy {
     constructor(gameVersion: GameVersion, private readonly issuerId: string) {
         super()
         this.issuerId = issuerId
-        this._remoteService =
-            gameVersion === "h3"
-                ? "hm3-service"
-                : gameVersion === "h2"
-                ? "pc2-service"
-                : "pc-service"
+        this._remoteService = getRemoteService(gameVersion)
     }
 
     override async get(userId: string) {
         // Note: Relies on the "legacyContractDownloader" flag.
         if (!userAuths.has(userId)) {
-            log(LogLevel.ERROR, `No data found for ${userId}.`)
+            log(LogLevel.ERROR, `No user data found for ${userId}.`)
             return []
         }
 
         const user = userAuths.get(userId)
 
-        const resp = await user?._useService<string[]>(
-            `https://${this._remoteService}.hitman.io/authentication/api/userchannel/ProfileService/GetPlatformEntitlements`,
-            false,
-            {
-                issuerId: this.issuerId,
-            },
-        )
+        let resp: AxiosResponse<string[]> = undefined
+
+        try {
+            resp = await user?._useService<string[]>(
+                `https://${this._remoteService}.hitman.io/authentication/api/userchannel/ProfileService/GetPlatformEntitlements`,
+                false,
+                {
+                    issuerId: this.issuerId,
+                },
+            )
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                log(
+                    LogLevel.ERROR,
+                    `Failed to get entitlements from Steam: got ${error.response.status} ${error.response.statusText}.`,
+                )
+            } else {
+                log(
+                    LogLevel.ERROR,
+                    `Failed to get entitlements from Steam: ${JSON.stringify(
+                        error,
+                    )}.`,
+                )
+            }
+        }
 
         return resp?.data || []
     }

@@ -19,6 +19,16 @@
 import type { NextFunction, Response } from "express"
 import type { RequestWithJwt } from "./types/types"
 import picocolors from "picocolors"
+import winston from "winston"
+import "winston-daily-rotate-file"
+
+const isDebug = ["*", "true", "peacock", "yes"].includes(
+    process.env.DEBUG || "false",
+)
+
+const isTest = ["*", "true", "peacock", "yes"].includes(
+    process.env.TEST || "false",
+)
 
 /**
  * Represents the different log levels.
@@ -27,30 +37,110 @@ export enum LogLevel {
     /**
      * For errors. Displays in red.
      */
-    ERROR,
+    ERROR = "error",
     /**
      * For warnings. Displays in yellow.
      */
-    WARN,
+    WARN = "warn",
     /**
      * For information. Displays in blue.
      * This is also the fallback for invalid log level values.
      */
-    INFO,
+    INFO = "info",
     /**
-     * For debugging.
-     * Displays in light blue, but only if the `DEBUG` environment variable is set to "*", "yes", "true", or "peacock".
+     * For debugging. Displays in light blue.
      */
-    DEBUG,
+    DEBUG = "debug",
     /**
      * For outputting stacktraces.
      */
-    TRACE,
+    TRACE = "trace",
+    /**
+     * For extremely verbose purposes.
+     */
+    SILLY = "silly",
 }
 
-const isDebug = ["*", "true", "peacock", "yes"].includes(
-    process.env.DEBUG || "false",
-)
+/**
+ * Represents the different internal log categories used by Peacock.
+ */
+export enum LogCategory {
+    /**
+     * Remove the category from the log
+     */
+    NONE = "none",
+    /**
+     * Set the category to the name of the calling function
+     */
+    CALLER = "caller",
+    /**
+     * Used for logging HTTP request
+     */
+    HTTP = "http",
+}
+
+const LOG_LEVEL_NONE = "none"
+
+//NOTE: Tests run in "strict mode", so only enable CALLER by default for debug-mode.
+const LOG_CATEGORY_DEFAULT =
+    isDebug && !isTest ? LogCategory.CALLER : LogCategory.NONE
+
+const fileLogLevel = process.env.LOG_LEVEL_FILE || LogLevel.TRACE
+const consoleLogLevel = process.env.LOG_LEVEL_CONSOLE || LogLevel.INFO
+const disabledLogCategories =
+    process.env.LOG_CATEGORY_DISABLED?.split(",") || []
+
+const transports = []
+
+if (fileLogLevel !== LOG_LEVEL_NONE) {
+    const fileTransport = new winston.transports.DailyRotateFile({
+        filename: "logs/peacock-%DATE%.json",
+        datePattern: "YYYYMMDDHHmmss",
+        frequency: "1d",
+        maxFiles: process.env.LOG_MAX_FILES,
+        level: fileLogLevel,
+        format: winston.format.printf((info) => {
+            return JSON.stringify(info.data)
+        }),
+    })
+
+    transports.push(fileTransport)
+}
+
+if (consoleLogLevel !== LOG_LEVEL_NONE) {
+    const consoleTransport = new winston.transports.Console({
+        level: consoleLogLevel,
+        format: winston.format.combine(
+            winston.format((info) => {
+                if (
+                    !info.data.category ||
+                    !disabledLogCategories.includes(info.data.category)
+                ) {
+                    return info
+                }
+
+                return false
+            })(),
+            winston.format.printf((info) => {
+                if (info.data.stack) {
+                    return `${info.message}\n${info.data.stack}`
+                }
+
+                return info.message
+            }),
+        ),
+    })
+
+    transports.push(consoleTransport)
+}
+
+const winstonLogLevel = {}
+Object.values(LogLevel).forEach((e, i) => (winstonLogLevel[e] = i))
+
+const logger = winston.createLogger({
+    levels: winstonLogLevel,
+    transports: transports,
+})
 
 /**
  * Adds leading zeros to a number so that the length of the string will always
@@ -78,10 +168,22 @@ export function logDebug(...args: unknown[]): void {
  *
  * @param level The message's level.
  * @param data The data to output.
+ * @param category The message's category.
  * @see LogLevel
+ *
+ * @function log
  */
-export function log(level: LogLevel, data: string): void {
-    const m = data ?? "No message specified"
+export function log(
+    level: LogLevel,
+    data: string,
+    category: LogCategory | string = LOG_CATEGORY_DEFAULT,
+): void {
+    if (category === LogCategory.CALLER) {
+        category = log.caller?.name.toString() ?? "unknown"
+    }
+
+    const message = data ?? "No message specified"
+
     const now = new Date()
     const stampParts: number[] = [
         now.getHours(),
@@ -93,41 +195,56 @@ export function log(level: LogLevel, data: string): void {
         .map((part) => zeroPad(part, 2))
         .join(":")}:${millis}`
 
-    const header = picocolors.gray(timestamp)
-    let outputTransport: (
-        message?: unknown,
-        ...optionalParams: unknown[]
-    ) => void
+    const timestampColored = picocolors.gray(timestamp)
+    const categoryColored = picocolors.gray(category)
+
     let levelString: string
+    let levelStringColored: string
+    let stack = undefined
 
     switch (level) {
         case LogLevel.ERROR:
-            outputTransport = console.error
-            levelString = picocolors.red("Error")
+            levelString = "Error"
+            levelStringColored = picocolors.red(levelString)
             break
         case LogLevel.WARN:
-            outputTransport = console.warn
-            levelString = picocolors.yellow("Warn")
+            levelString = "Warn"
+            levelStringColored = picocolors.yellow(levelString)
             break
         case LogLevel.INFO:
         default:
-            outputTransport = console.log
-            levelString = picocolors.blue("Info")
+            levelString = "Info"
+            levelStringColored = picocolors.blue(levelString)
             break
         case LogLevel.DEBUG:
-            if (!isDebug) {
-                return
-            }
-            outputTransport = console.log
-            levelString = picocolors.blueBright("Debug")
+            levelString = "Debug"
+            levelStringColored = picocolors.blueBright(levelString)
             break
         case LogLevel.TRACE:
-            outputTransport = console.trace
-            levelString = picocolors.bgYellow("Trace")
+            levelString = "Trace"
+            levelStringColored = picocolors.bgYellow(levelString)
+            stack = new Error("Trace").stack
             break
     }
 
-    outputTransport(`[${header}] [${levelString}] ${m}`)
+    const categoryAndLevel =
+        category === LogCategory.NONE
+            ? levelStringColored
+            : `${levelStringColored} | ${categoryColored}`
+
+    logger.log(
+        level,
+        `[${timestampColored}] [${categoryAndLevel}] ${message}`,
+        {
+            data: {
+                timestamp: timestamp,
+                category: category,
+                level: levelString,
+                message: message,
+                stack: stack,
+            },
+        },
+    )
 }
 
 /**
@@ -146,6 +263,7 @@ export function loggingMiddleware(
     log(
         LogLevel.INFO,
         `${picocolors.green(req.method)} ${picocolors.underline(req.url)}`,
+        LogCategory.HTTP,
     )
     next?.()
 }

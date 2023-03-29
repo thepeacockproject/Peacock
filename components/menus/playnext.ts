@@ -16,9 +16,14 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { getConfig } from "../configSwizzleManager"
 import { generateUserCentric } from "../contracts/dataGen"
 import { controller } from "../controller"
-import type { GameVersion, PlayNextCampaignDetails } from "../types/types"
+import type {
+    GameVersion,
+    MissionStory,
+    PlayNextCampaignDetails,
+} from "../types/types"
 
 export const orderedMissions: string[] = [
     "00000000-0000-0000-0000-000000000200",
@@ -41,6 +46,13 @@ export const orderedMissions: string[] = [
     "3d0cbb8c-2a80-442a-896b-fea00e98768c",
     "d42f850f-ca55-4fc9-9766-8c6a2b5c3129",
     "a3e19d55-64a6-4282-bb3c-d18c3f3e6e29",
+]
+
+export const orderedPZMissions: string[] = [
+    "024b6964-a3bb-4457-b085-08f9a7dc7fb7",
+    "7e3f758a-2435-42de-93bd-d8f0b72c63a4",
+    "ada6205e-6ee8-4189-9cdb-4947cccd84f4",
+    "a2befcec-7799-4987-9215-6a152cb6a320",
 ]
 
 /**
@@ -96,5 +108,36 @@ export function createPlayNextTile(
                 CategoryType: "NextMission",
             },
         ],
+    }
+}
+
+/**
+ * Generates tiles for recommended mission stories given a contract ID.
+ *
+ * @param contractId The contract ID.
+ * @returns The tile object.
+ */
+export function createMainOpportunityTile(contractId: string) {
+    const contractData = controller.resolveContract(contractId)
+
+    const missionStories = getConfig<Record<string, MissionStory>>(
+        "MissionStories",
+        false,
+    )
+
+    return {
+        CategoryType: "MainOpportunity",
+        CategoryName: "UI_PLAYNEXT_MAINOPPORTUNITY_CATEGORY_NAME",
+        Items: (contractData.Metadata.Opportunities || [])
+            .filter((value) => missionStories[value].IsMainOpportunity)
+            .map((value) => ({
+                ItemType: null,
+                ContentType: "Opportunity",
+                Content: {
+                    RepositoryId: value,
+                    ContractId: contractId,
+                },
+                CategoryType: "MainOpportunity",
+            })),
     }
 }

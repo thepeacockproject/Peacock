@@ -36,12 +36,12 @@ import { ZipFS } from "@yarnpkg/libzip"
 
 // NOTE: make sure to update ALL 3 OF THESE VALUES, or things will break!!
 const IMAGE_PACK_BIN =
-    "https://codeload.github.com/thepeacockproject/ImagePack/zip/843c1377fe42f51b81421f12a51b7507eb9e1edd"
+    "https://codeload.github.com/thepeacockproject/ImagePack/zip/b8415da0be992d6a2e7d10cb5d3ccd9aea4f9296"
 /**
  * Size of the image pack zip in bytes.
  */
-const IMAGE_PACK_LEN = 117645328
-const IMAGE_PACK_BASE_DIR = "ImagePack-843c1377fe42f51b81421f12a51b7507eb9e1edd"
+const IMAGE_PACK_LEN = 117286836
+const IMAGE_PACK_BASE_DIR = "ImagePack-b8415da0be992d6a2e7d10cb5d3ccd9aea4f9296"
 
 export async function toolsMenu() {
     const init = await prompts({

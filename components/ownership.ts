@@ -232,6 +232,14 @@ export const brokenItems = [
     "051825b9-44f2-4b3d-8ab1-8d4a07393c76",
     // eiffel tower melee weapon
     "a8a8f0da-a69b-428d-b8c1-faf8660ec318",
+    // PROP_DEVICE_REMOTE_EXPLOSIVE_ANCESTRAL (doesn't exist as of 3.140)
+    "099afc37-609b-48c9-9278-d3389b45829b",
+    // Remove TOKEN_OUTFIT_WET_SUIT, which is an unlock of The Mills Reverie challenge.
+    // Duplicate of TOKEN_OUTFIT_NEWZEALAND_HERO_NEWZEALANDSUIT, which is the New Zealand default suit.
+    "c2834cc6-0c71-4785-a976-c93aceb4c528",
+    // Remove TOKEN_OUTFIT_COLORADO_HERO_RABIESSUIT
+    // Duplicate of TOKEN_OUTFIT_COLORADO_HERO_COLORADOSUIT.
+    "e3234256-c061-48e6-b543-008d990affa1",
 ]
 
 /**

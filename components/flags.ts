@@ -89,8 +89,20 @@ const defaultFlags: Flags = {
         desc: "[Development - Workspace required] Toggle loading of plugins with a .ts/.cts extension inside the /plugins folder",
         default: false,
     },
+    developmentAllowRuntimeRestart: {
+        desc: "[Development] When set to true, it will be possible to restart Peacock while the game is running and connected.",
+        default: false,
+    },
     legacyContractDownloader: {
         desc: "When set to true, the official servers will be used for contract downloading in H3, which only works for the platform you are playing on. When false, the HITMAPS servers will be used instead. Note that this option only pertains to H3. Official servers will be used for H1 and H2 regardless of the value of this option.",
+        default: false,
+    },
+    gameplayUnlockAllShortcuts: {
+        desc: "When set to true, all shortcuts will always be unlocked.",
+        default: false,
+    },
+    gameplayUnlockAllFreelancerMasteries: {
+        desc: "When set to true, all Freelancer unlocks will always be available.",
         default: false,
     },
 }

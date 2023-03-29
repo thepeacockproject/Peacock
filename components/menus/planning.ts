@@ -32,7 +32,13 @@ import {
 } from "../contracts/dataGen"
 import { getConfig } from "../configSwizzleManager"
 import { getUserData, writeUserData } from "../databaseHandler"
-import { getDefaultSuitFor, nilUuid, unlockOrderComparer } from "../utils"
+import {
+    fastClone,
+    getDefaultSuitFor,
+    getMaxProfileLevel,
+    nilUuid,
+    unlockOrderComparer,
+} from "../utils"
 
 import type { Response } from "express"
 import { createInventory } from "../inventory"
@@ -62,7 +68,9 @@ export async function planningView(
     const isForReset = req.query.resetescalation === "true"
 
     for (const ms in userData.Extensions.opportunityprogression) {
-        missionStories[ms].PreviouslyCompleted = true
+        if (Object.keys(missionStories).includes(ms)) {
+            missionStories[ms].PreviouslyCompleted = true
+        }
     }
 
     if (isForReset) {
@@ -79,7 +87,7 @@ export async function planningView(
             controller.escalationMappings[escalationGroupId]["1"]
     }
 
-    const contractData =
+    let contractData =
         req.gameVersion === "h1" &&
         req.query.contractid === "42bac555-bbb9-429d-a8ce-f1ffdf94211c"
             ? _legacyBull
@@ -88,7 +96,27 @@ export async function planningView(
             : controller.resolveContract(req.query.contractid)
 
     if (!contractData) {
-        log(LogLevel.ERROR, `Not found: ${req.query.contractid}.`)
+        log(
+            LogLevel.WARN,
+            `Trying to download contract ${req.query.contractid} due to it not found locally.`,
+        )
+        const publicId = controller.contractIdToPublicId.get(
+            req.query.contractid,
+        )
+        if (publicId) {
+            const officialJson = await controller.downloadContract(
+                req.jwt.unique_name,
+                publicId,
+                req.gameVersion,
+            )
+            if (officialJson) {
+                contractData = fastClone(officialJson)
+            }
+        }
+    }
+
+    if (!contractData) {
+        log(LogLevel.ERROR, `Not found: ${req.query.contractid}, .`)
         res.status(400).send("no ct")
         return
     }
@@ -245,7 +273,11 @@ export async function planningView(
         userCentric.Contract.Metadata.Type = "mission"
     }
 
-    const sniperLoadouts = createSniperLoadouts(contractData)
+    const sniperLoadouts = createSniperLoadouts(
+        req.jwt.unique_name,
+        req.gameVersion,
+        contractData,
+    )
 
     if (req.gameVersion === "scpc") {
         sniperLoadouts.forEach((loadout) => {
@@ -444,7 +476,7 @@ export async function planningView(
                 XP: userData.Extensions.progression.PlayerProfileXP.Total,
                 Level: userData.Extensions.progression.PlayerProfileXP
                     .ProfileLevel,
-                MaxLevel: 7500,
+                MaxLevel: getMaxProfileLevel(req.gameVersion),
             },
         },
     })

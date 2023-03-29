@@ -80,6 +80,8 @@ import { multiplayerRouter } from "./multiplayer/multiplayerService"
 import { multiplayerMenuDataRouter } from "./multiplayer/multiplayerMenuData"
 import { pack, unpack } from "msgpackr"
 import { liveSplitManager } from "./livesplit/liveSplitManager"
+import { cheapLoadUserData } from "./databaseHandler"
+import { reportRouter } from "./contracts/reportRouting"
 
 // welcome to the bleeding edge
 setFlagsFromString("--harmony")
@@ -358,6 +360,21 @@ app.use(
         }),
 )
 
+if (getFlag("developmentAllowRuntimeRestart")) {
+    app.use(async (req: RequestWithJwt, _res, next): Promise<void> => {
+        if (!req.jwt) {
+            next()
+
+            return
+        }
+
+        //Make sure the userdata is always loaded if a proper JWT token is available
+        await cheapLoadUserData(req.jwt.unique_name, req.gameVersion)
+
+        next()
+    })
+}
+
 function generateBlobConfig(req: RequestWithJwt) {
     return {
         bloburl: `${req.protocol}://${req.get("Host")}/resources-${
@@ -418,6 +435,10 @@ primaryRouter.use("/authentication/api/userchannel/EventsService/", eventRouter)
 primaryRouter.use(
     "/authentication/api/userchannel/ContractsService/",
     contractRoutingRouter,
+)
+primaryRouter.use(
+    "/authentication/api/userchannel/ReportingService/",
+    reportRouter,
 )
 primaryRouter.use("/authentication/api/userchannel/", profileRouter)
 primaryRouter.use("/profiles/page/", preMenuDataRouter)
@@ -517,6 +538,7 @@ function startServer(options: { hmr: boolean; pluginDevHost: boolean }): void {
     // make sure required folder structure is in place
     for (const dir of [
         "contractSessions",
+        "plugins",
         "userdata",
         "contracts",
         join("userdata", "epicids"),

@@ -253,3 +253,7 @@ export type Dart_HitC2SEvent = ClientToServerEvent<{
     ActorType: number
     Sedative: "" | string
 }>
+
+export type Evergreen_Payout_DataC2SEvent = ClientToServerEvent<{
+    Total_Payout: number
+}>

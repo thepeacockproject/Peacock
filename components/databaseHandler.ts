@@ -104,7 +104,39 @@ export function getUserData(
         }
     }
 
+    //NOTE: ProfileLevel always starts at 1
+    if (data?.Extensions?.progression?.PlayerProfileXP?.ProfileLevel === 0) {
+        data.Extensions.progression.PlayerProfileXP.ProfileLevel = 1
+    }
+
     return data
+}
+
+/**
+ * Only attempt to load a user's profile if it hasn't been loaded yet
+ *
+ * @param userId The user's ID.
+ * @param gameVersion The game's version.
+ */
+export async function cheapLoadUserData(
+    userId: string,
+    gameVersion: GameVersion,
+): Promise<void> {
+    if (!userId || !gameVersion) {
+        return
+    }
+
+    const userProfile = asyncGuard.getProfile(`${userId}.${gameVersion}`)
+
+    if (userProfile) {
+        return
+    }
+
+    try {
+        await loadUserData(userId, gameVersion)
+    } catch (e) {
+        log(LogLevel.DEBUG, "Unable to load profile information.")
+    }
 }
 
 /**
