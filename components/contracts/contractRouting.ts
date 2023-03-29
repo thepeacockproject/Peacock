@@ -109,6 +109,11 @@ contractRoutingRouter.post(
             contractData.Data.EnableSaving = false
         }
 
+        // Edit elusive contract data HERE
+        if (contractData.Metadata.Type === "elusive") {
+            contractData.Metadata.Type = "mission"
+        }
+
         const contractSesh = {
             Contract: contractData,
             ContractSessionId: `${process.hrtime
