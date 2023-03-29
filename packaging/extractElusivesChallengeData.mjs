@@ -17,7 +17,6 @@
  */
 
 import { writeFile } from "fs/promises"
-import { orderedETs } from "../components/contracts/elusiveTargets"
 import pc from "picocolors"
 import { Command, Option, runExit } from "clipanion"
 import axios from "axios"
@@ -41,19 +40,84 @@ async function fetchContractCAndPFromIOI(axiosClient, contractId) {
     return data
 }
 
+const contractIds = {
+    LOCATION_PARENT_PARIS: [
+        "8813e0a4-08ac-494f-a847-687a2da3582f",
+        "13680605-83ed-4b8c-a44d-30cc5b4fb17a",
+        "158b600a-6448-45d3-907f-77351b9656ee",
+        "2b928d67-c244-4601-bafb-7af664fb17bb",
+        "a9d93d2a-c541-49ab-8ba1-9e345cf7e806",
+        "16d78245-5392-413c-b3db-989d6685c32a",
+        "92a87b10-a230-4986-bb35-06f16e84b11f",
+        "5dc115d3-e5d4-4023-a11a-27c6f7194bea",
+        "0fea5e55-9aec-41ef-9e5b-4e5e5f536f82",
+    ],
+    LOCATION_PARENT_COASTALTOWN: [
+        "ff188c8b-e1eb-4c59-af75-6b6fe3da5955",
+        "0fd17346-bcb4-4bcc-acc3-5e1b6b184ef4",
+        "e87217e3-4809-4855-80d5-74bed66be58d",
+        "8f13ea71-b207-4955-9eb8-ede757f3baa6",
+        "0dc242ce-084e-4f6d-980f-e65885cd6955",
+        "b555d6a4-8b4d-4e1e-b6bd-ebd135ad1e01",
+        "8462b2e5-4d34-4300-896f-fe1dc98fa877",
+    ],
+    LOCATION_PARENT_MARRAKECH: [
+        "0d938ef9-05c7-4eb8-89cc-ae79b73c6992",
+        "ad549098-eb3d-4132-8ef8-fe77c6afbbaa",
+        "c3c7126e-32cd-4502-b5ce-90b5ae436806",
+        "2e2c3f33-92ad-412f-a351-b7267697ff70",
+        "3716b654-a42c-45df-9db9-61795a6a3e46",
+    ],
+    LOCATION_PARENT_BANGKOK: [
+        // "b0bed170-8652-4188-8b9a-92caf9f97e5b",
+        "b0b8995c-7b3f-4fa6-91a2-be4bc8edc046",
+        // "87f8293a-29cd-4cb1-ade7-dd6bb056d38e",
+    ],
+    LOCATION_PARENT_COLORADO: [
+        "550c4d75-ca87-4be7-a18e-caf30e6c8136",
+        "655c5a57-69d1-48b6-a14b-2ae396c16174",
+    ],
+    LOCATION_PARENT_HOKKAIDO: [
+        "1c0377f3-6e32-4563-8baf-9677cdb3bb60",
+        "deace35f-ab6d-44c9-b1a6-98757e854f74",
+    ],
+    LOCATION_PARENT_NEWZEALAND: ["44fd7474-d7be-4d3d-b944-6c1cf6ca09d1"],
+    LOCATION_PARENT_MIAMI: [
+        "06a58b66-56f4-45c3-ba1b-d03998212289",
+        "ecf353e8-3dd8-4958-b255-f963926aea51",
+    ],
+    LOCATION_PARENT_COLOMBIA: ["01e38e22-b8d8-4266-af3b-f3330c41e6f2"],
+    LOCATION_PARENT_NORTHAMERICA: ["332e588b-80a3-4cb0-abc6-dc8de3d89e83"],
+    LOCATION_PARENT_NORTHSEA: [
+        "263eca3d-d25d-40ce-ba0a-48a221cd0b9e",
+        "cbc86bed-51ce-4699-89d4-0ded8f200cbc",
+    ],
+    LOCATION_PARENT_GOLDEN: ["b2c0251e-1803-4e12-b860-b9fa6ce5c004"],
+    LOCATION_PARENT_ANCESTRAL: [
+        "92951377-419d-4c31-aa21-2a3f03ef82d0",
+        "1fcaff1b-7fa3-4b9f-a586-9c7a1689b48d",
+    ],
+    LOCATION_PARENT_EDGY: ["38dba4d9-a361-46c9-bdae-7350945d6526"],
+    LOCATION_PARENT_WET: ["6fad7901-279f-45df-ab8d-087a3cb06dcc"],
+    LOCATION_PARENT_ELEGANT: [
+        "fa002472-2120-44b6-bf48-41d14af97f51",
+        "d8219c26-4122-4dde-bc42-382cdb374090",
+    ],
+}
+
 /**
  * @param {import("axios").AxiosInstance} axiosClient
  * @param {string} locationId
  * @returns {Promise<*>}
  */
-async function fetchDestination(axiosClient, locationId) {
-    const resp = await axiosClient.get("/profiles/page/Destination", {
-        params: {
-            locationId,
-        },
-    })
+async function fetchContract(axiosClient, contractId) {
+    console.log(`Fetching contract planning ${contractId}...`)
+    const resp = await axiosClient.get(
+        "/profiles/page/Planning?contractid=b0b8995c-7b3f-4fa6-91a2-be4bc8edc046&resetescalation=false&forcecurrentcontract=false&errorhandling=false",
+        {},
+    )
 
-    return resp.data
+    return resp.data.data.ChallengeData.Children
 }
 
 /**
@@ -74,76 +138,76 @@ async function extract(locationParent, jwt, apiUrl) {
         },
     })
 
-    const missionIds = new Set()
+    console.log(
+        `Fetching destination ${locationParent} from ${pc.underline(
+            apiUrl,
+        )}...`,
+    )
 
-    // const destinationsData = await fetchDestination(httpClient, locationParent)
+    const missionIds = contractIds[locationParent]
 
-    // const sublocations =
-        // destinationsData.data.MissionData.SubLocationMissionsData
-
-    // console.log(`Found ${pc.green(sublocations.length)} sublocations.`)
-
-    // const getOrEmpty = (val) => val || []
-
-    // for (const sublocationMissionData of sublocations) {
-    //     for (const mission of [
-    //         ...getOrEmpty(sublocationMissionData.Missions),
-    //         ...getOrEmpty(sublocationMissionData.SarajevoSixMissions),
-    //         ...getOrEmpty(sublocationMissionData.ElusiveMissions),
-    //         ...getOrEmpty(sublocationMissionData.EscalationMissions),
-    //         ...getOrEmpty(sublocationMissionData.SniperMissions),
-    //         ...getOrEmpty(sublocationMissionData.PlaceholderMissions),
-    //         ...getOrEmpty(sublocationMissionData.CampaignMissions),
-    //         ..."b0b8995c-7b3f-4fa6-91a2-be4bc8edc046",
-    //     ]) {
-    //         missionIds.add(mission.Id)
-    //     }
-    // }
-
-    const missions = await Promise.all(
-        [...orderedETs].map(async (id) => {
-            return await fetchContractCAndPFromIOI(httpClient, id)
+    const planningsData = await Promise.all(
+        missionIds.map(async (id) => {
+            return await fetchContract(httpClient, id)
         }),
     )
 
+    const missions = await Promise.all(
+        missionIds.map(async (id) => {
+            return await fetchContractCAndPFromIOI(httpClient, id)
+        }),
+    )
+    const challengeObjects = []
+    
+    const group = {
+        Name: "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+        Image: "images/challenges/categories/elusive/tile.jpg",
+        Icon: "elusive",
+        CategoryId: "elusive",
+        Description: "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_ELUSIVE",
+        Challenges: challengeObjects,
+    }
     /**
      * @type {SavedChallengeGroup[]}
      */
-    let groups = []
+    const groups = [
+        group,
+    ]
     const idToRuntimeExtras = {}
-
     // read runtime files
     for (const singleChallengesProgResult of missions) {
         for (const challenge of singleChallengesProgResult) {
-            const { Type, Definition, InclusionData, Tags, XpModifier, Id } =
-                challenge.Challenge
+            const {
+                Type,
+                Definition,
+                InclusionData,
+                Tags,
+                XpModifier,
+                Id,
+                GroupId,
+            } = challenge.Challenge
 
             idToRuntimeExtras[Id] = {
                 XpModifier: XpModifier || {},
                 RuntimeType: Type,
                 Definition,
                 Tags,
+                GroupId,
                 InclusionData,
             }
         }
     }
 
-    for (const group of destinationsData.data.ChallengeData.Children) {
-        const challengeObjects = []
+    //list of list of challenges
+    const ETchals = planningsData.map(
+        (single) =>
+            single.find(
+                (g) => g.CategoryId === "elusive",
+            ).SwitchData.Data.Challenges,
+    )
 
-        console.log(`Creating group ${pc.magenta(group.CategoryId)}...`)
-
-        groups.push({
-            Name: group.Name,
-            Image: group.Image,
-            Icon: group.Icon,
-            CategoryId: group.CategoryId,
-            Description: group.Description,
-            Challenges: challengeObjects,
-        })
-
-        const groupChallenges = group.SwitchData.Data.Challenges
-
+    for (let i = 0; i < ETchals.length ; i++ ) {
+        const groupChallenges = ETchals[i]
         for (let fullPlanningChallenge of groupChallenges) {
             const shortName = fullPlanningChallenge.Name.replace(
                 "UI_CHALLENGES_",
@@ -168,12 +232,12 @@ async function extract(locationParent, jwt, apiUrl) {
                 ...idToRuntimeExtras[fullPlanningChallenge.Id],
             }
 
-            if (fullPlanningChallenge.UserCentricContract) {
-                const contractId =
-                    fullPlanningChallenge.UserCentricContract?.Contract
-                        ?.Metadata?.Id
+            fullPlanningChallenge.InclusionData ??= {}
+            fullPlanningChallenge.InclusionData.ContractTypes ??= []
+            fullPlanningChallenge.InclusionData.ContractTypes.push("elusive")
 
-                fullPlanningChallenge.InclusionData ??= {}
+            if (fullPlanningChallenge.GroupId === missionIds[i]) {
+                const contractId = fullPlanningChallenge.GroupId
 
                 if (
                     !(
@@ -192,26 +256,9 @@ async function extract(locationParent, jwt, apiUrl) {
             fullPlanningChallenge.ChallengeProgress = undefined
             fullPlanningChallenge.UserCentricContract = undefined
 
+            delete fullPlanningChallenge.GroupId
+
             challengeObjects.push(fullPlanningChallenge)
-        }
-    }
-
-    {
-        const prunedGroups = new Set()
-
-        // remove groups with no challenges
-        groups = groups.filter((group) => {
-            const hasAny = group.Challenges.length > 0
-
-            if (!hasAny) {
-                prunedGroups.add(group.Name)
-            }
-
-            return hasAny
-        })
-
-        for (const prunedGroup of prunedGroups) {
-            console.log(`Removed empty group ${pc.magenta(prunedGroup)}`)
         }
     }
 
