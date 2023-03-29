@@ -153,7 +153,7 @@ export class ProgressionService {
         )
 
         const maxLevel = masteryData?.MaxLevel || DEFAULT_MASTERY_MAXLEVEL
-        const isEvergreenContract = contract.Metadata.Type !== "evergreen"
+        const isEvergreenContract = contract.Metadata.Type === "evergreen"
 
         if (masteryData) {
             const previousLevel = locationData.Level
