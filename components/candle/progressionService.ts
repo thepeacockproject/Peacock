@@ -18,7 +18,7 @@
 
 import { getSubLocationByName } from "../contracts/dataGen"
 import { controller } from "../controller"
-import { awardDropsToUser, getDataForUnlockables } from "../inventory"
+import { grantDrops, getDataForUnlockables } from "../inventory"
 import type {
     ContractSession,
     UserProfile,
@@ -37,15 +37,19 @@ import {
 import { writeUserData } from "../databaseHandler"
 
 export class ProgressionService {
+    //NOTE: Official will always grant XP to both Location Mastery and the Player Profile
     grantProfileProgression(
-        actionXp: number,
-        masteryXp: number,
-        challengeDrops: Unlockable[],
+        actionXp = 0,
+        masteryXp = 0,
+        drops: Unlockable[],
         contractSession: ContractSession,
         userProfile: UserProfile,
     ) {
+        // Total XP for profile XP is the total sum of the action and mastery XP's
+        const xp = actionXp + masteryXp
+
         // Grants profile XP
-        this.grantUserXp(actionXp + masteryXp, contractSession, userProfile)
+        this.grantUserXp(xp, contractSession, userProfile)
 
         // Grants Mastery Progression and Drops
         this.grantLocationMasteryXpAndRewards(
@@ -55,8 +59,8 @@ export class ProgressionService {
             userProfile,
         )
 
-        // Grants challenge related drops
-        awardDropsToUser(userProfile.Id, challengeDrops)
+        // Award provided drops. E.g. From challenges
+        grantDrops(userProfile.Id, drops)
 
         // Saves profile data
         writeUserData(userProfile.Id, contractSession.gameVersion)
@@ -179,7 +183,7 @@ export class ProgressionService {
                     previousLevel,
                     locationData.Level,
                 )
-                awardDropsToUser(userProfile.Id, masteryLocationDrops)
+                grantDrops(userProfile.Id, masteryLocationDrops)
             }
         }
 

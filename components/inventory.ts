@@ -17,7 +17,7 @@
  */
 
 import { getVersionedConfig } from "./configSwizzleManager"
-import type { GameVersion, Unlockable } from "./types/types"
+import type { GameVersion, Unlockable, UserProfile } from "./types/types"
 import {
     brokenItems,
     CONCRETEART_UNLOCKABLES,
@@ -91,6 +91,299 @@ export function clearInventoryCache(): void {
     inventoryUserCache.clear()
 }
 
+/**
+ * Filters unlocked unlockables
+ *
+ * @param userProfile
+ * @param packagedUnlocks
+ * @param challengesUnlockables
+ * @returns [Unlockable[], Unlockable[]]
+ */
+function filterUnlockedContent(
+    userProfile: UserProfile,
+    packagedUnlocks: Map<string, boolean>,
+    challengesUnlockables: object,
+) {
+    return function (
+        acc: [Unlockable[], Unlockable[]],
+        unlockable: Unlockable,
+    ) {
+        let unlockableChallengeId: string
+        let unlockableMasteryData: UnlockableMasteryData
+
+        // Handles unlockables that belong to a package or unlocked gear from evergreen
+        if (packagedUnlocks.has(unlockable.Id)) {
+            packagedUnlocks.get(unlockable.Id) && acc[0].push(unlockable)
+        }
+
+        // Handles packages
+        else if (unlockable.Type === "package") {
+            for (const pkgUnlockableId of unlockable.Properties.Unlocks) {
+                packagedUnlocks.set(pkgUnlockableId, true)
+            }
+
+            acc[0].push(unlockable)
+        }
+
+        // If the unlockable is challenge reward, check if user has the challenge completed
+        else if (
+            (unlockableChallengeId = challengesUnlockables[unlockable.Id])
+        ) {
+            const challenge =
+                userProfile.Extensions?.ChallengeProgression?.[
+                    unlockableChallengeId
+                ]
+
+            if (challenge?.Completed) acc[0].push(unlockable)
+        }
+
+        // If the unlockable is mastery locked, checks if its unlocked based on user location progression
+        else if (
+            (unlockableMasteryData =
+                controller.masteryService.getMasteryForUnlockable(unlockable))
+        ) {
+            const locationData =
+                controller.progressionService.getMasteryProgressionForLocation(
+                    userProfile,
+                    unlockableMasteryData.Location,
+                )
+
+            const canUnlock = locationData.Level >= unlockableMasteryData.Level
+
+            if (canUnlock) {
+                acc[0].push(unlockable)
+            }
+
+            // If the unlock is an evergreen package, adds its unlockables to the list
+            if (
+                unlockable.Type === "evergreenmastery" &&
+                unlockable.Properties.Unlocks
+            )
+                for (const evergreenGearId of unlockable.Properties.Unlocks) {
+                    packagedUnlocks.set(evergreenGearId, canUnlock)
+                }
+        } else {
+            const isEvergreen =
+                unlockable.Type === "evergreenmastery" ||
+                unlockable.Subtype === "evergreen"
+            const isDeluxe = DELUXE_DATA.includes(unlockable.Id)
+
+            if (isEvergreen || isDeluxe) {
+                acc[0].push(unlockable)
+            } else {
+                /**
+                 *  List of untracked items (to award to user until they are tracked to corresponding challenges)
+                 */
+                acc[1].push(unlockable)
+            }
+        }
+
+        return acc
+    }
+}
+
+/**
+ * Filters allowed unlockables
+ *
+ * @param gameVersion
+ * @param entP
+ * @returns boolean
+ */
+function filterAllowedContent(gameVersion: GameVersion, entP: string[]) {
+    return function (unlockContainer: {
+        InstanceId: string
+        ProfileId: string
+        Unlockable: Unlockable
+        Properties: object
+    }) {
+        if (!unlockContainer) {
+            return false
+        }
+
+        if (
+            unlockContainer.Unlockable.Type === "disguise" &&
+            !unlockContainer.Unlockable.Properties.OrderIndex
+        ) {
+            return false
+        }
+
+        if (gameVersion === "h1") {
+            return true
+        }
+
+        const e = entP
+        const { Id: id } = unlockContainer!.Unlockable
+
+        if (!e) {
+            return false
+        }
+
+        if (unlockContainer.Unlockable.Type === "evergreenmastery") {
+            return false
+        }
+
+        // This way of doing entitlements is a mess, redo this! - AF
+        if (gameVersion === "h3") {
+            if (WINTERSPORTS_UNLOCKABLES.includes(id)) {
+                return (
+                    e.includes("afa4b921503f43339c360d4b53910791") ||
+                    e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
+                    e.includes("1829590")
+                )
+            }
+
+            if (EXECUTIVE_UNLOCKABLES.includes(id)) {
+                return (
+                    e.includes("6408de14f7dc46b9a33adcf6cbc4d159") ||
+                    e.includes("afa4b921503f43339c360d4b53910791") ||
+                    e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
+                    e.includes("1829590")
+                )
+            }
+
+            if (H1_REQUIEM_UNLOCKABLES.includes(id)) {
+                return (
+                    e.includes("e698e1a4b63947b0bc9349a5ae2dc015") ||
+                    e.includes("a3509775467d4d6a8a7adffe518dc204") || // WoA Standard
+                    e.includes("1843460")
+                )
+            }
+
+            if (H1_GOTY_UNLOCKABLES.includes(id)) {
+                return (
+                    e.includes("894d1e6771044f48a8fdde934b8e443a") ||
+                    e.includes("a3509775467d4d6a8a7adffe518dc204") || // WoA Standard
+                    e.includes("1843460") ||
+                    e.includes("1829595")
+                )
+            }
+
+            if (H2_RACCOON_STINGRAY_UNLOCKABLES.includes(id)) {
+                return (
+                    e.includes("afa4b921503f43339c360d4b53910791") ||
+                    e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
+                    e.includes("1829590")
+                )
+            }
+        } else if (gameVersion === "h2") {
+            if (WINTERSPORTS_UNLOCKABLES.includes(id)) {
+                return e.includes("957693")
+            }
+        } else if (
+            // @ts-expect-error The types do actually overlap, but there is no way to show that.
+            gameVersion === "h1" &&
+            (e.includes("0a73eaedcac84bd28b567dbec764c5cb") ||
+                e.includes(EPIC_NAMESPACE_2016))
+        ) {
+            // h1 EGS
+            if (
+                H1_REQUIEM_UNLOCKABLES.includes(id) ||
+                H1_GOTY_UNLOCKABLES.includes(id)
+            ) {
+                return e.includes("81aecb49a60b47478e61e1cbd68d63c5")
+            }
+        }
+
+        if (DELUXE_UNLOCKABLES.includes(id)) {
+            return (
+                e.includes("bc610b36c75442299edcbe99f6f0fb60") ||
+                e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
+                e.includes("1829591")
+            )
+        }
+
+        /*
+        TODO: Fix this entitlement check (confirmed its broken with Blazer)
+        if (LEGACY_UNLOCKABLES.includes(id)) {
+            return (
+                e.includes("0b59243cb8aa420691b66be1ecbe68c0") ||
+                e.includes("1829593")
+            )
+        }
+         */
+
+        if (SIN_GREED_UNLOCKABLES.includes(id)) {
+            return (
+                e.includes("0e8632b4cdfb415e94291d97d727b98d") ||
+                e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
+                e.includes("1829580")
+            )
+        }
+
+        if (SIN_PRIDE_UNLOCKABLES.includes(id)) {
+            return (
+                e.includes("3f9adc216dde44dda5e829f11740a0a2") ||
+                e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
+                e.includes("1829581")
+            )
+        }
+
+        if (SIN_SLOTH_UNLOCKABLES.includes(id)) {
+            return (
+                e.includes("aece009ff59441c0b526f8aa69e24cfb") ||
+                e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
+                e.includes("1829582")
+            )
+        }
+
+        if (SIN_LUST_UNLOCKABLES.includes(id)) {
+            return (
+                e.includes("dfe5aeb89976450ba1e0e2c208b63d33") ||
+                e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
+                e.includes("1829583")
+            )
+        }
+
+        if (SIN_GLUTTONY_UNLOCKABLES.includes(id)) {
+            return (
+                e.includes("30107bff80024d1ab291f9cd3bac9fac") ||
+                e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
+                e.includes("1829584")
+            )
+        }
+
+        if (SIN_ENVY_UNLOCKABLES.includes(id)) {
+            return (
+                e.includes("0403062df0d347619c8dcf043c65c02e") ||
+                e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
+                e.includes("1829585")
+            )
+        }
+
+        if (SIN_WRATH_UNLOCKABLES.includes(id)) {
+            return (
+                e.includes("9e936ed2507a473db6f53ad24d2da587") ||
+                e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
+                e.includes("1829586")
+            )
+        }
+
+        if (TRINITY_UNLOCKABLES.includes(id)) {
+            return (
+                e.includes("5d06a6c6af9b4875b3530d5328f61287") ||
+                e.includes("1829596")
+            )
+        }
+
+        // The following two must be confirmed, epic entitlements may be in the wrong order! - AF
+        if (MAKESHIFT_UNLOCKABLES.includes(id)) {
+            return (
+                e.includes("08d2bc4d20754191b6c488541d2b4fa1") ||
+                e.includes("2184791")
+            )
+        }
+
+        if (CONCRETEART_UNLOCKABLES.includes(id)) {
+            return (
+                e.includes("a1e9a63fa4f3425aa66b9b8fa3c9cc35") ||
+                e.includes("2184790")
+            )
+        }
+
+        return true
+    }
+}
+
 export function createInventory(
     profileId: string,
     gameVersion: GameVersion,
@@ -101,7 +394,7 @@ export function createInventory(
     }
 
     // Get user data to check on location progression
-    const userData = getUserData(profileId, gameVersion)
+    const userProfile = getUserData(profileId, gameVersion)
 
     // add all unlockables to player's inventory
     const allunlockables = getVersionedConfig<Unlockable[]>(
@@ -132,90 +425,11 @@ export function createInventory(
                         : -1,
                 )
                 .reduce(
-                    (acc, unlockable) => {
-                        let unlockableChallengeId: string
-                        let unlockableMasteryData: UnlockableMasteryData
-
-                        // Handles unlockables that belong to a package or unlocked gear from evergreen
-                        if (packagedUnlocks.has(unlockable.Id)) {
-                            packagedUnlocks.get(unlockable.Id) &&
-                                acc[0].push(unlockable)
-                        }
-
-                        // Handles packages
-                        else if (unlockable.Type === "package") {
-                            for (const pkgUnlockableId of unlockable.Properties
-                                .Unlocks) {
-                                packagedUnlocks.set(pkgUnlockableId, true)
-                            }
-
-                            acc[0].push(unlockable)
-                        }
-
-                        // If the unlockable is challenge reward, check if user has the challenge completed
-                        else if (
-                            (unlockableChallengeId =
-                                challengesUnlockables[unlockable.Id])
-                        ) {
-                            const challenge =
-                                userData.Extensions?.ChallengeProgression?.[
-                                    unlockableChallengeId
-                                ]
-
-                            if (challenge?.Completed) acc[0].push(unlockable)
-                        }
-
-                        // If the unlockable is mastery locked, checks if its unlocked based on user location progression
-                        else if (
-                            (unlockableMasteryData =
-                                controller.masteryService.getMasteryForUnlockable(
-                                    unlockable,
-                                ))
-                        ) {
-                            const locationData =
-                                controller.progressionService.getMasteryProgressionForLocation(
-                                    userData,
-                                    unlockableMasteryData.Location,
-                                )
-
-                            const canUnlock =
-                                locationData.Level >=
-                                unlockableMasteryData.Level
-
-                            if (canUnlock) {
-                                acc[0].push(unlockable)
-                            }
-
-                            // If the unlock is an evergreen package, adds its unlockables to the list
-                            if (
-                                unlockable.Type === "evergreenmastery" &&
-                                unlockable.Properties.Unlocks
-                            )
-                                for (const evergreenGearId of unlockable
-                                    .Properties.Unlocks) {
-                                    packagedUnlocks.set(
-                                        evergreenGearId,
-                                        canUnlock,
-                                    )
-                                }
-                        } else {
-                            const isEvergreen =
-                                unlockable.Type === "evergreenmastery" ||
-                                unlockable.Subtype === "evergreen"
-                            const isDeluxe = DELUXE_DATA.includes(unlockable.Id)
-
-                            if (isEvergreen || isDeluxe) {
-                                acc[0].push(unlockable)
-                            } else {
-                                /**
-                                 *  List of untracked items (to award to user until they are tracked to corresponding challenges)
-                                 */
-                                acc[1].push(unlockable)
-                            }
-                        }
-
-                        return acc
-                    },
+                    filterUnlockedContent(
+                        userProfile,
+                        packagedUnlocks,
+                        challengesUnlockables,
+                    ),
                     [[], []],
                 )
 
@@ -246,193 +460,7 @@ export function createInventory(
             }
         })
         // filter again, this time removing legacy unlockables
-        .filter((unlockContainer) => {
-            if (!unlockContainer) {
-                return false
-            }
-
-            if (
-                unlockContainer.Unlockable.Type === "disguise" &&
-                !unlockContainer.Unlockable.Properties.OrderIndex
-            ) {
-                return false
-            }
-
-            if (gameVersion === "h1") {
-                return true
-            }
-
-            const e = entP
-            const { Id: id } = unlockContainer!.Unlockable
-
-            if (!e) {
-                return false
-            }
-
-            if (unlockContainer.Unlockable.Type === "evergreenmastery") {
-                return false
-            }
-
-            // This way of doing entitlements is a mess, redo this! - AF
-            if (gameVersion === "h3") {
-                if (WINTERSPORTS_UNLOCKABLES.includes(id)) {
-                    return (
-                        e.includes("afa4b921503f43339c360d4b53910791") ||
-                        e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
-                        e.includes("1829590")
-                    )
-                }
-
-                if (EXECUTIVE_UNLOCKABLES.includes(id)) {
-                    return (
-                        e.includes("6408de14f7dc46b9a33adcf6cbc4d159") ||
-                        e.includes("afa4b921503f43339c360d4b53910791") ||
-                        e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
-                        e.includes("1829590")
-                    )
-                }
-
-                if (H1_REQUIEM_UNLOCKABLES.includes(id)) {
-                    return (
-                        e.includes("e698e1a4b63947b0bc9349a5ae2dc015") ||
-                        e.includes("a3509775467d4d6a8a7adffe518dc204") || // WoA Standard
-                        e.includes("1843460")
-                    )
-                }
-
-                if (H1_GOTY_UNLOCKABLES.includes(id)) {
-                    return (
-                        e.includes("894d1e6771044f48a8fdde934b8e443a") ||
-                        e.includes("a3509775467d4d6a8a7adffe518dc204") || // WoA Standard
-                        e.includes("1843460") ||
-                        e.includes("1829595")
-                    )
-                }
-
-                if (H2_RACCOON_STINGRAY_UNLOCKABLES.includes(id)) {
-                    return (
-                        e.includes("afa4b921503f43339c360d4b53910791") ||
-                        e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
-                        e.includes("1829590")
-                    )
-                }
-            } else if (gameVersion === "h2") {
-                if (WINTERSPORTS_UNLOCKABLES.includes(id)) {
-                    return e.includes("957693")
-                }
-            } else if (
-                // @ts-expect-error The types do actually overlap, but there is no way to show that.
-                gameVersion === "h1" &&
-                (e.includes("0a73eaedcac84bd28b567dbec764c5cb") ||
-                    e.includes(EPIC_NAMESPACE_2016))
-            ) {
-                // h1 EGS
-                if (
-                    H1_REQUIEM_UNLOCKABLES.includes(id) ||
-                    H1_GOTY_UNLOCKABLES.includes(id)
-                ) {
-                    return e.includes("81aecb49a60b47478e61e1cbd68d63c5")
-                }
-            }
-
-            if (DELUXE_UNLOCKABLES.includes(id)) {
-                return (
-                    e.includes("bc610b36c75442299edcbe99f6f0fb60") ||
-                    e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
-                    e.includes("1829591")
-                )
-            }
-
-            /*
-            TODO: Fix this entitlement check (confirmed its broken with Blazer)
-            if (LEGACY_UNLOCKABLES.includes(id)) {
-                return (
-                    e.includes("0b59243cb8aa420691b66be1ecbe68c0") ||
-                    e.includes("1829593")
-                )
-            }
-             */
-
-            if (SIN_GREED_UNLOCKABLES.includes(id)) {
-                return (
-                    e.includes("0e8632b4cdfb415e94291d97d727b98d") ||
-                    e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
-                    e.includes("1829580")
-                )
-            }
-
-            if (SIN_PRIDE_UNLOCKABLES.includes(id)) {
-                return (
-                    e.includes("3f9adc216dde44dda5e829f11740a0a2") ||
-                    e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
-                    e.includes("1829581")
-                )
-            }
-
-            if (SIN_SLOTH_UNLOCKABLES.includes(id)) {
-                return (
-                    e.includes("aece009ff59441c0b526f8aa69e24cfb") ||
-                    e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
-                    e.includes("1829582")
-                )
-            }
-
-            if (SIN_LUST_UNLOCKABLES.includes(id)) {
-                return (
-                    e.includes("dfe5aeb89976450ba1e0e2c208b63d33") ||
-                    e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
-                    e.includes("1829583")
-                )
-            }
-
-            if (SIN_GLUTTONY_UNLOCKABLES.includes(id)) {
-                return (
-                    e.includes("30107bff80024d1ab291f9cd3bac9fac") ||
-                    e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
-                    e.includes("1829584")
-                )
-            }
-
-            if (SIN_ENVY_UNLOCKABLES.includes(id)) {
-                return (
-                    e.includes("0403062df0d347619c8dcf043c65c02e") ||
-                    e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
-                    e.includes("1829585")
-                )
-            }
-
-            if (SIN_WRATH_UNLOCKABLES.includes(id)) {
-                return (
-                    e.includes("9e936ed2507a473db6f53ad24d2da587") ||
-                    e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
-                    e.includes("1829586")
-                )
-            }
-
-            if (TRINITY_UNLOCKABLES.includes(id)) {
-                return (
-                    e.includes("5d06a6c6af9b4875b3530d5328f61287") ||
-                    e.includes("1829596")
-                )
-            }
-
-            // The following two must be confirmed, epic entitlements may be in the wrong order! - AF
-            if (MAKESHIFT_UNLOCKABLES.includes(id)) {
-                return (
-                    e.includes("08d2bc4d20754191b6c488541d2b4fa1") ||
-                    e.includes("2184791")
-                )
-            }
-
-            if (CONCRETEART_UNLOCKABLES.includes(id)) {
-                return (
-                    e.includes("a1e9a63fa4f3425aa66b9b8fa3c9cc35") ||
-                    e.includes("2184790")
-                )
-            }
-
-            return true
-        })
+        .filter(filterAllowedContent(gameVersion, entP))
 
     for (const unlockable of filtered) {
         unlockable!.ProfileId = profileId
@@ -442,7 +470,7 @@ export function createInventory(
     return filtered
 }
 
-export function awardDropsToUser(profileId: string, drops: Unlockable[]): void {
+export function grantDrops(profileId: string, drops: Unlockable[]): void {
     if (inventoryUserCache.has(profileId)) {
         const inventoryItems: InventoryItem[] = drops.map((unlockable) => ({
             InstanceId: unlockable.Guid,

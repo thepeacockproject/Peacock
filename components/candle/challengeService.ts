@@ -1140,13 +1140,9 @@ export class ChallengeService extends ChallengeRegistry {
             session.challengeContexts[challenge.Id].state = "Start"
         }
 
-        //NOTE: Official will always grant XP to both Location Mastery and the Player Profile
-        const actionXp = challenge.Xp || 0
-        const masteryXp = challenge.Rewards?.MasteryXP || 0
-
         controller.progressionService.grantProfileProgression(
-            actionXp,
-            masteryXp,
+            challenge.Xp,
+            challenge.Rewards?.MasteryXP,
             challenge?.Drops ?? [],
             session,
             userData,
