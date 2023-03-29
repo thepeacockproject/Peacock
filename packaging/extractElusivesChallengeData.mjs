@@ -69,9 +69,9 @@ const contractIds = {
         "3716b654-a42c-45df-9db9-61795a6a3e46",
     ],
     LOCATION_PARENT_BANGKOK: [
-        // "b0bed170-8652-4188-8b9a-92caf9f97e5b",
-        "b0b8995c-7b3f-4fa6-91a2-be4bc8edc046",
-        // "87f8293a-29cd-4cb1-ade7-dd6bb056d38e",
+        "b0bed170-8652-4188-8b9a-92caf9f97e5b",
+        // "b0b8995c-7b3f-4fa6-91a2-be4bc8edc046",
+        "87f8293a-29cd-4cb1-ade7-dd6bb056d38e",
     ],
     LOCATION_PARENT_COLORADO: [
         "550c4d75-ca87-4be7-a18e-caf30e6c8136",
@@ -81,7 +81,7 @@ const contractIds = {
         "1c0377f3-6e32-4563-8baf-9677cdb3bb60",
         "deace35f-ab6d-44c9-b1a6-98757e854f74",
     ],
-    LOCATION_PARENT_NEWZEALAND: ["44fd7474-d7be-4d3d-b944-6c1cf6ca09d1"],
+    // LOCATION_PARENT_NEWZEALAND: ["44fd7474-d7be-4d3d-b944-6c1cf6ca09d1"],
     LOCATION_PARENT_MIAMI: [
         "06a58b66-56f4-45c3-ba1b-d03998212289",
         "ecf353e8-3dd8-4958-b255-f963926aea51",
@@ -92,16 +92,34 @@ const contractIds = {
         "263eca3d-d25d-40ce-ba0a-48a221cd0b9e",
         "cbc86bed-51ce-4699-89d4-0ded8f200cbc",
     ],
-    LOCATION_PARENT_GOLDEN: ["b2c0251e-1803-4e12-b860-b9fa6ce5c004"],
-    LOCATION_PARENT_ANCESTRAL: [
-        "92951377-419d-4c31-aa21-2a3f03ef82d0",
-        "1fcaff1b-7fa3-4b9f-a586-9c7a1689b48d",
-    ],
-    LOCATION_PARENT_EDGY: ["38dba4d9-a361-46c9-bdae-7350945d6526"],
-    LOCATION_PARENT_WET: ["6fad7901-279f-45df-ab8d-087a3cb06dcc"],
-    LOCATION_PARENT_ELEGANT: [
-        "fa002472-2120-44b6-bf48-41d14af97f51",
-        "d8219c26-4122-4dde-bc42-382cdb374090",
+    // LOCATION_PARENT_GOLDEN: ["b2c0251e-1803-4e12-b860-b9fa6ce5c004"],
+    // LOCATION_PARENT_ANCESTRAL: [
+    //     "92951377-419d-4c31-aa21-2a3f03ef82d0",
+    //     "1fcaff1b-7fa3-4b9f-a586-9c7a1689b48d",
+    // ],
+    // LOCATION_PARENT_EDGY: ["3f0b8f19-d5d4-4611-ac8f-480f81c18f54"],
+    // LOCATION_PARENT_WET: ["6fad7901-279f-45df-ab8d-087a3cb06dcc"],
+    // LOCATION_PARENT_ELEGANT: [
+    //     "d030216e-a8d6-4446-a1f6-2fc1a2461464",
+    //     "9a36cc55-bfc4-4f8b-99d2-c65cf4de365d",
+    // ],
+    YEAR1: [
+        "655c5a57-69d1-48b6-a14b-2ae396c16174",
+        "deace35f-ab6d-44c9-b1a6-98757e854f74",
+        // "6fad7901-279f-45df-ab8d-087a3cb06dcc",
+        // "1fcaff1b-7fa3-4b9f-a586-9c7a1689b48d",
+        // "9a36cc55-bfc4-4f8b-99d2-c65cf4de365d",
+        // "3f0b8f19-d5d4-4611-ac8f-480f81c18f54",
+        // "d030216e-a8d6-4446-a1f6-2fc1a2461464",
+        // "92951377-419d-4c31-aa21-2a3f03ef82d0",
+        // "b2c0251e-1803-4e12-b860-b9fa6ce5c004",
+        // "b0b8995c-7b3f-4fa6-91a2-be4bc8edc046",
+        "2e2c3f33-92ad-412f-a351-b7267697ff70",
+        "e87217e3-4809-4855-80d5-74bed66be58d",
+        "2b928d67-c244-4601-bafb-7af664fb17bb",
+        // "44fd7474-d7be-4d3d-b944-6c1cf6ca09d1",
+        "cbc86bed-51ce-4699-89d4-0ded8f200cbc",
+        "8462b2e5-4d34-4300-896f-fe1dc98fa877",
     ],
 }
 
@@ -113,7 +131,7 @@ const contractIds = {
 async function fetchContract(axiosClient, contractId) {
     console.log(`Fetching contract planning ${contractId}...`)
     const resp = await axiosClient.get(
-        "/profiles/page/Planning?contractid=b0b8995c-7b3f-4fa6-91a2-be4bc8edc046&resetescalation=false&forcecurrentcontract=false&errorhandling=false",
+        `/profiles/page/Planning?contractid=${contractId}&resetescalation=false&forcecurrentcontract=false&errorhandling=false`,
         {},
     )
 
@@ -158,7 +176,7 @@ async function extract(locationParent, jwt, apiUrl) {
         }),
     )
     const challengeObjects = []
-    
+
     const group = {
         Name: "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
         Image: "images/challenges/categories/elusive/tile.jpg",
@@ -170,9 +188,7 @@ async function extract(locationParent, jwt, apiUrl) {
     /**
      * @type {SavedChallengeGroup[]}
      */
-    const groups = [
-        group,
-    ]
+    const groups = [group]
     const idToRuntimeExtras = {}
     // read runtime files
     for (const singleChallengesProgResult of missions) {
@@ -201,12 +217,11 @@ async function extract(locationParent, jwt, apiUrl) {
     //list of list of challenges
     const ETchals = planningsData.map(
         (single) =>
-            single.find(
-                (g) => g.CategoryId === "elusive",
-            ).SwitchData.Data.Challenges,
+            single.find((g) => g.CategoryId === "elusive").SwitchData.Data
+                .Challenges,
     )
 
-    for (let i = 0; i < ETchals.length ; i++ ) {
+    for (let i = 0; i < ETchals.length; i++) {
         const groupChallenges = ETchals[i]
         for (let fullPlanningChallenge of groupChallenges) {
             const shortName = fullPlanningChallenge.Name.replace(
