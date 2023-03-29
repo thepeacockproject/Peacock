@@ -87,13 +87,14 @@ export function getSubLocationByName(
  * @param subLocationId The ID of the targeted sub-location.
  * @param userId The ID of the user.
  * @param gameVersion The game's version.
- * If true, the SubLocationId property will not be set.
+ * @param contractType The type of the contract, only used to distinguish evergreen from other types (default).
  * @returns The completion data object.
  */
 export function generateCompletionData(
     subLocationId: string,
     userId: string,
     gameVersion: GameVersion,
+    contractType = "mission",
 ): CompletionData {
     const subLocation = getSubLocationByName(subLocationId, gameVersion)
 
@@ -101,19 +102,16 @@ export function generateCompletionData(
         ? subLocation.Properties?.ParentLocation
         : subLocationId
 
-    const completionData = controller.masteryService.getCompletionData(
+    const completionData = controller.masteryService.getLocationCompletion(
         locationId,
         subLocation?.Id,
         gameVersion,
         userId,
+        contractType,
     )
 
     if (!completionData) {
-        log(
-            LogLevel.DEBUG,
-            `Could not get CompletionData for location ${locationId}`,
-        )
-
+        // Should only reach here for sniper locations.
         return {
             Level: 1,
             MaxLevel: 1,
@@ -148,6 +146,7 @@ export function generateUserCentric(
         return undefined
     }
 
+    const userData = getUserData(userId, gameVersion)
     const subLocation = getSubLocationFromContract(contractData, gameVersion)
 
     if (!subLocation) {
@@ -168,6 +167,9 @@ export function generateUserCentric(
         )
     }
 
+    const played = userData.Extensions?.PeacockPlayedContracts
+    const id = contractData.Metadata.Id
+
     const uc: UserCentricContract = {
         Contract: contractData,
         Data: {
@@ -180,8 +182,18 @@ export function generateUserCentric(
             LocationHideProgression: false,
             ElusiveContractState: "",
             IsFeatured: false,
-            //LastPlayedAt: '2020-01-01T00:00:00.0000000Z', // ISO timestamp
-            Completed: false, // relevant for featured contracts
+            LastPlayedAt:
+                played[id] === undefined
+                    ? undefined
+                    : new Date(played[id]?.LastPlayedAt).toISOString(),
+            // relevant for contracts
+            // Favorite contracts
+            PlaylistData: {
+                IsAdded:
+                    userData.Extensions?.PeacockFavoriteContracts?.includes(id),
+                AddedTime: "0001-01-01T00:00:00Z",
+            },
+            Completed: played[id] === undefined ? false : played[id]?.Completed,
             LocationId: subLocation.Id,
             ParentLocationId: subLocation.Properties.ParentLocation!,
             CompletionData: generateCompletionData(
@@ -195,8 +207,6 @@ export function generateUserCentric(
     }
 
     if (contractData.Metadata.Type === "escalation") {
-        const userData = getUserData(userId, gameVersion)
-
         const eGroupId = contractData.Metadata.InGroup
 
         if (eGroupId) {
@@ -244,10 +254,16 @@ export function mapObjectives(
     const gameChangerObjectives: MissionManifestObjective[] = []
 
     if (gameChangers && gameChangers.length > 0) {
-        const gameChangerData = getConfig<Record<string, GameChanger>>(
-            "GameChangerProperties",
-            true,
-        )
+        const gameChangerData: Record<string, GameChanger> = {
+            ...getConfig<Record<string, GameChanger>>(
+                "GameChangerProperties",
+                true,
+            ),
+            ...getConfig<Record<string, GameChanger>>(
+                "PeacockGameChangerProperties",
+                true,
+            ),
+        }
         for (const gamechangerId of gameChangers) {
             if (isEvergreenSafehouse) break
             const gameChangerProps = gameChangerData[gamechangerId]

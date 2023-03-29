@@ -17,14 +17,28 @@
  */
 
 import { HookMap, SyncHook } from "../hooksImpl"
-import { GameVersion, HitsCategoryCategory } from "../types/types"
+import {
+    ContractHistory,
+    GameVersion,
+    HitsCategoryCategory,
+} from "../types/types"
 import {
     contractIdToHitObject,
     controller,
     featuredContractGroups,
+    preserveContracts,
 } from "../controller"
-import { getUserData } from "../databaseHandler"
+import { getUserData, writeUserData } from "../databaseHandler"
 import { orderedETs } from "./elusiveTargets"
+import { userAuths } from "../officialServerAuth"
+import { log, LogLevel } from "../loggingInterop"
+import { fastClone, getRemoteService } from "../utils"
+
+/**
+ * The filters supported for HitsCategories.
+ * Supported for "MyPlaylist" "MyHistory" and "MyContracts".
+ */
+type ContractFilter = "default" | "all" | "completed" | "failed" | string
 
 function paginate<Element>(
     elements: Element[],
@@ -83,10 +97,10 @@ export class HitsCategoryService {
     public hitsCategories: HookMap<
         SyncHook<
             [
-                /** gameVersion */ GameVersion,
                 /** contractIds */ string[],
-                /** hitsCategory */ HitsCategoryCategory,
+                /** gameVersion */ GameVersion,
                 /** userId */ string,
+                /** filter */ ContractFilter,
             ]
         >
     >
@@ -95,6 +109,7 @@ export class HitsCategoryService {
      * Hits categories that should not be automatically paginated.
      */
     public paginationExempt = ["Elusive_Target_Hits", "Arcade", "Sniper"]
+    public realtimeFetched = ["Trending", "MostPlayedLastWeek"]
 
     /**
      * The number of hits per page.
@@ -113,53 +128,240 @@ export class HitsCategoryService {
     _useDefaultHitsCategories(): void {
         const tapName = "HitsCategoryServiceImpl"
 
-        this.hitsCategories
-            .for("Sniper")
-            .tap(tapName, (gameVersion, contracts) => {
-                contracts.push("ff9f46cf-00bd-4c12-b887-eac491c3a96d")
-                contracts.push("00e57709-e049-44c9-a2c3-7655e19884fb")
-                contracts.push("25b20d86-bb5a-4ebd-b6bb-81ed2779c180")
-            })
+        this.hitsCategories.for("Sniper").tap(tapName, (contracts) => {
+            contracts.push("ff9f46cf-00bd-4c12-b887-eac491c3a96d")
+            contracts.push("00e57709-e049-44c9-a2c3-7655e19884fb")
+            contracts.push("25b20d86-bb5a-4ebd-b6bb-81ed2779c180")
+        })
 
         this.hitsCategories
             .for("Elusive_Target_Hits")
-            .tap(tapName, (gameVersion, contracts) => {
+            .tap(tapName, (contracts) => {
                 contracts.push(...orderedETs)
             })
 
         this.hitsCategories
             .for("MyContracts")
-            .tap(tapName, (gameVersion, contracts, hitsCategory) => {
-                hitsCategory.CurrentSubType = "MyContracts"
-
-                for (const contract of controller.contracts.values()) {
-                    contracts.push(contract.Metadata.Id)
-                }
+            .tap(tapName, (contracts, gameVersion, userId, filter) => {
+                this.writeMyContracts(gameVersion, contracts, userId, filter)
             })
 
         this.hitsCategories
             .for("Featured")
-            .tap(tapName, (gameVersion, contracts) => {
-                for (const fcGroup of featuredContractGroups) {
+            .tap(tapName, (contracts, gameVersion) => {
+                const cagedBull = "ee0411d6-b3e7-4320-b56b-25c45d8a9d61"
+                const clonedGroups = fastClone(featuredContractGroups)
+
+                for (const fcGroup of clonedGroups) {
+                    if (gameVersion === "h1" && fcGroup.includes(cagedBull)) {
+                        fcGroup.splice(
+                            fcGroup.findIndex((id) => id === cagedBull),
+                            1,
+                        )
+                    }
+
                     contracts.push(...fcGroup)
                 }
             })
 
+        // My Favorites
+
         this.hitsCategories
             .for("MyPlaylist")
-            .tap(tapName, (gameVersion, contracts, hitsCategory, userId) => {
-                const userProfile = getUserData(userId, gameVersion)
-                const favs =
-                    userProfile?.Extensions.PeacockFavoriteContracts ?? []
-
-                contracts.push(...favs)
-
-                hitsCategory.CurrentSubType = "MyPlaylist_all"
+            .tap(tapName, (contracts, gameVersion, userId, filter) => {
+                contracts.push(
+                    ...this.getMyPlaylist(gameVersion, userId, filter),
+                )
             })
 
-        // intentionally don't handle Trending
-        // intentionally don't handle MostPlayedLastWeek
+        // My History
+
+        this.hitsCategories
+            .for("MyHistory")
+            .tap(tapName, (contracts, gameVersion, userId, filter) => {
+                contracts.push(
+                    ...this.getMyHistory(gameVersion, userId, filter),
+                )
+            })
+
         // intentionally don't handle Arcade
+    }
+
+    private async fetchFromOfficial(
+        categoryName: string,
+        pageNumber: number,
+        gameVersion: GameVersion,
+        userId: string,
+    ): Promise<HitsCategoryCategory> {
+        const remoteService = getRemoteService(gameVersion)
+        const user = userAuths.get(userId)
+
+        if (!user) {
+            log(LogLevel.WARN, `No authentication for user ${userId}!`)
+            return undefined
+        }
+
+        const resp = await user._useService<{
+            data: HitsCategoryCategory
+        }>(
+            `https://${remoteService}.hitman.io/profiles/page/HitsCategory?page=${pageNumber}&type=${categoryName}&mode=dataonly`,
+            true,
+        )
+        const hits = resp.data.data.Data.Hits
+        preserveContracts(
+            hits.map(
+                (hit) => hit.UserCentricContract.Contract.Metadata.PublicId,
+            ),
+        )
+
+        // Stores the repo ID —— public ID lookup for the planning page to use.
+        hits.forEach((hit) =>
+            controller.contractIdToPublicId.set(
+                hit.UserCentricContract.Contract.Metadata.Id,
+                hit.UserCentricContract.Contract.Metadata.PublicId,
+            ),
+        )
+        controller.storeIdToPublicId(hits.map((hit) => hit.UserCentricContract))
+
+        // Fix completion and favorite status for retrieved contracts
+        const userProfile = getUserData(userId, gameVersion)
+        const played = userProfile?.Extensions.PeacockPlayedContracts
+        const favorites = userProfile?.Extensions.PeacockFavoriteContracts
+
+        hits.forEach((hit) => {
+            if (Object.keys(played).includes(hit.Id)) {
+                // Replace with data stored by Peacock
+                hit.UserCentricContract.Data.LastPlayedAt = new Date(
+                    played[hit.Id].LastPlayedAt,
+                ).toISOString()
+                hit.UserCentricContract.Data.Completed =
+                    played[hit.Id].Completed
+            } else {
+                // Never played on Peacock
+                delete hit.UserCentricContract.Data.LastPlayedAt
+                hit.UserCentricContract.Data.Completed = false
+            }
+
+            hit.UserCentricContract.Data.PlaylistData.IsAdded =
+                favorites.includes(hit.Id)
+        })
+
+        return resp.data.data
+    }
+
+    /**
+     * Writes the contracts array with the repoId of all contracts in the contracts folder that meet the player completion requirement specified by the type.
+     * @param gameVersion The gameVersion the player is playing on.
+     * @param contracts The array to write into.
+     * @param userId The Id of the user.
+     * @param type A filter for the contracts to fetch.
+     */
+    private writeMyContracts(
+        gameVersion: GameVersion,
+        contracts: string[],
+        userId: string,
+        type: ContractFilter,
+    ): void {
+        const userProfile = getUserData(userId, gameVersion)
+        const played = userProfile?.Extensions.PeacockPlayedContracts
+
+        for (const contract of controller.contracts.values()) {
+            if (this.isContractOfType(played, type, contract.Metadata.Id)) {
+                contracts.push(contract.Metadata.Id)
+            }
+        }
+    }
+
+    /**
+     * Gets the contracts array with the repoId of all contracts of the specified type that is in the player's favorite list.
+     * @param gameVersion The gameVersion the player is playing on.
+     * @param userId The Id of the user.
+     * @param type A filter for the contracts to fetch.
+     * @returns The resulting array.
+     */
+    private getMyPlaylist(
+        gameVersion: GameVersion,
+        userId: string,
+        type: ContractFilter,
+    ): string[] {
+        const userProfile = getUserData(userId, gameVersion)
+        const played = userProfile?.Extensions.PeacockPlayedContracts
+        const favs = userProfile?.Extensions.PeacockFavoriteContracts ?? []
+        return favs.filter((id) => this.isContractOfType(played, type, id))
+    }
+
+    /**
+     * This function will get or set the default filter of a category for a user, depending on the "type" passed.
+     * If the type is "default", then it will get the default filter and return it.
+     * Otherwise, it will set the default filter to the type passed, and return the type itself.
+     * @param gameVersion The GameVersion that the user is playing on.
+     * @param userId The ID of the user.
+     * @param type The type of the filter.
+     * @param category The category in question.
+     * @returns The filter to use for this request.
+     */
+    private getOrSetDefaultFilter(
+        gameVersion: GameVersion,
+        userId: string,
+        type: ContractFilter,
+        category: string,
+    ): string {
+        const user = getUserData(userId, gameVersion)
+        if (type === "default") {
+            type = user.Extensions.gamepersistentdata.HitsFilterType[category]
+        } else {
+            user.Extensions.gamepersistentdata.HitsFilterType[category] = type
+            writeUserData(userId, gameVersion)
+        }
+        return type
+    }
+
+    /**
+     * Gets the contracts array with the repoId of all contracts of the specified type that the player has played before, sorted by LastPlayedTime.
+     * @param gameVersion The gameVersion the player is playing on.
+     * @param userId The Id of the user.
+     * @param type A filter for the contracts to fetch.
+     * @returns The resulting array.
+     */
+    private getMyHistory(
+        gameVersion: GameVersion,
+        userId: string,
+        type: ContractFilter,
+    ): string[] {
+        const userProfile = getUserData(userId, gameVersion)
+        const played = userProfile?.Extensions.PeacockPlayedContracts
+        return Object.keys(played)
+            .filter((id) => this.isContractOfType(played, type, id))
+            .sort((a, b) => {
+                return played[b].LastPlayedAt - played[a].LastPlayedAt
+            })
+    }
+
+    /**
+     * For a user, returns whether a contract is of the given type of completion.
+     * @param played The user's played contracts.
+     * @param type The type of completion in question.
+     * @param contractId The id of the contract.
+     * @returns A boolean, denoting the result.
+     */
+    private isContractOfType(
+        played: {
+            [contractId: string]: ContractHistory
+        },
+        type: ContractFilter,
+        contractId: string,
+    ): boolean {
+        switch (type) {
+            case "completed":
+                return played[contractId]?.Completed
+            case "failed":
+                return (
+                    played[contractId] !== undefined &&
+                    played[contractId].Completed === undefined
+                )
+            case "all":
+                return true
+        }
     }
 
     /**
@@ -171,42 +373,64 @@ export class HitsCategoryService {
      * @param userId The current user's ID.
      * @returns The {@link HitsCategoryCategory} object.
      */
-    public paginateHitsCategory(
+    public async paginateHitsCategory(
         categoryName: string,
         pageNumber: number,
         gameVersion: GameVersion,
         userId: string,
-    ): HitsCategoryCategory {
+    ): Promise<HitsCategoryCategory> {
+        if (this.realtimeFetched.includes(categoryName)) {
+            return await this.fetchFromOfficial(
+                categoryName,
+                pageNumber,
+                gameVersion,
+                userId,
+            )
+        }
+        const categoryTypes = categoryName.split("_")
+        const category =
+            categoryName === "Elusive_Target_Hits"
+                ? categoryName
+                : categoryTypes[0]
+        let filter = categoryTypes.length === 2 ? categoryTypes[1] : "default"
+
+        filter = this.getOrSetDefaultFilter(
+            gameVersion,
+            userId,
+            filter,
+            category,
+        )
+
         const hitsCategory: HitsCategoryCategory = {
-            Category: categoryName,
+            Category: category,
             Data: {
-                Type: categoryName,
+                Type: category,
                 Hits: [],
                 Page: pageNumber,
                 HasMore: false,
             },
-            CurrentSubType: categoryName,
+            CurrentSubType: undefined,
         }
 
-        const hook = this.hitsCategories.for(categoryName)
+        const hook = this.hitsCategories.for(category)
 
         const hits: string[] = []
 
-        hook.call(gameVersion, hits, hitsCategory, userId)
+        hook.call(hits, gameVersion, userId, filter)
 
         const hitObjectList = hits
             .map((id) => contractIdToHitObject(id, gameVersion, userId))
             .filter(Boolean)
 
-        if (!this.paginationExempt.includes(categoryName)) {
+        if (!this.paginationExempt.includes(category)) {
             const paginated = paginate(hitObjectList, this.hitsPerPage)
 
-            // ts-expect-error Type things.
             hitsCategory.Data.Hits = paginated[pageNumber]
             hitsCategory.Data.HasMore = paginated.length > pageNumber + 1
+            hitsCategory.CurrentSubType = `${category}_${filter}`
         } else {
-            // ts-expect-error Type things.
             hitsCategory.Data.Hits = hitObjectList
+            hitsCategory.CurrentSubType = category
         }
 
         return hitsCategory

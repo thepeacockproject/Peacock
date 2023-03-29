@@ -20,9 +20,13 @@ import {
     ChallengeProgressionData,
     CompiledChallengeRewardData,
     CompiledChallengeRuntimeData,
+    InclusionData,
+    MissionManifest,
     RegistryChallenge,
 } from "../types/types"
 import assert from "assert"
+import { SavedChallengeGroup } from "../types/challenges"
+import { controller } from "../controller"
 
 export function compileScoringChallenge(
     challenge: RegistryChallenge,
@@ -66,8 +70,8 @@ export function compileRuntimeChallenge(
 export enum ChallengeFilterType {
     None = "None",
     Contract = "Contract",
+    /** Only used for the CAREER -> CHALLENGES page */
     Contracts = "Contracts",
-    ParentLocation = "ParentLocation",
 }
 
 export type ChallengeFilterOptions =
@@ -78,28 +82,52 @@ export type ChallengeFilterOptions =
           type: ChallengeFilterType.Contract
           contractId: string
           locationId: string
-          locationParentId: string
       }
     | {
           type: ChallengeFilterType.Contracts
           contractIds: string[]
           locationId: string
-          locationParentId: string
-      }
-    | {
-          type: ChallengeFilterType.ParentLocation
-          locationParentId: string
       }
 
+/**
+ * Checks if the metadata of a contract matches the definition in the InclusionData of a challenge.
+ * @param incData The inclusion data of the challenge in question. Will return true if this is null.
+ * @param contract The contract in question.
+ * @returns A boolean as the result.
+ */
+export function inclusionDataCheck(
+    incData: InclusionData,
+    contract: MissionManifest,
+): boolean {
+    if (!incData) return true
+
+    return (
+        incData.ContractIds?.includes(contract.Metadata.Id) ||
+        incData.ContractTypes?.includes(contract.Metadata.Type) ||
+        incData.Locations?.includes(contract.Metadata.Location) ||
+        contract.Metadata?.Gamemodes?.some((r) =>
+            incData.GameModes?.includes(r),
+        )
+    )
+}
+
+/**
+ * Judges whether a challenge should be included in the challenges list of a contract.
+ * @requires The challenge and the contract share the same parent location.
+ * @param contractId The id of the contract.
+ * @param locationId The sublocation ID of the challenge.
+ * @param challenge The challenge in question.
+ * @param forCareer Whether the result is used to decide what is shown the CAREER -> CHALLENGES page. Defaulted to false.
+ * @returns A boolean value, denoting the result.
+ */
 function isChallengeInContract(
     contractId: string,
     locationId: string,
-    locationParentId: string,
     challenge: RegistryChallenge,
-) {
+    forCareer = false,
+): boolean {
     assert.ok(contractId)
     assert.ok(locationId)
-    assert.ok(locationParentId)
     if (!challenge) {
         return false
     }
@@ -113,25 +141,40 @@ function isChallengeInContract(
         return true
     }
 
-    // is this for the current contract?
+    if (challenge.Type === "global") {
+        return inclusionDataCheck(
+            // Global challenges should not be shown for "tutorial" missions unless for the career page,
+            // despite the InclusionData somehow saying otherwise.
+            forCareer
+                ? challenge.InclusionData
+                : {
+                      ...challenge.InclusionData,
+                      ContractTypes:
+                          challenge.InclusionData.ContractTypes.filter(
+                              (type) => type !== "tutorial",
+                          ),
+                  },
+            controller.resolveContract(contractId),
+        )
+    }
+
+    // Is this for the current contract?
     const isForContract = (challenge.InclusionData?.ContractIds || []).includes(
         contractId,
     )
 
-    // is this a location-wide challenge?
-    // "location" is more widely used, but "parentlocation" is used in ambrose and berlin, as well as some "Discover XX" challenges.
+    // Is this a location-wide challenge?
+    // "location" is more widely used, but "parentlocation" is used in Ambrose and Berlin, as well as some "Discover XX" challenges.
     const isForLocation =
         challenge.Type === "location" || challenge.Type === "parentlocation"
 
-    // is this for the current location?
+    // Is this for the current location?
     const isCurrentLocation =
-        // is this challenge for the current parent location?
-        challenge.ParentLocationId === locationParentId &&
-        // and, is this challenge's location one of these things:
-        // 1. the current sub-location, e.g. "LOCATION_COASTALTOWN_NIGHT". This is the most common.
-        // 2. the parent location (yup, that can happen), e.g. "LOCATION_PARENT_HOKKAIDO" in Discover Hokkaido
-        (challenge.LocationId === locationId ||
-            challenge.LocationId === locationParentId)
+        // Is this challenge's location one of these things:
+        // 1. The current sub-location, e.g. "LOCATION_COASTALTOWN_NIGHT". This is the most common.
+        // 2. The parent location (yup, that can happen), e.g. "LOCATION_PARENT_HOKKAIDO" in Discover Hokkaido.
+        challenge.LocationId === locationId ||
+        challenge.LocationId === challenge.ParentLocationId
 
     return isForContract || (isForLocation && isCurrentLocation)
 }
@@ -147,7 +190,6 @@ export function filterChallenge(
             return isChallengeInContract(
                 options.contractId,
                 options.locationId,
-                options.locationParentId,
                 challenge,
             )
         }
@@ -156,16 +198,26 @@ export function filterChallenge(
                 isChallengeInContract(
                     contractId,
                     options.locationId,
-                    options.locationParentId,
                     challenge,
+                    true,
                 ),
             )
         }
-        case ChallengeFilterType.ParentLocation:
-            assert.ok(options.locationParentId)
+    }
+}
 
-            return (
-                (challenge?.ParentLocationId || "") === options.locationParentId
-            )
+/**
+ * Merges the Challenge field two SavedChallengeGroup objects and returns a new object. Does not modify the original objects. For all the other fields, the values of g1 is used.
+ * @param g1 One of the SavedChallengeGroup objects.
+ * @param g2 The other SavedChallengeGroup object.
+ * @returns A new object with the Challenge arrays merged.
+ */
+export function mergeSavedChallengeGroups(
+    g1: SavedChallengeGroup,
+    g2: SavedChallengeGroup,
+): SavedChallengeGroup {
+    return {
+        ...g1,
+        Challenges: [...(g1?.Challenges ?? []), ...(g2?.Challenges ?? [])],
     }
 }

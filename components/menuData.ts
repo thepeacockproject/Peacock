@@ -18,7 +18,10 @@
 
 import { Response, Router } from "express"
 import {
+    contractCreationTutorialId,
+    DEFAULT_MASTERY_MAXLEVEL,
     gameDifficulty,
+    getMaxProfileLevel,
     PEACOCKVERSTRING,
     unlockOrderComparer,
     uuidRegex,
@@ -40,6 +43,8 @@ import {
 } from "./menus/destinations"
 import type {
     CommonSelectScreenConfig,
+    contractSearchResult,
+    GameVersion,
     HitsCategoryCategory,
     IHit,
     MissionManifest,
@@ -61,17 +66,26 @@ import {
     generateUserCentric,
 } from "./contracts/dataGen"
 import { log, LogLevel } from "./loggingInterop"
-import { contractsModeHome } from "./contracts/contractsModeRouting"
+import {
+    contractsModeHome,
+    officialSearchContract,
+} from "./contracts/contractsModeRouting"
 import random from "random"
 import { getUserData } from "./databaseHandler"
 import {
+    createMainOpportunityTile,
     createPlayNextTile,
     getSeasonId,
     orderedMissions,
+    orderedPZMissions,
 } from "./menus/playnext"
 import { randomUUID } from "crypto"
 import { planningView } from "./menus/planning"
-import { directRoute, withLookupDialog } from "./menus/favoriteContracts"
+import {
+    deleteMultiple,
+    directRoute,
+    withLookupDialog,
+} from "./menus/favoriteContracts"
 import { swapToBrowsingMenusStatus } from "./discordRp"
 import axios from "axios"
 import { getFlag } from "./flags"
@@ -87,6 +101,7 @@ import {
     StashpointQuery,
 } from "./types/gameSchemas"
 import assert from "assert"
+import { SniperLoadoutConfig } from "./menus/sniper"
 
 export const preMenuDataRouter = Router()
 const menuDataRouter = Router()
@@ -187,7 +202,7 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
     }
 
     const contractCreationTutorial = controller.resolveContract(
-        "d7e2607c-6916-48e2-9588-976c7d8998bb",
+        contractCreationTutorialId,
     )!
 
     const locations = getVersionedConfig<PeacockLocationsData>(
@@ -314,7 +329,7 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
                 XP: userdata.Extensions.progression.PlayerProfileXP.Total,
                 Level: userdata.Extensions.progression.PlayerProfileXP
                     .ProfileLevel,
-                MaxLevel: 7500,
+                MaxLevel: getMaxProfileLevel(req.gameVersion),
             },
         },
     })
@@ -440,6 +455,18 @@ menuDataRouter.get("/SafehouseCategory", (req: RequestWithJwt, res) => {
     }
 
     res.json(safehouseData)
+})
+
+menuDataRouter.get("/report", (req: RequestWithJwt, res) => {
+    res.json({
+        template: getVersionedConfig("ReportTemplate", req.gameVersion, false),
+        data: {
+            Reasons: [
+                { Id: 0, Title: "UI_MENU_REPORT_REASON_OFFENSIVE" },
+                { Id: 1, Title: "UI_MENU_REPORT_REASON_BUGGY" },
+            ],
+        },
+    })
 })
 
 menuDataRouter.get(
@@ -1128,79 +1155,80 @@ menuDataRouter.get(
     },
 )
 
+async function lookupContractPublicId(
+    publicid: string,
+    userId: string,
+    gameVersion: GameVersion,
+) {
+    const publicIdRegex = /\d{12}/
+
+    while (publicid.includes("-")) {
+        publicid = publicid.replace("-", "")
+    }
+
+    if (!publicIdRegex.test(publicid)) {
+        return {
+            PublicId: publicid,
+            ErrorReason: "notfound",
+        }
+    }
+
+    const contract = await controller.contractByPubId(
+        publicid,
+        userId,
+        gameVersion,
+    )
+
+    if (!contract) {
+        return {
+            PublicId: publicid,
+            ErrorReason: "notfound",
+        }
+    }
+
+    const location = (
+        getVersionedConfig(
+            "allunlockables",
+            gameVersion,
+            false,
+        ) as readonly Unlockable[]
+    ).find((entry) => entry.Id === contract.Metadata.Location)
+
+    return {
+        Contract: contract,
+        Location: location,
+        UserCentricContract: generateUserCentric(contract, userId, gameVersion),
+    }
+}
+
 menuDataRouter.get(
     "/LookupContractPublicId",
     async (req: RequestWithJwt<{ publicid: string }>, res) => {
-        const publicIdRegex = /\d{12}/
-        let publicid = req.query.publicid
-        const templateLookupContractById = getVersionedConfig(
-            "LookupContractByIdTemplate",
-            req.gameVersion,
-            false,
-        )
-
-        if (!publicid) {
+        if (!req.query.publicid) {
             return res.status(400).send("no public id specified!")
         }
 
-        while (publicid.includes("-")) {
-            publicid = publicid.replace("-", "")
-        }
-
-        if (!publicIdRegex.test(publicid)) {
-            res.json({
-                template: templateLookupContractById,
-                data: {
-                    PublicId: req.query.publicid,
-                    ErrorReason: "notfound",
-                },
-            })
-            return
-        }
-
-        const contract = await controller.contractByPubId(
-            publicid,
-            req.jwt.unique_name,
-            req.gameVersion,
-        )
-
-        if (!contract) {
-            res.json({
-                template: templateLookupContractById,
-                data: {
-                    PublicId: req.query.publicid,
-                    ErrorReason: "notfound",
-                },
-            })
-            return
-        }
-
-        const location = (
-            getVersionedConfig(
-                "allunlockables",
+        res.json({
+            template: getVersionedConfig(
+                "LookupContractByIdTemplate",
                 req.gameVersion,
                 false,
-            ) as readonly Unlockable[]
-        ).find((entry) => entry.Id === contract.Metadata.Location)
-
-        res.json({
-            template: templateLookupContractById,
-            data: {
-                Contract: contract,
-                Location: location,
-                UserCentricContract: generateUserCentric(
-                    contract,
-                    req.jwt.unique_name,
-                    req.gameVersion,
-                ),
-            },
+            ),
+            data: await lookupContractPublicId(
+                req.query.publicid,
+                req.jwt.unique_name,
+                req.gameVersion,
+            ),
         })
     },
 )
 
 menuDataRouter.get(
     "/HitsCategory",
-    (req: RequestWithJwt<{ type: string; page?: number | string }>, res) => {
+    async (
+        req: RequestWithJwt<{ type: string; page?: number | string }>,
+        res,
+    ) => {
         const category = req.query.type
 
         const response: {
@@ -1222,7 +1250,7 @@ menuDataRouter.get(
 
         pageNumber = pageNumber < 0 ? 0 : pageNumber
 
-        response.data = hitsCategoryService.paginateHitsCategory(
+        response.data = await hitsCategoryService.paginateHitsCategory(
             category,
             pageNumber as number,
             req.gameVersion,
@@ -1241,11 +1269,11 @@ menuDataRouter.get(
             return
         }
 
-        const currentIdIndex = orderedMissions.indexOf(req.query.contractId)
-
         const cats = []
 
         //#region Main story missions
+        const currentIdIndex = orderedMissions.indexOf(req.query.contractId)
+
         if (
             currentIdIndex !== -1 &&
             currentIdIndex !== orderedMissions.length - 1
@@ -1272,6 +1300,45 @@ menuDataRouter.get(
                     ),
                 )
             }
+
+            cats.push(createMainOpportunityTile(req.query.contractId))
+        }
+        //#endregion
+
+        //#region PZ missions
+        const pzIdIndex = orderedPZMissions.indexOf(req.query.contractId)
+
+        if (pzIdIndex !== -1 && pzIdIndex !== orderedPZMissions.length - 1) {
+            const nextMissionId = orderedPZMissions[pzIdIndex + 1]
+            cats.push(
+                createPlayNextTile(
+                    req.jwt.unique_name,
+                    nextMissionId,
+                    req.gameVersion,
+                    {
+                        CampaignName: "UI_CONTRACT_CAMPAIGN_WHITE_SPIDER_TITLE",
+                        ParentCampaignName: "UI_MENU_PAGE_SIDE_MISSIONS_TITLE",
+                    },
+                ),
+            )
+        }
+        //#endregion
+
+        //#region Atlantide
+
+        if (req.query.contractId === "f1ba328f-e3dd-4ef8-bb26-0363499fdd95") {
+            const nextMissionId = "0b616e62-af0c-495b-82e3-b778e82b5912"
+            cats.push(
+                createPlayNextTile(
+                    req.jwt.unique_name,
+                    nextMissionId,
+                    req.gameVersion,
+                    {
+                        CampaignName: "UI_MENU_PAGE_SPECIAL_ASSIGNMENTS_TITLE",
+                        ParentCampaignName: "UI_MENU_PAGE_SIDE_MISSIONS_TITLE",
+                    },
+                ),
+            )
         }
         //#endregion
 
@@ -1477,7 +1544,7 @@ preMenuDataRouter.get(
 
 menuDataRouter.get("/contractsearchpage", (req: RequestWithJwt, res) => {
     const createContractTutorial = controller.resolveContract(
-        "d7e2607c-6916-48e2-9588-976c7d8998bb",
+        contractCreationTutorialId,
     )
 
     res.json({
@@ -1513,32 +1580,34 @@ menuDataRouter.post(
             specialContracts,
         )
 
-        const contracts: { UserCentricContract: UserCentricContract }[] = []
+        let searchResult: contractSearchResult = undefined
 
-        for (const contract of specialContracts) {
-            const userCentric = generateUserCentric(
-                controller.resolveContract(contract),
-                req.jwt.unique_name,
-                req.gameVersion,
-            )
+        if (specialContracts.length > 0) {
+            // Handled by a plugin
 
-            if (!userCentric) {
-                log(LogLevel.ERROR, "UC is null! (contract not registered?)")
-                continue
+            const contracts: { UserCentricContract: UserCentricContract }[] = []
+
+            for (const contract of specialContracts) {
+                const userCentric = generateUserCentric(
+                    controller.resolveContract(contract),
+                    req.jwt.unique_name,
+                    req.gameVersion,
+                )
+
+                if (!userCentric) {
+                    log(
+                        LogLevel.ERROR,
+                        "UC is null! (contract not registered?)",
+                    )
+                    continue
+                }
+
+                contracts.push({
+                    UserCentricContract: userCentric,
+                })
             }
 
-            contracts.push({
-                UserCentricContract: userCentric,
-            })
-        }
-
-        res.json({
-            template: getVersionedConfig(
-                "ContractSearchResponseTemplate",
-                req.gameVersion,
-                false,
-            ),
-            data: {
+            searchResult = {
                 Data: {
                     Contracts: contracts,
                     TotalCount: contracts.length,
@@ -1547,7 +1616,40 @@ menuDataRouter.post(
                     HasPrevious: false,
                     HasMore: false,
                 },
-            },
+            }
+        } else {
+            // No plugins handle this. Getting search results from official
+            searchResult = await officialSearchContract(
+                req.jwt.unique_name,
+                req.gameVersion,
+                req.body,
+                0,
+            )
+        }
+
+        res.json({
+            template: getVersionedConfig(
+                "ContractSearchResponseTemplate",
+                req.gameVersion,
+                false,
+            ),
+            data: searchResult,
+        })
+    },
+)
+
+menuDataRouter.post(
+    "/ContractSearchPaginate",
+    jsonMiddleware(),
+    async (req: RequestWithJwt<{ page: number }, string[]>, res) => {
+        res.json({
+            template: getConfig("ContractSearchPaginateTemplate", false),
+            data: await officialSearchContract(
+                req.jwt.unique_name,
+                req.gameVersion,
+                req.body,
+                req.query.page,
+            ),
         })
     },
 )
@@ -1641,7 +1743,8 @@ menuDataRouter.get("/contractcreation/create", (req: RequestWithJwt, res) => {
                         }
                     }),
                 ContractConditions: complications(timeLimitStr),
-                PublishingDisabled: false,
+                PublishingDisabled:
+                    sesh.contractId === contractCreationTutorialId,
                 Creator: req.jwt.unique_name,
                 ContractId: cUuid,
                 ContractPublicId: joined,
@@ -1716,6 +1819,7 @@ menuDataRouter.post(
     createLoadSaveMiddleware("SaveMenuTemplate"),
 )
 
+//TODO: Add statistics
 menuDataRouter.get("/PlayerProfile", (req: RequestWithJwt, res) => {
     const playerProfilePage = getConfig<PlayerProfileView>(
         "PlayerProfilePage",
@@ -1728,6 +1832,28 @@ menuDataRouter.get("/PlayerProfile", (req: RequestWithJwt, res) => {
     playerProfilePage.data.PlayerProfileXp.Level =
         userProfile.Extensions.progression.PlayerProfileXP.ProfileLevel
 
+    const subLocationMap = new Map(
+        userProfile.Extensions.progression.PlayerProfileXP.Sublocations.map(
+            (obj) => [obj.Location, obj],
+        ),
+    )
+
+    playerProfilePage.data.PlayerProfileXp.Seasons.forEach((e) =>
+        e.Locations.forEach((f) => {
+            const subLocationData = subLocationMap.get(f.LocationId)
+
+            f.Xp = subLocationData?.Xp || 0
+            f.ActionXp = subLocationData?.ActionXp || 0
+
+            if (f.LocationProgression) {
+                f.LocationProgression.Level =
+                    userProfile.Extensions.progression.Locations[
+                        f.LocationId.toLocaleLowerCase()
+                    ]?.Level || 1
+            }
+        }),
+    )
+
     res.json(playerProfilePage)
 })
 
@@ -1739,8 +1865,14 @@ menuDataRouter.get(
 
 menuDataRouter.get(
     // this one is sane Kappa
-    "/contractplaylist/addordelete/{contractId}",
+    "/contractplaylist/addordelete/:contractId",
     directRoute,
+)
+
+menuDataRouter.post(
+    "/contractplaylist/deletemultiple",
+    jsonMiddleware(),
+    deleteMultiple,
 )
 
 menuDataRouter.get("/GetPlayerProfileXpData", (req: RequestWithJwt, res) => {
@@ -1753,7 +1885,7 @@ menuDataRouter.get("/GetPlayerProfileXpData", (req: RequestWithJwt, res) => {
                 XP: userData.Extensions.progression.PlayerProfileXP.Total,
                 Level: userData.Extensions.progression.PlayerProfileXP
                     .ProfileLevel,
-                MaxLevel: 7500,
+                MaxLevel: getMaxProfileLevel(req.gameVersion),
             },
         },
     })
@@ -1775,7 +1907,6 @@ menuDataRouter.get(
 menuDataRouter.get(
     "/MasteryUnlockable",
     (req: RequestWithJwt<MasteryUnlockableQuery>, res) => {
-        let sniperLoadouts = getConfig("SniperLoadouts", false)
         let masteryUnlockTemplate = getConfig(
             "MasteryUnlockablesTemplate",
             false,
@@ -1794,6 +1925,11 @@ menuDataRouter.get(
             }
         })()
 
+        let sniperLoadout = getConfig<SniperLoadoutConfig>(
+            "SniperLoadouts",
+            false,
+        )[location][req.query.unlockableId]
+
         if (req.gameVersion === "scpc") {
             masteryUnlockTemplate = JSON.parse(
                 JSON.stringify(masteryUnlockTemplate).replace(
@@ -1802,36 +1938,33 @@ menuDataRouter.get(
                 ),
             )
 
-            sniperLoadouts = JSON.parse(
-                JSON.stringify(sniperLoadouts).replace(/hawk\/+/g, ""),
+            sniperLoadout = JSON.parse(
+                JSON.stringify(sniperLoadout).replace(/hawk\/+/g, ""),
             )
         }
+
+        const unlockables = sniperLoadout.Unlockable
 
         res.json({
             template: masteryUnlockTemplate,
             data: {
-                CompletionData: generateCompletionData(
-                    location,
+                CompletionData: controller.masteryService.getFirearmCompletion(
+                    req.query.unlockableId,
+                    sniperLoadout.MainUnlockable.Properties.Name,
                     req.jwt.unique_name,
                     req.gameVersion,
                 ),
-                Drops: [
-                    {
-                        IsLevelMarker: false,
-                        Unlockable:
-                            sniperLoadouts[location][req.query.unlockableId][
-                                "Unlockable"
-                            ],
-                        Level: 20,
-                        IsLocked: false,
-                        TypeLocaKey:
-                            "UI_MENU_PAGE_MASTERY_UNLOCKABLE_NAME_weapon",
-                    },
-                ],
-                Unlockable:
-                    sniperLoadouts[location][req.query.unlockableId][
-                        "MainUnlockable"
-                    ],
+                Drops: unlockables.map((unlockable) => ({
+                    IsLevelMarker: false,
+                    Unlockable: unlockable,
+                    Level:
+                        unlockable.Properties.UnlockOrder ??
+                        DEFAULT_MASTERY_MAXLEVEL,
+                    // TODO: Everything is unlocked. Change this when adding sniper progression
+                    IsLocked: false,
+                    TypeLocaKey: "UI_MENU_PAGE_MASTERY_UNLOCKABLE_NAME_weapon",
+                })),
+                Unlockable: sniperLoadout.MainUnlockable,
             },
         })
     },

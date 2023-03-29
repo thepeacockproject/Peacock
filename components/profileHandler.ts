@@ -18,7 +18,13 @@
 
 import { Router } from "express"
 import path from "path"
-import { castUserProfile, nilUuid, uuidRegex } from "./utils"
+import {
+    castUserProfile,
+    getMaxProfileLevel,
+    nilUuid,
+    uuidRegex,
+    XP_PER_LEVEL,
+} from "./utils"
 import { json as jsonMiddleware } from "body-parser"
 import { getPlatformEntitlements } from "./platformEntitlements"
 import { contractSessions, newSession } from "./eventHandler"
@@ -46,7 +52,10 @@ import { controller } from "./controller"
 import { loadouts } from "./loadouts"
 import { getFlag } from "./flags"
 import { menuSystemDatabase } from "./menus/menuSystem"
-import { compileRuntimeChallenge } from "./candle/challengeHelpers"
+import {
+    compileRuntimeChallenge,
+    inclusionDataCheck,
+} from "./candle/challengeHelpers"
 import { LoadSaveBody } from "./types/gameSchemas"
 
 const profileRouter = Router()
@@ -499,31 +508,7 @@ profileRouter.post(
                 req.gameVersion,
                 true,
             ) as CompiledChallengeRuntimeData[]
-        ).filter((val) => {
-            if (!val.Challenge.InclusionData) return true
-            let include = false
-            const incData = val.Challenge.InclusionData
-
-            if (!include && incData.ContractIds) {
-                include = incData.ContractIds.includes(json.Metadata.Id)
-            }
-
-            if (!include && incData.ContractTypes) {
-                include = incData.ContractTypes.includes(json.Metadata.Type)
-            }
-
-            if (!include && incData.Locations) {
-                include = incData.Locations.includes(json.Metadata.Location)
-            }
-
-            if (!include && incData.GameModes) {
-                include = json.Metadata.Gamemodes.some((r) =>
-                    incData.GameModes.includes(r),
-                )
-            }
-
-            return include
-        })
+        ).filter((val) => inclusionDataCheck(val.Challenge.InclusionData, json))
 
         challenges.push(
             ...Object.values(
@@ -562,9 +547,13 @@ profileRouter.post(
             })
         }
 
+        const unlockAllShortcuts = getFlag("gameplayUnlockAllShortcuts")
+
         for (const challenge of challenges) {
-            // TODO: Add actual support for shortcut challenges
-            if (challenge.Challenge.Tags?.includes("shortcut")) {
+            if (
+                unlockAllShortcuts &&
+                challenge.Challenge.Tags?.includes("shortcut")
+            ) {
                 challenge.Progression = {
                     ChallengeId: challenge.Challenge.Id,
                     ProfileId: req.jwt.unique_name,
@@ -613,11 +602,12 @@ profileRouter.post(
                     ),
             },
             LevelsDefinition: {
+                //TODO: Add Evergreen LevelInfo here?
                 Location: [0],
                 PlayerProfile: {
                     Version: 1,
-                    XpPerLevel: 6000,
-                    MaxLevel: 7500,
+                    XpPerLevel: XP_PER_LEVEL,
+                    MaxLevel: getMaxProfileLevel(req.gameVersion),
                 },
             },
         })
@@ -838,6 +828,13 @@ async function loadSession(
     }
     // Update challenge progression with the user's latest progression data
     for (const cid in sessionData.challengeContexts) {
+        // Make sure the ChallengeProgression is available, otherwise loading might fail!
+        userData.Extensions.ChallengeProgression[cid] ??= {
+            State: {},
+            Completed: false,
+            Ticked: false,
+        }
+
         const scope =
             controller.challengeService.getChallengeById(cid).Definition.Scope
         if (

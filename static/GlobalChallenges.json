@@ -10,24 +10,15 @@
             "Definition": {
                 "ResetOnCycleCompletion": false,
                 "Context": {},
-                "Repeatable": {
-                    "Base": 1,
-                    "Delta": 0
-                },
+                "Repeatable": { "Base": 1, "Delta": 0 },
                 "Scope": "session",
                 "States": {
-                    "Start": {
-                        "PollResult_Drown": {
-                            "Transition": "Active"
-                        }
-                    },
+                    "Start": { "PollResult_Drown": { "Transition": "Active" } },
                     "Active": {
                         "Kill": {
                             "Condition": {
                                 "$and": [
-                                    {
-                                        "$eq": ["$Value.IsTarget", true]
-                                    },
+                                    { "$eq": ["$Value.IsTarget", true] },
                                     {
                                         "$eq": [
                                             "$Value.KillMethodStrict",
@@ -43,7 +34,7 @@
             },
             "Tags": ["actionreward", "high", "crowdchoice"],
             "Drops": [],
-            "LastModified": "2021-01-06T23:00:28.9687062",
+            "LastModified": "2023-01-26T11:26:56.6680525",
             "Xp": 100,
             "XpModifier": {},
             "PlayableSince": null,
@@ -54,6 +45,7 @@
                     "mission",
                     "flashback",
                     "elusive",
+                    "arcade",
                     "escalation",
                     "usercreated",
                     "tutorial",
@@ -66,9 +58,8 @@
                 "Locations": null,
                 "GameModes": null
             },
-            "CrowdChoice": {
-                "Tag": "Drown"
-            }
+            "CrowdChoice": { "Tag": "Drown" },
+            "OrderIndex": 10000
         }
     },
     {
@@ -81,13 +72,8 @@
             "ImageName": null,
             "Definition": {
                 "ResetOnCycleCompletion": false,
-                "Context": {
-                    "IntelItemPickedup": []
-                },
-                "Repeatable": {
-                    "Base": 1,
-                    "Delta": 0
-                },
+                "Context": { "IntelItemPickedup": [] },
+                "Repeatable": { "Base": 1, "Delta": 0 },
                 "Scope": "session",
                 "States": {
                     "Start": {
@@ -130,7 +116,7 @@
             },
             "Tags": ["actionreward", "low", "infiltration"],
             "Drops": [],
-            "LastModified": "2021-01-06T23:00:28.4181805",
+            "LastModified": "2023-01-26T11:26:56.4048111",
             "Xp": 10,
             "XpModifier": {},
             "PlayableSince": null,
@@ -141,13 +127,15 @@
                     "mission",
                     "flashback",
                     "elusive",
+                    "arcade",
                     "tutorial",
                     "orbis",
                     "campaign"
                 ],
                 "Locations": null,
                 "GameModes": null
-            }
+            },
+            "OrderIndex": 10000
         }
     },
     {
@@ -160,19 +148,12 @@
             "ImageName": null,
             "Definition": {
                 "ResetOnCycleCompletion": false,
-                "Context": {
-                    "_SessionRewards": []
-                },
-                "Repeatable": {
-                    "Base": 1,
-                    "Delta": 0
-                },
+                "Context": { "_SessionRewards": [] },
+                "Repeatable": { "Base": 1, "Delta": 0 },
                 "Scope": "session",
                 "States": {
                     "Start": {
-                        "Spotted": {
-                            "Transition": "Failure"
-                        },
+                        "Spotted": { "Transition": "Failure" },
                         "ContractEnd": {
                             "Actions": {
                                 "$pushunique": ["_SessionRewards", true]
@@ -184,7 +165,7 @@
             },
             "Tags": ["actionreward", "intermediate", "mission"],
             "Drops": [],
-            "LastModified": "2021-01-06T23:00:28.7795353",
+            "LastModified": "2023-01-26T11:26:56.5750934",
             "Xp": 25,
             "XpModifier": {},
             "PlayableSince": null,
@@ -195,13 +176,15 @@
                     "mission",
                     "flashback",
                     "elusive",
+                    "arcade",
                     "tutorial",
                     "orbis",
                     "campaign"
                 ],
                 "Locations": null,
                 "GameModes": null
-            }
+            },
+            "OrderIndex": 10000
         }
     },
     {
@@ -214,10 +197,7 @@
             "ImageName": null,
             "Definition": {
                 "Context": {},
-                "Repeatable": {
-                    "Base": 10,
-                    "Delta": 10
-                },
+                "Repeatable": { "Base": 10, "Delta": 10 },
                 "Scope": "profile",
                 "States": {
                     "Start": {
@@ -227,9 +207,7 @@
                                     {
                                         "$eq": ["$Value.KillClass", "explosion"]
                                     },
-                                    {
-                                        "$eq": ["$Value.IsTarget", true]
-                                    }
+                                    { "$eq": ["$Value.IsTarget", true] }
                                 ]
                             },
                             "Transition": "Success"
@@ -239,7 +217,7 @@
             },
             "Tags": ["story", "stats", "hideinhud"],
             "Drops": [],
-            "LastModified": "2021-01-06T23:00:29.1088907",
+            "LastModified": "2023-01-26T11:26:56.7446747",
             "Xp": 0,
             "XpModifier": {},
             "PlayableSince": null,
@@ -260,7 +238,8 @@
                 ],
                 "Locations": null,
                 "GameModes": null
-            }
+            },
+            "OrderIndex": 10000
         }
     },
     {
@@ -274,34 +253,21 @@
             "Definition": {
                 "ResetOnCycleCompletion": false,
                 "Context": {},
-                "Repeatable": {
-                    "Base": 1,
-                    "Delta": 0
-                },
+                "Repeatable": { "Base": 1, "Delta": 0 },
                 "Scope": "session",
                 "States": {
                     "Checkbodyfound": {
                         "$timer": {
-                            "Condition": {
-                                "$after": 5
-                            },
+                            "Condition": { "$after": 5 },
                             "Transition": "Start"
                         },
-                        "BodyFound": {
-                            "Transition": "Failure"
-                        },
-                        "Spotted": {
-                            "Transition": "Failure"
-                        },
-                        "Unnoticed_Kill": {
-                            "Transition": "Success"
-                        }
+                        "BodyFound": { "Transition": "Failure" },
+                        "Spotted": { "Transition": "Failure" },
+                        "Unnoticed_Kill": { "Transition": "Success" }
                     },
                     "Start": {
                         "Kill": {
-                            "Condition": {
-                                "$eq": ["$Value.IsTarget", true]
-                            },
+                            "Condition": { "$eq": ["$Value.IsTarget", true] },
                             "Transition": "Checkbodyfound"
                         }
                     }
@@ -309,7 +275,7 @@
             },
             "Tags": ["actionreward", "intermediate", "elimination"],
             "Drops": [],
-            "LastModified": "2021-01-06T23:00:28.4530638",
+            "LastModified": "2023-01-26T11:26:56.4235586",
             "Xp": 25,
             "XpModifier": {},
             "PlayableSince": null,
@@ -320,13 +286,15 @@
                     "mission",
                     "flashback",
                     "elusive",
+                    "arcade",
                     "tutorial",
                     "orbis",
                     "campaign"
                 ],
                 "Locations": null,
                 "GameModes": null
-            }
+            },
+            "OrderIndex": 10000
         }
     },
     {
@@ -340,22 +308,15 @@
             "Definition": {
                 "ResetOnCycleCompletion": false,
                 "Context": {},
-                "Repeatable": {
-                    "Base": 1,
-                    "Delta": 0
-                },
+                "Repeatable": { "Base": 1, "Delta": 0 },
                 "Scope": "session",
                 "States": {
-                    "Start": {
-                        "AreaDiscovered": {
-                            "Transition": "Success"
-                        }
-                    }
+                    "Start": { "AreaDiscovered": { "Transition": "Success" } }
                 }
             },
             "Tags": ["actionreward", "mediumxp+", "infiltration"],
             "Drops": [],
-            "LastModified": "2021-01-06T23:00:28.3884107",
+            "LastModified": "2023-01-26T11:26:56.3883317",
             "Xp": 75,
             "XpModifier": {},
             "PlayableSince": null,
@@ -366,6 +327,7 @@
                     "mission",
                     "flashback",
                     "elusive",
+                    "arcade",
                     "escalation",
                     "usercreated",
                     "tutorial",
@@ -376,7 +338,8 @@
                 ],
                 "Locations": null,
                 "GameModes": null
-            }
+            },
+            "OrderIndex": 10000
         }
     },
     {
@@ -396,19 +359,12 @@
                     "Witnesses": [],
                     "LastAccidentTime": 0
                 },
-                "Repeatable": {
-                    "Base": 1,
-                    "Delta": 0
-                },
+                "Repeatable": { "Base": 1, "Delta": 0 },
                 "Scope": "session",
                 "States": {
                     "CheckNoticedKill": {
-                        "DeadBodySeen": {
-                            "Transition": "Failure"
-                        },
-                        "Unnoticed_Kill": {
-                            "Transition": "Start"
-                        }
+                        "DeadBodySeen": { "Transition": "Failure" },
+                        "Unnoticed_Kill": { "Transition": "Start" }
                     },
                     "Start": {
                         "AccidentBodyFound": {
@@ -451,9 +407,7 @@
                         "ContractEnd": {
                             "Condition": {
                                 "$and": [
-                                    {
-                                        "$eq": [true, "$.RecordingDestroyed"]
-                                    },
+                                    { "$eq": [true, "$.RecordingDestroyed"] },
                                     {
                                         "$all": {
                                             "in": "$.Witnesses",
@@ -474,16 +428,12 @@
                             },
                             "Transition": "Success"
                         },
-                        "CrowdNPC_Died": {
-                            "Transition": "Failure"
-                        },
+                        "CrowdNPC_Died": { "Transition": "Failure" },
                         "Witnesses": {
                             "Condition": {
                                 "$any": {
                                     "in": "$Value",
-                                    "?": {
-                                        "$pushunique": ["Witnesses", "$.#"]
-                                    }
+                                    "?": { "$pushunique": ["Witnesses", "$.#"] }
                                 }
                             }
                         },
@@ -491,9 +441,7 @@
                             "Condition": {
                                 "$any": {
                                     "in": "$Value",
-                                    "?": {
-                                        "$pushunique": ["Witnesses", "$.#"]
-                                    }
+                                    "?": { "$pushunique": ["Witnesses", "$.#"] }
                                 }
                             }
                         },
@@ -501,9 +449,7 @@
                             {
                                 "Condition": {
                                     "$and": [
-                                        {
-                                            "$eq": ["$Value.IsTarget", false]
-                                        },
+                                        { "$eq": ["$Value.IsTarget", false] },
                                         {
                                             "$not": {
                                                 "$eq": ["$Value.KillContext", 1]
@@ -516,12 +462,8 @@
                             {
                                 "Condition": {
                                     "$and": [
-                                        {
-                                            "$eq": ["$Value.IsTarget", false]
-                                        },
-                                        {
-                                            "$eq": ["$Value.KillContext", 1]
-                                        }
+                                        { "$eq": ["$Value.IsTarget", false] },
+                                        { "$eq": ["$Value.KillContext", 1] }
                                     ]
                                 },
                                 "Actions": {
@@ -545,12 +487,8 @@
                             {
                                 "Condition": {
                                     "$and": [
-                                        {
-                                            "$eq": ["$Value.IsTarget", true]
-                                        },
-                                        {
-                                            "$eq": ["$Value.Accident", false]
-                                        }
+                                        { "$eq": ["$Value.IsTarget", true] },
+                                        { "$eq": ["$Value.Accident", false] }
                                     ]
                                 },
                                 "Transition": "CheckNoticedKill"
@@ -571,12 +509,8 @@
                                 },
                                 "Condition": {
                                     "$or": [
-                                        {
-                                            "$eq": ["$Value.event", "erased"]
-                                        },
-                                        {
-                                            "$eq": ["$Value.event", "destroyed"]
-                                        }
+                                        { "$eq": ["$Value.event", "erased"] },
+                                        { "$eq": ["$Value.event", "destroyed"] }
                                     ]
                                 }
                             }
@@ -586,7 +520,7 @@
             },
             "Tags": ["actionreward", "intermediate", "mission"],
             "Drops": [],
-            "LastModified": "2021-01-06T23:00:28.8010273",
+            "LastModified": "2023-01-26T11:26:56.5845169",
             "Xp": 25,
             "XpModifier": {},
             "PlayableSince": null,
@@ -597,13 +531,15 @@
                     "mission",
                     "flashback",
                     "elusive",
+                    "arcade",
                     "tutorial",
                     "orbis",
                     "campaign"
                 ],
                 "Locations": null,
                 "GameModes": null
-            }
+            },
+            "OrderIndex": 10000
         }
     },
     {
@@ -616,25 +552,16 @@
             "ImageName": null,
             "Definition": {
                 "ResetOnCycleCompletion": false,
-                "Context": {
-                    "_SessionRewards": []
-                },
-                "Repeatable": {
-                    "Base": 1,
-                    "Delta": 0
-                },
+                "Context": { "_SessionRewards": [] },
+                "Repeatable": { "Base": 1, "Delta": 0 },
                 "Scope": "session",
                 "States": {
                     "Start": {
                         "Kill": {
                             "Condition": {
                                 "$and": [
-                                    {
-                                        "$eq": ["$Value.KillClass", "melee"]
-                                    },
-                                    {
-                                        "$eq": ["$Value.IsTarget", true]
-                                    }
+                                    { "$eq": ["$Value.KillClass", "melee"] },
+                                    { "$eq": ["$Value.IsTarget", true] }
                                 ]
                             },
                             "Actions": {
@@ -650,7 +577,7 @@
             },
             "Tags": ["actionreward", "low", "elimination"],
             "Drops": [],
-            "LastModified": "2021-01-06T23:00:28.585956",
+            "LastModified": "2023-01-26T11:26:56.4747551",
             "Xp": 10,
             "XpModifier": {},
             "PlayableSince": null,
@@ -661,13 +588,15 @@
                     "mission",
                     "flashback",
                     "elusive",
+                    "arcade",
                     "tutorial",
                     "orbis",
                     "campaign"
                 ],
                 "Locations": null,
                 "GameModes": null
-            }
+            },
+            "OrderIndex": 10000
         }
     },
     {
@@ -680,22 +609,15 @@
             "ImageName": null,
             "Definition": {
                 "Context": {},
-                "Repeatable": {
-                    "Base": 10,
-                    "Delta": 10
-                },
+                "Repeatable": { "Base": 10, "Delta": 10 },
                 "Scope": "profile",
                 "States": {
                     "Start": {
                         "Kill": {
                             "Condition": {
                                 "$and": [
-                                    {
-                                        "$eq": ["$Value.KillClass", "melee"]
-                                    },
-                                    {
-                                        "$eq": ["$Value.IsTarget", true]
-                                    }
+                                    { "$eq": ["$Value.KillClass", "melee"] },
+                                    { "$eq": ["$Value.IsTarget", true] }
                                 ]
                             },
                             "Transition": "Success"
@@ -705,7 +627,7 @@
             },
             "Tags": ["story", "stats", "hideinhud"],
             "Drops": [],
-            "LastModified": "2021-01-06T23:00:29.0970658",
+            "LastModified": "2023-01-26T11:26:56.7388704",
             "Xp": 0,
             "XpModifier": {},
             "PlayableSince": null,
@@ -726,7 +648,8 @@
                 ],
                 "Locations": null,
                 "GameModes": null
-            }
+            },
+            "OrderIndex": 10000
         }
     },
     {
@@ -739,20 +662,13 @@
             "ImageName": null,
             "Definition": {
                 "ResetOnCycleCompletion": false,
-                "Context": {
-                    "_SessionRewards": []
-                },
-                "Repeatable": {
-                    "Base": 1,
-                    "Delta": 0
-                },
+                "Context": { "_SessionRewards": [] },
+                "Repeatable": { "Base": 1, "Delta": 0 },
                 "Scope": "session",
                 "States": {
                     "Start": {
                         "Kill": {
-                            "Condition": {
-                                "$eq": ["$Value.IsTarget", true]
-                            },
+                            "Condition": { "$eq": ["$Value.IsTarget", true] },
                             "Actions": {
                                 "$pushunique": [
                                     "_SessionRewards",
@@ -766,7 +682,7 @@
             },
             "Tags": ["actionreward", "mediumxp", "elimination"],
             "Drops": [],
-            "LastModified": "2021-01-06T23:00:28.4297565",
+            "LastModified": "2023-01-26T11:26:56.4106817",
             "Xp": 50,
             "XpModifier": {},
             "PlayableSince": null,
@@ -777,13 +693,15 @@
                     "mission",
                     "flashback",
                     "elusive",
+                    "arcade",
                     "tutorial",
                     "orbis",
                     "campaign"
                 ],
                 "Locations": null,
                 "GameModes": null
-            }
+            },
+            "OrderIndex": 10000
         }
     },
     {
@@ -796,13 +714,8 @@
             "ImageName": null,
             "Definition": {
                 "ResetOnCycleCompletion": false,
-                "Context": {
-                    "_SessionRewards": []
-                },
-                "Repeatable": {
-                    "Base": 1,
-                    "Delta": 0
-                },
+                "Context": { "_SessionRewards": [] },
+                "Repeatable": { "Base": 1, "Delta": 0 },
                 "Scope": "session",
                 "States": {
                     "Start": {
@@ -817,7 +730,7 @@
             },
             "Tags": ["actionreward", "intermediate-", "mission"],
             "Drops": [],
-            "LastModified": "2021-01-06T23:00:28.7232384",
+            "LastModified": "2023-01-26T11:26:56.5481442",
             "Xp": 20,
             "XpModifier": {},
             "PlayableSince": null,
@@ -828,13 +741,15 @@
                     "mission",
                     "flashback",
                     "elusive",
+                    "arcade",
                     "tutorial",
                     "orbis",
                     "campaign"
                 ],
                 "Locations": null,
                 "GameModes": null
-            }
+            },
+            "OrderIndex": 10000
         }
     },
     {
@@ -847,13 +762,8 @@
             "ImageName": null,
             "Definition": {
                 "ResetOnCycleCompletion": false,
-                "Context": {
-                    "DisguiseEquipped": []
-                },
-                "Repeatable": {
-                    "Base": 1,
-                    "Delta": 0
-                },
+                "Context": { "DisguiseEquipped": [] },
+                "Repeatable": { "Base": 1, "Delta": 0 },
                 "Scope": "session",
                 "States": {
                     "Start": {
@@ -871,7 +781,7 @@
             },
             "Tags": ["actionreward", "intermediate", "infiltration"],
             "Drops": [],
-            "LastModified": "2021-01-06T23:00:28.7165215",
+            "LastModified": "2023-01-26T11:26:56.5452245",
             "Xp": 25,
             "XpModifier": {},
             "PlayableSince": null,
@@ -882,6 +792,7 @@
                     "mission",
                     "flashback",
                     "elusive",
+                    "arcade",
                     "escalation",
                     "usercreated",
                     "tutorial",
@@ -894,7 +805,8 @@
                 ],
                 "Locations": null,
                 "GameModes": null
-            }
+            },
+            "OrderIndex": 10000
         }
     },
     {
@@ -908,27 +820,18 @@
             "Definition": {
                 "ResetOnCycleCompletion": false,
                 "Context": {},
-                "Repeatable": {
-                    "Base": 1,
-                    "Delta": 0
-                },
+                "Repeatable": { "Base": 1, "Delta": 0 },
                 "Scope": "session",
                 "States": {
                     "Start": {
-                        "PollResult_HeadShot": {
-                            "Transition": "Active"
-                        }
+                        "PollResult_HeadShot": { "Transition": "Active" }
                     },
                     "Active": {
                         "Kill": {
                             "Condition": {
                                 "$and": [
-                                    {
-                                        "$eq": ["$Value.IsTarget", true]
-                                    },
-                                    {
-                                        "$eq": ["$Value.IsHeadshot", true]
-                                    }
+                                    { "$eq": ["$Value.IsTarget", true] },
+                                    { "$eq": ["$Value.IsHeadshot", true] }
                                 ]
                             },
                             "Transition": "Success"
@@ -938,7 +841,7 @@
             },
             "Tags": ["actionreward", "high", "crowdchoice"],
             "Drops": [],
-            "LastModified": "2021-01-06T23:00:28.9503765",
+            "LastModified": "2023-01-26T11:26:56.6577538",
             "Xp": 100,
             "XpModifier": {},
             "PlayableSince": null,
@@ -949,6 +852,7 @@
                     "mission",
                     "flashback",
                     "elusive",
+                    "arcade",
                     "escalation",
                     "usercreated",
                     "tutorial",
@@ -961,9 +865,8 @@
                 "Locations": null,
                 "GameModes": null
             },
-            "CrowdChoice": {
-                "Tag": "HeadShot"
-            }
+            "CrowdChoice": { "Tag": "HeadShot" },
+            "OrderIndex": 10000
         }
     },
     {
@@ -976,25 +879,16 @@
             "ImageName": null,
             "Definition": {
                 "ResetOnCycleCompletion": false,
-                "Context": {
-                    "_SessionRewards": []
-                },
-                "Repeatable": {
-                    "Base": 1,
-                    "Delta": 0
-                },
+                "Context": { "_SessionRewards": [] },
+                "Repeatable": { "Base": 1, "Delta": 0 },
                 "Scope": "session",
                 "States": {
                     "Start": {
                         "Kill": {
                             "Condition": {
                                 "$and": [
-                                    {
-                                        "$eq": ["$Value.IsTarget", true]
-                                    },
-                                    {
-                                        "$eq": ["$Value.Accident", true]
-                                    }
+                                    { "$eq": ["$Value.IsTarget", true] },
+                                    { "$eq": ["$Value.Accident", true] }
                                 ]
                             },
                             "Actions": {
@@ -1010,7 +904,7 @@
             },
             "Tags": ["actionreward", "mediumxp", "elimination"],
             "Drops": [],
-            "LastModified": "2021-01-06T23:00:28.4791482",
+            "LastModified": "2023-01-26T11:26:56.437435",
             "Xp": 50,
             "XpModifier": {},
             "PlayableSince": null,
@@ -1021,13 +915,15 @@
                     "mission",
                     "flashback",
                     "elusive",
+                    "arcade",
                     "tutorial",
                     "orbis",
                     "campaign"
                 ],
                 "Locations": null,
                 "GameModes": null
-            }
+            },
+            "OrderIndex": 10000
         }
     },
     {
@@ -1040,25 +936,16 @@
             "ImageName": null,
             "Definition": {
                 "ResetOnCycleCompletion": false,
-                "Context": {
-                    "_SessionRewards": []
-                },
-                "Repeatable": {
-                    "Base": 1,
-                    "Delta": 0
-                },
+                "Context": { "_SessionRewards": [] },
+                "Repeatable": { "Base": 1, "Delta": 0 },
                 "Scope": "session",
                 "States": {
                     "Start": {
                         "Kill": {
                             "Condition": {
                                 "$and": [
-                                    {
-                                        "$eq": ["$Value.KillClass", "poison"]
-                                    },
-                                    {
-                                        "$eq": ["$Value.IsTarget", true]
-                                    }
+                                    { "$eq": ["$Value.KillClass", "poison"] },
+                                    { "$eq": ["$Value.IsTarget", true] }
                                 ]
                             },
                             "Actions": {
@@ -1074,7 +961,7 @@
             },
             "Tags": ["actionreward", "intermediate", "elimination"],
             "Drops": [],
-            "LastModified": "2021-01-06T23:00:28.5640731",
+            "LastModified": "2023-01-26T11:26:56.4652644",
             "Xp": 25,
             "XpModifier": {},
             "PlayableSince": null,
@@ -1085,13 +972,15 @@
                     "mission",
                     "flashback",
                     "elusive",
+                    "arcade",
                     "tutorial",
                     "orbis",
                     "campaign"
                 ],
                 "Locations": null,
                 "GameModes": null
-            }
+            },
+            "OrderIndex": 10000
         }
     },
     {
@@ -1105,24 +994,17 @@
             "Definition": {
                 "ResetOnCycleCompletion": false,
                 "Context": {},
-                "Repeatable": {
-                    "Base": 1,
-                    "Delta": 0
-                },
+                "Repeatable": { "Base": 1, "Delta": 0 },
                 "Scope": "session",
                 "States": {
                     "Start": {
-                        "PollResult_FibreWire": {
-                            "Transition": "Active"
-                        }
+                        "PollResult_FibreWire": { "Transition": "Active" }
                     },
                     "Active": {
                         "Kill": {
                             "Condition": {
                                 "$and": [
-                                    {
-                                        "$eq": ["$Value.IsTarget", true]
-                                    },
+                                    { "$eq": ["$Value.IsTarget", true] },
                                     {
                                         "$eq": [
                                             "$Value.KillItemCategory",
@@ -1138,7 +1020,7 @@
             },
             "Tags": ["actionreward", "high", "crowdchoice"],
             "Drops": [],
-            "LastModified": "2021-01-06T23:00:28.9566263",
+            "LastModified": "2023-01-26T11:26:56.6607496",
             "Xp": 100,
             "XpModifier": {},
             "PlayableSince": null,
@@ -1149,6 +1031,7 @@
                     "mission",
                     "flashback",
                     "elusive",
+                    "arcade",
                     "escalation",
                     "usercreated",
                     "tutorial",
@@ -1161,9 +1044,8 @@
                 "Locations": null,
                 "GameModes": null
             },
-            "CrowdChoice": {
-                "Tag": "FibreWire"
-            }
+            "CrowdChoice": { "Tag": "FibreWire" },
+            "OrderIndex": 10000
         }
     },
     {
@@ -1177,10 +1059,7 @@
             "Definition": {
                 "ResetOnCycleCompletion": false,
                 "Context": {},
-                "Repeatable": {
-                    "Base": 1,
-                    "Delta": 0
-                },
+                "Repeatable": { "Base": 1, "Delta": 0 },
                 "Scope": "session",
                 "States": {
                     "Start": {
@@ -1197,7 +1076,7 @@
             },
             "Tags": ["actionreward", "intermediate", "infiltration"],
             "Drops": [],
-            "LastModified": "2021-01-06T23:00:28.3691806",
+            "LastModified": "2023-01-26T11:26:56.3772736",
             "Xp": 25,
             "XpModifier": {},
             "PlayableSince": null,
@@ -1208,6 +1087,7 @@
                     "mission",
                     "flashback",
                     "elusive",
+                    "arcade",
                     "escalation",
                     "usercreated",
                     "tutorial",
@@ -1220,7 +1100,8 @@
                 ],
                 "Locations": null,
                 "GameModes": null
-            }
+            },
+            "OrderIndex": 10000
         }
     },
     {
@@ -1234,25 +1115,16 @@
             "Definition": {
                 "ResetOnCycleCompletion": false,
                 "Context": {},
-                "Repeatable": {
-                    "Base": 1,
-                    "Delta": 0
-                },
+                "Repeatable": { "Base": 1, "Delta": 0 },
                 "Scope": "session",
                 "States": {
                     "Start": {
                         "Kill": {
                             "Condition": {
                                 "$and": [
-                                    {
-                                        "$eq": ["$Value.ActorType", 1]
-                                    },
-                                    {
-                                        "$eq": ["$Value.IsHeadshot", true]
-                                    },
-                                    {
-                                        "$eq": ["$Value.IsTarget", false]
-                                    }
+                                    { "$eq": ["$Value.ActorType", 1] },
+                                    { "$eq": ["$Value.IsHeadshot", true] },
+                                    { "$eq": ["$Value.IsTarget", false] }
                                 ]
                             },
                             "Transition": "Success"
@@ -1262,7 +1134,7 @@
             },
             "Tags": ["actionreward", "very-low", "elimination"],
             "Drops": [],
-            "LastModified": "2021-01-06T23:00:28.6511201",
+            "LastModified": "2023-01-26T11:26:56.5123901",
             "Xp": 5,
             "XpModifier": {},
             "PlayableSince": null,
@@ -1273,6 +1145,7 @@
                     "mission",
                     "flashback",
                     "elusive",
+                    "arcade",
                     "tutorial",
                     "orbis",
                     "campaign",
@@ -1282,7 +1155,8 @@
                 ],
                 "Locations": null,
                 "GameModes": null
-            }
+            },
+            "OrderIndex": 10000
         }
     },
     {
@@ -1295,10 +1169,7 @@
             "ImageName": null,
             "Definition": {
                 "Context": {},
-                "Repeatable": {
-                    "Base": 10,
-                    "Delta": 10
-                },
+                "Repeatable": { "Base": 10, "Delta": 10 },
                 "Scope": "profile",
                 "States": {
                     "Start": {
@@ -1308,9 +1179,7 @@
                                     {
                                         "$eq": ["$Value.KillClass", "ballistic"]
                                     },
-                                    {
-                                        "$eq": ["$Value.IsTarget", true]
-                                    }
+                                    { "$eq": ["$Value.IsTarget", true] }
                                 ]
                             },
                             "Transition": "Success"
@@ -1320,7 +1189,7 @@
             },
             "Tags": ["story", "stats", "hideinhud"],
             "Drops": [],
-            "LastModified": "2021-01-06T23:00:29.1031221",
+            "LastModified": "2023-01-26T11:26:56.7418674",
             "Xp": 0,
             "XpModifier": {},
             "PlayableSince": null,
@@ -1341,7 +1210,8 @@
                 ],
                 "Locations": null,
                 "GameModes": null
-            }
+            },
+            "OrderIndex": 10000
         }
     },
     {
@@ -1354,20 +1224,13 @@
             "ImageName": null,
             "Definition": {
                 "ResetOnCycleCompletion": false,
-                "Context": {
-                    "_SessionRewards": []
-                },
-                "Repeatable": {
-                    "Base": 1,
-                    "Delta": 0
-                },
+                "Context": { "_SessionRewards": [] },
+                "Repeatable": { "Base": 1, "Delta": 0 },
                 "Scope": "session",
                 "States": {
                     "Start": {
                         "Kill": {
-                            "Condition": {
-                                "$eq": ["$Value.IsTarget", false]
-                            },
+                            "Condition": { "$eq": ["$Value.IsTarget", false] },
                             "Transition": "Failure"
                         },
                         "ContractEnd": {
@@ -1381,7 +1244,7 @@
             },
             "Tags": ["actionreward", "intermediate", "mission"],
             "Drops": [],
-            "LastModified": "2021-01-06T23:00:28.7524133",
+            "LastModified": "2023-01-26T11:26:56.5635427",
             "Xp": 25,
             "XpModifier": {},
             "PlayableSince": null,
@@ -1392,13 +1255,15 @@
                     "mission",
                     "flashback",
                     "elusive",
+                    "arcade",
                     "tutorial",
                     "orbis",
                     "campaign"
                 ],
                 "Locations": null,
                 "GameModes": null
-            }
+            },
+            "OrderIndex": 10000
         }
     },
     {
@@ -1411,13 +1276,8 @@
             "ImageName": null,
             "Definition": {
                 "ResetOnCycleCompletion": false,
-                "Context": {
-                    "_SessionRewards": []
-                },
-                "Repeatable": {
-                    "Base": 1,
-                    "Delta": 0
-                },
+                "Context": { "_SessionRewards": [] },
+                "Repeatable": { "Base": 1, "Delta": 0 },
                 "Scope": "session",
                 "States": {
                     "Start": {
@@ -1427,9 +1287,7 @@
                                     {
                                         "$eq": ["$Value.KillClass", "ballistic"]
                                     },
-                                    {
-                                        "$eq": ["$Value.IsTarget", true]
-                                    }
+                                    { "$eq": ["$Value.IsTarget", true] }
                                 ]
                             },
                             "Actions": {
@@ -1445,7 +1303,7 @@
             },
             "Tags": ["actionreward", "low", "elimination"],
             "Drops": [],
-            "LastModified": "2021-01-06T23:00:28.6036988",
+            "LastModified": "2023-01-26T11:26:56.4852221",
             "Xp": 10,
             "XpModifier": {},
             "PlayableSince": null,
@@ -1456,13 +1314,15 @@
                     "mission",
                     "flashback",
                     "elusive",
+                    "arcade",
                     "tutorial",
                     "orbis",
                     "campaign"
                 ],
                 "Locations": null,
                 "GameModes": null
-            }
+            },
+            "OrderIndex": 10000
         }
     },
     {
@@ -1475,25 +1335,16 @@
             "ImageName": null,
             "Definition": {
                 "ResetOnCycleCompletion": false,
-                "Context": {
-                    "_SessionRewards": []
-                },
-                "Repeatable": {
-                    "Base": 1,
-                    "Delta": 0
-                },
+                "Context": { "_SessionRewards": [] },
+                "Repeatable": { "Base": 1, "Delta": 0 },
                 "Scope": "session",
                 "States": {
                     "Start": {
                         "Kill": {
                             "Condition": {
                                 "$and": [
-                                    {
-                                        "$eq": ["$Value.IsTarget", true]
-                                    },
-                                    {
-                                        "$eq": ["$Value.IsHeadshot", true]
-                                    }
+                                    { "$eq": ["$Value.IsTarget", true] },
+                                    { "$eq": ["$Value.IsHeadshot", true] }
                                 ]
                             },
                             "Actions": {
@@ -1509,7 +1360,7 @@
             },
             "Tags": ["actionreward", "low", "elimination"],
             "Drops": [],
-            "LastModified": "2021-01-06T23:00:28.5029428",
+            "LastModified": "2023-01-26T11:26:56.4503988",
             "Xp": 10,
             "XpModifier": {},
             "PlayableSince": null,
@@ -1520,13 +1371,15 @@
                     "mission",
                     "flashback",
                     "elusive",
+                    "arcade",
                     "tutorial",
                     "orbis",
                     "campaign"
                 ],
                 "Locations": null,
                 "GameModes": null
-            }
+            },
+            "OrderIndex": 10000
         }
     },
     {
@@ -1539,13 +1392,8 @@
             "ImageName": null,
             "Definition": {
                 "ResetOnCycleCompletion": false,
-                "Context": {
-                    "_SessionRewards": []
-                },
-                "Repeatable": {
-                    "Base": 1,
-                    "Delta": 0
-                },
+                "Context": { "_SessionRewards": [] },
+                "Repeatable": { "Base": 1, "Delta": 0 },
                 "Scope": "session",
                 "States": {
                     "Start": {
@@ -1555,9 +1403,7 @@
                                     {
                                         "$eq": ["$Value.KillClass", "explosion"]
                                     },
-                                    {
-                                        "$eq": ["$Value.IsTarget", true]
-                                    }
+                                    { "$eq": ["$Value.IsTarget", true] }
                                 ]
                             },
                             "Actions": {
@@ -1573,7 +1419,7 @@
             },
             "Tags": ["actionreward", "low", "elimination"],
             "Drops": [],
-            "LastModified": "2021-01-06T23:00:28.6270265",
+            "LastModified": "2023-01-26T11:26:56.4991132",
             "Xp": 10,
             "XpModifier": {},
             "PlayableSince": null,
@@ -1584,13 +1430,15 @@
                     "mission",
                     "flashback",
                     "elusive",
+                    "arcade",
                     "tutorial",
                     "orbis",
                     "campaign"
                 ],
                 "Locations": null,
                 "GameModes": null
-            }
+            },
+            "OrderIndex": 10000
         }
     },
     {
@@ -1603,34 +1451,21 @@
             "ImageName": null,
             "Definition": {
                 "Context": {},
-                "Repeatable": {
-                    "Base": 10,
-                    "Delta": 10
-                },
+                "Repeatable": { "Base": 10, "Delta": 10 },
                 "Scope": "profile",
                 "States": {
                     "Checkbodyfound": {
                         "$timer": {
-                            "Condition": {
-                                "$after": 5
-                            },
+                            "Condition": { "$after": 5 },
                             "Transition": "Start"
                         },
-                        "BodyFound": {
-                            "Transition": "Failure"
-                        },
-                        "Spotted": {
-                            "Transition": "Failure"
-                        },
-                        "Unnoticed_Kill": {
-                            "Transition": "Success"
-                        }
+                        "BodyFound": { "Transition": "Failure" },
+                        "Spotted": { "Transition": "Failure" },
+                        "Unnoticed_Kill": { "Transition": "Success" }
                     },
                     "Start": {
                         "Kill": {
-                            "Condition": {
-                                "$eq": ["$Value.IsTarget", true]
-                            },
+                            "Condition": { "$eq": ["$Value.IsTarget", true] },
                             "Transition": "Checkbodyfound"
                         }
                     }
@@ -1638,7 +1473,7 @@
             },
             "Tags": ["story", "stats"],
             "Drops": [],
-            "LastModified": "2021-01-06T23:00:29.0852276",
+            "LastModified": "2023-01-26T11:26:56.7322238",
             "Xp": 0,
             "XpModifier": {},
             "PlayableSince": null,
@@ -1659,7 +1494,8 @@
                 ],
                 "Locations": null,
                 "GameModes": null
-            }
+            },
+            "OrderIndex": 10000
         }
     },
     {
@@ -1672,22 +1508,15 @@
             "ImageName": null,
             "Definition": {
                 "Context": {},
-                "Repeatable": {
-                    "Base": 10,
-                    "Delta": 10
-                },
+                "Repeatable": { "Base": 10, "Delta": 10 },
                 "Scope": "profile",
                 "States": {
                     "Start": {
                         "Kill": {
                             "Condition": {
                                 "$and": [
-                                    {
-                                        "$eq": ["$Value.KillClass", "poison"]
-                                    },
-                                    {
-                                        "$eq": ["$Value.IsTarget", true]
-                                    }
+                                    { "$eq": ["$Value.KillClass", "poison"] },
+                                    { "$eq": ["$Value.IsTarget", true] }
                                 ]
                             },
                             "Transition": "Success"
@@ -1697,7 +1526,7 @@
             },
             "Tags": ["story", "stats", "hideinhud"],
             "Drops": [],
-            "LastModified": "2021-01-06T23:00:29.0909942",
+            "LastModified": "2023-01-26T11:26:56.7356016",
             "Xp": 0,
             "XpModifier": {},
             "PlayableSince": null,
@@ -1718,7 +1547,8 @@
                 ],
                 "Locations": null,
                 "GameModes": null
-            }
+            },
+            "OrderIndex": 10000
         }
     },
     {
@@ -1732,39 +1562,24 @@
             "Definition": {
                 "ResetOnCycleCompletion": false,
                 "Context": {},
-                "Repeatable": {
-                    "Base": 1,
-                    "Delta": 0
-                },
+                "Repeatable": { "Base": 1, "Delta": 0 },
                 "Scope": "session",
                 "States": {
                     "CheckUnnoticed": {
                         "$timer": {
-                            "Condition": {
-                                "$after": 5
-                            },
+                            "Condition": { "$after": 5 },
                             "Transition": "Start"
                         },
-                        "BodyFound": {
-                            "Transition": "Failure"
-                        },
-                        "Spotted": {
-                            "Transition": "Failure"
-                        },
-                        "Unnoticed_Pacified": {
-                            "Transition": "Success"
-                        }
+                        "BodyFound": { "Transition": "Failure" },
+                        "Spotted": { "Transition": "Failure" },
+                        "Unnoticed_Pacified": { "Transition": "Success" }
                     },
-                    "Start": {
-                        "Pacify": {
-                            "Transition": "CheckUnnoticed"
-                        }
-                    }
+                    "Start": { "Pacify": { "Transition": "CheckUnnoticed" } }
                 }
             },
             "Tags": ["actionreward", "intermediate", "infiltration"],
             "Drops": [],
-            "LastModified": "2021-01-06T23:00:28.3824438",
+            "LastModified": "2023-01-26T11:26:56.3836655",
             "Xp": 25,
             "XpModifier": {},
             "PlayableSince": null,
@@ -1775,6 +1590,7 @@
                     "mission",
                     "flashback",
                     "elusive",
+                    "arcade",
                     "escalation",
                     "usercreated",
                     "tutorial",
@@ -1786,7 +1602,8 @@
                 ],
                 "Locations": null,
                 "GameModes": null
-            }
+            },
+            "OrderIndex": 10000
         }
     },
     {
@@ -1799,22 +1616,15 @@
             "ImageName": null,
             "Definition": {
                 "Context": {},
-                "Repeatable": {
-                    "Base": 10,
-                    "Delta": 10
-                },
+                "Repeatable": { "Base": 10, "Delta": 10 },
                 "Scope": "profile",
                 "States": {
                     "Start": {
                         "Kill": {
                             "Condition": {
                                 "$and": [
-                                    {
-                                        "$eq": ["$Value.Accident", true]
-                                    },
-                                    {
-                                        "$eq": ["$Value.IsTarget", true]
-                                    }
+                                    { "$eq": ["$Value.Accident", true] },
+                                    { "$eq": ["$Value.IsTarget", true] }
                                 ]
                             },
                             "Transition": "Success"
@@ -1824,7 +1634,7 @@
             },
             "Tags": ["story", "stats"],
             "Drops": [],
-            "LastModified": "2021-01-06T23:00:29.0743994",
+            "LastModified": "2023-01-26T11:26:56.7266038",
             "Xp": 0,
             "XpModifier": {},
             "PlayableSince": null,
@@ -1845,7 +1655,8 @@
                 ],
                 "Locations": null,
                 "GameModes": null
-            }
+            },
+            "OrderIndex": 10000
         }
     },
     {
@@ -1858,22 +1669,15 @@
             "ImageName": null,
             "Definition": {
                 "Context": {},
-                "Repeatable": {
-                    "Base": 1,
-                    "Delta": 0
-                },
+                "Repeatable": { "Base": 1, "Delta": 0 },
                 "Scope": "session",
                 "States": {
-                    "Start": {
-                        "BodyHidden": {
-                            "Transition": "Success"
-                        }
-                    }
+                    "Start": { "BodyHidden": { "Transition": "Success" } }
                 }
             },
             "Tags": ["actionreward", "intermediate", "infiltration"],
             "Drops": [],
-            "LastModified": "2021-01-06T23:00:28.3943428",
+            "LastModified": "2023-01-26T11:26:56.3918938",
             "Xp": 25,
             "XpModifier": {},
             "PlayableSince": null,
@@ -1884,6 +1688,7 @@
                     "mission",
                     "flashback",
                     "elusive",
+                    "arcade",
                     "escalation",
                     "usercreated",
                     "tutorial",
@@ -1896,7 +1701,8 @@
                 ],
                 "Locations": null,
                 "GameModes": null
-            }
+            },
+            "OrderIndex": 10000
         }
     },
     {
@@ -1910,16 +1716,11 @@
             "Definition": {
                 "ResetOnCycleCompletion": false,
                 "Context": {},
-                "Repeatable": {
-                    "Base": 1,
-                    "Delta": 0
-                },
+                "Repeatable": { "Base": 1, "Delta": 0 },
                 "Scope": "session",
                 "States": {
                     "Start": {
-                        "FoxTargetIdEvent": {
-                            "Transition": "Success"
-                        },
+                        "FoxTargetIdEvent": { "Transition": "Success" },
                         "Level_Setup_Events": {
                             "Condition": {
                                 "$eq": [
@@ -1934,7 +1735,7 @@
             },
             "Tags": ["actionreward", "intermediate", "infiltration"],
             "Drops": [],
-            "LastModified": "2021-01-06T23:00:28.9256854",
+            "LastModified": "2023-01-26T11:26:56.645071",
             "Xp": 25,
             "XpModifier": {},
             "PlayableSince": null,
@@ -1945,6 +1746,7 @@
                     "mission",
                     "flashback",
                     "elusive",
+                    "arcade",
                     "escalation",
                     "usercreated",
                     "tutorial",
@@ -1957,7 +1759,8 @@
                 ],
                 "Locations": null,
                 "GameModes": null
-            }
+            },
+            "OrderIndex": 10000
         }
     },
     {
@@ -1970,13 +1773,8 @@
             "ImageName": null,
             "Definition": {
                 "ResetOnCycleCompletion": false,
-                "Context": {
-                    "_SessionRewards": []
-                },
-                "Repeatable": {
-                    "Base": 1,
-                    "Delta": 0
-                },
+                "Context": { "_SessionRewards": [] },
+                "Repeatable": { "Base": 1, "Delta": 0 },
                 "Scope": "session",
                 "States": {
                     "Start": {
@@ -1996,9 +1794,7 @@
                         ]
                     },
                     "CheckDisguise": {
-                        "Disguise": {
-                            "Transition": "Failure"
-                        },
+                        "Disguise": { "Transition": "Failure" },
                         "ContractEnd": {
                             "Actions": {
                                 "$pushunique": ["_SessionRewards", true]
@@ -2010,7 +1806,7 @@
             },
             "Tags": ["actionreward", "intermediate", "mission"],
             "Drops": [],
-            "LastModified": "2021-01-06T23:00:28.8236103",
+            "LastModified": "2023-01-26T11:26:56.597844",
             "Xp": 25,
             "XpModifier": {},
             "PlayableSince": null,
@@ -2021,13 +1817,15 @@
                     "mission",
                     "flashback",
                     "elusive",
+                    "arcade",
                     "tutorial",
                     "orbis",
                     "campaign"
                 ],
                 "Locations": null,
                 "GameModes": null
-            }
+            },
+            "OrderIndex": 10000
         }
     },
     {
@@ -2045,19 +1843,14 @@
                     "RecordingDestroyed": true,
                     "LastAccidentTime": 0
                 },
-                "Repeatable": {
-                    "Base": 1,
-                    "Delta": 0
-                },
+                "Repeatable": { "Base": 1, "Delta": 0 },
                 "Scope": "session",
                 "States": {
                     "Start": {
                         "ContractEnd": {
                             "Condition": {
                                 "$and": [
-                                    {
-                                        "$eq": [true, "$.RecordingDestroyed"]
-                                    },
+                                    { "$eq": [true, "$.RecordingDestroyed"] },
                                     {
                                         "$all": {
                                             "in": "$.Witnesses",
@@ -2082,9 +1875,7 @@
                             "Condition": {
                                 "$any": {
                                     "in": "$Value",
-                                    "?": {
-                                        "$pushunique": ["Witnesses", "$.#"]
-                                    }
+                                    "?": { "$pushunique": ["Witnesses", "$.#"] }
                                 }
                             }
                         },
@@ -2092,9 +1883,7 @@
                             "Condition": {
                                 "$any": {
                                     "in": "$Value",
-                                    "?": {
-                                        "$pushunique": ["Witnesses", "$.#"]
-                                    }
+                                    "?": { "$pushunique": ["Witnesses", "$.#"] }
                                 }
                             }
                         },
@@ -2102,9 +1891,7 @@
                             {
                                 "Condition": {
                                     "$and": [
-                                        {
-                                            "$eq": ["$Value.IsTarget", false]
-                                        },
+                                        { "$eq": ["$Value.IsTarget", false] },
                                         {
                                             "$not": {
                                                 "$eq": ["$Value.KillContext", 1]
@@ -2117,12 +1904,8 @@
                             {
                                 "Condition": {
                                     "$and": [
-                                        {
-                                            "$eq": ["$Value.IsTarget", false]
-                                        },
-                                        {
-                                            "$eq": ["$Value.KillContext", 1]
-                                        }
+                                        { "$eq": ["$Value.IsTarget", false] },
+                                        { "$eq": ["$Value.KillContext", 1] }
                                     ]
                                 },
                                 "Actions": {
@@ -2144,9 +1927,7 @@
                                 }
                             }
                         ],
-                        "CrowdNPC_Died": {
-                            "Transition": "Failure"
-                        },
+                        "CrowdNPC_Died": { "Transition": "Failure" },
                         "MurderedBodySeen": [
                             {
                                 "Condition": {
@@ -2196,12 +1977,8 @@
                                 },
                                 "Condition": {
                                     "$or": [
-                                        {
-                                            "$eq": ["$Value.event", "erased"]
-                                        },
-                                        {
-                                            "$eq": ["$Value.event", "destroyed"]
-                                        }
+                                        { "$eq": ["$Value.event", "erased"] },
+                                        { "$eq": ["$Value.event", "destroyed"] }
                                     ]
                                 }
                             }
@@ -2209,9 +1986,7 @@
                     }
                 },
                 "ContextListeners": {
-                    "RecordingDestroyed": {
-                        "type": "toggle"
-                    },
+                    "RecordingDestroyed": { "type": "toggle" },
                     "KilledTargets": {
                         "comparand": "$.Witnesses",
                         "type": "matcharrays"
@@ -2220,255 +1995,8 @@
             },
             "Tags": ["story", "stats", "hideinhud", "sa-feedback"],
             "Drops": [],
-            "LastModified": "2021-01-06T23:00:29.1322786",
+            "LastModified": "2023-01-26T11:26:56.7520587",
             "Xp": 0,
-            "XpModifier": {},
-            "PlayableSince": null,
-            "PlayableUntil": null,
-            "InclusionData": {
-                "ContractIds": null,
-                "ContractTypes": [
-                    "mission",
-                    "flashback",
-                    "elusive",
-                    "escalation",
-                    "usercreated",
-                    "tutorial",
-                    "creation",
-                    "orbis",
-                    "featured",
-                    "campaign",
-                    "vsrace"
-                ],
-                "Locations": null,
-                "GameModes": null
-            }
-        }
-    },
-    {
-        "Challenge": {
-            "Id": "b3be835a-0fc4-4caa-b5be-dfd9a621ec12",
-            "GroupId": "00000000-0000-0000-0000-000000000000",
-            "Name": "UI_CHALLENGES_GLOBAL_KEY_OBTAINED_NAME",
-            "Type": "Hit",
-            "Description": "",
-            "ImageName": null,
-            "Definition": {
-                "ResetOnCycleCompletion": false,
-                "Context": {},
-                "Repeatable": {
-                    "Base": 1,
-                    "Delta": 0
-                },
-                "Scope": "session",
-                "States": {
-                    "Start": {
-                        "ItemPickedUp": {
-                            "Condition": {
-                                "$eq": ["$Value.ActionRewardType", "AR_Key"]
-                            },
-                            "Transition": "Success"
-                        }
-                    }
-                }
-            },
-            "Tags": ["actionreward", "low", "infiltration"],
-            "Drops": [],
-            "LastModified": "2021-01-06T23:00:28.4118573",
-            "Xp": 10,
-            "XpModifier": {},
-            "PlayableSince": null,
-            "PlayableUntil": null,
-            "InclusionData": {
-                "ContractIds": null,
-                "ContractTypes": [
-                    "mission",
-                    "flashback",
-                    "elusive",
-                    "escalation",
-                    "usercreated",
-                    "tutorial",
-                    "creation",
-                    "orbis",
-                    "featured",
-                    "campaign"
-                ],
-                "Locations": null,
-                "GameModes": null
-            }
-        }
-    },
-    {
-        "Challenge": {
-            "Id": "b55bb4da-bb14-46a4-9975-af79e5a3e088",
-            "GroupId": "00000000-0000-0000-0000-000000000000",
-            "Name": "UI_CHALLENGES_GLOBAL_HEADSHOT_NAME",
-            "Type": "Statistic",
-            "Description": "UI_CHALLENGES_GLOBAL_HEADSHOT_DESC",
-            "ImageName": null,
-            "Definition": {
-                "Context": {},
-                "Repeatable": {
-                    "Base": 10,
-                    "Delta": 10
-                },
-                "Scope": "profile",
-                "States": {
-                    "Start": {
-                        "Kill": {
-                            "Condition": {
-                                "$and": [
-                                    {
-                                        "$eq": ["$Value.IsHeadshot", true]
-                                    },
-                                    {
-                                        "$eq": ["$Value.IsTarget", true]
-                                    }
-                                ]
-                            },
-                            "Transition": "Success"
-                        }
-                    }
-                }
-            },
-            "Tags": ["story", "stats"],
-            "Drops": [],
-            "LastModified": "2021-01-06T23:00:29.07981",
-            "Xp": 0,
-            "XpModifier": {},
-            "PlayableSince": null,
-            "PlayableUntil": null,
-            "InclusionData": {
-                "ContractIds": null,
-                "ContractTypes": [
-                    "mission",
-                    "flashback",
-                    "elusive",
-                    "escalation",
-                    "usercreated",
-                    "tutorial",
-                    "creation",
-                    "orbis",
-                    "featured",
-                    "campaign"
-                ],
-                "Locations": null,
-                "GameModes": null
-            }
-        }
-    },
-    {
-        "Challenge": {
-            "Id": "b6cc96db-9cd4-4d79-93a9-da33e887683b",
-            "GroupId": "00000000-0000-0000-0000-000000000000",
-            "Name": "UI_CHALLENGES_GLOBAL_CROWDCHOICE_POISON_NAME",
-            "Type": "Hit",
-            "Description": "",
-            "ImageName": null,
-            "Definition": {
-                "ResetOnCycleCompletion": false,
-                "Context": {},
-                "Repeatable": {
-                    "Base": 1,
-                    "Delta": 0
-                },
-                "Scope": "session",
-                "States": {
-                    "Start": {
-                        "PollResult_Poison": {
-                            "Transition": "Active"
-                        }
-                    },
-                    "Active": {
-                        "Kill": {
-                            "Condition": {
-                                "$and": [
-                                    {
-                                        "$eq": ["$Value.IsTarget", true]
-                                    },
-                                    {
-                                        "$eq": ["$Value.KillClass", "poison"]
-                                    }
-                                ]
-                            },
-                            "Transition": "Success"
-                        }
-                    }
-                }
-            },
-            "Tags": ["actionreward", "high", "crowdchoice"],
-            "Drops": [],
-            "LastModified": "2021-01-06T23:00:28.9745505",
-            "Xp": 100,
-            "XpModifier": {},
-            "PlayableSince": null,
-            "PlayableUntil": null,
-            "InclusionData": {
-                "ContractIds": null,
-                "ContractTypes": [
-                    "mission",
-                    "flashback",
-                    "elusive",
-                    "escalation",
-                    "usercreated",
-                    "tutorial",
-                    "creation",
-                    "orbis",
-                    "featured",
-                    "campaign",
-                    "placeholder"
-                ],
-                "Locations": null,
-                "GameModes": null
-            },
-            "CrowdChoice": {
-                "Tag": "Poison"
-            }
-        }
-    },
-    {
-        "Challenge": {
-            "Id": "baa81f5b-c1de-44e2-8217-8d96cf2f5f17",
-            "GroupId": "00000000-0000-0000-0000-000000000000",
-            "Name": "UI_CHALLENGES_GLOBAL_RECORDING_DELETED_NAME",
-            "Type": "Hit",
-            "Description": "",
-            "ImageName": null,
-            "Definition": {
-                "ResetOnCycleCompletion": false,
-                "Context": {
-                    "_SessionRewards": []
-                },
-                "Repeatable": {
-                    "Base": 1,
-                    "Delta": 0
-                },
-                "Scope": "session",
-                "States": {
-                    "Start": {
-                        "SecuritySystemRecorder": {
-                            "Condition": {
-                                "$or": [
-                                    {
-                                        "$eq": ["$Value.event", "erased"]
-                                    },
-                                    {
-                                        "$eq": ["$Value.event", "destroyed"]
-                                    }
-                                ]
-                            },
-                            "Actions": {
-                                "$pushunique": ["_SessionRewards", true]
-                            },
-                            "Transition": "Success"
-                        }
-                    }
-                }
-            },
-            "Tags": ["actionreward", "mediumxp", "infiltration"],
-            "Drops": [],
-            "LastModified": "2021-01-06T23:00:28.3764926",
-            "Xp": 50,
             "XpModifier": {},
             "PlayableSince": null,
             "PlayableUntil": null,
@@ -2486,11 +2014,237 @@
                     "featured",
                     "campaign",
                     "vsrace",
+                    "arcade"
+                ],
+                "Locations": null,
+                "GameModes": null
+            },
+            "OrderIndex": 10000
+        }
+    },
+    {
+        "Challenge": {
+            "Id": "b3be835a-0fc4-4caa-b5be-dfd9a621ec12",
+            "GroupId": "00000000-0000-0000-0000-000000000000",
+            "Name": "UI_CHALLENGES_GLOBAL_KEY_OBTAINED_NAME",
+            "Type": "Hit",
+            "Description": "",
+            "ImageName": null,
+            "Definition": {
+                "ResetOnCycleCompletion": false,
+                "Context": {},
+                "Repeatable": { "Base": 1, "Delta": 0 },
+                "Scope": "session",
+                "States": {
+                    "Start": {
+                        "ItemPickedUp": {
+                            "Condition": {
+                                "$eq": ["$Value.ActionRewardType", "AR_Key"]
+                            },
+                            "Transition": "Success"
+                        }
+                    }
+                }
+            },
+            "Tags": ["actionreward", "low", "infiltration"],
+            "Drops": [],
+            "LastModified": "2023-01-26T11:26:56.4012596",
+            "Xp": 10,
+            "XpModifier": {},
+            "PlayableSince": null,
+            "PlayableUntil": null,
+            "InclusionData": {
+                "ContractIds": null,
+                "ContractTypes": [
+                    "mission",
+                    "flashback",
+                    "elusive",
+                    "arcade",
+                    "escalation",
+                    "usercreated",
+                    "tutorial",
+                    "creation",
+                    "orbis",
+                    "featured",
+                    "campaign"
+                ],
+                "Locations": null,
+                "GameModes": null
+            },
+            "OrderIndex": 10000
+        }
+    },
+    {
+        "Challenge": {
+            "Id": "b55bb4da-bb14-46a4-9975-af79e5a3e088",
+            "GroupId": "00000000-0000-0000-0000-000000000000",
+            "Name": "UI_CHALLENGES_GLOBAL_HEADSHOT_NAME",
+            "Type": "Statistic",
+            "Description": "UI_CHALLENGES_GLOBAL_HEADSHOT_DESC",
+            "ImageName": null,
+            "Definition": {
+                "Context": {},
+                "Repeatable": { "Base": 10, "Delta": 10 },
+                "Scope": "profile",
+                "States": {
+                    "Start": {
+                        "Kill": {
+                            "Condition": {
+                                "$and": [
+                                    { "$eq": ["$Value.IsHeadshot", true] },
+                                    { "$eq": ["$Value.IsTarget", true] }
+                                ]
+                            },
+                            "Transition": "Success"
+                        }
+                    }
+                }
+            },
+            "Tags": ["story", "stats"],
+            "Drops": [],
+            "LastModified": "2023-01-26T11:26:56.7293855",
+            "Xp": 0,
+            "XpModifier": {},
+            "PlayableSince": null,
+            "PlayableUntil": null,
+            "InclusionData": {
+                "ContractIds": null,
+                "ContractTypes": [
+                    "mission",
+                    "flashback",
+                    "elusive",
+                    "escalation",
+                    "usercreated",
+                    "tutorial",
+                    "creation",
+                    "orbis",
+                    "featured",
+                    "campaign"
+                ],
+                "Locations": null,
+                "GameModes": null
+            },
+            "OrderIndex": 10000
+        }
+    },
+    {
+        "Challenge": {
+            "Id": "b6cc96db-9cd4-4d79-93a9-da33e887683b",
+            "GroupId": "00000000-0000-0000-0000-000000000000",
+            "Name": "UI_CHALLENGES_GLOBAL_CROWDCHOICE_POISON_NAME",
+            "Type": "Hit",
+            "Description": "",
+            "ImageName": null,
+            "Definition": {
+                "ResetOnCycleCompletion": false,
+                "Context": {},
+                "Repeatable": { "Base": 1, "Delta": 0 },
+                "Scope": "session",
+                "States": {
+                    "Start": {
+                        "PollResult_Poison": { "Transition": "Active" }
+                    },
+                    "Active": {
+                        "Kill": {
+                            "Condition": {
+                                "$and": [
+                                    { "$eq": ["$Value.IsTarget", true] },
+                                    { "$eq": ["$Value.KillClass", "poison"] }
+                                ]
+                            },
+                            "Transition": "Success"
+                        }
+                    }
+                }
+            },
+            "Tags": ["actionreward", "high", "crowdchoice"],
+            "Drops": [],
+            "LastModified": "2023-01-26T11:26:56.6715121",
+            "Xp": 100,
+            "XpModifier": {},
+            "PlayableSince": null,
+            "PlayableUntil": null,
+            "InclusionData": {
+                "ContractIds": null,
+                "ContractTypes": [
+                    "mission",
+                    "flashback",
+                    "elusive",
+                    "arcade",
+                    "escalation",
+                    "usercreated",
+                    "tutorial",
+                    "creation",
+                    "orbis",
+                    "featured",
+                    "campaign",
                     "placeholder"
                 ],
                 "Locations": null,
                 "GameModes": null
-            }
+            },
+            "CrowdChoice": { "Tag": "Poison" },
+            "OrderIndex": 10000
+        }
+    },
+    {
+        "Challenge": {
+            "Id": "baa81f5b-c1de-44e2-8217-8d96cf2f5f17",
+            "GroupId": "00000000-0000-0000-0000-000000000000",
+            "Name": "UI_CHALLENGES_GLOBAL_RECORDING_DELETED_NAME",
+            "Type": "Hit",
+            "Description": "",
+            "ImageName": null,
+            "Definition": {
+                "ResetOnCycleCompletion": false,
+                "Context": { "_SessionRewards": [] },
+                "Repeatable": { "Base": 1, "Delta": 0 },
+                "Scope": "session",
+                "States": {
+                    "Start": {
+                        "SecuritySystemRecorder": {
+                            "Condition": {
+                                "$or": [
+                                    { "$eq": ["$Value.event", "erased"] },
+                                    { "$eq": ["$Value.event", "destroyed"] }
+                                ]
+                            },
+                            "Actions": {
+                                "$pushunique": ["_SessionRewards", true]
+                            },
+                            "Transition": "Success"
+                        }
+                    }
+                }
+            },
+            "Tags": ["actionreward", "mediumxp", "infiltration"],
+            "Drops": [],
+            "LastModified": "2023-01-26T11:26:56.3806504",
+            "Xp": 50,
+            "XpModifier": {},
+            "PlayableSince": null,
+            "PlayableUntil": null,
+            "InclusionData": {
+                "ContractIds": null,
+                "ContractTypes": [
+                    "mission",
+                    "flashback",
+                    "elusive",
+                    "arcade",
+                    "escalation",
+                    "usercreated",
+                    "tutorial",
+                    "creation",
+                    "orbis",
+                    "featured",
+                    "campaign",
+                    "vsrace",
+                    "placeholder"
+                ],
+                "Locations": null,
+                "GameModes": null
+            },
+            "OrderIndex": 10000
         }
     },
     {
@@ -2504,25 +2258,16 @@
             "Definition": {
                 "ResetOnCycleCompletion": false,
                 "Context": {},
-                "Repeatable": {
-                    "Base": 1,
-                    "Delta": 0
-                },
+                "Repeatable": { "Base": 1, "Delta": 0 },
                 "Scope": "session",
                 "States": {
                     "Start": {
                         "Kill": {
                             "Condition": {
                                 "$and": [
-                                    {
-                                        "$eq": ["$Value.ActorType", 1]
-                                    },
-                                    {
-                                        "$eq": ["$Value.Accident", true]
-                                    },
-                                    {
-                                        "$eq": ["$Value.IsTarget", false]
-                                    }
+                                    { "$eq": ["$Value.ActorType", 1] },
+                                    { "$eq": ["$Value.Accident", true] },
+                                    { "$eq": ["$Value.IsTarget", false] }
                                 ]
                             },
                             "Transition": "Success"
@@ -2532,7 +2277,7 @@
             },
             "Tags": ["actionreward", "very-low", "elimination"],
             "Drops": [],
-            "LastModified": "2021-01-06T23:00:28.6696904",
+            "LastModified": "2023-01-26T11:26:56.522326",
             "Xp": 5,
             "XpModifier": {},
             "PlayableSince": null,
@@ -2543,6 +2288,7 @@
                     "mission",
                     "flashback",
                     "elusive",
+                    "arcade",
                     "tutorial",
                     "orbis",
                     "campaign",
@@ -2552,7 +2298,8 @@
                 ],
                 "Locations": null,
                 "GameModes": null
-            }
+            },
+            "OrderIndex": 10000
         }
     },
     {
@@ -2565,13 +2312,8 @@
             "ImageName": null,
             "Definition": {
                 "ResetOnCycleCompletion": false,
-                "Context": {
-                    "_SessionRewards": []
-                },
-                "Repeatable": {
-                    "Base": 1,
-                    "Delta": 0
-                },
+                "Context": { "_SessionRewards": [] },
+                "Repeatable": { "Base": 1, "Delta": 0 },
                 "Scope": "session",
                 "States": {
                     "Start": {
@@ -2589,7 +2331,7 @@
             },
             "Tags": ["actionreward", "low", "mission"],
             "Drops": [],
-            "LastModified": "2021-01-06T23:00:28.6876217",
+            "LastModified": "2023-01-26T11:26:56.532715",
             "Xp": 10,
             "XpModifier": {},
             "PlayableSince": null,
@@ -2600,13 +2342,15 @@
                     "mission",
                     "flashback",
                     "elusive",
+                    "arcade",
                     "tutorial",
                     "orbis",
                     "campaign"
                 ],
                 "Locations": null,
                 "GameModes": null
-            }
+            },
+            "OrderIndex": 10000
         }
     },
     {
@@ -2620,10 +2364,7 @@
             "Definition": {
                 "ResetOnCycleCompletion": false,
                 "Context": {},
-                "Repeatable": {
-                    "Base": 1,
-                    "Delta": 0
-                },
+                "Repeatable": { "Base": 1, "Delta": 0 },
                 "Scope": "session",
                 "States": {
                     "Start": {
@@ -2638,7 +2379,7 @@
             },
             "Tags": ["actionreward", "low", "infiltration"],
             "Drops": [],
-            "LastModified": "2021-01-06T23:00:28.4057529",
+            "LastModified": "2023-01-26T11:26:56.3980977",
             "Xp": 10,
             "XpModifier": {},
             "PlayableSince": null,
@@ -2649,6 +2390,7 @@
                     "mission",
                     "flashback",
                     "elusive",
+                    "arcade",
                     "escalation",
                     "usercreated",
                     "tutorial",
@@ -2659,7 +2401,8 @@
                 ],
                 "Locations": null,
                 "GameModes": null
-            }
+            },
+            "OrderIndex": 10000
         }
     },
     {
@@ -2672,13 +2415,8 @@
             "ImageName": null,
             "Definition": {
                 "ResetOnCycleCompletion": false,
-                "Context": {
-                    "FriskZone": []
-                },
-                "Repeatable": {
-                    "Base": 1,
-                    "Delta": 0
-                },
+                "Context": { "FriskZone": [] },
+                "Repeatable": { "Base": 1, "Delta": 0 },
                 "Scope": "session",
                 "States": {
                     "Start": {
@@ -2690,15 +2428,13 @@
                         }
                     },
                     "WaitForSuccess": {
-                        "FriskedSuccess": {
-                            "Transition": "Success"
-                        }
+                        "FriskedSuccess": { "Transition": "Success" }
                     }
                 }
             },
             "Tags": ["actionreward", "low", "infiltration"],
             "Drops": [],
-            "LastModified": "2021-01-06T23:00:28.3629123",
+            "LastModified": "2023-01-26T11:26:56.3741123",
             "Xp": 10,
             "XpModifier": {},
             "PlayableSince": null,
@@ -2709,6 +2445,7 @@
                     "mission",
                     "flashback",
                     "elusive",
+                    "arcade",
                     "escalation",
                     "usercreated",
                     "tutorial",
@@ -2721,7 +2458,8 @@
                 ],
                 "Locations": null,
                 "GameModes": null
-            }
+            },
+            "OrderIndex": 10000
         }
     },
     {
@@ -2735,22 +2473,15 @@
             "Definition": {
                 "ResetOnCycleCompletion": false,
                 "Context": {},
-                "Repeatable": {
-                    "Base": 1,
-                    "Delta": 0
-                },
+                "Repeatable": { "Base": 1, "Delta": 0 },
                 "Scope": "session",
                 "States": {
-                    "Start": {
-                        "Door_Unlocked": {
-                            "Transition": "Success"
-                        }
-                    }
+                    "Start": { "Door_Unlocked": { "Transition": "Success" } }
                 }
             },
             "Tags": ["actionreward", "intermediate", "infiltration"],
             "Drops": [],
-            "LastModified": "2021-01-06T23:00:28.4237377",
+            "LastModified": "2023-01-26T11:26:56.4076936",
             "Xp": 25,
             "XpModifier": {},
             "PlayableSince": null,
@@ -2761,6 +2492,7 @@
                     "mission",
                     "flashback",
                     "elusive",
+                    "arcade",
                     "escalation",
                     "usercreated",
                     "tutorial",
@@ -2772,7 +2504,8 @@
                 ],
                 "Locations": null,
                 "GameModes": null
-            }
+            },
+            "OrderIndex": 10000
         }
     },
     {
@@ -2785,22 +2518,15 @@
             "ImageName": null,
             "Definition": {
                 "Context": {},
-                "Repeatable": {
-                    "Base": 1,
-                    "Delta": 0
-                },
+                "Repeatable": { "Base": 1, "Delta": 0 },
                 "Scope": "profile",
                 "States": {
                     "Start": {
-                        "CrowdNPC_Died": {
-                            "Transition": "Success"
-                        },
+                        "CrowdNPC_Died": { "Transition": "Success" },
                         "Kill": {
                             "Condition": {
                                 "$and": [
-                                    {
-                                        "$eq": ["$Value.IsTarget", false]
-                                    },
+                                    { "$eq": ["$Value.IsTarget", false] },
                                     {
                                         "$not": {
                                             "$eq": ["$Value.KillContext", 1]
@@ -2853,27 +2579,18 @@
             "Definition": {
                 "ResetOnCycleCompletion": false,
                 "Context": {},
-                "Repeatable": {
-                    "Base": 1,
-                    "Delta": 0
-                },
+                "Repeatable": { "Base": 1, "Delta": 0 },
                 "Scope": "session",
                 "States": {
                     "Start": {
-                        "PollResult_Accident": {
-                            "Transition": "Active"
-                        }
+                        "PollResult_Accident": { "Transition": "Active" }
                     },
                     "Active": {
                         "Kill": {
                             "Condition": {
                                 "$and": [
-                                    {
-                                        "$eq": ["$Value.IsTarget", true]
-                                    },
-                                    {
-                                        "$eq": ["$Value.Accident", true]
-                                    }
+                                    { "$eq": ["$Value.IsTarget", true] },
+                                    { "$eq": ["$Value.Accident", true] }
                                 ]
                             },
                             "Transition": "Success"
@@ -2883,7 +2600,7 @@
             },
             "Tags": ["actionreward", "high", "crowdchoice"],
             "Drops": [],
-            "LastModified": "2021-01-06T23:00:28.9624484",
+            "LastModified": "2023-01-26T11:26:56.6638147",
             "Xp": 100,
             "XpModifier": {},
             "PlayableSince": null,
@@ -2894,6 +2611,7 @@
                     "mission",
                     "flashback",
                     "elusive",
+                    "arcade",
                     "escalation",
                     "usercreated",
                     "tutorial",
@@ -2906,593 +2624,8 @@
                 "Locations": null,
                 "GameModes": null
             },
-            "CrowdChoice": {
-                "Tag": "Accident"
-            }
-        }
-    },
-    {
-        "Challenge": {
-            "Id": "c64de151-22e3-4801-8954-51445525a185",
-            "GroupId": "ffbb1ec4-3d33-4cfc-a750-4830910bf8dc",
-            "Name": "UI_CHALLENGES_EDGY_LADDER_A_NAME",
-            "Type": "Hit",
-            "Description": "UI_CHALLENGES_EDGY_LADDER_A_DESC",
-            "ImageName": "images/challenges/Edgy/Edgy_persistentladder_a.jpg",
-            "Definition": {
-                "Context": {},
-                "Scope": "session",
-                "States": {
-                    "Start": {
-                        "Edgy_Ladder_A_Down": {
-                            "Transition": "Success"
-                        }
-                    }
-                }
-            },
-            "Tags": ["story", "easy", "discovery", "shortcut"],
-            "Drops": [],
-            "LastModified": "2021-01-06T23:00:38.0500356",
-            "Xp": 1000,
-            "XpModifier": {},
-            "PlayableSince": null,
-            "PlayableUntil": null,
-            "InclusionData": {
-                "ContractIds": null,
-                "ContractTypes": null,
-                "Locations": ["LOCATION_EDGY_FOX"],
-                "GameModes": null
-            }
-        }
-    },
-    {
-        "Challenge": {
-            "Id": "b1df314f-4c76-48c6-931b-bfdc171d0c8d",
-            "GroupId": "ffbb1ec4-3d33-4cfc-a750-4830910bf8dc",
-            "Name": "UI_CHALLENGES_EDGY_DOOR_A_NAME",
-            "Type": "Hit",
-            "Description": "UI_CHALLENGES_EDGY_DOOR_A_DESC",
-            "ImageName": "images/challenges/Edgy/Edgy_persistentdoor_a.jpg",
-            "Definition": {
-                "Context": {},
-                "Scope": "session",
-                "States": {
-                    "Start": {
-                        "Edgy_Door_A_Open": {
-                            "Transition": "Success"
-                        }
-                    }
-                }
-            },
-            "Tags": ["story", "easy", "discovery", "shortcut"],
-            "Drops": [],
-            "LastModified": "2021-01-06T23:00:38.0551326",
-            "Xp": 1000,
-            "XpModifier": {},
-            "PlayableSince": null,
-            "PlayableUntil": null,
-            "InclusionData": {
-                "ContractIds": null,
-                "ContractTypes": null,
-                "Locations": ["LOCATION_EDGY_FOX"],
-                "GameModes": null
-            }
-        }
-    },
-    {
-        "Challenge": {
-            "Id": "2f68f1d4-e7d7-4f10-8f38-df014a900b12",
-            "GroupId": "ffbb1ec4-3d33-4cfc-a750-4830910bf8dc",
-            "Name": "UI_CHALLENGES_EDGY_DOOR_B_NAME",
-            "Type": "Hit",
-            "Description": "UI_CHALLENGES_EDGY_DOOR_B_DESC",
-            "ImageName": "images/challenges/Edgy/Edgy_persistentdoor_b.jpg",
-            "Definition": {
-                "Context": {},
-                "Scope": "session",
-                "States": {
-                    "Start": {
-                        "Edgy_Door_B_Open": {
-                            "Transition": "Success"
-                        }
-                    }
-                }
-            },
-            "Tags": ["story", "easy", "discovery", "shortcut"],
-            "Drops": [],
-            "LastModified": "2021-01-06T23:00:38.067445",
-            "Xp": 1000,
-            "XpModifier": {},
-            "PlayableSince": null,
-            "PlayableUntil": null,
-            "InclusionData": {
-                "ContractIds": null,
-                "ContractTypes": null,
-                "Locations": ["LOCATION_EDGY_FOX"],
-                "GameModes": null
-            }
-        }
-    },
-    {
-        "Challenge": {
-            "Id": "fe368941-ba7a-419d-b870-abbf45fdf899",
-            "GroupId": "34d53a35-4612-43e9-84b3-e265349918c1",
-            "Name": "UI_CHALLENGES_ELEGANT_DOOR_A_NAME",
-            "Type": "Hit",
-            "Description": "UI_CHALLENGES_ELEGANT_DOOR_A_DESC",
-            "ImageName": "images/challenges/Elegant/Elegant_Door_a.jpg",
-            "Definition": {
-                "Context": {},
-                "Scope": "session",
-                "States": {
-                    "Start": {
-                        "Elegant_Door_A_Open": {
-                            "Transition": "Success"
-                        }
-                    }
-                }
-            },
-            "Tags": ["story", "easy", "discovery", "shortcut"],
-            "Drops": [],
-            "LastModified": "2021-01-06T23:00:36.413789",
-            "Xp": 1000,
-            "XpModifier": {},
-            "PlayableSince": null,
-            "PlayableUntil": null,
-            "InclusionData": {
-                "ContractIds": null,
-                "ContractTypes": null,
-                "Locations": ["LOCATION_ELEGANT_LLAMA"],
-                "GameModes": null
-            }
-        }
-    },
-    {
-        "Challenge": {
-            "Id": "4a75fb3f-b8a5-4f0e-b64c-044f48246c99",
-            "GroupId": "34d53a35-4612-43e9-84b3-e265349918c1",
-            "Name": "UI_CHALLENGES_ELEGANT_DOOR_C_NAME",
-            "Type": "Hit",
-            "Description": "UI_CHALLENGES_ELEGANT_DOOR_C_DESC",
-            "ImageName": "images/challenges/Elegant/Elegant_Door_C.jpg",
-            "Definition": {
-                "Context": {},
-                "Scope": "session",
-                "States": {
-                    "Start": {
-                        "Elegant_Door_C_Open": {
-                            "Transition": "Success"
-                        }
-                    }
-                }
-            },
-            "Tags": ["story", "easy", "discovery", "shortcut"],
-            "Drops": [],
-            "LastModified": "2021-01-06T23:00:36.5555553",
-            "Xp": 1000,
-            "XpModifier": {},
-            "PlayableSince": null,
-            "PlayableUntil": null,
-            "InclusionData": {
-                "ContractIds": null,
-                "ContractTypes": null,
-                "Locations": ["LOCATION_ELEGANT_LLAMA"],
-                "GameModes": null
-            }
-        }
-    },
-    {
-        "Challenge": {
-            "Id": "1131c30d-cf02-4444-aafa-694cea2ce124",
-            "GroupId": "34d53a35-4612-43e9-84b3-e265349918c1",
-            "Name": "UI_CHALLENGES_ELEGANT_DOOR_B_NAME",
-            "Type": "Hit",
-            "Description": "UI_CHALLENGES_ELEGANT_DOOR_B_DESC",
-            "ImageName": "images/challenges/Elegant/Elegant_Door_B.jpg",
-            "Definition": {
-                "Context": {},
-                "Scope": "session",
-                "States": {
-                    "Start": {
-                        "Elegant_Door_B_Open": {
-                            "Transition": "Success"
-                        }
-                    }
-                }
-            },
-            "Tags": ["story", "easy", "discovery", "shortcut"],
-            "Drops": [],
-            "LastModified": "2021-01-06T23:00:36.4180207",
-            "Xp": 1000,
-            "XpModifier": {},
-            "PlayableSince": null,
-            "PlayableUntil": null,
-            "InclusionData": {
-                "ContractIds": null,
-                "ContractTypes": null,
-                "Locations": ["LOCATION_ELEGANT_LLAMA"],
-                "GameModes": null
-            }
-        }
-    },
-    {
-        "Challenge": {
-            "Id": "fcddb4fe-1a44-414d-b769-bef1307ed05b",
-            "GroupId": "82331e45-36fa-4e15-a5e7-e4207e006f30",
-            "Name": "UI_CHALLENGES_TRAPPED_DOOR_B_NAME",
-            "Type": "Hit",
-            "Description": "UI_CHALLENGES_TRAPPED_DOOR_B_DESC",
-            "ImageName": "images/challenges/Trapped/trapped_door_b.jpg",
-            "Definition": {
-                "Context": {},
-                "Scope": "session",
-                "States": {
-                    "Start": {
-                        "Wolverine_Door_B_Open": {
-                            "Transition": "Success"
-                        }
-                    }
-                }
-            },
-            "Tags": ["story", "easy", "discovery", "shortcut"],
-            "Drops": [],
-            "LastModified": "2021-01-06T23:00:38.3643818",
-            "Xp": 1000,
-            "XpModifier": {},
-            "PlayableSince": null,
-            "PlayableUntil": null,
-            "InclusionData": {
-                "ContractIds": null,
-                "ContractTypes": null,
-                "Locations": ["LOCATION_TRAPPED_WOLVERINE"],
-                "GameModes": null
-            }
-        }
-    },
-    {
-        "Challenge": {
-            "Id": "18636f91-e1a9-4091-935c-adbf6cc3de55",
-            "GroupId": "82331e45-36fa-4e15-a5e7-e4207e006f30",
-            "Name": "UI_CHALLENGES_TRAPPED_DOOR_A_NAME",
-            "Type": "Hit",
-            "Description": "UI_CHALLENGES_TRAPPED_DOOR_A_DESC",
-            "ImageName": "images/challenges/Trapped/trapped_door_a.jpg",
-            "Definition": {
-                "Context": {},
-                "Scope": "session",
-                "States": {
-                    "Start": {
-                        "Wolverine_Door_A_Open": {
-                            "Transition": "Success"
-                        }
-                    }
-                }
-            },
-            "Tags": ["story", "easy", "discovery", "shortcut"],
-            "Drops": [],
-            "LastModified": "2021-01-06T23:00:38.359856",
-            "Xp": 1000,
-            "XpModifier": {},
-            "PlayableSince": null,
-            "PlayableUntil": null,
-            "InclusionData": {
-                "ContractIds": null,
-                "ContractTypes": null,
-                "Locations": ["LOCATION_TRAPPED_WOLVERINE"],
-                "GameModes": null
-            }
-        }
-    },
-    {
-        "Challenge": {
-            "Id": "04ef301f-a62d-47f6-8cb8-3b8697e0c06c",
-            "GroupId": "7e9a3b46-9642-466a-ad17-5356a4c42982",
-            "Name": "UI_CHALLENGES_RAT_DOOR_B_NAME",
-            "Type": "Hit",
-            "Description": "UI_CHALLENGES_RAT_DOOR_B_DESC",
-            "ImageName": "images/challenges/Wet/Rat_door_a.jpg",
-            "Definition": {
-                "Context": {},
-                "Scope": "session",
-                "States": {
-                    "Start": {
-                        "Rat_Door_A_Open": {
-                            "Transition": "Success"
-                        }
-                    }
-                }
-            },
-            "Tags": ["story", "easy", "discovery", "shortcut"],
-            "Drops": [],
-            "LastModified": "2021-02-23T13:33:48.3866227",
-            "Xp": 1000,
-            "XpModifier": {},
-            "PlayableSince": null,
-            "PlayableUntil": null,
-            "InclusionData": {
-                "ContractIds": null,
-                "ContractTypes": null,
-                "Locations": ["LOCATION_WET_RAT"],
-                "GameModes": null
-            }
-        }
-    },
-    {
-        "Challenge": {
-            "Id": "5f8cef5b-c631-4304-af90-46efa4ca7deb",
-            "GroupId": "7e9a3b46-9642-466a-ad17-5356a4c42982",
-            "Name": "UI_CHALLENGES_RAT_DOOR_A_NAME",
-            "Type": "Hit",
-            "Description": "UI_CHALLENGES_RAT_DOOR_A_DESC",
-            "ImageName": "images/challenges/Wet/Rat_door_c.jpg",
-            "Definition": {
-                "Context": {},
-                "Scope": "session",
-                "States": {
-                    "Start": {
-                        "Rat_Door_B_Open": {
-                            "Transition": "Success"
-                        }
-                    }
-                }
-            },
-            "Tags": ["story", "easy", "discovery", "shortcut"],
-            "Drops": [],
-            "LastModified": "2021-02-23T13:33:48.4011233",
-            "Xp": 1000,
-            "XpModifier": {},
-            "PlayableSince": null,
-            "PlayableUntil": null,
-            "InclusionData": {
-                "ContractIds": null,
-                "ContractTypes": null,
-                "Locations": ["LOCATION_WET_RAT"],
-                "GameModes": null
-            }
-        }
-    },
-    {
-        "Challenge": {
-            "Id": "aa4982db-045c-47d0-aabb-42b86a0714fb",
-            "GroupId": "7e9a3b46-9642-466a-ad17-5356a4c42982",
-            "Name": "UI_CHALLENGES_RAT_LADDER_A_NAME",
-            "Type": "Hit",
-            "Description": "UI_CHALLENGES_RAT_LADDER_A_DESC",
-            "ImageName": "images/challenges/Wet/Rat_ladder_a.jpg",
-            "Definition": {
-                "Context": {},
-                "Scope": "session",
-                "States": {
-                    "Start": {
-                        "Rat_Ladder_A_Open": {
-                            "Transition": "Success"
-                        }
-                    }
-                }
-            },
-            "Tags": ["story", "easy", "discovery", "shortcut"],
-            "Drops": [],
-            "LastModified": "2021-01-06T23:00:38.4390467",
-            "Xp": 1000,
-            "XpModifier": {},
-            "PlayableSince": null,
-            "PlayableUntil": null,
-            "InclusionData": {
-                "ContractIds": null,
-                "ContractTypes": null,
-                "Locations": ["LOCATION_WET_RAT"],
-                "GameModes": null
-            }
-        }
-    },
-    {
-        "Challenge": {
-            "Id": "23ff6a96-6540-4f24-9bd2-a62c3580ab8e",
-            "GroupId": "787f547d-67d8-4b53-b500-de81e244239a",
-            "Name": "UI_CHALLENGES_ANCESTRAL_LADDER_A_NAME",
-            "Type": "Hit",
-            "Description": "UI_CHALLENGES_ANCESTRAL_LADDER_A_DESC",
-            "ImageName": "images/challenges/Ancestral/Bulldog_ladder_a.jpg",
-            "Definition": {
-                "Context": {},
-                "Scope": "session",
-                "States": {
-                    "Start": {
-                        "Bulldog_Ladder_A_Open": {
-                            "Transition": "Success"
-                        }
-                    }
-                }
-            },
-            "Tags": ["story", "easy", "discovery", "shortcut"],
-            "Drops": [],
-            "LastModified": "2021-01-06T23:00:35.7147281",
-            "Xp": 1000,
-            "XpModifier": {},
-            "PlayableSince": null,
-            "PlayableUntil": null,
-            "InclusionData": {
-                "ContractIds": null,
-                "ContractTypes": null,
-                "Locations": [
-                    "LOCATION_ANCESTRAL_BULLDOG",
-                    "LOCATION_ANCESTRAL_SMOOTHSNAKE"
-                ],
-                "GameModes": null
-            }
-        }
-    },
-    {
-        "Challenge": {
-            "Id": "87d616bc-37d9-47ef-8efd-01b621e5a54c",
-            "GroupId": "787f547d-67d8-4b53-b500-de81e244239a",
-            "Name": "UI_CHALLENGES_ANCESTRAL_LADDER_B_NAME",
-            "Type": "Hit",
-            "Description": "UI_CHALLENGES_ANCESTRAL_LADDER_B_DESC",
-            "ImageName": "images/challenges/Ancestral/Bulldog_ladder_b.jpg",
-            "Definition": {
-                "Context": {},
-                "Scope": "session",
-                "States": {
-                    "Start": {
-                        "Bulldog_Ladder_B_Open": {
-                            "Transition": "Success"
-                        }
-                    }
-                }
-            },
-            "Tags": ["story", "easy", "discovery", "shortcut"],
-            "Drops": [],
-            "LastModified": "2021-01-06T23:00:35.8532662",
-            "Xp": 1000,
-            "XpModifier": {},
-            "PlayableSince": null,
-            "PlayableUntil": null,
-            "InclusionData": {
-                "ContractIds": null,
-                "ContractTypes": null,
-                "Locations": [
-                    "LOCATION_ANCESTRAL_BULLDOG",
-                    "LOCATION_ANCESTRAL_SMOOTHSNAKE"
-                ],
-                "GameModes": null
-            }
-        }
-    },
-    {
-        "Challenge": {
-            "Id": "319d9198-336b-4739-b218-7794f4433f06",
-            "GroupId": "d62d4b44-1ad3-4cbb-891c-5256e628a3e9",
-            "Name": "UI_CHALLENGES_GOLDEN_LADDER_C_NAME",
-            "Type": "Hit",
-            "Description": "UI_CHALLENGES_GOLDEN_LADDER_C_DESC",
-            "ImageName": "images/challenges/Golden/Golden_ladder_c.jpg",
-            "Definition": {
-                "Context": {},
-                "Scope": "session",
-                "States": {
-                    "Start": {
-                        "Gecko_Ladder_C_Down": {
-                            "Transition": "Success"
-                        }
-                    }
-                }
-            },
-            "Tags": ["story", "easy", "discovery", "shortcut"],
-            "Drops": [],
-            "LastModified": "2021-01-06T23:00:36.5734366",
-            "Xp": 1000,
-            "XpModifier": {},
-            "PlayableSince": null,
-            "PlayableUntil": null,
-            "InclusionData": {
-                "ContractIds": null,
-                "ContractTypes": null,
-                "Locations": ["LOCATION_GOLDEN_GECKO"],
-                "GameModes": null
-            }
-        }
-    },
-    {
-        "Challenge": {
-            "Id": "4a3120cc-403c-41a7-807c-767f8cfb80af",
-            "GroupId": "d62d4b44-1ad3-4cbb-891c-5256e628a3e9",
-            "Name": "UI_CHALLENGES_GOLDEN_LADDER_B_NAME",
-            "Type": "Hit",
-            "Description": "UI_CHALLENGES_GOLDEN_LADDER_B_DESC",
-            "ImageName": "images/challenges/Golden/Golden_ladder_b.jpg",
-            "Definition": {
-                "Context": {},
-                "Scope": "session",
-                "States": {
-                    "Start": {
-                        "Gecko_Ladder_B_Down": {
-                            "Transition": "Success"
-                        }
-                    }
-                }
-            },
-            "Tags": ["story", "easy", "discovery", "shortcut"],
-            "Drops": [],
-            "LastModified": "2021-01-06T23:00:36.5692687",
-            "Xp": 1000,
-            "XpModifier": {},
-            "PlayableSince": null,
-            "PlayableUntil": null,
-            "InclusionData": {
-                "ContractIds": null,
-                "ContractTypes": null,
-                "Locations": ["LOCATION_GOLDEN_GECKO"],
-                "GameModes": null
-            }
-        }
-    },
-    {
-        "Challenge": {
-            "Id": "6c537401-4577-4b5e-b1f9-a0b3cbb645f6",
-            "GroupId": "d62d4b44-1ad3-4cbb-891c-5256e628a3e9",
-            "Name": "UI_CHALLENGES_GOLDEN_DOOR_A_NAME",
-            "Type": "Hit",
-            "Description": "UI_CHALLENGES_GOLDEN_DOOR_A_DESC",
-            "ImageName": "images/challenges/Golden/Golden_door_a.jpg",
-            "Definition": {
-                "Context": {},
-                "Scope": "session",
-                "States": {
-                    "Start": {
-                        "Gecko_Door_A_Open": {
-                            "Transition": "Success"
-                        }
-                    }
-                }
-            },
-            "Tags": ["story", "easy", "discovery", "shortcut"],
-            "Drops": [],
-            "LastModified": "2021-01-06T23:00:36.5777154",
-            "Xp": 1000,
-            "XpModifier": {},
-            "PlayableSince": null,
-            "PlayableUntil": null,
-            "InclusionData": {
-                "ContractIds": null,
-                "ContractTypes": null,
-                "Locations": ["LOCATION_GOLDEN_GECKO"],
-                "GameModes": null
-            }
-        }
-    },
-    {
-        "Challenge": {
-            "Id": "a6a5a962-8e92-42a7-bd44-824610d7399f",
-            "GroupId": "d62d4b44-1ad3-4cbb-891c-5256e628a3e9",
-            "Name": "UI_CHALLENGES_GOLDEN_LADDER_A_NAME",
-            "Type": "Hit",
-            "Description": "UI_CHALLENGES_GOLDEN_LADDER_A_DESC",
-            "ImageName": "images/challenges/Golden/Golden_ladder_a.jpg",
-            "Definition": {
-                "Context": {},
-                "Scope": "session",
-                "States": {
-                    "Start": {
-                        "Gecko_Ladder_A_Down": {
-                            "Transition": "Success"
-                        }
-                    }
-                }
-            },
-            "Tags": ["story", "easy", "discovery", "shortcut"],
-            "Drops": [],
-            "LastModified": "2021-01-06T23:00:36.5650563",
-            "Xp": 1000,
-            "XpModifier": {},
-            "PlayableSince": null,
-            "PlayableUntil": null,
-            "InclusionData": {
-                "ContractIds": null,
-                "ContractTypes": null,
-                "Locations": ["LOCATION_GOLDEN_GECKO"],
-                "GameModes": null
-            }
+            "CrowdChoice": { "Tag": "Accident" },
+            "OrderIndex": 10000
         }
     },
     {
