@@ -4,12 +4,15 @@
         "Objectives": [
             {
                 "Primary": true,
+                "Text": null,
                 "SuccessEvent": {
                     "EventName": "Kill",
                     "EventValues": {
                         "RepositoryId": "e63259c4-1a82-4299-9633-6ac54991e1e9"
                     }
                 },
+                "ResetEvent": null,
+                "FailedEvent": null,
                 "Id": "85f63c02-f1c1-4d41-b1d0-a3ef765d2850",
                 "IsHidden": true
             },
@@ -49,6 +52,24 @@
         "Bricks": [
             "assembly:/_pro/scenes/missions/marrakesh/mission_marrakesh_maitai.brick"
         ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/missions/marrakesh/vr_agility_overrides_marrakesh_variations.brick",
+                    "assembly:/_PRO/scenes/missions/marrakesh/vr_overrides_python.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/missions/marrakesh/vr_agility_overrides_marrakesh_variations.brick",
+                    "assembly:/_PRO/scenes/missions/marrakesh/vr_overrides_python.brick"
+                ]
+            }
+        ],
         "GameChangers": []
     },
     "Metadata": {
@@ -57,6 +78,7 @@
         "Description": "UI_CONTRACT_MAI_TAI_DESC",
         "BriefingVideo": "briefing_maitai",
         "DebriefingVideo": "debriefing_maitai",
+        "CodeName_Hint": "Mai Tai",
         "Location": "LOCATION_MARRAKECH_NIGHT",
         "ScenePath": "assembly:/_pro/scenes/missions/marrakesh/_scene_python.entity",
         "TileImage": "images/contracts/elusive/014_MaiTai/Title.jpg",

@@ -4,12 +4,15 @@
         "Objectives": [
             {
                 "Primary": true,
+                "Text": null,
                 "SuccessEvent": {
                     "EventName": "Kill",
                     "EventValues": {
                         "RepositoryId": "ab3fe438-acd0-49a4-a0f4-690c86a10324"
                     }
                 },
+                "ResetEvent": null,
+                "FailedEvent": null,
                 "Id": "85f63c02-f1c1-4d41-b1d0-a3ef765d2850",
                 "IsHidden": true
             }
@@ -19,7 +22,25 @@
         "Bricks": [
             "assembly:/_PRO/Scenes/Missions/CoastalTown/Mission_Caipirinha.brick"
         ],
-        "GameChangers": []
+        "GameChangers": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/Missions/coastaltown/vr_agility_overrides_coastaltown_variations.brick",
+                    "assembly:/_PRO/Scenes/Missions/coastaltown/vr_overrides_copperhead.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/Missions/coastaltown/vr_agility_overrides_coastaltown_variations.brick",
+                    "assembly:/_PRO/Scenes/Missions/coastaltown/vr_overrides_copperhead.brick"
+                ]
+            }
+        ]
     },
     "Metadata": {
         "Id": "b555d6a4-8b4d-4e1e-b6bd-ebd135ad1e01",
@@ -28,6 +49,7 @@
         "Description": "UI_CONTRACT_CAIPIRINHA_DESC",
         "BriefingVideo": "briefing_caipirinha",
         "DebriefingVideo": "debriefing_caipirinha",
+        "CodeName_Hint": "Caipirinha",
         "Location": "LOCATION_COASTALTOWN_MOVIESET",
         "ScenePath": "assembly:/_PRO/Scenes/Missions/CoastalTown/_Scene_Copperhead.entity",
         "TileImage": "images/contracts/elusive/005_Caipirinha/Title.jpg",
