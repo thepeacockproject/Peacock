@@ -4202,7 +4202,8 @@
                     }
                 }
             ]
-        },{
+        },
+        {
             "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
             "Image": "images/challenges/categories/elusive/tile.jpg",
             "Icon": "elusive",
@@ -4270,10 +4271,7 @@
                                     "Transition": "Success"
                                 },
                                 "AccidentBodyFound": {
-                                    "$set": [
-                                        "LastAccidentTime",
-                                        "$Timestamp"
-                                    ]
+                                    "$set": ["LastAccidentTime", "$Timestamp"]
                                 },
                                 "Witnesses": {
                                     "Condition": {
@@ -4349,10 +4347,7 @@
                                     },
                                     {
                                         "Condition": {
-                                            "$eq": [
-                                                "$Value.IsTarget",
-                                                true
-                                            ]
+                                            "$eq": ["$Value.IsTarget", true]
                                         },
                                         "Actions": {
                                             "$pushunique": [
@@ -4411,18 +4406,12 @@
                                             ]
                                         },
                                         "Condition": {
-                                            "$eq": [
-                                                "$Value.event",
-                                                "spotted"
-                                            ]
+                                            "$eq": ["$Value.event", "spotted"]
                                         }
                                     },
                                     {
                                         "Actions": {
-                                            "$set": [
-                                                "RecordingDestroyed",
-                                                true
-                                            ]
+                                            "$set": ["RecordingDestroyed", true]
                                         },
                                         "Condition": {
                                             "$or": [
@@ -4445,18 +4434,10 @@
                             }
                         }
                     },
-                    "Tags": [
-                        "story",
-                        "hard",
-                        "elusive"
-                    ],
+                    "Tags": ["story", "hard", "elusive"],
                     "InclusionData": {
-                        "ContractTypes": [
-                            "elusive"
-                        ],
-                        "ContractIds": [
-                            "b2c0251e-1803-4e12-b860-b9fa6ce5c004"
-                        ]
+                        "ContractTypes": ["elusive"],
+                        "ContractIds": ["b2c0251e-1803-4e12-b860-b9fa6ce5c004"]
                     }
                 },
                 {
@@ -4487,28 +4468,17 @@
                             "Start": {
                                 "Kill": {
                                     "Condition": {
-                                        "$eq": [
-                                            "$Value.IsTarget",
-                                            true
-                                        ]
+                                        "$eq": ["$Value.IsTarget", true]
                                     },
                                     "Transition": "Success"
                                 }
                             }
                         }
                     },
-                    "Tags": [
-                        "story",
-                        "medium",
-                        "elusive"
-                    ],
+                    "Tags": ["story", "medium", "elusive"],
                     "InclusionData": {
-                        "ContractTypes": [
-                            "elusive"
-                        ],
-                        "ContractIds": [
-                            "b2c0251e-1803-4e12-b860-b9fa6ce5c004"
-                        ]
+                        "ContractTypes": ["elusive"],
+                        "ContractIds": ["b2c0251e-1803-4e12-b860-b9fa6ce5c004"]
                     }
                 }
             ]
