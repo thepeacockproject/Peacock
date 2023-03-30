@@ -8,6 +8,7 @@
             {
                 "Id": "e24e8b07-8ac7-4ec3-acd5-7b671308ce2f",
                 "Primary": true,
+                "ResetEvent": null,
                 "IsHidden": true,
                 "SuccessEvent": {
                     "EventName": "Kill",
@@ -19,11 +20,7 @@
             {
                 "Id": "29122337-1643-48d2-a76f-d7c738378cb6",
                 "Category": "primary",
-                "OnActive": {
-                    "IfCompleted": {
-                        "Visible": false
-                    }
-                },
+                "OnActive": { "IfCompleted": { "Visible": false } },
                 "IsHidden": true,
                 "BriefingText": "$loc UI_CONTRACT_PISCO_SOUR_FAIL_GONZALES_HARMED",
                 "Type": "statemachine",
@@ -74,6 +71,23 @@
         "Bricks": [
             "assembly:/_PRO/Scenes/Missions/CoastalTown/mission_piscosour.brick"
         ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_octopus.brick",
+                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_octopus.brick"
+                ]
+            }
+        ],
         "GameChangers": []
     },
     "Metadata": {
@@ -82,6 +96,7 @@
         "Description": "UI_CONTRACT_PISCO_SOUR_DESC",
         "BriefingVideo": "briefing_piscosour",
         "DebriefingVideo": "debriefing_piscosour",
+        "CodeName_Hint": "Pisco Sour",
         "ScenePath": "assembly:/_PRO/Scenes/Missions/CoastalTown/_scene_octopus.entity",
         "Location": "LOCATION_COASTALTOWN",
         "TileImage": "images/contracts/elusive/013_PiscoSour/Title.jpg",
