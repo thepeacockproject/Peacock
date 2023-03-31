@@ -31,6 +31,7 @@ export interface MissionEndChallenge {
 
 export interface MissionEndDrop {
     Unlockable: Unlockable
+    SourceChallenge?: Omit<MissionEndChallenge, "Drops">
 }
 
 export interface MissionEndAchievedMastery {

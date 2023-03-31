@@ -39,8 +39,8 @@ import { writeUserData } from "../databaseHandler"
 export class ProgressionService {
     //NOTE: Official will always grant XP to both Location Mastery and the Player Profile
     grantProfileProgression(
-        actionXp = 0,
-        masteryXp = 0,
+        actionXp: number,
+        masteryXp: number,
         drops: Unlockable[],
         contractSession: ContractSession,
         userProfile: UserProfile,

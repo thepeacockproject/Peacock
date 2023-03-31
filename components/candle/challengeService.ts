@@ -1141,8 +1141,8 @@ export class ChallengeService extends ChallengeRegistry {
         }
 
         controller.progressionService.grantProfileProgression(
-            challenge.Xp,
-            challenge.Rewards?.MasteryXP,
+            challenge.Xp ?? 0,
+            challenge.Rewards?.MasteryXP ?? 0,
             challenge?.Drops ?? [],
             session,
             userData,
