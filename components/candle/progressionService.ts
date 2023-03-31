@@ -94,7 +94,7 @@ export class ProgressionService {
             .filter((drop) => drop.Level > minLevel && drop.Level <= maxLevel)
             .map((drop) => drop.Id)
 
-        const unlockables = getDataForUnlockables(gameVersion, unlockableIds)
+        let unlockables = getDataForUnlockables(gameVersion, unlockableIds)
 
         /**
          * If missions type is evergreen, checks if any of the unlockables has unlockable gear, and award those too
@@ -106,13 +106,11 @@ export class ProgressionService {
                 if (u.Properties.Unlocks) acc.push(...u.Properties.Unlocks)
                 return acc
             }, [])
-            evergreenGearUnlockables.length &&
-                unlockables.push(
-                    ...getDataForUnlockables(
-                        gameVersion,
-                        evergreenGearUnlockables,
-                    ),
-                )
+
+            unlockables = getDataForUnlockables(
+                gameVersion,
+                evergreenGearUnlockables,
+            )
         }
 
         return unlockables

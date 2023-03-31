@@ -150,7 +150,7 @@ function filterUnlockedContent(
 
             const canUnlock = locationData.Level >= unlockableMasteryData.Level
 
-            if (canUnlock) {
+            if (canUnlock && unlockable.Type !== "evergreenmastery") {
                 acc[0].push(unlockable)
             }
 
