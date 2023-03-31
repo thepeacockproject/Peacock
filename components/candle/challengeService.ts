@@ -1148,8 +1148,6 @@ export class ChallengeService extends ChallengeRegistry {
             userData,
         )
 
-        writeUserData(userId, gameVersion)
-
         this.hooks.onChallengeCompleted.call(userId, challenge, gameVersion)
 
         // Check if completing this challenge also completes any dependency trees depending on it
