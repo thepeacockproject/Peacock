@@ -97,9 +97,7 @@ export class ProgressionService {
         let unlockables = getDataForUnlockables(gameVersion, unlockableIds)
 
         /**
-         * If missions type is evergreen, checks if any of the unlockables has unlockable gear, and award those too
-         *
-         * This is required to unlock the item to the normal inventory too, as the freelancer and normal inventory item ID is not the same
+         * If missions type is evergreen, awards only the unlockables from gear type to the normal inventory
          */
         if (isEvergreenContract) {
             const evergreenGearUnlockables = unlockables.reduce((acc, u) => {
