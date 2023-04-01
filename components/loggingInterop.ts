@@ -85,8 +85,8 @@ const LOG_LEVEL_NONE = "none"
 const LOG_CATEGORY_DEFAULT =
     isDebug && !isTest ? LogCategory.CALLER : LogCategory.NONE
 
-const fileLogLevel = process.env.LOG_LEVEL_FILE || LogLevel.TRACE
-const consoleLogLevel = process.env.LOG_LEVEL_CONSOLE || LogLevel.INFO
+const fileLogLevel = process.env.LOG_LEVEL_FILE || LogLevel.SILLY
+const consoleLogLevel = process.env.LOG_LEVEL_CONSOLE || LogLevel.SILLY
 const disabledLogCategories =
     process.env.LOG_CATEGORY_DISABLED?.split(",") || []
 
@@ -224,6 +224,10 @@ export function log(
             levelString = "Trace"
             levelStringColored = picocolors.bgYellow(levelString)
             stack = new Error("Trace").stack
+            break
+        case LogLevel.SILLY:
+            levelString = "Silly"
+            levelStringColored = picocolors.bgMagenta(levelString)
             break
     }
 
