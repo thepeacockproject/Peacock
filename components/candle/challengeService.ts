@@ -902,7 +902,7 @@ export class ChallengeService extends ChallengeRegistry {
             Rewards: {
                 MasteryXP: challenge.Rewards.MasteryXP,
             },
-            Drops: [],
+            Drops: challenge.Drops,
             Completed: progression.Completed,
             IsPlayable: isDestination,
             IsLocked: challenge.IsLocked || false,
