@@ -896,6 +896,23 @@ export class ChallengeService extends ChallengeRegistry {
         userId: string,
         isDestination = false,
     ): CompiledChallengeTreeData {
+        const allUnlockables = getVersionedConfig<Unlockable[]>(
+            "allunlockables",
+            gameVersion,
+            false,
+        )
+
+        const drops = challenge.Drops.map((e) =>
+            allUnlockables.find((f) => f.Id === e),
+        ).filter((e) => e !== undefined)
+
+        if (drops.length !== challenge.Drops.length) {
+            log(
+                LogLevel.DEBUG,
+                `Challenge ${challenge.Id} contains non-existing drops!`,
+            )
+        }
+
         return {
             // GetChallengeTreeFor
             Id: challenge.Id,
@@ -905,7 +922,7 @@ export class ChallengeService extends ChallengeRegistry {
             Rewards: {
                 MasteryXP: challenge.Rewards.MasteryXP,
             },
-            Drops: [],
+            Drops: drops,
             Completed: progression.Completed,
             IsPlayable: isDestination,
             IsLocked: challenge.IsLocked || false,
