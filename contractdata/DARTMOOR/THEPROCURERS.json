@@ -1,19 +1,16 @@
 {
     "Data": {
+        "EnableSaving": true,
         "Entrances": [
+            "0aec817c-738e-4381-bbd4-a13b5d1c6730",
             "5314c86b-7173-412b-a0b5-b0d9af2da722",
-            "3812ea57-e29c-42cb-b93a-ea2d3e6a6806",
             "d4ec0c94-02b2-4aae-be9e-cbb5cc7d7e4a",
-            "0aec817c-738e-4381-bbd4-a13b5d1c6730"
+            "3812ea57-e29c-42cb-b93a-ea2d3e6a6806"
         ],
-        "Bricks": [
-            "assembly:/_PRO/scenes/missions/ancestral/elusive_vesper.brick"
-        ],
-        "GameChangers": [],
         "Objectives": [
             {
-                "_comment": "----- Eliminate Jack Roe -----",
-                "Id": "395b06cd-bf61-4fa6-af98-0c8e06c3f7f1",
+                "_comment": "----- Eliminate The Chef -----",
+                "Id": "8ce9983e-c491-4bd2-bedc-44e1deb236f9",
                 "Primary": true,
                 "IsHidden": true,
                 "SuccessEvent": {
@@ -24,8 +21,8 @@
                 }
             },
             {
-                "_comment": "----- Eliminate Robert Burk -----",
-                "Id": "0a6115b6-1174-49de-bcf9-050795021463",
+                "_comment": "----- Eliminate The Embalmer -----",
+                "Id": "0fc1b8ec-7c9d-4c93-bcbe-e5912cb52742",
                 "Primary": true,
                 "IsHidden": true,
                 "SuccessEvent": {
@@ -35,20 +32,42 @@
                     }
                 }
             }
+        ],
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/ancestral/elusive_vesper.brick"
+        ],
+        "GameChangers": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ancestral_bulldog.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ancestral_bulldog.brick"
+                ]
+            }
         ]
     },
     "Metadata": {
         "Id": "1fcaff1b-7fa3-4b9f-a586-9c7a1689b48d",
+        "CodeName_Hint": "Vesper",
         "Type": "elusive",
         "Title": "UI_CONTRACT_VESPER_TITLE",
         "Description": "UI_CONTRACT_VESPER_DESC",
         "BriefingVideo": "briefing_vesper",
         "DebriefingVideo": "debriefing_vesper",
         "ScenePath": "assembly:/_pro/scenes/missions/ancestral/scene_ancestral_vesper.entity",
-        "TileImage": "images/contracts/elusive/s3_vesper/title.jpg",
+        "TileImage": "images/contracts/elusive/S3_Vesper/Title.jpg",
         "Location": "LOCATION_ANCESTRAL_BULLDOG",
-        "IsPublished": true,
         "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "PublicId": "028795308747",
         "Entitlements": ["LOCATION_ANCESTRAL"]
     },
     "UserData": {}

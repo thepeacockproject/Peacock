@@ -944,6 +944,7 @@ export class Controller {
                     Description: e.Challenge.Description,
                     Definition: e.Challenge.Definition,
                     Xp: e.Challenge.Xp,
+                    InclusionData: e.Challenge.InclusionData,
                 }
             })
 
