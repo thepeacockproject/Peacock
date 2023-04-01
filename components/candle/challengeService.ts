@@ -158,6 +158,15 @@ export abstract class ChallengeRegistry {
                 this.groups.get("GLOBAL_CLASSIC_CHALLENGES")?.get(groupId),
             )
         }
+        if (
+            groupId === "elusive" &&
+            location !== "GLOBAL_ELUSIVES_CHALLENGES"
+        ) {
+            return mergeSavedChallengeGroups(
+                this.groups.get(location)?.get(groupId),
+                this.groups.get("GLOBAL_ELUSIVES_CHALLENGES")?.get(groupId),
+            )
+        }
         return this.groups.get(location)?.get(groupId)
     }
 
@@ -171,6 +180,17 @@ export abstract class ChallengeRegistry {
                 ...(this.groupContents.get(location)?.get(groupId) ?? []),
                 ...(this.groupContents
                     .get("GLOBAL_CLASSIC_CHALLENGES")
+                    ?.get(groupId) ?? []),
+            ])
+        }
+        if (
+            groupId === "elusive" &&
+            location !== "GLOBAL_ELUSIVES_CHALLENGES"
+        ) {
+            return new Set([
+                ...(this.groupContents.get(location)?.get(groupId) ?? []),
+                ...(this.groupContents
+                    .get("GLOBAL_ELUSIVES_CHALLENGES")
                     ?.get(groupId) ?? []),
             ])
         }
