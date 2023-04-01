@@ -26,7 +26,7 @@ export interface MissionEndChallenge {
     XPGain: number
     IsGlobal: boolean
     IsActionReward: boolean
-    Drops: Unlockable[]
+    Drops: string[]
 }
 
 export interface MissionEndDrop {

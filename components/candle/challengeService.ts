@@ -136,8 +136,8 @@ export abstract class ChallengeRegistry {
     getChallengesUnlockables() {
         return [...this.challenges.values()].reduce((acc, challenge) => {
             if (challenge?.Drops?.length) {
-                challenge?.Drops.forEach(
-                    (drop) => (acc[drop.Id] = challenge.Id),
+                challenge.Drops.forEach(
+                    (dropId) => (acc[dropId] = challenge.Id),
                 )
             }
             return acc

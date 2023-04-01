@@ -20,7 +20,6 @@ import {
     ContextScopedStorageLocation,
     InclusionData,
     MissionManifestObjective,
-    Unlockable,
 } from "./types"
 
 export interface SavedChallenge {
@@ -31,7 +30,7 @@ export interface SavedChallenge {
     Rewards: {
         MasteryXP: number
     }
-    Drops: Unlockable[]
+    Drops: string[]
     IsPlayable: boolean
     IsLocked: boolean
     HideProgression: boolean

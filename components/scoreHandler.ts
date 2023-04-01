@@ -69,6 +69,7 @@ import {
     MissionEndChallenge,
 } from "./types/score"
 import { MasteryData } from "./types/mastery"
+import { getDataForUnlockables } from "./inventory"
 
 /**
  * Checks the criteria of each possible play-style, ranking them by scoring.
@@ -992,7 +993,10 @@ export async function missionEnd(
     const challengeDrops: MissionEndDrop[] =
         calculateXpResult.completedChallenges.reduce((acc, challenge) => {
             if (challenge?.Drops?.length) {
-                const drops = challenge.Drops
+                const drops = getDataForUnlockables(
+                    req.gameVersion,
+                    challenge.Drops,
+                )
                 delete challenge.Drops
 
                 for (const drop of drops) {

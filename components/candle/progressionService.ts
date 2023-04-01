@@ -19,12 +19,7 @@
 import { getSubLocationByName } from "../contracts/dataGen"
 import { controller } from "../controller"
 import { grantDrops, getDataForUnlockables } from "../inventory"
-import type {
-    ContractSession,
-    UserProfile,
-    Unlockable,
-    GameVersion,
-} from "../types/types"
+import type { ContractSession, UserProfile, GameVersion } from "../types/types"
 import {
     DEFAULT_MASTERY_MAXLEVEL,
     clampValue,
@@ -41,7 +36,7 @@ export class ProgressionService {
     grantProfileProgression(
         actionXp: number,
         masteryXp: number,
-        drops: Unlockable[],
+        dropIds: string[],
         contractSession: ContractSession,
         userProfile: UserProfile,
     ) {
@@ -60,7 +55,10 @@ export class ProgressionService {
         )
 
         // Award provided drops. E.g. From challenges
-        grantDrops(userProfile.Id, drops)
+        grantDrops(
+            userProfile.Id,
+            getDataForUnlockables(contractSession.gameVersion, dropIds),
+        )
 
         // Saves profile data
         writeUserData(userProfile.Id, contractSession.gameVersion)
