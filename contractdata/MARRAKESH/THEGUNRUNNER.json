@@ -5,9 +5,8 @@
             {
                 "Id": "905e7cd5-1dd9-4ce3-bec2-a0120b921308",
                 "Primary": true,
-                "FailedEvent": {
-                    "EventName": "TargetEscaped"
-                },
+                "ResetEvent": null,
+                "FailedEvent": { "EventName": "TargetEscaped" },
                 "IsHidden": true,
                 "SuccessEvent": {
                     "EventName": "Kill",
@@ -20,6 +19,23 @@
         "Bricks": [
             "assembly:/_pro/scenes/missions/marrakesh/mission_marrakesh_screwdriver.brick"
         ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/missions/marrakesh/vr_overrides_spider.brick",
+                    "assembly:/_PRO/scenes/missions/marrakesh/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/missions/marrakesh/vr_overrides_spider.brick"
+                ]
+            }
+        ],
         "GameChangers": []
     },
     "Metadata": {
@@ -28,6 +44,7 @@
         "Description": "UI_CONTRACT_SCREWDRIVER_DESC",
         "BriefingVideo": "briefing_screwdriver",
         "DebriefingVideo": "debriefing_screwdriver",
+        "CodeName_Hint": "Screwdriver",
         "Location": "LOCATION_MARRAKECH",
         "ScenePath": "assembly:/_pro/scenes/missions/marrakesh/_scene_spider.entity",
         "TileImage": "images/contracts/elusive/010_Screwdriver/Title.jpg",

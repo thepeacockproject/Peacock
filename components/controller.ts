@@ -913,7 +913,7 @@ export class Controller {
      *
      */
     private registerGlobalChallenges(gameVersion: GameVersion) {
-        const regGlobalChallenges = getVersionedConfig<
+        const regGlobalChallenges: RegistryChallenge[] = getVersionedConfig<
             CompiledChallengeIngameData[]
         >("GlobalChallenges", gameVersion, true).map((e) => {
             const tags = e.Tags || []
@@ -928,6 +928,7 @@ export class Controller {
                 Description: e.Description,
                 Definition: e.Definition,
                 Xp: e.Xp ?? 0,
+                InclusionData: e.InclusionData,
             }
         })
 
@@ -1317,11 +1318,11 @@ export function contractIdToHitObject(
         SubLocation: subLocation,
         ChallengesCompleted: challengeCompletion.CompletedChallengesCount,
         ChallengesTotal: challengeCompletion.ChallengesCount,
-        LocationLevel: 1,
-        LocationMaxLevel: 1,
-        LocationCompletion: 0,
-        LocationXPLeft: 6000,
-        LocationHideProgression: false,
+        LocationLevel: userCentric.Data.LocationLevel,
+        LocationMaxLevel: userCentric.Data.LocationMaxLevel,
+        LocationCompletion: userCentric.Data.LocationCompletion,
+        LocationXPLeft: userCentric.Data.LocationXpLeft,
+        LocationHideProgression: userCentric.Data.LocationHideProgression,
     }
 }
 

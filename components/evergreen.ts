@@ -48,6 +48,12 @@ export async function getCpd(
             false,
         ) as ContractProgressionData
 
+        //NOTE: Override the EvergreenLevel with the latest Mastery Level
+        if (getFlag("gameplayUnlockAllFreelancerMasteries")) {
+            //TODO: Get rid of hardcoded values
+            userData.Extensions.CPD[cpdID]["EvergreenLevel"] = 100
+        }
+
         await setCpd(defaultCPD, uID, cpdID)
         return defaultCPD
     }

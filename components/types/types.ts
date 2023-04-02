@@ -185,7 +185,7 @@ export type MissionType =
 /**
  * The data acquired when using the "contract search" functionality.
  */
-export interface contractSearchResult {
+export interface ContractSearchResult {
     Data: {
         Contracts: {
             UserCentricContract: UserCentricContract
@@ -659,6 +659,12 @@ export interface UserCentricContract {
         ElusiveContractState: string
         LastPlayedAt?: string
         IsFeatured?: boolean
+        // For favorite contracts
+        PlaylistData?: {
+            IsAdded: boolean
+            // Not sure if this is important
+            AddedTime: string
+        }
         Completed?: boolean
         LocationId: string
         ParentLocationId: string
@@ -851,7 +857,11 @@ export interface MissionManifestMetadata {
             },
         ]
     }[]
-    CharacterLoadoutData?: unknown
+    CharacterLoadoutData?: {
+        Id: string
+        Loadout: unknown
+        CompletionData: CompletionData
+    }[]
     SpawnSelectionType?: "random" | string
     Gamemodes?: ("versus" | string)[]
     Enginemodes?: ("singleplayer" | "multiplayer" | string)[]
@@ -1384,7 +1394,7 @@ export type SafehouseCategory = {
 export type SniperLoadout = {
     ID: string
     InstanceID: string
-    Unlockable: Unlockable
+    Unlockable: Unlockable[]
     MainUnlockable: Unlockable
 }
 

@@ -18,7 +18,6 @@
 
 import type { Response } from "express"
 import {
-    clampValue,
     DEFAULT_MASTERY_MAXLEVEL,
     contractTypes,
     difficultyToString,
@@ -29,7 +28,6 @@ import {
     levelForXp,
     PEACOCKVERSTRING,
     SNIPER_LEVEL_INFO,
-    xpRequiredForEvergreenLevel,
     xpRequiredForLevel,
 } from "./utils"
 import { contractSessions, getCurrentState } from "./eventHandler"
@@ -605,8 +603,6 @@ export async function missionEnd(
         return
     }
 
-    const locationParentIdLowerCase = locationParentId.toLocaleLowerCase()
-
     //Resolve all opportunities for the location
     const opportunities = contractData.Metadata.Opportunities
     const opportunityCount = opportunities ? opportunities.length : 0
@@ -652,16 +648,6 @@ export async function missionEnd(
         opportunityCount,
     )
 
-    //Get the location and playerprofile progression from the userdata
-    if (!userData.Extensions.progression.Locations[locationParentIdLowerCase]) {
-        userData.Extensions.progression.Locations[locationParentIdLowerCase] = {
-            Xp: 0,
-            Level: 1,
-        }
-    }
-
-    const locationProgressionData =
-        userData.Extensions.progression.Locations[locationParentIdLowerCase]
     const playerProgressionData =
         userData.Extensions.progression.PlayerProfileXP
 
@@ -712,10 +698,17 @@ export async function missionEnd(
     //NOTE: Official doesn't seem to make up it's mind whether or not XPGain is the same for both Mastery and Profile...
     const totalXpGain = calculateXpResult.xp + masteryXpGain
 
+    const completionData = generateCompletionData(
+        contractData.Metadata.Location,
+        req.jwt.unique_name,
+        req.gameVersion,
+        contractData.Metadata.Type,
+    )
+
     //Calculate the old location progression based on the current one and process it
-    const oldLocationXp = locationProgressionData.Xp - masteryXpGain
+    const oldLocationXp = completionData.XP - masteryXpGain
     let oldLocationLevel = levelForXp(oldLocationXp)
-    const newLocationXp = locationProgressionData.Xp
+    const newLocationXp = completionData.XP
     let newLocationLevel = levelForXp(newLocationXp)
 
     const masteryData =
@@ -731,12 +724,6 @@ export async function missionEnd(
             return xpRequiredForLevel(i + 1)
         })
     }
-
-    const completionData = generateCompletionData(
-        contractData.Metadata.Location,
-        req.jwt.unique_name,
-        req.gameVersion,
-    )
 
     //Calculate the old playerprofile progression based on the current one and process it
     const oldPlayerProfileXp = playerProgressionData.Total - totalXpGain
@@ -778,17 +765,6 @@ export async function missionEnd(
         contractData,
         timeTotal,
     )
-
-    let contractScore = {
-        Total: calculateScoreResult.scoreWithBonus,
-        AchievedMasteries: calculateScoreResult.achievedMasteries,
-        AwardedBonuses: calculateScoreResult.awardedBonuses,
-        TotalNoMultipliers: calculateScoreResult.score,
-        TimeUsedSecs: timeTotal,
-        StarCount: calculateScoreResult.stars,
-        FailedBonuses: calculateScoreResult.failedBonuses,
-        SilentAssassin: calculateScoreResult.silentAssassin,
-    }
 
     //Evergreen
     const evergreenData: MissionEndEvergreen = <MissionEndEvergreen>{
@@ -855,27 +831,9 @@ export async function missionEnd(
 
         locationLevelInfo = EVERGREEN_LEVEL_INFO
 
-        const currentLevelRequiredXp = xpRequiredForEvergreenLevel(
-            locationProgressionData.Level,
-        )
-        const nextLevelRequiredXp = clampValue(
-            xpRequiredForEvergreenLevel(locationProgressionData.Level + 1),
-            1,
-            100,
-        )
-
-        //Override completion data for proper animations
-        completionData.XP = locationProgressionData.Xp
-        completionData.Level = locationProgressionData.Level
-        completionData.Completion =
-            (currentLevelRequiredXp - locationProgressionData.Xp) /
-            (nextLevelRequiredXp - currentLevelRequiredXp)
-
         //Override the location levels to trigger potential drops
-        oldLocationLevel = evergreenLevelForXp(
-            locationProgressionData.Xp - totalXpGain,
-        )
-        newLocationLevel = locationProgressionData.Level
+        oldLocationLevel = evergreenLevelForXp(completionData.XP - totalXpGain)
+        newLocationLevel = completionData.Level
 
         //Override the silent assassin rank
         if (calculateScoreResult.silentAssassin) {
@@ -896,6 +854,17 @@ export async function missionEnd(
     //Sniper
     let unlockableProgression = undefined
     let sniperChallengeScore = undefined
+
+    let contractScore = {
+        Total: calculateScoreResult.scoreWithBonus,
+        AchievedMasteries: calculateScoreResult.achievedMasteries,
+        AwardedBonuses: calculateScoreResult.awardedBonuses,
+        TotalNoMultipliers: calculateScoreResult.score,
+        TimeUsedSecs: timeTotal,
+        StarCount: calculateScoreResult.stars,
+        FailedBonuses: calculateScoreResult.failedBonuses,
+        SilentAssassin: calculateScoreResult.silentAssassin,
+    }
 
     //TODO: Calculate proper Sniper XP and Score
     //TODO: Move most of this to its own calculateSniperScore function

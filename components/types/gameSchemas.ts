@@ -26,6 +26,9 @@ export type MissionEndRequestQuery = Partial<{
  */
 export type StashpointQuery = Partial<{
     contractid: string
+    /**
+     * Can be a number or a UUID.
+     */
     slotid: number | string
     slotname: "gear" | "disguise" | "stashpoint" | string
     stashpoint?: string

@@ -194,6 +194,11 @@ async function extract(locationParent, jwt, gameVersion) {
                 }
             }
 
+            //NOTE: Make sure to convert drops (Unlockable) to a string
+            fullPlanningChallenge.Drops = fullPlanningChallenge.Drops.map(
+                (e) => e.Id,
+            )
+
             fullPlanningChallenge.CompletionData = undefined
             fullPlanningChallenge.Completed = undefined
             fullPlanningChallenge.ChallengeProgress = undefined

@@ -58,6 +58,7 @@ import {
     levelForXp,
     xpRequiredForEvergreenLevel,
     xpRequiredForLevel,
+    isSniperLocation,
 } from "../utils"
 import {
     ChallengeFilterOptions,
@@ -505,12 +506,9 @@ export class ChallengeService extends ChallengeRegistry {
         const location = locations.children[child]
         assert.ok(location)
 
-        let contracts =
-            child === "LOCATION_AUSTRIA" ||
-            child === "LOCATION_SALTY_SEAGULL" ||
-            child === "LOCATION_CAGED_FALCON"
-                ? this.controller.missionsInLocations.sniper[child]
-                : this.controller.missionsInLocations[child]
+        let contracts = isSniperLocation(child)
+            ? this.controller.missionsInLocations.sniper[child]
+            : this.controller.missionsInLocations[child]
         if (!contracts) {
             contracts = []
         }
@@ -1005,6 +1003,23 @@ export class ChallengeService extends ChallengeRegistry {
         userId: string,
         isDestination = false,
     ): CompiledChallengeTreeData {
+        const allUnlockables = getVersionedConfig<Unlockable[]>(
+            "allunlockables",
+            gameVersion,
+            false,
+        )
+
+        const drops = challenge.Drops.map((e) =>
+            allUnlockables.find((f) => f.Id === e),
+        ).filter((e) => e !== undefined)
+
+        if (drops.length !== challenge.Drops.length) {
+            log(
+                LogLevel.DEBUG,
+                `Challenge ${challenge.Id} contains non-existing drops!`,
+            )
+        }
+
         return {
             // GetChallengeTreeFor
             Id: challenge.Id,
@@ -1014,7 +1029,7 @@ export class ChallengeService extends ChallengeRegistry {
             Rewards: {
                 MasteryXP: challenge.Rewards.MasteryXP,
             },
-            Drops: [],
+            Drops: drops,
             Completed: progression.Completed,
             IsPlayable: isDestination,
             IsLocked: challenge.IsLocked || false,

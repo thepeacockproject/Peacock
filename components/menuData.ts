@@ -19,6 +19,7 @@
 import { Response, Router } from "express"
 import {
     contractCreationTutorialId,
+    DEFAULT_MASTERY_MAXLEVEL,
     gameDifficulty,
     getMaxProfileLevel,
     PEACOCKVERSTRING,
@@ -42,7 +43,7 @@ import {
 } from "./menus/destinations"
 import type {
     CommonSelectScreenConfig,
-    contractSearchResult,
+    ContractSearchResult,
     GameVersion,
     HitsCategoryCategory,
     IHit,
@@ -80,7 +81,11 @@ import {
 } from "./menus/playnext"
 import { randomUUID } from "crypto"
 import { planningView } from "./menus/planning"
-import { directRoute, withLookupDialog } from "./menus/favoriteContracts"
+import {
+    deleteMultiple,
+    directRoute,
+    withLookupDialog,
+} from "./menus/favoriteContracts"
 import { swapToBrowsingMenusStatus } from "./discordRp"
 import axios from "axios"
 import { getFlag } from "./flags"
@@ -96,6 +101,7 @@ import {
     StashpointQuery,
 } from "./types/gameSchemas"
 import assert from "assert"
+import { SniperLoadoutConfig } from "./menus/sniper"
 
 export const preMenuDataRouter = Router()
 const menuDataRouter = Router()
@@ -152,6 +158,11 @@ menuDataRouter.get(
 menuDataRouter.get(
     "/ChallengeLocation",
     (req: RequestWithJwt<{ locationId: string }>, res) => {
+        if (typeof req.query.locationId !== "string") {
+            res.status(400).send("Invalid locationId")
+            return
+        }
+
         const location = getVersionedConfig<PeacockLocationsData>(
             "LocationsData",
             req.gameVersion,
@@ -487,6 +498,14 @@ menuDataRouter.get(
             ),
         }
 
+        if (
+            typeof req.query.slotname !== "string" ||
+            !(req.query.slotid ?? undefined)
+        ) {
+            res.status(400).send("invalid slot data")
+            return
+        }
+
         const userData = getUserData(req.jwt.unique_name, req.gameVersion)
 
         const inventory = createInventory(
@@ -494,11 +513,6 @@ menuDataRouter.get(
             req.gameVersion,
             userData.Extensions.entP,
         )
-
-        if (!req.query.slotname || !(req.query.slotid ?? undefined)) {
-            res.status(400).send("invalid?")
-            return
-        }
 
         let contractData: MissionManifest | undefined = undefined
         if (req.query.contractid) {
@@ -1199,8 +1213,8 @@ async function lookupContractPublicId(
 menuDataRouter.get(
     "/LookupContractPublicId",
     async (req: RequestWithJwt<{ publicid: string }>, res) => {
-        if (!req.query.publicid) {
-            return res.status(400).send("no public id specified!")
+        if (!req.query.publicid || typeof req.query.publicid !== "string") {
+            return res.status(400).send("no/invalid public id specified!")
         }
 
         res.json({
@@ -1575,7 +1589,7 @@ menuDataRouter.post(
             specialContracts,
         )
 
-        let searchResult: contractSearchResult = undefined
+        let searchResult: ContractSearchResult
 
         if (specialContracts.length > 0) {
             // Handled by a plugin
@@ -1860,8 +1874,14 @@ menuDataRouter.get(
 
 menuDataRouter.get(
     // this one is sane Kappa
-    "/contractplaylist/addordelete/{contractId}",
+    "/contractplaylist/addordelete/:contractId",
     directRoute,
+)
+
+menuDataRouter.post(
+    "/contractplaylist/deletemultiple",
+    jsonMiddleware(),
+    deleteMultiple,
 )
 
 menuDataRouter.get("/GetPlayerProfileXpData", (req: RequestWithJwt, res) => {
@@ -1896,7 +1916,6 @@ menuDataRouter.get(
 menuDataRouter.get(
     "/MasteryUnlockable",
     (req: RequestWithJwt<MasteryUnlockableQuery>, res) => {
-        let sniperLoadouts = getConfig("SniperLoadouts", false)
         let masteryUnlockTemplate = getConfig(
             "MasteryUnlockablesTemplate",
             false,
@@ -1915,6 +1934,11 @@ menuDataRouter.get(
             }
         })()
 
+        let sniperLoadout = getConfig<SniperLoadoutConfig>(
+            "SniperLoadouts",
+            false,
+        )[location][req.query.unlockableId]
+
         if (req.gameVersion === "scpc") {
             masteryUnlockTemplate = JSON.parse(
                 JSON.stringify(masteryUnlockTemplate).replace(
@@ -1923,36 +1947,33 @@ menuDataRouter.get(
                 ),
             )
 
-            sniperLoadouts = JSON.parse(
-                JSON.stringify(sniperLoadouts).replace(/hawk\/+/g, ""),
+            sniperLoadout = JSON.parse(
+                JSON.stringify(sniperLoadout).replace(/hawk\/+/g, ""),
             )
         }
+
+        const unlockables = sniperLoadout.Unlockable
 
         res.json({
             template: masteryUnlockTemplate,
             data: {
-                CompletionData: generateCompletionData(
-                    location,
+                CompletionData: controller.masteryService.getFirearmCompletion(
+                    req.query.unlockableId,
+                    sniperLoadout.MainUnlockable.Properties.Name,
                     req.jwt.unique_name,
                     req.gameVersion,
                 ),
-                Drops: [
-                    {
-                        IsLevelMarker: false,
-                        Unlockable:
-                            sniperLoadouts[location][req.query.unlockableId][
-                                "Unlockable"
-                            ],
-                        Level: 20,
-                        IsLocked: false,
-                        TypeLocaKey:
-                            "UI_MENU_PAGE_MASTERY_UNLOCKABLE_NAME_weapon",
-                    },
-                ],
-                Unlockable:
-                    sniperLoadouts[location][req.query.unlockableId][
-                        "MainUnlockable"
-                    ],
+                Drops: unlockables.map((unlockable) => ({
+                    IsLevelMarker: false,
+                    Unlockable: unlockable,
+                    Level:
+                        unlockable.Properties.UnlockOrder ??
+                        DEFAULT_MASTERY_MAXLEVEL,
+                    // TODO: Everything is unlocked. Change this when adding sniper progression
+                    IsLocked: false,
+                    TypeLocaKey: "UI_MENU_PAGE_MASTERY_UNLOCKABLE_NAME_weapon",
+                })),
+                Unlockable: sniperLoadout.MainUnlockable,
             },
         })
     },
