@@ -100,12 +100,8 @@
                 "Definition": {
                     "States": {
                         "Start": {
-                            "UncoveredEvidence": {
-                                "Transition": "Success"
-                            },
-                            "LaptopDestroyed": {
-                                "Transition": "Failure"
-                            }
+                            "UncoveredEvidence": { "Transition": "Success" },
+                            "LaptopDestroyed": { "Transition": "Failure" }
                         }
                     }
                 }
@@ -113,6 +109,23 @@
         ],
         "Bricks": [
             "assembly:/_PRO/Scenes/Missions/Colorado_2/_scene_bushwacker.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/missions/colorado_2/vr_overrides_bull.brick",
+                    "assembly:/_PRO/scenes/missions/colorado_2/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/missions/colorado_2/vr_overrides_bull.brick"
+                ]
+            }
         ],
         "Entrances": [
             "e5c0d1a4-72b0-4cc0-857d-8bb155ea09f4",
@@ -131,6 +144,7 @@
         "Description": "UI_CONTRACT_BUSHWHACKER_DESC",
         "BriefingVideo": "briefing_bushwacker",
         "DebriefingVideo": "debriefing_bushwacker",
+        "CodeName_Hint": "Bushwacker",
         "ScenePath": "assembly:/_PRO/Scenes/Missions/Colorado_2/_scene_bull.entity",
         "TileImage": "images/contracts/elusive/027_Bushwacker/Title.jpg",
         "Location": "LOCATION_COLORADO",

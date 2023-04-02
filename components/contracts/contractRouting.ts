@@ -54,7 +54,7 @@ import {
 import { createSniperLoadouts } from "../menus/sniper"
 import { GetForPlay2Body } from "../types/gameSchemas"
 import assert from "assert"
-import { getUserData } from "components/databaseHandler"
+import { getUserData } from "../databaseHandler"
 import { getCpd } from "../evergreen"
 
 const contractRoutingRouter = Router()
@@ -79,7 +79,11 @@ contractRoutingRouter.post(
             return
         }
 
-        const sniperloadouts = createSniperLoadouts(contractData)
+        const sniperloadouts = createSniperLoadouts(
+            req.jwt.unique_name,
+            req.gameVersion,
+            contractData,
+        )
         const loadoutData = {
             CharacterLoadoutData:
                 sniperloadouts.length !== 0 ? sniperloadouts : null,

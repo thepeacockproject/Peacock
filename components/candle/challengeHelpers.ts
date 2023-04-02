@@ -25,8 +25,8 @@ import {
     RegistryChallenge,
 } from "../types/types"
 import assert from "assert"
-import { SavedChallengeGroup } from "components/types/challenges"
-import { controller } from "components/controller"
+import { SavedChallengeGroup } from "../types/challenges"
+import { controller } from "../controller"
 
 export function compileScoringChallenge(
     challenge: RegistryChallenge,
@@ -92,7 +92,7 @@ export type ChallengeFilterOptions =
 
 /**
  * Checks if the metadata of a contract matches the definition in the InclusionData of a challenge.
- * @param challenge The challenge in question. Will return true if this is null.
+ * @param incData The inclusion data of the challenge in question. Will return true if this is null.
  * @param contract The contract in question.
  * @returns A boolean as the result.
  */
@@ -106,7 +106,9 @@ export function inclusionDataCheck(
         incData.ContractIds?.includes(contract.Metadata.Id) ||
         incData.ContractTypes?.includes(contract.Metadata.Type) ||
         incData.Locations?.includes(contract.Metadata.Location) ||
-        contract.Metadata?.Gamemodes?.some((r) => incData.GameModes.includes(r))
+        contract.Metadata?.Gamemodes?.some((r) =>
+            incData.GameModes?.includes(r),
+        )
     )
 }
 

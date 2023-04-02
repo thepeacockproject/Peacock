@@ -185,7 +185,7 @@ export type MissionType =
 /**
  * The data acquired when using the "contract search" functionality.
  */
-export interface contractSearchResult {
+export interface ContractSearchResult {
     Data: {
         Contracts: {
             UserCentricContract: UserCentricContract
@@ -262,7 +262,18 @@ export interface ContractSession {
             context: unknown
             state: string
             timers: Timer[]
+            timesCompleted: number
         }
+    }
+    /**
+     * Session Evergreen details.
+     *
+     * @since v6.0.0
+     */
+    evergreen?: {
+        payout: number
+        scoringScreenEndState: string
+        failed: boolean
     }
 }
 
@@ -369,8 +380,25 @@ export interface PlayerProfileView {
         PlayerProfileXp: {
             Total: number
             Level: number
+            Seasons: {
+                Number: number
+                Locations: {
+                    LocationId: string
+                    Xp: number
+                    ActionXp: number
+                    LocationProgression?: {
+                        Level: number
+                        MaxLevel: number
+                    }
+                }[]
+            }[]
         }
     }
+}
+
+export interface ContractHistory {
+    LastPlayedAt?: number
+    Completed?: boolean
 }
 
 export interface UserProfile {
@@ -391,6 +419,9 @@ export interface UserProfile {
             [escalationId: string]: number
         }
         PeacockFavoriteContracts: string[]
+        PeacockPlayedContracts: {
+            [contractId: string]: ContractHistory
+        }
         PeacockCompletedEscalations: string[]
         Saves: {
             [slot: string]: {
@@ -415,6 +446,11 @@ export interface UserProfile {
                  * The total amount of XP a user has obtained.
                  */
                 Total: number
+                Sublocations: {
+                    Location: string
+                    Xp: number
+                    ActionXp: number
+                }[]
             }
             Locations: {
                 [location: string]: {
@@ -436,6 +472,12 @@ export interface UserProfile {
         gamepersistentdata: {
             __stats?: unknown
             PersistentBool: Record<string, unknown>
+            HitsFilterType: {
+                // "all" / "completed" / "failed"
+                MyHistory: string
+                MyContracts: string
+                MyPlaylist: string
+            }
         }
         opportunityprogression: {
             [opportunityId: RepositoryId]: boolean
@@ -617,6 +659,12 @@ export interface UserCentricContract {
         ElusiveContractState: string
         LastPlayedAt?: string
         IsFeatured?: boolean
+        // For favorite contracts
+        PlaylistData?: {
+            IsAdded: boolean
+            // Not sure if this is important
+            AddedTime: string
+        }
         Completed?: boolean
         LocationId: string
         ParentLocationId: string
@@ -809,7 +857,11 @@ export interface MissionManifestMetadata {
             },
         ]
     }[]
-    CharacterLoadoutData?: unknown
+    CharacterLoadoutData?: {
+        Id: string
+        Loadout: unknown
+        CompletionData: CompletionData
+    }[]
     SpawnSelectionType?: "random" | string
     Gamemodes?: ("versus" | string)[]
     Enginemodes?: ("singleplayer" | "multiplayer" | string)[]
@@ -1339,7 +1391,7 @@ export type SafehouseCategory = {
 export type SniperLoadout = {
     ID: string
     InstanceID: string
-    Unlockable: Unlockable
+    Unlockable: Unlockable[]
     MainUnlockable: Unlockable
 }
 

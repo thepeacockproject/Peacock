@@ -35,6 +35,7 @@ import { getUserData, writeUserData } from "../databaseHandler"
 import {
     fastClone,
     getDefaultSuitFor,
+    getMaxProfileLevel,
     nilUuid,
     unlockOrderComparer,
 } from "../utils"
@@ -272,7 +273,11 @@ export async function planningView(
         userCentric.Contract.Metadata.Type = "mission"
     }
 
-    const sniperLoadouts = createSniperLoadouts(contractData)
+    const sniperLoadouts = createSniperLoadouts(
+        req.jwt.unique_name,
+        req.gameVersion,
+        contractData,
+    )
 
     if (req.gameVersion === "scpc") {
         sniperLoadouts.forEach((loadout) => {
@@ -471,7 +476,7 @@ export async function planningView(
                 XP: userData.Extensions.progression.PlayerProfileXP.Total,
                 Level: userData.Extensions.progression.PlayerProfileXP
                     .ProfileLevel,
-                MaxLevel: 7500,
+                MaxLevel: getMaxProfileLevel(req.gameVersion),
             },
         },
     })

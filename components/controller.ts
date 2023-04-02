@@ -28,6 +28,7 @@ import {
 import type {
     Campaign,
     ClientToServerEvent,
+    CompiledChallengeRuntimeData,
     ContractSession,
     GameVersion,
     GenSingleMissionFunc,
@@ -36,6 +37,7 @@ import type {
     MissionManifest,
     PeacockLocationsData,
     PlayNextGetCampaignsHookReturn,
+    RegistryChallenge,
     RequestWithJwt,
     S2CEventWithTimestamp,
     SMFLastDeploy,
@@ -81,7 +83,7 @@ import { createContext, Script } from "vm"
 import { ChallengeService } from "./candle/challengeService"
 import { getFlag } from "./flags"
 import { unpack } from "msgpackr"
-import { ChallengePackage } from "./types/challenges"
+import { ChallengePackage, SavedChallengeGroup } from "./types/challenges"
 import { promisify } from "util"
 import { brotliDecompress } from "zlib"
 import assert from "assert"
@@ -668,7 +670,6 @@ export class Controller {
         if (openCtJson) {
             return fastClone(openCtJson)
         }
-        log(LogLevel.TRACE, `Contract ${id} not found!`)
         return undefined
     }
 
@@ -919,6 +920,43 @@ export class Controller {
                 this._handleChallengeResources(data)
             },
         )
+
+        //Get all global challenges and register a simplified version of them
+        {
+            const globalChallenges: RegistryChallenge[] = (
+                getConfig(
+                    "GlobalChallenges",
+                    true,
+                ) as CompiledChallengeRuntimeData[]
+            ).map((e) => {
+                const tags = e.Challenge.Tags || []
+                tags.push("global")
+
+                //NOTE: Treat all other fields as undefined
+                return <RegistryChallenge>{
+                    Id: e.Challenge.Id,
+                    Tags: tags,
+                    Name: e.Challenge.Name,
+                    ImageName: e.Challenge.ImageName,
+                    Description: e.Challenge.Description,
+                    Definition: e.Challenge.Definition,
+                    Xp: e.Challenge.Xp,
+                    InclusionData: e.Challenge.InclusionData,
+                }
+            })
+
+            this._handleChallengeResources({
+                groups: [
+                    <SavedChallengeGroup>{
+                        CategoryId: "global",
+                        Challenges: globalChallenges,
+                    },
+                ],
+                meta: {
+                    Location: "GLOBAL",
+                },
+            })
+        }
 
         // Load mastery resources
         const masteryDirectory = join(
@@ -1267,11 +1305,11 @@ export function contractIdToHitObject(
         SubLocation: subLocation,
         ChallengesCompleted: challengeCompletion.CompletedChallengesCount,
         ChallengesTotal: challengeCompletion.ChallengesCount,
-        LocationLevel: 1,
-        LocationMaxLevel: 1,
-        LocationCompletion: 0,
-        LocationXPLeft: 6000,
-        LocationHideProgression: false,
+        LocationLevel: userCentric.Data.LocationLevel,
+        LocationMaxLevel: userCentric.Data.LocationMaxLevel,
+        LocationCompletion: userCentric.Data.LocationCompletion,
+        LocationXPLeft: userCentric.Data.LocationXpLeft,
+        LocationHideProgression: userCentric.Data.LocationHideProgression,
     }
 }
 
