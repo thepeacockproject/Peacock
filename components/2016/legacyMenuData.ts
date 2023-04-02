@@ -28,25 +28,31 @@ import { log, LogLevel } from "../loggingInterop"
 import { createInventory } from "../inventory"
 import { getFlag } from "../flags"
 import { loadouts } from "../loadouts"
+import { StashpointQueryH2016, StashpointSlotName } from "../types/gameSchemas"
 
 const legacyMenuDataRouter = Router()
 
 legacyMenuDataRouter.get(
     "/stashpoint",
-    (req: RequestWithJwt<{ contractid: string; slotname: string }>, res) => {
-        // stashpoint?contractid=4e45e91a-94ca-4d89-89fc-1b250e608e73&stashpoint=&allowlargeitems=true&slotname=concealedweapon2
+    (req: RequestWithJwt<StashpointQueryH2016>, res) => {
         if (!uuidRegex.test(req.query.contractid)) {
             res.status(400).send("contract id was not a uuid")
             return
         }
 
-        const contractData = controller.resolveContract(req.query.contractid)
-        if (!contractData) {
-            res.status(404).send()
+        if (typeof req.query.slotname !== "string") {
+            res.status(400).send("invalid slot data")
             return
         }
 
-        const loadoutSlots = [
+        const contractData = controller.resolveContract(req.query.contractid)
+
+        if (!contractData) {
+            res.status(404).send("contract not found")
+            return
+        }
+
+        const loadoutSlots: StashpointSlotName[] = [
             "carriedweapon",
             "carrieditem",
             "concealedweapon",
@@ -226,6 +232,11 @@ legacyMenuDataRouter.get(
         req: RequestWithJwt<{ contractSessionId: string; contractId: string }>,
         res,
     ) => {
+        if (typeof req.query.contractId !== "string") {
+            res.status(400).send("invalid contractId")
+            return
+        }
+
         // debriefingchallenges?contractSessionId=00000000000000-00000000-0000-0000-0000-000000000001&contractId=dd906289-7c32-427f-b689-98ae645b407f
         res.json({
             template: getConfig("LegacyDebriefingChallengesTemplate", false),
