@@ -158,6 +158,8 @@ menuDataRouter.get(
 menuDataRouter.get(
     "/ChallengeLocation",
     (req: RequestWithJwt<{ locationId: string }>, res) => {
+        assert.equal(typeof req.query.locationId, "string")
+
         const location = getVersionedConfig<PeacockLocationsData>(
             "LocationsData",
             req.gameVersion,
@@ -1207,6 +1209,8 @@ menuDataRouter.get(
         if (!req.query.publicid) {
             return res.status(400).send("no public id specified!")
         }
+
+        assert.equal(typeof req.query.publicid, "string")
 
         res.json({
             template: getVersionedConfig(
