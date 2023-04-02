@@ -1308,11 +1308,11 @@ export function contractIdToHitObject(
         SubLocation: subLocation,
         ChallengesCompleted: challengeCompletion.CompletedChallengesCount,
         ChallengesTotal: challengeCompletion.ChallengesCount,
-        LocationLevel: 1,
-        LocationMaxLevel: 1,
-        LocationCompletion: 0,
-        LocationXPLeft: 6000,
-        LocationHideProgression: false,
+        LocationLevel: userCentric.Data.LocationLevel,
+        LocationMaxLevel: userCentric.Data.LocationMaxLevel,
+        LocationCompletion: userCentric.Data.LocationCompletion,
+        LocationXPLeft: userCentric.Data.LocationXpLeft,
+        LocationHideProgression: userCentric.Data.LocationHideProgression,
     }
 }
 
