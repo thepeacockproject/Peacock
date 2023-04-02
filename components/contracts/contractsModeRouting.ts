@@ -17,7 +17,7 @@
  */
 
 import type {
-    contractSearchResult,
+    ContractSearchResult,
     GameVersion,
     RequestWithJwt,
 } from "../types/types"
@@ -73,7 +73,7 @@ export async function officialSearchContract(
     gameVersion: GameVersion,
     filters: string[],
     pageNumber: number,
-): Promise<contractSearchResult> {
+): Promise<ContractSearchResult> {
     const remoteService = getRemoteService(gameVersion)
     const user = userAuths.get(userId)
 
@@ -83,7 +83,7 @@ export async function officialSearchContract(
     }
 
     const resp = await user._useService<{
-        data: contractSearchResult
+        data: ContractSearchResult
     }>(
         pageNumber === 0
             ? `https://${remoteService}.hitman.io/profiles/page/ContractSearch?sorting=`

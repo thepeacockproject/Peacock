@@ -185,7 +185,7 @@ export type MissionType =
 /**
  * The data acquired when using the "contract search" functionality.
  */
-export interface contractSearchResult {
+export interface ContractSearchResult {
     Data: {
         Contracts: {
             UserCentricContract: UserCentricContract

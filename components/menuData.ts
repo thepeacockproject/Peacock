@@ -43,7 +43,7 @@ import {
 } from "./menus/destinations"
 import type {
     CommonSelectScreenConfig,
-    contractSearchResult,
+    ContractSearchResult,
     GameVersion,
     HitsCategoryCategory,
     IHit,
@@ -158,6 +158,11 @@ menuDataRouter.get(
 menuDataRouter.get(
     "/ChallengeLocation",
     (req: RequestWithJwt<{ locationId: string }>, res) => {
+        if (typeof req.query.locationId !== "string") {
+            res.status(400).send("Invalid locationId")
+            return
+        }
+
         const location = getVersionedConfig<PeacockLocationsData>(
             "LocationsData",
             req.gameVersion,
@@ -493,6 +498,14 @@ menuDataRouter.get(
             ),
         }
 
+        if (
+            typeof req.query.slotname !== "string" ||
+            !(req.query.slotid ?? undefined)
+        ) {
+            res.status(400).send("invalid slot data")
+            return
+        }
+
         const userData = getUserData(req.jwt.unique_name, req.gameVersion)
 
         const inventory = createInventory(
@@ -500,11 +513,6 @@ menuDataRouter.get(
             req.gameVersion,
             userData.Extensions.entP,
         )
-
-        if (!req.query.slotname || !(req.query.slotid ?? undefined)) {
-            res.status(400).send("invalid?")
-            return
-        }
 
         let contractData: MissionManifest | undefined = undefined
         if (req.query.contractid) {
@@ -1204,8 +1212,8 @@ async function lookupContractPublicId(
 menuDataRouter.get(
     "/LookupContractPublicId",
     async (req: RequestWithJwt<{ publicid: string }>, res) => {
-        if (!req.query.publicid) {
-            return res.status(400).send("no public id specified!")
+        if (!req.query.publicid || typeof req.query.publicid !== "string") {
+            return res.status(400).send("no/invalid public id specified!")
         }
 
         res.json({
@@ -1580,7 +1588,7 @@ menuDataRouter.post(
             specialContracts,
         )
 
-        let searchResult: contractSearchResult = undefined
+        let searchResult: ContractSearchResult
 
         if (specialContracts.length > 0) {
             // Handled by a plugin

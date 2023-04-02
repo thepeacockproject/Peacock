@@ -170,16 +170,22 @@ export function generateUserCentric(
     const played = userData.Extensions?.PeacockPlayedContracts
     const id = contractData.Metadata.Id
 
+    const completionData = generateCompletionData(
+        contractData.Metadata.Location,
+        userId,
+        gameVersion,
+    )
+
     const uc: UserCentricContract = {
         Contract: contractData,
         Data: {
             IsLocked: subLocation?.Properties?.IsLocked || false,
             LockedReason: "",
-            LocationLevel: 1,
-            LocationMaxLevel: 1,
-            LocationCompletion: 1,
-            LocationXpLeft: 0,
-            LocationHideProgression: false,
+            LocationLevel: completionData.Level,
+            LocationMaxLevel: completionData.MaxLevel,
+            LocationCompletion: completionData.Completion,
+            LocationXpLeft: completionData.XpLeft,
+            LocationHideProgression: completionData.HideProgression,
             ElusiveContractState: "",
             IsFeatured: false,
             LastPlayedAt:
@@ -196,11 +202,7 @@ export function generateUserCentric(
             Completed: played[id] === undefined ? false : played[id]?.Completed,
             LocationId: subLocation.Id,
             ParentLocationId: subLocation.Properties.ParentLocation!,
-            CompletionData: generateCompletionData(
-                contractData.Metadata.Location,
-                userId,
-                gameVersion,
-            ),
+            CompletionData: completionData,
             DlcName: subLocation.Properties.DlcName!,
             DlcImage: subLocation.Properties.DlcImage!,
         },
