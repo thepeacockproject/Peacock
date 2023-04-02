@@ -7175,58 +7175,79 @@
                 {
                     "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
                     "Definition": {
-                        "Constants": {
-                            "RequiredTargetCount": 2
-                        },
-                        "Context": {
-                            "KilledTargetCount": 0
-                        },
-                        "ContextListeners": {
-                            "KilledTargetCount": {
-                                "type": "challengecounter",
-                                "count": "$.KilledTargetCount",
-                                "total": "$.RequiredTargetCount"
-                            }
-                        },
+                        "Context": {},
                         "Scope": "session",
                         "States": {
                             "Start": {
-                                "Kill": [
-                                    {
-                                        "Condition": {
-                                            "$eq": ["$Value.IsTarget", true]
-                                        },
-                                        "Actions": {
-                                            "$inc": "KilledTargetCount"
-                                        }
+                                "Kill": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "3d1b5b6c-a1fe-430e-a4c4-57e76872fa1f"
+                                        ]
                                     },
-                                    {
-                                        "Condition": {
-                                            "$eq": [
-                                                "$.KilledTargetCount",
-                                                "$.RequiredTargetCount"
-                                            ]
-                                        },
-                                        "Transition": "Success"
-                                    }
-                                ]
+                                    "Transition": "Success"
+                                }
                             }
                         }
                     },
-                    "Description": "UI_CHALLENGES_ET_NEGRONI_TARGETDOWN_DESC",
+                    "Description": "UI_CHALLENGES_ET_NEGRONI_A_TARGETDOWN_DESC",
                     "DifficultyLevels": [],
                     "Drops": [],
                     "HideProgression": false,
                     "Icon": "elusive",
                     "Id": "db95206f-0033-40ae-a273-a68eaa8048f2",
-                    "ImageName": "images/challenges/elusive_target/et_negroni_targetdown.jpg",
+                    "ImageName": "images/challenges/elusive_target/et_negroni_a_targetdown.jpg",
                     "InclusionData": {
                         "ContractIds": ["3716b654-a42c-45df-9db9-61795a6a3e46"]
                     },
                     "IsLocked": false,
                     "IsPlayable": false,
                     "LocationId": "LOCATION_MARRAKECH_NIGHT",
-                    "Name": "UI_CHALLENGES_ET_NEGRONI_TARGETDOWN_NAME",
+                    "Name": "UI_CHALLENGES_ET_NEGRONI_A_TARGETDOWN_NAME",
+                    "OrderIndex": 10000,
+                    "ParentLocationId": "LOCATION_PARENT_MARRAKECH",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "RuntimeType": "Hit",
+                    "Tags": ["story", "medium", "elusive"],
+                    "Type": "contract",
+                    "XpModifier": {}
+                },
+                {
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "d0c17d33-182b-45c7-92fe-96c376ca9301"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Description": "UI_CHALLENGES_ET_NEGRONI_B_TARGETDOWN_DESC",
+                    "DifficultyLevels": [],
+                    "Drops": [],
+                    "HideProgression": false,
+                    "Icon": "elusive",
+                    "Id": "61433a50-5d15-4b2d-9e6b-679ca9950c93",
+                    "ImageName": "images/challenges/elusive_target/et_negroni_b_targetdown.jpg",
+                    "InclusionData": {
+                        "ContractIds": ["3716b654-a42c-45df-9db9-61795a6a3e46"]
+                    },
+                    "IsLocked": false,
+                    "IsPlayable": false,
+                    "LocationId": "LOCATION_MARRAKECH_NIGHT",
+                    "Name": "UI_CHALLENGES_ET_NEGRONI_B_TARGETDOWN_NAME",
                     "OrderIndex": 10000,
                     "ParentLocationId": "LOCATION_PARENT_MARRAKECH",
                     "Rewards": {
