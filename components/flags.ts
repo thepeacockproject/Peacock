@@ -105,6 +105,10 @@ const defaultFlags: Flags = {
         desc: "When set to true, all Freelancer unlocks will always be available.",
         default: false,
     },
+    mapDiscoveryState: {
+        desc: 'Decides what to do with the discovery state of the maps. REVEALED will reset all map locations to discovered, CLOUDED will reset all maps to undiscovered, and KEEP will keep your current discovery state. Note that these actions will take effect every time you connect to Peacock. Your progress of the "Discover [Location]" challenges will not be affected by this option.',
+        default: "KEEP",
+    },
     enableMasteryProgression: {
         desc: "When set to false, mastery progression will be disabled and all unlockables will be awarded at the beginning",
         default: true,

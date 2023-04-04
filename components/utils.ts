@@ -31,6 +31,7 @@ import axios, { AxiosError } from "axios"
 import { log, LogLevel } from "./loggingInterop"
 import { writeFileSync } from "fs"
 import { getFlag } from "./flags"
+import { getConfig } from "./configSwizzleManager"
 
 /**
  * True if the server is being run by the launcher, false otherwise.
@@ -282,6 +283,24 @@ export function castUserProfile(profile: UserProfile): UserProfile {
             MyHistory: "all",
             MyContracts: "all",
             MyPlaylist: "all",
+        }
+    }
+
+    if (j.Extensions?.gamepersistentdata?.PersistentBool) {
+        switch (getFlag("mapDiscoveryState")) {
+            case "REVEALED":
+                j.Extensions.gamepersistentdata.PersistentBool = {
+                    ...j.Extensions.gamepersistentdata.PersistentBool,
+                    ...getConfig("PersistentBools", true),
+                }
+                break
+            case "CLOUDED":
+                j.Extensions.gamepersistentdata.PersistentBool = {
+                    __Full:
+                        j.Extensions.gamepersistentdata.PersistentBool
+                            ?.__Full ?? {},
+                }
+                break
         }
     }
 
