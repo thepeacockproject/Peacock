@@ -373,8 +373,6 @@ export async function planningView(
         locationData.parents[sublocation?.Properties?.ParentLocation]
             ?.Properties
 
-    console.log(limitedLoadoutUnlockLevelMap[sublocation.Id] ?? 0)
-
     if (sublocation?.Properties?.LimitedLoadout) {
         const loadoutUnlockable = getUnlockableById(
             req.gameVersion,
