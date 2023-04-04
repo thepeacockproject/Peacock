@@ -63,8 +63,6 @@ export async function planningView(
         false,
     )
 
-    const locationData = getConfig<any>("LocationsData", true)
-
     const userData = getUserData(req.jwt.unique_name, req.gameVersion)
 
     const isForReset = req.query.resetescalation === "true"
@@ -368,15 +366,17 @@ export async function planningView(
     const limitedLoadoutUnlockLevelMap = {
         LOCATION_MIAMI: 2,
         LOCATION_HOKKAIDO: 20,
+        LOCATION_HOKKAIDO_SHIM_MAMUSHI: 20,
     }
-    const parentLocationProperties =
-        locationData.parents[sublocation?.Properties?.ParentLocation]
-            ?.Properties
 
     if (sublocation?.Properties?.LimitedLoadout) {
         const loadoutUnlockable = getUnlockableById(
             req.gameVersion,
-            parentLocationProperties.NormalLoadoutUnlock,
+            req.gameVersion === "h1"
+                ? sublocation?.Properties?.NormalLoadoutUnlock[
+                      contractData.Metadata.Difficulty ?? "normal"
+                  ]
+                : sublocation?.Properties?.NormalLoadoutUnlock,
         )
 
         if (loadoutUnlockable) {
