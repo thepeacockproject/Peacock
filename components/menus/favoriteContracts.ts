@@ -26,15 +26,16 @@ import type {
 import { controller } from "../controller"
 import { generateUserCentric } from "../contracts/dataGen"
 import { getUserData, writeUserData } from "../databaseHandler"
-import { getConfig, getVersionedConfig } from "../configSwizzleManager"
+import { getVersionedConfig } from "../configSwizzleManager"
 import type { Response } from "express"
 
 export function withLookupDialog(
     req: RequestWithJwt<{ contractId: string }>,
     res: Response,
 ): void {
-    const lookupFavoriteTemplate = getConfig(
+    const lookupFavoriteTemplate = getVersionedConfig(
         "LookupContractFavoriteTemplate",
+        req.gameVersion,
         false,
     )
 

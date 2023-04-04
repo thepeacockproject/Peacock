@@ -1,0 +1,1940 @@
+{
+    "pageisclosable": true,
+    "body": {
+        "controller": "list",
+        "direction": "horizontal",
+        "children": {
+            "id": "dataNode",
+            "data": {
+                "creatorname": "$($user $($arg Contract).Metadata.CreatorUserId).name"
+            },
+            "stateproviders": [
+                {
+                    "type": "lazycontractavailability",
+                    "contract": "$.Contract"
+                },
+                {
+                    "type": "userresolution",
+                    "target": "creatorname",
+                    "profileid": "$($arg Contract).Metadata.CreatorUserId"
+                }
+            ],
+            "actions": {
+                "on-entitlement-missing": {
+                    "set-persistent-context": {
+                        "target": "hub",
+                        "actions": {
+                            "show-modal": {
+                                "config": {
+                                    "view": "menu3.modal.ModalDialogGeneric",
+                                    "buttons": [
+                                        {
+                                            "label": "$loc UI_DIALOG_CANCEL",
+                                            "type": "cancel"
+                                        }
+                                    ],
+                                    "data": {
+                                        "$setup": {
+                                            "$set DlcName": {
+                                                "$notransform": {
+                                                    "$if": {
+                                                        "$condition": {
+                                                            "$or": [
+                                                                "$eqs ($.MissingEntitlements[0].Id,GOTY_PATIENT_ZERO)",
+                                                                "$eqs ($.MissingEntitlements[0].Id,TOKEN_OUTFIT_PARIS_CLOWN)",
+                                                                "$eqs ($.MissingEntitlements[0].Id,TOKEN_OUTFIT_MARRAKESH_DARK_SNIPER)",
+                                                                "$eqs ($.MissingEntitlements[0].Id,TOKEN_OUTFIT_HOKKAIDO_COWBOY)"
+                                                            ]
+                                                        },
+                                                        "$then": {
+                                                            "$if": {
+                                                                "$condition": {
+                                                                    "$or": [
+                                                                        "$isuser intropack",
+                                                                        "$isuser fullexperience"
+                                                                    ]
+                                                                },
+                                                                "$then": "$loc GAME_STORE_METADATA_LEGACY_PACKAGE_LEGACY_GOTY_UPGRADE_TITLE",
+                                                                "$else": "$loc GAME_STORE_METADATA_LEGACY_PACKAGE_LEGACY_GOTY_BUNDLE_TITLE"
+                                                            }
+                                                        },
+                                                        "$else": {
+                                                            "$if $eqs ($.MissingEntitlements[0].Id,LOCATION_NEWZEALAND)": {
+                                                                "$then": "$loc GAME_STORE_METADATA_S2_DLC07_TITLE"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            "$set DlcImage": {
+                                                "$notransform": {
+                                                    "$if": {
+                                                        "$condition": {
+                                                            "$or": [
+                                                                "$eqs ($.MissingEntitlements[0].Id,GOTY_PATIENT_ZERO)",
+                                                                "$eqs ($.MissingEntitlements[0].Id,TOKEN_OUTFIT_PARIS_CLOWN)",
+                                                                "$eqs ($.MissingEntitlements[0].Id,TOKEN_OUTFIT_MARRAKESH_DARK_SNIPER)",
+                                                                "$eqs ($.MissingEntitlements[0].Id,TOKEN_OUTFIT_HOKKAIDO_COWBOY)"
+                                                            ]
+                                                        },
+                                                        "$then": {
+                                                            "$if": {
+                                                                "$condition": {
+                                                                    "$or": [
+                                                                        "$isuser intropack",
+                                                                        "$isuser fullexperience"
+                                                                    ]
+                                                                },
+                                                                "$then": "$res images/livetile/dlc/tile_goty_cfs_legacy.jpg",
+                                                                "$else": "$res images/livetile/dlc/tile_goty_legacy.jpg"
+                                                            }
+                                                        },
+                                                        "$else": {
+                                                            "$if $eqs ($.MissingEntitlements[0].Id,LOCATION_NEWZEALAND)": {
+                                                                "$then": "$res images/livetile/dlc/newzealand_wide_logo.png"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            "$set Title": "UI_DIALOG_CONTRACT_ENTITLEMENT_MISSING_TITLE",
+                                            "$set DescriptionExpanded": {
+                                                "$notransform": {
+                                                    "$loc": {
+                                                        "key": "UI_DIALOG_CONTRACT_ENTITLEMENT_MISSING_DESCRIPTION",
+                                                        "data": [
+                                                            {
+                                                                "$if": {
+                                                                    "$condition": {
+                                                                        "$or": [
+                                                                            "$eqs ($.MissingEntitlements[0].Id,GOTY_PATIENT_ZERO)",
+                                                                            "$eqs ($.MissingEntitlements[0].Id,TOKEN_OUTFIT_PARIS_CLOWN)",
+                                                                            "$eqs ($.MissingEntitlements[0].Id,TOKEN_OUTFIT_MARRAKESH_DARK_SNIPER)",
+                                                                            "$eqs ($.MissingEntitlements[0].Id,TOKEN_OUTFIT_HOKKAIDO_COWBOY)"
+                                                                        ]
+                                                                    },
+                                                                    "$then": {
+                                                                        "$if": {
+                                                                            "$condition": {
+                                                                                "$or": [
+                                                                                    "$isuser intropack",
+                                                                                    "$isuser fullexperience"
+                                                                                ]
+                                                                            },
+                                                                            "$then": "$loc GAME_STORE_METADATA_LEGACY_PACKAGE_LEGACY_GOTY_UPGRADE_TITLE",
+                                                                            "$else": "$loc GAME_STORE_METADATA_LEGACY_PACKAGE_LEGACY_GOTY_BUNDLE_TITLE"
+                                                                        }
+                                                                    },
+                                                                    "$else": {
+                                                                        "$if $eqs ($.MissingEntitlements[0].Id,LOCATION_NEWZEALAND)": {
+                                                                            "$then": "$loc GAME_STORE_METADATA_S2_DLC07_TITLE"
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            "$in": {
+                                                "title": "$loc $.Title",
+                                                "frameheightmax": 850,
+                                                "information": [
+                                                    {
+                                                        "$if $not $($isnull $.Contract)": {
+                                                            "$then": {
+                                                                "contract": {
+                                                                    "type": "$.Contract.Metadata.Type",
+                                                                    "name": {
+                                                                        "$switch $.Contract.Metadata.Type": [
+                                                                            {
+                                                                                "case": "usercreated",
+                                                                                "return": {
+                                                                                    "$if $($arg _ugcrestricted)": {
+                                                                                        "$then": "$loc UI_CONTRACT_NO_ACCESS_UGC",
+                                                                                        "$else": "$.Contract.Metadata.Title"
+                                                                                    }
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "case": "featured",
+                                                                                "return": "$.Contract.Metadata.Title"
+                                                                            },
+                                                                            {
+                                                                                "default": "$loc $.Contract.Metadata.Title"
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "creator": {
+                                                                        "$switch $.Contract.Metadata.Type": [
+                                                                            {
+                                                                                "case": "featured",
+                                                                                "return": "$loc UI_CATEGORY_MESSAGE_CENTER_COMMUNITY"
+                                                                            },
+                                                                            {
+                                                                                "default": "$($user $.Contract.Metadata.CreatorUserId).name"
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "id": "$formatpublicid $.Contract.Metadata.PublicId",
+                                                                    "creationdate": "$.Contract.Metadata.CreationTimestamp",
+                                                                    "description": {
+                                                                        "$switch $.Contract.Metadata.Type": [
+                                                                            {
+                                                                                "case": "featured",
+                                                                                "return": {
+                                                                                    "$if $stringvalid $loc $.Contract.Metadata.Description": {
+                                                                                        "$then": "$loc $.Contract.Metadata.Description",
+                                                                                        "$else": "$.Contract.Metadata.Description"
+                                                                                    }
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "case": "creation",
+                                                                                "return": "$loc UI_MENU_PAGE_CREATE_CONTRACT_NO_ACCESS_DESCRIPTION"
+                                                                            },
+                                                                            {
+                                                                                "case": "elusive",
+                                                                                "return": "$loc UI_CONTRACT_HEADER_ELUSIVE"
+                                                                            },
+                                                                            {
+                                                                                "default": "$loc $.Contract.Metadata.Description"
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "image": {
+                                                                        "$if $.Contract.Metadata.TileImage": {
+                                                                            "$then": {
+                                                                                "$if $gt ($arraysize $.Contract.Metadata.TileImage,0)": {
+                                                                                    "$then": {
+                                                                                        "$setup": {
+                                                                                            "$set EngineMode": {
+                                                                                                "$if $isnull $.EngineMode": {
+                                                                                                    "$then": {
+                                                                                                        "$if $isnull $arg EngineMode": {
+                                                                                                            "$then": "singleplayer",
+                                                                                                            "$else": "$arg EngineMode"
+                                                                                                        }
+                                                                                                    },
+                                                                                                    "$else": "$.EngineMode"
+                                                                                                }
+                                                                                            },
+                                                                                            "$set TileImageOrdered": {
+                                                                                                "$orderby": {
+                                                                                                    "from": "$expand $.Contract.Metadata.TileImage",
+                                                                                                    "by": "Mode",
+                                                                                                    "order": [
+                                                                                                        "$.EngineMode"
+                                                                                                    ]
+                                                                                                }
+                                                                                            },
+                                                                                            "$in": "$res $.TileImageOrdered[0].Image"
+                                                                                        }
+                                                                                    },
+                                                                                    "$else": "$res $expand $.Contract.Metadata.TileImage"
+                                                                                }
+                                                                            },
+                                                                            "$else": "$res images/ui/tiles/defaultmenutilesmall.jpg"
+                                                                        }
+                                                                    },
+                                                                    "icon": {
+                                                                        "$switch $.Contract.Metadata.Type": [
+                                                                            {
+                                                                                "case": "dummy",
+                                                                                "return": {
+                                                                                    "_dynamicPackerOverride": [
+                                                                                        "SniperChallenge"
+                                                                                    ]
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "case": "orbis",
+                                                                                "return": "ica"
+                                                                            },
+                                                                            {
+                                                                                "case": "campaign",
+                                                                                "return": "mission"
+                                                                            },
+                                                                            {
+                                                                                "case": "sniper",
+                                                                                "return": "sniperrifle"
+                                                                            },
+                                                                            {
+                                                                                "default": {
+                                                                                    "$if $.Contract.Metadata.IsVersus": {
+                                                                                        "$then": "versus",
+                                                                                        "$else": "$.Contract.Metadata.Type"
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "locked": true
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    {
+                                                        "dlcmissing": {
+                                                            "$setup": {
+                                                                "$set DlcName": {
+                                                                    "$if $isnull $.DlcName": {
+                                                                        "$then": {
+                                                                            "$if $isnull $.SubLocation": {
+                                                                                "$then": {
+                                                                                    "$if $isnull $.Location": {
+                                                                                        "$then": "$loc $.Data.DlcName",
+                                                                                        "$else": "$loc $.Location.Properties.DlcName"
+                                                                                    }
+                                                                                },
+                                                                                "$else": "$loc $.SubLocation.Properties.DlcName"
+                                                                            }
+                                                                        },
+                                                                        "$else": "$.DlcName"
+                                                                    }
+                                                                },
+                                                                "$set DlcImage": {
+                                                                    "$if $isnull $.DlcImage": {
+                                                                        "$then": {
+                                                                            "$if $isnull $.SubLocation": {
+                                                                                "$then": {
+                                                                                    "$if $isnull $.Location": {
+                                                                                        "$then": "$res $.Data.DlcImage",
+                                                                                        "$else": "$res $.Location.Properties.DlcImage"
+                                                                                    }
+                                                                                },
+                                                                                "$else": "$res $.SubLocation.Properties.DlcImage"
+                                                                            }
+                                                                        },
+                                                                        "$else": "$.DlcImage"
+                                                                    }
+                                                                },
+                                                                "$set CreatedInMission": "$loc $formatstring UI_{$.Contract.Metadata.Location}_TITLE",
+                                                                "$set CreatedInLocation": "$loc $formatstring UI_{$.Contract.Metadata.Location}_CITY",
+                                                                "$in": {
+                                                                    "showcreatedin": {
+                                                                        "$switch $.Contract.Metadata.Type": [
+                                                                            {
+                                                                                "case": "featured",
+                                                                                "return": true
+                                                                            },
+                                                                            {
+                                                                                "case": "usercreated",
+                                                                                "return": true
+                                                                            },
+                                                                            {
+                                                                                "default": false
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "episode": "$.DlcName",
+                                                                    "location": {
+                                                                        "$loc": {
+                                                                            "key": "UI_DIALOG_CONTRACT_SEARCH_CREATED_IN",
+                                                                            "data": [
+                                                                                "$formatstring {$.CreatedInMission}, {$.CreatedInLocation}"
+                                                                            ]
+                                                                        }
+                                                                    },
+                                                                    "description": {
+                                                                        "$if $isnull $.DescriptionExpanded": {
+                                                                            "$then": {
+                                                                                "$loc": {
+                                                                                    "key": "$.Description",
+                                                                                    "data": [
+                                                                                        "$.DlcName"
+                                                                                    ]
+                                                                                }
+                                                                            },
+                                                                            "$else": "$.DescriptionExpanded"
+                                                                        }
+                                                                    },
+                                                                    "image": "$.DlcImage"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                ],
+                                                "userresolution": {
+                                                    "$if": {
+                                                        "$condition": {
+                                                            "$and": [
+                                                                "$not $($isnull $.Contract)",
+                                                                {
+                                                                    "$equal": [
+                                                                        "usercreated",
+                                                                        "$.Contract.Metadata.Type"
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        },
+                                                        "$then": {
+                                                            "informationtarget": "contract.creator",
+                                                            "profileid": "$.Contract.Metadata.CreatorUserId"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "onbutton": []
+                            }
+                        }
+                    },
+                    "request-back": {}
+                },
+                "on-content-unknown": {
+                    "set-persistent-context": {
+                        "target": "hub",
+                        "actions": {
+                            "show-modal": {
+                                "config": {
+                                    "view": "menu3.modal.ModalDialogGeneric",
+                                    "buttons": ["$loc UI_DIALOG_OK"],
+                                    "data": {
+                                        "title": "$loc UI_CONTENT_UNKNOWN_DLC_TITLE",
+                                        "description": "$loc UI_CONTENT_UNKNOWN_DLC_TEXT"
+                                    }
+                                },
+                                "onbutton": []
+                            }
+                        }
+                    },
+                    "request-back": {}
+                },
+                "on-content-not-owned": {
+                    "set-persistent-context": {
+                        "target": "hub",
+                        "actions": {
+                            "show-modal": {
+                                "config": {
+                                    "view": "menu3.modal.ModalDialogGeneric",
+                                    "buttons": [
+                                        {
+                                            "label": "$loc UI_DIALOG_CANCEL",
+                                            "type": "cancel"
+                                        }
+                                    ],
+                                    "data": {
+                                        "$setup": {
+                                            "$set Title": "UI_DIALOG_CONTRACT_SEARCH_DLC_NOT_OWNED_TITLE",
+                                            "$set Description": "UI_DIALOG_CONTRACT_SEARCH_DLC_NOT_OWNED_DESCRIPTION",
+                                            "$in": {
+                                                "title": "$loc $.Title",
+                                                "frameheightmax": 850,
+                                                "information": [
+                                                    {
+                                                        "$if $not $($isnull $.Contract)": {
+                                                            "$then": {
+                                                                "contract": {
+                                                                    "type": "$.Contract.Metadata.Type",
+                                                                    "name": {
+                                                                        "$switch $.Contract.Metadata.Type": [
+                                                                            {
+                                                                                "case": "usercreated",
+                                                                                "return": {
+                                                                                    "$if $($arg _ugcrestricted)": {
+                                                                                        "$then": "$loc UI_CONTRACT_NO_ACCESS_UGC",
+                                                                                        "$else": "$.Contract.Metadata.Title"
+                                                                                    }
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "case": "featured",
+                                                                                "return": "$.Contract.Metadata.Title"
+                                                                            },
+                                                                            {
+                                                                                "default": "$loc $.Contract.Metadata.Title"
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "creator": {
+                                                                        "$switch $.Contract.Metadata.Type": [
+                                                                            {
+                                                                                "case": "featured",
+                                                                                "return": "$loc UI_CATEGORY_MESSAGE_CENTER_COMMUNITY"
+                                                                            },
+                                                                            {
+                                                                                "default": "$($user $.Contract.Metadata.CreatorUserId).name"
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "id": "$formatpublicid $.Contract.Metadata.PublicId",
+                                                                    "creationdate": "$.Contract.Metadata.CreationTimestamp",
+                                                                    "description": {
+                                                                        "$switch $.Contract.Metadata.Type": [
+                                                                            {
+                                                                                "case": "featured",
+                                                                                "return": {
+                                                                                    "$if $stringvalid $loc $.Contract.Metadata.Description": {
+                                                                                        "$then": "$loc $.Contract.Metadata.Description",
+                                                                                        "$else": "$.Contract.Metadata.Description"
+                                                                                    }
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "case": "creation",
+                                                                                "return": "$loc UI_MENU_PAGE_CREATE_CONTRACT_NO_ACCESS_DESCRIPTION"
+                                                                            },
+                                                                            {
+                                                                                "case": "elusive",
+                                                                                "return": "$loc UI_CONTRACT_HEADER_ELUSIVE"
+                                                                            },
+                                                                            {
+                                                                                "default": "$loc $.Contract.Metadata.Description"
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "image": {
+                                                                        "$if $.Contract.Metadata.TileImage": {
+                                                                            "$then": {
+                                                                                "$if $gt ($arraysize $.Contract.Metadata.TileImage,0)": {
+                                                                                    "$then": {
+                                                                                        "$setup": {
+                                                                                            "$set EngineMode": {
+                                                                                                "$if $isnull $.EngineMode": {
+                                                                                                    "$then": {
+                                                                                                        "$if $isnull $arg EngineMode": {
+                                                                                                            "$then": "singleplayer",
+                                                                                                            "$else": "$arg EngineMode"
+                                                                                                        }
+                                                                                                    },
+                                                                                                    "$else": "$.EngineMode"
+                                                                                                }
+                                                                                            },
+                                                                                            "$set TileImageOrdered": {
+                                                                                                "$orderby": {
+                                                                                                    "from": "$expand $.Contract.Metadata.TileImage",
+                                                                                                    "by": "Mode",
+                                                                                                    "order": [
+                                                                                                        "$.EngineMode"
+                                                                                                    ]
+                                                                                                }
+                                                                                            },
+                                                                                            "$in": "$res $.TileImageOrdered[0].Image"
+                                                                                        }
+                                                                                    },
+                                                                                    "$else": "$res $expand $.Contract.Metadata.TileImage"
+                                                                                }
+                                                                            },
+                                                                            "$else": "$res images/ui/tiles/defaultmenutilesmall.jpg"
+                                                                        }
+                                                                    },
+                                                                    "icon": {
+                                                                        "$switch $.Contract.Metadata.Type": [
+                                                                            {
+                                                                                "case": "dummy",
+                                                                                "return": {
+                                                                                    "_dynamicPackerOverride": [
+                                                                                        "SniperChallenge"
+                                                                                    ]
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "case": "orbis",
+                                                                                "return": "ica"
+                                                                            },
+                                                                            {
+                                                                                "case": "campaign",
+                                                                                "return": "mission"
+                                                                            },
+                                                                            {
+                                                                                "case": "sniper",
+                                                                                "return": "sniperrifle"
+                                                                            },
+                                                                            {
+                                                                                "default": {
+                                                                                    "$if $.Contract.Metadata.IsVersus": {
+                                                                                        "$then": "versus",
+                                                                                        "$else": "$.Contract.Metadata.Type"
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "locked": true
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    {
+                                                        "dlcmissing": {
+                                                            "$setup": {
+                                                                "$set DlcName": {
+                                                                    "$if $isnull $.DlcName": {
+                                                                        "$then": {
+                                                                            "$if $isnull $.SubLocation": {
+                                                                                "$then": {
+                                                                                    "$if $isnull $.Location": {
+                                                                                        "$then": "$loc $.Data.DlcName",
+                                                                                        "$else": "$loc $.Location.Properties.DlcName"
+                                                                                    }
+                                                                                },
+                                                                                "$else": "$loc $.SubLocation.Properties.DlcName"
+                                                                            }
+                                                                        },
+                                                                        "$else": "$.DlcName"
+                                                                    }
+                                                                },
+                                                                "$set DlcImage": {
+                                                                    "$if $isnull $.DlcImage": {
+                                                                        "$then": {
+                                                                            "$if $isnull $.SubLocation": {
+                                                                                "$then": {
+                                                                                    "$if $isnull $.Location": {
+                                                                                        "$then": "$res $.Data.DlcImage",
+                                                                                        "$else": "$res $.Location.Properties.DlcImage"
+                                                                                    }
+                                                                                },
+                                                                                "$else": "$res $.SubLocation.Properties.DlcImage"
+                                                                            }
+                                                                        },
+                                                                        "$else": "$.DlcImage"
+                                                                    }
+                                                                },
+                                                                "$set CreatedInMission": "$loc $formatstring UI_{$.Contract.Metadata.Location}_TITLE",
+                                                                "$set CreatedInLocation": "$loc $formatstring UI_{$.Contract.Metadata.Location}_CITY",
+                                                                "$in": {
+                                                                    "showcreatedin": {
+                                                                        "$switch $.Contract.Metadata.Type": [
+                                                                            {
+                                                                                "case": "featured",
+                                                                                "return": true
+                                                                            },
+                                                                            {
+                                                                                "case": "usercreated",
+                                                                                "return": true
+                                                                            },
+                                                                            {
+                                                                                "default": false
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "episode": "$.DlcName",
+                                                                    "location": {
+                                                                        "$loc": {
+                                                                            "key": "UI_DIALOG_CONTRACT_SEARCH_CREATED_IN",
+                                                                            "data": [
+                                                                                "$formatstring {$.CreatedInMission}, {$.CreatedInLocation}"
+                                                                            ]
+                                                                        }
+                                                                    },
+                                                                    "description": {
+                                                                        "$if $isnull $.DescriptionExpanded": {
+                                                                            "$then": {
+                                                                                "$loc": {
+                                                                                    "key": "$.Description",
+                                                                                    "data": [
+                                                                                        "$.DlcName"
+                                                                                    ]
+                                                                                }
+                                                                            },
+                                                                            "$else": "$.DescriptionExpanded"
+                                                                        }
+                                                                    },
+                                                                    "image": "$.DlcImage"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                ],
+                                                "userresolution": {
+                                                    "$if": {
+                                                        "$condition": {
+                                                            "$and": [
+                                                                "$not $($isnull $.Contract)",
+                                                                {
+                                                                    "$equal": [
+                                                                        "usercreated",
+                                                                        "$.Contract.Metadata.Type"
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        },
+                                                        "$then": {
+                                                            "informationtarget": "contract.creator",
+                                                            "profileid": "$.Contract.Metadata.CreatorUserId"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "onbutton": []
+                            }
+                        }
+                    },
+                    "request-back": {}
+                },
+                "on-content-not-installed": {
+                    "set-persistent-context": {
+                        "target": "hub",
+                        "actions": {
+                            "show-modal": {
+                                "config": {
+                                    "view": "menu3.modal.ModalDialogGeneric",
+                                    "buttons": [
+                                        {
+                                            "label": "$loc UI_DIALOG_CANCEL",
+                                            "type": "cancel"
+                                        }
+                                    ],
+                                    "data": {
+                                        "$setup": {
+                                            "$set Title": "UI_DIALOG_CONTRACT_SEARCH_DLC_NOT_INSTALLED_TITLE",
+                                            "_comment": "using the NOT_OWNED string here as well is intentional",
+                                            "$set Description": "UI_DIALOG_CONTRACT_SEARCH_DLC_NOT_INSTALLED_DESCRIPTION",
+                                            "$in": {
+                                                "title": "$loc $.Title",
+                                                "frameheightmax": 850,
+                                                "information": [
+                                                    {
+                                                        "$if $not $($isnull $.Contract)": {
+                                                            "$then": {
+                                                                "contract": {
+                                                                    "type": "$.Contract.Metadata.Type",
+                                                                    "name": {
+                                                                        "$switch $.Contract.Metadata.Type": [
+                                                                            {
+                                                                                "case": "usercreated",
+                                                                                "return": {
+                                                                                    "$if $($arg _ugcrestricted)": {
+                                                                                        "$then": "$loc UI_CONTRACT_NO_ACCESS_UGC",
+                                                                                        "$else": "$.Contract.Metadata.Title"
+                                                                                    }
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "case": "featured",
+                                                                                "return": "$.Contract.Metadata.Title"
+                                                                            },
+                                                                            {
+                                                                                "default": "$loc $.Contract.Metadata.Title"
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "creator": {
+                                                                        "$switch $.Contract.Metadata.Type": [
+                                                                            {
+                                                                                "case": "featured",
+                                                                                "return": "$loc UI_CATEGORY_MESSAGE_CENTER_COMMUNITY"
+                                                                            },
+                                                                            {
+                                                                                "default": "$($user $.Contract.Metadata.CreatorUserId).name"
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "id": "$formatpublicid $.Contract.Metadata.PublicId",
+                                                                    "creationdate": "$.Contract.Metadata.CreationTimestamp",
+                                                                    "description": {
+                                                                        "$switch $.Contract.Metadata.Type": [
+                                                                            {
+                                                                                "case": "featured",
+                                                                                "return": {
+                                                                                    "$if $stringvalid $loc $.Contract.Metadata.Description": {
+                                                                                        "$then": "$loc $.Contract.Metadata.Description",
+                                                                                        "$else": "$.Contract.Metadata.Description"
+                                                                                    }
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "case": "creation",
+                                                                                "return": "$loc UI_MENU_PAGE_CREATE_CONTRACT_NO_ACCESS_DESCRIPTION"
+                                                                            },
+                                                                            {
+                                                                                "case": "elusive",
+                                                                                "return": "$loc UI_CONTRACT_HEADER_ELUSIVE"
+                                                                            },
+                                                                            {
+                                                                                "default": "$loc $.Contract.Metadata.Description"
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "image": {
+                                                                        "$if $.Contract.Metadata.TileImage": {
+                                                                            "$then": {
+                                                                                "$if $gt ($arraysize $.Contract.Metadata.TileImage,0)": {
+                                                                                    "$then": {
+                                                                                        "$setup": {
+                                                                                            "$set EngineMode": {
+                                                                                                "$if $isnull $.EngineMode": {
+                                                                                                    "$then": {
+                                                                                                        "$if $isnull $arg EngineMode": {
+                                                                                                            "$then": "singleplayer",
+                                                                                                            "$else": "$arg EngineMode"
+                                                                                                        }
+                                                                                                    },
+                                                                                                    "$else": "$.EngineMode"
+                                                                                                }
+                                                                                            },
+                                                                                            "$set TileImageOrdered": {
+                                                                                                "$orderby": {
+                                                                                                    "from": "$expand $.Contract.Metadata.TileImage",
+                                                                                                    "by": "Mode",
+                                                                                                    "order": [
+                                                                                                        "$.EngineMode"
+                                                                                                    ]
+                                                                                                }
+                                                                                            },
+                                                                                            "$in": "$res $.TileImageOrdered[0].Image"
+                                                                                        }
+                                                                                    },
+                                                                                    "$else": "$res $expand $.Contract.Metadata.TileImage"
+                                                                                }
+                                                                            },
+                                                                            "$else": "$res images/ui/tiles/defaultmenutilesmall.jpg"
+                                                                        }
+                                                                    },
+                                                                    "icon": {
+                                                                        "$switch $.Contract.Metadata.Type": [
+                                                                            {
+                                                                                "case": "dummy",
+                                                                                "return": {
+                                                                                    "_dynamicPackerOverride": [
+                                                                                        "SniperChallenge"
+                                                                                    ]
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "case": "orbis",
+                                                                                "return": "ica"
+                                                                            },
+                                                                            {
+                                                                                "case": "campaign",
+                                                                                "return": "mission"
+                                                                            },
+                                                                            {
+                                                                                "case": "sniper",
+                                                                                "return": "sniperrifle"
+                                                                            },
+                                                                            {
+                                                                                "default": {
+                                                                                    "$if $.Contract.Metadata.IsVersus": {
+                                                                                        "$then": "versus",
+                                                                                        "$else": "$.Contract.Metadata.Type"
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "locked": true
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    {
+                                                        "dlcmissing": {
+                                                            "$setup": {
+                                                                "$set DlcName": {
+                                                                    "$if $isnull $.DlcName": {
+                                                                        "$then": {
+                                                                            "$if $isnull $.SubLocation": {
+                                                                                "$then": {
+                                                                                    "$if $isnull $.Location": {
+                                                                                        "$then": "$loc $.Data.DlcName",
+                                                                                        "$else": "$loc $.Location.Properties.DlcName"
+                                                                                    }
+                                                                                },
+                                                                                "$else": "$loc $.SubLocation.Properties.DlcName"
+                                                                            }
+                                                                        },
+                                                                        "$else": "$.DlcName"
+                                                                    }
+                                                                },
+                                                                "$set DlcImage": {
+                                                                    "$if $isnull $.DlcImage": {
+                                                                        "$then": {
+                                                                            "$if $isnull $.SubLocation": {
+                                                                                "$then": {
+                                                                                    "$if $isnull $.Location": {
+                                                                                        "$then": "$res $.Data.DlcImage",
+                                                                                        "$else": "$res $.Location.Properties.DlcImage"
+                                                                                    }
+                                                                                },
+                                                                                "$else": "$res $.SubLocation.Properties.DlcImage"
+                                                                            }
+                                                                        },
+                                                                        "$else": "$.DlcImage"
+                                                                    }
+                                                                },
+                                                                "$set CreatedInMission": "$loc $formatstring UI_{$.Contract.Metadata.Location}_TITLE",
+                                                                "$set CreatedInLocation": "$loc $formatstring UI_{$.Contract.Metadata.Location}_CITY",
+                                                                "$in": {
+                                                                    "showcreatedin": {
+                                                                        "$switch $.Contract.Metadata.Type": [
+                                                                            {
+                                                                                "case": "featured",
+                                                                                "return": true
+                                                                            },
+                                                                            {
+                                                                                "case": "usercreated",
+                                                                                "return": true
+                                                                            },
+                                                                            {
+                                                                                "default": false
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "episode": "$.DlcName",
+                                                                    "location": {
+                                                                        "$loc": {
+                                                                            "key": "UI_DIALOG_CONTRACT_SEARCH_CREATED_IN",
+                                                                            "data": [
+                                                                                "$formatstring {$.CreatedInMission}, {$.CreatedInLocation}"
+                                                                            ]
+                                                                        }
+                                                                    },
+                                                                    "description": {
+                                                                        "$if $isnull $.DescriptionExpanded": {
+                                                                            "$then": {
+                                                                                "$loc": {
+                                                                                    "key": "$.Description",
+                                                                                    "data": [
+                                                                                        "$.DlcName"
+                                                                                    ]
+                                                                                }
+                                                                            },
+                                                                            "$else": "$.DescriptionExpanded"
+                                                                        }
+                                                                    },
+                                                                    "image": "$.DlcImage"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                ],
+                                                "userresolution": {
+                                                    "$if": {
+                                                        "$condition": {
+                                                            "$and": [
+                                                                "$not $($isnull $.Contract)",
+                                                                {
+                                                                    "$equal": [
+                                                                        "usercreated",
+                                                                        "$.Contract.Metadata.Type"
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        },
+                                                        "$then": {
+                                                            "informationtarget": "contract.creator",
+                                                            "profileid": "$.Contract.Metadata.CreatorUserId"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "onbutton": []
+                            }
+                        }
+                    },
+                    "request-back": {}
+                },
+                "on-content-downloading": {
+                    "set-persistent-context": {
+                        "target": "hub",
+                        "actions": {
+                            "show-modal": {
+                                "config": {
+                                    "view": "menu3.modal.ModalDialogGeneric",
+                                    "buttons": [
+                                        {
+                                            "label": "$loc UI_DIALOG_CANCEL",
+                                            "type": "cancel"
+                                        }
+                                    ],
+                                    "data": {
+                                        "$setup": {
+                                            "$set Title": "UI_DIALOG_CONTRACT_SEARCH_DLC_DOWNLOADING_TITLE",
+                                            "$set Description": "UI_DIALOG_CONTRACT_SEARCH_DLC_DOWNLOADING_DESCRIPTION",
+                                            "$in": {
+                                                "title": "$loc $.Title",
+                                                "frameheightmax": 850,
+                                                "information": [
+                                                    {
+                                                        "$if $not $($isnull $.Contract)": {
+                                                            "$then": {
+                                                                "contract": {
+                                                                    "type": "$.Contract.Metadata.Type",
+                                                                    "name": {
+                                                                        "$switch $.Contract.Metadata.Type": [
+                                                                            {
+                                                                                "case": "usercreated",
+                                                                                "return": {
+                                                                                    "$if $($arg _ugcrestricted)": {
+                                                                                        "$then": "$loc UI_CONTRACT_NO_ACCESS_UGC",
+                                                                                        "$else": "$.Contract.Metadata.Title"
+                                                                                    }
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "case": "featured",
+                                                                                "return": "$.Contract.Metadata.Title"
+                                                                            },
+                                                                            {
+                                                                                "default": "$loc $.Contract.Metadata.Title"
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "creator": {
+                                                                        "$switch $.Contract.Metadata.Type": [
+                                                                            {
+                                                                                "case": "featured",
+                                                                                "return": "$loc UI_CATEGORY_MESSAGE_CENTER_COMMUNITY"
+                                                                            },
+                                                                            {
+                                                                                "default": "$($user $.Contract.Metadata.CreatorUserId).name"
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "id": "$formatpublicid $.Contract.Metadata.PublicId",
+                                                                    "creationdate": "$.Contract.Metadata.CreationTimestamp",
+                                                                    "description": {
+                                                                        "$switch $.Contract.Metadata.Type": [
+                                                                            {
+                                                                                "case": "featured",
+                                                                                "return": {
+                                                                                    "$if $stringvalid $loc $.Contract.Metadata.Description": {
+                                                                                        "$then": "$loc $.Contract.Metadata.Description",
+                                                                                        "$else": "$.Contract.Metadata.Description"
+                                                                                    }
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "case": "creation",
+                                                                                "return": "$loc UI_MENU_PAGE_CREATE_CONTRACT_NO_ACCESS_DESCRIPTION"
+                                                                            },
+                                                                            {
+                                                                                "case": "elusive",
+                                                                                "return": "$loc UI_CONTRACT_HEADER_ELUSIVE"
+                                                                            },
+                                                                            {
+                                                                                "default": "$loc $.Contract.Metadata.Description"
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "image": {
+                                                                        "$if $.Contract.Metadata.TileImage": {
+                                                                            "$then": {
+                                                                                "$if $gt ($arraysize $.Contract.Metadata.TileImage,0)": {
+                                                                                    "$then": {
+                                                                                        "$setup": {
+                                                                                            "$set EngineMode": {
+                                                                                                "$if $isnull $.EngineMode": {
+                                                                                                    "$then": {
+                                                                                                        "$if $isnull $arg EngineMode": {
+                                                                                                            "$then": "singleplayer",
+                                                                                                            "$else": "$arg EngineMode"
+                                                                                                        }
+                                                                                                    },
+                                                                                                    "$else": "$.EngineMode"
+                                                                                                }
+                                                                                            },
+                                                                                            "$set TileImageOrdered": {
+                                                                                                "$orderby": {
+                                                                                                    "from": "$expand $.Contract.Metadata.TileImage",
+                                                                                                    "by": "Mode",
+                                                                                                    "order": [
+                                                                                                        "$.EngineMode"
+                                                                                                    ]
+                                                                                                }
+                                                                                            },
+                                                                                            "$in": "$res $.TileImageOrdered[0].Image"
+                                                                                        }
+                                                                                    },
+                                                                                    "$else": "$res $expand $.Contract.Metadata.TileImage"
+                                                                                }
+                                                                            },
+                                                                            "$else": "$res images/ui/tiles/defaultmenutilesmall.jpg"
+                                                                        }
+                                                                    },
+                                                                    "icon": {
+                                                                        "$switch $.Contract.Metadata.Type": [
+                                                                            {
+                                                                                "case": "dummy",
+                                                                                "return": {
+                                                                                    "_dynamicPackerOverride": [
+                                                                                        "SniperChallenge"
+                                                                                    ]
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "case": "orbis",
+                                                                                "return": "ica"
+                                                                            },
+                                                                            {
+                                                                                "case": "campaign",
+                                                                                "return": "mission"
+                                                                            },
+                                                                            {
+                                                                                "case": "sniper",
+                                                                                "return": "sniperrifle"
+                                                                            },
+                                                                            {
+                                                                                "default": {
+                                                                                    "$if $.Contract.Metadata.IsVersus": {
+                                                                                        "$then": "versus",
+                                                                                        "$else": "$.Contract.Metadata.Type"
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "locked": true
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    {
+                                                        "dlcmissing": {
+                                                            "$setup": {
+                                                                "$set DlcName": {
+                                                                    "$if $isnull $.DlcName": {
+                                                                        "$then": {
+                                                                            "$if $isnull $.SubLocation": {
+                                                                                "$then": {
+                                                                                    "$if $isnull $.Location": {
+                                                                                        "$then": "$loc $.Data.DlcName",
+                                                                                        "$else": "$loc $.Location.Properties.DlcName"
+                                                                                    }
+                                                                                },
+                                                                                "$else": "$loc $.SubLocation.Properties.DlcName"
+                                                                            }
+                                                                        },
+                                                                        "$else": "$.DlcName"
+                                                                    }
+                                                                },
+                                                                "$set DlcImage": {
+                                                                    "$if $isnull $.DlcImage": {
+                                                                        "$then": {
+                                                                            "$if $isnull $.SubLocation": {
+                                                                                "$then": {
+                                                                                    "$if $isnull $.Location": {
+                                                                                        "$then": "$res $.Data.DlcImage",
+                                                                                        "$else": "$res $.Location.Properties.DlcImage"
+                                                                                    }
+                                                                                },
+                                                                                "$else": "$res $.SubLocation.Properties.DlcImage"
+                                                                            }
+                                                                        },
+                                                                        "$else": "$.DlcImage"
+                                                                    }
+                                                                },
+                                                                "$set CreatedInMission": "$loc $formatstring UI_{$.Contract.Metadata.Location}_TITLE",
+                                                                "$set CreatedInLocation": "$loc $formatstring UI_{$.Contract.Metadata.Location}_CITY",
+                                                                "$in": {
+                                                                    "showcreatedin": {
+                                                                        "$switch $.Contract.Metadata.Type": [
+                                                                            {
+                                                                                "case": "featured",
+                                                                                "return": true
+                                                                            },
+                                                                            {
+                                                                                "case": "usercreated",
+                                                                                "return": true
+                                                                            },
+                                                                            {
+                                                                                "default": false
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "episode": "$.DlcName",
+                                                                    "location": {
+                                                                        "$loc": {
+                                                                            "key": "UI_DIALOG_CONTRACT_SEARCH_CREATED_IN",
+                                                                            "data": [
+                                                                                "$formatstring {$.CreatedInMission}, {$.CreatedInLocation}"
+                                                                            ]
+                                                                        }
+                                                                    },
+                                                                    "description": {
+                                                                        "$if $isnull $.DescriptionExpanded": {
+                                                                            "$then": {
+                                                                                "$loc": {
+                                                                                    "key": "$.Description",
+                                                                                    "data": [
+                                                                                        "$.DlcName"
+                                                                                    ]
+                                                                                }
+                                                                            },
+                                                                            "$else": "$.DescriptionExpanded"
+                                                                        }
+                                                                    },
+                                                                    "image": "$.DlcImage"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                ],
+                                                "userresolution": {
+                                                    "$if": {
+                                                        "$condition": {
+                                                            "$and": [
+                                                                "$not $($isnull $.Contract)",
+                                                                {
+                                                                    "$equal": [
+                                                                        "usercreated",
+                                                                        "$.Contract.Metadata.Type"
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        },
+                                                        "$then": {
+                                                            "informationtarget": "contract.creator",
+                                                            "profileid": "$.Contract.Metadata.CreatorUserId"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "request-back": {}
+                },
+                "on-content-update-required": {
+                    "set-persistent-context": {
+                        "target": "hub",
+                        "actions": {
+                            "show-dlc-update-dialog": {
+                                "$setup": {
+                                    "$set DlcId": {
+                                        "$notransform": {
+                                            "$if $isnull $.OutdatedDlcId": {
+                                                "$then": -1,
+                                                "$else": "$.OutdatedDlcId"
+                                            }
+                                        }
+                                    },
+                                    "$in": { "OutdatedDlcId": "$.DlcId" }
+                                }
+                            },
+                            "show-modal": {
+                                "config": {
+                                    "view": "menu3.modal.ModalDialogGeneric",
+                                    "buttons": [
+                                        {
+                                            "label": "$loc UI_DIALOG_CANCEL",
+                                            "type": "cancel"
+                                        }
+                                    ],
+                                    "data": {
+                                        "$setup": {
+                                            "$set Title": "UI_DIALOG_DLC_DOWNLOAD",
+                                            "$set Description": "UI_DIALOG_CONTENT_REQUIRES_UPDATE_DESCRIPTION",
+                                            "$in": {
+                                                "title": "$loc $.Title",
+                                                "frameheightmax": 850,
+                                                "information": [
+                                                    {
+                                                        "$if $not $($isnull $.Contract)": {
+                                                            "$then": {
+                                                                "contract": {
+                                                                    "type": "$.Contract.Metadata.Type",
+                                                                    "name": {
+                                                                        "$switch $.Contract.Metadata.Type": [
+                                                                            {
+                                                                                "case": "usercreated",
+                                                                                "return": {
+                                                                                    "$if $($arg _ugcrestricted)": {
+                                                                                        "$then": "$loc UI_CONTRACT_NO_ACCESS_UGC",
+                                                                                        "$else": "$.Contract.Metadata.Title"
+                                                                                    }
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "case": "featured",
+                                                                                "return": "$.Contract.Metadata.Title"
+                                                                            },
+                                                                            {
+                                                                                "default": "$loc $.Contract.Metadata.Title"
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "creator": {
+                                                                        "$switch $.Contract.Metadata.Type": [
+                                                                            {
+                                                                                "case": "featured",
+                                                                                "return": "$loc UI_CATEGORY_MESSAGE_CENTER_COMMUNITY"
+                                                                            },
+                                                                            {
+                                                                                "default": "$($user $.Contract.Metadata.CreatorUserId).name"
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "id": "$formatpublicid $.Contract.Metadata.PublicId",
+                                                                    "creationdate": "$.Contract.Metadata.CreationTimestamp",
+                                                                    "description": {
+                                                                        "$switch $.Contract.Metadata.Type": [
+                                                                            {
+                                                                                "case": "featured",
+                                                                                "return": {
+                                                                                    "$if $stringvalid $loc $.Contract.Metadata.Description": {
+                                                                                        "$then": "$loc $.Contract.Metadata.Description",
+                                                                                        "$else": "$.Contract.Metadata.Description"
+                                                                                    }
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "case": "creation",
+                                                                                "return": "$loc UI_MENU_PAGE_CREATE_CONTRACT_NO_ACCESS_DESCRIPTION"
+                                                                            },
+                                                                            {
+                                                                                "case": "elusive",
+                                                                                "return": "$loc UI_CONTRACT_HEADER_ELUSIVE"
+                                                                            },
+                                                                            {
+                                                                                "default": "$loc $.Contract.Metadata.Description"
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "image": {
+                                                                        "$if $.Contract.Metadata.TileImage": {
+                                                                            "$then": {
+                                                                                "$if $gt ($arraysize $.Contract.Metadata.TileImage,0)": {
+                                                                                    "$then": {
+                                                                                        "$setup": {
+                                                                                            "$set EngineMode": {
+                                                                                                "$if $isnull $.EngineMode": {
+                                                                                                    "$then": {
+                                                                                                        "$if $isnull $arg EngineMode": {
+                                                                                                            "$then": "singleplayer",
+                                                                                                            "$else": "$arg EngineMode"
+                                                                                                        }
+                                                                                                    },
+                                                                                                    "$else": "$.EngineMode"
+                                                                                                }
+                                                                                            },
+                                                                                            "$set TileImageOrdered": {
+                                                                                                "$orderby": {
+                                                                                                    "from": "$expand $.Contract.Metadata.TileImage",
+                                                                                                    "by": "Mode",
+                                                                                                    "order": [
+                                                                                                        "$.EngineMode"
+                                                                                                    ]
+                                                                                                }
+                                                                                            },
+                                                                                            "$in": "$res $.TileImageOrdered[0].Image"
+                                                                                        }
+                                                                                    },
+                                                                                    "$else": "$res $expand $.Contract.Metadata.TileImage"
+                                                                                }
+                                                                            },
+                                                                            "$else": "$res images/ui/tiles/defaultmenutilesmall.jpg"
+                                                                        }
+                                                                    },
+                                                                    "icon": {
+                                                                        "$switch $.Contract.Metadata.Type": [
+                                                                            {
+                                                                                "case": "dummy",
+                                                                                "return": {
+                                                                                    "_dynamicPackerOverride": [
+                                                                                        "SniperChallenge"
+                                                                                    ]
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "case": "orbis",
+                                                                                "return": "ica"
+                                                                            },
+                                                                            {
+                                                                                "case": "campaign",
+                                                                                "return": "mission"
+                                                                            },
+                                                                            {
+                                                                                "case": "sniper",
+                                                                                "return": "sniperrifle"
+                                                                            },
+                                                                            {
+                                                                                "default": {
+                                                                                    "$if $.Contract.Metadata.IsVersus": {
+                                                                                        "$then": "versus",
+                                                                                        "$else": "$.Contract.Metadata.Type"
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "locked": true
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    {
+                                                        "dlcmissing": {
+                                                            "$setup": {
+                                                                "$set DlcName": {
+                                                                    "$if $isnull $.DlcName": {
+                                                                        "$then": {
+                                                                            "$if $isnull $.SubLocation": {
+                                                                                "$then": {
+                                                                                    "$if $isnull $.Location": {
+                                                                                        "$then": "$loc $.Data.DlcName",
+                                                                                        "$else": "$loc $.Location.Properties.DlcName"
+                                                                                    }
+                                                                                },
+                                                                                "$else": "$loc $.SubLocation.Properties.DlcName"
+                                                                            }
+                                                                        },
+                                                                        "$else": "$.DlcName"
+                                                                    }
+                                                                },
+                                                                "$set DlcImage": {
+                                                                    "$if $isnull $.DlcImage": {
+                                                                        "$then": {
+                                                                            "$if $isnull $.SubLocation": {
+                                                                                "$then": {
+                                                                                    "$if $isnull $.Location": {
+                                                                                        "$then": "$res $.Data.DlcImage",
+                                                                                        "$else": "$res $.Location.Properties.DlcImage"
+                                                                                    }
+                                                                                },
+                                                                                "$else": "$res $.SubLocation.Properties.DlcImage"
+                                                                            }
+                                                                        },
+                                                                        "$else": "$.DlcImage"
+                                                                    }
+                                                                },
+                                                                "$set CreatedInMission": "$loc $formatstring UI_{$.Contract.Metadata.Location}_TITLE",
+                                                                "$set CreatedInLocation": "$loc $formatstring UI_{$.Contract.Metadata.Location}_CITY",
+                                                                "$in": {
+                                                                    "showcreatedin": {
+                                                                        "$switch $.Contract.Metadata.Type": [
+                                                                            {
+                                                                                "case": "featured",
+                                                                                "return": true
+                                                                            },
+                                                                            {
+                                                                                "case": "usercreated",
+                                                                                "return": true
+                                                                            },
+                                                                            {
+                                                                                "default": false
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "episode": "$.DlcName",
+                                                                    "location": {
+                                                                        "$loc": {
+                                                                            "key": "UI_DIALOG_CONTRACT_SEARCH_CREATED_IN",
+                                                                            "data": [
+                                                                                "$formatstring {$.CreatedInMission}, {$.CreatedInLocation}"
+                                                                            ]
+                                                                        }
+                                                                    },
+                                                                    "description": {
+                                                                        "$if $isnull $.DescriptionExpanded": {
+                                                                            "$then": {
+                                                                                "$loc": {
+                                                                                    "key": "$.Description",
+                                                                                    "data": [
+                                                                                        "$.DlcName"
+                                                                                    ]
+                                                                                }
+                                                                            },
+                                                                            "$else": "$.DescriptionExpanded"
+                                                                        }
+                                                                    },
+                                                                    "image": "$.DlcImage"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                ],
+                                                "userresolution": {
+                                                    "$if": {
+                                                        "$condition": {
+                                                            "$and": [
+                                                                "$not $($isnull $.Contract)",
+                                                                {
+                                                                    "$equal": [
+                                                                        "usercreated",
+                                                                        "$.Contract.Metadata.Type"
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        },
+                                                        "$then": {
+                                                            "informationtarget": "contract.creator",
+                                                            "profileid": "$.Contract.Metadata.CreatorUserId"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "request-back": {}
+                },
+                "on-content-installing": {
+                    "set-persistent-context": {
+                        "target": "hub",
+                        "actions": {
+                            "show-modal": {
+                                "config": {
+                                    "view": "menu3.modal.ModalDialogGeneric",
+                                    "buttons": [
+                                        {
+                                            "label": "$loc UI_DIALOG_CANCEL",
+                                            "type": "cancel"
+                                        }
+                                    ],
+                                    "data": {
+                                        "$setup": {
+                                            "$set Title": "UI_DIALOG_CONTRACT_INSTALLING_TITLE",
+                                            "$set Description": "UI_DIALOG_CONTRACT_INSTALLING_DESCRIPTION",
+                                            "$in": {
+                                                "title": "$loc $.Title",
+                                                "frameheightmax": 850,
+                                                "information": [
+                                                    {
+                                                        "$if $not $($isnull $.Contract)": {
+                                                            "$then": {
+                                                                "contract": {
+                                                                    "type": "$.Contract.Metadata.Type",
+                                                                    "name": {
+                                                                        "$switch $.Contract.Metadata.Type": [
+                                                                            {
+                                                                                "case": "usercreated",
+                                                                                "return": {
+                                                                                    "$if $($arg _ugcrestricted)": {
+                                                                                        "$then": "$loc UI_CONTRACT_NO_ACCESS_UGC",
+                                                                                        "$else": "$.Contract.Metadata.Title"
+                                                                                    }
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "case": "featured",
+                                                                                "return": "$.Contract.Metadata.Title"
+                                                                            },
+                                                                            {
+                                                                                "default": "$loc $.Contract.Metadata.Title"
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "creator": {
+                                                                        "$switch $.Contract.Metadata.Type": [
+                                                                            {
+                                                                                "case": "featured",
+                                                                                "return": "$loc UI_CATEGORY_MESSAGE_CENTER_COMMUNITY"
+                                                                            },
+                                                                            {
+                                                                                "default": "$($user $.Contract.Metadata.CreatorUserId).name"
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "id": "$formatpublicid $.Contract.Metadata.PublicId",
+                                                                    "creationdate": "$.Contract.Metadata.CreationTimestamp",
+                                                                    "description": {
+                                                                        "$switch $.Contract.Metadata.Type": [
+                                                                            {
+                                                                                "case": "featured",
+                                                                                "return": {
+                                                                                    "$if $stringvalid $loc $.Contract.Metadata.Description": {
+                                                                                        "$then": "$loc $.Contract.Metadata.Description",
+                                                                                        "$else": "$.Contract.Metadata.Description"
+                                                                                    }
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "case": "creation",
+                                                                                "return": "$loc UI_MENU_PAGE_CREATE_CONTRACT_NO_ACCESS_DESCRIPTION"
+                                                                            },
+                                                                            {
+                                                                                "case": "elusive",
+                                                                                "return": "$loc UI_CONTRACT_HEADER_ELUSIVE"
+                                                                            },
+                                                                            {
+                                                                                "default": "$loc $.Contract.Metadata.Description"
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "image": {
+                                                                        "$if $.Contract.Metadata.TileImage": {
+                                                                            "$then": {
+                                                                                "$if $gt ($arraysize $.Contract.Metadata.TileImage,0)": {
+                                                                                    "$then": {
+                                                                                        "$setup": {
+                                                                                            "$set EngineMode": {
+                                                                                                "$if $isnull $.EngineMode": {
+                                                                                                    "$then": {
+                                                                                                        "$if $isnull $arg EngineMode": {
+                                                                                                            "$then": "singleplayer",
+                                                                                                            "$else": "$arg EngineMode"
+                                                                                                        }
+                                                                                                    },
+                                                                                                    "$else": "$.EngineMode"
+                                                                                                }
+                                                                                            },
+                                                                                            "$set TileImageOrdered": {
+                                                                                                "$orderby": {
+                                                                                                    "from": "$expand $.Contract.Metadata.TileImage",
+                                                                                                    "by": "Mode",
+                                                                                                    "order": [
+                                                                                                        "$.EngineMode"
+                                                                                                    ]
+                                                                                                }
+                                                                                            },
+                                                                                            "$in": "$res $.TileImageOrdered[0].Image"
+                                                                                        }
+                                                                                    },
+                                                                                    "$else": "$res $expand $.Contract.Metadata.TileImage"
+                                                                                }
+                                                                            },
+                                                                            "$else": "$res images/ui/tiles/defaultmenutilesmall.jpg"
+                                                                        }
+                                                                    },
+                                                                    "icon": {
+                                                                        "$switch $.Contract.Metadata.Type": [
+                                                                            {
+                                                                                "case": "dummy",
+                                                                                "return": {
+                                                                                    "_dynamicPackerOverride": [
+                                                                                        "SniperChallenge"
+                                                                                    ]
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "case": "orbis",
+                                                                                "return": "ica"
+                                                                            },
+                                                                            {
+                                                                                "case": "campaign",
+                                                                                "return": "mission"
+                                                                            },
+                                                                            {
+                                                                                "case": "sniper",
+                                                                                "return": "sniperrifle"
+                                                                            },
+                                                                            {
+                                                                                "default": {
+                                                                                    "$if $.Contract.Metadata.IsVersus": {
+                                                                                        "$then": "versus",
+                                                                                        "$else": "$.Contract.Metadata.Type"
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "locked": true
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    {
+                                                        "dlcmissing": {
+                                                            "$setup": {
+                                                                "$set DlcName": {
+                                                                    "$if $isnull $.DlcName": {
+                                                                        "$then": {
+                                                                            "$if $isnull $.SubLocation": {
+                                                                                "$then": {
+                                                                                    "$if $isnull $.Location": {
+                                                                                        "$then": "$loc $.Data.DlcName",
+                                                                                        "$else": "$loc $.Location.Properties.DlcName"
+                                                                                    }
+                                                                                },
+                                                                                "$else": "$loc $.SubLocation.Properties.DlcName"
+                                                                            }
+                                                                        },
+                                                                        "$else": "$.DlcName"
+                                                                    }
+                                                                },
+                                                                "$set DlcImage": {
+                                                                    "$if $isnull $.DlcImage": {
+                                                                        "$then": {
+                                                                            "$if $isnull $.SubLocation": {
+                                                                                "$then": {
+                                                                                    "$if $isnull $.Location": {
+                                                                                        "$then": "$res $.Data.DlcImage",
+                                                                                        "$else": "$res $.Location.Properties.DlcImage"
+                                                                                    }
+                                                                                },
+                                                                                "$else": "$res $.SubLocation.Properties.DlcImage"
+                                                                            }
+                                                                        },
+                                                                        "$else": "$.DlcImage"
+                                                                    }
+                                                                },
+                                                                "$set CreatedInMission": "$loc $formatstring UI_{$.Contract.Metadata.Location}_TITLE",
+                                                                "$set CreatedInLocation": "$loc $formatstring UI_{$.Contract.Metadata.Location}_CITY",
+                                                                "$in": {
+                                                                    "showcreatedin": {
+                                                                        "$switch $.Contract.Metadata.Type": [
+                                                                            {
+                                                                                "case": "featured",
+                                                                                "return": true
+                                                                            },
+                                                                            {
+                                                                                "case": "usercreated",
+                                                                                "return": true
+                                                                            },
+                                                                            {
+                                                                                "default": false
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "episode": "$.DlcName",
+                                                                    "location": {
+                                                                        "$loc": {
+                                                                            "key": "UI_DIALOG_CONTRACT_SEARCH_CREATED_IN",
+                                                                            "data": [
+                                                                                "$formatstring {$.CreatedInMission}, {$.CreatedInLocation}"
+                                                                            ]
+                                                                        }
+                                                                    },
+                                                                    "description": {
+                                                                        "$if $isnull $.DescriptionExpanded": {
+                                                                            "$then": {
+                                                                                "$loc": {
+                                                                                    "key": "$.Description",
+                                                                                    "data": [
+                                                                                        "$.DlcName"
+                                                                                    ]
+                                                                                }
+                                                                            },
+                                                                            "$else": "$.DescriptionExpanded"
+                                                                        }
+                                                                    },
+                                                                    "image": "$.DlcImage"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                ],
+                                                "userresolution": {
+                                                    "$if": {
+                                                        "$condition": {
+                                                            "$and": [
+                                                                "$not $($isnull $.Contract)",
+                                                                {
+                                                                    "$equal": [
+                                                                        "usercreated",
+                                                                        "$.Contract.Metadata.Type"
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        },
+                                                        "$then": {
+                                                            "informationtarget": "contract.creator",
+                                                            "profileid": "$.Contract.Metadata.CreatorUserId"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "request-back": {}
+                },
+                "on-content-available": {
+                    "set-persistent-context": {
+                        "target": "hub",
+                        "actions": {
+                            "show-modal": {
+                                "config": {
+                                    "view": "menu3.modal.ModalDialogGeneric",
+                                    "buttons": [
+                                        "$loc UI_DIALOG_CONTRACT_SEARCH_CONTRACT_FOUND_BUTTON",
+                                        {
+                                            "$if $.UserCentricContract.Data.PlaylistData.IsAdded": {
+                                                "$then": {
+                                                    "label": "$loc UI_BUTTON_PROMPTS_ACTION_REMOVE_FROM_PLAYLIST",
+                                                    "icon": "trashbin"
+                                                },
+                                                "$else": {
+                                                    "label": "$loc UI_BUTTON_PROMPTS_ACTION_ADD_TO_PLAYLIST",
+                                                    "icon": "addtolist"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "label": "$loc UI_DIALOG_CANCEL",
+                                            "type": "cancel"
+                                        }
+                                    ],
+                                    "data": {
+                                        "title": "$loc UI_DIALOG_CONTRACT_SEARCH_CONTRACT_FOUND_TITLE",
+                                        "information": [
+                                            {
+                                                "contract": {
+                                                    "$mergeobjects": [
+                                                        {
+                                                            "type": "$.Contract.Metadata.Type",
+                                                            "name": {
+                                                                "$switch $.Contract.Metadata.Type": [
+                                                                    {
+                                                                        "case": "usercreated",
+                                                                        "return": {
+                                                                            "$if $($arg _ugcrestricted)": {
+                                                                                "$then": "$loc UI_CONTRACT_NO_ACCESS_UGC",
+                                                                                "$else": "$.Contract.Metadata.Title"
+                                                                            }
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        "case": "featured",
+                                                                        "return": "$.Contract.Metadata.Title"
+                                                                    },
+                                                                    {
+                                                                        "default": "$loc $.Contract.Metadata.Title"
+                                                                    }
+                                                                ]
+                                                            },
+                                                            "creator": "$($user $.Contract.Metadata.CreatorUserId).name",
+                                                            "id": "$formatpublicid $.Contract.Metadata.PublicId",
+                                                            "creationdate": "$.Contract.Metadata.CreationTimestamp",
+                                                            "description": "$loc $.Contract.Metadata.Description",
+                                                            "image": {
+                                                                "$if $.Contract.Metadata.TileImage": {
+                                                                    "$then": {
+                                                                        "$if $gt ($arraysize $.Contract.Metadata.TileImage,0)": {
+                                                                            "$then": {
+                                                                                "$setup": {
+                                                                                    "$set EngineMode": {
+                                                                                        "$if $isnull $.EngineMode": {
+                                                                                            "$then": {
+                                                                                                "$if $isnull $arg EngineMode": {
+                                                                                                    "$then": "singleplayer",
+                                                                                                    "$else": "$arg EngineMode"
+                                                                                                }
+                                                                                            },
+                                                                                            "$else": "$.EngineMode"
+                                                                                        }
+                                                                                    },
+                                                                                    "$set TileImageOrdered": {
+                                                                                        "$orderby": {
+                                                                                            "from": "$expand $.Contract.Metadata.TileImage",
+                                                                                            "by": "Mode",
+                                                                                            "order": [
+                                                                                                "$.EngineMode"
+                                                                                            ]
+                                                                                        }
+                                                                                    },
+                                                                                    "$in": "$res $.TileImageOrdered[0].Image"
+                                                                                }
+                                                                            },
+                                                                            "$else": "$res $expand $.Contract.Metadata.TileImage"
+                                                                        }
+                                                                    },
+                                                                    "$else": "$res images/ui/tiles/defaultmenutilesmall.jpg"
+                                                                }
+                                                            },
+                                                            "icon": "$.Contract.Metadata.Type",
+                                                            "locked": false,
+                                                            "addedSuccessfullyToPlaylist": "$.AddedSuccessfully",
+                                                            "isInPlaylist": "$.UserCentricContract.Data.PlaylistData.IsAdded"
+                                                        },
+                                                        {
+                                                            "completionstate": {
+                                                                "$use $.UserCentricContract": {
+                                                                    "$switch $.Contract.Metadata.Type": [
+                                                                        {
+                                                                            "case": "usercreated",
+                                                                            "return": {
+                                                                                "$if $.Data.LastPlayedAt": {
+                                                                                    "$then": {
+                                                                                        "$if $.Data.Completed": {
+                                                                                            "$then": "completed",
+                                                                                            "$else": "failed"
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        },
+                                                                        {
+                                                                            "case": "featured",
+                                                                            "return": {
+                                                                                "$if $.Data.LastPlayedAt": {
+                                                                                    "$then": {
+                                                                                        "$if $.Data.Completed": {
+                                                                                            "$then": "completed",
+                                                                                            "$else": "failed"
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        },
+                                                                        {
+                                                                            "case": "escalation",
+                                                                            "return": {
+                                                                                "$if $.Data.LastPlayedAt": {
+                                                                                    "$then": {
+                                                                                        "$if $.Data.EscalationCompleted": {
+                                                                                            "$then": "completed"
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        },
+                                                                        {
+                                                                            "case": "placeholder",
+                                                                            "return": {
+                                                                                "$if $.Data.LastPlayedAt": {
+                                                                                    "$then": {
+                                                                                        "$if $.Data.EscalationCompleted": {
+                                                                                            "$then": "completed"
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        ],
+                                        "userresolution": {
+                                            "informationtarget": "contract.creator",
+                                            "profileid": "$.Contract.Metadata.CreatorUserId"
+                                        }
+                                    }
+                                },
+                                "onbutton": [
+                                    {
+                                        "link": {
+                                            "page": "planning",
+                                            "args": {
+                                                "url": "planning",
+                                                "args": {
+                                                    "contractid": "$.Contract.Metadata.Id"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "link": {
+                                            "page": "planning",
+                                            "args": {
+                                                "url": "lookupcontractdialogaddordeletefromplaylist",
+                                                "args": {
+                                                    "contractId": "$.Contract.Metadata.Id"
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "request-back": {}
+                }
+            }
+        }
+    }
+}
