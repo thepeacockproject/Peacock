@@ -365,9 +365,15 @@ export async function planningView(
     /**
      * Handles loadout lock for Miami and Hokkaido
      */
+    const limitedLoadoutUnlockLevelMap = {
+        LOCATION_MIAMI: 2,
+        LOCATION_HOKKAIDO: 20,
+    }
     const parentLocationProperties =
         locationData.parents[sublocation?.Properties?.ParentLocation]
             ?.Properties
+
+    console.log(limitedLoadoutUnlockLevelMap[sublocation.Id] ?? 0)
 
     if (sublocation?.Properties?.LimitedLoadout) {
         const loadoutUnlockable = getUnlockableById(
@@ -468,7 +474,8 @@ export async function planningView(
             Location: sublocation,
             LoadoutData:
                 contractData.Metadata.Type === "sniper" ? null : loadoutSlots,
-            LimitedLoadoutUnlockLevel: 0, // Hokkaido
+            LimitedLoadoutUnlockLevel:
+                limitedLoadoutUnlockLevelMap[sublocation.Id] ?? 0,
             CharacterLoadoutData:
                 sniperLoadouts.length !== 0 ? sniperLoadouts : null,
             ChallengeData: {
