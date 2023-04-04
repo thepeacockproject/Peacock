@@ -93,6 +93,10 @@ const defaultFlags: Flags = {
         desc: "[Development] When set to true, it will be possible to restart Peacock while the game is running and connected.",
         default: false,
     },
+    developmentLogRequests: {
+        desc: "[Development] When set to true, will log the body of all requests the game makes. This can cause huge log files!",
+        default: false,
+    },
     legacyContractDownloader: {
         desc: "When set to true, the official servers will be used for contract downloading in H3, which only works for the platform you are playing on. When false, the HITMAPS servers will be used instead. Note that this option only pertains to H3. Official servers will be used for H1 and H2 regardless of the value of this option.",
         default: false,
