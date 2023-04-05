@@ -36,7 +36,6 @@ import { controller, Controller } from "../controller"
 import {
     generateCompletionData,
     generateUserCentric,
-    getSubLocationByName,
     getSubLocationFromContract,
 } from "../contracts/dataGen"
 import { log, LogLevel } from "../loggingInterop"
@@ -49,17 +48,7 @@ import {
     HandleEventOptions,
 } from "@peacockproject/statemachine-parser"
 import { SavedChallengeGroup } from "../types/challenges"
-import {
-    clampValue,
-    DEFAULT_MASTERY_MAXLEVEL,
-    evergreenLevelForXp,
-    fastClone,
-    getMaxProfileLevel,
-    levelForXp,
-    xpRequiredForEvergreenLevel,
-    xpRequiredForLevel,
-    isSniperLocation,
-} from "../utils"
+import { fastClone, isSniperLocation } from "../utils"
 import {
     ChallengeFilterOptions,
     ChallengeFilterType,
@@ -197,6 +186,20 @@ export abstract class ChallengeRegistry {
         gameVersion: GameVersion,
     ): RegistryChallenge | undefined {
         return this.challenges.get(gameVersion)?.get(challengeId)
+    }
+
+    /**
+     * Returns a list of all challenges unlockables
+     */
+    getChallengesUnlockables() {
+        return [...this.challenges.values()].reduce((acc, challenge) => {
+            if (challenge?.Drops?.length) {
+                challenge.Drops.forEach(
+                    (dropId) => (acc[dropId] = challenge.Id),
+                )
+            }
+            return acc
+        }, {})
     }
 
     /**
@@ -1267,15 +1270,13 @@ export class ChallengeService extends ChallengeRegistry {
             session.challengeContexts[challenge.Id].state = "Start"
         }
 
-        //NOTE: Official will always grant XP to both Location Mastery and the Player Profile
-        const actionXp = challenge.Xp || 0
-        const masteryXp = challenge.Rewards?.MasteryXP || 0
-        const xp = actionXp + masteryXp
-
-        this.grantLocationMasteryXp(masteryXp, actionXp, session, userData)
-        this.grantUserXp(xp, session, userData)
-
-        writeUserData(userId, gameVersion)
+        controller.progressionService.grantProfileProgression(
+            challenge.Xp ?? 0,
+            challenge.Rewards?.MasteryXP ?? 0,
+            challenge?.Drops ?? [],
+            session,
+            userData,
+        )
 
         this.hooks.onChallengeCompleted.call(userId, challenge, gameVersion)
 
@@ -1289,116 +1290,5 @@ export class ChallengeService extends ChallengeRegistry {
                 gameVersion,
             )
         }
-    }
-
-    grantLocationMasteryXp(
-        masteryXp: number,
-        actionXp: number,
-        contractSession: ContractSession,
-        userProfile: UserProfile,
-    ): boolean {
-        const contract = controller.resolveContract(contractSession.contractId)
-
-        if (!contract) {
-            return false
-        }
-
-        const subLocation = getSubLocationByName(
-            contract.Metadata.Location,
-            contractSession.gameVersion,
-        )
-
-        const parentLocationId = subLocation
-            ? subLocation.Properties?.ParentLocation
-            : contract.Metadata.Location
-
-        if (!parentLocationId) {
-            return false
-        }
-
-        const masteryData =
-            this.controller.masteryService.getMasteryPackage(parentLocationId)
-
-        const parentLocationIdLowerCase = parentLocationId.toLocaleLowerCase()
-
-        //Update the Location data
-        userProfile.Extensions.progression.Locations[
-            parentLocationIdLowerCase
-        ] ??= {
-            Xp: 0,
-            Level: 1,
-        }
-
-        const locationData =
-            userProfile.Extensions.progression.Locations[
-                parentLocationIdLowerCase
-            ]
-
-        const maxLevel = masteryData?.MaxLevel || DEFAULT_MASTERY_MAXLEVEL
-
-        if (masteryData) {
-            locationData.Xp = clampValue(
-                locationData.Xp + masteryXp + actionXp,
-                0,
-                contract.Metadata.Type !== "evergreen"
-                    ? xpRequiredForLevel(maxLevel)
-                    : xpRequiredForEvergreenLevel(maxLevel),
-            )
-
-            locationData.Level = clampValue(
-                contract.Metadata.Type !== "evergreen"
-                    ? levelForXp(locationData.Xp)
-                    : evergreenLevelForXp(locationData.Xp),
-                1,
-                maxLevel,
-            )
-        }
-
-        //Update the SubLocation data
-        const profileData = userProfile.Extensions.progression.PlayerProfileXP
-
-        let foundSubLocation = profileData.Sublocations.find(
-            (e) => e.Location === parentLocationId,
-        )
-
-        if (!foundSubLocation) {
-            foundSubLocation = {
-                Location: parentLocationId,
-                Xp: 0,
-                ActionXp: 0,
-            }
-
-            profileData.Sublocations.push(foundSubLocation)
-        }
-
-        foundSubLocation.Xp += masteryXp
-        foundSubLocation.ActionXp += actionXp
-
-        //Update the EvergreenLevel with the latest Mastery Level
-        if (contract.Metadata.Type === "evergreen") {
-            userProfile.Extensions.CPD[contract.Metadata.CpdId][
-                "EvergreenLevel"
-            ] = locationData.Level
-        }
-
-        return true
-    }
-
-    //TODO: Combine with grantLocationMasteryXp?
-    grantUserXp(
-        xp: number,
-        contractSession: ContractSession,
-        userProfile: UserProfile,
-    ): boolean {
-        const profileData = userProfile.Extensions.progression.PlayerProfileXP
-
-        profileData.Total += xp
-        profileData.ProfileLevel = clampValue(
-            levelForXp(profileData.Total),
-            1,
-            getMaxProfileLevel(contractSession.gameVersion),
-        )
-
-        return true
     }
 }

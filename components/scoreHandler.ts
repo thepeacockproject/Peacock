@@ -69,6 +69,7 @@ import {
     MissionEndChallenge,
 } from "./types/score"
 import { MasteryData } from "./types/mastery"
+import { getDataForUnlockables } from "./inventory"
 
 /**
  * Checks the criteria of each possible play-style, ranking them by scoring.
@@ -973,8 +974,8 @@ export async function missionEnd(
         })
     }
 
-    //Drops
-    let drops: MissionEndDrop[] = []
+    //Mastery Drops
+    let masteryDrops: MissionEndDrop[] = []
 
     if (newLocationLevel - oldLocationLevel > 0) {
         const masteryData =
@@ -985,7 +986,7 @@ export async function missionEnd(
             ) as MasteryData[]
 
         if (masteryData.length > 0) {
-            drops = masteryData[0].Drops.filter(
+            masteryDrops = masteryData[0].Drops.filter(
                 (e) =>
                     e.Level > oldLocationLevel && e.Level <= newLocationLevel,
             ).map((e) => {
@@ -995,6 +996,26 @@ export async function missionEnd(
             })
         }
     }
+
+    // Challenge Drops
+    const challengeDrops: MissionEndDrop[] =
+        calculateXpResult.completedChallenges.reduce((acc, challenge) => {
+            if (challenge?.Drops?.length) {
+                const drops = getDataForUnlockables(
+                    req.gameVersion,
+                    challenge.Drops,
+                )
+                delete challenge.Drops
+
+                for (const drop of drops) {
+                    acc.push({
+                        Unlockable: drop,
+                        SourceChallenge: challenge,
+                    })
+                }
+            }
+            return acc
+        }, [])
 
     //Setup the result
     const result: MissionEndResponse = {
@@ -1016,7 +1037,7 @@ export async function missionEnd(
                 XPGain: totalXpGain,
             },
             Challenges: calculateXpResult.completedChallenges,
-            Drops: drops,
+            Drops: [...masteryDrops, ...challengeDrops],
             //TODO: Do these exist? Appears to be optional.
             OpportunityRewards: [],
             UnlockableProgression: unlockableProgression,

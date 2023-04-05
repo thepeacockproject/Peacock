@@ -48,3 +48,8 @@ export interface MasteryDrop {
     IsLocked: boolean
     TypeLocaKey: string
 }
+
+export interface UnlockableMasteryData {
+    Location: string
+    Level: number
+}
