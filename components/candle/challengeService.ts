@@ -191,15 +191,18 @@ export abstract class ChallengeRegistry {
     /**
      * Returns a list of all challenges unlockables
      */
-    getChallengesUnlockables() {
-        return [...this.challenges.values()].reduce((acc, challenge) => {
-            if (challenge?.Drops?.length) {
-                challenge.Drops.forEach(
-                    (dropId) => (acc[dropId] = challenge.Id),
-                )
-            }
-            return acc
-        }, {})
+    getChallengesUnlockables(gameVersion: GameVersion) {
+        return [...this.challenges.get(gameVersion).values()].reduce(
+            (acc, challenge) => {
+                if (challenge?.Drops?.length) {
+                    challenge.Drops.forEach(
+                        (dropId) => (acc[dropId] = challenge.Id),
+                    )
+                }
+                return acc
+            },
+            {},
+        )
     }
 
     /**
