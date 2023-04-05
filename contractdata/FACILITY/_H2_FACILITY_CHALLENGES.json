@@ -1,0 +1,2902 @@
+{
+    "meta": {
+        "Location": "LOCATION_PARENT_ICA_FACILITY",
+        "GameVersion": "h2"
+    },
+    "groups": [
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+            "Image": "images/challenges/categories/assassination/tile.jpg",
+            "Icon": "challenge_category_assassination",
+            "CategoryId": "assassination",
+            "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_SIGNATUREKILL",
+            "Challenges": [
+                {
+                    "Id": "0b0289de-73c9-42e5-8133-b2dbe46b454b",
+                    "Name": "UI_CHALLENGES_PROLOGUE_FIBERWIRE_KILL_NAME",
+                    "ImageName": "images/challenges/lat73/prologue_c_fiberwire_kill.jpg",
+                    "Description": "UI_CHALLENGES_PROLOGUE_FIBERWIRE_KILL_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "3d25ee6c-61fa-4ba5-8f19-fedd905fd8fb"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemCategory",
+                                                    "fiberwire"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["b573932d-7a34-44f1-bcf4-ea8f79f75710"]
+                    }
+                },
+                {
+                    "Id": "37f6512d-36e7-419a-a1b2-c0da87e6655f",
+                    "Name": "UI_CHALLENGES_PROLOGUE_TARGET_DROWN_NAME",
+                    "ImageName": "images/challenges/lat73/prologue_c_target_drown.jpg",
+                    "Description": "UI_CHALLENGES_PROLOGUE_TARGET_DROWN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "3d25ee6c-61fa-4ba5-8f19-fedd905fd8fb"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceType",
+                                                    "7b28519a-3c66-4498-a61b-ae6926a85594"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["b573932d-7a34-44f1-bcf4-ea8f79f75710"]
+                    }
+                },
+                {
+                    "Id": "228996e6-5fff-4f76-95de-484ee941c0ab",
+                    "Name": "UI_CHALLENGES_GRADUATION_DEATH_BYPROXY_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_c_death_byproxy.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_DEATH_BYPROXY_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "IsKnightDied": {
+                                "$timer": {
+                                    "Condition": {
+                                        "$after": 5
+                                    },
+                                    "Transition": "Start"
+                                },
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "579f2544-1970-4865-afa3-ad4566e5f98d"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceId",
+                                                    "0955e3c3-8b58-468f-81df-0e66ffbac677"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            },
+                            "Start": {
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "KGB_Fix_Fuse"
+                                        ]
+                                    },
+                                    "Transition": "IsKnightDied"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "24806303-11f7-4c71-a3fc-412f8095726c",
+                    "Name": "UI_CHALLENGES_GRADUATION_THE_MECHANIC_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_c_the_mechanic.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_THE_MECHANIC_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": ["$Value.IsTarget", true]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "8f6ea4f1-32a8-4e57-a39d-90a2c2ff2bb0"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": ["$Value.Accident", true]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "3f2bfeb7-4cb0-4a56-b37b-dd5768b04a03",
+                    "Name": "UI_CHALLENGES_GRADUATION_SEAT_EJECT_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_c_seat_eject.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_SEAT_EJECT_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "579f2544-1970-4865-afa3-ad4566e5f98d"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceId",
+                                                    "f41da13a-dd22-4cff-864d-0010609b8309"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "4be75ba3-4916-4660-9f5b-8f12b3250c7a",
+                    "Name": "UI_CHALLENGES_GRADUATION_DROWN_KILL_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_c_drown_kill.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_DROWN_KILL_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "579f2544-1970-4865-afa3-ad4566e5f98d"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceType",
+                                                    "7b28519a-3c66-4498-a61b-ae6926a85594"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "5434404c-1db9-48d7-8f30-fbf0b342938a",
+                    "Name": "UI_CHALLENGES_GRADUATION_THE_SOVIET_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_c_the_soviet.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_THE_SOVIET_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": ["$Value.IsTarget", true]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "5c419edc-203d-4736-8cd9-bed24e34171c"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemCategory",
+                                                    "assaultrifle"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "62f8d41c-ef58-4213-8fa7-b2d68191e092",
+                    "Name": "UI_CHALLENGES_GRADUATION_THAT_SPOT_LIGHT_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_c_spot_light.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_THAT_SPOT_LIGHT_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "579f2544-1970-4865-afa3-ad4566e5f98d"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceType",
+                                                    "a43ee7ae-44ff-44d8-80fb-5f28f55ca7e5"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "77729582-ddf2-4fcc-9307-f6d6d867edb8",
+                    "Name": "UI_CHALLENGES_GRADUATION_THE_SECURITY_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_c_the_security.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_THE_SECURITY_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": ["$Value.IsTarget", true]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "f7acaf86-205c-4ac4-98c7-2c418007299c"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemCategory",
+                                                    "pistol"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "e20675e2-7504-4692-92ad-4e75fd7b9d64",
+                    "Name": "UI_CHALLENGES_GRADUATION_PROJECTOR_KILL_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_c_projector_kill.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_PROJECTOR_KILL_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "IsKnightDied": {
+                                "$timer": {
+                                    "Condition": {
+                                        "$after": 5
+                                    },
+                                    "Transition": "Start"
+                                },
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "579f2544-1970-4865-afa3-ad4566e5f98d"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceId",
+                                                    "0955e3c3-8b58-468f-81df-0e66ffbac677"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            },
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "579f2544-1970-4865-afa3-ad4566e5f98d"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceId",
+                                                    "0955e3c3-8b58-468f-81df-0e66ffbac677"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "KGB_Fix_Fuse"
+                                        ]
+                                    },
+                                    "Transition": "IsKnightDied"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                }
+            ]
+        },
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+            "Image": "images/challenges/categories/discovery/tile.jpg",
+            "Icon": "challenge_category_discovery",
+            "CategoryId": "discovery",
+            "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_EXPLORATION",
+            "Challenges": [
+                {
+                    "Id": "210f75bf-8094-4a4a-90f3-da23b4e73ad9",
+                    "Name": "UI_CHALLENGES_GRADUATION_CHESS_PUZZLE_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_c_chess_puzzle.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_CHESS_PUZZLE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "setpieces": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.name_metricvalue",
+                                            "Chess_GoodMove"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "discovery"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "5b630176-2d35-4328-b1b2-51df4c2c0bb3",
+                    "Name": "UI_CHALLENGES_GRADUATION_OPP_DISGUISE_KGB_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_c_disguise_kgb.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_OPP_DISGUISE_KGB_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Disguise": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value",
+                                            "abb1e004-7fdf-462b-96b3-074e3390c171"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "discovery"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "72db2871-a24c-4fa9-8f78-25c9a004ee02",
+                    "Name": "UI_CHALLENGES_GRADUATION_OPP_DISGUISE_SECUIRTYGUARD_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_c_disguise_securityguard.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_OPP_DISGUISE_SECUIRTYGUARD_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Disguise": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value",
+                                            "f7acaf86-205c-4ac4-98c7-2c418007299c"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "discovery"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "7e8f3cf1-fff8-4dc6-9157-e87e316159b6",
+                    "Name": "UI_CHALLENGES_GRADUATION_TARGET_SICK_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_c_target_sick.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_TARGET_SICK_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Actorsick": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.actor_R_ID",
+                                            "579f2544-1970-4865-afa3-ad4566e5f98d"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "discovery"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "c508908e-2cef-4679-8499-2f6c9873fde8",
+                    "Name": "UI_CHALLENGES_GRADUATION_OPP_FIND_SLIDES_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_c_find_slides.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_OPP_FIND_SLIDES_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ItemPickedUp": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "c9f0b076-0ade-4795-b3ae-901b58292e69"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "discovery"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "ccc19da4-6a05-4355-8cb2-4466ceb5b4fb",
+                    "Name": "UI_CHALLENGES_GRADUATION_OPP_DISGUISE_MECHANIC_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_c_disguise_mechaic.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_OPP_DISGUISE_MECHANIC_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Disguise": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value",
+                                            "8f6ea4f1-32a8-4e57-a39d-90a2c2ff2bb0"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "discovery"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "d51d2d4a-6cf3-4643-a0c6-ed17a1f0a80a",
+                    "Name": "UI_CHALLENGES_GRADUATION_OPP_INVESTIGATE_PLANE_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_c_opp_investigate_plane.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_OPP_INVESTIGATE_PLANE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "setpieces": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "885d3ac3-aff7-4dca-942b-fecbc3fc688a"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "discovery"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "eb565979-a252-4fcd-aec0-b81bf54caea4",
+                    "Name": "UI_CHALLENGES_GRADUATION_DELIVER_VODKA_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_c_deliver_vodka.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_DELIVER_VODKA_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ItemPickedUp": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "195dcd6b-6663-4768-9e0a-c94e244cbea4"
+                                        ]
+                                    },
+                                    "Transition": "State_Delivery"
+                                },
+                                "Spotted": {
+                                    "Transition": "Failure"
+                                }
+                            },
+                            "State_Delivery": {
+                                "Spotted": {
+                                    "Transition": "Failure"
+                                },
+                                "setpieces": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "6edc921c-9051-4fe3-b327-117ca15728df"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "discovery"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "fdea3ead-783c-45da-b31a-713faa0bf07c",
+                    "Name": "UI_CHALLENGES_GRADUATION_OPP_DISGUISE_SOVIET_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_c_disguise_soviet.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_OPP_DISGUISE_SOVIET_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Disguise": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value",
+                                            "5c419edc-203d-4736-8cd9-bed24e34171c"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "discovery"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "9b2a753a-93e7-4044-a4fa-bc7738805578",
+                    "Name": "UI_CHALLENGES_GRADUATION_AREA_DISCOVERED_NAME",
+                    "ImageName": "images/challenges/lat73/area_discovered_graduation.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_AREA_DISCOVERED_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "location",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 9
+                        },
+                        "Context": {
+                            "AreaIDs": []
+                        },
+                        "ContextListeners": {
+                            "AreaIDs": {
+                                "type": "challengecounter",
+                                "count": "($.AreaIDs).Count",
+                                "total": "$.Goal",
+                                "text": "UI_CHALLENGES_GRADUATION_AREA_DISCOVERED_NAME"
+                            }
+                        },
+                        "Scope": "profile",
+                        "States": {
+                            "Start": {
+                                "AreaDiscovered": [
+                                    {
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "AreaIDs",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "($.AreaIDs).Count",
+                                                "$.Goal"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "discovery"]
+                }
+            ]
+        },
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+            "Image": "images/challenges/categories/feats/tile.jpg",
+            "Icon": "challenge_category_feats",
+            "CategoryId": "feats",
+            "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_COMMUNITY",
+            "Challenges": [
+                {
+                    "Id": "18f5e1fd-736c-44de-a4e1-c3e70357ec7c",
+                    "Name": "UI_CHALLENGES_PROLOGUE_BOARD_AS_GUARD_NAME",
+                    "ImageName": "images/challenges/lat73/prologue_c_board_as_guard.jpg",
+                    "Description": "UI_CHALLENGES_PROLOGUE_BOARD_AS_GUARD_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "Board_Yacht_asGuard"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["b573932d-7a34-44f1-bcf4-ea8f79f75710"]
+                    }
+                },
+                {
+                    "Id": "57e399bc-e449-4805-bbae-f7cd257925fe",
+                    "Name": "UI_CHALLENGES_PROLOGUE_LIFERAFT_KILL_NAME",
+                    "ImageName": "images/challenges/lat73/prologue_c_liferaft_kill.jpg",
+                    "Description": "UI_CHALLENGES_PROLOGUE_LIFERAFT_KILL_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "3d25ee6c-61fa-4ba5-8f19-fedd905fd8fb"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceType",
+                                                    "99743df5-fef0-4c20-a1b6-deb34f094a44"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["clean", "medium", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["b573932d-7a34-44f1-bcf4-ea8f79f75710"]
+                    }
+                },
+                {
+                    "Id": "5c312f4a-5895-42ab-bce7-cd6c166113b1",
+                    "Name": "UI_CHALLENGES_PROLOGUE_ITEM_FOUND_NAME",
+                    "ImageName": "images/challenges/lat73/prologue_c_item_found.jpg",
+                    "Description": "UI_CHALLENGES_PROLOGUE_ITEM_FOUND_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Guard_FoundItem": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "hard", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["b573932d-7a34-44f1-bcf4-ea8f79f75710"]
+                    }
+                },
+                {
+                    "Id": "8eca1722-68c7-4bdd-9317-f13fad851552",
+                    "Name": "UI_CHALLENGES_PROLOGUE_HIDEBODY_NAME",
+                    "ImageName": "images/challenges/lat73/prologue_c_hidebody.jpg",
+                    "Description": "UI_CHALLENGES_PROLOGUE_HIDEBODY_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "BodyHidden": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "3d25ee6c-61fa-4ba5-8f19-fedd905fd8fb"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["b573932d-7a34-44f1-bcf4-ea8f79f75710"]
+                    }
+                },
+                {
+                    "Id": "a9faeb2f-a4d6-4bd6-b97d-d005e21f7db6",
+                    "Name": "UI_CHALLENGES_PROLOGUE_RAT_POISON_NAME",
+                    "ImageName": "images/challenges/lat73/prologue_c_rat_poison.jpg",
+                    "Description": "UI_CHALLENGES_PROLOGUE_RAT_POISON_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ItemPickedUp": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "8b37a3a8-8a20-4262-81c5-0fcd15f4bba9"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["b573932d-7a34-44f1-bcf4-ea8f79f75710"]
+                    }
+                },
+                {
+                    "Id": "c70e38d8-b858-47ed-9257-c43f563e5871",
+                    "Name": "UI_CHALLENGES_PROLOGUE_DIGUISE_PICKED_NAME",
+                    "ImageName": "images/challenges/lat73/prologue_c_disguise_picked.jpg",
+                    "Description": "UI_CHALLENGES_PROLOGUE_DIGUISE_PICKED_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "InValidBox": {
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "Out_Waiter_Disguise_Box"
+                                        ]
+                                    },
+                                    "Transition": "Start"
+                                },
+                                "Disguise": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value",
+                                            "bbffa24b-fa46-4f9d-a73d-71de56ff3bfe"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            },
+                            "Start": {
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "In_Waiter_Disguise_Box"
+                                        ]
+                                    },
+                                    "Transition": "InValidBox"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["b573932d-7a34-44f1-bcf4-ea8f79f75710"]
+                    }
+                },
+                {
+                    "Id": "c984bb30-920c-4d0e-9088-06f7c9b4629e",
+                    "Name": "UI_CHALLENGES_PROLOGUE_POISON_SICK_NAME",
+                    "ImageName": "images/challenges/lat73/prologue_c_poison_sick.jpg",
+                    "Description": "UI_CHALLENGES_PROLOGUE_POISON_SICK_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Actorsick": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.actor_R_ID",
+                                            "3d25ee6c-61fa-4ba5-8f19-fedd905fd8fb"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["clean", "easy", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["b573932d-7a34-44f1-bcf4-ea8f79f75710"]
+                    }
+                },
+                {
+                    "Id": "cf5a7ad8-6e45-4577-a7e9-30e3fb428ca9",
+                    "Name": "UI_CHALLENGES_PROLOGUE_GENERATOR_NAME",
+                    "ImageName": "images/challenges/lat73/prologue_c_generator.jpg",
+                    "Description": "UI_CHALLENGES_PROLOGUE_GENERATOR_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "DistractionStart": {
+                                "$timer": {
+                                    "Condition": {
+                                        "$after": 200
+                                    },
+                                    "Transition": "Start"
+                                },
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "Guard_In_box"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            },
+                            "Start": {
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "Generator_Rigged"
+                                        ]
+                                    },
+                                    "Transition": "DistractionStart"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["b573932d-7a34-44f1-bcf4-ea8f79f75710"]
+                    }
+                },
+                {
+                    "Id": "df10cfd0-545e-40db-afca-cf5c178870a5",
+                    "Name": "UI_CHALLENGES_PROLOGUE_TARGET_EXPLOSION_NAME",
+                    "ImageName": "images/challenges/lat73/prologue_c_target_explosion.jpg",
+                    "Description": "UI_CHALLENGES_PROLOGUE_TARGET_EXPLOSION_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "3d25ee6c-61fa-4ba5-8f19-fedd905fd8fb"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "7d0c107e-4279-4fda-a7e2-77359271cb9a"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["clean", "easy", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["b573932d-7a34-44f1-bcf4-ea8f79f75710"]
+                    }
+                },
+                {
+                    "Id": "df35b620-ca4d-40f1-ae50-9297585ede5d",
+                    "Name": "UI_CHALLENGES_PROLOGUE_NORFOLK_MEETING_NAME",
+                    "ImageName": "images/challenges/lat73/prologue_c_norfolk_meeting.jpg",
+                    "Description": "UI_CHALLENGES_PROLOGUE_NORFOLK_MEETING_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "47_Norfolk_meeting_start"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["clean", "easy", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["b573932d-7a34-44f1-bcf4-ea8f79f75710"]
+                    }
+                },
+                {
+                    "Id": "eb6129de-ee3b-488a-bd02-50aa5c0a92bb",
+                    "Name": "UI_CHALLENGES_PROLOGUE_COIN_DISTRACTION_NAME",
+                    "ImageName": "images/challenges/lat73/prologue_c_coin_distraction.jpg",
+                    "Description": "UI_CHALLENGES_PROLOGUE_COIN_DISTRACTION_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "DistractionStart": {
+                                "$timer": {
+                                    "Condition": {
+                                        "$after": 3
+                                    },
+                                    "Transition": "Start"
+                                },
+                                "Investigate_Curious": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "$Value.InvestigationType",
+                                                0
+                                            ]
+                                        }
+                                    },
+                                    "Transition": "Success"
+                                }
+                            },
+                            "Start": {
+                                "ItemThrown": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "dda002e9-02b1-4208-82a5-cf059f3c79cf"
+                                        ]
+                                    },
+                                    "Transition": "DistractionStart"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["b573932d-7a34-44f1-bcf4-ea8f79f75710"]
+                    }
+                },
+                {
+                    "Id": "055ad61d-04bb-4a19-a44f-6ef4db545438",
+                    "Name": "UI_CHALLENGES_GRADUATION_47_MASTER_OF_TRADE_NAME",
+                    "ImageName": "images/challenges/profile_challenges/generic_location_47_versatile.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_47_MASTER_OF_TRADE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "RequiredChallenges": [
+                                "eed87874-5a23-4230-a5ba-220e90372721",
+                                "969f8855-6727-4cf4-bfa9-a40e4460f7ae",
+                                "24806303-11f7-4c71-a3fc-412f8095726c",
+                                "77729582-ddf2-4fcc-9307-f6d6d867edb8",
+                                "5434404c-1db9-48d7-8f30-fbf0b342938a",
+                                "3f2bfeb7-4cb0-4a56-b37b-dd5768b04a03",
+                                "e20675e2-7504-4692-92ad-4e75fd7b9d64",
+                                "4be75ba3-4916-4660-9f5b-8f12b3250c7a",
+                                "62f8d41c-ef58-4213-8fa7-b2d68191e092",
+                                "85bbb639-40e3-4aa5-87aa-388a1cad2404",
+                                "068dc309-f4e7-4551-9719-31e064f4cc6e",
+                                "228996e6-5fff-4f76-95de-484ee941c0ab"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedChallenges": []
+                        },
+                        "ContextListeners": {
+                            "CompletedChallenges": {
+                                "comparand": "$.RequiredChallenges",
+                                "type": "challengetree"
+                            }
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "ChallengeCompleted": [
+                                    {
+                                        "$pushunique": [
+                                            "CompletedChallenges",
+                                            "$Value.ChallengeId"
+                                        ]
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$all": {
+                                                "?": {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$.##"
+                                                            ]
+                                                        },
+                                                        "in": "$.CompletedChallenges"
+                                                    }
+                                                },
+                                                "in": "$.RequiredChallenges"
+                                            }
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "1b3c8b9b-17a5-407f-ad4f-4bdca3779a8f",
+                    "Name": "UI_CHALLENGES_GRADUATION_STORY_CHALLENGE_JET_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_story_jet.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_STORY_CHALLENGE_JET_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "Story_Jet"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "294ad6dc-829d-4f29-8721-f86735603009",
+                    "Name": "UI_CHALLENGES_GRADUATION_STORY_CHALLENGE_RADIO_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_story_radio.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_STORY_CHALLENGE_RADIO_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "Story_Radio"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "5fea8bbc-66cc-407c-b6fc-00036a418891",
+                    "Name": "UI_CHALLENGES_GRADUATION_BIG3_STORY_NAME",
+                    "ImageName": "images/challenges/lat73/all_graduation_story_bjective.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_BIG3_STORY_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": ["PROP_TOOL_LOCK_PICK"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "RequiredChallenges": [
+                                "1b3c8b9b-17a5-407f-ad4f-4bdca3779a8f",
+                                "294ad6dc-829d-4f29-8721-f86735603009",
+                                "bab13148-ca59-4214-b332-e7060429fff4"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedChallenges": []
+                        },
+                        "ContextListeners": {
+                            "CompletedChallenges": {
+                                "comparand": "$.RequiredChallenges",
+                                "type": "challengetree"
+                            }
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "ChallengeCompleted": [
+                                    {
+                                        "$pushunique": [
+                                            "CompletedChallenges",
+                                            "$Value.ChallengeId"
+                                        ]
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$all": {
+                                                "?": {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$.##"
+                                                            ]
+                                                        },
+                                                        "in": "$.CompletedChallenges"
+                                                    }
+                                                },
+                                                "in": "$.RequiredChallenges"
+                                            }
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "71b47237-cbf0-4b18-be34-81226026a4c9",
+                    "Name": "UI_CHALLENGES_POLARBEAR_HAMMER_TIME_NAME",
+                    "ImageName": "images/challenges/lat73/polarbear_hammer_time.jpg",
+                    "Description": "UI_CHALLENGES_POLARBEAR_HAMMER_TIME_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Distraction_State": {
+                                "$timer": {
+                                    "Condition": {
+                                        "$after": 2
+                                    },
+                                    "Transition": "Start"
+                                },
+                                "Investigate_Curious": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "$Value.InvestigationType",
+                                                0
+                                            ]
+                                        }
+                                    },
+                                    "Transition": "Failure"
+                                },
+                                "Kill": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "$Value.KillItemRepositoryId",
+                                                "3c24c96a-557c-472a-9d71-1a235d7383a7"
+                                            ]
+                                        }
+                                    },
+                                    "Transition": "Failure"
+                                },
+                                "Pacify": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "$Value.KillItemRepositoryId",
+                                                "3c24c96a-557c-472a-9d71-1a235d7383a7"
+                                            ]
+                                        }
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            },
+                            "Start": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                },
+                                "ItemDropped": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "3c24c96a-557c-472a-9d71-1a235d7383a7"
+                                            ]
+                                        }
+                                    },
+                                    "Transition": "Distraction_State"
+                                },
+                                "Kill": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$any": {
+                                                "?": {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$.##"
+                                                            ]
+                                                        },
+                                                        "in": "$Value.DamageEvents"
+                                                    }
+                                                },
+                                                "in": ["Subdue", "CoupDeGrace"]
+                                            }
+                                        }
+                                    },
+                                    "Transition": "Failure"
+                                },
+                                "Pacify": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "$Value.KillItemRepositoryId",
+                                                "3c24c96a-557c-472a-9d71-1a235d7383a7"
+                                            ]
+                                        }
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["feats", "easy"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "bab13148-ca59-4214-b332-e7060429fff4",
+                    "Name": "UI_CHALLENGES_GRADUATION_STORY_CHALLENGE_PROJECTOR_NAME",
+                    "ImageName": "images/challenges/lat73/graduation_story_projector.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_STORY_CHALLENGE_PROJECTOR_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "Story_Projector"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "c00464a6-19e5-49fa-8b83-fe32e8278741",
+                    "Name": "UI_CHALLENGES_GRADUATION_47_MASTER_OF_DISGUISE_NAME",
+                    "ImageName": "images/challenges/profile_challenges/generic_location_47_chameleon.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_47_MASTER_OF_DISGUISE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "EligibleDisguises": [
+                                "8f6ea4f1-32a8-4e57-a39d-90a2c2ff2bb0",
+                                "f7acaf86-205c-4ac4-98c7-2c418007299c",
+                                "abb1e004-7fdf-462b-96b3-074e3390c171",
+                                "5c419edc-203d-4736-8cd9-bed24e34171c"
+                            ]
+                        },
+                        "Context": {
+                            "Disguises": []
+                        },
+                        "ContextListeners": {
+                            "Disguises": {
+                                "count": "($.Disguises).Count",
+                                "total": "($.EligibleDisguises).Count",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "Disguise": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": ["$.#", "$Value"]
+                                                },
+                                                "in": "$.EligibleDisguises"
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Disguises",
+                                                "$Value"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$all": {
+                                                "?": {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$.##"
+                                                            ]
+                                                        },
+                                                        "in": "$.Disguises"
+                                                    }
+                                                },
+                                                "in": "$.EligibleDisguises"
+                                            }
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "ec46536e-f632-47aa-ab92-7041d9728640",
+                    "Name": "UI_CONTRACT_SNOWDROP_GROUP_TITLE",
+                    "ImageName": "images/contracts/escalation/ContractEscalation_Snowdrop.jpg",
+                    "Description": "UI_CHALLENGES_ESCLATION_COMPLETE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$ContractId",
+                                            "e71bb57e-cba6-4b47-bdb1-2c89319d7e45"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["feats"],
+                    "InclusionData": {
+                        "ContractIds": ["aee6a16f-6525-4d63-a37f-225e293c6118"]
+                    }
+                },
+                {
+                    "Id": "f6a2aae0-6c20-47a1-b647-74263476db69",
+                    "Name": "UI_CONTRACT_WOLFSBANE_GROUP_TITLE",
+                    "ImageName": "images/contracts/escalation/ContractEscalation_Wolfsbane.jpg",
+                    "Description": "UI_CHALLENGES_ESCLATION_COMPLETE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$ContractId",
+                                            "dac764bf-d07f-461b-8f51-a511ed64a20a"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["feats"],
+                    "InclusionData": {
+                        "ContractIds": ["c469d91d-01fc-4314-b22c-71cb804e92c0"]
+                    }
+                }
+            ]
+        },
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_CLASSIC",
+            "Image": "images/challenges/categories/classic/tile.jpg",
+            "Icon": "profile",
+            "CategoryId": "classic",
+            "Description": "",
+            "Challenges": [
+                {
+                    "Id": "068dc309-f4e7-4551-9719-31e064f4cc6e",
+                    "Name": "UI_CHALLENGES_GRADUATION_47_NO_EVIDENCE_NAME",
+                    "ImageName": "images/challenges/profile_challenges/classics_normal_47_no_evidence.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_47_NO_EVIDENCE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_CLASSIC",
+                    "Icon": "profile",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "RecordingDestroyed": true,
+                            "LastSeenTime": 0,
+                            "Witnesses": [],
+                            "Kills": []
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    true,
+                                                    "$.RecordingDestroyed"
+                                                ]
+                                            },
+                                            {
+                                                "$all": {
+                                                    "in": "$.Witnesses",
+                                                    "?": {
+                                                        "$any": {
+                                                            "in": "$.Kills",
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "$.##"
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "SecuritySystemRecorder": [
+                                    {
+                                        "Actions": {
+                                            "$set": [
+                                                "RecordingDestroyed",
+                                                false
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$eq": ["$Value.event", "spotted"]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["RecordingDestroyed", true]
+                                        },
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "erased"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "destroyed"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "Kill": [
+                                    {
+                                        "$pushunique": [
+                                            "Kills",
+                                            "$Value.RepositoryId"
+                                        ]
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.Accident",
+                                                        false
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "CheckNoticedKill"
+                                    }
+                                ],
+                                "MurderedBodySeen": [
+                                    {
+                                        "$set": ["LastSeenTime", "$Timestamp"]
+                                    },
+                                    {
+                                        "$pushunique": [
+                                            "Witnesses",
+                                            "$Value.Witness"
+                                        ]
+                                    }
+                                ],
+                                "BodyFound": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$Timestamp",
+                                                            "$.LastSeenTime"
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "$or": [
+                                                        {
+                                                            "$eq": [
+                                                                "$Value.DeadBody.IsCrowdActor",
+                                                                true
+                                                            ]
+                                                        },
+                                                        {
+                                                            "$eq": [
+                                                                "$Value.DeadBody.DeathContext",
+                                                                4
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ]
+                            },
+                            "CheckNoticedKill": {
+                                "Unnoticed_Kill": {
+                                    "Transition": "Start"
+                                },
+                                "DeadBodySeen": {
+                                    "Transition": "Failure"
+                                },
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    true,
+                                                    "$.RecordingDestroyed"
+                                                ]
+                                            },
+                                            {
+                                                "$all": {
+                                                    "in": "$.Witnesses",
+                                                    "?": {
+                                                        "$any": {
+                                                            "in": "$.Kills",
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "$.##"
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "classic"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "85bbb639-40e3-4aa5-87aa-388a1cad2404",
+                    "Name": "UI_CHALLENGES_GRADUATION_47_SUIT_ONLY_NAME",
+                    "ImageName": "images/challenges/profile_challenges/classics_normal_47_suit_only.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_47_SUIT_ONLY_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_CLASSIC",
+                    "Icon": "profile",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "Collection": [
+                                "4fc9396e-2619-4e66-a51e-2bd366230da7",
+                                "28d1aef1-45ba-4e8d-9bca-7cd8b4e5b4f8",
+                                "feef1171-9faa-4c95-b80e-22ae3c9bbec1",
+                                "989928f2-06d6-42f3-871a-353f07def969",
+                                "5e292dfb-646c-4a5b-9233-f4fbe5d5c033",
+                                "08f9f972-9229-432f-9092-2787883774e6",
+                                "054f443b-824f-4913-8b29-64dfcd82b089",
+                                "75759271-e236-4b33-8dd5-7e502c958d05",
+                                "58161492-10c8-4fce-860c-89e9b0a764fb",
+                                "00000000-0000-0000-0000-000000000000"
+                            ]
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                },
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$all": {
+                                            "?": {
+                                                "$not": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$Value.Disguise"
+                                                    ]
+                                                }
+                                            },
+                                            "in": "$.Collection"
+                                        }
+                                    },
+                                    "Transition": "Failure"
+                                },
+                                "Disguise": {
+                                    "Transition": "Failure"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "classic"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "969f8855-6727-4cf4-bfa9-a40e4460f7ae",
+                    "Name": "UI_CHALLENGES_GRADUATION_SILENT_ASSASSIN_SUIT_ONLY_NAME",
+                    "ImageName": "images/challenges/profile_challenges/classics_normal_47_sa_suit.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_SILENT_ASSASSIN_SUIT_ONLY_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_CLASSIC",
+                    "Icon": "profile",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "Witnesses": [],
+                            "Targets": [],
+                            "RecordingDestroyed": true,
+                            "LastAccidentTime": 0
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    true,
+                                                    "$.RecordingDestroyed"
+                                                ]
+                                            },
+                                            {
+                                                "$all": {
+                                                    "in": "$.Witnesses",
+                                                    "?": {
+                                                        "$any": {
+                                                            "in": "$.Targets",
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "$.##"
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "AccidentBodyFound": {
+                                    "$set": ["LastAccidentTime", "$Timestamp"]
+                                },
+                                "Witnesses": {
+                                    "Condition": {
+                                        "$any": {
+                                            "in": "$Value",
+                                            "?": {
+                                                "$pushunique": [
+                                                    "Witnesses",
+                                                    "$.#"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                "Spotted": {
+                                    "Condition": {
+                                        "$any": {
+                                            "in": "$Value",
+                                            "?": {
+                                                "$pushunique": [
+                                                    "Witnesses",
+                                                    "$.#"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                "ContractStart": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.IsHitmanSuit",
+                                                false
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ],
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$Value.KillContext",
+                                                            1
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.KillContext",
+                                                        1
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Targets",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$Value.IsTarget", true]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Targets",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "CrowdNPC_Died": {
+                                    "Transition": "Failure"
+                                },
+                                "MurderedBodySeen": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.IsWitnessTarget",
+                                                true
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Witnesses",
+                                                "$Value.Witness"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsWitnessTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$.LastAccidentTime",
+                                                            "$Timestamp"
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ],
+                                "SecuritySystemRecorder": [
+                                    {
+                                        "Actions": {
+                                            "$set": [
+                                                "RecordingDestroyed",
+                                                false
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$eq": ["$Value.event", "spotted"]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["RecordingDestroyed", true]
+                                        },
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "erased"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "destroyed"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "Disguise": {
+                                    "Transition": "Failure"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "classic", "medium", "suitonly"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                },
+                {
+                    "Id": "eed87874-5a23-4230-a5ba-220e90372721",
+                    "Name": "UI_CHALLENGES_GRADUATION_SILENT_ASSASSIN_NAME",
+                    "ImageName": "images/challenges/profile_challenges/classics_normal_47_silent_assassin.jpg",
+                    "Description": "UI_CHALLENGES_GRADUATION_SILENT_ASSASSIN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_CLASSIC",
+                    "Icon": "profile",
+                    "LocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "ParentLocationId": "LOCATION_PARENT_ICA_FACILITY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "Witnesses": [],
+                            "KilledTargets": [],
+                            "RecordingDestroyed": true,
+                            "LastAccidentTime": 0
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    true,
+                                                    "$.RecordingDestroyed"
+                                                ]
+                                            },
+                                            {
+                                                "$all": {
+                                                    "in": "$.Witnesses",
+                                                    "?": {
+                                                        "$any": {
+                                                            "in": "$.KilledTargets",
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "$.##"
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "AccidentBodyFound": {
+                                    "$set": ["LastAccidentTime", "$Timestamp"]
+                                },
+                                "Witnesses": {
+                                    "Condition": {
+                                        "$any": {
+                                            "in": "$Value",
+                                            "?": {
+                                                "$pushunique": [
+                                                    "Witnesses",
+                                                    "$.#"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                "Spotted": {
+                                    "Condition": {
+                                        "$any": {
+                                            "in": "$Value",
+                                            "?": {
+                                                "$pushunique": [
+                                                    "Witnesses",
+                                                    "$.#"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$Value.KillContext",
+                                                            1
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.KillContext",
+                                                        1
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "KilledTargets",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$Value.IsTarget", true]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "KilledTargets",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "CrowdNPC_Died": {
+                                    "Transition": "Failure"
+                                },
+                                "MurderedBodySeen": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.IsWitnessTarget",
+                                                true
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Witnesses",
+                                                "$Value.Witness"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsWitnessTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$.LastAccidentTime",
+                                                            "$Timestamp"
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ],
+                                "SecuritySystemRecorder": [
+                                    {
+                                        "Actions": {
+                                            "$set": [
+                                                "RecordingDestroyed",
+                                                false
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$eq": ["$Value.event", "spotted"]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["RecordingDestroyed", true]
+                                        },
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "erased"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "destroyed"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "hard", "classic"],
+                    "InclusionData": {
+                        "ContractIds": ["ada5f2b1-8529-48bb-a596-717f75f5eacb"]
+                    }
+                }
+            ]
+        }
+    ]
+}

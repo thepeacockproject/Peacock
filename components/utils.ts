@@ -53,6 +53,8 @@ export const uuidRegex =
 
 export const contractTypes = ["featured", "usercreated"]
 
+export const versions: GameVersion[] = ["h1", "h2", "h3"]
+
 export const contractCreationTutorialId = "d7e2607c-6916-48e2-9588-976c7d8998bb"
 
 export async function checkForUpdates(): Promise<void> {
@@ -415,6 +417,7 @@ export const gameDifficulty = {
      * Casual mode.
      */
     casual: 1,
+    easy: 1,
     /**
      * Professional (normal) mode.
      */
@@ -423,6 +426,7 @@ export const gameDifficulty = {
      * Master mode.
      */
     master: 4,
+    hard: 4,
 } as const
 
 export function difficultyToString(difficulty: number): string {

@@ -209,6 +209,7 @@ export function calculatePlaystyle(
 
 export function calculateXp(
     contractSession: ContractSession,
+    gameVersion: GameVersion,
 ): CalculateXpResult {
     const completedChallenges: MissionEndChallenge[] = []
     let totalXp = 0
@@ -221,8 +222,10 @@ export function calculateXp(
             continue
         }
 
-        const challenge =
-            controller.challengeService.getChallengeById(challengeId)
+        const challenge = controller.challengeService.getChallengeById(
+            challengeId,
+            gameVersion,
+        )
 
         if (!challenge || !challenge.Xp || !challenge.Tags.includes("global")) {
             continue
@@ -616,11 +619,13 @@ export async function missionEnd(
                 type: ChallengeFilterType.None,
             },
             locationParentId,
+            req.gameVersion,
         )
     const contractChallenges =
         controller.challengeService.getChallengesForContract(
             sessionDetails.contractId,
             req.gameVersion,
+            sessionDetails.difficulty,
         )
     const locationChallengeCompletion =
         controller.challengeService.countTotalNCompletedChallenges(
@@ -647,7 +652,10 @@ export async function missionEnd(
         userData.Extensions.progression.PlayerProfileXP
 
     //Calculate XP based on all challenges, including the global ones.
-    const calculateXpResult: CalculateXpResult = calculateXp(sessionDetails)
+    const calculateXpResult: CalculateXpResult = calculateXp(
+        sessionDetails,
+        req.gameVersion,
+    )
     let justTickedChallenges = 0
     let masteryXpGain = 0
 

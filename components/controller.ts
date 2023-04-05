@@ -28,7 +28,7 @@ import {
 import type {
     Campaign,
     ClientToServerEvent,
-    CompiledChallengeRuntimeData,
+    CompiledChallengeIngameData,
     ContractSession,
     GameVersion,
     GenSingleMissionFunc,
@@ -63,6 +63,7 @@ import {
     fastClone,
     getRemoteService,
     hitmapsUrl,
+    versions,
 } from "./utils"
 import * as sessionSerialization from "./sessionSerialization"
 import * as databaseHandler from "./databaseHandler"
@@ -906,6 +907,45 @@ export class Controller {
         return fetchedData!.contract!.Contract
     }
 
+    /**
+     * Get all global challenges and register a simplified version of them.
+     * @param gameVersion A GameVersion object representing the version of the game.
+     *
+     */
+    private registerGlobalChallenges(gameVersion: GameVersion) {
+        const regGlobalChallenges: RegistryChallenge[] = getVersionedConfig<
+            CompiledChallengeIngameData[]
+        >("GlobalChallenges", gameVersion, true).map((e) => {
+            const tags = e.Tags || []
+            tags.push("global")
+
+            //NOTE: Treat all other fields as undefined
+            return <RegistryChallenge>{
+                Id: e.Id,
+                Tags: tags,
+                Name: e.Name,
+                ImageName: e.ImageName,
+                Description: e.Description,
+                Definition: e.Definition,
+                Xp: e.Xp ?? 0,
+                InclusionData: e.InclusionData,
+            }
+        })
+
+        this._handleChallengeResources({
+            groups: [
+                <SavedChallengeGroup>{
+                    CategoryId: "global",
+                    Challenges: regGlobalChallenges,
+                },
+            ],
+            meta: {
+                Location: "GLOBAL",
+                GameVersion: gameVersion,
+            },
+        })
+    }
+
     private async _loadResources(): Promise<void> {
         // Load challenge resources
         const challengeDirectory = join(
@@ -921,41 +961,8 @@ export class Controller {
             },
         )
 
-        //Get all global challenges and register a simplified version of them
-        {
-            const globalChallenges: RegistryChallenge[] = (
-                getConfig(
-                    "GlobalChallenges",
-                    true,
-                ) as CompiledChallengeRuntimeData[]
-            ).map((e) => {
-                const tags = e.Challenge.Tags || []
-                tags.push("global")
-
-                //NOTE: Treat all other fields as undefined
-                return <RegistryChallenge>{
-                    Id: e.Challenge.Id,
-                    Tags: tags,
-                    Name: e.Challenge.Name,
-                    ImageName: e.Challenge.ImageName,
-                    Description: e.Challenge.Description,
-                    Definition: e.Challenge.Definition,
-                    Xp: e.Challenge.Xp,
-                    InclusionData: e.Challenge.InclusionData,
-                }
-            })
-
-            this._handleChallengeResources({
-                groups: [
-                    <SavedChallengeGroup>{
-                        CategoryId: "global",
-                        Challenges: globalChallenges,
-                    },
-                ],
-                meta: {
-                    Location: "GLOBAL",
-                },
-            })
+        for (const gameVersion of versions) {
+            this.registerGlobalChallenges(gameVersion)
         }
 
         // Load mastery resources
@@ -1003,13 +1010,18 @@ export class Controller {
                 continue
             }
 
-            this.challengeService.registerGroup(group, data.meta.Location)
+            this.challengeService.registerGroup(
+                group,
+                data.meta.Location,
+                data.meta.GameVersion,
+            )
 
             for (const challenge of group.Challenges) {
                 this.challengeService.registerChallenge(
                     challenge,
                     group.CategoryId,
                     data.meta.Location,
+                    data.meta.GameVersion,
                 )
             }
         }
@@ -1289,6 +1301,7 @@ export function contractIdToHitObject(
             type: ChallengeFilterType.None,
         },
         parentLocation?.Id,
+        gameVersion,
     )
 
     const challengeCompletion =
