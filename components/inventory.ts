@@ -409,7 +409,7 @@ export function createInventory(
         const packagedUnlocks: Map<string, boolean> = new Map()
 
         const challengesUnlockables =
-            controller.challengeService.getChallengesUnlockables()
+            controller.challengeService.getChallengesUnlockables(gameVersion)
 
         /**
          * Separates unlockable types and lookup for progression level
