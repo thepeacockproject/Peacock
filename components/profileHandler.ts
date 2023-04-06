@@ -829,8 +829,21 @@ async function loadSession(
     sessionData?: ContractSession,
 ): Promise<void> {
     if (!sessionData) {
-        sessionData = await getContractSession(token + "_" + sessionId)
+        try {
+            //First, try the loading the session from the filesystem.
+            sessionData = await getContractSession(token + "_" + sessionId)
+        } catch (e) {
+            //Otherwise, see if we still have this session in memory.
+            //This may be the currently active session, but we need a fallback of some sorts in case a player disconnected.
+            if (contractSessions.has(sessionId)) {
+                sessionData = contractSessions.get(sessionId)
+            } else {
+                //Rethrow the error
+                throw e
+            }
+        }
     }
+
     // Update challenge progression with the user's latest progression data
     for (const cid in sessionData.challengeContexts) {
         // Make sure the ChallengeProgression is available, otherwise loading might fail!
