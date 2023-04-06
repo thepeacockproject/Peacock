@@ -2,13 +2,37 @@
 import type * as core from "express-serve-static-core"
 import { RequestWithJwt } from "../../components/types/types"
 import { Mock } from "vitest"
+import { sign } from "jsonwebtoken"
 
 export function asMock<T>(value: T): Mock {
     return value as Mock
 }
 
 export function mockRequestWithJwt(): RequestWithJwt<core.Query, any> {
-    return <RequestWithJwt<core.Query, any>>{}
+    const mockedRequest = <RequestWithJwt<core.Query, any>>{
+        headers: {},
+        header: (name: string) =>
+            mockedRequest.headers[name.toLowerCase()] as string,
+    }
+
+    return mockedRequest
+}
+
+export function mockRequestWithValidJwt(
+    pId: string,
+): RequestWithJwt<core.Query, any> {
+    const mockedRequest = mockRequestWithJwt()
+
+    const jwtToken = sign(
+        {
+            unique_name: pId,
+        },
+        "secret",
+    )
+
+    mockedRequest.headers.authorization = `Bearer ${jwtToken}`
+
+    return mockedRequest
 }
 
 export function mockResponse(): core.Response {
