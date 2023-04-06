@@ -209,11 +209,13 @@ export class HitsCategoryService {
             true,
         )
         const hits = resp.data.data.Data.Hits
-        preserveContracts(
-            hits.map(
-                (hit) => hit.UserCentricContract.Contract.Metadata.PublicId,
-            ),
-        )
+        if (categoryName !== "Featured") {
+            preserveContracts(
+                hits.map(
+                    (hit) => hit.UserCentricContract.Contract.Metadata.PublicId,
+                ),
+            )
+        }
 
         // Fix completion and favorite status for retrieved contracts
         const userProfile = getUserData(userId, gameVersion)
@@ -234,8 +236,10 @@ export class HitsCategoryService {
                 hit.UserCentricContract.Data.Completed = false
             }
 
-            hit.UserCentricContract.Data.PlaylistData.IsAdded =
-                favorites.includes(hit.Id)
+            "PlaylistData" in hit.UserCentricContract.Data
+                ? (hit.UserCentricContract.Data.PlaylistData.IsAdded =
+                      favorites.includes(hit.Id))
+                : null
         })
 
         return resp.data.data
@@ -380,6 +384,27 @@ export class HitsCategoryService {
                 userId,
             )
         }
+
+        const peacockFCNum = featuredContractGroups.reduce(
+            (acc, curr) => acc + curr.length,
+            0,
+        )
+
+        if (
+            categoryName === "Featured" &&
+            pageNumber >= Math.ceil(peacockFCNum / this.hitsPerPage)
+        ) {
+            log(LogLevel.DEBUG, `Peacock: Fetching from official.`)
+            const response = await this.fetchFromOfficial(
+                categoryName,
+                pageNumber - Math.ceil(peacockFCNum / this.hitsPerPage),
+                gameVersion,
+                userId,
+            )
+            response.Data.Page = pageNumber
+            return response
+        }
+
         const categoryTypes = categoryName.split("_")
         const category =
             categoryName === "Elusive_Target_Hits"
@@ -419,7 +444,11 @@ export class HitsCategoryService {
             const paginated = paginate(hitObjectList, this.hitsPerPage)
 
             hitsCategory.Data.Hits = paginated[pageNumber]
-            hitsCategory.Data.HasMore = paginated.length > pageNumber + 1
+            hitsCategory.Data.HasMore =
+                categoryName === "Featured"
+                    ? true
+                    : paginated.length > pageNumber + 1
+
             hitsCategory.CurrentSubType = filter
                 ? `${category}_${filter}`
                 : categoryName
