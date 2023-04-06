@@ -179,10 +179,10 @@ export function log(
     category: LogCategory | string = LOG_CATEGORY_DEFAULT,
 ): void {
     if (category === LogCategory.CALLER) {
-        category = log.caller?.name.toString() ?? "unknown"
+        category = log.caller?.name.toString() || "unknown"
     }
 
-    const message = data ?? "No message specified"
+    const message = data || "No message specified"
 
     const now = new Date()
     const stampParts: number[] = [
@@ -269,5 +269,53 @@ export function loggingMiddleware(
         `${picocolors.green(req.method)} ${picocolors.underline(req.url)}`,
         LogCategory.HTTP,
     )
+    next?.()
+}
+
+export function requestLoggingMiddleware(
+    req: RequestWithJwt,
+    res: Response,
+    next?: NextFunction,
+): void {
+    res.once("finish", () => {
+        const debug = {
+            method: req.method,
+            url: req.url,
+            body: req.body,
+            statusCode: res.statusCode,
+            statusMessage: res.statusMessage,
+        }
+
+        log(LogLevel.DEBUG, JSON.stringify(debug), LogCategory.HTTP)
+    })
+
+    next?.()
+}
+
+export function errorLoggingMiddleware(
+    err: Error,
+    req: RequestWithJwt,
+    res: Response,
+    next?: NextFunction,
+): void {
+    const debug = {
+        method: req.method,
+        url: req.url,
+        body: req.body,
+        error: `${err.name} - ${err.message} - ${
+            err.cause || "Unknown cause"
+        }\n${err.stack || "No stack"}`,
+    }
+
+    log(
+        LogLevel.ERROR,
+        `${picocolors.green(req.method)} ${picocolors.underline(
+            req.url,
+        )} gave an unexpected error! Please see log for details.`,
+        LogCategory.HTTP,
+    )
+
+    log(LogLevel.DEBUG, JSON.stringify(debug), LogCategory.HTTP)
+
     next?.()
 }
