@@ -25,6 +25,7 @@ import {
     MasteryDataTemplate,
     MasteryDrop,
     MasteryPackage,
+    UnlockableMasteryData,
 } from "../types/mastery"
 import { CompletionData, GameVersion, Unlockable } from "../types/types"
 import {
@@ -37,9 +38,33 @@ import {
 
 export class MasteryService {
     private masteryData: Map<string, MasteryPackage> = new Map()
+    private unlockableMasteryData: Map<string, UnlockableMasteryData> =
+        new Map()
 
     registerMasteryData(masteryPackage: MasteryPackage) {
         this.masteryData.set(masteryPackage.Id, masteryPackage)
+
+        /**
+         * Generates the same data in a reverse order. It could be considered redundant but this allows for
+         * faster access to location and level based on unlockable ID, avoiding big-O operation for `getMasteryForUnlockable`
+         */
+        for (const drop of masteryPackage.Drops) {
+            this.unlockableMasteryData.set(drop.Id, {
+                Location: masteryPackage.Id.toLocaleLowerCase(),
+                Level: drop.Level,
+            })
+        }
+    }
+
+    /**
+     * Returns mastery data for unlockable, if there's any
+     * @param unlockable
+     * @returns { Location: string, Level: number  } | undefined
+     */
+    getMasteryForUnlockable(
+        unlockable: Unlockable,
+    ): UnlockableMasteryData | undefined {
+        return this.unlockableMasteryData.get(unlockable.Id)
     }
 
     getMasteryDataForDestination(

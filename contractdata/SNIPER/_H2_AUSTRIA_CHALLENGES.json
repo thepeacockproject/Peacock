@@ -1,0 +1,2572 @@
+{
+    "meta": {
+        "Location": "LOCATION_PARENT_AUSTRIA",
+        "GameVersion": "h2"
+    },
+    "groups": [
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+            "Image": "images/challenges/categories/assassination/tile.jpg",
+            "Icon": "challenge_category_assassination",
+            "CategoryId": "assassination",
+            "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_SIGNATUREKILL",
+            "Challenges": [
+                {
+                    "Id": "26b61596-8bad-44f7-b6ed-e36989c1d092",
+                    "Name": "UI_CHALLENGES_HAWK_LABYRINTH_NAME",
+                    "ImageName": "images/challenges/hawk/hawk_labyrith.jpg",
+                    "Description": "UI_CHALLENGES_HAWK_LABYRINTH_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_HAWK_LABYRINTH"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_AUSTRIA",
+                    "ParentLocationId": "LOCATION_PARENT_AUSTRIA",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "Complete": 0,
+                            "Count": 0,
+                            "Goal": 2
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        },
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.RepositoryId",
+                                                        "a95228f3-14ac-4305-8993-24a7f73ec4b6"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.SetPieceId",
+                                                        "ac9302b6-6f8d-47f5-a148-6431e381e619"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        },
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.RepositoryId",
+                                                        "d81e6d6c-d10b-4ee3-b313-b4e296464e87"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.SetPieceId",
+                                                        "ac9302b6-6f8d-47f5-a148-6431e381e619"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Actions": {
+                                            "$set": ["Complete", 1]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["ff9f46cf-00bd-4c12-b887-eac491c3a96d"]
+                    }
+                },
+                {
+                    "Id": "3aaff26e-711c-4e9f-ab6d-22b8b414e05a",
+                    "Name": "UI_CHALLENGES_HAWK_ELECTRIFIED_NAME",
+                    "ImageName": "images/challenges/hawk/hawk_electified.jpg",
+                    "Description": "UI_CHALLENGES_HAWK_ELECTRIFIED_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_HAWK_ELECTRIFIED"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_AUSTRIA",
+                    "ParentLocationId": "LOCATION_PARENT_AUSTRIA",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "Count": 0,
+                            "TargetGoal": 3,
+                            "DeadTargets": 0,
+                            "TooManyKilled": 16
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.TargetGoal",
+                                "text": "UI_CHALLENGES_HAWK_ELECTRIFIED_NAME",
+                                "icon": "some_icon"
+                            },
+                            "ForceUpdateCounters": {
+                                "type": "force-update",
+                                "target": "Count"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": [
+                                    {
+                                        "Actions": [
+                                            {
+                                                "$inc": "Count"
+                                            },
+                                            {
+                                                "$inc": "DeadTargets"
+                                            }
+                                        ],
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "Electric"
+                                                            ]
+                                                        },
+                                                        "in": "$Value.DamageEvents"
+                                                    }
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "TimerStart"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.TargetGoal"]
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$.DeadTargets",
+                                                "$.TooManyKilled"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ]
+                            },
+                            "TimerStart": {
+                                "$timer": {
+                                    "Condition": {
+                                        "$after": 30
+                                    },
+                                    "Actions": {
+                                        "$set": ["Count", 0]
+                                    },
+                                    "Transition": "Start"
+                                },
+                                "Kill": [
+                                    {
+                                        "Actions": [
+                                            {
+                                                "$inc": "Count"
+                                            },
+                                            {
+                                                "$inc": "DeadTargets"
+                                            }
+                                        ],
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "Electric"
+                                                            ]
+                                                        },
+                                                        "in": "$Value.DamageEvents"
+                                                    }
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.TargetGoal"]
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$.DeadTargets",
+                                                "$.TooManyKilled"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["ff9f46cf-00bd-4c12-b887-eac491c3a96d"]
+                    }
+                },
+                {
+                    "Id": "4f27adcf-4bd0-4ffe-bc90-123f088aa262",
+                    "Name": "UI_CHALLENGES_HAWK_WATER_DUMP_NAME",
+                    "ImageName": "images/challenges/hawk/hawk_dump_five_targets.jpg",
+                    "Description": "UI_CHALLENGES_HAWK_WATER_DUMP_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_HAWK_WATER_DUMP"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_AUSTRIA",
+                    "ParentLocationId": "LOCATION_PARENT_AUSTRIA",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "TargetsDumpedInWater": [],
+                            "Count": 0,
+                            "Goal": 5
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal",
+                                "text": "UI_CHALLENGES_HAWK_WATER_DUMP_NAME",
+                                "icon": "some icon"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "DumpInOcean": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count",
+                                            "$pushunique": [
+                                                "TargetsDumpedInWater",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$Value.RepositoryId"
+                                                            ]
+                                                        },
+                                                        "in": [
+                                                            "2d241583-bce0-4822-822b-b2f7f155207c",
+                                                            "2e51798e-bbf2-4872-adc6-d40d847962e4",
+                                                            "4b4044da-5495-49b6-b624-97606e57ff3a",
+                                                            "7b108fd9-e385-4766-b428-8bef36e34cae",
+                                                            "b00f75a8-5ba8-4178-84ba-5458310eb780",
+                                                            "29cdbd3d-7879-4fea-b8fb-246f9800504e",
+                                                            "2c7cf854-9027-479e-a7a9-ad5b3142229f",
+                                                            "c3bfa937-56cd-468e-8b4e-dbbed662e0ca",
+                                                            "8b5dfea4-7278-4f1b-8e57-1cbcef0dc29b",
+                                                            "f2512414-e04f-46b3-96ec-bedb6e6aeb88",
+                                                            "dd0071eb-0a49-4759-86ae-92581fd9dce6",
+                                                            "47de9521-bd32-4306-a070-0418cd20cfcb",
+                                                            "d99e8574-63a0-43ca-8943-ac7dfdd5b815",
+                                                            "a245e588-c084-4464-89c8-acb0ae73e337",
+                                                            "c90f9a15-b42e-4b00-86de-fc8808159c99",
+                                                            "d81e6d6c-d10b-4ee3-b313-b4e296464e87",
+                                                            "a95228f3-14ac-4305-8993-24a7f73ec4b6",
+                                                            "b5a423f5-7f02-4ddc-8dc6-fdb64c1ebfcf"
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["ff9f46cf-00bd-4c12-b887-eac491c3a96d"]
+                    }
+                },
+                {
+                    "Id": "5d522dc9-6097-4af3-a190-b354a840edd2",
+                    "Name": "UI_CHALLENGES_HAWK_BODYGUARDS_NAME",
+                    "ImageName": "images/challenges/hawk/hawk_bodygards.jpg",
+                    "Description": "UI_CHALLENGES_HAWK_BODYGUARDS_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_HAWK_BODYGUARDS"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_AUSTRIA",
+                    "ParentLocationId": "LOCATION_PARENT_AUSTRIA",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "Count": 0,
+                            "Goal": 15
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal",
+                                "text": "UI_CHALLENGES_HAWK_BODYGUARDS_NAME",
+                                "icon": "some_icon"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "BodyguardEscaped": {
+                                    "Transition": "Failure"
+                                },
+                                "Kill": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        },
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$Value.RepositoryId"
+                                                            ]
+                                                        },
+                                                        "in": [
+                                                            "2d241583-bce0-4822-822b-b2f7f155207c",
+                                                            "2e51798e-bbf2-4872-adc6-d40d847962e4",
+                                                            "4b4044da-5495-49b6-b624-97606e57ff3a",
+                                                            "7b108fd9-e385-4766-b428-8bef36e34cae",
+                                                            "b00f75a8-5ba8-4178-84ba-5458310eb780",
+                                                            "29cdbd3d-7879-4fea-b8fb-246f9800504e",
+                                                            "2c7cf854-9027-479e-a7a9-ad5b3142229f",
+                                                            "c3bfa937-56cd-468e-8b4e-dbbed662e0ca",
+                                                            "8b5dfea4-7278-4f1b-8e57-1cbcef0dc29b",
+                                                            "f2512414-e04f-46b3-96ec-bedb6e6aeb88",
+                                                            "dd0071eb-0a49-4759-86ae-92581fd9dce6",
+                                                            "47de9521-bd32-4306-a070-0418cd20cfcb",
+                                                            "d99e8574-63a0-43ca-8943-ac7dfdd5b815",
+                                                            "a245e588-c084-4464-89c8-acb0ae73e337",
+                                                            "c90f9a15-b42e-4b00-86de-fc8808159c99"
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["ff9f46cf-00bd-4c12-b887-eac491c3a96d"]
+                    }
+                },
+                {
+                    "Id": "5f7e240d-bdde-4f34-9bae-1ce8ae2f9d9e",
+                    "Name": "UI_CHALLENGES_HAWK_BODYHIDER_NAME",
+                    "ImageName": "images/challenges/hawk/hawk_bodyhider.jpg",
+                    "Description": "UI_CHALLENGES_HAWK_BODYHIDER_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_HAWK_BODYHIDER"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_AUSTRIA",
+                    "ParentLocationId": "LOCATION_PARENT_AUSTRIA",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "Count": 0,
+                            "Goal": 18
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal",
+                                "text": "UI_CHALLENGES_HAWK_BODYHIDER_NAME",
+                                "icon": "some_icon"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "BodyguardEscaped": {
+                                    "Transition": "Failure"
+                                },
+                                "BodyHidden": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        },
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$Value.RepositoryId"
+                                                            ]
+                                                        },
+                                                        "in": [
+                                                            "d81e6d6c-d10b-4ee3-b313-b4e296464e87",
+                                                            "a245e588-c084-4464-89c8-acb0ae73e337",
+                                                            "b5a423f5-7f02-4ddc-8dc6-fdb64c1ebfcf",
+                                                            "d99e8574-63a0-43ca-8943-ac7dfdd5b815",
+                                                            "a95228f3-14ac-4305-8993-24a7f73ec4b6",
+                                                            "c90f9a15-b42e-4b00-86de-fc8808159c99",
+                                                            "f2512414-e04f-46b3-96ec-bedb6e6aeb88",
+                                                            "dd0071eb-0a49-4759-86ae-92581fd9dce6",
+                                                            "8b5dfea4-7278-4f1b-8e57-1cbcef0dc29b",
+                                                            "c3bfa937-56cd-468e-8b4e-dbbed662e0ca",
+                                                            "2c7cf854-9027-479e-a7a9-ad5b3142229f",
+                                                            "29cdbd3d-7879-4fea-b8fb-246f9800504e",
+                                                            "b00f75a8-5ba8-4178-84ba-5458310eb780",
+                                                            "7b108fd9-e385-4766-b428-8bef36e34cae",
+                                                            "4b4044da-5495-49b6-b624-97606e57ff3a",
+                                                            "2e51798e-bbf2-4872-adc6-d40d847962e4",
+                                                            "2d241583-bce0-4822-822b-b2f7f155207c",
+                                                            "47de9521-bd32-4306-a070-0418cd20cfcb",
+                                                            "d81e6d6c-d10b-4ee3-b313-b4e296464e87",
+                                                            "a95228f3-14ac-4305-8993-24a7f73ec4b6",
+                                                            "b5a423f5-7f02-4ddc-8dc6-fdb64c1ebfcf"
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["ff9f46cf-00bd-4c12-b887-eac491c3a96d"]
+                    }
+                },
+                {
+                    "Id": "9eb5dcbe-66fc-4bb5-9697-afccaed09d97",
+                    "Name": "UI_CHALLENGES_HAWK_NO_LOOSE_ENDS_NAME",
+                    "ImageName": "images/challenges/hawk/hawk_no_loose_ends.jpg",
+                    "Description": "UI_CHALLENGES_HAWK_NO_LOOSE_ENDS_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_HAWK_NO_LOOSE_ENDS"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_AUSTRIA",
+                    "ParentLocationId": "LOCATION_PARENT_AUSTRIA",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "Count": 0,
+                            "Goal": 15
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal",
+                                "text": "UI_CHALLENGES_HAWK_NO_LOOSE_ENDS_NAME",
+                                "icon": "some_icon"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$Value.RepositoryId"
+                                                            ]
+                                                        },
+                                                        "in": [
+                                                            "2d241583-bce0-4822-822b-b2f7f155207c",
+                                                            "2e51798e-bbf2-4872-adc6-d40d847962e4",
+                                                            "4b4044da-5495-49b6-b624-97606e57ff3a",
+                                                            "7b108fd9-e385-4766-b428-8bef36e34cae",
+                                                            "b00f75a8-5ba8-4178-84ba-5458310eb780",
+                                                            "29cdbd3d-7879-4fea-b8fb-246f9800504e",
+                                                            "2c7cf854-9027-479e-a7a9-ad5b3142229f",
+                                                            "c3bfa937-56cd-468e-8b4e-dbbed662e0ca",
+                                                            "8b5dfea4-7278-4f1b-8e57-1cbcef0dc29b",
+                                                            "f2512414-e04f-46b3-96ec-bedb6e6aeb88",
+                                                            "dd0071eb-0a49-4759-86ae-92581fd9dce6",
+                                                            "47de9521-bd32-4306-a070-0418cd20cfcb",
+                                                            "d99e8574-63a0-43ca-8943-ac7dfdd5b815",
+                                                            "a245e588-c084-4464-89c8-acb0ae73e337",
+                                                            "c90f9a15-b42e-4b00-86de-fc8808159c99"
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ],
+                                "CombatStarted": {
+                                    "Transition": "InCombat"
+                                }
+                            },
+                            "InCombat": {
+                                "BodyguardEscaped": {
+                                    "Transition": "Failure"
+                                },
+                                "Kill": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        },
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$Value.RepositoryId"
+                                                            ]
+                                                        },
+                                                        "in": [
+                                                            "2d241583-bce0-4822-822b-b2f7f155207c",
+                                                            "2e51798e-bbf2-4872-adc6-d40d847962e4",
+                                                            "4b4044da-5495-49b6-b624-97606e57ff3a",
+                                                            "7b108fd9-e385-4766-b428-8bef36e34cae",
+                                                            "b00f75a8-5ba8-4178-84ba-5458310eb780",
+                                                            "29cdbd3d-7879-4fea-b8fb-246f9800504e",
+                                                            "2c7cf854-9027-479e-a7a9-ad5b3142229f",
+                                                            "c3bfa937-56cd-468e-8b4e-dbbed662e0ca",
+                                                            "8b5dfea4-7278-4f1b-8e57-1cbcef0dc29b",
+                                                            "f2512414-e04f-46b3-96ec-bedb6e6aeb88",
+                                                            "dd0071eb-0a49-4759-86ae-92581fd9dce6",
+                                                            "47de9521-bd32-4306-a070-0418cd20cfcb",
+                                                            "d99e8574-63a0-43ca-8943-ac7dfdd5b815",
+                                                            "a245e588-c084-4464-89c8-acb0ae73e337",
+                                                            "c90f9a15-b42e-4b00-86de-fc8808159c99"
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["ff9f46cf-00bd-4c12-b887-eac491c3a96d"]
+                    }
+                },
+                {
+                    "Id": "a412d186-3d2a-46b1-bc16-6973ac52e1b2",
+                    "Name": "UI_CHALLENGES_HAWK_KILLER_SHOT_NAME",
+                    "ImageName": "images/challenges/hawk/hawk_photoshoot.jpg",
+                    "Description": "UI_CHALLENGES_HAWK_KILLER_SHOT_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_HAWK_KILLER_SHOT"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_AUSTRIA",
+                    "ParentLocationId": "LOCATION_PARENT_AUSTRIA",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "Complete": 0
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$or": [
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "b5a423f5-7f02-4ddc-8dc6-fdb64c1ebfcf"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.SetPieceId",
+                                                            "25bf69be-5ee3-4a5c-b413-9665b7e673df"
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "d81e6d6c-d10b-4ee3-b313-b4e296464e87"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.SetPieceId",
+                                                            "25bf69be-5ee3-4a5c-b413-9665b7e673df"
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Is_DoubleKill"
+                                }
+                            },
+                            "Is_DoubleKill": {
+                                "$timer": {
+                                    "Condition": {
+                                        "$after": 0.1
+                                    },
+                                    "Transition": "Failure"
+                                },
+                                "Kill": {
+                                    "Condition": {
+                                        "$or": [
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "b5a423f5-7f02-4ddc-8dc6-fdb64c1ebfcf"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.SetPieceId",
+                                                            "25bf69be-5ee3-4a5c-b413-9665b7e673df"
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "d81e6d6c-d10b-4ee3-b313-b4e296464e87"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.SetPieceId",
+                                                            "25bf69be-5ee3-4a5c-b413-9665b7e673df"
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Actions": {
+                                        "$set": ["Complete", 1]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["ff9f46cf-00bd-4c12-b887-eac491c3a96d"]
+                    }
+                },
+                {
+                    "Id": "b6d092b4-add8-4653-9dab-04e9050d68fa",
+                    "Name": "UI_CHALLENGES_HAWK_ALL_HEADSHOTS_NAME",
+                    "ImageName": "images/challenges/hawk/hawk_all_headshots.jpg",
+                    "Description": "UI_CHALLENGES_HAWK_ALL_HEADSHOTS_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_HAWK_ALL_HEADSHOTS"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_AUSTRIA",
+                    "ParentLocationId": "LOCATION_PARENT_AUSTRIA",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "Count": 0,
+                            "Goal": 18
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal",
+                                "text": "UI_CHALLENGES_HAWK_ALL_HEADSHOTS_NAME",
+                                "icon": "some_icon"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "BodyguardEscaped": {
+                                    "Transition": "Failure"
+                                },
+                                "Kill": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        },
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsHeadshot",
+                                                        true
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsHeadshot",
+                                                        false
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["ff9f46cf-00bd-4c12-b887-eac491c3a96d"]
+                    }
+                },
+                {
+                    "Id": "c865cc6b-9644-4a1e-8ef0-520910576e11",
+                    "Name": "UI_CHALLENGES_HAWK_HEAVY_BURDEN_NAME",
+                    "ImageName": "images/challenges/hawk/hawk_triple_death_from_above.jpg",
+                    "Description": "UI_CHALLENGES_HAWK_HEAVY_BURDEN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_HAWK_HEAVY_BURDEN"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_AUSTRIA",
+                    "ParentLocationId": "LOCATION_PARENT_AUSTRIA",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "Context": {
+                            "Complete": 0
+                        },
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$or": [
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "d81e6d6c-d10b-4ee3-b313-b4e296464e87"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$any": {
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "SuspendedObject"
+                                                                ]
+                                                            },
+                                                            "in": "$Value.DamageEvents"
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "b5a423f5-7f02-4ddc-8dc6-fdb64c1ebfcf"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$any": {
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "SuspendedObject"
+                                                                ]
+                                                            },
+                                                            "in": "$Value.DamageEvents"
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "a95228f3-14ac-4305-8993-24a7f73ec4b6"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$any": {
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "SuspendedObject"
+                                                                ]
+                                                            },
+                                                            "in": "$Value.DamageEvents"
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Is_DoubleKill"
+                                }
+                            },
+                            "Is_DoubleKill": {
+                                "$timer": {
+                                    "Condition": {
+                                        "$after": 0.1
+                                    },
+                                    "Transition": "Failure"
+                                },
+                                "Kill": {
+                                    "Condition": {
+                                        "$or": [
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "d81e6d6c-d10b-4ee3-b313-b4e296464e87"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$any": {
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "SuspendedObject"
+                                                                ]
+                                                            },
+                                                            "in": "$Value.DamageEvents"
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "b5a423f5-7f02-4ddc-8dc6-fdb64c1ebfcf"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$any": {
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "SuspendedObject"
+                                                                ]
+                                                            },
+                                                            "in": "$Value.DamageEvents"
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "a95228f3-14ac-4305-8993-24a7f73ec4b6"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$any": {
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "SuspendedObject"
+                                                                ]
+                                                            },
+                                                            "in": "$Value.DamageEvents"
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Is_TripleKill"
+                                }
+                            },
+                            "Is_TripleKill": {
+                                "$timer": {
+                                    "Condition": {
+                                        "$after": 0.1
+                                    },
+                                    "Transition": "Failure"
+                                },
+                                "Kill": {
+                                    "Condition": {
+                                        "$or": [
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "d81e6d6c-d10b-4ee3-b313-b4e296464e87"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$any": {
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "SuspendedObject"
+                                                                ]
+                                                            },
+                                                            "in": "$Value.DamageEvents"
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "b5a423f5-7f02-4ddc-8dc6-fdb64c1ebfcf"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$any": {
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "SuspendedObject"
+                                                                ]
+                                                            },
+                                                            "in": "$Value.DamageEvents"
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "a95228f3-14ac-4305-8993-24a7f73ec4b6"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$any": {
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "SuspendedObject"
+                                                                ]
+                                                            },
+                                                            "in": "$Value.DamageEvents"
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Actions": {
+                                        "$set": ["Complete", 1]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["ff9f46cf-00bd-4c12-b887-eac491c3a96d"]
+                    }
+                },
+                {
+                    "Id": "cc61fdf8-a8c9-4fc8-87ac-8db82718b320",
+                    "Name": "UI_CHALLENGES_HAWK_TOUCH_AND_GO_NAME",
+                    "ImageName": "images/challenges/hawk/hawk_touch_and_go.jpg",
+                    "Description": "UI_CHALLENGES_HAWK_TOUCH_AND_GO_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_HAWK_TOUCH_AND_GO"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_AUSTRIA",
+                    "ParentLocationId": "LOCATION_PARENT_AUSTRIA",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "Count": 0,
+                            "Goal": 3
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal",
+                                "text": "UI_CHALLENGES_HAWK_TOUCH_AND_GO_NAME",
+                                "icon": "some_icon"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "TargetsEscaping": {
+                                    "Transition": "EliminateTargets"
+                                },
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$Value.RepositoryId"
+                                                            ]
+                                                        },
+                                                        "in": [
+                                                            "d81e6d6c-d10b-4ee3-b313-b4e296464e87",
+                                                            "a95228f3-14ac-4305-8993-24a7f73ec4b6",
+                                                            "b5a423f5-7f02-4ddc-8dc6-fdb64c1ebfcf"
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ]
+                            },
+                            "EliminateTargets": {
+                                "Kill": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        },
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$Value.RepositoryId"
+                                                            ]
+                                                        },
+                                                        "in": [
+                                                            "d81e6d6c-d10b-4ee3-b313-b4e296464e87",
+                                                            "a95228f3-14ac-4305-8993-24a7f73ec4b6",
+                                                            "b5a423f5-7f02-4ddc-8dc6-fdb64c1ebfcf"
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ],
+                                "TargetEscaped": {
+                                    "Transition": "Failure"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["ff9f46cf-00bd-4c12-b887-eac491c3a96d"]
+                    }
+                },
+                {
+                    "Id": "d096942e-37ec-4a68-af1c-74d8aec6ffc6",
+                    "Name": "UI_CHALLENGES_HAWK_GOT_A_LIGHT_NAME",
+                    "ImageName": "images/challenges/hawk/hawk_triple_explosion.jpg",
+                    "Description": "UI_CHALLENGES_HAWK_GOT_A_LIGHT_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_HAWK_BOOM_BOOM"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_AUSTRIA",
+                    "ParentLocationId": "LOCATION_PARENT_AUSTRIA",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "Context": {
+                            "Complete": 0
+                        },
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$or": [
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "d81e6d6c-d10b-4ee3-b313-b4e296464e87"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillMethodStrict",
+                                                            "accident_explosion"
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "b5a423f5-7f02-4ddc-8dc6-fdb64c1ebfcf"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillMethodStrict",
+                                                            "accident_explosion"
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "a95228f3-14ac-4305-8993-24a7f73ec4b6"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillMethodStrict",
+                                                            "accident_explosion"
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Is_DoubleKill"
+                                }
+                            },
+                            "Is_DoubleKill": {
+                                "$timer": {
+                                    "Condition": {
+                                        "$after": 0.1
+                                    },
+                                    "Transition": "Failure"
+                                },
+                                "Kill": {
+                                    "Condition": {
+                                        "$or": [
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "d81e6d6c-d10b-4ee3-b313-b4e296464e87"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillMethodStrict",
+                                                            "accident_explosion"
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "b5a423f5-7f02-4ddc-8dc6-fdb64c1ebfcf"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillMethodStrict",
+                                                            "accident_explosion"
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "a95228f3-14ac-4305-8993-24a7f73ec4b6"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillMethodStrict",
+                                                            "accident_explosion"
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Is_TripleKill"
+                                }
+                            },
+                            "Is_TripleKill": {
+                                "$timer": {
+                                    "Condition": {
+                                        "$after": 0.1
+                                    },
+                                    "Transition": "Failure"
+                                },
+                                "Kill": {
+                                    "Condition": {
+                                        "$or": [
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "d81e6d6c-d10b-4ee3-b313-b4e296464e87"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillMethodStrict",
+                                                            "accident_explosion"
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "b5a423f5-7f02-4ddc-8dc6-fdb64c1ebfcf"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillMethodStrict",
+                                                            "accident_explosion"
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "a95228f3-14ac-4305-8993-24a7f73ec4b6"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillMethodStrict",
+                                                            "accident_explosion"
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Actions": {
+                                        "$set": ["Complete", 1]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["ff9f46cf-00bd-4c12-b887-eac491c3a96d"]
+                    }
+                },
+                {
+                    "Id": "dd4058f1-6bbc-4f40-a6a3-b2022add4978",
+                    "Name": "UI_CHALLENGES_HAWK_EXPLOSION_TIME_NAME",
+                    "ImageName": "images/challenges/hawk/hawk_explosion_time.jpg",
+                    "Description": "UI_CHALLENGES_HAWK_EXPLOSION_TIME_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_HAWK_EXPLOSION_TIME"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_AUSTRIA",
+                    "ParentLocationId": "LOCATION_PARENT_AUSTRIA",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "Count": 0,
+                            "TargetGoal": 5,
+                            "DeadTargets": 0,
+                            "TooManyKilled": 14
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.TargetGoal",
+                                "text": "UI_CHALLENGES_HAWK_EXPLOSION_TIME_NAME",
+                                "icon": "some_icon"
+                            },
+                            "ForceUpdateCounters": {
+                                "type": "force-update",
+                                "target": "Count"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": [
+                                    {
+                                        "Actions": [
+                                            {
+                                                "$inc": "Count"
+                                            },
+                                            {
+                                                "$inc": "DeadTargets"
+                                            }
+                                        ],
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.KillMethodStrict",
+                                                        "accident_explosion"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "TimerStart"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.TargetGoal"]
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$.DeadTargets",
+                                                "$.TooManyKilled"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ]
+                            },
+                            "TimerStart": {
+                                "$timer": {
+                                    "Condition": {
+                                        "$after": 30
+                                    },
+                                    "Actions": {
+                                        "$set": ["Count", 0]
+                                    },
+                                    "Transition": "Start"
+                                },
+                                "Kill": [
+                                    {
+                                        "Actions": [
+                                            {
+                                                "$inc": "Count"
+                                            },
+                                            {
+                                                "$inc": "DeadTargets"
+                                            }
+                                        ],
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.KillMethodStrict",
+                                                        "accident_explosion"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.TargetGoal"]
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$.DeadTargets",
+                                                "$.TooManyKilled"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["ff9f46cf-00bd-4c12-b887-eac491c3a96d"]
+                    }
+                },
+                {
+                    "Id": "e104192c-88f3-465f-ad17-f2e705cd0546",
+                    "Name": "UI_CHALLENGES_HAWK_WALTZ_OF_DEATH_NAME",
+                    "ImageName": "images/challenges/hawk/hawk_death_waltz.jpg",
+                    "Description": "UI_CHALLENGES_HAWK_WALTZ_OF_DEATH_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_HAWK_WALTZ_OF_DEATH"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_AUSTRIA",
+                    "ParentLocationId": "LOCATION_PARENT_AUSTRIA",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "Count": 0,
+                            "Goal": 7,
+                            "TargetsKilled": 0,
+                            "TooManyKilled": 12
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal",
+                                "text": "UI_CHALLENGES_HAWK_WALTZ_OF_DEATH_NAME",
+                                "icon": "some_icon"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "CoupleDancing": {
+                                    "Transition": "CoupleIsDancing"
+                                },
+                                "Kill": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "TargetsKilled"
+                                        },
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$.TargetsKilled",
+                                                "$.TooManyKilled"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ]
+                            },
+                            "CoupleIsDancing": {
+                                "CombatStarted": {
+                                    "Transition": "Failure"
+                                },
+                                "DancingPaused": {
+                                    "Transition": "WaitForDancingResumed"
+                                },
+                                "Kill": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        },
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$Value.RepositoryId"
+                                                            ]
+                                                        },
+                                                        "in": [
+                                                            "9d97662a-cbd8-435c-8c8c-c5652f3cb8f2",
+                                                            "0074795b-8de4-4a29-8754-218266e25e44"
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ],
+                                "CoupleDoneDancing": {
+                                    "Transition": "Failure"
+                                }
+                            },
+                            "WaitForDancingResumed": {
+                                "DancingResumed": {
+                                    "Transition": "CoupleIsDancing"
+                                },
+                                "DancingOver": {
+                                    "Transition": "Failure"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["ff9f46cf-00bd-4c12-b887-eac491c3a96d"]
+                    }
+                }
+            ]
+        },
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+            "Image": "images/challenges/categories/feats/tile.jpg",
+            "Icon": "challenge_category_feats",
+            "CategoryId": "feats",
+            "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_COMMUNITY",
+            "Challenges": [
+                {
+                    "Id": "0e12e4fd-6666-4871-91b8-1340af438e03",
+                    "Name": "UI_CHALLENGES_HAWK_AGNOMALY_NAME",
+                    "ImageName": "images/challenges/hawk/hawk_shoot_allgnomes.jpg",
+                    "Description": "UI_CHALLENGES_HAWK_AGNOMALY_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_HAWK_AGNOMALY"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_AUSTRIA",
+                    "ParentLocationId": "LOCATION_PARENT_AUSTRIA",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "Count": 0,
+                            "Goal": 6
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal",
+                                "text": "UI_CHALLENGES_HAWK_AGNOMALY_NAME",
+                                "icon": "some_icon"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "GnomeShot": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["ff9f46cf-00bd-4c12-b887-eac491c3a96d"]
+                    }
+                },
+                {
+                    "Id": "13cd05da-1fad-4c9d-b6b8-7c2004384fa3",
+                    "Name": "UI_CHALLENGES_HAWK_BLACKOUT_NAME",
+                    "ImageName": "images/challenges/hawk/hawk_lights_out.jpg",
+                    "Description": "UI_CHALLENGES_HAWK_BLACKOUT_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_HAWK_BLACKOUT"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_AUSTRIA",
+                    "ParentLocationId": "LOCATION_PARENT_AUSTRIA",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal",
+                                "text": "UI_CHALLENGES_HAWK_BLACKOUT_NAME",
+                                "icon": "some_icon"
+                            }
+                        },
+                        "Context": {
+                            "Count": 0,
+                            "Goal": 18
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "LightsOff": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["ff9f46cf-00bd-4c12-b887-eac491c3a96d"]
+                    }
+                },
+                {
+                    "Id": "269235f8-8ab1-40c0-96cc-df94ed93bc8f",
+                    "Name": "UI_CHALLENGES_HAWK_47_VASES_NAME",
+                    "ImageName": "images/challenges/hawk/hawk_47_vases.jpg",
+                    "Description": "UI_CHALLENGES_HAWK_47_VASES_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_HAWK_47_VASES"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_AUSTRIA",
+                    "ParentLocationId": "LOCATION_PARENT_AUSTRIA",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "Count": 0,
+                            "Goal": 47
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal",
+                                "text": "UI_CHALLENGES_HAWK_47_VASES_NAME",
+                                "icon": "some_icon"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "VaseShot": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["ff9f46cf-00bd-4c12-b887-eac491c3a96d"]
+                    }
+                },
+                {
+                    "Id": "26a2739b-4d68-4c49-98f1-1ecbe9fcd323",
+                    "Name": "UI_CHALLENGES_HAWK_BONFIRE_NAME",
+                    "ImageName": "images/challenges/hawk/hawk_bonfire.jpg",
+                    "Description": "UI_CHALLENGES_HAWK_BONFIRE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_HAWK_BONFIRE"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_AUSTRIA",
+                    "ParentLocationId": "LOCATION_PARENT_AUSTRIA",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "ContextListeners": {
+                            "Complete": {
+                                "type": "challengecounter",
+                                "count": "$.Complete",
+                                "total": 1,
+                                "text": "PLACEHOLDER",
+                                "icon": "some_icon"
+                            }
+                        },
+                        "Context": {
+                            "Complete": 0
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Bonfire_Activated": {
+                                    "Actions": {
+                                        "$set": ["Complete", 1]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["ff9f46cf-00bd-4c12-b887-eac491c3a96d"]
+                    }
+                },
+                {
+                    "Id": "329e9fab-35f2-4265-a99a-f44a6e79f257",
+                    "Name": "UI_CHALLENGES_HAWK_SHOOT_BASE_JUMPER_NAME",
+                    "ImageName": "images/challenges/hawk/hawk_shoot_basejumper.jpg",
+                    "Description": "UI_CHALLENGES_HAWK_SHOOT_BASE_JUMPER_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_HAWK_SHOOT_BASE_JUMPER"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_AUSTRIA",
+                    "ParentLocationId": "LOCATION_PARENT_AUSTRIA",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "ContextListeners": {
+                            "Complete": {
+                                "type": "challengecounter",
+                                "count": "$.Complete",
+                                "total": 1,
+                                "text": "PLACEHOLDER",
+                                "icon": "some_icon"
+                            }
+                        },
+                        "Context": {
+                            "Complete": 0
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Base_Jumper_Jumped": {
+                                    "Transition": "InAir"
+                                }
+                            },
+                            "InAir": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "8ef3a023-5ff3-4c77-8f2e-6002504adb02"
+                                        ]
+                                    },
+                                    "Actions": {
+                                        "$set": ["Complete", 1]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["ff9f46cf-00bd-4c12-b887-eac491c3a96d"]
+                    }
+                },
+                {
+                    "Id": "6eb9c3c8-94dd-4d0d-8b82-e7f29d0857e0",
+                    "Name": "UI_CHALLENGES_HAWK_HELP_HIKER_NAME",
+                    "ImageName": "images/challenges/hawk/hawk_help_hiker.jpg",
+                    "Description": "UI_CHALLENGES_HAWK_HELP_HIKER_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_HAWK_HELP_HIKER"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_AUSTRIA",
+                    "ParentLocationId": "LOCATION_PARENT_AUSTRIA",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "ContextListeners": {
+                            "Complete": {
+                                "type": "challengecounter",
+                                "count": "$.Complete",
+                                "total": 1,
+                                "text": "PLACEHOLDER",
+                                "icon": "some_icon"
+                            }
+                        },
+                        "Context": {
+                            "Complete": 0
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "HikerFree": {
+                                    "Actions": {
+                                        "$set": ["Complete", 1]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["ff9f46cf-00bd-4c12-b887-eac491c3a96d"]
+                    }
+                },
+                {
+                    "Id": "ab2b8eac-67c2-46ef-a85e-e751d97ee925",
+                    "Name": "UI_CHALLENGES_HAWK_KILL_MICE_NAME",
+                    "ImageName": "images/challenges/hawk/hawk_kill_mice.jpg",
+                    "Description": "UI_CHALLENGES_HAWK_KILL_MICE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_HAWK_KILL_MICE"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_AUSTRIA",
+                    "ParentLocationId": "LOCATION_PARENT_AUSTRIA",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "Count": 0,
+                            "Goal": 2
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal",
+                                "text": "UI_CHALLENGES_HAWK_KILL_MICE_NAME",
+                                "icon": "some_icon"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "MouseShot": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["ff9f46cf-00bd-4c12-b887-eac491c3a96d"]
+                    }
+                },
+                {
+                    "Id": "c2dae7e5-ea16-40cd-b167-1be1619e8b00",
+                    "Name": "UI_CHALLENGES_HAWK_DESTROY_PAINTING_NAME",
+                    "ImageName": "images/challenges/hawk/hawk_destroy_painting.jpg",
+                    "Description": "UI_CHALLENGES_HAWK_DESTROY_PAINTING_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_HAWK_DESTROY_PAINTING"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_AUSTRIA",
+                    "ParentLocationId": "LOCATION_PARENT_AUSTRIA",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "ContextListeners": {
+                            "Complete": {
+                                "type": "challengecounter",
+                                "count": "$.Complete",
+                                "total": 1,
+                                "text": "PLACEHOLDER",
+                                "icon": "some_icon"
+                            }
+                        },
+                        "Context": {
+                            "Complete": 0
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "PaintingShot": {
+                                    "Transition": "WaitPaintingFixed"
+                                }
+                            },
+                            "WaitPaintingFixed": {
+                                "PaintingFixed": {
+                                    "Transition": "DestroyPoster"
+                                }
+                            },
+                            "DestroyPoster": {
+                                "PosterShot": {
+                                    "Actions": {
+                                        "$set": ["Complete", 1]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["ff9f46cf-00bd-4c12-b887-eac491c3a96d"]
+                    }
+                },
+                {
+                    "Id": "c46d278a-0323-43e0-96b0-73ae424057a2",
+                    "Name": "UI_CHALLENGES_HAWK_BRIDAL_BOUQUET_NAME",
+                    "ImageName": "images/challenges/hawk/hawk_bridal_bouquet.jpg",
+                    "Description": "UI_CHALLENGES_HAWK_BRIDAL_BOUQUET_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_HAWK_BOUQUET"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_AUSTRIA",
+                    "ParentLocationId": "LOCATION_PARENT_AUSTRIA",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "ContextListeners": {
+                            "Complete": {
+                                "type": "challengecounter",
+                                "count": "$.Complete",
+                                "total": 1,
+                                "text": "PLACEHOLDER",
+                                "icon": "some_icon"
+                            }
+                        },
+                        "Context": {
+                            "Complete": 0
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Bouquet_Destroyed": {
+                                    "Actions": {
+                                        "$set": ["Complete", 1]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["ff9f46cf-00bd-4c12-b887-eac491c3a96d"]
+                    }
+                },
+                {
+                    "Id": "c7fb5b50-5e70-400c-a023-21aa3590bb62",
+                    "Name": "UI_CHALLENGES_HAWK_FAITHLESS_NAME",
+                    "ImageName": "images/challenges/hawk/hawk_no_priest.jpg",
+                    "Description": "UI_CHALLENGES_HAWK_FAITHLESS_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_HAWK_FAITHLESS"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_AUSTRIA",
+                    "ParentLocationId": "LOCATION_PARENT_AUSTRIA",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "ContextListeners": {
+                            "Complete": {
+                                "type": "challengecounter",
+                                "count": "$.Complete",
+                                "total": 1,
+                                "text": "PLACEHOLDER",
+                                "icon": "some_icon"
+                            }
+                        },
+                        "Context": {
+                            "Complete": 0
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Priest_Left": {
+                                    "Actions": {
+                                        "$set": ["Complete", 1]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["ff9f46cf-00bd-4c12-b887-eac491c3a96d"]
+                    }
+                },
+                {
+                    "Id": "cd15acc3-ef6c-49b8-af63-59cbb25f72f5",
+                    "Name": "UI_CHALLENGES_HAWK_SHOOT_ALL_PIGEONS_NAME",
+                    "ImageName": "images/challenges/hawk/hawk_shoot_allpigeons.jpg",
+                    "Description": "UI_CHALLENGES_HAWK_SHOOT_ALL_PIGEONS_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_HAWK_SHOOT_ALL_PIGEONS"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_AUSTRIA",
+                    "ParentLocationId": "LOCATION_PARENT_AUSTRIA",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "Count": 0,
+                            "Goal": 10
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal",
+                                "text": "UI_CHALLENGES_HAWK_SHOOT_ALL_PIGEONS_NAME",
+                                "icon": "some_icon"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "PigeonShot": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["ff9f46cf-00bd-4c12-b887-eac491c3a96d"]
+                    }
+                },
+                {
+                    "Id": "d1c98e07-1d8c-460a-8dd4-ced22cd7adca",
+                    "Name": "UI_CHALLENGES_HAWK_RUBBER_DUCK_NAME",
+                    "ImageName": "images/challenges/hawk/hawk_rubber_ducks.jpg",
+                    "Description": "UI_CHALLENGES_HAWK_RUBBER_DUCK_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_HAWK_DUCKS"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_AUSTRIA",
+                    "ParentLocationId": "LOCATION_PARENT_AUSTRIA",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "Count": 0,
+                            "Goal": 10
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal",
+                                "text": "UI_CHALLENGES_HAWK_RUBBER_DUCK_NAME",
+                                "icon": "some_icon"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "RubberDuckHit": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["ff9f46cf-00bd-4c12-b887-eac491c3a96d"]
+                    }
+                },
+                {
+                    "Id": "e4db8fea-b84a-4dbd-9226-9ff15dbcaf1d",
+                    "Name": "UI_CHALLENGES_HAWK_SHOOT_RICE_BAG_NAME",
+                    "ImageName": "images/challenges/hawk/hawk_shoot_ricebag.jpg",
+                    "Description": "UI_CHALLENGES_HAWK_SHOOT_RICE_BAG_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_HAWK_SHOOT_RICE_BAG"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_AUSTRIA",
+                    "ParentLocationId": "LOCATION_PARENT_AUSTRIA",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "ContextListeners": {
+                            "Complete": {
+                                "type": "challengecounter",
+                                "count": "$.Complete",
+                                "total": 1,
+                                "text": "PLACEHOLDER",
+                                "icon": "some_icon"
+                            }
+                        },
+                        "Context": {
+                            "Complete": 0
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "RiceBag_Shot": {
+                                    "Actions": {
+                                        "$set": ["Complete", 1]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["ff9f46cf-00bd-4c12-b887-eac491c3a96d"]
+                    }
+                },
+                {
+                    "Id": "f9938bbc-401f-4f89-891c-14fb6848f5d2",
+                    "Name": "UI_CHALLENGES_HAWK_KILL_ALL_HAWKS_NAME",
+                    "ImageName": "images/challenges/hawk/hawk_kill_hawks.jpg",
+                    "Description": "UI_CHALLENGES_HAWK_KILL_ALL_HAWKS_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_HAWK_KILL_ALL_HAWKS"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_AUSTRIA",
+                    "ParentLocationId": "LOCATION_PARENT_AUSTRIA",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "Count": 0,
+                            "Goal": 3
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal",
+                                "text": "UI_CHALLENGES_HAWK_KILL_ALL_HAWKS_NAME",
+                                "icon": "some_icon"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "HawkShot": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["ff9f46cf-00bd-4c12-b887-eac491c3a96d"]
+                    }
+                }
+            ]
+        }
+    ]
+}

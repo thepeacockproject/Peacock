@@ -29,7 +29,7 @@ import { json as jsonMiddleware } from "body-parser"
 import { getPlatformEntitlements } from "./platformEntitlements"
 import { contractSessions, newSession } from "./eventHandler"
 import type {
-    CompiledChallengeRuntimeData,
+    CompiledChallengeIngameData,
     ContractSession,
     GameVersion,
     RequestWithJwt,
@@ -481,7 +481,10 @@ profileRouter.post(
     "/ChallengesService/GetActiveChallengesAndProgression",
     jsonMiddleware(),
     (
-        req: RequestWithJwt<Record<string, never>, { contractId: string }>,
+        req: RequestWithJwt<
+            Record<string, never>,
+            { contractId: string; difficultyLevel: number }
+        >,
         res,
     ) => {
         if (!uuidRegex.test(req.body.contractId)) {
@@ -502,19 +505,20 @@ profileRouter.post(
             return res.json([])
         }
 
-        let challenges: CompiledChallengeRuntimeData[] = (
-            getVersionedConfig(
-                "GlobalChallenges",
-                req.gameVersion,
-                true,
-            ) as CompiledChallengeRuntimeData[]
-        ).filter((val) => inclusionDataCheck(val.Challenge.InclusionData, json))
+        let challenges = getVersionedConfig<CompiledChallengeIngameData[]>(
+            "GlobalChallenges",
+            req.gameVersion,
+            true,
+        )
+            .filter((val) => inclusionDataCheck(val.InclusionData, json))
+            .map((item) => ({ Challenge: item, Progression: undefined }))
 
         challenges.push(
             ...Object.values(
                 controller.challengeService.getChallengesForContract(
                     json.Metadata.Id,
                     req.gameVersion,
+                    req.body.difficultyLevel,
                 ),
             )
                 .flat()
@@ -599,6 +603,7 @@ profileRouter.post(
                         req.body.contractId,
                         req.gameVersion,
                         req.jwt.unique_name,
+                        req.body.difficultyLevel,
                     ),
             },
             LevelsDefinition: {
@@ -835,8 +840,10 @@ async function loadSession(
             Ticked: false,
         }
 
-        const scope =
-            controller.challengeService.getChallengeById(cid).Definition.Scope
+        const scope = controller.challengeService.getChallengeById(
+            cid,
+            sessionData.gameVersion,
+        ).Definition.Scope
         if (
             !userData.Extensions.ChallengeProgression[cid].Completed &&
             (scope === "hit" || scope === "profile")
