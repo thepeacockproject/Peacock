@@ -394,7 +394,6 @@ export class HitsCategoryService {
             categoryName === "Featured" &&
             pageNumber >= Math.ceil(peacockFCNum / this.hitsPerPage)
         ) {
-            log(LogLevel.DEBUG, `Peacock: Fetching from official.`)
             const response = await this.fetchFromOfficial(
                 categoryName,
                 pageNumber - Math.ceil(peacockFCNum / this.hitsPerPage),
