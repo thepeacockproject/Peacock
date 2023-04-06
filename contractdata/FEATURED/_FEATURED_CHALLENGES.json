@@ -1,0 +1,2187 @@
+{
+    "meta": {
+        "Location": "GLOBAL_FEATURED_CHALLENGES",
+        "GameVersion": "h3"
+    },
+    "groups": [
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_FEATURED_HM1_HM2",
+            "Image": "images/challenges/categories/FeaturedContractsTracks/tile_hm1_hm2.jpg",
+            "Icon": "featured",
+            "CategoryId": "featured_hm1_hm2",
+            "Description": "",
+            "Challenges": [
+                {
+                    "Id": "3d6eb80b-16af-4504-b23a-3465578b2cf9",
+                    "Name": "UI_CHALLENGES_FEATURED_CONTRACT_1_NAME",
+                    "ImageName": "images/challenges/profile_challenges/featured_contract_1.jpg",
+                    "Description": "UI_CHALLENGES_FEATURED_CONTRACT_1_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["PROP_TOOL_GOLD_COIN"],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_FEATURED_HM1_HM2",
+                    "Icon": "featured",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 60001,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 5,
+                            "Locations": [
+                                "LOCATION_PARIS",
+                                "LOCATION_COASTALTOWN",
+                                "LOCATION_COASTALTOWN_NIGHT",
+                                "LOCATION_COASTALTOWN_MOVIESET",
+                                "LOCATION_COASTALTOWN_EBOLA",
+                                "LOCATION_MARRAKECH",
+                                "LOCATION_MARRAKECH_NIGHT",
+                                "LOCATION_BANGKOK",
+                                "LOCATION_BANGKOK_ZIKA",
+                                "LOCATION_COLORADO",
+                                "LOCATION_COLORADO_RABIES",
+                                "LOCATION_HOKKAIDO",
+                                "LOCATION_HOKKAIDO_FLU",
+                                "LOCATION_NEWZEALAND",
+                                "LOCATION_MIAMI",
+                                "LOCATION_COLOMBIA",
+                                "LOCATION_COLOMBIA_ANACONDA",
+                                "LOCATION_MUMBAI",
+                                "LOCATION_MUMBAI_KINGCOBRA",
+                                "LOCATION_NORTHAMERICA",
+                                "LOCATION_NORTHSEA",
+                                "LOCATION_GREEDY_RACCOON",
+                                "LOCATION_OPULENT_STINGRAY"
+                            ]
+                        },
+                        "Context": {
+                            "Completed": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.Completed).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.ContractType",
+                                                    "featured"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.LocationId"
+                                                        ]
+                                                    },
+                                                    "in": "$.Locations"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "State_ValidContract"
+                                }
+                            },
+                            "State_ValidContract": {
+                                "ContractEnd": [
+                                    {
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Completed",
+                                                "$ContractId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "($.Completed).Count",
+                                                "$.Goal"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Transition": "Start"
+                                    }
+                                ],
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "$Value.ContractType",
+                                                "featured"
+                                            ]
+                                        }
+                                    },
+                                    "Transition": "Start"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "featured_hm1_hm2"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["featured"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "31e8e58f-86c1-4f1b-9341-d312cd9f28f8",
+                    "Name": "UI_CHALLENGES_FEATURED_CONTRACT_2_NAME",
+                    "ImageName": "images/challenges/profile_challenges/featured_contract_2.jpg",
+                    "Description": "UI_CHALLENGES_FEATURED_CONTRACT_2_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["PROP_MELEE_MEASURING_TAPE"],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_FEATURED_HM1_HM2",
+                    "Icon": "featured",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 60002,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 10,
+                            "Locations": [
+                                "LOCATION_PARIS",
+                                "LOCATION_COASTALTOWN",
+                                "LOCATION_COASTALTOWN_NIGHT",
+                                "LOCATION_COASTALTOWN_MOVIESET",
+                                "LOCATION_COASTALTOWN_EBOLA",
+                                "LOCATION_MARRAKECH",
+                                "LOCATION_MARRAKECH_NIGHT",
+                                "LOCATION_BANGKOK",
+                                "LOCATION_BANGKOK_ZIKA",
+                                "LOCATION_COLORADO",
+                                "LOCATION_COLORADO_RABIES",
+                                "LOCATION_HOKKAIDO",
+                                "LOCATION_HOKKAIDO_FLU",
+                                "LOCATION_NEWZEALAND",
+                                "LOCATION_MIAMI",
+                                "LOCATION_COLOMBIA",
+                                "LOCATION_COLOMBIA_ANACONDA",
+                                "LOCATION_MUMBAI",
+                                "LOCATION_MUMBAI_KINGCOBRA",
+                                "LOCATION_NORTHAMERICA",
+                                "LOCATION_NORTHSEA",
+                                "LOCATION_GREEDY_RACCOON",
+                                "LOCATION_OPULENT_STINGRAY"
+                            ]
+                        },
+                        "Context": {
+                            "Completed": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.Completed).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.ContractType",
+                                                    "featured"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.LocationId"
+                                                        ]
+                                                    },
+                                                    "in": "$.Locations"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "State_ValidContract"
+                                }
+                            },
+                            "State_ValidContract": {
+                                "ContractEnd": [
+                                    {
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Completed",
+                                                "$ContractId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "($.Completed).Count",
+                                                "$.Goal"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Transition": "Start"
+                                    }
+                                ],
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "$Value.ContractType",
+                                                "featured"
+                                            ]
+                                        }
+                                    },
+                                    "Transition": "Start"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "featured_hm1_hm2"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["featured"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "29557099-98dd-4d07-a53a-1db147191f52",
+                    "Name": "UI_CHALLENGES_FEATURED_CONTRACT_3_NAME",
+                    "ImageName": "images/challenges/profile_challenges/featured_contract_3.jpg",
+                    "Description": "UI_CHALLENGES_FEATURED_CONTRACT_3_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["PROP_TOOL_SQUEAKY_TOY_KIWI"],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_FEATURED_HM1_HM2",
+                    "Icon": "featured",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 60003,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 15,
+                            "Locations": [
+                                "LOCATION_PARIS",
+                                "LOCATION_COASTALTOWN",
+                                "LOCATION_COASTALTOWN_NIGHT",
+                                "LOCATION_COASTALTOWN_MOVIESET",
+                                "LOCATION_COASTALTOWN_EBOLA",
+                                "LOCATION_MARRAKECH",
+                                "LOCATION_MARRAKECH_NIGHT",
+                                "LOCATION_BANGKOK",
+                                "LOCATION_BANGKOK_ZIKA",
+                                "LOCATION_COLORADO",
+                                "LOCATION_COLORADO_RABIES",
+                                "LOCATION_HOKKAIDO",
+                                "LOCATION_HOKKAIDO_FLU",
+                                "LOCATION_NEWZEALAND",
+                                "LOCATION_MIAMI",
+                                "LOCATION_COLOMBIA",
+                                "LOCATION_COLOMBIA_ANACONDA",
+                                "LOCATION_MUMBAI",
+                                "LOCATION_MUMBAI_KINGCOBRA",
+                                "LOCATION_NORTHAMERICA",
+                                "LOCATION_NORTHSEA",
+                                "LOCATION_GREEDY_RACCOON",
+                                "LOCATION_OPULENT_STINGRAY"
+                            ]
+                        },
+                        "Context": {
+                            "Completed": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.Completed).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.ContractType",
+                                                    "featured"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.LocationId"
+                                                        ]
+                                                    },
+                                                    "in": "$.Locations"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "State_ValidContract"
+                                }
+                            },
+                            "State_ValidContract": {
+                                "ContractEnd": [
+                                    {
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Completed",
+                                                "$ContractId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "($.Completed).Count",
+                                                "$.Goal"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Transition": "Start"
+                                    }
+                                ],
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "$Value.ContractType",
+                                                "featured"
+                                            ]
+                                        }
+                                    },
+                                    "Transition": "Start"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "featured_hm1_hm2"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["featured"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "1afd7b98-5745-470a-be55-fe703fa7b082",
+                    "Name": "UI_CHALLENGES_FEATURED_CONTRACT_4_NAME",
+                    "ImageName": "images/challenges/profile_challenges/featured_contract_4.jpg",
+                    "Description": "UI_CHALLENGES_FEATURED_CONTRACT_4_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["PROP_TOOL_WRENCH_HANDYMAN"],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_FEATURED_HM1_HM2",
+                    "Icon": "featured",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 60004,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 20,
+                            "Locations": [
+                                "LOCATION_PARIS",
+                                "LOCATION_COASTALTOWN",
+                                "LOCATION_COASTALTOWN_NIGHT",
+                                "LOCATION_COASTALTOWN_MOVIESET",
+                                "LOCATION_COASTALTOWN_EBOLA",
+                                "LOCATION_MARRAKECH",
+                                "LOCATION_MARRAKECH_NIGHT",
+                                "LOCATION_BANGKOK",
+                                "LOCATION_BANGKOK_ZIKA",
+                                "LOCATION_COLORADO",
+                                "LOCATION_COLORADO_RABIES",
+                                "LOCATION_HOKKAIDO",
+                                "LOCATION_HOKKAIDO_FLU",
+                                "LOCATION_NEWZEALAND",
+                                "LOCATION_MIAMI",
+                                "LOCATION_COLOMBIA",
+                                "LOCATION_COLOMBIA_ANACONDA",
+                                "LOCATION_MUMBAI",
+                                "LOCATION_MUMBAI_KINGCOBRA",
+                                "LOCATION_NORTHAMERICA",
+                                "LOCATION_NORTHSEA",
+                                "LOCATION_GREEDY_RACCOON",
+                                "LOCATION_OPULENT_STINGRAY"
+                            ]
+                        },
+                        "Context": {
+                            "Completed": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.Completed).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.ContractType",
+                                                    "featured"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.LocationId"
+                                                        ]
+                                                    },
+                                                    "in": "$.Locations"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "State_ValidContract"
+                                }
+                            },
+                            "State_ValidContract": {
+                                "ContractEnd": [
+                                    {
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Completed",
+                                                "$ContractId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "($.Completed).Count",
+                                                "$.Goal"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Transition": "Start"
+                                    }
+                                ],
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "$Value.ContractType",
+                                                "featured"
+                                            ]
+                                        }
+                                    },
+                                    "Transition": "Start"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "featured_hm1_hm2"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["featured"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "276bbad6-cd22-43f7-8ebb-7f6595d8b7f1",
+                    "Name": "UI_CHALLENGES_FEATURED_CONTRACT_5_NAME",
+                    "ImageName": "images/challenges/profile_challenges/featured_contract_5.jpg",
+                    "Description": "UI_CHALLENGES_FEATURED_CONTRACT_5_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["TOKEN_OUTFIT_GOLDEN_MASK"],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_FEATURED_HM1_HM2",
+                    "Icon": "featured",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 60005,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 25,
+                            "Locations": [
+                                "LOCATION_PARIS",
+                                "LOCATION_COASTALTOWN",
+                                "LOCATION_COASTALTOWN_NIGHT",
+                                "LOCATION_COASTALTOWN_MOVIESET",
+                                "LOCATION_COASTALTOWN_EBOLA",
+                                "LOCATION_MARRAKECH",
+                                "LOCATION_MARRAKECH_NIGHT",
+                                "LOCATION_BANGKOK",
+                                "LOCATION_BANGKOK_ZIKA",
+                                "LOCATION_COLORADO",
+                                "LOCATION_COLORADO_RABIES",
+                                "LOCATION_HOKKAIDO",
+                                "LOCATION_HOKKAIDO_FLU",
+                                "LOCATION_NEWZEALAND",
+                                "LOCATION_MIAMI",
+                                "LOCATION_COLOMBIA",
+                                "LOCATION_COLOMBIA_ANACONDA",
+                                "LOCATION_MUMBAI",
+                                "LOCATION_MUMBAI_KINGCOBRA",
+                                "LOCATION_NORTHAMERICA",
+                                "LOCATION_NORTHSEA",
+                                "LOCATION_GREEDY_RACCOON",
+                                "LOCATION_OPULENT_STINGRAY"
+                            ]
+                        },
+                        "Context": {
+                            "Completed": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.Completed).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.ContractType",
+                                                    "featured"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.LocationId"
+                                                        ]
+                                                    },
+                                                    "in": "$.Locations"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "State_ValidContract"
+                                }
+                            },
+                            "State_ValidContract": {
+                                "ContractEnd": [
+                                    {
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Completed",
+                                                "$ContractId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "($.Completed).Count",
+                                                "$.Goal"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Transition": "Start"
+                                    }
+                                ],
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "$Value.ContractType",
+                                                "featured"
+                                            ]
+                                        }
+                                    },
+                                    "Transition": "Start"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "featured_hm1_hm2"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["featured"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "2e6fbd64-3952-455b-a483-e261788dd501",
+                    "Name": "UI_CHALLENGES_FEATURED_CONTRACT_6_NAME",
+                    "ImageName": "images/challenges/profile_challenges/featured_contract_6.jpg",
+                    "Description": "UI_CHALLENGES_FEATURED_CONTRACT_6_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["PROP_MELEE_HOBBY_KNIFE"],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_FEATURED_HM1_HM2",
+                    "Icon": "featured",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 60006,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 30,
+                            "Locations": [
+                                "LOCATION_PARIS",
+                                "LOCATION_COASTALTOWN",
+                                "LOCATION_COASTALTOWN_NIGHT",
+                                "LOCATION_COASTALTOWN_MOVIESET",
+                                "LOCATION_COASTALTOWN_EBOLA",
+                                "LOCATION_MARRAKECH",
+                                "LOCATION_MARRAKECH_NIGHT",
+                                "LOCATION_BANGKOK",
+                                "LOCATION_BANGKOK_ZIKA",
+                                "LOCATION_COLORADO",
+                                "LOCATION_COLORADO_RABIES",
+                                "LOCATION_HOKKAIDO",
+                                "LOCATION_HOKKAIDO_FLU",
+                                "LOCATION_NEWZEALAND",
+                                "LOCATION_MIAMI",
+                                "LOCATION_COLOMBIA",
+                                "LOCATION_COLOMBIA_ANACONDA",
+                                "LOCATION_MUMBAI",
+                                "LOCATION_MUMBAI_KINGCOBRA",
+                                "LOCATION_NORTHAMERICA",
+                                "LOCATION_NORTHSEA",
+                                "LOCATION_GREEDY_RACCOON",
+                                "LOCATION_OPULENT_STINGRAY"
+                            ]
+                        },
+                        "Context": {
+                            "Completed": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.Completed).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.ContractType",
+                                                    "featured"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.LocationId"
+                                                        ]
+                                                    },
+                                                    "in": "$.Locations"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "State_ValidContract"
+                                }
+                            },
+                            "State_ValidContract": {
+                                "ContractEnd": [
+                                    {
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Completed",
+                                                "$ContractId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "($.Completed).Count",
+                                                "$.Goal"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Transition": "Start"
+                                    }
+                                ],
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "$Value.ContractType",
+                                                "featured"
+                                            ]
+                                        }
+                                    },
+                                    "Transition": "Start"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "featured_hm1_hm2"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["featured"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "81c27c20-5460-446d-a271-759d88b26025",
+                    "Name": "UI_CHALLENGES_FEATURED_CONTRACT_7_NAME",
+                    "ImageName": "images/challenges/profile_challenges/featured_contract_7.jpg",
+                    "Description": "UI_CHALLENGES_FEATURED_CONTRACT_7_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["TOKEN_OUTFIT_GHOSTMODE_PHANTOM_REWARD_SUIT"],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_FEATURED_HM1_HM2",
+                    "Icon": "featured",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 60007,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 35,
+                            "Locations": [
+                                "LOCATION_PARIS",
+                                "LOCATION_COASTALTOWN",
+                                "LOCATION_COASTALTOWN_NIGHT",
+                                "LOCATION_COASTALTOWN_MOVIESET",
+                                "LOCATION_COASTALTOWN_EBOLA",
+                                "LOCATION_MARRAKECH",
+                                "LOCATION_MARRAKECH_NIGHT",
+                                "LOCATION_BANGKOK",
+                                "LOCATION_BANGKOK_ZIKA",
+                                "LOCATION_COLORADO",
+                                "LOCATION_COLORADO_RABIES",
+                                "LOCATION_HOKKAIDO",
+                                "LOCATION_HOKKAIDO_FLU",
+                                "LOCATION_NEWZEALAND",
+                                "LOCATION_MIAMI",
+                                "LOCATION_COLOMBIA",
+                                "LOCATION_COLOMBIA_ANACONDA",
+                                "LOCATION_MUMBAI",
+                                "LOCATION_MUMBAI_KINGCOBRA",
+                                "LOCATION_NORTHAMERICA",
+                                "LOCATION_NORTHSEA",
+                                "LOCATION_GREEDY_RACCOON",
+                                "LOCATION_OPULENT_STINGRAY"
+                            ]
+                        },
+                        "Context": {
+                            "Completed": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.Completed).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.ContractType",
+                                                    "featured"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.LocationId"
+                                                        ]
+                                                    },
+                                                    "in": "$.Locations"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "State_ValidContract"
+                                }
+                            },
+                            "State_ValidContract": {
+                                "ContractEnd": [
+                                    {
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Completed",
+                                                "$ContractId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "($.Completed).Count",
+                                                "$.Goal"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Transition": "Start"
+                                    }
+                                ],
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "$Value.ContractType",
+                                                "featured"
+                                            ]
+                                        }
+                                    },
+                                    "Transition": "Start"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "featured_hm1_hm2"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["featured"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "e60bf7f0-1cc7-4e01-a0e9-3879f8c0ee92",
+                    "Name": "UI_CHALLENGES_FEATURED_CONTRACT_8_NAME",
+                    "ImageName": "images/challenges/profile_challenges/featured_contract_8.jpg",
+                    "Description": "UI_CHALLENGES_FEATURED_CONTRACT_8_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["PROP_CONTAINER_SUITCASE_TOOL_BOX"],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_FEATURED_HM1_HM2",
+                    "Icon": "featured",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 60008,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 40,
+                            "Locations": [
+                                "LOCATION_PARIS",
+                                "LOCATION_COASTALTOWN",
+                                "LOCATION_COASTALTOWN_NIGHT",
+                                "LOCATION_COASTALTOWN_MOVIESET",
+                                "LOCATION_COASTALTOWN_EBOLA",
+                                "LOCATION_MARRAKECH",
+                                "LOCATION_MARRAKECH_NIGHT",
+                                "LOCATION_BANGKOK",
+                                "LOCATION_BANGKOK_ZIKA",
+                                "LOCATION_COLORADO",
+                                "LOCATION_COLORADO_RABIES",
+                                "LOCATION_HOKKAIDO",
+                                "LOCATION_HOKKAIDO_FLU",
+                                "LOCATION_NEWZEALAND",
+                                "LOCATION_MIAMI",
+                                "LOCATION_COLOMBIA",
+                                "LOCATION_COLOMBIA_ANACONDA",
+                                "LOCATION_MUMBAI",
+                                "LOCATION_MUMBAI_KINGCOBRA",
+                                "LOCATION_NORTHAMERICA",
+                                "LOCATION_NORTHSEA",
+                                "LOCATION_GREEDY_RACCOON",
+                                "LOCATION_OPULENT_STINGRAY"
+                            ]
+                        },
+                        "Context": {
+                            "Completed": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.Completed).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.ContractType",
+                                                    "featured"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.LocationId"
+                                                        ]
+                                                    },
+                                                    "in": "$.Locations"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "State_ValidContract"
+                                }
+                            },
+                            "State_ValidContract": {
+                                "ContractEnd": [
+                                    {
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Completed",
+                                                "$ContractId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "($.Completed).Count",
+                                                "$.Goal"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Transition": "Start"
+                                    }
+                                ],
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "$Value.ContractType",
+                                                "featured"
+                                            ]
+                                        }
+                                    },
+                                    "Transition": "Start"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "featured_hm1_hm2"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["featured"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "8a3409e1-cfc4-4d61-9b99-101f8de47ebc",
+                    "Name": "UI_CHALLENGES_FEATURED_CONTRACT_9_NAME",
+                    "ImageName": "images/challenges/profile_challenges/featured_contract_9.jpg",
+                    "Description": "UI_CHALLENGES_FEATURED_CONTRACT_9_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["TOKEN_OUTFIT_REWARD_CHLORINE_FLAMINGO_SUIT"],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_FEATURED_HM1_HM2",
+                    "Icon": "featured",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 60009,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 45,
+                            "Locations": [
+                                "LOCATION_PARIS",
+                                "LOCATION_COASTALTOWN",
+                                "LOCATION_COASTALTOWN_NIGHT",
+                                "LOCATION_COASTALTOWN_MOVIESET",
+                                "LOCATION_COASTALTOWN_EBOLA",
+                                "LOCATION_MARRAKECH",
+                                "LOCATION_MARRAKECH_NIGHT",
+                                "LOCATION_BANGKOK",
+                                "LOCATION_BANGKOK_ZIKA",
+                                "LOCATION_COLORADO",
+                                "LOCATION_COLORADO_RABIES",
+                                "LOCATION_HOKKAIDO",
+                                "LOCATION_HOKKAIDO_FLU",
+                                "LOCATION_NEWZEALAND",
+                                "LOCATION_MIAMI",
+                                "LOCATION_COLOMBIA",
+                                "LOCATION_COLOMBIA_ANACONDA",
+                                "LOCATION_MUMBAI",
+                                "LOCATION_MUMBAI_KINGCOBRA",
+                                "LOCATION_NORTHAMERICA",
+                                "LOCATION_NORTHSEA",
+                                "LOCATION_GREEDY_RACCOON",
+                                "LOCATION_OPULENT_STINGRAY"
+                            ]
+                        },
+                        "Context": {
+                            "Completed": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.Completed).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.ContractType",
+                                                    "featured"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.LocationId"
+                                                        ]
+                                                    },
+                                                    "in": "$.Locations"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "State_ValidContract"
+                                }
+                            },
+                            "State_ValidContract": {
+                                "ContractEnd": [
+                                    {
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Completed",
+                                                "$ContractId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "($.Completed).Count",
+                                                "$.Goal"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Transition": "Start"
+                                    }
+                                ],
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "$Value.ContractType",
+                                                "featured"
+                                            ]
+                                        }
+                                    },
+                                    "Transition": "Start"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "featured_hm1_hm2"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["featured"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                }
+            ]
+        },
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_FEATURED_HM3",
+            "Image": "images/challenges/categories/FeaturedContractsTracks/tile_hm3.jpg",
+            "Icon": "featured",
+            "CategoryId": "featured_hm3",
+            "Description": "",
+            "Challenges": [
+                {
+                    "Id": "2f58dac5-8170-4e85-a1b8-1c1cdca9cbd3",
+                    "Name": "UI_CHALLENGES_FEATURED_CONTRACT_TIER_1_HMN_NAME",
+                    "ImageName": "images/challenges/profile_challenges/featured_contract_hmn_1.jpg",
+                    "Description": "UI_CHALLENGES_FEATURED_CONTRACT_TIER_1_HMN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["PROP_DEVICE_ICA_MODULAR_BREACHCHARGE_S3"],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_FEATURED_HM3",
+                    "Icon": "featured",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 60101,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 5,
+                            "Locations": [
+                                "LOCATION_ICA_FACILITY_SHIP",
+                                "LOCATION_ICA_FACILITY",
+                                "LOCATION_GOLDEN_GECKO",
+                                "LOCATION_ANCESTRAL_BULLDOG",
+                                "LOCATION_ANCESTRAL_SMOOTHSNAKE",
+                                "LOCATION_EDGY_FOX",
+                                "LOCATION_WET_RAT",
+                                "LOCATION_ELEGANT_LLAMA",
+                                "LOCATION_TRAPPED_WOLVERINE",
+                                "LOCATION_ROCKY_DUGONG"
+                            ]
+                        },
+                        "Context": {
+                            "Completed": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.Completed).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.ContractType",
+                                                    "featured"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.LocationId"
+                                                        ]
+                                                    },
+                                                    "in": "$.Locations"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "State_ValidContract"
+                                }
+                            },
+                            "State_ValidContract": {
+                                "ContractEnd": [
+                                    {
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Completed",
+                                                "$ContractId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "($.Completed).Count",
+                                                "$.Goal"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Transition": "Start"
+                                    }
+                                ],
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "$Value.ContractType",
+                                                "featured"
+                                            ]
+                                        }
+                                    },
+                                    "Transition": "Start"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "featured_hm3"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["featured"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "5e3e631e-7495-4c3a-8b01-06229c7fdd0e",
+                    "Name": "UI_CHALLENGES_FEATURED_CONTRACT_TIER_2_HMN_NAME",
+                    "ImageName": "images/challenges/profile_challenges/featured_contract_hmn_2.jpg",
+                    "Description": "UI_CHALLENGES_FEATURED_CONTRACT_TIER_2_HMN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["FIREARMS_HERO_SHOTGUN_SILENCED"],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_FEATURED_HM3",
+                    "Icon": "featured",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 60102,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 10,
+                            "Locations": [
+                                "LOCATION_ICA_FACILITY_SHIP",
+                                "LOCATION_ICA_FACILITY",
+                                "LOCATION_GOLDEN_GECKO",
+                                "LOCATION_ANCESTRAL_BULLDOG",
+                                "LOCATION_ANCESTRAL_SMOOTHSNAKE",
+                                "LOCATION_EDGY_FOX",
+                                "LOCATION_WET_RAT",
+                                "LOCATION_ELEGANT_LLAMA",
+                                "LOCATION_TRAPPED_WOLVERINE",
+                                "LOCATION_ROCKY_DUGONG"
+                            ]
+                        },
+                        "Context": {
+                            "Completed": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.Completed).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.ContractType",
+                                                    "featured"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.LocationId"
+                                                        ]
+                                                    },
+                                                    "in": "$.Locations"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "State_ValidContract"
+                                }
+                            },
+                            "State_ValidContract": {
+                                "ContractEnd": [
+                                    {
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Completed",
+                                                "$ContractId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "($.Completed).Count",
+                                                "$.Goal"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Transition": "Start"
+                                    }
+                                ],
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "$Value.ContractType",
+                                                "featured"
+                                            ]
+                                        }
+                                    },
+                                    "Transition": "Start"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "featured_hm3"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["featured"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "8cdbbf2c-9b97-40a7-a83a-34edecb19652",
+                    "Name": "UI_CHALLENGES_FEATURED_CONTRACT_TIER_3_HMN_NAME",
+                    "ImageName": "images/challenges/profile_challenges/featured_contract_hmn_3.jpg",
+                    "Description": "UI_CHALLENGES_FEATURED_CONTRACT_TIER_3_HMN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["PROP_DEVICE_ICA_SEMTEX_REMOTE_EXPLOSIVE_S3"],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_FEATURED_HM3",
+                    "Icon": "featured",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 60103,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 20,
+                            "Locations": [
+                                "LOCATION_ICA_FACILITY_SHIP",
+                                "LOCATION_ICA_FACILITY",
+                                "LOCATION_GOLDEN_GECKO",
+                                "LOCATION_ANCESTRAL_BULLDOG",
+                                "LOCATION_ANCESTRAL_SMOOTHSNAKE",
+                                "LOCATION_EDGY_FOX",
+                                "LOCATION_WET_RAT",
+                                "LOCATION_ELEGANT_LLAMA",
+                                "LOCATION_TRAPPED_WOLVERINE",
+                                "LOCATION_ROCKY_DUGONG"
+                            ]
+                        },
+                        "Context": {
+                            "Completed": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.Completed).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.ContractType",
+                                                    "featured"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.LocationId"
+                                                        ]
+                                                    },
+                                                    "in": "$.Locations"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "State_ValidContract"
+                                }
+                            },
+                            "State_ValidContract": {
+                                "ContractEnd": [
+                                    {
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Completed",
+                                                "$ContractId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "($.Completed).Count",
+                                                "$.Goal"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Transition": "Start"
+                                    }
+                                ],
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "$Value.ContractType",
+                                                "featured"
+                                            ]
+                                        }
+                                    },
+                                    "Transition": "Start"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "featured_hm3"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["featured"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "df5043a1-3077-4c00-a914-61715ec733ba",
+                    "Name": "UI_CHALLENGES_FEATURED_CONTRACT_TIER_4_HMN_NAME",
+                    "ImageName": "images/challenges/profile_challenges/featured_contract_hmn_4.jpg",
+                    "Description": "UI_CHALLENGES_FEATURED_CONTRACT_TIER_4_HMN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["PROP_CONTAINER_SUITCASE_SIEGER300"],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_FEATURED_HM3",
+                    "Icon": "featured",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 60104,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 30,
+                            "Locations": [
+                                "LOCATION_ICA_FACILITY_SHIP",
+                                "LOCATION_ICA_FACILITY",
+                                "LOCATION_GOLDEN_GECKO",
+                                "LOCATION_ANCESTRAL_BULLDOG",
+                                "LOCATION_ANCESTRAL_SMOOTHSNAKE",
+                                "LOCATION_EDGY_FOX",
+                                "LOCATION_WET_RAT",
+                                "LOCATION_ELEGANT_LLAMA",
+                                "LOCATION_TRAPPED_WOLVERINE",
+                                "LOCATION_ROCKY_DUGONG"
+                            ]
+                        },
+                        "Context": {
+                            "Completed": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.Completed).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.ContractType",
+                                                    "featured"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.LocationId"
+                                                        ]
+                                                    },
+                                                    "in": "$.Locations"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "State_ValidContract"
+                                }
+                            },
+                            "State_ValidContract": {
+                                "ContractEnd": [
+                                    {
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Completed",
+                                                "$ContractId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "($.Completed).Count",
+                                                "$.Goal"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Transition": "Start"
+                                    }
+                                ],
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "$Value.ContractType",
+                                                "featured"
+                                            ]
+                                        }
+                                    },
+                                    "Transition": "Start"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "featured_hm3"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["featured"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "071152b8-f2e3-4cb5-9c04-c87502c0dcfa",
+                    "Name": "UI_CHALLENGES_FEATURED_CONTRACT_TIER_5_HMN_NAME",
+                    "ImageName": "images/challenges/profile_challenges/featured_contract_hmn_5.jpg",
+                    "Description": "UI_CHALLENGES_FEATURED_CONTRACT_TIER_5_HMN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        "FIREARMS_HERO_PISTOL_TACTICAL_ICA_19_FA_STEALTH_DUCKY"
+                    ],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_FEATURED_HM3",
+                    "Icon": "featured",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 60105,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 40,
+                            "Locations": [
+                                "LOCATION_ICA_FACILITY_SHIP",
+                                "LOCATION_ICA_FACILITY",
+                                "LOCATION_GOLDEN_GECKO",
+                                "LOCATION_ANCESTRAL_BULLDOG",
+                                "LOCATION_ANCESTRAL_SMOOTHSNAKE",
+                                "LOCATION_EDGY_FOX",
+                                "LOCATION_WET_RAT",
+                                "LOCATION_ELEGANT_LLAMA",
+                                "LOCATION_TRAPPED_WOLVERINE",
+                                "LOCATION_ROCKY_DUGONG"
+                            ]
+                        },
+                        "Context": {
+                            "Completed": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.Completed).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.ContractType",
+                                                    "featured"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.LocationId"
+                                                        ]
+                                                    },
+                                                    "in": "$.Locations"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "State_ValidContract"
+                                }
+                            },
+                            "State_ValidContract": {
+                                "ContractEnd": [
+                                    {
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Completed",
+                                                "$ContractId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "($.Completed).Count",
+                                                "$.Goal"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Transition": "Start"
+                                    }
+                                ],
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "$Value.ContractType",
+                                                "featured"
+                                            ]
+                                        }
+                                    },
+                                    "Transition": "Start"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "featured_hm3"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["featured"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "5232e2b7-f5a2-49cc-b85b-666baf4488e2",
+                    "Name": "UI_CHALLENGES_FEATURED_CONTRACT_TIER_6_HMN_NAME",
+                    "ImageName": "images/challenges/profile_challenges/featured_contract_hmn_6.jpg",
+                    "Description": "UI_CHALLENGES_FEATURED_CONTRACT_TIER_6_HMN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["FIREARMS_SMG_RUDE_RUBY"],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_FEATURED_HM3",
+                    "Icon": "featured",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 60106,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 50,
+                            "Locations": [
+                                "LOCATION_ICA_FACILITY_SHIP",
+                                "LOCATION_ICA_FACILITY",
+                                "LOCATION_GOLDEN_GECKO",
+                                "LOCATION_ANCESTRAL_BULLDOG",
+                                "LOCATION_ANCESTRAL_SMOOTHSNAKE",
+                                "LOCATION_EDGY_FOX",
+                                "LOCATION_WET_RAT",
+                                "LOCATION_ELEGANT_LLAMA",
+                                "LOCATION_TRAPPED_WOLVERINE",
+                                "LOCATION_ROCKY_DUGONG"
+                            ]
+                        },
+                        "Context": {
+                            "Completed": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.Completed).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.ContractType",
+                                                    "featured"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.LocationId"
+                                                        ]
+                                                    },
+                                                    "in": "$.Locations"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "State_ValidContract"
+                                }
+                            },
+                            "State_ValidContract": {
+                                "ContractEnd": [
+                                    {
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Completed",
+                                                "$ContractId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "($.Completed).Count",
+                                                "$.Goal"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Transition": "Start"
+                                    }
+                                ],
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "$Value.ContractType",
+                                                "featured"
+                                            ]
+                                        }
+                                    },
+                                    "Transition": "Start"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "featured_hm3"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["featured"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "52659e5d-4b35-4807-b9a7-afd10417e1f3",
+                    "Name": "UI_CHALLENGES_FEATURED_CONTRACT_TIER_7_HMN_NAME",
+                    "ImageName": "images/challenges/profile_challenges/featured_contract_hmn_7.jpg",
+                    "Description": "UI_CHALLENGES_FEATURED_CONTRACT_TIER_7_HMN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        "FIREARMS_SNIPER_ICA_HACKL_LEVIATHAN_COVERT_DUCKY"
+                    ],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_FEATURED_HM3",
+                    "Icon": "featured",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 60107,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 60,
+                            "Locations": [
+                                "LOCATION_ICA_FACILITY_SHIP",
+                                "LOCATION_ICA_FACILITY",
+                                "LOCATION_GOLDEN_GECKO",
+                                "LOCATION_ANCESTRAL_BULLDOG",
+                                "LOCATION_ANCESTRAL_SMOOTHSNAKE",
+                                "LOCATION_EDGY_FOX",
+                                "LOCATION_WET_RAT",
+                                "LOCATION_ELEGANT_LLAMA",
+                                "LOCATION_TRAPPED_WOLVERINE",
+                                "LOCATION_ROCKY_DUGONG"
+                            ]
+                        },
+                        "Context": {
+                            "Completed": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.Completed).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.ContractType",
+                                                    "featured"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.LocationId"
+                                                        ]
+                                                    },
+                                                    "in": "$.Locations"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "State_ValidContract"
+                                }
+                            },
+                            "State_ValidContract": {
+                                "ContractEnd": [
+                                    {
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Completed",
+                                                "$ContractId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "($.Completed).Count",
+                                                "$.Goal"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Transition": "Start"
+                                    }
+                                ],
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "$Value.ContractType",
+                                                "featured"
+                                            ]
+                                        }
+                                    },
+                                    "Transition": "Start"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "featured_hm3"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["featured"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "1b1ab053-d55a-428d-b0cb-6bc2624c84b5",
+                    "Name": "UI_CHALLENGES_FEATURED_CONTRACT_TIER_8_HMN_NAME",
+                    "ImageName": "images/challenges/profile_challenges/featured_contract_hmn_8.jpg",
+                    "Description": "UI_CHALLENGES_FEATURED_CONTRACT_TIER_8_HMN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["PROP_TOOL_SCREWDRIVER_PROFESSIONAL"],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_FEATURED_HM3",
+                    "Icon": "featured",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 60108,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 70,
+                            "Locations": [
+                                "LOCATION_ICA_FACILITY_SHIP",
+                                "LOCATION_ICA_FACILITY",
+                                "LOCATION_GOLDEN_GECKO",
+                                "LOCATION_ANCESTRAL_BULLDOG",
+                                "LOCATION_ANCESTRAL_SMOOTHSNAKE",
+                                "LOCATION_EDGY_FOX",
+                                "LOCATION_WET_RAT",
+                                "LOCATION_ELEGANT_LLAMA",
+                                "LOCATION_TRAPPED_WOLVERINE",
+                                "LOCATION_ROCKY_DUGONG"
+                            ]
+                        },
+                        "Context": {
+                            "Completed": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.Completed).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.ContractType",
+                                                    "featured"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.LocationId"
+                                                        ]
+                                                    },
+                                                    "in": "$.Locations"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "State_ValidContract"
+                                }
+                            },
+                            "State_ValidContract": {
+                                "ContractEnd": [
+                                    {
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Completed",
+                                                "$ContractId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "($.Completed).Count",
+                                                "$.Goal"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Transition": "Start"
+                                    }
+                                ],
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "$Value.ContractType",
+                                                "featured"
+                                            ]
+                                        }
+                                    },
+                                    "Transition": "Start"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "featured_hm3"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["featured"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                }
+            ]
+        }
+    ]
+}

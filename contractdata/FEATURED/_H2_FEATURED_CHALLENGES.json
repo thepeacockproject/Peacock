@@ -1,0 +1,433 @@
+{
+    "meta": {
+        "Location": "GLOBAL_FEATURED_CHALLENGES",
+        "GameVersion": "h2"
+    },
+    "groups": [
+        {
+            "Name": "UI_MENU_PAGE_HITS_ELEMENT_CATEGORY_FEATURED",
+            "Image": "images/challenges/categories/featured/tile.jpg",
+            "Icon": "featured",
+            "CategoryId": "featured",
+            "Description": "",
+            "Challenges": [
+                {
+                    "Id": "31e8e58f-86c1-4f1b-9341-d312cd9f28f8",
+                    "Name": "UI_CHALLENGES_FEATURED_CONTRACT_I_NAME",
+                    "ImageName": "images/challenges/profile_challenges/featured_contract_i.jpg",
+                    "Description": "UI_CHALLENGES_FEATURED_CONTRACT_I_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["PROP_MELEE_MEASURING_TAPE"],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_HITS_ELEMENT_CATEGORY_FEATURED",
+                    "Icon": "featured",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 5
+                        },
+                        "Context": {
+                            "Completed": [],
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "$.Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.ContractType",
+                                            "featured"
+                                        ]
+                                    },
+                                    "Transition": "State_ValidContract"
+                                }
+                            },
+                            "State_ValidContract": {
+                                "ContractEnd": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count",
+                                            "$pushunique": [
+                                                "Completed",
+                                                "$ContractId"
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$not": {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$ContractId"
+                                                        ]
+                                                    },
+                                                    "in": "$.Completed"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Transition": "Start"
+                                    }
+                                ],
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "$Value.ContractType",
+                                                "featured"
+                                            ]
+                                        }
+                                    },
+                                    "Transition": "Start"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "featured"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["featured"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "29557099-98dd-4d07-a53a-1db147191f52",
+                    "Name": "UI_CHALLENGES_FEATURED_CONTRACT_II_NAME",
+                    "ImageName": "images/challenges/profile_challenges/featured_contract_ii.jpg",
+                    "Description": "UI_CHALLENGES_FEATURED_CONTRACT_II_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["PROP_TOOL_WRENCH_HANDYMAN"],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_HITS_ELEMENT_CATEGORY_FEATURED",
+                    "Icon": "featured",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 15
+                        },
+                        "Context": {
+                            "Completed": [],
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "$.Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.ContractType",
+                                            "featured"
+                                        ]
+                                    },
+                                    "Transition": "State_ValidContract"
+                                }
+                            },
+                            "State_ValidContract": {
+                                "ContractEnd": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count",
+                                            "$pushunique": [
+                                                "Completed",
+                                                "$ContractId"
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$not": {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$ContractId"
+                                                        ]
+                                                    },
+                                                    "in": "$.Completed"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Transition": "Start"
+                                    }
+                                ],
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "$Value.ContractType",
+                                                "featured"
+                                            ]
+                                        }
+                                    },
+                                    "Transition": "Start"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "featured"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["featured"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "1afd7b98-5745-470a-be55-fe703fa7b082",
+                    "Name": "UI_CHALLENGES_FEATURED_CONTRACT_III_NAME",
+                    "ImageName": "images/challenges/profile_challenges/featured_contract_iii.jpg",
+                    "Description": "UI_CHALLENGES_FEATURED_CONTRACT_III_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["PROP_MELEE_HOBBY_KNIFE"],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_HITS_ELEMENT_CATEGORY_FEATURED",
+                    "Icon": "featured",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 25
+                        },
+                        "Context": {
+                            "Completed": [],
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "$.Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.ContractType",
+                                            "featured"
+                                        ]
+                                    },
+                                    "Transition": "State_ValidContract"
+                                }
+                            },
+                            "State_ValidContract": {
+                                "ContractEnd": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count",
+                                            "$pushunique": [
+                                                "Completed",
+                                                "$ContractId"
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$not": {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$ContractId"
+                                                        ]
+                                                    },
+                                                    "in": "$.Completed"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Transition": "Start"
+                                    }
+                                ],
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "$Value.ContractType",
+                                                "featured"
+                                            ]
+                                        }
+                                    },
+                                    "Transition": "Start"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "featured"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["featured"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "276bbad6-cd22-43f7-8ebb-7f6595d8b7f1",
+                    "Name": "UI_CHALLENGES_FEATURED_CONTRACT_IV_NAME",
+                    "ImageName": "images/challenges/profile_challenges/featured_contract_iv.jpg",
+                    "Description": "UI_CHALLENGES_FEATURED_CONTRACT_IV_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["PROP_CONTAINER_SUITCASE_TOOL_BOX"],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_HITS_ELEMENT_CATEGORY_FEATURED",
+                    "Icon": "featured",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 40
+                        },
+                        "Context": {
+                            "Completed": [],
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "$.Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.ContractType",
+                                            "featured"
+                                        ]
+                                    },
+                                    "Transition": "State_ValidContract"
+                                }
+                            },
+                            "State_ValidContract": {
+                                "ContractEnd": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count",
+                                            "$pushunique": [
+                                                "Completed",
+                                                "$ContractId"
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$not": {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$ContractId"
+                                                        ]
+                                                    },
+                                                    "in": "$.Completed"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Transition": "Start"
+                                    }
+                                ],
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "$Value.ContractType",
+                                                "featured"
+                                            ]
+                                        }
+                                    },
+                                    "Transition": "Start"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "featured"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["featured"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                }
+            ]
+        }
+    ]
+}

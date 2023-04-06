@@ -83,6 +83,7 @@ export type ChallengeFilterOptions =
           type: ChallengeFilterType.Contract
           contractId: string
           locationId: string
+          isFeatured?: boolean
           difficulty: number
       }
     | {
