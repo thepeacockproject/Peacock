@@ -1125,7 +1125,10 @@ export interface CompiledChallengeTreeData {
     Completed: boolean
     CompletionData: CompletionData
     Description: string
-    DifficultyLevels?: unknown // more investigation required
+    // A string array of at most one element ("easy", "normal", or "hard").
+    // If empty, then the challenge should appear in sessions on any difficulty.
+    // If not, then it should only appear in sessions on or above the specified difficulty.
+    DifficultyLevels?: string[]
     Displayed?: boolean
     Drops?: Unlockable[]
     HideProgression: boolean

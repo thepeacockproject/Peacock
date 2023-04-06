@@ -1,0 +1,1587 @@
+{
+    "meta": {
+        "Location": "LOCATION_PARENT_CAGED",
+        "GameVersion": "h2"
+    },
+    "groups": [
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+            "Image": "images/challenges/categories/assassination/tile.jpg",
+            "Icon": "challenge_category_assassination",
+            "CategoryId": "assassination",
+            "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_SIGNATUREKILL",
+            "Challenges": [
+                {
+                    "Id": "02da8256-9c11-4c49-bb5b-a68019f90441",
+                    "Name": "UI_CHALLENGES_FALCON_ALL_HEADSHOTS_NAME",
+                    "ImageName": "images/challenges/caged/falcon_all_headshots.jpg",
+                    "Description": "UI_CHALLENGES_FALCON_ALL_HEADSHOTS_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_FALCON_ALL_HEADSHOTS"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_CAGED",
+                    "ParentLocationId": "LOCATION_PARENT_CAGED",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 17
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "BodyguardEscaped": {
+                                    "Transition": "Failure"
+                                },
+                                "Kill": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        },
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsHeadshot",
+                                                        true
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsHeadshot",
+                                                        false
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["25b20d86-bb5a-4ebd-b6bb-81ed2779c180"]
+                    }
+                },
+                {
+                    "Id": "12b960c7-43cd-4451-a98a-c9efc6505476",
+                    "Name": "UI_CHALLENGES_FALCON_ONLY_ACCIDENTS_NAME",
+                    "ImageName": "images/challenges/caged/falcon_only_accidents.jpg",
+                    "Description": "UI_CHALLENGES_FALCON_ONLY_ACCIDENTS_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_FALCON_ONLY_ACCIDENTS"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_CAGED",
+                    "ParentLocationId": "LOCATION_PARENT_CAGED",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "Constants": {
+                            "Goal": 17
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal"
+                            }
+                        },
+                        "States": {
+                            "Start": {
+                                "BodyguardEscaped": {
+                                    "Transition": "Failure"
+                                },
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.KillContext",
+                                                        4
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$Value.IsTarget", true]
+                                        },
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["25b20d86-bb5a-4ebd-b6bb-81ed2779c180"]
+                    }
+                },
+                {
+                    "Id": "1f420eab-496c-48e8-9e67-a38a785b920e",
+                    "Name": "UI_CHALLENGES_FALCON_EXTINGUISER_KILL_NAME",
+                    "ImageName": "images/challenges/caged/falcon_extinguiser_kill.jpg",
+                    "Description": "UI_CHALLENGES_FALCON_EXTINGUISER_KILL_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_FALCON_EXTINGUISER_KILL"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_CAGED",
+                    "ParentLocationId": "LOCATION_PARENT_CAGED",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "d1fcedd5-b0bc-4d91-bf7f-97ff6392d2c9"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillMethodStrict",
+                                                    "accident_explosion"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["25b20d86-bb5a-4ebd-b6bb-81ed2779c180"]
+                    }
+                },
+                {
+                    "Id": "3f701f37-d1ae-4c61-97e6-717d179cbcf5",
+                    "Name": "UI_CHALLENGES_FALCON_STAR_KILL_NAME",
+                    "ImageName": "images/challenges/caged/falcon_star_kill.jpg",
+                    "Description": "UI_CHALLENGES_FALCON_STAR_KILL_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_FALCON_STAR_KILL"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_CAGED",
+                    "ParentLocationId": "LOCATION_PARENT_CAGED",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "SetPiece": "447811c4-b843-4d54-9c69-7fac169e1407"
+                        },
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": ["$Value.IsTarget", true]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceId",
+                                                    "$.SetPiece"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["25b20d86-bb5a-4ebd-b6bb-81ed2779c180"]
+                    }
+                },
+                {
+                    "Id": "4688b423-2993-4826-8f7a-bfab58d7346b",
+                    "Name": "UI_CHALLENGES_FALCON_ELECTRIFIED_NAME",
+                    "ImageName": "images/challenges/caged/falcon_electrified.jpg",
+                    "Description": "UI_CHALLENGES_FALCON_ELECTRIFIED_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_FALCON_ELECTRIFIED"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_CAGED",
+                    "ParentLocationId": "LOCATION_PARENT_CAGED",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 3
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "accident_electric"
+                                                            ]
+                                                        },
+                                                        "in": [
+                                                            "$Value.KillMethodBroad",
+                                                            "$Value.KillMethodStrict"
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["25b20d86-bb5a-4ebd-b6bb-81ed2779c180"]
+                    }
+                },
+                {
+                    "Id": "4b5903bc-e4b3-4f7f-a634-9d401e6ed7d9",
+                    "Name": "UI_CHALLENGES_FALCON_BURN_DOUBLE_KILL_NAME",
+                    "ImageName": "images/challenges/caged/falcon_burn_double_kill.jpg",
+                    "Description": "UI_CHALLENGES_FALCON_BURN_DOUBLE_KILL_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_FALCON_BURN_DOUBLE_KILL"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_CAGED",
+                    "ParentLocationId": "LOCATION_PARENT_CAGED",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "BurnDoubleKill_Event": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["25b20d86-bb5a-4ebd-b6bb-81ed2779c180"]
+                    }
+                },
+                {
+                    "Id": "53d8235a-3b2f-470b-b321-493f16a74e34",
+                    "Name": "UI_CHALLENGES_FALCON_STAR_DOUBLE_KILL_NAME",
+                    "ImageName": "images/challenges/caged/falcon_star_double_kill.jpg",
+                    "Description": "UI_CHALLENGES_FALCON_STAR_DOUBLE_KILL_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_FALCON_STAR_DOUBLE_KILL"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_CAGED",
+                    "ParentLocationId": "LOCATION_PARENT_CAGED",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "SetPiece": "447811c4-b843-4d54-9c69-7fac169e1407",
+                            "Targets": [
+                                "d1fcedd5-b0bc-4d91-bf7f-97ff6392d2c9",
+                                "ff2d44f1-133b-466a-bb63-cdc5ed21d440"
+                            ]
+                        },
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.RepositoryId"
+                                                        ]
+                                                    },
+                                                    "in": "$.Targets"
+                                                }
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceId",
+                                                    "$.SetPiece"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Is_DoubleKill"
+                                }
+                            },
+                            "Is_DoubleKill": {
+                                "$timer": {
+                                    "Condition": {
+                                        "$after": 0.5
+                                    },
+                                    "Transition": "Failure"
+                                },
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.RepositoryId"
+                                                        ]
+                                                    },
+                                                    "in": "$.Targets"
+                                                }
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceId",
+                                                    "$.SetPiece"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["25b20d86-bb5a-4ebd-b6bb-81ed2779c180"]
+                    }
+                },
+                {
+                    "Id": "62dedca5-41ac-4263-93a6-1af54eb8c2f5",
+                    "Name": "UI_CHALLENGES_FALCON_GRENADE_KILL_NAME",
+                    "ImageName": "images/challenges/caged/falcon_grenade_kill.jpg",
+                    "Description": "UI_CHALLENGES_FALCON_GRENADE_KILL_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_FALCON_GRENADE_KILL"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_CAGED",
+                    "ParentLocationId": "LOCATION_PARENT_CAGED",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "States": {
+                            "Start": {
+                                "FireExtinguisher_Exploded_Carried_Event": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["25b20d86-bb5a-4ebd-b6bb-81ed2779c180"]
+                    }
+                },
+                {
+                    "Id": "65d63e43-b231-45d3-84ab-ad2a8a9dd897",
+                    "Name": "UI_CHALLENGES_FALCON_NO_LOOSE_ENDS_NAME",
+                    "ImageName": "images/challenges/caged/falcon_no_loose_ends.jpg",
+                    "Description": "UI_CHALLENGES_FALCON_NO_LOOSE_ENDS_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_FALCON_NO_LOOSE_ENDS"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_CAGED",
+                    "ParentLocationId": "LOCATION_PARENT_CAGED",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Targets": [
+                                "52210fdd-4e64-4bd9-a50e-3ca3e6d4feaa",
+                                "5ad4f481-43b1-4cdd-852b-e23e44456d65",
+                                "5eca3cc3-5c5c-4d94-9add-d01439381a7c",
+                                "bf7d1e19-89e4-425c-9391-e0b21b9a8719",
+                                "d86ff8bb-283d-479b-a9a5-ce9b9b05f504",
+                                "1ab92327-545e-4fa3-8a3d-a01857e6481e",
+                                "798635a3-95eb-42c3-a851-08aa8eee6e4c",
+                                "4f7e3731-9f55-4f8d-9537-9e99b651f0c3",
+                                "fdd864ec-edbf-48b9-b4ec-e53a73f7f211",
+                                "3c418097-2077-48dd-bad3-19ea2b17516b",
+                                "1a639843-940f-4777-8b8f-9d357d8751b9",
+                                "ee98f38a-a955-451b-9ef5-7d908acb2055",
+                                "7c2c2c44-1351-49f8-a31f-7e2ea268ea52",
+                                "e1694891-b8c0-484b-bf27-495bcaf54622",
+                                "d840b6ea-2b73-460d-bd91-5138d5e0fffa"
+                            ]
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "($.Targets).Count"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$any": {
+                                            "?": {
+                                                "$eq": [
+                                                    "$.#",
+                                                    "$Value.RepositoryId"
+                                                ]
+                                            },
+                                            "in": "$.Targets"
+                                        }
+                                    },
+                                    "Transition": "Failure"
+                                },
+                                "CombatStarted": {
+                                    "Transition": "InCombat"
+                                }
+                            },
+                            "InCombat": {
+                                "BodyguardEscaped": {
+                                    "Transition": "Failure"
+                                },
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$Value.RepositoryId"
+                                                    ]
+                                                },
+                                                "in": "$.Targets"
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$.Count",
+                                                "($.Targets).Count"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["25b20d86-bb5a-4ebd-b6bb-81ed2779c180"]
+                    }
+                },
+                {
+                    "Id": "6920d1f8-ef9c-464d-8c74-d3c85881d47e",
+                    "Name": "UI_CHALLENGES_FALCON_BODYHIDER_BODYGUARDS_NAME",
+                    "ImageName": "images/challenges/caged/falcon_bodyhider_bodyguards.jpg",
+                    "Description": "UI_CHALLENGES_FALCON_BODYHIDER_BODYGUARDS_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        "SCORE_MULTIPLIER_SC_FALCON_BODYHIDER_BODYGUARDS"
+                    ],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_CAGED",
+                    "ParentLocationId": "LOCATION_PARENT_CAGED",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Targets": [
+                                "52210fdd-4e64-4bd9-a50e-3ca3e6d4feaa",
+                                "5ad4f481-43b1-4cdd-852b-e23e44456d65",
+                                "5eca3cc3-5c5c-4d94-9add-d01439381a7c",
+                                "bf7d1e19-89e4-425c-9391-e0b21b9a8719",
+                                "d86ff8bb-283d-479b-a9a5-ce9b9b05f504",
+                                "1ab92327-545e-4fa3-8a3d-a01857e6481e",
+                                "798635a3-95eb-42c3-a851-08aa8eee6e4c",
+                                "4f7e3731-9f55-4f8d-9537-9e99b651f0c3",
+                                "fdd864ec-edbf-48b9-b4ec-e53a73f7f211",
+                                "3c418097-2077-48dd-bad3-19ea2b17516b",
+                                "1a639843-940f-4777-8b8f-9d357d8751b9",
+                                "ee98f38a-a955-451b-9ef5-7d908acb2055",
+                                "7c2c2c44-1351-49f8-a31f-7e2ea268ea52",
+                                "e1694891-b8c0-484b-bf27-495bcaf54622",
+                                "d840b6ea-2b73-460d-bd91-5138d5e0fffa"
+                            ]
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "($.Targets).Count"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "TargetKilledByNotHitman_Event": {
+                                    "Transition": "Failure"
+                                },
+                                "BodyHidden": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$Value.RepositoryId"
+                                                    ]
+                                                },
+                                                "in": "$.Targets"
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$.Count",
+                                                "($.Targets).Count"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["25b20d86-bb5a-4ebd-b6bb-81ed2779c180"]
+                    }
+                },
+                {
+                    "Id": "7b8bb544-e60a-4015-9cf1-b9c3f0e21f22",
+                    "Name": "UI_CHALLENGES_FALCON_ICICLE_KILL_NAME",
+                    "ImageName": "images/challenges/caged/falcon_icicle_kill.jpg",
+                    "Description": "UI_CHALLENGES_FALCON_ICICLE_KILL_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_FALCON_ICICLE_KILL"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_CAGED",
+                    "ParentLocationId": "LOCATION_PARENT_CAGED",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "Constants": {
+                            "Icicles": [
+                                "b340e071-fe32-4b23-8fe7-6f5451e26e46",
+                                "d53b3758-7336-47a8-8692-d8c8334fa7c9",
+                                "39ba9dbe-2068-4f51-840b-0301e961a3f8",
+                                "36f6624e-41ee-4dea-bd06-6de7d6f65cde",
+                                "b54c8492-1c27-4fdd-a0d4-0106e6ebad04",
+                                "b3a340c5-c15d-4254-bf01-3a3610aca314",
+                                "d468933a-53fc-4839-8fa3-526dc35e97f9"
+                            ]
+                        },
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": ["$Value.IsTarget", true]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.SetPieceId"
+                                                        ]
+                                                    },
+                                                    "in": "$.Icicles"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["25b20d86-bb5a-4ebd-b6bb-81ed2779c180"]
+                    }
+                },
+                {
+                    "Id": "d7eeed38-3437-4d59-9bb2-f30776750e25",
+                    "Name": "UI_CHALLENGES_FALCON_BODYHIDER_TARGETS_NAME",
+                    "ImageName": "images/challenges/caged/falcon_bodyhider_targets.jpg",
+                    "Description": "UI_CHALLENGES_FALCON_BODYHIDER_TARGETS_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_FALCON_BODYHIDER_TARGETS"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_CAGED",
+                    "ParentLocationId": "LOCATION_PARENT_CAGED",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Targets": [
+                                "d1fcedd5-b0bc-4d91-bf7f-97ff6392d2c9",
+                                "ff2d44f1-133b-466a-bb63-cdc5ed21d440"
+                            ]
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "($.Targets).Count"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "BodyguardEscaped": {
+                                    "Transition": "Failure"
+                                },
+                                "BodyHidden": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$Value.RepositoryId"
+                                                    ]
+                                                },
+                                                "in": "$.Targets"
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$.Count",
+                                                "($.Targets).Count"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["25b20d86-bb5a-4ebd-b6bb-81ed2779c180"]
+                    }
+                },
+                {
+                    "Id": "fcc059d7-60e6-42cb-95e9-6e7ccce10778",
+                    "Name": "UI_CHALLENGES_FALCON_SAVE_SCHEVCHENKO_NAME",
+                    "ImageName": "images/challenges/caged/falcon_save_schevchenko.jpg",
+                    "Description": "UI_CHALLENGES_FALCON_SAVE_SCHEVCHENKO_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_FALCON_SAVE_SCHEVCHENKO"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_CAGED",
+                    "ParentLocationId": "LOCATION_PARENT_CAGED",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "SaveSchevchenko_Event": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["25b20d86-bb5a-4ebd-b6bb-81ed2779c180"]
+                    }
+                }
+            ]
+        },
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+            "Image": "images/challenges/categories/feats/tile.jpg",
+            "Icon": "challenge_category_feats",
+            "CategoryId": "feats",
+            "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_COMMUNITY",
+            "Challenges": [
+                {
+                    "Id": "235dbd3c-dd84-47d9-8678-f727624a2701",
+                    "Name": "UI_CHALLENGES_FALCON_SHOOT_BOTTLES_NAME",
+                    "ImageName": "images/challenges/caged/falcon_shoot_bottles.jpg",
+                    "Description": "UI_CHALLENGES_FALCON_SHOOT_BOTTLES_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_FALCON_SHOOT_BOTTLES"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_CAGED",
+                    "ParentLocationId": "LOCATION_PARENT_CAGED",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 5
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ShootBottles_Event": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["25b20d86-bb5a-4ebd-b6bb-81ed2779c180"]
+                    }
+                },
+                {
+                    "Id": "4a8f39f6-add2-476c-ac33-00180fa2a734",
+                    "Name": "UI_CHALLENGES_FALCON_RUBBER_DUCK_NAME",
+                    "ImageName": "images/challenges/caged/falcon_rubber_ducks.jpg",
+                    "Description": "UI_CHALLENGES_FALCON_RUBBER_DUCK_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_FALCON_RUBBER_DUCK"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_CAGED",
+                    "ParentLocationId": "LOCATION_PARENT_CAGED",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 10
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ShootDuck_Event": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["25b20d86-bb5a-4ebd-b6bb-81ed2779c180"]
+                    }
+                },
+                {
+                    "Id": "6b329562-542d-4af5-8400-c8392c81787a",
+                    "Name": "UI_CHALLENGES_FALCON_POISON_DELIVERY_NAME",
+                    "ImageName": "images/challenges/caged/falcon_poison_delivery.jpg",
+                    "Description": "UI_CHALLENGES_FALCON_POISON_DELIVERY_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_FALCON_POISON_DELIVERY"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_CAGED",
+                    "ParentLocationId": "LOCATION_PARENT_CAGED",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "States": {
+                            "Start": {
+                                "PoisonDelivery_Event": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["25b20d86-bb5a-4ebd-b6bb-81ed2779c180"]
+                    }
+                },
+                {
+                    "Id": "6c34f63e-0e11-4bfd-931e-07fcafdcece7",
+                    "Name": "UI_CHALLENGES_FALCON_RATS_NAME",
+                    "ImageName": "images/challenges/caged/falcon_rats.jpg",
+                    "Description": "UI_CHALLENGES_FALCON_RATS_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_FALCON_RATS"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_CAGED",
+                    "ParentLocationId": "LOCATION_PARENT_CAGED",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 6
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "RatHit_Event": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["25b20d86-bb5a-4ebd-b6bb-81ed2779c180"]
+                    }
+                },
+                {
+                    "Id": "6c475f1d-89a7-453d-9b35-56f11e08707a",
+                    "Name": "UI_CHALLENGES_FALCON_DROP_NPC_INTO_RIOT_NAME",
+                    "ImageName": "images/challenges/caged/falcon_drop_npc_into_riot.jpg",
+                    "Description": "UI_CHALLENGES_FALCON_DROP_NPC_INTO_RIOT_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_FALCON_DROP_NPC_INTO_RIOT"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_CAGED",
+                    "ParentLocationId": "LOCATION_PARENT_CAGED",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "TargetHiddenRiot_Event": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["25b20d86-bb5a-4ebd-b6bb-81ed2779c180"]
+                    }
+                },
+                {
+                    "Id": "7da92a70-6d65-4137-9088-5fe350d391d7",
+                    "Name": "UI_CHALLENGES_FALCON_SNOW_DUMP_NAME",
+                    "ImageName": "images/challenges/caged/falcon_snow_dump.jpg",
+                    "Description": "UI_CHALLENGES_FALCON_SNOW_DUMP_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_FALCON_SNOW_DUMP"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_CAGED",
+                    "ParentLocationId": "LOCATION_PARENT_CAGED",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 5
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Snowpile": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["25b20d86-bb5a-4ebd-b6bb-81ed2779c180"]
+                    }
+                },
+                {
+                    "Id": "88d77378-cf0b-4fa6-9538-4c3eaa01388c",
+                    "Name": "UI_CHALLENGES_FALCON_HIDE_BODIES_TOILET_NAME",
+                    "ImageName": "images/challenges/caged/falcon_hide_bodies_toilet.jpg",
+                    "Description": "UI_CHALLENGES_FALCON_HIDE_BODIES_TOILET_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_FALCON_HIDE_BODIES_TOILET"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_CAGED",
+                    "ParentLocationId": "LOCATION_PARENT_CAGED",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 3
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Toilet": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["25b20d86-bb5a-4ebd-b6bb-81ed2779c180"]
+                    }
+                },
+                {
+                    "Id": "9550af87-6c1b-4b57-bf00-99349d943ccc",
+                    "Name": "UI_CHALLENGES_FALCON_GREAT_ESCAPE_NAME",
+                    "ImageName": "images/challenges/caged/falcon_great_escape.jpg",
+                    "Description": "UI_CHALLENGES_FALCON_GREAT_ESCAPE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_FALCON_GREAT_ESCAPE"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_CAGED",
+                    "ParentLocationId": "LOCATION_PARENT_CAGED",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "GreatEscape_Event": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["25b20d86-bb5a-4ebd-b6bb-81ed2779c180"]
+                    }
+                },
+                {
+                    "Id": "9f1627fe-1a5a-4e6a-a447-3dbae928a710",
+                    "Name": "UI_CHALLENGES_FALCON_FULL_ON_RIOT_NAME",
+                    "ImageName": "images/challenges/caged/falcon_full_on_riot.jpg",
+                    "Description": "UI_CHALLENGES_FALCON_FULL_ON_RIOT_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_FALCON_FULL_ON_RIOT"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_CAGED",
+                    "ParentLocationId": "LOCATION_PARENT_CAGED",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "FullOnRiot_Event": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["25b20d86-bb5a-4ebd-b6bb-81ed2779c180"]
+                    }
+                },
+                {
+                    "Id": "a2ca6280-f59f-4958-a8b2-818cb24107c1",
+                    "Name": "UI_CHALLENGES_FALCON_START_FIRE_NAME",
+                    "ImageName": "images/challenges/caged/falcon_start_fire.jpg",
+                    "Description": "UI_CHALLENGES_FALCON_START_FIRE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_FALCON_START_FIRE"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_CAGED",
+                    "ParentLocationId": "LOCATION_PARENT_CAGED",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "StartFire_Event": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["25b20d86-bb5a-4ebd-b6bb-81ed2779c180"]
+                    }
+                },
+                {
+                    "Id": "bc31ce93-8d2f-4dc3-ba25-0112c2881fd5",
+                    "Name": "UI_CHALLENGES_FALCON_SHOOT_PANTS_NAME",
+                    "ImageName": "images/challenges/caged/falcon_shoot_pants.jpg",
+                    "Description": "UI_CHALLENGES_FALCON_SHOOT_PANTS_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_FALCON_SHOOT_PANTS"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_CAGED",
+                    "ParentLocationId": "LOCATION_PARENT_CAGED",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ShootPants_Event": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["25b20d86-bb5a-4ebd-b6bb-81ed2779c180"]
+                    }
+                },
+                {
+                    "Id": "e2eec03c-a831-4670-8156-e66486e39dbe",
+                    "Name": "UI_CHALLENGES_FALCON_SHOOT_FLAG_NAME",
+                    "ImageName": "images/challenges/caged/falcon_shoot_flag.jpg",
+                    "Description": "UI_CHALLENGES_FALCON_SHOOT_FLAG_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_FALCON_SHOOT_FLAG"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_CAGED",
+                    "ParentLocationId": "LOCATION_PARENT_CAGED",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ShootFlag_Event": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["25b20d86-bb5a-4ebd-b6bb-81ed2779c180"]
+                    }
+                },
+                {
+                    "Id": "f7656ff1-56ac-4354-8320-bdceac711e5e",
+                    "Name": "UI_CHALLENGES_FALCON_SHOOT_PIGEONS_NAME",
+                    "ImageName": "images/challenges/caged/falcon_shoot_pigeons.jpg",
+                    "Description": "UI_CHALLENGES_FALCON_SHOOT_PIGEONS_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_FALCON_SHOOT_PIGEONS"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_CAGED",
+                    "ParentLocationId": "LOCATION_PARENT_CAGED",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 8
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ShootCrow_Event": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["25b20d86-bb5a-4ebd-b6bb-81ed2779c180"]
+                    }
+                },
+                {
+                    "Id": "fb1db9af-df85-4b0d-b9ac-9a58d3c71095",
+                    "Name": "UI_CHALLENGES_FALCON_SHOOT_LAMPS_NAME",
+                    "ImageName": "images/challenges/caged/falcon_shoot_lamps.jpg",
+                    "Description": "UI_CHALLENGES_FALCON_SHOOT_LAMPS_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["SCORE_MULTIPLIER_SC_FALCON_SHOOT_LAMPS"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": true,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_CAGED",
+                    "ParentLocationId": "LOCATION_PARENT_CAGED",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 10,
+                            "SetPiece": "2d7a91b9-1b3a-4db3-a8bf-6249db70c339"
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "setpieces": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "$.SetPiece"
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["25b20d86-bb5a-4ebd-b6bb-81ed2779c180"]
+                    }
+                }
+            ]
+        }
+    ]
+}

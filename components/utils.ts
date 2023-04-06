@@ -31,6 +31,7 @@ import axios, { AxiosError } from "axios"
 import { log, LogLevel } from "./loggingInterop"
 import { writeFileSync } from "fs"
 import { getFlag } from "./flags"
+import { getConfig } from "./configSwizzleManager"
 
 /**
  * True if the server is being run by the launcher, false otherwise.
@@ -51,6 +52,8 @@ export const uuidRegex =
     /^[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$/
 
 export const contractTypes = ["featured", "usercreated"]
+
+export const versions: GameVersion[] = ["h1", "h2", "h3"]
 
 export const contractCreationTutorialId = "d7e2607c-6916-48e2-9588-976c7d8998bb"
 
@@ -285,6 +288,24 @@ export function castUserProfile(profile: UserProfile): UserProfile {
         }
     }
 
+    if (j.Extensions?.gamepersistentdata?.PersistentBool) {
+        switch (getFlag("mapDiscoveryState")) {
+            case "REVEALED":
+                j.Extensions.gamepersistentdata.PersistentBool = {
+                    ...j.Extensions.gamepersistentdata.PersistentBool,
+                    ...getConfig("PersistentBools", true),
+                }
+                break
+            case "CLOUDED":
+                j.Extensions.gamepersistentdata.PersistentBool = {
+                    __Full:
+                        j.Extensions.gamepersistentdata.PersistentBool
+                            ?.__Full ?? {},
+                }
+                break
+        }
+    }
+
     if (dirty) {
         writeFileSync(`userdata/users/${j.Id}.json`, JSON.stringify(j))
         log(LogLevel.INFO, "Profile successfully repaired!")
@@ -396,6 +417,7 @@ export const gameDifficulty = {
      * Casual mode.
      */
     casual: 1,
+    easy: 1,
     /**
      * Professional (normal) mode.
      */
@@ -404,6 +426,7 @@ export const gameDifficulty = {
      * Master mode.
      */
     master: 4,
+    hard: 4,
 } as const
 
 export function difficultyToString(difficulty: number): string {

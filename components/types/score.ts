@@ -29,8 +29,20 @@ export interface MissionEndChallenge {
     Drops: string[]
 }
 
+export interface MissionEndSourceChallenge {
+    ChallengeId: string
+    ChallengeTags: string[]
+    ChallengeName: string
+    ChallengeImageUrl: string
+    ChallengeDescription: string
+    XPGain: number
+    IsGlobal: boolean
+    IsActionReward: boolean
+}
+
 export interface MissionEndDrop {
     Unlockable: Unlockable
+    SourceChallenge?: MissionEndSourceChallenge
 }
 
 export interface MissionEndAchievedMastery {

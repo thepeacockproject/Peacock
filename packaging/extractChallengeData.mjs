@@ -26,16 +26,19 @@ import axios from "axios"
  * @param {string} contractId
  * @returns {Promise<*>}
  */
-async function fetchContractCAndPFromIOI(axiosClient, contractId) {
+async function fetchContractCAndPFromIOI(axiosClient, contractId, gameVersion) {
     console.log(`${pc.blue`Fetching contract`} ${contractId}...`)
 
-    const { data } = await axiosClient.post(
-        "/authentication/api/userchannel/ChallengesService/GetActiveChallengesAndProgression",
-        {
-            contractId,
-            difficultyLevel: 2,
-        },
-    )
+    const url = `/authentication/api/userchannel/ChallengesService/GetActiveChallenges${
+        gameVersion === "h1" ? "" : "AndProgression"
+    }`
+
+    const body =
+        gameVersion === "h1"
+            ? { contractId }
+            : { contractId, difficultyLevel: 4 }
+
+    const { data } = await axiosClient.post(url, body)
 
     return data
 }
@@ -58,24 +61,24 @@ async function fetchDestination(axiosClient, locationId) {
 /**
  * @param {string} locationParent
  * @param {string} jwt
- * @param {string} apiUrl
+ * @param {string} gameVersion
  * @returns {Promise<string>}
  */
-async function extract(locationParent, jwt, apiUrl) {
+async function extract(locationParent, jwt, gameVersion) {
     const httpClient = axios.create({
-        baseURL: `https://${apiUrl}/`,
+        baseURL: `https://${getUrlFromVersion(gameVersion)}/`,
         headers: {
             "User-Agent": "G2 Http/1.0 (Windows NT 10.0; DX12/1; d3d12/1)",
             "Content-Type": "application/json",
             Accept: "application/json, text/*, image/*, application/json",
-            Version: "8.9.0",
+            Version: gameVersion === "h1" ? "6.74.0" : "8.9.0",
             Authorization: `bearer ${jwt}`,
         },
     })
 
     console.log(
         `Fetching destination ${locationParent} from ${pc.underline(
-            apiUrl,
+            getUrlFromVersion(gameVersion),
         )}...`,
     )
 
@@ -106,7 +109,7 @@ async function extract(locationParent, jwt, apiUrl) {
 
     const missions = await Promise.all(
         [...missionIds].map(async (id) => {
-            return await fetchContractCAndPFromIOI(httpClient, id)
+            return await fetchContractCAndPFromIOI(httpClient, id, gameVersion)
         }),
     )
 
@@ -120,7 +123,7 @@ async function extract(locationParent, jwt, apiUrl) {
     for (const singleChallengesProgResult of missions) {
         for (const challenge of singleChallengesProgResult) {
             const { Type, Definition, InclusionData, Tags, XpModifier, Id } =
-                challenge.Challenge
+                gameVersion === "h1" ? challenge : challenge.Challenge
 
             idToRuntimeExtras[Id] = {
                 XpModifier: XpModifier || {},
@@ -230,6 +233,7 @@ async function extract(locationParent, jwt, apiUrl) {
         {
             meta: {
                 Location: locationParent,
+                GameVersion: gameVersion,
             },
             groups,
         },
@@ -238,13 +242,21 @@ async function extract(locationParent, jwt, apiUrl) {
     )
 }
 
+function getUrlFromVersion(gameVersion) {
+    return gameVersion === "h3"
+        ? "hm3-service.hitman.io"
+        : gameVersion === "h2"
+        ? "pc2-service.hitman.io"
+        : "pc-service.hitman.io"
+}
+
 class ExtractChallengeDataCommand extends Command {
     outFile = Option.String("--out-file", { required: true })
     jwt = Option.String("--jwt", { required: true })
     locationParent = Option.String("--location-parent", { required: true })
     // https://youtrack.jetbrains.com/issue/WEB-56917
     // noinspection JSCheckFunctionSignatures
-    apiUrl = Option.String("--api-url", "hm3-service.hitman.io")
+    gameVersion = Option.String("--game-version", "h3")
 
     static usage = Command.Usage({
         category: `Challenges`,
@@ -256,14 +268,18 @@ class ExtractChallengeDataCommand extends Command {
                 `$0 --location-parent LOCATION_PARENT_PARIS --jwt someJsonWebToken --out-file out.json`,
             ],
             [
-                `With API URL`,
-                `$0 --location-parent LOCATION_PARENT_PARIS --jwt someJsonWebToken --out-file out.json --api-url hm2-service.hitman.io`,
+                `With game version`,
+                `$0 --location-parent LOCATION_PARENT_PARIS --jwt someJsonWebToken --out-file out.json --game-version h2`,
             ],
         ],
     })
 
     async execute() {
-        const data = await extract(this.locationParent, this.jwt, this.apiUrl)
+        const data = await extract(
+            this.locationParent,
+            this.jwt,
+            this.gameVersion,
+        )
 
         await writeFile(this.outFile, data)
     }

@@ -1,0 +1,393 @@
+{
+    "meta": {
+        "Location": "GLOBAL_CLASSIC_CHALLENGES",
+        "GameVersion": "h2"
+    },
+    "groups": [
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_CLASSIC",
+            "Image": "images/challenges/categories/classic/tile.jpg",
+            "Icon": "profile",
+            "CategoryId": "classic",
+            "Description": "",
+            "Challenges": [
+                {
+                    "Id": "24946af7-cfd3-4fd3-8aba-aabad50bce14",
+                    "Name": "UI_CHALLENGES_GLOBAL_BIG5_ALL_S2_HARD_NAME",
+                    "ImageName": "images/challenges/profile_challenges/classics_all_s2_hard.jpg",
+                    "Description": "UI_CHALLENGES_GLOBAL_BIG5_ALL_S2_HARD_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["PROP_CONTAINER_SUITCASE_ICA_CLASSIC"],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_CLASSIC",
+                    "Icon": "profile",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": ["hard"],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "RequiredChallenges": [
+                                "c00eafaf-39e7-4157-bbda-326bff1f2c6e",
+                                "b34937b4-f2b9-4250-a13d-2956096b63aa",
+                                "c67b96e3-3e42-42c5-9e23-229119f13724",
+                                "27ddab4a-5bf6-4753-ab31-dc5d138080e9",
+                                "0a09ec6a-6c94-4558-a963-1983c0da37b2",
+                                "e54cf63e-d497-4492-891d-9a13b4dc797f"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedChallenges": []
+                        },
+                        "ContextListeners": {
+                            "CompletedChallenges": {
+                                "comparand": "$.RequiredChallenges",
+                                "type": "challengetree"
+                            }
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "ChallengeCompleted": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$Value.ChallengeId"
+                                                    ]
+                                                },
+                                                "in": "$.RequiredChallenges"
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "CompletedChallenges",
+                                                "$Value.ChallengeId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$all": {
+                                                "?": {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$.##"
+                                                            ]
+                                                        },
+                                                        "in": "$.CompletedChallenges"
+                                                    }
+                                                },
+                                                "in": "$.RequiredChallenges"
+                                            }
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "difficulty_hard", "classic"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["mission"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "7622734e-82bf-47c1-bf32-1624996bc4f8",
+                    "Name": "UI_CHALLENGES_GLOBAL_BIG5_ALL_S2_NORMAL_NAME",
+                    "ImageName": "images/challenges/profile_challenges/classics_all_s2_normal.jpg",
+                    "Description": "UI_CHALLENGES_GLOBAL_BIG5_ALL_S2_NORMAL_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["PROP_TOOL_LOCK_PICK_CLASSIC"],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_CLASSIC",
+                    "Icon": "profile",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": ["normal"],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "RequiredChallenges": [
+                                "7491a15e-ed7f-45aa-b97c-0ee022bcb401",
+                                "b6c5ac40-05e4-4db1-8f39-929c8b94b92f",
+                                "555ccc13-f617-4c74-8bcc-568a000e22bc",
+                                "894b1901-3cf4-4586-b308-3318556abc12",
+                                "06e96021-1c9d-4279-b20d-f59dcf2edf3a",
+                                "db60ecfd-bb15-460d-9e88-9e736fdc324d"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedChallenges": []
+                        },
+                        "ContextListeners": {
+                            "CompletedChallenges": {
+                                "comparand": "$.RequiredChallenges",
+                                "type": "challengetree"
+                            }
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "ChallengeCompleted": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$Value.ChallengeId"
+                                                    ]
+                                                },
+                                                "in": "$.RequiredChallenges"
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "CompletedChallenges",
+                                                "$Value.ChallengeId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$all": {
+                                                "?": {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$.##"
+                                                            ]
+                                                        },
+                                                        "in": "$.CompletedChallenges"
+                                                    }
+                                                },
+                                                "in": "$.RequiredChallenges"
+                                            }
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "difficulty_normal", "classic"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["mission"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "765fb04e-4545-4c97-b303-eade075dd63b",
+                    "Name": "UI_CHALLENGES_GLOBAL_BIG5_ALL_S1_HARD_NAME",
+                    "ImageName": "images/challenges/profile_challenges/classics_all_s1_hard.jpg",
+                    "Description": "UI_CHALLENGES_GLOBAL_BIG5_ALL_S1_HARD_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["PROP_TOOL_COIN_CLASSIC"],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_CLASSIC",
+                    "Icon": "profile",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": ["hard"],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "RequiredChallenges": [
+                                "d70c0519-3f8e-48c2-a35a-44c2b2255a1d",
+                                "5754a4d5-51a0-4138-95a4-49339a67320c",
+                                "c47ad026-2258-4f9c-889a-4c50c3a1b876",
+                                "d3fc0927-b4e9-4ead-86a8-7c8bbe045ac4",
+                                "e5214395-e717-43df-9271-d332e03fe118",
+                                "59596df2-e35b-418b-9524-ef1be8025258"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedChallenges": []
+                        },
+                        "ContextListeners": {
+                            "CompletedChallenges": {
+                                "comparand": "$.RequiredChallenges",
+                                "type": "challengetree"
+                            }
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "ChallengeCompleted": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$Value.ChallengeId"
+                                                    ]
+                                                },
+                                                "in": "$.RequiredChallenges"
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "CompletedChallenges",
+                                                "$Value.ChallengeId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$all": {
+                                                "?": {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$.##"
+                                                            ]
+                                                        },
+                                                        "in": "$.CompletedChallenges"
+                                                    }
+                                                },
+                                                "in": "$.RequiredChallenges"
+                                            }
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "difficulty_hard", "classic"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["mission"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "ad58e0a2-cb85-4b31-b7d2-6d28f524e191",
+                    "Name": "UI_CHALLENGES_GLOBAL_BIG5_ALL_S1_NORMAL_NAME",
+                    "ImageName": "images/challenges/profile_challenges/classics_all_s1_normal.jpg",
+                    "Description": "UI_CHALLENGES_GLOBAL_BIG5_ALL_S1_NORMAL_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["TOKEN_OUTFIT_CLASSICS_REWARD_BLACK_SUIT"],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_CLASSIC",
+                    "Icon": "profile",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": ["normal"],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "RequiredChallenges": [
+                                "39ebb5f7-6d18-434b-abce-29d3f245b08e",
+                                "df919b92-5ef9-43ba-91d8-de8368da7410",
+                                "3c5ea5f7-4bc7-473b-b06e-1ec4b2565a5d",
+                                "dd9a61ab-304f-4e9b-89bf-81520ee50aaf",
+                                "d1aaccef-8c65-47b0-856b-f2ecd4ae6ba0",
+                                "d5be8f28-e0df-4c52-a382-88514b32d7e2"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedChallenges": []
+                        },
+                        "ContextListeners": {
+                            "CompletedChallenges": {
+                                "comparand": "$.RequiredChallenges",
+                                "type": "challengetree"
+                            }
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "ChallengeCompleted": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$Value.ChallengeId"
+                                                    ]
+                                                },
+                                                "in": "$.RequiredChallenges"
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "CompletedChallenges",
+                                                "$Value.ChallengeId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$all": {
+                                                "?": {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$.##"
+                                                            ]
+                                                        },
+                                                        "in": "$.CompletedChallenges"
+                                                    }
+                                                },
+                                                "in": "$.RequiredChallenges"
+                                            }
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "difficulty_normal", "classic"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["mission"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                }
+            ]
+        }
+    ]
+}
