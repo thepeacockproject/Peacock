@@ -33,9 +33,9 @@ import {
 import { getConfig } from "../configSwizzleManager"
 import { getUserData, writeUserData } from "../databaseHandler"
 import {
-    fastClone,
     getDefaultSuitFor,
     getMaxProfileLevel,
+    getRemoteService,
     nilUuid,
     unlockOrderComparer,
 } from "../utils"
@@ -47,6 +47,7 @@ import { getFlag } from "../flags"
 import { loadouts } from "../loadouts"
 import { resolveProfiles } from "../profileHandler"
 import { PlanningQuery } from "../types/gameSchemas"
+import { userAuths } from "../officialServerAuth"
 
 export async function planningView(
     req: RequestWithJwt<PlanningQuery>,
@@ -96,23 +97,26 @@ export async function planningView(
             : controller.resolveContract(req.query.contractid)
 
     if (!contractData) {
+        // This will only happen for **contracts** that are meant to be fetched from the official servers.
+        // E.g. trending contracts, most played last week, etc.
+        // This will also fetch a contract if the player has downloaded it before but deleted the files.
+        // E.g. the user adds a contract to favorites, then deletes the files, then tries to load the contract again.
         log(
             LogLevel.WARN,
             `Trying to download contract ${req.query.contractid} due to it not found locally.`,
         )
-        const publicId = controller.contractIdToPublicId.get(
-            req.query.contractid,
-        )
-        if (publicId) {
-            const officialJson = await controller.downloadContract(
-                req.jwt.unique_name,
-                publicId,
+        const user = userAuths.get(req.jwt.unique_name)
+        const resp = await user._useService(
+            `https://${getRemoteService(
                 req.gameVersion,
-            )
-            if (officialJson) {
-                contractData = fastClone(officialJson)
-            }
-        }
+            )}.hitman.io/profiles/page/Planning?contractid=${
+                req.query.contractid
+            }&resetescalation=false&forcecurrentcontract=false&errorhandling=false`,
+            true,
+        )
+
+        contractData = resp.data.data.Contract
+        controller.commitNewContract(contractData)
     }
 
     if (!contractData) {
