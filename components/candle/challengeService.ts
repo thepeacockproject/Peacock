@@ -220,6 +220,10 @@ export abstract class ChallengeRegistry {
             return undefined
         }
         const gameGroups = this.groups.get(gameVersion)
+
+        if (groupId?.includes("featured")) {
+            return gameGroups.get("GLOBAL_FEATURED_CHALLENGES")?.get(groupId)
+        }
         // Included by default. Filtered later.
         if (groupId === "classic" && location !== "GLOBAL_CLASSIC_CHALLENGES") {
             return mergeSavedChallengeGroups(
@@ -239,6 +243,10 @@ export abstract class ChallengeRegistry {
             return undefined
         }
         const gameChalGC = this.groupContents.get(gameVersion)
+
+        if (groupId?.includes("featured")) {
+            return gameChalGC.get("GLOBAL_FEATURED_CHALLENGES")?.get(groupId)
+        }
 
         // Included by default. Filtered later.
         if (groupId === "classic" && location !== "GLOBAL_CLASSIC_CHALLENGES") {
@@ -404,24 +412,21 @@ export class ChallengeService extends ChallengeRegistry {
     }
 
     /**
+     * This is a helper function for @see getGroupedChallengeLists. It is not expected to be used elsewhere.
+     *
      * Filter all challenges in a parent location using a given filter, sort them into groups,
-     * and return them as a `GroupIndexedChallengeLists`.
+     * and write them into the `challenges` array provided.
      *
      * @param filter The filter to use.
      * @param location The parent location whose challenges to get.
-     * @returns A GroupIndexedChallengeLists containing the resulting challenge groups.
+     * @param challenges The array to write results to.
      */
-    getGroupedChallengeLists(
+    getGroupedChallengesByLoc(
         filter: ChallengeFilterOptions,
         location: string,
+        challenges: [string, RegistryChallenge[]][],
         gameVersion: GameVersion,
-    ): GroupIndexedChallengeLists {
-        let challenges: [string, RegistryChallenge[]][] = []
-
-        if (!this.groups.has(gameVersion)) {
-            return {}
-        }
-
+    ) {
         for (const groupId of this.groups
             .get(gameVersion)
             .get(location)
@@ -462,6 +467,42 @@ export class ChallengeService extends ChallengeRegistry {
                 challenges.push([groupId, [...groupChallenges]])
             }
         }
+    }
+
+    /**
+     * Filter all challenges in a parent location using a given filter, sort them into groups,
+     * and return them as a `GroupIndexedChallengeLists`.
+     *
+     * @param filter The filter to use.
+     * @param location The parent location whose challenges to get.
+     * @returns A GroupIndexedChallengeLists containing the resulting challenge groups.
+     */
+    getGroupedChallengeLists(
+        filter: ChallengeFilterOptions,
+        location: string,
+        gameVersion: GameVersion,
+    ): GroupIndexedChallengeLists {
+        let challenges: [string, RegistryChallenge[]][] = []
+
+        if (!this.groups.has(gameVersion)) {
+            return {}
+        }
+
+        this.getGroupedChallengesByLoc(
+            filter,
+            location,
+            challenges,
+            gameVersion,
+        )
+
+        if (filter.type === ChallengeFilterType.Contract && filter.isFeatured) {
+            this.getGroupedChallengesByLoc(
+                filter,
+                "GLOBAL_FEATURED_CHALLENGES",
+                challenges,
+                gameVersion,
+            )
+        }
 
         // remove empty groups
         challenges = challenges.filter(
@@ -492,6 +533,7 @@ export class ChallengeService extends ChallengeRegistry {
                 type: ChallengeFilterType.Contract,
                 contractId: contractId,
                 locationId: contract.Metadata.Location,
+                isFeatured: contract.Metadata.Type === "featured",
                 difficulty,
             },
             contractParentLocation,
@@ -640,6 +682,7 @@ export class ChallengeService extends ChallengeRegistry {
                     currentState: data.state,
                     timers: data.timers,
                     timestamp: event.Timestamp,
+                    contractId: session.contractId,
                     //logger: (category, message) =>
                     //    log(LogLevel.DEBUG, `[${category}] ${message}`),
                 }
@@ -953,10 +996,10 @@ export class ChallengeService extends ChallengeRegistry {
 
             return {
                 Name: groupData?.Name,
-                Description: groupData.Description,
-                Image: groupData.Image,
-                CategoryId: groupData.CategoryId,
-                Icon: groupData.Icon,
+                Description: groupData?.Description,
+                Image: groupData?.Image,
+                CategoryId: groupData?.CategoryId,
+                Icon: groupData?.Icon,
                 ChallengesCount: challenges.length,
                 CompletedChallengesCount: challengeProgressionData.filter(
                     (progressionData) => progressionData.Completed,
