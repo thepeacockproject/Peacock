@@ -113,6 +113,10 @@ const defaultFlags: Flags = {
         desc: "[Development] Please do not modify - intended for development only",
         default: "https://backend.rdil.rocks",
     },
+    developmentLogRequests: {
+        desc: "[Development] When set to true, will log the body of all requests the game makes. This can cause huge log files!",
+        default: false,
+    },
 }
 
 const OLD_FLAGS_FILE = "flags.json5"

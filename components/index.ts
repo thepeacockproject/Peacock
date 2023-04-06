@@ -47,7 +47,13 @@ import type {
 } from "./types/types"
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs"
 import { join } from "path"
-import { log, loggingMiddleware, LogLevel } from "./loggingInterop"
+import {
+    errorLoggingMiddleware,
+    log,
+    loggingMiddleware,
+    LogLevel,
+    requestLoggingMiddleware,
+} from "./loggingInterop"
 import { eventRouter } from "./eventHandler"
 import { contractRoutingRouter } from "./contracts/contractRouting"
 import { profileRouter } from "./profileHandler"
@@ -125,6 +131,11 @@ process.on("uncaughtException", uncaught)
 const app = express()
 
 app.use(loggingMiddleware)
+
+if (getFlag("developmentLogRequests")) {
+    app.use(requestLoggingMiddleware)
+}
+
 app.use("/_wf", webFeaturesRouter)
 
 app.get("/", (req: Request, res) => {
@@ -484,6 +495,8 @@ app.all("*", (req, res) => {
     log(LogLevel.WARN, `Unhandled URL: ${req.url}`)
     res.status(404).send("Not found!")
 })
+
+app.use(errorLoggingMiddleware)
 
 program.description(
     "The Peacock Project is a HITMAN™ World of Assassination Trilogy server built for general use.",
