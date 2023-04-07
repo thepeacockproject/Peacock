@@ -10,6 +10,7 @@ import {
     getMockCallArgument,
     getResolvingPromise,
     mockRequestWithJwt,
+    mockRequestWithValidJwt,
     mockResponse,
 } from "../helpers/testHelpers"
 
@@ -32,7 +33,7 @@ describe("oauthToken", () => {
         vi.clearAllMocks()
     })
 
-    it("steam auth hitman 3", async () => {
+    it("external_steam for hitman 3", async () => {
         vi.spyOn(axios, "post").mockImplementation((url) => {
             if (url === "https://auth.hitman.io/oauth/token") {
                 return getResolvingPromise({})
@@ -77,7 +78,7 @@ describe("oauthToken", () => {
         expect((accessToken.payload as any).unique_name).toBe(pId)
     })
 
-    test("epic auth hitman 3", async () => {
+    it("external_epic for hitman 3", async () => {
         vi.spyOn(platformEntitlements, "getEpicEntitlements").mockResolvedValue(
             ["mock"],
         )
@@ -119,7 +120,69 @@ describe("oauthToken", () => {
         expect((accessToken.payload as any).unique_name).toBe(pId)
     })
 
-    it("unsupported auth method", async () => {
+    it("refresh_token - missing auth header", async () => {
+        const request = mockRequestWithJwt()
+
+        request.body = {
+            grant_type: "refresh_token",
+        }
+
+        const respose = mockResponse()
+
+        let error: Error = undefined
+
+        try {
+            await handleOauthToken(request, respose)
+        } catch (e) {
+            error = e
+        }
+
+        expect(error).toBeInstanceOf(TypeError)
+    })
+
+    it("refresh_token - invalid auth header", async () => {
+        const request = mockRequestWithJwt()
+        request.headers.authorization = "Bearer invalid"
+
+        request.body = {
+            grant_type: "refresh_token",
+        }
+
+        const respose = mockResponse()
+
+        let error: Error = undefined
+
+        try {
+            await handleOauthToken(request, respose)
+        } catch (e) {
+            error = e
+        }
+
+        expect(error).toBeInstanceOf(TypeError)
+    })
+
+    it("refresh_token - valid auth header", async () => {
+        const request = mockRequestWithValidJwt(pId)
+
+        //NOTE: We don't care about the actual values
+        request.body = {
+            grant_type: "refresh_token",
+        }
+
+        const response = mockResponse()
+
+        await handleOauthToken(request, response)
+
+        const jsonResponse = getMockCallArgument<any>(response.json, 0, 0)
+        const accessToken = verify(jsonResponse.access_token, "secret", {
+            complete: true,
+        })
+
+        expect(jsonResponse.token_type).toBe("bearer")
+        expect((accessToken.payload as any).unique_name).toBe(pId)
+    })
+
+    it("no grant_type", async () => {
         const request = mockRequestWithJwt()
         request.body = {}
 
