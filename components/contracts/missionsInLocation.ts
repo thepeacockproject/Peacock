@@ -147,7 +147,7 @@ export const missionsInLocations = {
             "f19f7ac8-39ec-498b-aa23-44c8e75d8693",
             "35f1f534-ae2d-42be-8472-dd55e96625ea",
         ],
-        LOCATION_GOLDEN_GECKO: ["be14d4f1-f1aa-4dea-8c9b-a5b1a1dea931"],
+        LOCATION_GOLDEN_GECKO: ["9448d91d-f7df-4b5a-8ea3-91f1233f644a"],
         LOCATION_ANCESTRAL_BULLDOG: [
             "b12d08ea-c842-498a-82ea-889653588592",
             "78628e05-93ce-4f87-8a17-b910d32df51f",
