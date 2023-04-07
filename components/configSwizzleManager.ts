@@ -85,6 +85,7 @@ import H2ContractSearchResponseTemplate from "../static/H2ContractSearchResponse
 import H2LocationsData from "../static/H2LocationsData.json"
 import H2FilterData from "../static/H2FilterData.json"
 import H2DashboardTemplate from "../static/H2DashboardTemplate.json"
+import H2LookupContractTemplate from "../static/H2LookupContractTemplate.json"
 import FrankensteinHubTemplate from "../static/FrankensteinHubTemplate.json"
 import FrankensteinMmSpTemplate from "../static/FrankensteinMmSpTemplate.json"
 import FrankensteinMmMpTemplate from "../static/FrankensteinMmMpTemplate.json"
@@ -92,6 +93,8 @@ import FrankensteinScoreOverviewTemplate from "../static/FrankensteinScoreOvervi
 import FrankensteinPlanningTemplate from "../static/FrankensteinPlanningTemplate.json"
 import Videos from "../static/Videos.json"
 import ChallengeLocationTemplate from "../static/ChallengeLocationTemplate.json"
+import H2ChallengeLocationTemplate from "../static/H2ChallengeLocationTemplate.json"
+import LegacyChallengeLocationTemplate from "../static/LegacyChallengeLocationTemplate.json"
 import ReportTemplate from "../static/ReportTemplate.json"
 import ContractSearchPageTemplate from "../static/ContractSearchPageTemplate.json"
 import ContractSearchPaginateTemplate from "../static/ContractSearchPaginateTemplate.json"
@@ -182,6 +185,8 @@ const configs: Record<string, unknown> = {
     H2StoreData,
     H2ContractSearchResponseTemplate,
     H2LocationsData,
+    H2LookupContractByIdTemplate: H2LookupContractTemplate,
+    H2LookupContractFavoriteTemplate: H2LookupContractTemplate,
     H2FilterData,
     H2DashboardTemplate,
     FrankensteinMmSpTemplate,
@@ -190,6 +195,8 @@ const configs: Record<string, unknown> = {
     FrankensteinScoreOverviewTemplate,
     Videos,
     ChallengeLocationTemplate,
+    H2ChallengeLocationTemplate,
+    LegacyChallengeLocationTemplate,
     ReportTemplate,
     ContractSearchPageTemplate,
     ContractSearchPaginateTemplate,

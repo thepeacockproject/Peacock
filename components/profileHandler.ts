@@ -29,7 +29,7 @@ import { json as jsonMiddleware } from "body-parser"
 import { getPlatformEntitlements } from "./platformEntitlements"
 import { contractSessions, newSession } from "./eventHandler"
 import type {
-    CompiledChallengeRuntimeData,
+    CompiledChallengeIngameData,
     ContractSession,
     GameVersion,
     RequestWithJwt,
@@ -481,7 +481,10 @@ profileRouter.post(
     "/ChallengesService/GetActiveChallengesAndProgression",
     jsonMiddleware(),
     (
-        req: RequestWithJwt<Record<string, never>, { contractId: string }>,
+        req: RequestWithJwt<
+            Record<string, never>,
+            { contractId: string; difficultyLevel: number }
+        >,
         res,
     ) => {
         if (!uuidRegex.test(req.body.contractId)) {
@@ -502,19 +505,20 @@ profileRouter.post(
             return res.json([])
         }
 
-        let challenges: CompiledChallengeRuntimeData[] = (
-            getVersionedConfig(
-                "GlobalChallenges",
-                req.gameVersion,
-                true,
-            ) as CompiledChallengeRuntimeData[]
-        ).filter((val) => inclusionDataCheck(val.Challenge.InclusionData, json))
+        let challenges = getVersionedConfig<CompiledChallengeIngameData[]>(
+            "GlobalChallenges",
+            req.gameVersion,
+            true,
+        )
+            .filter((val) => inclusionDataCheck(val.InclusionData, json))
+            .map((item) => ({ Challenge: item, Progression: undefined }))
 
         challenges.push(
             ...Object.values(
                 controller.challengeService.getChallengesForContract(
                     json.Metadata.Id,
                     req.gameVersion,
+                    req.body.difficultyLevel,
                 ),
             )
                 .flat()
@@ -599,6 +603,7 @@ profileRouter.post(
                         req.body.contractId,
                         req.gameVersion,
                         req.jwt.unique_name,
+                        req.body.difficultyLevel,
                     ),
             },
             LevelsDefinition: {
@@ -824,8 +829,21 @@ async function loadSession(
     sessionData?: ContractSession,
 ): Promise<void> {
     if (!sessionData) {
-        sessionData = await getContractSession(token + "_" + sessionId)
+        try {
+            //First, try the loading the session from the filesystem.
+            sessionData = await getContractSession(token + "_" + sessionId)
+        } catch (e) {
+            //Otherwise, see if we still have this session in memory.
+            //This may be the currently active session, but we need a fallback of some sorts in case a player disconnected.
+            if (contractSessions.has(sessionId)) {
+                sessionData = contractSessions.get(sessionId)
+            } else {
+                //Rethrow the error
+                throw e
+            }
+        }
     }
+
     // Update challenge progression with the user's latest progression data
     for (const cid in sessionData.challengeContexts) {
         // Make sure the ChallengeProgression is available, otherwise loading might fail!
@@ -835,8 +853,10 @@ async function loadSession(
             Ticked: false,
         }
 
-        const scope =
-            controller.challengeService.getChallengeById(cid).Definition.Scope
+        const scope = controller.challengeService.getChallengeById(
+            cid,
+            sessionData.gameVersion,
+        ).Definition.Scope
         if (
             !userData.Extensions.ChallengeProgression[cid].Completed &&
             (scope === "hit" || scope === "profile")

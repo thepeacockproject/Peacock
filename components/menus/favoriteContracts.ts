@@ -26,15 +26,16 @@ import type {
 import { controller } from "../controller"
 import { generateUserCentric } from "../contracts/dataGen"
 import { getUserData, writeUserData } from "../databaseHandler"
-import { getConfig, getVersionedConfig } from "../configSwizzleManager"
+import { getVersionedConfig } from "../configSwizzleManager"
 import type { Response } from "express"
 
 export function withLookupDialog(
     req: RequestWithJwt<{ contractId: string }>,
     res: Response,
 ): void {
-    const lookupFavoriteTemplate = getConfig(
+    const lookupFavoriteTemplate = getVersionedConfig(
         "LookupContractFavoriteTemplate",
+        req.gameVersion,
         false,
     )
 
@@ -66,6 +67,13 @@ export function withLookupDialog(
         false,
     ).find((entry) => entry.Id === contract.Metadata.Location)
 
+    // Must toggle before generating the user centric contract.
+    const flag = toggleFavorite(
+        req.jwt.unique_name,
+        req.query.contractId,
+        req.gameVersion,
+    )
+
     const result: Result = {
         template: lookupFavoriteTemplate,
         data: {
@@ -77,13 +85,8 @@ export function withLookupDialog(
                 req.gameVersion,
             ),
         },
+        ...(flag && { AddedSuccessfully: true }),
     }
-
-    result.data.AddedSuccessfully = toggleFavorite(
-        req.jwt.unique_name,
-        req.query.contractId,
-        req.gameVersion,
-    )
 
     res.json(result)
 }
@@ -144,6 +147,37 @@ export function directRoute(req: RequestWithJwt, res: Response): void {
                 req.params.contractId,
                 req.gameVersion,
             ),
+        },
+    })
+}
+
+/**
+ * Takes an array of contract IDs and deletes them from the user's favorites.
+ * @param req The request.
+ * @param res The response.
+ */
+export function deleteMultiple(
+    req: RequestWithJwt<{ mode?: string }, string[]>,
+    res: Response,
+): void {
+    const userProfile = getUserData(req.jwt.unique_name, req.gameVersion)
+
+    // Perform some verification
+    const success = req.body?.every((id) =>
+        userProfile.Extensions.PeacockFavoriteContracts.includes(id),
+    )
+
+    if (success) {
+        req.body?.forEach((id) =>
+            toggleFavorite(req.jwt.unique_name, id, req.gameVersion),
+        )
+    }
+
+    res.json({
+        template: null,
+        data: {
+            ContractIds: req.body,
+            Success: success,
         },
     })
 }

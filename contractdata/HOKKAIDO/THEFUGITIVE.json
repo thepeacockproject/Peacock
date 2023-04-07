@@ -19,10 +19,7 @@
                 "Type": "statemachine",
                 "Scope": "hit",
                 "Definition": {
-                    "Context": {
-                        "KilledActors": [],
-                        "Targets": []
-                    },
+                    "Context": { "KilledActors": [], "Targets": [] },
                     "States": {
                         "Start": {
                             "TargetPicked": [
@@ -72,6 +69,23 @@
         "Bricks": [
             "assembly:/_PRO/Scenes/Missions/Hokkaido/_scene_dirtyoctopus.brick"
         ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/hokkaido/vr_overrides_snowcrane.brick",
+                    "assembly:/_PRO/scenes/missions/hokkaido/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/hokkaido/vr_overrides_snowcrane.brick"
+                ]
+            }
+        ],
         "GameChangers": []
     },
     "Metadata": {
@@ -80,6 +94,7 @@
         "Description": "UI_CONTRACT_DIRTY_OCTOPUS_DESC",
         "BriefingVideo": "briefing_dirtyoctopus",
         "DebriefingVideo": "debriefing_dirtyoctopus",
+        "CodeName_Hint": "Dirty Octopus",
         "ScenePath": "assembly:/_PRO/Scenes/Missions/Hokkaido/_Scene_SnowCrane.entity",
         "TileImage": "images/contracts/elusive/028_DirtyOctopus/Title.jpg",
         "Location": "LOCATION_HOKKAIDO",

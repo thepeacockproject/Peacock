@@ -26,6 +26,7 @@ import {
 } from "../types/types"
 import { SavedChallengeGroup } from "../types/challenges"
 import { controller } from "../controller"
+import { gameDifficulty } from "../utils"
 
 export function compileScoringChallenge(
     challenge: RegistryChallenge,
@@ -81,6 +82,8 @@ export type ChallengeFilterOptions =
           type: ChallengeFilterType.Contract
           contractId: string
           locationId: string
+          isFeatured?: boolean
+          difficulty: number
       }
     | {
           type: ChallengeFilterType.Contracts
@@ -111,11 +114,23 @@ export function inclusionDataCheck(
     )
 }
 
+export function isChallengeForDifficulty(
+    difficulty: number,
+    challenge: RegistryChallenge,
+): boolean {
+    return (
+        !challenge.DifficultyLevels ||
+        challenge.DifficultyLevels.length === 0 ||
+        gameDifficulty[challenge.DifficultyLevels[0]] <= difficulty
+    )
+}
+
 /**
  * Judges whether a challenge should be included in the challenges list of a contract.
  * @requires The challenge and the contract share the same parent location.
  * @param contractId The id of the contract.
  * @param locationId The sublocation ID of the challenge.
+ * @param difficulty The upper bound on the difficulty of the challenges to return.
  * @param challenge The challenge in question.
  * @param forCareer Whether the result is used to decide what is shown the CAREER -> CHALLENGES page. Defaulted to false.
  * @returns A boolean value, denoting the result.
@@ -123,6 +138,7 @@ export function inclusionDataCheck(
 function isChallengeInContract(
     contractId: string,
     locationId: string,
+    difficulty: number,
     challenge: RegistryChallenge,
     forCareer = false,
 ): boolean {
@@ -132,6 +148,10 @@ function isChallengeInContract(
     }
 
     if (!challenge) {
+        return false
+    }
+
+    if (!isChallengeForDifficulty(difficulty, challenge)) {
         return false
     }
 
@@ -193,6 +213,7 @@ export function filterChallenge(
             return isChallengeInContract(
                 options.contractId,
                 options.locationId,
+                options.difficulty,
                 challenge,
             )
         }
@@ -201,6 +222,7 @@ export function filterChallenge(
                 isChallengeInContract(
                     contractId,
                     options.locationId,
+                    gameDifficulty.master, // Get challenges of all difficulties
                     challenge,
                     true,
                 ),

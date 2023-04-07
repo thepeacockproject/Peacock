@@ -185,7 +185,7 @@ export type MissionType =
 /**
  * The data acquired when using the "contract search" functionality.
  */
-export interface contractSearchResult {
+export interface ContractSearchResult {
     Data: {
         Contracts: {
             UserCentricContract: UserCentricContract
@@ -659,6 +659,12 @@ export interface UserCentricContract {
         ElusiveContractState: string
         LastPlayedAt?: string
         IsFeatured?: boolean
+        // For favorite contracts
+        PlaylistData?: {
+            IsAdded: boolean
+            // Not sure if this is important
+            AddedTime: string
+        }
         Completed?: boolean
         LocationId: string
         ParentLocationId: string
@@ -852,7 +858,11 @@ export interface MissionManifestMetadata {
             },
         ]
     }[]
-    CharacterLoadoutData?: unknown
+    CharacterLoadoutData?: {
+        Id: string
+        Loadout: unknown
+        CompletionData: CompletionData
+    }[]
     SpawnSelectionType?: "random" | string
     Gamemodes?: ("versus" | string)[]
     Enginemodes?: ("singleplayer" | "multiplayer" | string)[]
@@ -1116,7 +1126,10 @@ export interface CompiledChallengeTreeData {
     Completed: boolean
     CompletionData: CompletionData
     Description: string
-    DifficultyLevels?: unknown // more investigation required
+    // A string array of at most one element ("easy", "normal", or "hard").
+    // If empty, then the challenge should appear in sessions on any difficulty.
+    // If not, then it should only appear in sessions on or above the specified difficulty.
+    DifficultyLevels?: string[]
     Displayed?: boolean
     Drops?: Unlockable[]
     HideProgression: boolean
@@ -1382,7 +1395,7 @@ export type SafehouseCategory = {
 export type SniperLoadout = {
     ID: string
     InstanceID: string
-    Unlockable: Unlockable
+    Unlockable: Unlockable[]
     MainUnlockable: Unlockable
 }
 

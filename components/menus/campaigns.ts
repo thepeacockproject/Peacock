@@ -29,6 +29,7 @@ import type {
 import { log, LogLevel } from "../loggingInterop"
 import { getConfig } from "../configSwizzleManager"
 import { fastClone } from "../utils"
+import assert from "assert"
 
 /* eslint-disable prefer-const */
 
@@ -37,6 +38,15 @@ const genSingleMissionFactory = (userId: string): GenSingleMissionFunc => {
         contractId: string,
         gameVersion: GameVersion,
     ): ICampaignMission {
+        assert.ok(
+            contractId,
+            "Plugin tried to generate mission with no contract ID",
+        )
+        assert.ok(
+            gameVersion,
+            "Plugin tried to generate mission with no game version",
+        )
+
         const actualContractData = controller.resolveContract(contractId)
 
         if (!actualContractData) {

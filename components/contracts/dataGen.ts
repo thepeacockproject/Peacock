@@ -87,13 +87,14 @@ export function getSubLocationByName(
  * @param subLocationId The ID of the targeted sub-location.
  * @param userId The ID of the user.
  * @param gameVersion The game's version.
- * If true, the SubLocationId property will not be set.
+ * @param contractType The type of the contract, only used to distinguish evergreen from other types (default).
  * @returns The completion data object.
  */
 export function generateCompletionData(
     subLocationId: string,
     userId: string,
     gameVersion: GameVersion,
+    contractType = "mission",
 ): CompletionData {
     const subLocation = getSubLocationByName(subLocationId, gameVersion)
 
@@ -101,19 +102,16 @@ export function generateCompletionData(
         ? subLocation.Properties?.ParentLocation
         : subLocationId
 
-    const completionData = controller.masteryService.getCompletionData(
+    const completionData = controller.masteryService.getLocationCompletion(
         locationId,
         subLocation?.Id,
         gameVersion,
         userId,
+        contractType,
     )
 
     if (!completionData) {
-        log(
-            LogLevel.DEBUG,
-            `Could not get CompletionData for location ${locationId}`,
-        )
-
+        // Should only reach here for sniper locations.
         return {
             Level: 1,
             MaxLevel: 1,
@@ -172,16 +170,22 @@ export function generateUserCentric(
     const played = userData.Extensions?.PeacockPlayedContracts
     const id = contractData.Metadata.Id
 
+    const completionData = generateCompletionData(
+        contractData.Metadata.Location,
+        userId,
+        gameVersion,
+    )
+
     const uc: UserCentricContract = {
         Contract: contractData,
         Data: {
             IsLocked: subLocation?.Properties?.IsLocked || false,
             LockedReason: "",
-            LocationLevel: 1,
-            LocationMaxLevel: 1,
-            LocationCompletion: 1,
-            LocationXpLeft: 0,
-            LocationHideProgression: false,
+            LocationLevel: completionData.Level,
+            LocationMaxLevel: completionData.MaxLevel,
+            LocationCompletion: completionData.Completion,
+            LocationXpLeft: completionData.XpLeft,
+            LocationHideProgression: completionData.HideProgression,
             ElusiveContractState: "",
             IsFeatured: false,
             LastPlayedAt:
@@ -189,14 +193,16 @@ export function generateUserCentric(
                     ? undefined
                     : new Date(played[id]?.LastPlayedAt).toISOString(),
             // relevant for contracts
+            // Favorite contracts
+            PlaylistData: {
+                IsAdded:
+                    userData.Extensions?.PeacockFavoriteContracts?.includes(id),
+                AddedTime: "0001-01-01T00:00:00Z",
+            },
             Completed: played[id] === undefined ? false : played[id]?.Completed,
             LocationId: subLocation.Id,
             ParentLocationId: subLocation.Properties.ParentLocation!,
-            CompletionData: generateCompletionData(
-                contractData.Metadata.Location,
-                userId,
-                gameVersion,
-            ),
+            CompletionData: completionData,
             DlcName: subLocation.Properties.DlcName!,
             DlcImage: subLocation.Properties.DlcImage!,
         },

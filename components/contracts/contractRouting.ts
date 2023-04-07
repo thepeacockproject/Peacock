@@ -79,7 +79,11 @@ contractRoutingRouter.post(
             return
         }
 
-        const sniperloadouts = createSniperLoadouts(contractData)
+        const sniperloadouts = createSniperLoadouts(
+            req.jwt.unique_name,
+            req.gameVersion,
+            contractData,
+        )
         const loadoutData = {
             CharacterLoadoutData:
                 sniperloadouts.length !== 0 ? sniperloadouts : null,

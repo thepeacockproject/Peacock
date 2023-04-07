@@ -53,6 +53,8 @@ export const uuidRegex =
 
 export const contractTypes = ["featured", "usercreated"]
 
+export const versions: GameVersion[] = ["h1", "h2", "h3"]
+
 export const contractCreationTutorialId = "d7e2607c-6916-48e2-9588-976c7d8998bb"
 
 export async function checkForUpdates(): Promise<void> {
@@ -191,10 +193,32 @@ export const SNIPER_LEVEL_INFO: number[] = [
 ]
 
 /**
+ * Get the number of xp needed to reach a level in sniper missions.
+ * @param level The level in question.
+ * @returns The xp, as a number.
+ */
+export function xpRequiredForSniperLevel(level: number): number {
+    return SNIPER_LEVEL_INFO[level - 1]
+}
+
+/**
  * Clamps the given value between a minimum and maximum value
  */
 export function clampValue(value: number, min: number, max: number) {
     return Math.max(min, Math.min(value, max))
+}
+
+/**
+ * Returns whether a location is a sniper location. Works for both parent and child locations.
+ * @param location The location ID string.
+ * @returns A boolean denoting the result.
+ */
+export function isSniperLocation(location: string): boolean {
+    return (
+        location.includes("AUSTRIA") ||
+        location.includes("SALTY") ||
+        location.includes("CAGED")
+    )
 }
 
 export function castUserProfile(profile: UserProfile): UserProfile {
@@ -261,6 +285,24 @@ export function castUserProfile(profile: UserProfile): UserProfile {
             MyHistory: "all",
             MyContracts: "all",
             MyPlaylist: "all",
+        }
+    }
+
+    if (j.Extensions?.gamepersistentdata?.PersistentBool) {
+        switch (getFlag("mapDiscoveryState")) {
+            case "REVEALED":
+                j.Extensions.gamepersistentdata.PersistentBool = {
+                    ...j.Extensions.gamepersistentdata.PersistentBool,
+                    ...getConfig("PersistentBools", true),
+                }
+                break
+            case "CLOUDED":
+                j.Extensions.gamepersistentdata.PersistentBool = {
+                    __Full:
+                        j.Extensions.gamepersistentdata.PersistentBool
+                            ?.__Full ?? {},
+                }
+                break
         }
     }
 
@@ -375,6 +417,7 @@ export const gameDifficulty = {
      * Casual mode.
      */
     casual: 1,
+    easy: 1,
     /**
      * Professional (normal) mode.
      */
@@ -383,6 +426,7 @@ export const gameDifficulty = {
      * Master mode.
      */
     master: 4,
+    hard: 4,
 } as const
 
 export function difficultyToString(difficulty: number): string {

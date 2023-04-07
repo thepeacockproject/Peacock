@@ -21,7 +21,6 @@ import { join } from "path"
 import type { ContractSession, GameVersion, UserProfile } from "./types/types"
 import { serializeSession, deserializeSession } from "./sessionSerialization"
 import { castUserProfile } from "./utils"
-import { getConfig } from "./configSwizzleManager"
 import { log, LogLevel } from "./loggingInterop"
 import { unlink, readdir } from "fs/promises"
 
@@ -95,14 +94,6 @@ export function getUserData(
     gameVersion: GameVersion,
 ): UserProfile {
     const data = asyncGuard.getProfile(`${userId}.${gameVersion}`)
-
-    // we may not have this profile
-    if (data?.Extensions?.gamepersistentdata?.PersistentBool) {
-        data.Extensions.gamepersistentdata.PersistentBool = {
-            ...data.Extensions.gamepersistentdata.PersistentBool,
-            ...getConfig("PersistentBools", true),
-        }
-    }
 
     //NOTE: ProfileLevel always starts at 1
     if (data?.Extensions?.progression?.PlayerProfileXP?.ProfileLevel === 0) {

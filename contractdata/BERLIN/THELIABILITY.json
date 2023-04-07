@@ -1,9 +1,14 @@
 {
     "Data": {
         "EnableSaving": true,
+        "Entrances": [
+            "000fc136-f098-43a2-b204-26c038a55490",
+            "8ec50af5-e6b4-47d0-873b-0361cee52a05",
+            "700603be-2925-4ec4-ae47-572068b801af"
+        ],
         "Objectives": [
             {
-                "Id": "c2a5d24b-16a3-43bc-87be-08e97d3571fd",
+                "Id": "b7f349f0-f4fe-4755-ba1c-124fb4abadbe",
                 "Primary": true,
                 "IsHidden": true,
                 "SuccessEvent": {
@@ -33,9 +38,7 @@
                     "Scope": "session",
                     "States": {
                         "Start": {
-                            "ContractEnd": {
-                                "Transition": "Success"
-                            },
+                            "ContractEnd": { "Transition": "Success" },
                             "Kill": [
                                 {
                                     "Condition": {
@@ -57,21 +60,41 @@
             }
         ],
         "Bricks": [
-            "assembly:/_pro/scenes/missions/Edgy/mission_fox/elusive_radler.brick"
+            "assembly:/_pro/scenes/missions/edgy/mission_fox/elusive_radler.brick"
         ],
-        "GameChangers": []
+        "GameChangers": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/edgy/mission_fox/vr_overrides_fox.brick",
+                    "assembly:/_pro/scenes/missions/edgy/mission_fox/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/edgy/mission_fox/vr_overrides_fox.brick"
+                ]
+            }
+        ]
     },
     "Metadata": {
-        "Id": "38dba4d9-a361-46c9-bdae-7350945d6526",
-        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Id": "3f0b8f19-d5d4-4611-ac8f-480f81c18f54",
+        "CodeName_Hint": "Radler",
+        "Type": "elusive",
         "Title": "UI_CONTRACT_RADLER_TITLE",
+        "Description": "UI_CONTRACT_RADLER_DESC",
         "BriefingVideo": "briefing_radler",
         "DebriefingVideo": "debriefing_radler",
-        "Location": "LOCATION_EDGY_FOX",
-        "Entitlements": ["LOCATION_EDGY"],
-        "TileImage": "images/contracts/elusive/s3_radler/title.jpg",
         "ScenePath": "assembly:/_pro/scenes/missions/edgy/mission_fox/scene_radler.entity",
-        "Type": "elusive"
+        "TileImage": "images/contracts/elusive/S3_Radler/Title.jpg",
+        "Location": "LOCATION_EDGY_FOX",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "PublicId": "029137535847",
+        "Entitlements": ["LOCATION_EDGY"]
     },
     "UserData": {}
 }

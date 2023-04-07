@@ -3,6 +3,23 @@
         "Bricks": [
             "assembly:/_PRO/Scenes/Missions/Colorado_2/_scene_flirtini.brick"
         ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/missions/colorado_2/vr_overrides_bull.brick",
+                    "assembly:/_PRO/scenes/missions/colorado_2/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/missions/colorado_2/vr_overrides_bull.brick"
+                ]
+            }
+        ],
         "EnableSaving": true,
         "Entrances": [
             "e5c0d1a4-72b0-4cc0-857d-8bb155ea09f4",
@@ -16,15 +33,18 @@
         "GameChangers": [],
         "Objectives": [
             {
+                "FailedEvent": null,
                 "Id": "0a87490c-076c-4d08-ba73-37c70600c02d",
                 "IsHidden": true,
                 "Primary": true,
+                "ResetEvent": null,
                 "SuccessEvent": {
                     "EventName": "Kill",
                     "EventValues": {
                         "RepositoryId": "229d24be-d95a-4c73-a1be-afac4a05a5e3"
                     }
-                }
+                },
+                "Text": null
             },
             {
                 "BriefingName": "$loc UI_CONTRACT_FLIRTINI_OBJ_2_TITLE",
@@ -65,19 +85,13 @@
                     "Scope": "session",
                     "States": {
                         "Start": {
-                            "TargetEscaped": {
-                                "Transition": "Success"
-                            }
+                            "TargetEscaped": { "Transition": "Success" }
                         }
                     }
                 },
                 "ExcludeFromScoring": true,
                 "Id": "d76898ad-1279-45e0-a83f-3821ab4507d8",
-                "OnActive": {
-                    "IfInProgress": {
-                        "Visible": false
-                    }
-                },
+                "OnActive": { "IfInProgress": { "Visible": false } },
                 "Type": "statemachine"
             },
             {
@@ -94,14 +108,10 @@
                     "States": {
                         "EscapeCountdownStart": {
                             "$timer": {
-                                "Condition": {
-                                    "$after": 30
-                                },
+                                "Condition": { "$after": 30 },
                                 "Transition": "Failure"
                             },
-                            "CarDestroyed": {
-                                "Transition": "Success"
-                            },
+                            "CarDestroyed": { "Transition": "Success" },
                             "Kill": [
                                 {
                                     "Condition": {
@@ -122,9 +132,7 @@
                     }
                 },
                 "IgnoreIfInactive": true,
-                "HUDTemplate": {
-                    "display": "$loc UI_CONTRACT_FLIRTINI_OBJ_3"
-                },
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_FLIRTINI_OBJ_3" },
                 "Id": "980a8b37-21f1-466f-a220-d2083df88ebb",
                 "Scope": "session",
                 "Type": "statemachine"
@@ -133,6 +141,7 @@
     },
     "Metadata": {
         "BriefingVideo": "briefing_flirtini",
+        "CodeName_Hint": "Flirtini",
         "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
         "DebriefingVideo": "debriefing_flirtini",
         "Description": "UI_CONTRACT_FLIRTINI_DESC",

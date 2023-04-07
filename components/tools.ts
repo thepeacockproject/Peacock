@@ -32,16 +32,16 @@ import ProgressBar from "progress"
 import { resolve as pathResolve } from "path"
 import picocolors from "picocolors"
 import { Filename, PortablePath, ppath, xfs } from "@yarnpkg/fslib"
-import { ZipFS } from "@yarnpkg/libzip"
+import { makeEmptyArchive, ZipFS } from "@yarnpkg/libzip"
 
 // NOTE: make sure to update ALL 3 OF THESE VALUES, or things will break!!
 const IMAGE_PACK_BIN =
-    "https://codeload.github.com/thepeacockproject/ImagePack/zip/843c1377fe42f51b81421f12a51b7507eb9e1edd"
+    "https://codeload.github.com/thepeacockproject/ImagePack/zip/b8415da0be992d6a2e7d10cb5d3ccd9aea4f9296"
 /**
  * Size of the image pack zip in bytes.
  */
-const IMAGE_PACK_LEN = 117645328
-const IMAGE_PACK_BASE_DIR = "ImagePack-843c1377fe42f51b81421f12a51b7507eb9e1edd"
+const IMAGE_PACK_LEN = 117286836
+const IMAGE_PACK_BASE_DIR = "ImagePack-b8415da0be992d6a2e7d10cb5d3ccd9aea4f9296"
 
 export async function toolsMenu() {
     const init = await prompts({
@@ -83,6 +83,14 @@ export async function toolsMenu() {
     }
 }
 
+async function copyIntoZip(zip: ZipFS, path: string): Promise<void> {
+    await zip.copyPromise(zip.resolve(path as Filename), ppath.resolve(path), {
+        stableTime: true,
+        stableSort: true,
+        baseFs: xfs,
+    })
+}
+
 async function exportDebugInfo(): Promise<void> {
     const cpus = cpuList().map((cpu, index) => ({
         core: index + 1,
@@ -112,10 +120,27 @@ async function exportDebugInfo(): Promise<void> {
         flags: getAllFlags(),
     }
 
-    await writeFile("DEBUG_PROFILE.json", JSON.stringify(data, undefined, 4))
+    const debugJson = JSON.stringify(data, undefined, 4)
+
+    const zipFile = ppath.resolve(ppath.cwd(), "DEBUG_PROFILE.zip")
+
+    // we'll start by creating an empty zip file
+    await writeFile(zipFile, makeEmptyArchive())
+
+    const zip = new ZipFS(zipFile, { create: true })
+
+    await zip.writeFilePromise(zip.resolve("meta.json" as Filename), debugJson)
+
+    await copyIntoZip(zip, "logs")
+    await copyIntoZip(zip, "userdata")
+    await copyIntoZip(zip, "contractSessions")
+    await copyIntoZip(zip, "contracts")
+
+    zip.saveAndClose()
+
     log(
         LogLevel.INFO,
-        "Successfully outputted debugging data to DEBUG_PROFILE.json!",
+        "Successfully outputted debugging data to DEBUG_PROFILE.zip!",
     )
 }
 
