@@ -413,6 +413,7 @@ export class Controller {
      * A list of Simple Mod Framework mods installed.
      */
     public readonly installedMods: readonly string[]
+    public readonly installedPlugins: readonly string[]
     private _pubIdToContractId: Map<string, string> = new Map()
     private _internalContracts: MissionManifest[]
     /** Internal elusive target contracts - only accessible during bootstrap. */
@@ -445,6 +446,7 @@ export class Controller {
         }
 
         this.installedMods = []
+        this.installedPlugins = []
     }
 
     /**
@@ -1151,6 +1153,8 @@ export class Controller {
             log(LogLevel.ERROR, e.stack)
             return
         }
+
+        this.installedPlugins.push(pluginName)
 
         try {
             let plugin = theExports

@@ -88,6 +88,7 @@ import { pack, unpack } from "msgpackr"
 import { liveSplitManager } from "./livesplit/liveSplitManager"
 import { cheapLoadUserData } from "./databaseHandler"
 import { reportRouter } from "./contracts/reportRouting"
+import os from "os"
 
 // welcome to the bleeding edge
 setFlagsFromString("--harmony")
@@ -513,7 +514,10 @@ const PEECOCK_ART = `
 ░░░░░        ░░░░░░░░░░ ░░░░░░░░░░   ░░░░░░░░░     ░░░░░░░      ░░░░░░░░░  ░░░░░   ░░░░
 `
 
-function startServer(options: { hmr: boolean; pluginDevHost: boolean }): void {
+async function startServer(options: {
+    hmr: boolean
+    pluginDevHost: boolean
+}): Promise<void> {
     checkForUpdates()
 
     if (!IS_LAUNCHER) {
@@ -535,7 +539,9 @@ function startServer(options: { hmr: boolean; pluginDevHost: boolean }): void {
 
     log(
         LogLevel.INFO,
-        `This is Peacock v${PEACOCKVERSTRING} (rev ${PEACOCKVER}), with Node v${process.versions.node}.`,
+        `This is Peacock v${PEACOCKVERSTRING} (rev ${PEACOCKVER}), with Node v${
+            process.versions.node
+        } running on ${os.version()}.`,
     )
 
     // jokes lol
@@ -590,7 +596,20 @@ function startServer(options: { hmr: boolean; pluginDevHost: boolean }): void {
 
     // once contracts directory is present, we are clear to boot
     loadouts.init()
-    controller.boot(options.pluginDevHost)
+    await controller.boot(options.pluginDevHost)
+
+    const mods =
+        controller.installedMods.length > 0
+            ? controller.installedMods.join(", ")
+            : "None"
+
+    const plugins =
+        controller.installedPlugins.length > 0
+            ? controller.installedPlugins.join(", ")
+            : "None"
+
+    log(LogLevel.INFO, `Installed SMF mods: ${mods}`)
+    log(LogLevel.INFO, `Installed plugins: ${plugins}`)
 
     const httpServer = http.createServer(app)
 

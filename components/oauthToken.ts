@@ -152,6 +152,13 @@ export async function handleOauthToken(
         ? "h2"
         : "h1"
 
+    log(
+        LogLevel.INFO,
+        `Platform detected: ${external_appid} on ${external_platform} requesting ${
+            req.body.gs
+        } (${gameVersion} v${req.header("Version")})`,
+    )
+
     if (!req.body.pId) {
         // if no profile id supplied
         try {
