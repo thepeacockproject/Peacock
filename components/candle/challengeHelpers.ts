@@ -73,6 +73,8 @@ export enum ChallengeFilterType {
     Contract = "Contract",
     /** Only used for the CAREER -> CHALLENGES page */
     Contracts = "Contracts",
+    /** Only used for the location page */
+    ParentLocation = "ParentLocation",
 }
 
 export type ChallengeFilterOptions =
@@ -90,6 +92,9 @@ export type ChallengeFilterOptions =
           type: ChallengeFilterType.Contracts
           contractIds: string[]
           locationId: string
+      }
+    | {
+          type: ChallengeFilterType.ParentLocation
       }
 
 /**
@@ -233,6 +238,11 @@ export function filterChallenge(
                     true,
                 ),
             )
+        }
+        case ChallengeFilterType.ParentLocation: {
+            // Challenges are already organized by location
+            // So we only need to filter out the elusive target challenges
+            return !challenge.Tags.includes("elusive")
         }
     }
 }
