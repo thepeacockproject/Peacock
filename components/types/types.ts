@@ -369,12 +369,22 @@ export interface MissionStory {
     Summary: string
     Briefing: string
     Location: string
+    SubLocation: string
     Image: string
 }
 
 export interface PlayerProfileView {
     template: unknown
     data: {
+        SubLocationData: {
+            ParentLocation: Unlockable
+            Location: Unlockable
+            CompletionData: CompletionData
+            ChallengeCategoryCompletion: ChallengeCategoryCompletion[]
+            ChallengeCompletion: ChallengeCompletion
+            OpportunityStatistics: OpportunityStatistics
+            LocationCompletionPercent: number
+        }[]
         PlayerProfileXp: {
             Total: number
             Level: number
@@ -392,6 +402,21 @@ export interface PlayerProfileView {
             }[]
         }
     }
+}
+
+export interface ChallengeCompletion {
+    ChallengesCount: number
+    CompletedChallengesCount: number
+    CompletionPercent?: number
+}
+
+export interface ChallengeCategoryCompletion extends ChallengeCompletion {
+    Name: string
+}
+
+export interface OpportunityStatistics {
+    Count: number
+    Completed: number
 }
 
 export interface ContractHistory {
@@ -521,7 +546,6 @@ export interface NamespaceEntitlementEpic {
  */
 export interface Unlockable {
     Id: string
-    Opportunities?: number
     DisplayNameLocKey: string
     GameAsset: string | null
     Guid: string
