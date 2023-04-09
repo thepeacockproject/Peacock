@@ -603,7 +603,7 @@ function saveEvents(
         if (
             !canGetAfterTimerOver.includes(event.Name) &&
             session.timerEnd !== 0 &&
-            event.Timestamp > session.timerEnd
+            event.Timestamp > (session.timerEnd as number)
         ) {
             // Do not handle events that occur after exiting the level
             response.push(process.hrtime.bigint().toString())
