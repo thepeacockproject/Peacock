@@ -45,7 +45,6 @@ import { encodePushMessage } from "./multiplayer/multiplayerUtils"
 import {
     ActorTaggedC2SEvent,
     AmbientChangedC2SEvent,
-    AreaDiscoveredC2SEvent,
     BodyHiddenC2SEvent,
     ContractStartC2SEvent,
     Evergreen_Payout_DataC2SEvent,
@@ -574,14 +573,11 @@ function saveEvents(
             }
         }
 
-        // if the event is AreaDiscovered, we defer the handling of it
-        if (event.Name !== "AreaDiscovered") {
-            controller.challengeService.onContractEvent(
-                event,
-                event.ContractSessionId,
-                session,
-            )
-        }
+        controller.challengeService.onContractEvent(
+            event,
+            event.ContractSessionId,
+            session,
+        )
 
         if (event.Name.startsWith("ScoringScreenEndState_")) {
             session.evergreen.scoringScreenEndState = event.Name
@@ -805,23 +801,6 @@ function saveEvents(
                 writeUserData(req.jwt.unique_name, req.gameVersion)
                 break
             }
-            case "AreaDiscovered":
-                // ignored for evergreen
-                if (!session.evergreen) {
-                    // update challenge progress
-                    controller.challengeService.onContractEvent(
-                        event,
-                        event.ContractSessionId,
-                        session,
-                    )
-
-                    // write persistentbool to user profile
-                    userData.Extensions.gamepersistentdata["PersistentBool"][
-                        (<AreaDiscoveredC2SEvent>event).Value.RepositoryId
-                    ] = true
-                    writeUserData(req.jwt.unique_name, req.gameVersion)
-                }
-                break
             // Evergreen
             case "CpdSet":
                 setCpd(
