@@ -468,9 +468,18 @@ profileRouter.post(
             return res.status(403).end()
         }
 
+        const newData = req.body.data
         const userdata = getUserData(req.body.userId, req.gameVersion)
 
-        userdata.Extensions.gamepersistentdata[req.body.key] = req.body.data
+        if (req.body.key === "PersistentBool") {
+            // Only update Extensions.gamepersistentdata.PersistentBools._Full
+            // because the other PersistentBools are updated at the AreaDiscovered event
+            userdata.Extensions.gamepersistentdata["PersistentBool"]["_Full"] =
+                newData._Full
+        } else {
+            userdata.Extensions.gamepersistentdata[req.body.key] = newData
+        }
+
         writeUserData(req.body.userId, req.gameVersion)
 
         res.json(null)
