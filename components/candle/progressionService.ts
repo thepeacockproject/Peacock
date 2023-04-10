@@ -133,13 +133,13 @@ export class ProgressionService {
         }
 
         const subLocation = getSubLocationByName(
-            location,
+            location ?? contract.Metadata.Location,
             contractSession.gameVersion,
         )
 
         const parentLocationId = subLocation
             ? subLocation.Properties?.ParentLocation
-            : location
+            : location ?? contract.Metadata.Location
 
         if (!parentLocationId) {
             return false
