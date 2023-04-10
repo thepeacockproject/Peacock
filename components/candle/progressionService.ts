@@ -39,6 +39,7 @@ export class ProgressionService {
         dropIds: string[],
         contractSession: ContractSession,
         userProfile: UserProfile,
+        location: string,
     ) {
         // Total XP for profile XP is the total sum of the action and mastery XP's
         const xp = actionXp + masteryXp
@@ -52,6 +53,7 @@ export class ProgressionService {
             actionXp,
             contractSession,
             userProfile,
+            location,
         )
 
         // Award provided drops. E.g. From challenges
@@ -122,6 +124,7 @@ export class ProgressionService {
         actionXp: number,
         contractSession: ContractSession,
         userProfile: UserProfile,
+        location: string,
     ): boolean {
         const contract = controller.resolveContract(contractSession.contractId)
 
@@ -130,13 +133,13 @@ export class ProgressionService {
         }
 
         const subLocation = getSubLocationByName(
-            contract.Metadata.Location,
+            location,
             contractSession.gameVersion,
         )
 
         const parentLocationId = subLocation
             ? subLocation.Properties?.ParentLocation
-            : contract.Metadata.Location
+            : location
 
         if (!parentLocationId) {
             return false

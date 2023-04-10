@@ -113,6 +113,7 @@ import LobbySlimTemplate from "../static/LobbySlimTemplate.json"
 import MasteryDataForLocationTemplate from "../static/MasteryDataForLocationTemplate.json"
 import DefaultCpdConfig from "../static/DefaultCpdConfig.json"
 import EvergreenGameChangerProperties from "../static/EvergreenGameChangerProperties.json"
+import AreaMap from "../static/AreaMap.json"
 import type { GameVersion } from "./types/types"
 import { fastClone } from "./utils"
 
@@ -213,6 +214,7 @@ const configs: Record<string, unknown> = {
     MasteryDataForLocationTemplate,
     DefaultCpdConfig,
     EvergreenGameChangerProperties,
+    AreaMap,
 }
 
 Object.keys(configs).forEach((cfg) => {

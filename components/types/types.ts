@@ -20,10 +20,9 @@ import type * as core from "express-serve-static-core"
 
 import type { IContractCreationPayload } from "../statemachines/contractCreation"
 import type { Request } from "express"
-import { ProfileChallengeData, SavedChallenge } from "./challenges"
+import { ChallengeContext, ProfileChallengeData, SavedChallenge } from "./challenges"
 import { SessionGhostModeDetails } from "../multiplayer/multiplayerService"
 import { IContextListener } from "../statemachines/contextListeners"
-import { Timer } from "@peacockproject/statemachine-parser"
 
 /**
  * A duration or relative point in time expressed in seconds.
@@ -258,12 +257,7 @@ export interface ContractSession {
      * @since v5.6.0-dev.1
      */
     challengeContexts?: {
-        [challengeId: string]: {
-            context: unknown
-            state: string
-            timers: Timer[]
-            timesCompleted: number
-        }
+        [challengeId: string]: ChallengeContext
     }
     /**
      * Session Evergreen details.
