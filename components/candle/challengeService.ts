@@ -47,7 +47,7 @@ import {
     handleEvent,
     HandleEventOptions,
 } from "@peacockproject/statemachine-parser"
-import { SavedChallengeGroup } from "../types/challenges"
+import { ChallengeContext, SavedChallengeGroup } from "../types/challenges"
 import { fastClone, isSniperLocation } from "../utils"
 import {
     ChallengeFilterOptions,
@@ -647,6 +647,90 @@ export class ChallengeService extends ChallengeRegistry {
         }
     }
 
+    /**
+     * Updates the challenge context for a given challenge on an event.
+     * @param event  The event to handle.
+     * @param session  The session to handle the event for.
+     * @param challengeId  The challenge to handle the event for.
+     * @param userData  The user data to update.
+     * @param data  The context of the challenge.
+     */
+    public challengeOnEvent(
+        event: ClientToServerEvent,
+        session: ContractSession,
+        challengeId: string,
+        userData: UserProfile,
+        data: ChallengeContext,
+    ): void {
+        const challenge = this.getChallengeById(
+            challengeId,
+            session.gameVersion,
+        )
+
+        if (!challenge) {
+            log(LogLevel.WARN, `Challenge ${challengeId} not found`)
+            return
+        }
+
+        if (this.fastGetIsCompleted(userData, challengeId)) {
+            return
+        }
+
+        try {
+            const options: HandleEventOptions = {
+                eventName: event.Name,
+                currentState: data.state,
+                timers: data.timers,
+                timestamp: event.Timestamp,
+                contractId: session.contractId,
+                // logger: (category, message) =>
+                //     log(LogLevel.DEBUG, `[${category}] ${message}`),
+            }
+
+            const previousState = data.state
+
+            const result = handleEvent(
+                // @ts-expect-error Needs to be fixed upstream.
+                challenge.Definition,
+                fastClone(data.context),
+                event.Value,
+                options,
+            )
+
+            // For challenges with scopes being "profile" or "hit",
+            // save challenge progression to the user's progression data
+            if (
+                challenge.Definition.Scope === "profile" ||
+                challenge.Definition.Scope === "hit"
+            ) {
+                userData.Extensions.ChallengeProgression[challengeId].State =
+                    result.context
+
+                writeUserData(session.userId, session.gameVersion)
+            }
+            // Need to update session context for all challenges
+            // to correctly determine challenge completion
+            data.state = result.state
+            data.context = result.context || challenge.Definition?.Context || {}
+            if (previousState !== "Success" && result.state === "Success") {
+                this.onChallengeCompleted(
+                    session,
+                    session.userId,
+                    session.gameVersion,
+                    challenge,
+                )
+            }
+        } catch (e) {
+            log(LogLevel.ERROR, e)
+        }
+    }
+
+    /**
+     * Upon an event, updates the context for all challenges in a contract session. Challenges not in the session are ignored.
+     * @param event  The event to handle.
+     * @param sessionId  The ID of the session. Unused as of v6.0.0.
+     * @param session  The session.
+     */
     onContractEvent(
         event: ClientToServerEvent,
         sessionId: string,
@@ -661,71 +745,13 @@ export class ChallengeService extends ChallengeRegistry {
         const userData = getUserData(session.userId, session.gameVersion)
 
         for (const challengeId of Object.keys(session.challengeContexts)) {
-            const challenge = this.getChallengeById(
+            this.challengeOnEvent(
+                event,
+                session,
                 challengeId,
-                session.gameVersion,
+                userData,
+                session.challengeContexts[challengeId],
             )
-            const data = session.challengeContexts[challengeId]
-
-            if (!challenge) {
-                log(LogLevel.WARN, `Challenge ${challengeId} not found`)
-                continue
-            }
-
-            if (this.fastGetIsCompleted(userData, challengeId)) {
-                continue
-            }
-
-            try {
-                const options: HandleEventOptions = {
-                    eventName: event.Name,
-                    currentState: data.state,
-                    timers: data.timers,
-                    timestamp: event.Timestamp,
-                    contractId: session.contractId,
-                    //logger: (category, message) =>
-                    //    log(LogLevel.DEBUG, `[${category}] ${message}`),
-                }
-
-                const previousState = data.state
-
-                const result = handleEvent(
-                    // @ts-expect-error Needs to be fixed upstream.
-                    challenge.Definition,
-                    fastClone(data.context),
-                    event.Value,
-                    options,
-                )
-
-                // For challenges with scopes being "profile" or "hit",
-                // save challenge progression to the user's progression data
-                if (
-                    challenge.Definition.Scope === "profile" ||
-                    challenge.Definition.Scope === "hit"
-                ) {
-                    userData.Extensions.ChallengeProgression[
-                        challengeId
-                    ].State = result.context
-
-                    writeUserData(session.userId, session.gameVersion)
-                }
-                // Need to update session context for all challenges
-                // to correctly determine challenge completion
-                session.challengeContexts[challengeId].state = result.state
-                session.challengeContexts[challengeId].context =
-                    result.context || challenge.Definition?.Context || {}
-
-                if (previousState !== "Success" && result.state === "Success") {
-                    this.onChallengeCompleted(
-                        session,
-                        session.userId,
-                        session.gameVersion,
-                        challenge,
-                    )
-                }
-            } catch (e) {
-                log(LogLevel.ERROR, e)
-            }
         }
     }
 
@@ -1308,11 +1334,16 @@ export class ChallengeService extends ChallengeRegistry {
         }
 
         //Always count the number of completions
-        session.challengeContexts[challenge.Id].timesCompleted++
+        if (session.challengeContexts[challenge.Id]) {
+            session.challengeContexts[challenge.Id].timesCompleted++
+        }
 
         //If we have a Definition-scope with a Repeatable, we may want to restart it.
         //TODO: Figure out what Base/Delta means. For now if Repeatable is set, we restart the challenge.
-        if (challenge.Definition.Repeatable) {
+        if (
+            challenge.Definition.Repeatable &&
+            session.challengeContexts[challenge.Id]
+        ) {
             session.challengeContexts[challenge.Id].state = "Start"
         }
 
@@ -1322,6 +1353,7 @@ export class ChallengeService extends ChallengeRegistry {
             challenge?.Drops ?? [],
             session,
             userData,
+            challenge.LocationId,
         )
 
         this.hooks.onChallengeCompleted.call(userId, challenge, gameVersion)

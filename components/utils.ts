@@ -291,9 +291,12 @@ export function castUserProfile(profile: UserProfile): UserProfile {
     if (j.Extensions?.gamepersistentdata?.PersistentBool) {
         switch (getFlag("mapDiscoveryState")) {
             case "REVEALED":
-                j.Extensions.gamepersistentdata.PersistentBool = {
-                    ...j.Extensions.gamepersistentdata.PersistentBool,
-                    ...getConfig("PersistentBools", true),
+                {
+                    const areas = Object.keys(getConfig("AreaMap", false))
+                    for (const area of areas) {
+                        j.Extensions.gamepersistentdata.PersistentBool[area] =
+                            true
+                    }
                 }
                 break
             case "CLOUDED":
