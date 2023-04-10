@@ -20,7 +20,11 @@ import type * as core from "express-serve-static-core"
 
 import type { IContractCreationPayload } from "../statemachines/contractCreation"
 import type { Request } from "express"
-import { ChallengeContext, ProfileChallengeData, SavedChallenge } from "./challenges"
+import {
+    ChallengeContext,
+    ProfileChallengeData,
+    SavedChallenge,
+} from "./challenges"
 import { SessionGhostModeDetails } from "../multiplayer/multiplayerService"
 import { IContextListener } from "../statemachines/contextListeners"
 
