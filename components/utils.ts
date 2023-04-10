@@ -293,7 +293,7 @@ export function castUserProfile(profile: UserProfile): UserProfile {
             case "REVEALED":
                 j.Extensions.gamepersistentdata.PersistentBool = {
                     ...j.Extensions.gamepersistentdata.PersistentBool,
-                    ...getConfig("PersistentBools", true),
+                    ...Object.keys(getConfig("AreaMap", false)),
                 }
                 break
             case "CLOUDED":

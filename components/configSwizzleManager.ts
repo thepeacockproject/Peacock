@@ -77,7 +77,6 @@ import LegacySaveMenuTemplate from "../static/LegacySaveMenuTemplate.json"
 import LegacyLoadMenuTemplate from "../static/LegacyLoadMenuTemplate.json"
 import LegacyLookupContractByIdTemplate from "../static/LegacyLookupContractByIdTemplate.json"
 import EiderDashboard from "../static/EiderDashboard.json"
-import PersistentBools from "../static/PersistentBools.json"
 import H2allunlockables from "../static/H2allunlockables.json"
 import H2DestinationsData from "../static/H2DestinationsData.json"
 import H2StoreData from "../static/H2StoreData.json"
@@ -179,7 +178,6 @@ const configs: Record<string, unknown> = {
     DebriefingChallengesTemplate,
     LegacyLookupContractByIdTemplate,
     EiderDashboard,
-    PersistentBools,
     FrankensteinHubTemplate,
     H2allunlockables,
     H2DestinationsData,
