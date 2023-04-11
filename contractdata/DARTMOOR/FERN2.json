@@ -1,0 +1,334 @@
+{
+    "Data": {
+        "Bricks": [
+            "Assembly:/_PRO/Scenes/missions/Ancestral/ancestral_fern.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ancestral_bulldog.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ancestral_bulldog.brick"
+                ]
+            }
+        ],
+        "DevOnlyBricks": [],
+        "GameChangers": [
+            "63055f1a-bcd2-4e0f-8caf-b446f01d02f3",
+            "3db72bb5-63d6-47fe-9332-d7ea3c195e06",
+            "c2da52c5-ff3e-41cd-a175-4ed9267f6c95"
+        ],
+        "Entrances": ["5a60147f-9c85-4998-b70f-1441ee7ba9b1"],
+        "MandatoryLoadout": [
+            {
+                "Id": "Global_Outfit_Hero_Hunting_Suit",
+                "Properties": {
+                    "LoadoutSlot": "Outfit",
+                    "RepositoryId": "ae7358ae-ac6d-4217-b86e-efffde5b90dd"
+                }
+            }
+        ],
+        "GameChangerReferences": [],
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "_comment": "Zacharys balcony guard with barber razor",
+                "Id": "bbbf0156-83b2-4c7e-a729-fb04172ec048",
+                "Category": "primary",
+                "BriefingName": "",
+                "Image": "images/actors/actor_5cfc8323-1053-4138-b2a4-2448b5003d1e.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "ae7358ae-ac6d-4217-b86e-efffde5b90dd",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "5ce2f842-e091-4ead-a51c-1cc406309c8d",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_FERN_LUCIANBARKER_RAZOR"
+                },
+                "BriefingText": "$loc UI_CONTRACT_FERN_LUCIANBARKER_RAZOR",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["5cfc8323-1053-4138-b2a4-2448b5003d1e"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "5cfc8323-1053-4138-b2a4-2448b5003d1e"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "ae7358ae-ac6d-4217-b86e-efffde5b90dd"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "5ce2f842-e091-4ead-a51c-1cc406309c8d"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "5cfc8323-1053-4138-b2a4-2448b5003d1e"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Lawyer room guard",
+                "Id": "4628bf54-4e8b-4fec-9767-2dbf48f7175a",
+                "Category": "primary",
+                "BriefingName": "",
+                "Image": "images/actors/actor_604dfbdb-1cdd-4d96-ba13-7a7dacbc973c.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "ae7358ae-ac6d-4217-b86e-efffde5b90dd",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "5ce2f842-e091-4ead-a51c-1cc406309c8d",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_FERN_BENMOORE_RAZOR"
+                },
+                "BriefingText": "$loc UI_CONTRACT_FERN_BENMOORE_RAZOR",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["604dfbdb-1cdd-4d96-ba13-7a7dacbc973c"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "604dfbdb-1cdd-4d96-ba13-7a7dacbc973c"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "ae7358ae-ac6d-4217-b86e-efffde5b90dd"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "5ce2f842-e091-4ead-a51c-1cc406309c8d"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "604dfbdb-1cdd-4d96-ba13-7a7dacbc973c"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Alexa office guard",
+                "Id": "b4494de6-0256-490a-a9f2-20c822f7c427",
+                "Category": "primary",
+                "BriefingName": "",
+                "Image": "images/actors/actor_51cb49bf-2a59-4444-81b7-96aeda12ba19.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "ae7358ae-ac6d-4217-b86e-efffde5b90dd",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "5ce2f842-e091-4ead-a51c-1cc406309c8d",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_FERN_ISAACHUNTER_RAZOR"
+                },
+                "BriefingText": "$loc UI_CONTRACT_FERN_ISAACHUNTER_RAZOR",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["51cb49bf-2a59-4444-81b7-96aeda12ba19"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "51cb49bf-2a59-4444-81b7-96aeda12ba19"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "ae7358ae-ac6d-4217-b86e-efffde5b90dd"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "5ce2f842-e091-4ead-a51c-1cc406309c8d"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "51cb49bf-2a59-4444-81b7-96aeda12ba19"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Find razor blade",
+                "Id": "0592edff-8c1c-45a6-933f-fd07b1d9abd9",
+                "Category": "primary",
+                "ObjectiveType": "setpiece",
+                "ExcludeFromScoring": true,
+                "BriefingName": "$loc UI_CONTRACT_FERN_GETRAZORBLADE",
+                "Image": "images/unlockables/item_perspective_5ce2f842-e091-4ead-a51c-1cc406309c8d_0.jpg",
+                "TargetConditions": [{}],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_FERN_GETRAZORBLADE",
+                    "iconType": 17
+                },
+                "BriefingText": "$loc UI_CONTRACT_FERN_GETRAZORBLADE",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["29e96a16-a0c0-4fa5-b438-ceeb3a00fb7e"]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "5ce2f842-e091-4ead-a51c-1cc406309c8d"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "6e78d720-ed06-4c56-a016-39b6a6887d63",
+        "IsPublished": true,
+        "CreationTimestamp": "2018-10-17T14:35:18.194497Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_FERN_LEVEL_2_NAME",
+        "Description": "UI_CONTRACT_FERN_GROUP_DESC",
+        "CodeName_Hint": "Fern - Level 2",
+        "Location": "LOCATION_ANCESTRAL_BULLDOG",
+        "RequiredUnlockable": "ACCESS_HIT_BULLDOG",
+        "ScenePath": "assembly:/_pro/scenes/missions/ancestral/scene_bulldog_fern.entity",
+        "Type": "escalation",
+        "Release": "3.1.0 Escalation",
+        "InGroup": "4689ef5e-0ddd-44b3-adca-aebf3293d9e1",
+        "Entitlements": ["H3_EXPANSION"],
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "0592edff-8c1c-45a6-933f-fd07b1d9abd9" },
+            { "IsNew": true, "Id": "bbbf0156-83b2-4c7e-a729-fb04172ec048" },
+            { "IsNew": true, "Id": "4628bf54-4e8b-4fec-9767-2dbf48f7175a" },
+            { "IsNew": true, "Id": "b4494de6-0256-490a-a9f2-20c822f7c427" },
+            { "IsNew": true, "Id": "c2da52c5-ff3e-41cd-a175-4ed9267f6c95" },
+            { "Id": "63055f1a-bcd2-4e0f-8caf-b446f01d02f3" },
+            { "Id": "3db72bb5-63d6-47fe-9332-d7ea3c195e06" }
+        ],
+        "LastUpdate": "2023-03-30T11:20:25.6666489Z",
+        "PublicId": "028167631447",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Ancestral_Fern.jpg"
+    },
+    "UserData": {}
+}

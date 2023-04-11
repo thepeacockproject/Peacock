@@ -1,0 +1,1086 @@
+{
+    "Data": {
+        "EnableExits": {
+            "$eq": ["$8bfb7c94-ea15-46af-afc2-480f40e54ff2", "Completed"]
+        },
+        "EnableSaving": false,
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/wet/scenario_makoyana.brick",
+            "assembly:/_pro/scenes/missions/wet/scenario_makoyana_level2.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/wet/vr_overrides_rat.brick",
+                    "assembly:/_pro/scenes/missions/Wet/vr_overrides_ps4perf.brick",
+                    "assembly:/_PRO/Scenes/missions/Wet/vr_overrides_makoyana_level2.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/wet/vr_overrides_rat.brick",
+                    "assembly:/_PRO/Scenes/missions/Wet/vr_overrides_makoyana_level2.brick"
+                ]
+            }
+        ],
+        "GameChangers": [
+            "3db72bb5-63d6-47fe-9332-d7ea3c195e06",
+            "63055f1a-bcd2-4e0f-8caf-b446f01d02f3"
+        ],
+        "Entrances": [],
+        "MandatoryLoadout": [],
+        "GameChangerReferences": [],
+        "Objectives": [
+            {
+                "_comment": "Do as your told_test objective",
+                "Id": "f869412b-112f-4efe-97d8-39add9b03d95",
+                "Category": "primary",
+                "ObjectiveType": "setpiece",
+                "BriefingName": "$loc UI_CONTRACT_MAKOYANA_FIRSTOBJECTIVE",
+                "Image": "images/contracts/escalation/ContractEscalation_Wet_Makoyana_FirstObjective.jpg",
+                "TargetConditions": [],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_MAKOYANA_FIRSTOBJECTIVE",
+                    "iconType": 17
+                },
+                "BriefingText": "$loc UI_CONTRACT_MAKOYANA_FIRSTOBJECTIVE",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "LetterOpener": false,
+                        "DevilDuck": false,
+                        "KilledActors": [],
+                        "Targets": ["d1a8a3b4-8fb7-4801-8e6d-af354ba03646"]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$or": [
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "1bfbb69d-c876-4d05-ab0b-f0be63b55b7a"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "f9d471fc-a3d0-49bd-8e2d-af7fb8cedf6f"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Silent objective to start Fiber Wire path -----",
+                "Id": "0ce95bfc-79f4-4400-9109-75541673535c",
+                "Type": "statemachine",
+                "Category": "condition",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                },
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "PickedUpSyringe": [{ "Transition": "Success" }]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Silent objective to start Sniper path -----",
+                "Id": "f2863184-44c1-4276-86cf-6e98219b25be",
+                "Type": "statemachine",
+                "Category": "condition",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                },
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "PickedUpSniper": [{ "Transition": "Success" }]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "FAIL condition for wasting a syringe",
+                "Id": "9d66e3a2-73a2-40d9-b19b-f0b5e695920a",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "BriefingName": "",
+                "TargetConditions": [],
+                "HUDTemplate": {
+                    "display": "$loc UI_FAILMESSAGE_MAKOYANA_KEYITEMLOST"
+                },
+                "BriefingText": "$loc UI_FAILMESSAGE_MAKOYANA_KEYITEMLOST",
+                "Type": "statemachine",
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.IsTarget",
+                                                    false
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "1bfbb69d-c876-4d05-ab0b-f0be63b55b7a"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Syringe target 1",
+                "Id": "9f7bc670-34dc-428e-a9e6-dd0a12c055cb",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "BriefingName": "",
+                "Image": "images/actors/actor_cb7b9923-0098-4336-8bff-6ca0d5d46440.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "1bfbb69d-c876-4d05-ab0b-f0be63b55b7a",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "c4fe3a20-f62a-4154-ae91-7d163d5b99fd",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_MAKOYANA_OBJ14" },
+                "BriefingText": "$loc UI_CONTRACT_MAKOYANA_OBJ14",
+                "Type": "statemachine",
+                "IgnoreIfInactive": true,
+                "Activation": {
+                    "$eq": [
+                        "$0ce95bfc-79f4-4400-9109-75541673535c",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": { "IfInProgress": { "Visible": false } },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["cb7b9923-0098-4336-8bff-6ca0d5d46440"]
+                    },
+                    "States": {
+                        "Start": {
+                            "PickedUpSyringe": [{ "Transition": "CheckKills" }]
+                        },
+                        "CheckKills": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "cb7b9923-0098-4336-8bff-6ca0d5d46440"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "1bfbb69d-c876-4d05-ab0b-f0be63b55b7a"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "cb7b9923-0098-4336-8bff-6ca0d5d46440"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Syringe target 2",
+                "Id": "a09ecfba-1748-4ad1-b141-0981a7fea25a",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "BriefingName": "",
+                "Image": "images/actors/actor_ddbac9e2-4100-4a61-9539-64e92f5f98e0.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "1bfbb69d-c876-4d05-ab0b-f0be63b55b7a",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "c4fe3a20-f62a-4154-ae91-7d163d5b99fd",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_MAKOYANA_OBJ15" },
+                "BriefingText": "$loc UI_CONTRACT_MAKOYANA_OBJ15",
+                "Type": "statemachine",
+                "IgnoreIfInactive": true,
+                "Activation": {
+                    "$eq": [
+                        "$0ce95bfc-79f4-4400-9109-75541673535c",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": { "IfInProgress": { "Visible": false } },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["ddbac9e2-4100-4a61-9539-64e92f5f98e0"]
+                    },
+                    "States": {
+                        "Start": {
+                            "PickedUpSyringe": [{ "Transition": "CheckKills" }]
+                        },
+                        "CheckKills": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "ddbac9e2-4100-4a61-9539-64e92f5f98e0"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "1bfbb69d-c876-4d05-ab0b-f0be63b55b7a"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "ddbac9e2-4100-4a61-9539-64e92f5f98e0"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Syringe target 3",
+                "Id": "b7ea841b-7382-4bf0-995c-6f1c3d3944e7",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "BriefingName": "",
+                "Image": "images/actors/actor_dcfb0146-63ff-4514-8278-de05f86a3d21.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "1bfbb69d-c876-4d05-ab0b-f0be63b55b7a",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "c4fe3a20-f62a-4154-ae91-7d163d5b99fd",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_MAKOYANA_OBJ16" },
+                "BriefingText": "$loc UI_CONTRACT_MAKOYANA_OBJ16",
+                "Type": "statemachine",
+                "IgnoreIfInactive": true,
+                "Activation": {
+                    "$eq": [
+                        "$0ce95bfc-79f4-4400-9109-75541673535c",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": { "IfInProgress": { "Visible": false } },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["dcfb0146-63ff-4514-8278-de05f86a3d21"]
+                    },
+                    "States": {
+                        "Start": {
+                            "PickedUpSyringe": [{ "Transition": "CheckKills" }]
+                        },
+                        "CheckKills": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "dcfb0146-63ff-4514-8278-de05f86a3d21"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "1bfbb69d-c876-4d05-ab0b-f0be63b55b7a"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "dcfb0146-63ff-4514-8278-de05f86a3d21"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Sniper objective 1 _ Roof Guard 1",
+                "Id": "88b4ed99-3c87-4321-9669-296c5cc92239",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "BriefingName": "",
+                "Image": "images/actors/actor_935e35cd-e31f-48d4-b472-e8b66f134020.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "f9d471fc-a3d0-49bd-8e2d-af7fb8cedf6f",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "c4fe3a20-f62a-4154-ae91-7d163d5b99fd",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_MAKOYANA_OBJ7" },
+                "BriefingText": "$loc UI_CONTRACT_MAKOYANA_OBJ7",
+                "Type": "statemachine",
+                "IgnoreIfInactive": true,
+                "Activation": {
+                    "$eq": [
+                        "$f2863184-44c1-4276-86cf-6e98219b25be",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": { "IfInProgress": { "Visible": false } },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["935e35cd-e31f-48d4-b472-e8b66f134020"]
+                    },
+                    "States": {
+                        "Start": {
+                            "PickedUpSniper": { "Transition": "CheckKills" }
+                        },
+                        "CheckKills": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "935e35cd-e31f-48d4-b472-e8b66f134020"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "f9d471fc-a3d0-49bd-8e2d-af7fb8cedf6f"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "935e35cd-e31f-48d4-b472-e8b66f134020"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Sniper Objective 2 _ Roof guard 2",
+                "Id": "d652c20d-0c90-4637-a8c1-f9dc3b3b167c",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "BriefingName": "",
+                "Image": "images/actors/actor_5638d1a0-335b-4c35-8b6a-9f3b48fe7485.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "f9d471fc-a3d0-49bd-8e2d-af7fb8cedf6f",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "c4fe3a20-f62a-4154-ae91-7d163d5b99fd",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_MAKOYANA_OBJ8" },
+                "BriefingText": "$loc UI_CONTRACT_MAKOYANA_OBJ8",
+                "Type": "statemachine",
+                "IgnoreIfInactive": true,
+                "Activation": {
+                    "$eq": [
+                        "$f2863184-44c1-4276-86cf-6e98219b25be",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": { "IfInProgress": { "Visible": false } },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["5638d1a0-335b-4c35-8b6a-9f3b48fe7485"]
+                    },
+                    "States": {
+                        "Start": {
+                            "PickedUpSniper": { "Transition": "CheckKills" }
+                        },
+                        "CheckKills": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "5638d1a0-335b-4c35-8b6a-9f3b48fe7485"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "f9d471fc-a3d0-49bd-8e2d-af7fb8cedf6f"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "5638d1a0-335b-4c35-8b6a-9f3b48fe7485"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Sniper Objective 3 _ scientist in hush relax room",
+                "Id": "7a864a4e-0dc9-4525-898c-4f9418e778e5",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "BriefingName": "",
+                "Image": "images/actors/actor_6927fbc1-8cbb-4c7a-9098-0b041fe120df.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "f9d471fc-a3d0-49bd-8e2d-af7fb8cedf6f",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "c4fe3a20-f62a-4154-ae91-7d163d5b99fd",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_MAKOYANA_OBJ12" },
+                "BriefingText": "$loc UI_CONTRACT_MAKOYANA_OBJ12",
+                "Type": "statemachine",
+                "IgnoreIfInactive": true,
+                "Activation": {
+                    "$eq": [
+                        "$f2863184-44c1-4276-86cf-6e98219b25be",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": { "IfInProgress": { "Visible": false } },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["6927fbc1-8cbb-4c7a-9098-0b041fe120df"]
+                    },
+                    "States": {
+                        "Start": {
+                            "PickedUpSniper": { "Transition": "CheckKills" }
+                        },
+                        "CheckKills": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "6927fbc1-8cbb-4c7a-9098-0b041fe120df"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "f9d471fc-a3d0-49bd-8e2d-af7fb8cedf6f"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "6927fbc1-8cbb-4c7a-9098-0b041fe120df"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Sniper Objective 4 _ Guard in hush relax room",
+                "Id": "d23b25a2-86fd-4d35-9c9f-b6028e4db93e",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "BriefingName": "",
+                "Image": "images/actors/actor_fdbe167e-dfe6-49b3-bc1b-27a4a67a9c6d.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "f9d471fc-a3d0-49bd-8e2d-af7fb8cedf6f",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "c4fe3a20-f62a-4154-ae91-7d163d5b99fd",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_MAKOYANA_OBJ13" },
+                "BriefingText": "$loc UI_CONTRACT_MAKOYANA_OBJ13",
+                "Type": "statemachine",
+                "IgnoreIfInactive": true,
+                "Activation": {
+                    "$eq": [
+                        "$f2863184-44c1-4276-86cf-6e98219b25be",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": { "IfInProgress": { "Visible": false } },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["fdbe167e-dfe6-49b3-bc1b-27a4a67a9c6d"]
+                    },
+                    "States": {
+                        "Start": {
+                            "PickedUpSniper": { "Transition": "CheckKills" }
+                        },
+                        "CheckKills": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "fdbe167e-dfe6-49b3-bc1b-27a4a67a9c6d"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "f9d471fc-a3d0-49bd-8e2d-af7fb8cedf6f"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "fdbe167e-dfe6-49b3-bc1b-27a4a67a9c6d"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Sniper Explosive objective 1 _ 3 npcs near scooters",
+                "Id": "a7e283d8-2585-4563-8249-38729a4382ee",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "BriefingName": "",
+                "Image": "images/actors/actor_d8e503c0-90e5-42bf-bd1c-39a2352b6aa2.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "explosion",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "c4fe3a20-f62a-4154-ae91-7d163d5b99fd",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_MAKOYANA_OBJ9" },
+                "BriefingText": "$loc UI_CONTRACT_MAKOYANA_OBJ9",
+                "Type": "statemachine",
+                "IgnoreIfInactive": true,
+                "Activation": {
+                    "$eq": [
+                        "$f2863184-44c1-4276-86cf-6e98219b25be",
+                        "$88b4ed99-3c87-4321-9669-296c5cc92239",
+                        "$d652c20d-0c90-4637-a8c1-f9dc3b3b167c",
+                        "$7a864a4e-0dc9-4525-898c-4f9418e778e5",
+                        "$d23b25a2-86fd-4d35-9c9f-b6028e4db93e",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": { "IfInProgress": { "Visible": false } },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["d8e503c0-90e5-42bf-bd1c-39a2352b6aa2"]
+                    },
+                    "States": {
+                        "Start": {
+                            "PickedUpSniper": { "Transition": "CheckKills" }
+                        },
+                        "CheckKills": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "d8e503c0-90e5-42bf-bd1c-39a2352b6aa2"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillClass",
+                                                    "explosion"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "d8e503c0-90e5-42bf-bd1c-39a2352b6aa2"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Sniper Explosive objective 2 _ 3 npcs near scooters",
+                "Id": "d1ed2cda-eb08-49d0-8dc2-1e7e544775fa",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "BriefingName": "",
+                "Image": "images/actors/actor_0d99b69b-bdd6-4016-ae11-faa9c67d1c40.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "explosion",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "c4fe3a20-f62a-4154-ae91-7d163d5b99fd",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_MAKOYANA_OBJ10" },
+                "BriefingText": "$loc UI_CONTRACT_MAKOYANA_OBJ10",
+                "Type": "statemachine",
+                "IgnoreIfInactive": true,
+                "Activation": {
+                    "$eq": [
+                        "$f2863184-44c1-4276-86cf-6e98219b25be",
+                        "$88b4ed99-3c87-4321-9669-296c5cc92239",
+                        "$d652c20d-0c90-4637-a8c1-f9dc3b3b167c",
+                        "$7a864a4e-0dc9-4525-898c-4f9418e778e5",
+                        "$d23b25a2-86fd-4d35-9c9f-b6028e4db93e",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": { "IfInProgress": { "Visible": false } },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["0d99b69b-bdd6-4016-ae11-faa9c67d1c40"]
+                    },
+                    "States": {
+                        "Start": {
+                            "PickedUpSniper": { "Transition": "CheckKills" }
+                        },
+                        "CheckKills": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "0d99b69b-bdd6-4016-ae11-faa9c67d1c40"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillClass",
+                                                    "explosion"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "0d99b69b-bdd6-4016-ae11-faa9c67d1c40"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Sniper Explosive objective 3 _ 3 npcs near scooters",
+                "Id": "b64dd118-a4e6-4a4d-8a1b-aefc590cd771",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "BriefingName": "",
+                "Image": "images/actors/actor_b07d3226-7ca2-412e-9000-2893f689dcf0.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "explosion",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "c4fe3a20-f62a-4154-ae91-7d163d5b99fd",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_MAKOYANA_OBJ11" },
+                "BriefingText": "$loc UI_CONTRACT_MAKOYANA_OBJ11",
+                "Type": "statemachine",
+                "IgnoreIfInactive": true,
+                "Activation": {
+                    "$eq": [
+                        "$f2863184-44c1-4276-86cf-6e98219b25be",
+                        "$88b4ed99-3c87-4321-9669-296c5cc92239",
+                        "$d652c20d-0c90-4637-a8c1-f9dc3b3b167c",
+                        "$7a864a4e-0dc9-4525-898c-4f9418e778e5",
+                        "$d23b25a2-86fd-4d35-9c9f-b6028e4db93e",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": { "IfInProgress": { "Visible": false } },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["b07d3226-7ca2-412e-9000-2893f689dcf0"]
+                    },
+                    "States": {
+                        "Start": {
+                            "PickedUpSniper": { "Transition": "CheckKills" }
+                        },
+                        "CheckKills": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "b07d3226-7ca2-412e-9000-2893f689dcf0"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillClass",
+                                                    "explosion"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "b07d3226-7ca2-412e-9000-2893f689dcf0"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "0e759412-c9df-4ceb-8aab-92381735f4bf",
+                "Name": "UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_DO_NOT_GET_SPOTTED_PRIMARY_NAME",
+                "Description": "UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_DO_NOT_GET_SPOTTED_PRIMARY_DESC",
+                "TileImage": "images/contractconditions/condition_contrac_do_not_be_spotted.jpg",
+                "Icon": "images/challenges/default_challenge_icon.png",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "IgnoreIfInactive": true,
+                "Activation": {
+                    "$eq": [
+                        "$0ce95bfc-79f4-4400-9109-75541673535c",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfFailed": { "State": "InProgress" }
+                },
+                "OnActive": { "IfInProgress": { "Visible": true } },
+                "BriefingText": "$loc UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_DO_NOT_GET_SPOTTED_PRIMARY_FAIL",
+                "HUDTemplate": {
+                    "display": "$loc UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_DO_NOT_GET_SPOTTED_PRIMARY_OBJ",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": { "PacifiedIds": [] },
+                    "States": {
+                        "Start": {
+                            "PickedUpSyringe": { "Transition": "NoSpotting" }
+                        },
+                        "NoSpotting": {
+                            "Spotted": { "Transition": "Failure" },
+                            "Pacify": {
+                                "Actions": {
+                                    "$reset": "PacifiedIds",
+                                    "$pushunique": [
+                                        "PacifiedIds",
+                                        "$Value.RepositoryId"
+                                    ]
+                                }
+                            },
+                            "Witnesses": [
+                                {
+                                    "Condition": {
+                                        "$all": {
+                                            "in": "$.PacifiedIds",
+                                            "?": {
+                                                "$any": {
+                                                    "in": "$Value",
+                                                    "?": {
+                                                        "$eq": ["$.#", "$.##"]
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "Transition": "Failure"
+                                },
+                                { "Actions": { "$reset": "PacifiedIds" } }
+                            ],
+                            "DisguiseBlown": { "Transition": "Failure" }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Silent objective to hande exit enabling -----",
+                "Id": "8bfb7c94-ea15-46af-afc2-480f40e54ff2",
+                "Type": "statemachine",
+                "Category": "condition",
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                },
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "SyringesKilled": [{ "Transition": "Success" }],
+                            "SnipersKilled": [{ "Transition": "Success" }]
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "d1b14b00-2393-4037-baf9-0217dd710427",
+        "IsPublished": true,
+        "CreationTimestamp": "2021-01-12T12:24:16.194497Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_MAKOYANA_LEVEL_2_TITLE",
+        "Description": "UI_CONTRACT_MAKOYANA_LEVEL_2_TITLE",
+        "CodeName_Hint": "Makoyana Level 2",
+        "Location": "LOCATION_WET_RAT",
+        "RequiredUnlockable": "ACCESS_HIT_RAT",
+        "ScenePath": "assembly:/_pro/scenes/missions/wet/scene_wet_makoyana.entity",
+        "Type": "escalation",
+        "Release": "3.3.0 Escalation",
+        "InGroup": "494d97a6-9e31-45e0-9dae-f3793c731336",
+        "Entitlements": ["H3_DEADLYSINS_PRIDE"],
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "f869412b-112f-4efe-97d8-39add9b03d95" },
+            { "Id": "3db72bb5-63d6-47fe-9332-d7ea3c195e06" },
+            { "Id": "63055f1a-bcd2-4e0f-8caf-b446f01d02f3" }
+        ],
+        "LastUpdate": "2023-03-30T11:20:26.8734117Z",
+        "PublicId": "030748790247",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Wet_Makoyana.jpg"
+    },
+    "UserData": {}
+}

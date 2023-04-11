@@ -1,0 +1,857 @@
+{
+    "Data": {
+        "EnableExits": {
+            "$eq": ["$cbc1d9f6-aef5-42a4-978e-47b6dd258952", "Completed"]
+        },
+        "EnableSaving": false,
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/wet/scenario_makoyana.brick",
+            "assembly:/_pro/scenes/missions/wet/scenario_makoyana_level3.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/wet/vr_overrides_rat.brick",
+                    "assembly:/_pro/scenes/missions/Wet/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/wet/vr_overrides_rat.brick"
+                ]
+            }
+        ],
+        "GameChangers": [
+            "3db72bb5-63d6-47fe-9332-d7ea3c195e06",
+            "63055f1a-bcd2-4e0f-8caf-b446f01d02f3"
+        ],
+        "Entrances": [],
+        "MandatoryLoadout": [],
+        "GameChangerReferences": [],
+        "Objectives": [
+            {
+                "_comment": "Do as your told_test objective",
+                "Id": "0dfac285-9618-4219-9e7b-24ae3df2d352",
+                "Category": "primary",
+                "ObjectiveType": "setpiece",
+                "BriefingName": "$loc UI_CONTRACT_MAKOYANA_FIRSTOBJECTIVE",
+                "Image": "images/contracts/escalation/ContractEscalation_Wet_Makoyana_FirstObjective.jpg",
+                "TargetConditions": [],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_MAKOYANA_FIRSTOBJECTIVE",
+                    "iconType": 17
+                },
+                "BriefingText": "$loc UI_CONTRACT_MAKOYANA_FIRSTOBJECTIVE",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "LetterOpener": false,
+                        "DevilDuck": false,
+                        "KilledActors": [],
+                        "Targets": ["8139d1af-85eb-4212-b9b2-4d4ca5fcf086"]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$or": [
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "5b28437f-e440-40e0-ba77-426c1ee9fe0c"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "edd82229-9984-45db-802f-8584ecf38ef3"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Silent objective to start Pride Sabre path -----",
+                "Id": "5bf3fe20-b1dc-4773-8cef-60c1fe383558",
+                "Type": "statemachine",
+                "Category": "condition",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                },
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "PickedUpPrideSabre": { "Transition": "Success" }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Silent objective to start Fiber Wire Path -----",
+                "Id": "1a4057a9-0889-48b1-9e98-3750c6a7a084",
+                "Type": "statemachine",
+                "Category": "condition",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                },
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "PickedUpPirateSabre": { "Transition": "Success" }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "FAIL condition for throwing sabre away",
+                "Id": "9759c510-d84a-4f83-a699-e73d33678db8",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "BriefingName": "",
+                "TargetConditions": [],
+                "HUDTemplate": {
+                    "display": "$loc UI_FAILMESSAGE_MAKOYANA_KEYITEMLOST"
+                },
+                "BriefingText": "$loc UI_FAILMESSAGE_MAKOYANA_KEYITEMLOST",
+                "Type": "statemachine",
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "SABRE_LEFT_LEVEL": { "Transition": "Failure" }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Fiber Wire target 1",
+                "Id": "141d419c-6484-490a-97db-f6927afa0e37",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "BriefingName": "",
+                "Image": "images/actors/actor_006e46cf-afb8-47af-bd88-905d574c6e8b.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "fiberwire",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "c4fe3a20-f62a-4154-ae91-7d163d5b99fd",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_MAKOYANA_L3DEFYOBJECTIVE01"
+                },
+                "BriefingText": "$loc UI_CONTRACT_MAKOYANA_L3DEFYOBJECTIVE01",
+                "Type": "statemachine",
+                "Activation": {
+                    "$eq": [
+                        "$1a4057a9-0889-48b1-9e98-3750c6a7a084",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": { "IfInProgress": { "Visible": false } },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["006e46cf-afb8-47af-bd88-905d574c6e8b"]
+                    },
+                    "States": {
+                        "Start": {
+                            "PickedUpPirateSabre": {
+                                "Transition": "CheckKills"
+                            }
+                        },
+                        "CheckKills": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "006e46cf-afb8-47af-bd88-905d574c6e8b"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemCategory",
+                                                    "fiberwire"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "006e46cf-afb8-47af-bd88-905d574c6e8b"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Fiber Wire target 2",
+                "Id": "7f62cfa0-a67c-4bcb-86c5-2517270ce092",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "BriefingName": "",
+                "Image": "images/actors/actor_0e015f8d-8b10-4656-9d9f-c97c7271984c.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "fiberwire",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "c4fe3a20-f62a-4154-ae91-7d163d5b99fd",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_MAKOYANA_L3DEFYOBJECTIVE02"
+                },
+                "BriefingText": "$loc UI_CONTRACT_MAKOYANA_L3DEFYOBJECTIVE02",
+                "Type": "statemachine",
+                "Activation": {
+                    "$eq": [
+                        "$1a4057a9-0889-48b1-9e98-3750c6a7a084",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": { "IfInProgress": { "Visible": false } },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["0e015f8d-8b10-4656-9d9f-c97c7271984c"]
+                    },
+                    "States": {
+                        "Start": {
+                            "PickedUpPirateSabre": {
+                                "Transition": "CheckKills"
+                            }
+                        },
+                        "CheckKills": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "0e015f8d-8b10-4656-9d9f-c97c7271984c"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemCategory",
+                                                    "fiberwire"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "0e015f8d-8b10-4656-9d9f-c97c7271984c"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Fiber Wire target 3",
+                "Id": "79ee30f3-c558-471b-a4a3-47d8e242ed4e",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "BriefingName": "",
+                "Image": "images/actors/actor_b7962e99-f578-4027-85d9-73968c39076b.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "fiberwire",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "c4fe3a20-f62a-4154-ae91-7d163d5b99fd",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_MAKOYANA_L3DEFYOBJECTIVE03"
+                },
+                "BriefingText": "$loc UI_CONTRACT_MAKOYANA_L3DEFYOBJECTIVE03",
+                "Type": "statemachine",
+                "Activation": {
+                    "$eq": [
+                        "$1a4057a9-0889-48b1-9e98-3750c6a7a084",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": { "IfInProgress": { "Visible": false } },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["b7962e99-f578-4027-85d9-73968c39076b"]
+                    },
+                    "States": {
+                        "Start": {
+                            "PickedUpPirateSabre": {
+                                "Transition": "CheckKills"
+                            }
+                        },
+                        "CheckKills": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "b7962e99-f578-4027-85d9-73968c39076b"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemCategory",
+                                                    "fiberwire"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "b7962e99-f578-4027-85d9-73968c39076b"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Pride sabre target 1",
+                "Id": "e632afb3-56f9-4ad6-aa5c-574614d18127",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "BriefingName": "",
+                "Image": "images/actors/actor_6d6e3356-f225-4290-ba2d-97fd3c2c14de.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "5b28437f-e440-40e0-ba77-426c1ee9fe0c",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "c4fe3a20-f62a-4154-ae91-7d163d5b99fd",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_MAKOYANA_L3OBEYOBJECTIVE01"
+                },
+                "BriefingText": "$loc UI_CONTRACT_MAKOYANA_L3OBEYOBJECTIVE01",
+                "Type": "statemachine",
+                "IgnoreIfInactive": true,
+                "Activation": {
+                    "$eq": [
+                        "$5bf3fe20-b1dc-4773-8cef-60c1fe383558",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": { "IfInProgress": { "Visible": false } },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["6d6e3356-f225-4290-ba2d-97fd3c2c14de"]
+                    },
+                    "States": {
+                        "Start": {
+                            "PickedUpPrideSabre": { "Transition": "CheckKills" }
+                        },
+                        "CheckKills": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "6d6e3356-f225-4290-ba2d-97fd3c2c14de"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "5b28437f-e440-40e0-ba77-426c1ee9fe0c"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "6d6e3356-f225-4290-ba2d-97fd3c2c14de"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Pride sabre target 2",
+                "Id": "ec93aa6c-9992-40fd-8b66-0bdf2452b667",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "BriefingName": "",
+                "Image": "images/actors/actor_621516e0-b703-4cb8-934b-43fac7f9dfdb.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "5b28437f-e440-40e0-ba77-426c1ee9fe0c",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "c4fe3a20-f62a-4154-ae91-7d163d5b99fd",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_MAKOYANA_L3OBEYOBJECTIVE02"
+                },
+                "BriefingText": "$loc UI_CONTRACT_MAKOYANA_L3OBEYOBJECTIVE02",
+                "Type": "statemachine",
+                "IgnoreIfInactive": true,
+                "Activation": {
+                    "$eq": [
+                        "$5bf3fe20-b1dc-4773-8cef-60c1fe383558",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": { "IfInProgress": { "Visible": false } },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["621516e0-b703-4cb8-934b-43fac7f9dfdb"]
+                    },
+                    "States": {
+                        "Start": {
+                            "PickedUpPrideSabre": { "Transition": "CheckKills" }
+                        },
+                        "CheckKills": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "621516e0-b703-4cb8-934b-43fac7f9dfdb"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "5b28437f-e440-40e0-ba77-426c1ee9fe0c"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "621516e0-b703-4cb8-934b-43fac7f9dfdb"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Pride sabre target 3",
+                "Id": "1d0addf3-e9b9-4aeb-9e66-0429b34284bf",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "BriefingName": "",
+                "Image": "images/actors/actor_d19eb158-c842-4064-92da-a8038086bd53.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "5b28437f-e440-40e0-ba77-426c1ee9fe0c",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "c4fe3a20-f62a-4154-ae91-7d163d5b99fd",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_MAKOYANA_L3OBEYOBJECTIVE03"
+                },
+                "BriefingText": "$loc UI_CONTRACT_MAKOYANA_L3OBEYOBJECTIVE03",
+                "Type": "statemachine",
+                "IgnoreIfInactive": true,
+                "Activation": {
+                    "$eq": [
+                        "$5bf3fe20-b1dc-4773-8cef-60c1fe383558",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": { "IfInProgress": { "Visible": false } },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["d19eb158-c842-4064-92da-a8038086bd53"]
+                    },
+                    "States": {
+                        "Start": {
+                            "PickedUpPrideSabre": { "Transition": "CheckKills" }
+                        },
+                        "CheckKills": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "d19eb158-c842-4064-92da-a8038086bd53"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "5b28437f-e440-40e0-ba77-426c1ee9fe0c"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "d19eb158-c842-4064-92da-a8038086bd53"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Pride sabre target 4",
+                "Id": "b1f2562e-52ac-4981-a165-effa282c6380",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "BriefingName": "",
+                "Image": "images/actors/actor_fb36e9cd-58f6-4323-adda-66f5647814d1.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "5b28437f-e440-40e0-ba77-426c1ee9fe0c",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "c4fe3a20-f62a-4154-ae91-7d163d5b99fd",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_MAKOYANA_L3OBEYOBJECTIVE04"
+                },
+                "BriefingText": "$loc UI_CONTRACT_MAKOYANA_L3OBEYOBJECTIVE04",
+                "Type": "statemachine",
+                "IgnoreIfInactive": true,
+                "Activation": {
+                    "$eq": [
+                        "$5bf3fe20-b1dc-4773-8cef-60c1fe383558",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": { "IfInProgress": { "Visible": false } },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["fb36e9cd-58f6-4323-adda-66f5647814d1"]
+                    },
+                    "States": {
+                        "Start": {
+                            "PickedUpPrideSabre": { "Transition": "CheckKills" }
+                        },
+                        "CheckKills": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "fb36e9cd-58f6-4323-adda-66f5647814d1"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "5b28437f-e440-40e0-ba77-426c1ee9fe0c"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "fb36e9cd-58f6-4323-adda-66f5647814d1"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Dynamic Gamechanger - No pacifications",
+                "Id": "cd10efbe-cf1f-482e-8e9c-ed062de27f12",
+                "Name": "UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_NO_PACIFICATIONS_PRIMARY_NAME",
+                "Description": "UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_NO_PACIFICATIONS_PRIMARY_DESC",
+                "TileImage": "images/contracts/gamechangers/Gamechanger_Global_NoPacifications.jpg",
+                "Icon": "images/challenges/default_challenge_icon.png",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "Activation": {
+                    "$eq": [
+                        "$1a4057a9-0889-48b1-9e98-3750c6a7a084",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": { "IfInProgress": { "Visible": false } },
+                "OnActive": { "IfInProgress": { "Visible": true } },
+                "BriefingText": "$loc UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_NO_PACIFICATIONS_PRIMARY_FAIL",
+                "HUDTemplate": {
+                    "display": "$loc UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_NO_PACIFICATIONS_PRIMARY_OBJ",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "PickedUpPirateSabre": {
+                                "Transition": "NoPacification"
+                            }
+                        },
+                        "NoPacification": {
+                            "Pacify": { "Transition": "Failure" }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Dynamic Gamechanger - No non-target kills",
+                "Id": "1e5f160b-75a7-469b-8fcf-77fb10e65d64",
+                "Name": "UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_TARGETS_ONLY_PRIMARY_NAME",
+                "Description": "UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_TARGETS_ONLY_PRIMARY_DESC",
+                "TileImage": "images/contractconditions/condition_contrac_targets_only.jpg",
+                "Icon": "images/challenges/default_challenge_icon.png",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "UpdateActivationWhileCompleted": true,
+                "IgnoreIfInactive": true,
+                "Activation": {
+                    "$eq": [
+                        "$1a4057a9-0889-48b1-9e98-3750c6a7a084",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfFailed": { "State": "Completed" }
+                },
+                "OnActive": {
+                    "IfCompleted": { "State": "InProgress" },
+                    "IfInProgress": { "Visible": true }
+                },
+                "BriefingText": "$loc UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_TARGETS_ONLY_PRIMARY_FAIL",
+                "HUDTemplate": {
+                    "display": "$loc UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_TARGETS_ONLY_PRIMARY_OBJ",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "PickedUpPirateSabre": { "Transition": "NoKills" }
+                        },
+                        "NoKills": {
+                            "Kill": {
+                                "Condition": {
+                                    "$and": [
+                                        { "$eq": ["$Value.IsTarget", false] },
+                                        {
+                                            "$not": {
+                                                "$eq": ["$Value.KillContext", 1]
+                                            }
+                                        }
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            },
+                            "CrowdNPC_Died": { "Transition": "Failure" }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Silent objective to hande exit enabling -----",
+                "Id": "cbc1d9f6-aef5-42a4-978e-47b6dd258952",
+                "Type": "statemachine",
+                "Category": "condition",
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                },
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "PrideSabreKilled": [{ "Transition": "Success" }],
+                            "FiberWireKilled": [{ "Transition": "Success" }]
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "4d0e0458-1aba-4017-a3bd-629cfdac3916",
+        "IsPublished": true,
+        "CreationTimestamp": "2021-01-12T12:24:16.194497Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_MAKOYANA_LEVEL_3_TITLE",
+        "Description": "UI_CONTRACT_MAKOYANA_LEVEL_3_TITLE",
+        "CodeName_Hint": "Makoyana Level 3",
+        "Location": "LOCATION_WET_RAT",
+        "RequiredUnlockable": "ACCESS_HIT_RAT",
+        "ScenePath": "assembly:/_pro/scenes/missions/wet/scene_wet_makoyana.entity",
+        "Type": "escalation",
+        "Release": "3.3.0 Escalation",
+        "InGroup": "494d97a6-9e31-45e0-9dae-f3793c731336",
+        "Entitlements": ["H3_DEADLYSINS_PRIDE"],
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "0dfac285-9618-4219-9e7b-24ae3df2d352" },
+            { "Id": "3db72bb5-63d6-47fe-9332-d7ea3c195e06" },
+            { "Id": "63055f1a-bcd2-4e0f-8caf-b446f01d02f3" }
+        ],
+        "LastUpdate": "2023-03-30T11:20:26.889936Z",
+        "PublicId": "030650916747",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Wet_Makoyana.jpg"
+    },
+    "UserData": {}
+}

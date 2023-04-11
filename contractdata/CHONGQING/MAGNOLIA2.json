@@ -1,0 +1,155 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "_comment": "----- Eliminate Shihong Luo -----",
+                "Id": "7ea7bb27-b85e-4ec5-aa0d-e9bff498b805",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "BriefingName": "$loc UI_CONTRACT_MAGNOLIA_OBJ_2_1",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_MAGNOLIA_OBJ_2_1"
+                },
+                "BriefingText": "$loc UI_CONTRACT_MAGNOLIA_OBJ_2_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "Targets": ["07923f4a-01d0-46b8-85ec-8cba445dd3a0"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "07923f4a-01d0-46b8-85ec-8cba445dd3a0"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "07923f4a-01d0-46b8-85ec-8cba445dd3a0"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Eliminate Hui Hou -----",
+                "Id": "5e7e16a4-30f9-473c-8f48-180cff17d1a8",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "BriefingName": "$loc UI_CONTRACT_MAGNOLIA_OBJ_2_2",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_MAGNOLIA_OBJ_2_2"
+                },
+                "BriefingText": "$loc UI_CONTRACT_MAGNOLIA_OBJ_2_2",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "Targets": ["6927fbc1-8cbb-4c7a-9098-0b041fe120df"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "6927fbc1-8cbb-4c7a-9098-0b041fe120df"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "6927fbc1-8cbb-4c7a-9098-0b041fe120df"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/wet/escalation_magnolia.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/wet/vr_overrides_rat.brick",
+                    "assembly:/_pro/scenes/missions/Wet/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/wet/vr_overrides_rat.brick"
+                ]
+            }
+        ],
+        "GameChangers": [
+            "99ce90aa-7669-4ff0-82c5-5f962432ce24",
+            "09a41818-4aa4-4b8b-885a-59ec74b1eb2d",
+            "3db72bb5-63d6-47fe-9332-d7ea3c195e06",
+            "07b1bc1d-f52b-4004-a760-846c4bc3f172",
+            "c2da52c5-ff3e-41cd-a175-4ed9267f6c95"
+        ],
+        "Entrances": ["3f31c72e-fb07-4c3d-afa6-3c434abdc1b8"],
+        "MandatoryLoadout": [
+            {
+                "Id": "Wet_Unique_Homeless_M_",
+                "Properties": {
+                    "LoadoutSlot": "Outfit",
+                    "RepositoryId": "ba4e595e-da3b-4902-8622-40889fc088db"
+                }
+            }
+        ],
+        "GameChangerReferences": []
+    },
+    "Metadata": {
+        "Id": "dd331f87-bd69-406d-8a10-6e59f5c6f4d1",
+        "IsPublished": true,
+        "CreationTimestamp": "2021-01-12T12:24:16.194497Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_MAGNOLIA_LEVEL_2_TITLE",
+        "Description": "UI_CONTRACT_MAGNOLIA_LEVEL_2_TITLE",
+        "CodeName_Hint": "Magnolia Level 2",
+        "Location": "LOCATION_WET_RAT",
+        "RequiredUnlockable": "ACCESS_HIT_RAT",
+        "ScenePath": "assembly:/_pro/scenes/missions/wet/scene_magnolia.entity",
+        "Type": "escalation",
+        "Release": "3.1.0 Escalation",
+        "InGroup": "542108f2-f82f-4a04-bfec-efa92785fec1",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "99ce90aa-7669-4ff0-82c5-5f962432ce24", "IsNew": true },
+            { "Id": "5e7e16a4-30f9-473c-8f48-180cff17d1a8", "IsNew": true },
+            { "Id": "7ea7bb27-b85e-4ec5-aa0d-e9bff498b805" },
+            { "Id": "09a41818-4aa4-4b8b-885a-59ec74b1eb2d" }
+        ],
+        "Entitlements": ["LOCATION_WET"],
+        "LastUpdate": "2023-03-30T11:20:26.8257759Z",
+        "PublicId": "030797927947",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Wet_Magnolia.jpg"
+    },
+    "UserData": {}
+}

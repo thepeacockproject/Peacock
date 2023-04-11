@@ -1,0 +1,171 @@
+{
+    "Data": {
+        "Bricks": [
+            "Assembly:/_PRO/Scenes/missions/golden/mission_gecko/golden_desertrose.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/scenes/missions/golden/mission_gecko/vr_overrides_golden_gecko.brick",
+                    "assembly:/_PRO/scenes/missions/golden/mission_gecko/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/scenes/missions/golden/mission_gecko/vr_overrides_golden_gecko.brick"
+                ]
+            }
+        ],
+        "DevOnlyBricks": [],
+        "GameChangers": ["3db72bb5-63d6-47fe-9332-d7ea3c195e06"],
+        "Entrances": ["a4e53696-94ca-4eeb-8e82-e235c212897f"],
+        "MandatoryLoadout": [],
+        "GameChangerReferences": [],
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "_comment": "Eliminate janitor in sniper corridor",
+                "Id": "8620c60f-0ac2-492b-af0c-7c4830a874e2",
+                "Category": "primary",
+                "BriefingName": "",
+                "Image": "images/actors/actor_7f1b07a9-c640-4c1a-bd1b-a944093c5646.jpg",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_DESERTROSE_OBJ_1"
+                },
+                "BriefingText": "$loc UI_CONTRACT_DESERTROSE_OBJ_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["7f1b07a9-c640-4c1a-bd1b-a944093c5646"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "7f1b07a9-c640-4c1a-bd1b-a944093c5646"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Eliminate Guard above entrance to the right",
+                "Id": "d3db2a31-f7ca-4fe8-835c-6a463e5bfbf1",
+                "Category": "primary",
+                "BriefingName": "",
+                "Image": "images/actors/actor_64102a8d-0f3c-40cb-8ad1-3b2943be98bd.jpg",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_DESERTROSE_OBJ_2"
+                },
+                "BriefingText": "$loc UI_CONTRACT_DESERTROSE_OBJ_2",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["64102a8d-0f3c-40cb-8ad1-3b2943be98bd"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "64102a8d-0f3c-40cb-8ad1-3b2943be98bd"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Eliminate toilet servant near black gold bar",
+                "Id": "936457ae-4268-4621-be1d-5a29a87737e6",
+                "Category": "primary",
+                "BriefingName": "",
+                "Image": "images/actors/actor_731da6de-0f6c-48ab-b0db-4d76e1f87d5b.jpg",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_DESERTROSE_OBJ_3"
+                },
+                "BriefingText": "$loc UI_CONTRACT_DESERTROSE_OBJ_3",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["731da6de-0f6c-48ab-b0db-4d76e1f87d5b"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "731da6de-0f6c-48ab-b0db-4d76e1f87d5b"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "8b2c8eca-8cd3-4812-88c1-dcb2ac2e9b86",
+        "IsPublished": true,
+        "CreationTimestamp": "2018-10-17T14:35:18.194497Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_DESERTROSE_LEVEL_1_NAME",
+        "Description": "UI_CONTRACT_DESERTROSE_GROUP_DESC",
+        "CodeName_Hint": "Desert Rose - Level 1",
+        "Location": "LOCATION_GOLDEN_GECKO",
+        "ScenePath": "assembly:/_pro/scenes/missions/golden/mission_gecko/scene_gecko_desertrose.entity",
+        "Type": "escalation",
+        "Release": "3.1.0 Escalation",
+        "InGroup": "89305766-199e-43eb-9fcb-29e6f2b6e9ab",
+        "Entitlements": ["H3_EXPANSION"],
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "8620c60f-0ac2-492b-af0c-7c4830a874e2" },
+            { "IsNew": true, "Id": "d3db2a31-f7ca-4fe8-835c-6a463e5bfbf1" },
+            { "IsNew": true, "Id": "936457ae-4268-4621-be1d-5a29a87737e6" },
+            { "IsNew": true, "Id": "3db72bb5-63d6-47fe-9332-d7ea3c195e06" }
+        ],
+        "LastUpdate": "2023-03-30T11:20:25.6079263Z",
+        "PublicId": "027457622347",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Golden_Desert_Rose.jpg"
+    },
+    "UserData": {}
+}

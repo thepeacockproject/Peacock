@@ -1,0 +1,565 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "MandatoryLoadout": [],
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/ancestral/ancestral_harebell.brick",
+            "assembly:/_pro/scenes/missions/ancestral/ancestral_harebell_level2.brick"
+        ],
+        "GameChangers": [
+            "3db72bb5-63d6-47fe-9332-d7ea3c195e06",
+            "07b1bc1d-f52b-4004-a760-846c4bc3f172",
+            "4fd079b5-4238-453a-84c9-2183f3dc0b7e"
+        ],
+        "GameChangerReferences": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ancestral_bulldog.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ancestral_bulldog.brick"
+                ]
+            }
+        ],
+        "Objectives": [
+            {
+                "_comment": "----- Eliminate greenhouse gardener  -----",
+                "Id": "c86aa7cd-f5b5-42b5-a251-d0a6b575b8ff",
+                "Category": "primary",
+                "BriefingName": "$loc UI_CONTRACT_HAREBELL_OBJ_2_1",
+                "BriefingText": "$loc UI_CONTRACT_HAREBELL_OBJ_2_1",
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "throw",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_HAREBELL_OBJ_2_1"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "Targets": ["20c320f1-dc52-466a-baff-eb79880120a8"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "20c320f1-dc52-466a-baff-eb79880120a8"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": ["$.#", "throw"]
+                                                    },
+                                                    "in": [
+                                                        "$Value.KillMethodBroad",
+                                                        "$Value.KillMethodStrict"
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "20c320f1-dc52-466a-baff-eb79880120a8"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Eliminate Water Guard -----",
+                "Id": "b64e4bde-8a4c-4058-84eb-9f1c230d7d55",
+                "Category": "primary",
+                "BriefingName": "$loc UI_CONTRACT_HAREBELL_OBJ_2_2",
+                "BriefingText": "$loc UI_CONTRACT_HAREBELL_OBJ_2_2",
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "accident",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_HAREBELL_OBJ_2_2"
+                },
+                "Type": "statemachine",
+                "Activation": {
+                    "$eq": [
+                        "$c86aa7cd-f5b5-42b5-a251-d0a6b575b8ff",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": {
+                    "IfCompleted": { "State": "Completed", "Visible": true }
+                },
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "Targets": ["96f7c10f-0e6f-419b-b916-2693dc5a97ae"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "96f7c10f-0e6f-419b-b916-2693dc5a97ae"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillMethodBroad",
+                                                    "accident"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "96f7c10f-0e6f-419b-b916-2693dc5a97ae"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Eliminate Photographer  -----",
+                "Id": "4339a53b-f9d3-49e4-b565-99bcab4b2175",
+                "Category": "primary",
+                "BriefingName": "$loc UI_CONTRACT_HAREBELL_OBJ_2_3",
+                "BriefingText": "$loc UI_CONTRACT_HAREBELL_OBJ_2_3",
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "accident",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_HAREBELL_OBJ_2_3"
+                },
+                "Type": "statemachine",
+                "Activation": {
+                    "$eq": [
+                        "$c86aa7cd-f5b5-42b5-a251-d0a6b575b8ff",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": {
+                    "IfCompleted": { "State": "Completed", "Visible": true }
+                },
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "Targets": ["f055ea99-8e5a-4130-a257-618990ac3684"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "f055ea99-8e5a-4130-a257-618990ac3684"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillMethodBroad",
+                                                    "accident"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "f055ea99-8e5a-4130-a257-618990ac3684"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Eliminate Female Staff  -----",
+                "Id": "a8cc0bd2-db5c-4ec9-b0b1-a14cb15c0f31",
+                "Category": "primary",
+                "BriefingName": "$loc UI_CONTRACT_HAREBELL_OBJ_2_4",
+                "BriefingText": "$loc UI_CONTRACT_HAREBELL_OBJ_2_4",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_HAREBELL_OBJ_2_4"
+                },
+                "Type": "statemachine",
+                "Activation": {
+                    "$eq": [
+                        "$c86aa7cd-f5b5-42b5-a251-d0a6b575b8ff",
+                        "$b64e4bde-8a4c-4058-84eb-9f1c230d7d55",
+                        "$4339a53b-f9d3-49e4-b565-99bcab4b2175",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": {
+                    "IfCompleted": { "State": "Completed", "Visible": true }
+                },
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "Targets": ["128b5a07-ba7d-4515-8930-aa8c87edf8fe"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "128b5a07-ba7d-4515-8930-aa8c87edf8fe"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Jogger -----",
+                "Id": "da642531-a160-437c-9a76-be8ada00947b",
+                "Category": "secondary",
+                "ObjectiveType": "custom",
+                "ExcludeFromScoring": true,
+                "BriefingName": "$loc UI_CONTRACT_HAREBELL_OBJ_JOGGER_NAME",
+                "BriefingText": "$loc UI_CONTRACT_HAREBELL_OBJ_JOGGER_TEXT",
+                "LongBriefingText": "$loc UI_CONTRACT_HAREBELL_OBJ_JOGGER_LONG",
+                "Image": "images/contracts/escalation/ContractEscalation_Ancestral_Harebell_Obj_Jogger.jpg",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_HAREBELL_OBJ_JOGGER_HUD"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "Targets": ["ded52369-4237-4c96-9f62-122f580eb281"]
+                    },
+                    "States": {
+                        "Start": {
+                            "JoggerCompleted": { "Transition": "Success" }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Vitality -----",
+                "Id": "01f6bda5-882e-47c8-82af-885187777b5c",
+                "Category": "secondary",
+                "ObjectiveType": "custom",
+                "ExcludeFromScoring": true,
+                "Type": "statemachine",
+                "BriefingName": "$loc UI_CONTRACT_HAREBELL_OBJ_VITALITY_NAME",
+                "BriefingText": "$loc UI_CONTRACT_HAREBELL_OBJ_VITALITY_TEXT",
+                "LongBriefingText": "$loc UI_CONTRACT_HAREBELL_OBJ_VITALITY_LONG",
+                "Image": "images/contracts/escalation/ContractEscalation_Ancestral_Harebell_Obj_Vitality.jpg",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_HAREBELL_OBJ_VITALITY_HUD"
+                },
+                "Definition": {
+                    "ContextListeners": {
+                        "Vitality": {
+                            "type": "custom",
+                            "HUDTemplate": {
+                                "iconType": 13,
+                                "display": {
+                                    "$loc": {
+                                        "key": "UI_CONTRACT_HAREBELL_OBJ_VITALITY_HUD",
+                                        "data": ["$.Vitality"]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "Context": { "Vitality": 1 },
+                    "States": {
+                        "Start": {
+                            "VitalityChanged": [
+                                {
+                                    "Actions": {
+                                        "$set": ["Vitality", "$Value"]
+                                    }
+                                },
+                                {
+                                    "Condition": { "$le": ["$.Vitality", 0] },
+                                    "Transition": "Failure"
+                                }
+                            ],
+                            "VitalityCompleted": { "Transition": "Success" }
+                        },
+                        "Failure": {
+                            "VitalityChanged": [
+                                {
+                                    "Actions": {
+                                        "$set": ["Vitality", "$Value"]
+                                    }
+                                },
+                                {
+                                    "Condition": { "$gt": ["$.Vitality", 0] },
+                                    "Transition": "Start"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- hidden dummy objective #1 -----",
+                "Id": "4e8d9134-ebc6-4416-a8ed-562e7534a232",
+                "IsHidden": true,
+                "ExcludeFromScoring": true,
+                "Category": "secondary",
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {},
+                    "States": { "Start": { "-": { "Transition": "Success" } } }
+                },
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                }
+            },
+            {
+                "_comment": "----- hidden dummy objective #2 -----",
+                "Id": "3b518dc4-1b1c-4f17-94a1-8134df173413",
+                "IsHidden": true,
+                "ExcludeFromScoring": true,
+                "Category": "secondary",
+                "Activation": {
+                    "$eq": [
+                        "$4e8d9134-ebc6-4416-a8ed-562e7534a232",
+                        "Completed"
+                    ]
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {},
+                    "States": { "Start": { "-": { "Transition": "Success" } } }
+                },
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                }
+            },
+            {
+                "_comment": "----- hidden dummy objective #3 -----",
+                "Id": "9c6084d3-75c5-4f9e-90af-c4969cf47070",
+                "IsHidden": true,
+                "ExcludeFromScoring": true,
+                "Category": "secondary",
+                "Activation": {
+                    "$eq": [
+                        "$4e8d9134-ebc6-4416-a8ed-562e7534a232",
+                        "$3b518dc4-1b1c-4f17-94a1-8134df173413",
+                        "Completed"
+                    ]
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {},
+                    "States": { "Start": { "-": { "Transition": "Success" } } }
+                },
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                }
+            },
+            {
+                "_comment": "----- hidden dummy objective #4 -----",
+                "Id": "af201612-add1-4911-a0a1-3c703782c7dd",
+                "IsHidden": true,
+                "ExcludeFromScoring": true,
+                "Category": "secondary",
+                "Activation": {
+                    "$eq": [
+                        "$4e8d9134-ebc6-4416-a8ed-562e7534a232",
+                        "$3b518dc4-1b1c-4f17-94a1-8134df173413",
+                        "$9c6084d3-75c5-4f9e-90af-c4969cf47070",
+                        "Completed"
+                    ]
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {},
+                    "States": { "Start": { "-": { "Transition": "Success" } } }
+                },
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                }
+            },
+            {
+                "_comment": "----- Invisible Primary: Eliminate Targets in any order -----",
+                "Id": "bfb82a95-ac46-4e47-9885-ce1bb4260e41",
+                "Category": "secondary",
+                "IsHidden": true,
+                "ExcludeFromScoring": true,
+                "Activation": {
+                    "$eq": [
+                        "$4e8d9134-ebc6-4416-a8ed-562e7534a232",
+                        "$3b518dc4-1b1c-4f17-94a1-8134df173413",
+                        "$9c6084d3-75c5-4f9e-90af-c4969cf47070",
+                        "$af201612-add1-4911-a0a1-3c703782c7dd",
+                        "Completed"
+                    ]
+                },
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                },
+                "ObjectiveType": "custom",
+                "Image": "",
+                "BriefingName": "",
+                "BriefingText": "",
+                "HUDTemplate": { "display": "" },
+                "Type": "statemachine",
+                "Scope": "hit",
+                "Definition": {
+                    "Context": {
+                        "Targets": [
+                            "20c320f1-dc52-466a-baff-eb79880120a8",
+                            "96f7c10f-0e6f-419b-b916-2693dc5a97ae",
+                            "f055ea99-8e5a-4130-a257-618990ac3684",
+                            "128b5a07-ba7d-4515-8930-aa8c87edf8fe"
+                        ]
+                    },
+                    "States": {
+                        "Start": { "ContractEnd": { "Transition": "Success" } }
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "135bb8a1-1b8f-4f43-8f8a-6eebf72d86e7",
+        "CodeName_Hint": "Harebell - Level 2",
+        "Release": "3.40.0 Escalation",
+        "Type": "escalation",
+        "Title": "UI_CONTRACT_HAREBELL_LEVEL_2_NAME",
+        "Description": "UI_CONTRACT_HAREBELL_GROUP_DESC",
+        "InGroup": "a838c4b0-7db5-4ac7-8d52-e8c5b82aa376",
+        "Location": "LOCATION_ANCESTRAL_BULLDOG",
+        "ScenePath": "assembly:/_pro/scenes/missions/ancestral/scene_ancestral_harebell.entity",
+        "CreationTimestamp": "2018-10-17T14:35:18.194497Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "IsPublished": true,
+        "Entitlements": ["H3_DEADLYSINS_SLOTH"],
+        "GroupObjectiveDisplayOrder": [
+            {
+                "_comment": "Eliminate staff member",
+                "Id": "a8cc0bd2-db5c-4ec9-b0b1-a14cb15c0f31",
+                "IsNew": true
+            },
+            {
+                "_comment": "Eliminate photographer",
+                "Id": "4339a53b-f9d3-49e4-b565-99bcab4b2175",
+                "IsNew": true
+            },
+            {
+                "_comment": "Eliminate guard",
+                "Id": "b64e4bde-8a4c-4058-84eb-9f1c230d7d55",
+                "IsNew": true
+            },
+            {
+                "_comment": "Eliminate gardener",
+                "Id": "c86aa7cd-f5b5-42b5-a251-d0a6b575b8ff",
+                "IsNew": true
+            },
+            {
+                "_comment": "Eliminate jogger",
+                "Id": "da642531-a160-437c-9a76-be8ada00947b"
+            },
+            {
+                "_comment": "Vitality",
+                "Id": "01f6bda5-882e-47c8-82af-885187777b5c"
+            },
+            {
+                "_comment": "Hidden objectives",
+                "Id": "4fd079b5-4238-453a-84c9-2183f3dc0b7e"
+            },
+            {
+                "_comment": "No disguise changes",
+                "Id": "07b1bc1d-f52b-4004-a760-846c4bc3f172"
+            },
+            {
+                "_comment": "Restricted loadout",
+                "Id": "3db72bb5-63d6-47fe-9332-d7ea3c195e06"
+            }
+        ],
+        "LastUpdate": "2023-03-30T11:20:26.1188629Z",
+        "PublicId": "028833878747",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Ancestral_Harebell.jpg"
+    },
+    "UserData": {}
+}
