@@ -65,6 +65,7 @@ import {
     complications,
     generateCompletionData,
     generateUserCentric,
+    getSubLocationByName,
 } from "./contracts/dataGen"
 import { log, LogLevel } from "./loggingInterop"
 import {
@@ -509,16 +510,20 @@ menuDataRouter.get(
 
         const userData = getUserData(req.jwt.unique_name, req.gameVersion)
 
-        const inventory = createInventory(
-            req.jwt.unique_name,
-            req.gameVersion,
-            userData.Extensions.entP,
-        )
-
         let contractData: MissionManifest | undefined = undefined
         if (req.query.contractid) {
             contractData = controller.resolveContract(req.query.contractid)
         }
+
+        const inventory = createInventory(
+            req.jwt.unique_name,
+            req.gameVersion,
+            userData.Extensions.entP,
+            getSubLocationByName(
+                contractData.Metadata.Location,
+                req.gameVersion,
+            ),
+        )
 
         if (req.query.slotname.endsWith(req.query.slotid!.toString())) {
             req.query.slotname = req.query.slotname.slice(
