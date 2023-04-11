@@ -74,21 +74,22 @@ legacyMenuDataRouter.get(
 
         const userProfile = getUserData(req.jwt.unique_name, req.gameVersion)
 
+        const sublocation = getSubLocationByName(
+            contractData.Metadata.Location,
+            req.gameVersion,
+        )
+
         const inventory = createInventory(
             req.jwt.unique_name,
             req.gameVersion,
             userProfile.Extensions.entP,
+            sublocation,
         )
 
         const userCentricContract = generateUserCentric(
             contractData,
             req.jwt.unique_name,
             "h1",
-        )
-
-        const sublocation = getSubLocationByName(
-            contractData.Metadata.Location,
-            req.gameVersion,
         )
 
         const defaultLoadout = {

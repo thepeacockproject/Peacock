@@ -196,6 +196,7 @@ export async function planningView(
         req.jwt.unique_name,
         req.gameVersion,
         userData.Extensions.entP,
+        sublocation,
     )
 
     const unlockedEntrances = typedInv

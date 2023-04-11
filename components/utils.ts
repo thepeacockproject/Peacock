@@ -317,7 +317,7 @@ export function castUserProfile(profile: UserProfile): UserProfile {
     return j
 }
 
-const defaultSuits = {
+export const defaultSuits = {
     LOCATION_PARENT_ICA_FACILITY: "TOKEN_OUTFIT_GREENLAND_HERO_TRAININGSUIT",
     LOCATION_PARENT_PARIS: "TOKEN_OUTFIT_PARIS_HERO_PARISSUIT",
     LOCATION_PARENT_COASTALTOWN: "TOKEN_OUTFIT_SAPIENZA_HERO_SAPIENZASUIT",
@@ -347,6 +347,26 @@ const defaultSuits = {
     LOCATION_PARENT_ELEGANT: "TOKEN_OUTFIT_ELEGANT_HERO_LLAMASUIT",
     LOCATION_PARENT_TRAPPED: "TOKEN_OUTFIT_TRAPPED_WOLVERINE_SUIT",
     LOCATION_PARENT_ROCKY: "TOKEN_OUTFIT_HERO_DUGONG_SUIT",
+}
+
+/**
+ * Default suits that are attainable via challenges or mastery in this version.
+ * NOTE: Currently this is hardcoded. To allow for flexibility and extensibility, this should be generated in real-time
+ * using the Drops of challenges and masteries. However, that would require looping through all challenges and masteries
+ * for all default suits, which is slow. This is a trade-off.
+ * @param   gameVersion The game version.
+ * @returns  The default suits that are attainable via challenges or mastery.
+ */
+export function attainableDefaults(gameVersion: GameVersion): string[] {
+    return gameVersion === "h1"
+        ? []
+        : gameVersion === "h2"
+        ? ["TOKEN_OUTFIT_WET_SUIT"]
+        : [
+              "TOKEN_OUTFIT_GREENLAND_HERO_TRAININGSUIT",
+              "TOKEN_OUTFIT_WET_SUIT",
+              "TOKEN_OUTFIT_HERO_DUGONG_SUIT",
+          ]
 }
 
 /**
