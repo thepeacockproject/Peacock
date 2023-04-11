@@ -588,7 +588,7 @@ export class ChallengeService extends ChallengeRegistry {
             session.difficulty,
         )
 
-        const contractJson = this.controller.resolveContract(contractId)
+        const contractJson = this.controller.resolveContract(contractId, true)
 
         if (contractJson.Metadata.Type === "evergreen") {
             session.evergreen = {

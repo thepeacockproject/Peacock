@@ -47,7 +47,7 @@ const genSingleMissionFactory = (userId: string): GenSingleMissionFunc => {
             "Plugin tried to generate mission with no game version",
         )
 
-        const actualContractData = controller.resolveContract(contractId)
+        const actualContractData = controller.resolveContract(contractId, true)
 
         if (!actualContractData) {
             log(LogLevel.ERROR, `Failed to resolve contract ${contractId}!`)

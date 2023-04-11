@@ -177,7 +177,7 @@ function isChallengeInContract(
                               (type) => type !== "tutorial",
                           ),
                   },
-            controller.resolveContract(contractId),
+            controller.resolveContract(contractId, true),
         )
     }
 
