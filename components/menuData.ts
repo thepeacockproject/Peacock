@@ -520,7 +520,7 @@ menuDataRouter.get(
             req.gameVersion,
             userData.Extensions.entP,
             getSubLocationByName(
-                contractData.Metadata.Location,
+                contractData?.Metadata.Location,
                 req.gameVersion,
             ),
         )
