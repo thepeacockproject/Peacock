@@ -528,7 +528,7 @@ export async function missionEnd(
         req.gameVersion === "scpc" &&
         sessionDetails.contractId === "ff9f46cf-00bd-4c12-b887-eac491c3a96d"
             ? _theLastYardbirdScpc
-            : controller.resolveContract(sessionDetails.contractId)
+            : controller.resolveContract(sessionDetails.contractId, true)
 
     if (!contractData) {
         res.status(404).send("contract not found")

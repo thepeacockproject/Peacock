@@ -621,7 +621,7 @@ menuDataRouter.get(
     "/missionrewards",
     (req: RequestWithJwt<{ contractSessionId: string }>, res) => {
         const { contractId } = getSession(req.jwt.unique_name)
-        const contractData = controller.resolveContract(contractId)
+        const contractData = controller.resolveContract(contractId, true)
 
         const userData = getUserData(req.jwt.unique_name, req.gameVersion)
 
@@ -659,7 +659,7 @@ menuDataRouter.get(
                 XPGain: 0,
                 Challenges: Object.values(
                     controller.challengeService.getChallengesForContract(
-                        getSession(req.jwt.unique_name).contractId,
+                        contractId,
                         req.gameVersion,
                         // TODO: Should a difficulty be passed here?
                     ),

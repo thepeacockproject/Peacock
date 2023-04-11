@@ -164,6 +164,7 @@ function isChallengeInContract(
         return true
     }
 
+    const contract = controller.resolveContract(contractId, true)
     if (challenge.Type === "global") {
         return inclusionDataCheck(
             // Global challenges should not be shown for "tutorial" missions unless for the career page,
@@ -177,13 +178,13 @@ function isChallengeInContract(
                               (type) => type !== "tutorial",
                           ),
                   },
-            controller.resolveContract(contractId, true),
+            contract,
         )
     }
 
-    // Is this for the current contract?
+    // Is this for the current contract or group contract?
     const isForContract = (challenge.InclusionData?.ContractIds || []).includes(
-        contractId,
+        contract.Metadata.Id,
     )
 
     // Is this a location-wide challenge?
