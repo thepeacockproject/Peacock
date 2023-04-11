@@ -117,6 +117,10 @@ const defaultFlags: Flags = {
         desc: "When set to false, mastery progression will be disabled and all unlockables will be awarded at the beginning",
         default: true,
     },
+    getDefaultSuits: {
+        desc: `[Gameplay] Set this to true to add all the default starting suits to your inventory. Note: If you set both this and "enableMasteryProgression" to "true" at the same time, a starting suit that is also the unlock for a challenge/mastery will be locked behind its challenge/mastery.`,
+        default: false,
+    },
 }
 
 const OLD_FLAGS_FILE = "flags.json5"

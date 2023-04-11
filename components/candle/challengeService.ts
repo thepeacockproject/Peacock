@@ -17,6 +17,7 @@
  */
 
 import type {
+    ChallengeCompletion,
     ChallengeProgressionData,
     ChallengeTreeWaterfallState,
     ClientToServerEvent,
@@ -551,8 +552,6 @@ export class ChallengeService extends ChallengeRegistry {
             true,
         )
         const parent = locations.children[child].Properties.ParentLocation
-        const location = locations.children[child]
-        assert.ok(location)
 
         let contracts = isSniperLocation(child)
             ? this.controller.missionsInLocations.sniper[child]
@@ -1215,7 +1214,7 @@ export class ChallengeService extends ChallengeRegistry {
         challengeLists: GroupIndexedChallengeLists,
         userId: string,
         gameVersion: GameVersion,
-    ): { ChallengesCount: number; CompletedChallengesCount: number } {
+    ): ChallengeCompletion {
         const userData = getUserData(userId, gameVersion)
 
         userData.Extensions.ChallengeProgression ??= {}
@@ -1237,6 +1236,7 @@ export class ChallengeService extends ChallengeRegistry {
         return {
             ChallengesCount: challengesCount,
             CompletedChallengesCount: completedChallengesCount,
+            CompletionPercent: completedChallengesCount / challengesCount,
         }
     }
 
