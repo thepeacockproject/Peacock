@@ -93,10 +93,7 @@ legacyMenuDataRouter.get(
 
         const defaultLoadout = {
             2: "FIREARMS_HERO_PISTOL_TACTICAL_001_SU_SKIN01",
-            3: getDefaultSuitFor(
-                sublocation.Id,
-                sublocation?.Properties?.ParentLocation,
-            ),
+            3: getDefaultSuitFor(sublocation),
             4: "TOKEN_FIBERWIRE",
             5: "PROP_TOOL_COIN",
         }

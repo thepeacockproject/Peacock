@@ -356,9 +356,11 @@ const defaultSuits = {
  * @param parent The parent location.
  * @returns  The default suit for the given sublocation and parent location.
  */
-export function getDefaultSuitFor(sub: string, parent: string) {
+export function getDefaultSuitFor(sublocation: Unlockable) {
     return (
-        defaultSuits[sub] || defaultSuits[parent] || "TOKEN_OUTFIT_HITMANSUIT"
+        defaultSuits[sublocation.Id] ||
+        defaultSuits[sublocation.Properties.ParentLocation] ||
+        "TOKEN_OUTFIT_HITMANSUIT"
     )
 }
 
