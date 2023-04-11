@@ -74,7 +74,6 @@ export const missionsInLocations = {
     escalations: {
         LOCATION_PARIS: [
             "4f6ee6ec-b6d7-4958-9838-0352c10294a0",
-            "d6961637-effe-4c39-b99a-f2df4402657d",
             "07bbf22b-d6ae-4883-bec2-122eeeb7b665",
         ],
         LOCATION_COASTALTOWN: [
@@ -88,7 +87,7 @@ export const missionsInLocations = {
             "b49de2a1-fe8e-49c4-8331-17aaa9d65d32",
             "c2e16fb7-d49f-49ef-9d76-46b8b31b3389",
         ],
-        LOCATION_BANGKOK: ["ccbde3e2-67e7-4534-95ec-e9bd7ef65273"],
+        LOCATION_BANGKOK: [],
         LOCATION_HOKKAIDO: [
             "e96fb040-a13f-466c-9d96-c8f3b2b8a09a",
             "115425b1-e797-47bf-b517-410dc7507397",
