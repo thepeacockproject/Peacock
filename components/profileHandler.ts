@@ -491,7 +491,7 @@ profileRouter.post(
             return res.status(404).send("invalid contract")
         }
 
-        const json = controller.resolveContract(req.body.contractId)
+        const json = controller.resolveContract(req.body.contractId, true)
 
         if (!json) {
             log(
