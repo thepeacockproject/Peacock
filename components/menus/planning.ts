@@ -221,10 +221,10 @@ export async function planningView(
     }
 
     let pistol = "FIREARMS_HERO_PISTOL_TACTICAL_ICA_19"
-    let suit =
-        sublocation.Id === "LOCATION_ANCESTRAL_SMOOTHSNAKE"
-            ? "TOKEN_OUTFIT_ANCESTRAL_HERO_SMOOTHSNAKESUIT"
-            : getDefaultSuitFor(sublocation?.Properties?.ParentLocation)
+    let suit = getDefaultSuitFor(
+        sublocation.Id,
+        sublocation?.Properties?.ParentLocation,
+    )
     let tool1 = "TOKEN_FIBERWIRE"
     let tool2 = "PROP_TOOL_COIN"
     let briefcaseProp: string | undefined = undefined
