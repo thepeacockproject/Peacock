@@ -422,6 +422,7 @@ export interface OpportunityStatistics {
 export interface ContractHistory {
     LastPlayedAt?: number
     Completed?: boolean
+    IsEscalation?: boolean
 }
 
 export interface UserProfile {

@@ -353,14 +353,18 @@ export class HitsCategoryService {
     ): boolean {
         switch (type) {
             case "completed":
-                return played[contractId]?.Completed
+                return (
+                    played[contractId]?.Completed &&
+                    !played[contractId]?.IsEscalation
+                )
             case "failed":
                 return (
                     played[contractId] !== undefined &&
-                    played[contractId].Completed === undefined
+                    played[contractId].Completed === undefined &&
+                    !played[contractId]?.IsEscalation
                 )
             case "all":
-                return true
+                return !played[contractId]?.IsEscalation ?? true
         }
     }
 

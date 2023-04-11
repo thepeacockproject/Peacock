@@ -219,18 +219,15 @@ export function generateUserCentric(
             `Get EscalationUCProps - group: ${eGroupId} prog: ${p}`,
         )
 
-        // I have absolutely no idea why,
-        // but this is incorrect on the destinations
-        // screen unless we do proper count - 1
-        // ANOTHER NOTE - Anthony:
-        // this currently doesn't mark it as completed when it is,
-        // unknown to why
+        // Probably not needed, just in case though.
+        delete uc.Data.Completed
+
         uc.Data.EscalationCompletedLevels = p - 1
         uc.Data.EscalationTotalLevels = getLevelCount(
             controller.resolveContract(eGroupId),
         )
         uc.Data.EscalationCompleted = p === uc.Data.EscalationTotalLevels
-        uc.Data.InGroup = eGroupId
+        if (contractData.Metadata.InGroup) uc.Data.InGroup = eGroupId
     }
 
     return uc
