@@ -57,10 +57,7 @@ import type {
     Unlockable,
     UserCentricContract,
 } from "./types/types"
-import {
-    getUserEscalationProgress,
-    no2016,
-} from "./contracts/escalations/escalationService"
+import { no2016 } from "./contracts/escalations/escalationService"
 import {
     complications,
     generateCompletionData,
@@ -111,17 +108,11 @@ const menuDataRouter = Router()
 // /profiles/page/
 
 function dashEscalations(req: RequestWithJwt, res: Response) {
-    const userData = getUserData(req.jwt.unique_name, req.gameVersion)
-
     const contracts: UserCentricContract[] = []
 
     for (const groupId of peacockRecentEscalations) {
-        const level = getUserEscalationProgress(userData, groupId)
-
         const userCentric = generateUserCentric(
-            controller.resolveContract(
-                controller.escalationMappings.get(groupId)[level],
-            )!,
+            controller.resolveContract(groupId, true)!,
             req.jwt.unique_name,
             req.gameVersion,
         )
