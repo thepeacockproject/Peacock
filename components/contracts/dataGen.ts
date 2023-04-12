@@ -226,7 +226,8 @@ export function generateUserCentric(
         uc.Data.EscalationTotalLevels = getLevelCount(
             controller.resolveContract(eGroupId),
         )
-        uc.Data.EscalationCompleted = p === uc.Data.EscalationTotalLevels
+        uc.Data.EscalationCompleted =
+            userData.Extensions.PeacockCompletedEscalations.includes(eGroupId)
         if (contractData.Metadata.InGroup) uc.Data.InGroup = eGroupId
     }
 
