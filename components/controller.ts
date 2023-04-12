@@ -1205,7 +1205,7 @@ export class Controller {
     scanForGroups(): void {
         let groupCount = 0
 
-        thisGroup: for (const contractId of new Set<string>([
+        allGroups: for (const contractId of new Set<string>([
             ...Object.keys(internalContracts),
             ...this.hooks.getContractManifest.allTapNames,
         ])) {
@@ -1229,7 +1229,7 @@ export class Controller {
                         LogLevel.ERROR,
                         `Could not find next contract (${order[i]}) in group ${contractId}!`,
                     )
-                    break thisGroup
+                    continue allGroups
                 }
 
                 escalationGroup[i + 1] = next.Metadata.Id
