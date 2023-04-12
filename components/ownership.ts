@@ -289,6 +289,9 @@ export const brokenItems = [
     // Remove TOKEN_OUTFIT_HOKKAIDO_HERO_FLUSUIT
     // Duplicate of TOKEN_OUTFIT_GREENLAND_HERO_TRAININGSUIT.
     "86c32734-a879-41e6-bd4e-6af1a95f1127",
+    // Remove TOKEN_OUTFIT_HERO_EASTER_RAVER_BUNNY_SUIT
+    // Duplicate of TOKEN_OUTFIT_HERO_EASTER_SUIT.
+    "da4f6106-0585-4a69-815d-51336d581a9b"
 ]
 
 /**
