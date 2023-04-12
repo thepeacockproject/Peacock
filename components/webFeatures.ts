@@ -179,6 +179,15 @@ webFeaturesRouter.get(
             req.query.level,
         )
 
+        if (
+            read.Extensions.PeacockCompletedEscalations.includes(req.query.id)
+        ) {
+            read.Extensions.PeacockCompletedEscalations =
+                read.Extensions.PeacockCompletedEscalations.filter(
+                    (val) => val !== req.query.level,
+                )
+        }
+
         writeUserData(req.query.user, req.query.gv)
 
         res.json({ success: true })
