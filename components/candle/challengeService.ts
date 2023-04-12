@@ -555,7 +555,7 @@ export class ChallengeService extends ChallengeRegistry {
 
         let contracts = isSniperLocation(child)
             ? this.controller.missionsInLocations.sniper[child]
-            : this.controller.missionsInLocations[child]?.concat(
+            : (this.controller.missionsInLocations[child] ?? []).concat(
                   this.controller.missionsInLocations.escalations[child],
               )
         if (!contracts) {
