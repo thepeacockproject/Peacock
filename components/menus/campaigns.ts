@@ -162,7 +162,8 @@ export function makeCampaigns(
     let prologueCampaign: Campaign,
         s1Campaign: Campaign,
         s2Campaign: Campaign,
-        s3Campaign: Campaign | undefined
+        s3Campaign: Campaign | undefined,
+        sdsCampaign: Campaign | undefined
 
     if (gameVersion !== "h1") {
         const s2StoryData: StoryData[] = [
@@ -245,6 +246,40 @@ export function makeCampaigns(
                   ]
                 : undefined
 
+        const sdsStoryData: StoryData[] | undefined =
+            gameVersion === "h3"
+                ? [
+                      genSingleMission(
+                          "ae04c7a0-4028-4524-b27f-6a62f020fdca",
+                          gameVersion,
+                      ),
+                      genSingleMission(
+                          "494d97a6-9e31-45e0-9dae-f3793c731336",
+                          gameVersion,
+                      ),
+                      genSingleMission(
+                          "a838c4b0-7db5-4ac7-8d52-e8c5b82aa376",
+                          gameVersion,
+                      ),
+                      genSingleMission(
+                          "e3b65e65-636b-4dfd-bb42-65a18c5dce4a",
+                          gameVersion,
+                      ),
+                      genSingleMission(
+                          "5121acde-313d-4517-ae70-6a54ca5d775a",
+                          gameVersion,
+                      ),
+                      genSingleMission(
+                          "8c8ed496-948f-4672-879b-4d9575406577",
+                          gameVersion,
+                      ),
+                      genSingleMission(
+                          "8e95dcd0-704f-4121-8be6-088a3812f838",
+                          gameVersion,
+                      ),
+                  ]
+                : undefined
+
         // BackgroundImage is duplicated as H3 uses properties, H2 doesn't
         prologueCampaign = {
             BackgroundImage: "images/story/background_training.jpg",
@@ -291,6 +326,17 @@ export function makeCampaigns(
                       },
                       StoryData: s3StoryData!,
                       Type: "mission",
+                  }
+                : undefined
+
+        sdsCampaign =
+            gameVersion === "h3"
+                ? {
+                      Name: "UI_MENU_PAGE_HUB_SEVEN_DEADLY_SINS",
+                      Image: "",
+                      Type: "campaign",
+                      BackgroundImage: "images/story/background_deadlysins.jpg",
+                      StoryData: sdsStoryData!,
                   }
                 : undefined
     }
@@ -350,6 +396,32 @@ export function makeCampaigns(
                 Type: "mission",
                 BackgroundImage: null,
                 Subgroups: [
+                    sdsCampaign,
+                    {
+                        Name: "UI_MENU_PAGE_SPECIAL_ASSIGNMENTS_TITLE",
+                        Image: "",
+                        Type: "campaign",
+                        BackgroundImage:
+                            "images/story/background_special_assignments.jpg",
+                        StoryData: [
+                            genSingleMission(
+                                "179563a4-727a-4072-b354-c9fff4e8bff0",
+                                gameVersion,
+                            ),
+                            genSingleMission(
+                                "a8036782-de0a-4353-b522-0ab7a384bade",
+                                gameVersion,
+                            ),
+                            genSingleMission(
+                                "f1ba328f-e3dd-4ef8-bb26-0363499fdd95",
+                                gameVersion,
+                            ),
+                            genSingleMission(
+                                "0b616e62-af0c-495b-82e3-b778e82b5912",
+                                gameVersion,
+                            ),
+                        ],
+                    },
                     pzCampaign,
                     {
                         Name: "UI_MENU_PAGE_BONUS_MISSIONS_TITLE",
@@ -380,31 +452,6 @@ export function makeCampaigns(
                             ),
                             genSingleMission(
                                 "99bd3287-1d83-4429-a769-45045dfcbf31",
-                                gameVersion,
-                            ),
-                        ],
-                    },
-                    {
-                        Name: "UI_MENU_PAGE_SPECIAL_ASSIGNMENTS_TITLE",
-                        Image: "",
-                        Type: "campaign",
-                        BackgroundImage:
-                            "images/story/background_special_assignments.jpg",
-                        StoryData: [
-                            genSingleMission(
-                                "179563a4-727a-4072-b354-c9fff4e8bff0",
-                                gameVersion,
-                            ),
-                            genSingleMission(
-                                "a8036782-de0a-4353-b522-0ab7a384bade",
-                                gameVersion,
-                            ),
-                            genSingleMission(
-                                "f1ba328f-e3dd-4ef8-bb26-0363499fdd95",
-                                gameVersion,
-                            ),
-                            genSingleMission(
-                                "0b616e62-af0c-495b-82e3-b778e82b5912",
                                 gameVersion,
                             ),
                         ],
