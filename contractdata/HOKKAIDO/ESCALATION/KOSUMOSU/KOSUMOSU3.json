@@ -1,0 +1,146 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "Id": "3873b688-fc76-4f8e-9e49-f50b9d665181",
+                "Activation": {
+                    "$eq": [
+                        "$2828f753-d86a-41d3-9e12-54b0dc61bf00",
+                        "Completed"
+                    ]
+                },
+                "Category": "primary",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_KOSUMOSU_OBJ_1_1"
+                },
+                "BriefingText": "$loc UI_CONTRACT_KOSUMOSU_CASCADE_FAIL",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["2e1a30c5-b1e0-4984-b3f4-67f01f9ebfef"]
+                    },
+                    "States": {
+                        "Start": { "-": { "Transition": "WaitForPickup" } },
+                        "WaitForPickup": {
+                            "NakamuraIsDead": { "Transition": "Success" },
+                            "BodyHidden": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "2e1a30c5-b1e0-4984-b3f4-67f01f9ebfef"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            },
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "87d60de1-c050-48a1-ba43-9d2dbc052de0"
+                                    ]
+                                },
+                                "Transition": "KillCountdown"
+                            }
+                        },
+                        "KillCountdown": {
+                            "$timer": {
+                                "Condition": { "$after": 60 },
+                                "Transition": "Failure"
+                            },
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "2e1a30c5-b1e0-4984-b3f4-67f01f9ebfef"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "2828f753-d86a-41d3-9e12-54b0dc61bf00",
+                "Category": "primary",
+                "ObjectiveType": "setpiece",
+                "Image": "images/contracts/gamechangers/Gamechanger_Hokkaido_SleepQuarters_BreakAndEnter.jpg",
+                "BriefingName": "$loc UI_GAMECHANGERS_HOKKAIDO_SAFE_SLEEP_QUARTERS_NAME",
+                "BriefingText": "$loc UI_CONTRACT_KOSUMOSU_OBJ_2",
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_KOSUMOSU_OBJ_2" },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {
+                        "Targets": ["e74dfd73-6051-4490-bfc2-401d4b54421a"]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "87d60de1-c050-48a1-ba43-9d2dbc052de0"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "ad7ff41a-bcef-4e6a-90fe-175edbf363e5",
+                "Category": "primary",
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "f19cb43e-7f33-4d27-aa42-ecd7918eb2fe"
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [
+            "ee5fa046-141b-46c8-bc3c-9216b1e7eaf1",
+            "f0947de6-d10f-4ebf-87f7-056637d25b03",
+            "121fe46a-981e-43a4-9e7f-c8310af11581"
+        ],
+        "GameChangerReferences": []
+    },
+    "Metadata": {
+        "Id": "c16896e5-b3e5-4570-9c2e-ecb655cdf127",
+        "IsPublished": true,
+        "CreationTimestamp": "2016-05-04T09:51:27.393Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "TileImage": "",
+        "Title": "UI_CONTRACT_KOSUMOSU_LEVEL_3_TITLE",
+        "Description": "",
+        "CodeName_Hint": "Kosumosu Level 3",
+        "RequiredUnlockable": "ACCESS_HIT_SNOW_CRANE",
+        "Location": "LOCATION_HOKKAIDO",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Hokkaido/_scene_snowcrane.entity",
+        "Release": "1.6.0 Escalation",
+        "Type": "escalation",
+        "InGroup": "88451dd9-4b57-441e-9eab-e20b9879bafa",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "ad7ff41a-bcef-4e6a-90fe-175edbf363e5" },
+            { "IsNew": true, "Id": "121fe46a-981e-43a4-9e7f-c8310af11581" },
+            { "Id": "f0947de6-d10f-4ebf-87f7-056637d25b03" },
+            { "Id": "2828f753-d86a-41d3-9e12-54b0dc61bf00" },
+            { "Id": "3873b688-fc76-4f8e-9e49-f50b9d665181" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:42.7262539Z",
+        "PublicId": "010323741247",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}
