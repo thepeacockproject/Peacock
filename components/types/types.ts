@@ -921,6 +921,8 @@ export interface MissionManifestMetadata {
     UseContractProgressionData?: boolean
     CpdId?: string
     GroupDefinition?: ContractGroupDefinition
+    // Elusive custom property (like official's year)
+    Season?: number
 }
 
 export interface GroupObjectiveDisplayOrderItem {
