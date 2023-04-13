@@ -1,5 +1,11 @@
 import { Playstyle, ScoringBonus, ScoringHeadline } from "./scoring"
-import { CompletionData, Seconds, Unlockable } from "./types"
+import {
+    ChallengeCompletion,
+    CompletionData,
+    OpportunityStatistics,
+    Seconds,
+    Unlockable,
+} from "./types"
 
 export interface CalculateXpResult {
     completedChallenges: MissionEndChallenge[]
@@ -95,18 +101,9 @@ export interface MissionEndResponse {
             Name: string
         }
         CompletionData: CompletionData
-        ChallengeCompletion: {
-            ChallengesCount: number
-            CompletedChallengesCount: number
-        }
-        ContractChallengeCompletion: {
-            ChallengesCount: number
-            CompletedChallengesCount: number
-        }
-        OpportunityStatistics: {
-            Count: number
-            Completed: number
-        }
+        ChallengeCompletion: ChallengeCompletion
+        ContractChallengeCompletion: ChallengeCompletion
+        OpportunityStatistics: OpportunityStatistics
         LocationCompletionPercent: number
     }
     ScoreOverview: {

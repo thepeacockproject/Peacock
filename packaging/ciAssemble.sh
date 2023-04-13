@@ -34,10 +34,10 @@ cp PeacockPatcher.exe "$OUT_DIR"
 cp chunk*.js "$OUT_DIR"
 if [ "$IS_LITE" != true ]; then
     cp -r nodedist "$OUT_DIR"
+    cp "packaging/Start Server.cmd" "$OUT_DIR"
+    cp "packaging/Tools.cmd" "$OUT_DIR"
 fi
 cp LICENSE "$OUT_DIR"
-cp "Start Server.cmd" "$OUT_DIR"
-cp "Tools.cmd" "$OUT_DIR"
 cp THIRDPARTYNOTICES.txt "$OUT_DIR"
 cp .nvmrc "$OUT_DIR"
 mkdir "$OUT_DIR"/resources

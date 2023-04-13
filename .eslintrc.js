@@ -25,14 +25,9 @@ module.exports = {
         "@typescript-eslint",
         "promise",
         "react-hooks",
-        "prettier",
-        "custom-rules",
+        "@peacockproject",
     ],
-    extends: [
-        "eslint:recommended",
-        "plugin:@typescript-eslint/recommended",
-        "plugin:prettier/recommended",
-    ],
+    extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
     parser: "@typescript-eslint/parser",
     parserOptions: {
         ecmaVersion: "es2022",
@@ -68,6 +63,6 @@ module.exports = {
         "promise/valid-params": "warn",
         "react-hooks/rules-of-hooks": "error",
         "react-hooks/exhaustive-deps": "warn",
-        "custom-rules/import-components": "error",
+        "@peacockproject/import-components": "error",
     },
 }

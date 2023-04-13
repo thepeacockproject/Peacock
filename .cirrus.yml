@@ -77,3 +77,8 @@ task:
             name: Linting
             Lint_script:
                 - yarn lint
+                - yarn prettier:check
+        - only_if: $CIRRUS_TAG == ''
+          name: Tests
+          Test_script:
+            - yarn test

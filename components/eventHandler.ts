@@ -45,6 +45,7 @@ import { encodePushMessage } from "./multiplayer/multiplayerUtils"
 import {
     ActorTaggedC2SEvent,
     AmbientChangedC2SEvent,
+    AreaDiscoveredC2SEvent,
     BodyHiddenC2SEvent,
     ContractStartC2SEvent,
     Evergreen_Payout_DataC2SEvent,
@@ -63,6 +64,7 @@ import {
 } from "./types/events"
 import picocolors from "picocolors"
 import { setCpd } from "./evergreen"
+import { getConfig } from "./configSwizzleManager"
 
 const eventRouter = Router()
 
@@ -599,7 +601,7 @@ function saveEvents(
         if (
             !canGetAfterTimerOver.includes(event.Name) &&
             session.timerEnd !== 0 &&
-            event.Timestamp > session.timerEnd
+            event.Timestamp > (session.timerEnd as number)
         ) {
             // Do not handle events that occur after exiting the level
             response.push(process.hrtime.bigint().toString())
@@ -801,6 +803,46 @@ function saveEvents(
                 writeUserData(req.jwt.unique_name, req.gameVersion)
                 break
             }
+            case "AreaDiscovered":
+                // This might be an evergreen session,
+                // so we need to manually call challengeOnEvent for the area
+                // discovery challenge because onContractEvent won't do it for us
+
+                if (session.evergreen) {
+                    const areaId = (<AreaDiscoveredC2SEvent>event).Value
+                        .RepositoryId
+
+                    const challengeId = getConfig("AreaMap", false)[areaId]
+                    const progress = userData.Extensions.ChallengeProgression
+
+                    log(LogLevel.DEBUG, `Area discovered: ${areaId}`)
+
+                    // Nullability checks
+                    progress[challengeId] ??= {
+                        Ticked: false,
+                        Completed: false,
+                        State: {
+                            AreaIDs: [],
+                        },
+                    }
+                    progress[challengeId].State ??= { AreaIDs: [] }
+                    progress[challengeId].State.AreaIDs ??= []
+
+                    controller.challengeService.challengeOnEvent(
+                        event,
+                        session,
+                        challengeId,
+                        userData,
+                        {
+                            context: progress[challengeId].State,
+                            state: "Start",
+                            timers: [],
+                            timesCompleted: 0,
+                        },
+                    )
+                }
+
+                break
             // Evergreen
             case "CpdSet":
                 setCpd(

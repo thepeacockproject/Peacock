@@ -74,10 +74,16 @@ legacyMenuDataRouter.get(
 
         const userProfile = getUserData(req.jwt.unique_name, req.gameVersion)
 
+        const sublocation = getSubLocationByName(
+            contractData.Metadata.Location,
+            req.gameVersion,
+        )
+
         const inventory = createInventory(
             req.jwt.unique_name,
             req.gameVersion,
             userProfile.Extensions.entP,
+            sublocation,
         )
 
         const userCentricContract = generateUserCentric(
@@ -86,14 +92,9 @@ legacyMenuDataRouter.get(
             "h1",
         )
 
-        const sublocation = getSubLocationByName(
-            contractData.Metadata.Location,
-            req.gameVersion,
-        )
-
         const defaultLoadout = {
             2: "FIREARMS_HERO_PISTOL_TACTICAL_001_SU_SKIN01",
-            3: getDefaultSuitFor(sublocation?.Properties?.ParentLocation),
+            3: getDefaultSuitFor(sublocation),
             4: "TOKEN_FIBERWIRE",
             5: "PROP_TOOL_COIN",
         }

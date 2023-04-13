@@ -42,6 +42,7 @@ import {
     getDestinationCompletion,
 } from "./menus/destinations"
 import type {
+    ChallengeCategoryCompletion,
     CommonSelectScreenConfig,
     ContractSearchResult,
     GameVersion,
@@ -64,6 +65,7 @@ import {
     complications,
     generateCompletionData,
     generateUserCentric,
+    getSubLocationByName,
 } from "./contracts/dataGen"
 import { log, LogLevel } from "./loggingInterop"
 import {
@@ -240,7 +242,7 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
         if (
             child === "LOCATION_ICA_FACILITY_ARRIVAL" ||
             child === "LOCATION_HOKKAIDO_SHIM_MAMUSHI" ||
-            child.search("SNUG_") > 0
+            child.includes("SNUG_")
         ) {
             continue
         }
@@ -508,16 +510,20 @@ menuDataRouter.get(
 
         const userData = getUserData(req.jwt.unique_name, req.gameVersion)
 
-        const inventory = createInventory(
-            req.jwt.unique_name,
-            req.gameVersion,
-            userData.Extensions.entP,
-        )
-
         let contractData: MissionManifest | undefined = undefined
         if (req.query.contractid) {
             contractData = controller.resolveContract(req.query.contractid)
         }
+
+        const inventory = createInventory(
+            req.jwt.unique_name,
+            req.gameVersion,
+            userData.Extensions.entP,
+            getSubLocationByName(
+                contractData?.Metadata.Location,
+                req.gameVersion,
+            ),
+        )
 
         if (req.query.slotname.endsWith(req.query.slotid!.toString())) {
             req.query.slotname = req.query.slotname.slice(
@@ -961,7 +967,7 @@ menuDataRouter.get(
             data: {
                 Location: {},
                 MissionData: {
-                    ...getDestinationCompletion(locationData, req),
+                    ...getDestinationCompletion(locationData, undefined, req),
                     ...{ SubLocationMissionsData: [] },
                 },
                 ChallengeData: {
@@ -1828,12 +1834,81 @@ menuDataRouter.post(
     createLoadSaveMiddleware("SaveMenuTemplate"),
 )
 
-//TODO: Add statistics
 menuDataRouter.get("/PlayerProfile", (req: RequestWithJwt, res) => {
     const playerProfilePage = getConfig<PlayerProfileView>(
         "PlayerProfilePage",
         true,
     )
+
+    const locationData = getVersionedConfig<PeacockLocationsData>(
+        "LocationsData",
+        req.gameVersion,
+        false,
+    )
+
+    playerProfilePage.data.SubLocationData = []
+
+    for (const subLocationKey in locationData.children) {
+        //Ewww...
+        if (
+            subLocationKey === "LOCATION_ICA_FACILITY_ARRIVAL" ||
+            subLocationKey === "LOCATION_HOKKAIDO_SHIM_MAMUSHI" ||
+            subLocationKey.includes("SNUG_")
+        ) {
+            continue
+        }
+
+        const subLocation = locationData.children[subLocationKey]
+        const parentLocation =
+            locationData.parents[subLocation.Properties.ParentLocation]
+
+        const completionData = generateCompletionData(
+            subLocation.Id,
+            req.jwt.unique_name,
+            req.gameVersion,
+        )
+
+        //TODO: Make getDestinationCompletion do something like this.
+        const challenges = controller.challengeService.getChallengesForLocation(
+            subLocation.Id,
+            req.gameVersion,
+        )
+
+        const challengeCategoryCompletion: ChallengeCategoryCompletion[] = []
+
+        for (const challengeGroup in challenges) {
+            const challengeCompletion =
+                controller.challengeService.countTotalNCompletedChallenges(
+                    {
+                        challengeGroup: challenges[challengeGroup],
+                    },
+                    req.jwt.unique_name,
+                    req.gameVersion,
+                )
+
+            challengeCategoryCompletion.push({
+                Name: challenges[challengeGroup][0].CategoryName,
+                ...challengeCompletion,
+            })
+        }
+
+        const destinationCompletion = getDestinationCompletion(
+            parentLocation,
+            subLocation,
+            req,
+        )
+
+        playerProfilePage.data.SubLocationData.push({
+            ParentLocation: parentLocation,
+            Location: subLocation,
+            CompletionData: completionData,
+            ChallengeCategoryCompletion: challengeCategoryCompletion,
+            ChallengeCompletion: destinationCompletion.ChallengeCompletion,
+            OpportunityStatistics: destinationCompletion.OpportunityStatistics,
+            LocationCompletionPercent:
+                destinationCompletion.LocationCompletionPercent,
+        })
+    }
 
     const userProfile = getUserData(req.jwt.unique_name, req.gameVersion)
     playerProfilePage.data.PlayerProfileXp.Total =
