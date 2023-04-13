@@ -56,7 +56,6 @@ import { GetForPlay2Body } from "../types/gameSchemas"
 import assert from "assert"
 import { getUserData } from "../databaseHandler"
 import { getCpd } from "../evergreen"
-import { getFlag } from "../flags"
 
 const contractRoutingRouter = Router()
 
@@ -111,13 +110,6 @@ contractRoutingRouter.post(
         }
 
         // Edit elusive contract data HERE
-
-        if (
-            contractData.Metadata.Type === "elusive" &&
-            getFlag("elusivesEnableSaving")
-        ) {
-            contractData.Metadata.Type = "mission"
-        }
 
         const contractSesh = {
             Contract: contractData,

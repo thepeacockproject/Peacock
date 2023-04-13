@@ -109,8 +109,8 @@ const defaultFlags: Flags = {
         desc: "When set to true, all Freelancer unlocks will always be available.",
         default: false,
     },
-    elusivesEnableSaving: {
-        desc: 'When set to true, elusive target missions will share the same restarting/replanning/saving rules with normal missions, but the "Elusive Target [Location]" challenges will not be completable. These challenges will only be completable when this option is set to false.',
+    legacyElusivesEnableSaving: {
+        desc: 'When set to true, playing elusive target missions in Hitman 2016 will share the same restarting/replanning/saving rules with normal missions, but the "Elusive Target [Location]" challenges will not be completable. These challenges will only be completable when this option is set to false.',
         default: false,
     },
     mapDiscoveryState: {
