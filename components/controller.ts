@@ -657,14 +657,7 @@ export class Controller {
         )
 
         if (registryJson) {
-            const dereferenced: MissionManifest = fastClone(registryJson)
-
-            if (registryJson.Metadata.Type === "elusive") {
-                dereferenced.Metadata.Type = "mission"
-                return dereferenced
-            }
-
-            return dereferenced
+            return fastClone(registryJson)
         }
 
         const openCtJson = this.contracts.has(id)

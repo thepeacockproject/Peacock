@@ -266,11 +266,6 @@ export async function planningView(
         req.gameVersion,
     )
 
-    if (userCentric.Contract.Metadata.Type === "elusive") {
-        // change the type until we figure out why they become unplayable
-        userCentric.Contract.Metadata.Type = "mission"
-    }
-
     const sniperLoadouts = createSniperLoadouts(
         req.jwt.unique_name,
         req.gameVersion,
@@ -407,7 +402,7 @@ export async function planningView(
                 : null,
         data: {
             Contract: contractData,
-            ElusiveContractState: "",
+            ElusiveContractState: "not_completed",
             UserCentric: userCentric,
             IsFirstInGroup: escalation
                 ? controller.escalationMappings[escalationGroupId]["1"] ===

@@ -73,6 +73,8 @@ export enum ChallengeFilterType {
     Contract = "Contract",
     /** Only used for the CAREER -> CHALLENGES page */
     Contracts = "Contracts",
+    /** Only used for the location page */
+    ParentLocation = "ParentLocation",
 }
 
 export type ChallengeFilterOptions =
@@ -90,6 +92,9 @@ export type ChallengeFilterOptions =
           type: ChallengeFilterType.Contracts
           contractIds: string[]
           locationId: string
+      }
+    | {
+          type: ChallengeFilterType.ParentLocation
       }
 
 /**
@@ -178,10 +183,15 @@ function isChallengeInContract(
         )
     }
 
-    // Is this for the current contract?
+    // Is this for the current contract or contract type?
     const isForContract = (challenge.InclusionData?.ContractIds || []).includes(
         contractId,
     )
+
+    // As of v6.1.0, this is only used for ET challenges.
+    const isForContractType = (
+        challenge.InclusionData?.ContractTypes || []
+    ).includes(controller.resolveContract(contractId).Metadata.Type)
 
     // Is this a location-wide challenge?
     // "location" is more widely used, but "parentlocation" is used in Ambrose and Berlin, as well as some "Discover XX" challenges.
@@ -196,7 +206,11 @@ function isChallengeInContract(
         challenge.LocationId === locationId ||
         challenge.LocationId === challenge.ParentLocationId
 
-    return isForContract || (isForLocation && isCurrentLocation)
+    return (
+        isForContract ||
+        isForContractType ||
+        (isForLocation && isCurrentLocation)
+    )
 }
 
 export function filterChallenge(
@@ -224,6 +238,11 @@ export function filterChallenge(
                     true,
                 ),
             )
+        }
+        case ChallengeFilterType.ParentLocation: {
+            // Challenges are already organized by location
+            // So we only need to filter out the elusive target challenges
+            return !challenge.Tags.includes("elusive")
         }
     }
 }

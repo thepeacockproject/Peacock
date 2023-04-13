@@ -25,6 +25,7 @@ import { log, LogLevel } from "../loggingInterop"
 import { getConfig } from "../configSwizzleManager"
 import type { GameChanger, RequestWithJwt } from "../types/types"
 import { randomUUID } from "crypto"
+import { getFlag } from "../flags"
 
 const legacyContractRouter = Router()
 
@@ -52,6 +53,13 @@ legacyContractRouter.post(
             )
             res.status(400).send("no such contract")
             return
+        }
+        if (
+            contractData.Metadata.Type === "elusive" &&
+            getFlag("legacyElusivesEnableSaving")
+        ) {
+            log(LogLevel.DEBUG, "Changing elusive mission...")
+            contractData.Metadata.Type = "mission"
         }
 
         if (!contractData.Data.GameChangers) {

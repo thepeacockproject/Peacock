@@ -1,0 +1,1179 @@
+{
+    "meta": {
+        "Location": "GLOBAL_ELUSIVES_CHALLENGES",
+        "GameVersion": "h3"
+    },
+    "groups": [
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+            "Image": "images/challenges/categories/elusive/tile.jpg",
+            "Icon": "elusive",
+            "CategoryId": "elusive",
+            "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_ELUSIVE",
+            "Challenges": [
+                {
+                    "Id": "1cb6662f-b471-427d-af62-14906ea8f2ed",
+                    "Name": "UI_CHALLENGES_ELUSIVE_TARGETS_1_NAME",
+                    "ImageName": "images/challenges/profile_challenges/elusive_targets_3.jpg",
+                    "Description": "UI_CHALLENGES_ELUSIVE_TARGETS_1_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["TOKEN_OUTFIT_LEGACY_HERO_ABSOLUTIONSUIT"],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+                    "Icon": "elusive",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 70001,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 3
+                        },
+                        "Context": {
+                            "Completed": [],
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "$.Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.ContractType",
+                                            "elusive"
+                                        ]
+                                    },
+                                    "Transition": "State_ValidContract"
+                                }
+                            },
+                            "State_ValidContract": {
+                                "ContractEnd": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count",
+                                            "$pushunique": [
+                                                "Completed",
+                                                "$ContractId"
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$not": {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$ContractId"
+                                                        ]
+                                                    },
+                                                    "in": "$.Completed"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Transition": "Start"
+                                    }
+                                ],
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "$Value.ContractType",
+                                                "elusive"
+                                            ]
+                                        }
+                                    },
+                                    "Transition": "Start"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "elusive"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["elusive"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "cddd65dc-1017-49d6-91de-e34cb219fa81",
+                    "Name": "UI_CHALLENGES_ELUSIVE_TARGETS_2_NAME",
+                    "ImageName": "images/challenges/profile_challenges/elusive_targets_6.jpg",
+                    "Description": "UI_CHALLENGES_ELUSIVE_TARGETS_2_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["TOKEN_OUTFIT_LEGACY_HERO_BLOODMONEYSUIT"],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+                    "Icon": "elusive",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 70002,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 6
+                        },
+                        "Context": {
+                            "Completed": [],
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "$.Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.ContractType",
+                                            "elusive"
+                                        ]
+                                    },
+                                    "Transition": "State_ValidContract"
+                                }
+                            },
+                            "State_ValidContract": {
+                                "ContractEnd": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count",
+                                            "$pushunique": [
+                                                "Completed",
+                                                "$ContractId"
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$not": {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$ContractId"
+                                                        ]
+                                                    },
+                                                    "in": "$.Completed"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Transition": "Start"
+                                    }
+                                ],
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "$Value.ContractType",
+                                                "elusive"
+                                            ]
+                                        }
+                                    },
+                                    "Transition": "Start"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "elusive"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["elusive"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "817faf2a-fee7-4166-9332-39ef30a7f1d0",
+                    "Name": "UI_CHALLENGES_ELUSIVE_TARGETS_3_NAME",
+                    "ImageName": "images/challenges/profile_challenges/elusive_targets_9.jpg",
+                    "Description": "UI_CHALLENGES_ELUSIVE_TARGETS_3_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        "TOKEN_OUTFIT_LEGACY_HERO_SIGNATURESUITANDGLOVES"
+                    ],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+                    "Icon": "elusive",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 70003,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 9
+                        },
+                        "Context": {
+                            "Completed": [],
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "$.Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.ContractType",
+                                            "elusive"
+                                        ]
+                                    },
+                                    "Transition": "State_ValidContract"
+                                }
+                            },
+                            "State_ValidContract": {
+                                "ContractEnd": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count",
+                                            "$pushunique": [
+                                                "Completed",
+                                                "$ContractId"
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$not": {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$ContractId"
+                                                        ]
+                                                    },
+                                                    "in": "$.Completed"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Transition": "Start"
+                                    }
+                                ],
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "$Value.ContractType",
+                                                "elusive"
+                                            ]
+                                        }
+                                    },
+                                    "Transition": "Start"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "elusive"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["elusive"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "afdb9b3f-5d19-41dd-a406-51b560f2cde2",
+                    "Name": "UI_CHALLENGES_ELUSIVE_TARGETS_4_NAME",
+                    "ImageName": "images/challenges/profile_challenges/elusive_targets_12.jpg",
+                    "Description": "UI_CHALLENGES_ELUSIVE_TARGETS_4_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["TOKEN_OUTFIT_ELUSIVE_COMPLETE_12_SUIT"],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+                    "Icon": "elusive",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 70004,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 12
+                        },
+                        "Context": {
+                            "Completed": [],
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "$.Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.ContractType",
+                                            "elusive"
+                                        ]
+                                    },
+                                    "Transition": "State_ValidContract"
+                                }
+                            },
+                            "State_ValidContract": {
+                                "ContractEnd": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count",
+                                            "$pushunique": [
+                                                "Completed",
+                                                "$ContractId"
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$not": {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$ContractId"
+                                                        ]
+                                                    },
+                                                    "in": "$.Completed"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Transition": "Start"
+                                    }
+                                ],
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "$Value.ContractType",
+                                                "elusive"
+                                            ]
+                                        }
+                                    },
+                                    "Transition": "Start"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "elusive"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["elusive"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "9b805891-5899-48be-baf9-75b91dda77fa",
+                    "Name": "UI_CHALLENGES_ELUSIVE_TARGETS_5_NAME",
+                    "ImageName": "images/challenges/profile_challenges/elusive_targets_15.jpg",
+                    "Description": "UI_CHALLENGES_ELUSIVE_TARGETS_5_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["TOKEN_OUTFIT_ELUSIVE_COMPLETE_15_SUIT"],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+                    "Icon": "elusive",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 70005,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 15
+                        },
+                        "Context": {
+                            "Completed": [],
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "$.Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.ContractType",
+                                            "elusive"
+                                        ]
+                                    },
+                                    "Transition": "State_ValidContract"
+                                }
+                            },
+                            "State_ValidContract": {
+                                "ContractEnd": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count",
+                                            "$pushunique": [
+                                                "Completed",
+                                                "$ContractId"
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$not": {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$ContractId"
+                                                        ]
+                                                    },
+                                                    "in": "$.Completed"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Transition": "Start"
+                                    }
+                                ],
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "$Value.ContractType",
+                                                "elusive"
+                                            ]
+                                        }
+                                    },
+                                    "Transition": "Start"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "elusive"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["elusive"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "ce8b2dbb-3730-468e-90c2-faba14c5ed6a",
+                    "Name": "UI_CHALLENGES_GLOBAL_SA_ELUSIVE_TARGETS_I_NAME",
+                    "ImageName": "images/challenges/profile_challenges/sa_elusive_target_1.jpg",
+                    "Description": "UI_CHALLENGES_GLOBAL_SA_ELUSIVE_TARGETS_I_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["TOKEN_OUTFIT_HERO_TERMINUS_SUIT"],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+                    "Icon": "elusive",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 70101,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "CompletedSA": [],
+                            "Count": 0,
+                            "Goal": 1,
+                            "RecordingDestroyed": true,
+                            "Witnesses": [],
+                            "Targets": [],
+                            "LastAccidentTime": 0
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "ContractStart": {
+                                    "Actions": [
+                                        {
+                                            "$reset": "Witnesses"
+                                        },
+                                        {
+                                            "$reset": "Targets"
+                                        },
+                                        {
+                                            "$set": ["RecordingDestroyed", true]
+                                        }
+                                    ],
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.ContractType",
+                                            "elusive"
+                                        ]
+                                    },
+                                    "Transition": "State_ValidContract"
+                                }
+                            },
+                            "State_ValidContract": {
+                                "ContractStart": [
+                                    {
+                                        "Actions": [
+                                            {
+                                                "$reset": "Witnesses"
+                                            },
+                                            {
+                                                "$reset": "Targets"
+                                            },
+                                            {
+                                                "$set": [
+                                                    "RecordingDestroyed",
+                                                    true
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$not": {
+                                                "$eq": [
+                                                    "$Value.ContractType",
+                                                    "elusive"
+                                                ]
+                                            }
+                                        },
+                                        "Transition": "Start"
+                                    }
+                                ],
+                                "AccidentBodyFound": {
+                                    "$set": ["LastAccidentTime", "$Timestamp"]
+                                },
+                                "MurderedBodySeen": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.IsWitnessTarget",
+                                                true
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Witnesses",
+                                                "$Value.Witness"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsWitnessTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$.LastAccidentTime",
+                                                            "$Timestamp"
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Start"
+                                    }
+                                ],
+                                "ContractEnd": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count",
+                                            "$pushunique": [
+                                                "CompletedSA",
+                                                "$ContractId"
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        true,
+                                                        "$.RecordingDestroyed"
+                                                    ]
+                                                },
+                                                {
+                                                    "$all": {
+                                                        "in": "$.Witnesses",
+                                                        "?": {
+                                                            "$any": {
+                                                                "in": "$.Targets",
+                                                                "?": {
+                                                                    "$eq": [
+                                                                        "$.#",
+                                                                        "$.##"
+                                                                    ]
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$any": {
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "$ContractId"
+                                                                ]
+                                                            },
+                                                            "in": "$.CompletedSA"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ],
+                                "CrowdNPC_Died": {
+                                    "Transition": "Start"
+                                },
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$Value.KillContext",
+                                                            1
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Start"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.KillContext",
+                                                        1
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Targets",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$Value.IsTarget", true]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Targets",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "Witnesses": {
+                                    "Condition": {
+                                        "$any": {
+                                            "in": "$Value",
+                                            "?": {
+                                                "$pushunique": [
+                                                    "Witnesses",
+                                                    "$.#"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                "Spotted": {
+                                    "Condition": {
+                                        "$any": {
+                                            "in": "$Value",
+                                            "?": {
+                                                "$pushunique": [
+                                                    "Witnesses",
+                                                    "$.#"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                "SecuritySystemRecorder": [
+                                    {
+                                        "Actions": {
+                                            "$set": [
+                                                "RecordingDestroyed",
+                                                false
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$eq": ["$Value.event", "spotted"]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["RecordingDestroyed", true]
+                                        },
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "erased"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "destroyed"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "elusive"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["elusive"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "7b6082fa-76f4-456c-a4a2-c8b84f9d63db",
+                    "Name": "UI_CHALLENGES_GLOBAL_SA_ELUSIVE_TARGETS_II_NAME",
+                    "ImageName": "images/challenges/profile_challenges/sa_elusive_target_2.jpg",
+                    "Description": "UI_CHALLENGES_GLOBAL_SA_ELUSIVE_TARGETS_II_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["TOKEN_OUTFIT_HERO_WINTER_SUIT"],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+                    "Icon": "elusive",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 70102,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 5
+                        },
+                        "Context": {
+                            "CompletedSA": [],
+                            "Count": 0,
+                            "RecordingDestroyed": true,
+                            "Witnesses": [],
+                            "Targets": [],
+                            "LastAccidentTime": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "$.Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "ContractStart": {
+                                    "Actions": [
+                                        {
+                                            "$reset": "Witnesses"
+                                        },
+                                        {
+                                            "$reset": "Targets"
+                                        },
+                                        {
+                                            "$set": ["RecordingDestroyed", true]
+                                        }
+                                    ],
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.ContractType",
+                                            "elusive"
+                                        ]
+                                    },
+                                    "Transition": "State_ValidContract"
+                                }
+                            },
+                            "State_ValidContract": {
+                                "ContractStart": [
+                                    {
+                                        "Actions": [
+                                            {
+                                                "$reset": "Witnesses"
+                                            },
+                                            {
+                                                "$reset": "Targets"
+                                            },
+                                            {
+                                                "$set": [
+                                                    "RecordingDestroyed",
+                                                    true
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$not": {
+                                                "$eq": [
+                                                    "$Value.ContractType",
+                                                    "elusive"
+                                                ]
+                                            }
+                                        },
+                                        "Transition": "Start"
+                                    }
+                                ],
+                                "AccidentBodyFound": {
+                                    "$set": ["LastAccidentTime", "$Timestamp"]
+                                },
+                                "MurderedBodySeen": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.IsWitnessTarget",
+                                                true
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Witnesses",
+                                                "$Value.Witness"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsWitnessTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$.LastAccidentTime",
+                                                            "$Timestamp"
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Start"
+                                    }
+                                ],
+                                "Witnesses": {
+                                    "Condition": {
+                                        "$any": {
+                                            "in": "$Value",
+                                            "?": {
+                                                "$pushunique": [
+                                                    "Witnesses",
+                                                    "$.#"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                "Spotted": {
+                                    "Condition": {
+                                        "$any": {
+                                            "in": "$Value",
+                                            "?": {
+                                                "$pushunique": [
+                                                    "Witnesses",
+                                                    "$.#"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                "ContractEnd": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count",
+                                            "$pushunique": [
+                                                "CompletedSA",
+                                                "$ContractId"
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        true,
+                                                        "$.RecordingDestroyed"
+                                                    ]
+                                                },
+                                                {
+                                                    "$all": {
+                                                        "in": "$.Witnesses",
+                                                        "?": {
+                                                            "$any": {
+                                                                "in": "$.Targets",
+                                                                "?": {
+                                                                    "$eq": [
+                                                                        "$.#",
+                                                                        "$.##"
+                                                                    ]
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$any": {
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "$ContractId"
+                                                                ]
+                                                            },
+                                                            "in": "$.CompletedSA"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ],
+                                "CrowdNPC_Died": {
+                                    "Transition": "Start"
+                                },
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$Value.KillContext",
+                                                            1
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Start"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.KillContext",
+                                                        1
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Targets",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$Value.IsTarget", true]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Targets",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "SecuritySystemRecorder": [
+                                    {
+                                        "Actions": {
+                                            "$set": [
+                                                "RecordingDestroyed",
+                                                false
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$eq": ["$Value.event", "spotted"]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["RecordingDestroyed", true]
+                                        },
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "erased"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "destroyed"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "elusive"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["elusive"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                }
+            ]
+        }
+    ]
+}

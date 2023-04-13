@@ -232,6 +232,15 @@ export abstract class ChallengeRegistry {
                 gameGroups.get("GLOBAL_CLASSIC_CHALLENGES")?.get(groupId),
             )
         }
+        if (
+            groupId === "elusive" &&
+            location !== "GLOBAL_ELUSIVES_CHALLENGES"
+        ) {
+            return mergeSavedChallengeGroups(
+                gameGroups.get(location)?.get(groupId),
+                gameGroups.get("GLOBAL_ELUSIVES_CHALLENGES")?.get(groupId),
+            )
+        }
         return gameGroups.get(location)?.get(groupId)
     }
 
@@ -255,6 +264,17 @@ export abstract class ChallengeRegistry {
                 ...(gameChalGC.get(location)?.get(groupId) ?? []),
                 ...(gameChalGC.get("GLOBAL_CLASSIC_CHALLENGES")?.get(groupId) ??
                     []),
+            ])
+        }
+        if (
+            groupId === "elusive" &&
+            location !== "GLOBAL_ELUSIVES_CHALLENGES"
+        ) {
+            return new Set([
+                ...(gameChalGC.get(location)?.get(groupId) ?? []),
+                ...(gameChalGC
+                    .get("GLOBAL_ELUSIVES_CHALLENGES")
+                    ?.get(groupId) ?? []),
             ])
         }
         return gameChalGC.get(location)?.get(groupId)
@@ -917,7 +937,7 @@ export class ChallengeService extends ChallengeRegistry {
 
         const forLocation = this.getGroupedChallengeLists(
             {
-                type: ChallengeFilterType.None,
+                type: ChallengeFilterType.ParentLocation,
             },
             locationParentId,
             gameVersion,
