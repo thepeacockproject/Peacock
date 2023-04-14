@@ -90,7 +90,7 @@ export class MenuSystemDatabase {
                     )
                 }
 
-                if (gameVersion === "h3" || gameVersion === "h1") {
+                if (["h3", "h1"].includes(gameVersion)) {
                     configs.push("menusystem/pages/hub/hub_page.json")
                 }
 
@@ -106,6 +106,18 @@ export class MenuSystemDatabase {
                     )
                     configs.push(
                         "menusystem/pages/hub/dashboard/category_escalation/result.json",
+                    )
+
+                    // The following is to allow restart/replan/save/load on elusive contracts
+                    // alongside removing the warning when starting one in H2/3 - AF
+                    configs.push(
+                        "menusystem/pages/pause/pausemenu/restart.json",
+                    )
+                    configs.push("menusystem/pages/pause/pausemenu/replan.json")
+                    configs.push("menusystem/pages/pause/pausemenu/save.json")
+                    configs.push("menusystem/pages/pause/pausemenu/load.json")
+                    configs.push(
+                        "menusystem/pages/planning/actions/actions_contextbutton_play.json",
                     )
                 }
 
@@ -177,6 +189,284 @@ export class MenuSystemDatabase {
                     }
                 case "/pages/multiplayer/content/lobbyslim.json":
                     return getConfig("LobbySlimTemplate", false)
+                case "/pages/pause/pausemenu/restart.json":
+                    return {
+                        $if: {
+                            $condition: {
+                                $or: [
+                                    {
+                                        $and: [
+                                            "$not $eq({$currentcontractcontext}.ContractType,arcade)",
+                                            "$not $eq({$currentcontractcontext}.ContractType,evergreen)",
+                                        ],
+                                    },
+                                    "$isallowedtorestart",
+                                ],
+                            },
+                            $then: {
+                                $include: {
+                                    $path: "menusystem/pages/pause/pausemenu/restartnoconditions.json",
+                                },
+                            },
+                        },
+                    }
+                case "/pages/pause/pausemenu/replan.json":
+                    return {
+                        $if: {
+                            $condition: {
+                                $and: [
+                                    "$not $eq({$currentcontractcontext}.ContractLocation,LOCATION_ICA_FACILITY)",
+                                    "$not $eq({$currentcontractcontext}.ContractType,tutorial)",
+                                    "$not $eq({$currentcontractcontext}.ContractType,vsrace)",
+                                    "$not $eq({$currentcontractcontext}.ContractType,evergreen)",
+                                ],
+                            },
+                            $then: {
+                                $if: {
+                                    $condition: {
+                                        $or: [
+                                            "$not $eq({$currentcontractcontext}.ContractType,arcade)",
+                                            "$isallowedtorestart",
+                                        ],
+                                    },
+                                    $then: {
+                                        view: "menu3.basic.ListElementSmall",
+                                        pressable:
+                                            "$not $isnull {$currentcontractcontext}.Contract",
+                                        selectable:
+                                            "$not $isnull {$currentcontractcontext}.Contract",
+                                        data: {
+                                            showningame: "$isingame",
+                                            title: "$loc UI_MENU_PAGE_PAUSE_REPLAN",
+                                            icon: "planning",
+                                        },
+                                        actions: {
+                                            accept: {
+                                                "$if $eq ({$currentcontractcontext}.ContractType,placeholder)":
+                                                    {
+                                                        $then: {
+                                                            $datacontext: {
+                                                                in: "$.",
+                                                                datavalues: {
+                                                                    AutoStart:
+                                                                        false,
+                                                                },
+                                                                do: {
+                                                                    $include: {
+                                                                        $path: "menusystem/pages/pause/pausemenu/replanplaceholder.json",
+                                                                    },
+                                                                },
+                                                            },
+                                                        },
+                                                        $else: {
+                                                            "replan-level": {},
+                                                        },
+                                                    },
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    }
+                case "/pages/pause/pausemenu/save.json":
+                    return {
+                        $if: {
+                            $condition: {
+                                $and: [
+                                    "$not $eq({$currentcontractcontext}.ContractType,arcade)",
+                                    "$not $eq({$currentcontractcontext}.ContractType,evergreen)",
+                                    "$not $eq({$currentcontractcontext}.ContractType,sniper)",
+                                    "$not $eq({$currentcontractcontext}.ContractType,vsrace)",
+                                ],
+                            },
+                            $then: {
+                                $datacontext: {
+                                    in: "$.",
+                                    datavalues: {
+                                        CanSave: "$cansave",
+                                    },
+                                    do: {
+                                        view: "menu3.basic.ListElementSmall",
+                                        selectable: "$.CanSave",
+                                        pressable: "$.CanSave",
+                                        data: {
+                                            showningame: "$isingame",
+                                            title: "$loc UI_MENU_PAGE_PAUSE_SAVE",
+                                            icon: {
+                                                "$if $.CanSave": {
+                                                    $then: "save",
+                                                    $else: "savedisabled",
+                                                },
+                                            },
+                                            greyelement: "$not $.CanSave",
+                                        },
+                                        actions: {
+                                            "$if $.CanSave": {
+                                                $then: {
+                                                    accept: {
+                                                        link: {
+                                                            page: "savepage",
+                                                            args: {
+                                                                url: "save",
+                                                                args: {
+                                                                    saveorload:
+                                                                        "save",
+                                                                },
+                                                                saveorload:
+                                                                    "save",
+                                                            },
+                                                        },
+                                                    },
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    }
+                case "/pages/pause/pausemenu/load.json":
+                    return {
+                        $if: {
+                            $condition: {
+                                $and: [
+                                    "$not $eq({$currentcontractcontext}.ContractType,arcade)",
+                                    "$not $eq({$currentcontractcontext}.ContractType,evergreen)",
+                                    "$not $eq({$currentcontractcontext}.ContractType,sniper)",
+                                    "$not $eq({$currentcontractcontext}.ContractType,vsrace)",
+                                ],
+                            },
+                            $then: {
+                                view: "menu3.basic.ListElementSmall",
+                                data: {
+                                    showningame: "$isingame",
+                                    title: "$loc UI_MENU_PAGE_PAUSE_LOAD_GAME",
+                                    icon: "load",
+                                },
+                                actions: {
+                                    accept: {
+                                        link: {
+                                            page: "loadpage",
+                                            args: {
+                                                url: "load",
+                                                args: {
+                                                    saveorload: "load",
+                                                },
+                                                saveorload: "load",
+                                                mainmenu: false,
+                                                reloadonchange: true,
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    }
+                // Following exists in the files of H3, but not H2. No need to put it in the diff. - AF
+                case "/pages/pause/pausemenu/restartnoconditions.json":
+                    return {
+                        view: "menu3.basic.ListElementSmall",
+                        data: {
+                            showningame: "$isingame",
+                            title: {
+                                "$if $eq ({$currentcontractcontext}.ContractType,vsrace)":
+                                    {
+                                        $then: "$loc UI_MENU_LOBBY_REMATCH",
+                                        $else: "$loc UI_MENU_PAGE_PAUSE_RESTART",
+                                    },
+                            },
+                            icon: "replay",
+                        },
+                        actions: {
+                            accept: {
+                                "$if $eq ({$currentcontractcontext}.ContractType,placeholder)":
+                                    {
+                                        $then: {
+                                            $datacontext: {
+                                                in: "$.",
+                                                datavalues: {
+                                                    AutoStart: true,
+                                                },
+                                                do: {
+                                                    $include: {
+                                                        $path: "menusystem/pages/pause/pausemenu/replanplaceholder.json",
+                                                    },
+                                                },
+                                            },
+                                        },
+                                        $else: {
+                                            "restart-level": {},
+                                        },
+                                    },
+                            },
+                        },
+                    }
+                case "/pages/planning/actions/actions_contextbutton_play.json":
+                    return {
+                        $mergeobjects: [
+                            {
+                                accept: {
+                                    "$switch $.Contract.Metadata.Type": [
+                                        {
+                                            case: "arcade",
+                                            return: {
+                                                "show-modal": {
+                                                    config: {
+                                                        view: "menu3.modal.ModalDialogGeneric",
+                                                        buttons: [
+                                                            "$loc UI_DIALOG_CONFIRM",
+                                                            {
+                                                                label: "$loc UI_DIALOG_CANCEL",
+                                                                type: "cancel",
+                                                            },
+                                                        ],
+                                                        data: {
+                                                            title: "$loc UI_CONTRACT_HEADER_ARCADE",
+                                                            information: [
+                                                                {
+                                                                    description:
+                                                                        "$loc UI_MENU_PAGE_PLANNING_ARCADE_PLAY_WARNING",
+                                                                },
+                                                            ],
+                                                        },
+                                                    },
+                                                    onbutton: [
+                                                        {
+                                                            "start-contract": {
+                                                                contract:
+                                                                    "$.Contract",
+                                                                difficulty:
+                                                                    "$.@parent.CurrentDifficulty",
+                                                                objectives:
+                                                                    "$.@parent.Objectives",
+                                                            },
+                                                        },
+                                                    ],
+                                                },
+                                            },
+                                        },
+                                        {
+                                            default: {
+                                                "start-contract": {
+                                                    contract: "$.Contract",
+                                                    difficulty:
+                                                        "$.@parent.CurrentDifficulty",
+                                                    objectives:
+                                                        "$.@parent.Objectives",
+                                                },
+                                            },
+                                        },
+                                    ],
+                                },
+                            },
+                            {
+                                $include: {
+                                    $path: "menusystem/pages/planning/actions/actions_contextbutton_common.json",
+                                },
+                            },
+                        ],
+                    }
                 default:
                     return undefined
             }

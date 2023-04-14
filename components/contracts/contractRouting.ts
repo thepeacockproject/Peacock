@@ -110,6 +110,8 @@ contractRoutingRouter.post(
             contractData.Data.EnableSaving = false
         }
 
+        // Edit elusive contract data HERE
+
         const contractSesh = {
             Contract: contractData,
             ContractSessionId: `${process.hrtime

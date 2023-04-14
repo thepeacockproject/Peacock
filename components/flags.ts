@@ -109,6 +109,10 @@ const defaultFlags: Flags = {
         desc: "When set to true, all Freelancer unlocks will always be available.",
         default: false,
     },
+    legacyElusivesEnableSaving: {
+        desc: 'When set to true, playing elusive target missions in Hitman 2016 will share the same restarting/replanning/saving rules with normal missions, but the "Elusive Target [Location]" challenges will not be completable. These challenges will only be completable when this option is set to false.',
+        default: false,
+    },
     mapDiscoveryState: {
         desc: 'Decides what to do with the discovery state of the maps. REVEALED will reset all map locations to discovered, CLOUDED will reset all maps to undiscovered, and KEEP will keep your current discovery state. Note that these actions will take effect every time you connect to Peacock. Your progress of the "Discover [Location]" challenges will not be affected by this option.',
         default: "KEEP",

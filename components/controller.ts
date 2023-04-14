@@ -677,16 +677,9 @@ export class Controller {
         const registryJson: MissionManifest | undefined = internalContracts[id]
 
         if (registryJson) {
-            const dereferenced: MissionManifest = fastClone(registryJson)
-
-            if (registryJson.Metadata.Type === "elusive") {
-                dereferenced.Metadata.Type = "mission"
-                return getGroup
-                    ? this.getGroupContract(dereferenced)
-                    : dereferenced
-            }
-
-            return getGroup ? this.getGroupContract(dereferenced) : dereferenced
+            return fastClone(
+                getGroup ? this.getGroupContract(registryJson) : registryJson,
+            )
         }
 
         const openCtJson = this.contracts.has(id)
