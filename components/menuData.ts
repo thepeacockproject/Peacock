@@ -1046,7 +1046,7 @@ menuDataRouter.get(
 
             // every unique escalation from the sublocation
             const allUniqueEscalations: string[] = [
-                ...(req.gameVersion === "h1"
+                ...(req.gameVersion === "h1" && e.Id === "LOCATION_ICA_FACILITY"
                     ? controller.missionsInLocations.escalations[
                           "LOCATION_ICA_FACILITY_SHIP"
                       ]
