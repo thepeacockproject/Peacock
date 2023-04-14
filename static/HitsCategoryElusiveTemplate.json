@@ -1,0 +1,71 @@
+{
+    "$datacontext": {
+        "in": "$.data",
+        "datavalues": {
+            "NoContractsAvailableLine": "UI_MENU_PAGE_NO_CONTRACTS_AVAILABLE",
+            "GroupedHits": {
+                "$arraygroupby": {
+                    "source": "$.data.Data.Hits",
+                    "property": "UserCentricContract.Contract.Metadata.Season"
+                }
+            }
+        },
+        "do": {
+            "controller": "category",
+            "id": "sub_category_container",
+            "row": -1,
+            "col": 0,
+            "view": "menu3.containers.ScrollingTabsContainer",
+            "ncols": 10,
+            "direction": "horizontal",
+            "submenunavigation": true,
+            "loopedselection": false,
+            "data": {
+                "direction": "horizontal",
+                "submenu": true
+            },
+            "children": {
+                "$each $.GroupedHits": {
+                    "id": "$formatstring category_season_{$.by, .f}",
+                    "view": "menu3.basic.SubCategoryElement",
+                    "controller": "categoryitem",
+                    "data": {
+                        "title": "$loc $formatstring UI_SEASON_{$.by, .f}"
+                    },
+                    "children": [
+                        {
+                            "controller": "group",
+                            "view": "menu3.containers.ScrollingListContainer",
+                            "layoutchildren": true,
+                            "id": "hitscategory_container",
+                            "row": 1,
+                            "nrows": 3,
+                            "ncols": 10,
+                            "pressable": false,
+                            "navigationmode": "leaf-selection",
+                            "data": {
+                                "direction": "horizontal"
+                            },
+                            "hidedefaultnocontent": false,
+                            "children": {
+                                "$datacontext": {
+                                    "in": "$.",
+                                    "datavalues": {
+                                        "Data": {
+                                            "Hits": "$.group"
+                                        }
+                                    },
+                                    "do": {
+                                        "$include": {
+                                            "$path": "menusystem/elements/contract/hitscategory_contracts.json"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

@@ -84,10 +84,6 @@ export class MenuSystemDatabase {
                     configs.push(
                         "menusystem/elements/settings/data/isnonvroptionvisible.json",
                     )
-
-                    configs.push(
-                        "menusystem/elements/contract/hitscategory_elusive.json",
-                    )
                 }
 
                 if (["h3", "h1"].includes(gameVersion)) {
@@ -108,6 +104,10 @@ export class MenuSystemDatabase {
                         "menusystem/pages/hub/dashboard/category_escalation/result.json",
                     )
 
+                    configs.push(
+                        "menusystem/elements/contract/hitscategory_elusive.json",
+                    )
+
                     // The following is to allow restart/replan/save/load on elusive contracts
                     // alongside removing the warning when starting one in H2/3 - AF
                     configs.push(
@@ -126,6 +126,9 @@ export class MenuSystemDatabase {
                     configs.push(
                         "menusystem/pages/multiplayer/content/lobbyslim.json",
                     )
+                    configs.push(
+                        "menusystem/elements/contract/contractshitcategoryloading.json",
+                    )
                 }
             },
         )
@@ -143,9 +146,49 @@ export class MenuSystemDatabase {
                         },
                     }
                 case "/elements/contract/hitscategory_elusive.json":
+                    return getConfig("HitsCategoryElusiveTemplate", false)
+                case "/elements/contract/contractshitcategoryloading.json":
                     return {
-                        $include:
-                            "menusystem/elements/contract/hitscategory.json",
+                        controller: "group",
+                        view: "menu3.containers.ScrollingListContainer",
+                        layoutchildren: true,
+                        id: "hitscategory_container",
+                        nrows: 3,
+                        ncols: 10,
+                        pressable: false,
+                        data: { direction: "horizontal" },
+                        actions: {
+                            activated: {
+                                "load-async": {
+                                    path: {
+                                        "$if $eq ($.Category,Elusive_Target_Hits)":
+                                            {
+                                                $then: "menusystem/elements/contract/hitscategory_elusive.json",
+                                                $else: "menusystem/elements/contract/hitscategory.json",
+                                            },
+                                    },
+                                    from: {
+                                        url: "hitscategory",
+                                        args: {
+                                            page: 0,
+                                            type: "$.Category",
+                                            mode: "dataonly",
+                                        },
+                                    },
+                                    target: "hitscategory_container",
+                                    showloadingindicator: true,
+                                    blocksinput: false,
+                                    "post-load-action": [
+                                        {
+                                            "set-selected": {
+                                                target: "hitscategory_container",
+                                            },
+                                        },
+                                    ],
+                                },
+                            },
+                        },
+                        children: [{ pressable: false, selectable: true }],
                     }
                 case "/data/ishitman3available.json":
                     return {
