@@ -626,7 +626,7 @@ export async function missionEnd(
     const locationChallenges =
         controller.challengeService.getGroupedChallengeLists(
             {
-                type: ChallengeFilterType.None,
+                type: ChallengeFilterType.ParentLocation,
             },
             locationParentId,
             req.gameVersion,
