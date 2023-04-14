@@ -1,0 +1,62 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "Id": "905e7cd5-1dd9-4ce3-bec2-a0120b921308",
+                "Primary": true,
+                "ResetEvent": null,
+                "FailedEvent": { "EventName": "TargetEscaped" },
+                "IsHidden": true,
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "905e7cd5-1dd9-4ce3-bec2-a0120b921308"
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/marrakesh/mission_marrakesh_screwdriver.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/missions/marrakesh/vr_overrides_spider.brick",
+                    "assembly:/_PRO/scenes/missions/marrakesh/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/missions/marrakesh/vr_overrides_spider.brick"
+                ]
+            }
+        ],
+        "GameChangers": ["f0f53067-2617-4128-8cb7-2a0ae4757a3f"]
+    },
+    "Metadata": {
+        "Id": "edc03550-8073-415c-a509-173b36bb7158",
+        "IsPublished": true,
+        "Title": "UI_CONTRACT_PAPAYA_LEVEL02_NAME",
+        "Description": "UI_CONTRACT_SCREWDRIVER_DESC",
+        "BriefingVideo": "briefing_screwdriver",
+        "DebriefingVideo": "debriefing_screwdriver",
+        "CodeName_Hint": "Arcade Papaya Screwdriver",
+        "Location": "LOCATION_MARRAKECH",
+        "ScenePath": "assembly:/_pro/scenes/missions/marrakesh/_scene_spider.entity",
+        "Entitlements": ["LOCATION_GOLDEN"],
+        "TileImage": "images/contracts/elusive/010_Screwdriver/Title.jpg",
+        "LastUpdate": "2023-02-24T10:14:37.7765869Z",
+        "CreationTimestamp": "2012-12-12T12:12:12.743Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Type": "arcade",
+        "Release": "3.100.0 Arcade",
+        "InGroup": "7569d5e4-5270-4b69-96c8-e47b99876390",
+        "PublicId": "006072923947"
+    },
+    "UserData": {}
+}

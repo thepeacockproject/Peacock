@@ -1,0 +1,114 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "EnableExits": {
+            "$eq": ["$e24e8b07-8ac7-4ec3-acd5-7b671308ce2f", "Completed"]
+        },
+        "Objectives": [
+            {
+                "Id": "e24e8b07-8ac7-4ec3-acd5-7b671308ce2f",
+                "Primary": true,
+                "ResetEvent": null,
+                "IsHidden": true,
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "97b05a61-84d6-4b22-8dcc-3658986e1758"
+                    }
+                }
+            },
+            {
+                "Id": "29122337-1643-48d2-a76f-d7c738378cb6",
+                "Category": "primary",
+                "OnActive": { "IfCompleted": { "Visible": false } },
+                "IsHidden": true,
+                "BriefingText": "$loc UI_CONTRACT_PISCO_SOUR_FAIL_GONZALES_HARMED",
+                "Type": "statemachine",
+                "ExcludeFromScoring": true,
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["168c6da4-c583-47f4-9435-a42d9ea22546"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Pacify": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "168c6da4-c583-47f4-9435-a42d9ea22546"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ],
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "168c6da4-c583-47f4-9435-a42d9ea22546"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_PRO/Scenes/Missions/CoastalTown/mission_piscosour.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_octopus.brick",
+                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_octopus.brick"
+                ]
+            }
+        ],
+        "GameChangers": ["f0f53067-2617-4128-8cb7-2a0ae4757a3f"]
+    },
+    "Metadata": {
+        "Id": "25778e9a-b194-4b77-9d0f-d8adc3ff8c03",
+        "IsPublished": true,
+        "Title": "UI_CONTRACT_PAPAYA_LEVEL04_NAME",
+        "Description": "UI_CONTRACT_PISCO_SOUR_DESC",
+        "BriefingVideo": "briefing_piscosour",
+        "DebriefingVideo": "debriefing_piscosour",
+        "CodeName_Hint": "Arcade Papaya Pisco Sour",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/CoastalTown/_scene_octopus.entity",
+        "Entitlements": ["LOCATION_GOLDEN"],
+        "Location": "LOCATION_COASTALTOWN",
+        "TileImage": "images/contracts/elusive/013_PiscoSour/Title.jpg",
+        "LastUpdate": "2023-02-24T10:14:37.8064658Z",
+        "CreationTimestamp": "2012-12-12T12:12:12.743Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Type": "arcade",
+        "Release": "3.100.0 Arcade",
+        "InGroup": "7569d5e4-5270-4b69-96c8-e47b99876390",
+        "PublicId": "003308750847"
+    },
+    "UserData": {}
+}

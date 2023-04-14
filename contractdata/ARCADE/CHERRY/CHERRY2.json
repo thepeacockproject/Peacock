@@ -1,0 +1,101 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Bricks": [
+            "assembly:/_PRO/Scenes/Missions/Colorado_2/_scene_bushwacker.brick"
+        ],
+        "GameChangers": ["3db72bb5-63d6-47fe-9332-d7ea3c195e06"],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/missions/colorado_2/vr_overrides_bull.brick",
+                    "assembly:/_PRO/scenes/missions/colorado_2/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/missions/colorado_2/vr_overrides_bull.brick"
+                ]
+            }
+        ],
+        "Entrances": [
+            "e5c0d1a4-72b0-4cc0-857d-8bb155ea09f4",
+            "6c943798-8ca7-42cc-861a-becdb32017da",
+            "bd0cc571-e4a3-41f1-9b9b-608cdecc09c1",
+            "f8ff0b17-b9f5-41ce-b7b1-db8bf6c47f4a",
+            "370b4106-96f2-4a04-9bc6-029b86b301aa",
+            "53ce9bb6-ef1c-4f17-8951-5b501fb941d4",
+            "1d3a5b4a-5573-4e2d-8a98-d1c881cbd13e"
+        ],
+        "MandatoryLoadout": [
+            {
+                "Id": "TOKEN_OUTFIT_COLORADO_HERO_COLORADOSUIT",
+                "Properties": {
+                    "LoadoutSlot": "disguise",
+                    "RepositoryId": "dd9792ec-4a1d-4c29-a928-a556fc0b6692"
+                }
+            }
+        ],
+        "Objectives": [
+            {
+                "Id": "3c074d6f-3c97-4891-9baa-4e44567693d7",
+                "Primary": true,
+                "IsHidden": true,
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "441209db-35ca-46e8-bb99-b9c3f8e8783c"
+                    }
+                }
+            },
+            {
+                "Id": "f94dcce7-2d6e-4f1f-a095-7b93b5e3a5ea",
+                "IsHidden": true,
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": true,
+                "Image": "images/contracts/elusive/027_Bushwacker/Objective1.jpg",
+                "BriefingName": "$loc UI_CONTRACT_BUSHWHACKER_OBJ_2_TITLE",
+                "BriefingText": "$loc UI_CONTRACT_BUSHWHACKER_OBJ_2_DESC",
+                "LongBriefingText": "$loc UI_CONTRACT_BUSHWHACKER_OBJ_2_DESC",
+                "Category": "primary",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_BUSHWHACKER_OBJ_2_TITLE"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "UncoveredEvidence": { "Transition": "Success" },
+                            "LaptopDestroyed": { "Transition": "Failure" }
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "417c1639-69be-45e7-b5d4-224336860f82",
+        "CodeName_Hint": "Cherry - Level 2 - Bushwacker",
+        "Release": "Arcade/Violet",
+        "Type": "arcade",
+        "Title": "UI_CONTRACT_CHERRY_LEVEL2_TITLE",
+        "Description": "UI_CONTRACT_CHERRY_LEVEL2_DESC",
+        "TileImage": "images/contracts/elusive/027_Bushwacker/Title.jpg",
+        "Location": "LOCATION_COLORADO",
+        "InGroup": "06f99231-9b1e-483f-8a72-f91efcc2fd2b",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Colorado_2/_scene_bull.entity",
+        "Entitlements": ["LOCATION_GOLDEN"],
+        "BriefingVideo": "briefing_bushwacker",
+        "DebriefingVideo": "debriefing_bushwacker",
+        "CreationTimestamp": "2012-12-12T12:12:12.743Z",
+        "LastUpdate": "2023-02-24T10:14:37.063847Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "IsPublished": true,
+        "PublicId": "009553291947"
+    },
+    "UserData": {}
+}
