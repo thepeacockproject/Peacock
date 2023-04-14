@@ -1,0 +1,486 @@
+{
+    "Data": {
+        "Bricks": [
+            "Assembly:/_PRO/Scenes/missions/Ancestral/ancestral_fern.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ancestral_bulldog.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ancestral_bulldog.brick"
+                ]
+            }
+        ],
+        "DevOnlyBricks": [],
+        "GameChangers": [
+            "63055f1a-bcd2-4e0f-8caf-b446f01d02f3",
+            "3db72bb5-63d6-47fe-9332-d7ea3c195e06",
+            "f41f18fe-0fe5-416a-a793-50727e594655"
+        ],
+        "Entrances": ["5a60147f-9c85-4998-b70f-1441ee7ba9b1"],
+        "MandatoryLoadout": [
+            {
+                "Id": "Global_Outfit_Hero_Hunting_Suit",
+                "Properties": {
+                    "LoadoutSlot": "Outfit",
+                    "RepositoryId": "ae7358ae-ac6d-4217-b86e-efffde5b90dd"
+                }
+            }
+        ],
+        "GameChangerReferences": [],
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "_comment": "Zacharys balcony guard",
+                "Id": "407ddb00-ec26-43dd-bce8-6c1e3323e69d",
+                "Category": "primary",
+                "BriefingName": "",
+                "Image": "images/actors/actor_5cfc8323-1053-4138-b2a4-2448b5003d1e.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "ae7358ae-ac6d-4217-b86e-efffde5b90dd",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "6696a10d-9138-4184-8104-a6c7ec2e0eb1",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_FERN_LUCIANBARKER_SHOTGUN"
+                },
+                "BriefingText": "$loc UI_CONTRACT_FERN_LUCIANBARKER_SHOTGUN",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["5cfc8323-1053-4138-b2a4-2448b5003d1e"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "5cfc8323-1053-4138-b2a4-2448b5003d1e"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "ae7358ae-ac6d-4217-b86e-efffde5b90dd"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "6696a10d-9138-4184-8104-a6c7ec2e0eb1"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "5cfc8323-1053-4138-b2a4-2448b5003d1e"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Lawyer room guard",
+                "Id": "9ec451bf-ff55-4eee-965a-92d26d879e3f",
+                "Category": "primary",
+                "BriefingName": "",
+                "Image": "images/actors/actor_604dfbdb-1cdd-4d96-ba13-7a7dacbc973c.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "ae7358ae-ac6d-4217-b86e-efffde5b90dd",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "6696a10d-9138-4184-8104-a6c7ec2e0eb1",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_FERN_BENMOORE_SHOTGUN"
+                },
+                "BriefingText": "$loc UI_CONTRACT_FERN_BENMOORE_SHOTGUN",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["604dfbdb-1cdd-4d96-ba13-7a7dacbc973c"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "604dfbdb-1cdd-4d96-ba13-7a7dacbc973c"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "ae7358ae-ac6d-4217-b86e-efffde5b90dd"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "6696a10d-9138-4184-8104-a6c7ec2e0eb1"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "604dfbdb-1cdd-4d96-ba13-7a7dacbc973c"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Alexa balcony guard 01",
+                "Id": "297701e2-652a-4ef5-97f7-f68ac4a696cf",
+                "Category": "primary",
+                "BriefingName": "",
+                "Image": "images/actors/actor_69bb005e-160b-457f-9aa8-053e085e386f.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "ae7358ae-ac6d-4217-b86e-efffde5b90dd",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "6696a10d-9138-4184-8104-a6c7ec2e0eb1",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_FERN_DANIELBROOKS_SHOTGUN"
+                },
+                "BriefingText": "$loc UI_CONTRACT_FERN_DANIELBROOKS_SHOTGUN",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["69bb005e-160b-457f-9aa8-053e085e386f"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "69bb005e-160b-457f-9aa8-053e085e386f"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "ae7358ae-ac6d-4217-b86e-efffde5b90dd"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "6696a10d-9138-4184-8104-a6c7ec2e0eb1"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "69bb005e-160b-457f-9aa8-053e085e386f"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Alexa balcony guard 02",
+                "Id": "a107317a-7b47-4bf6-b192-0c5108f94b61",
+                "Category": "primary",
+                "BriefingName": "",
+                "Image": "images/actors/actor_2c711497-3923-41b9-ac9a-8eae297bad15.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "ae7358ae-ac6d-4217-b86e-efffde5b90dd",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "6696a10d-9138-4184-8104-a6c7ec2e0eb1",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_FERN_LAYTONGILL_SHOTGUN"
+                },
+                "BriefingText": "$loc UI_CONTRACT_FERN_LAYTONGILL_SHOTGUN",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["2c711497-3923-41b9-ac9a-8eae297bad15"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "2c711497-3923-41b9-ac9a-8eae297bad15"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "ae7358ae-ac6d-4217-b86e-efffde5b90dd"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "6696a10d-9138-4184-8104-a6c7ec2e0eb1"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "2c711497-3923-41b9-ac9a-8eae297bad15"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Alexa office guard",
+                "Id": "40f0a91a-fb33-4fb5-8a0e-e8bc5a5ce89d",
+                "Category": "primary",
+                "BriefingName": "",
+                "Image": "images/actors/actor_51cb49bf-2a59-4444-81b7-96aeda12ba19.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "ae7358ae-ac6d-4217-b86e-efffde5b90dd",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "6696a10d-9138-4184-8104-a6c7ec2e0eb1",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_FERN_ISAACHUNTER_SHOTGUN"
+                },
+                "BriefingText": "$loc UI_CONTRACT_FERN_ISAACHUNTER_SHOTGUN",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["51cb49bf-2a59-4444-81b7-96aeda12ba19"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "51cb49bf-2a59-4444-81b7-96aeda12ba19"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "ae7358ae-ac6d-4217-b86e-efffde5b90dd"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "6696a10d-9138-4184-8104-a6c7ec2e0eb1"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "51cb49bf-2a59-4444-81b7-96aeda12ba19"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Find deluxe shotgun",
+                "Id": "bbbff4c7-8f16-4bde-b619-b31323cb2aa6",
+                "Category": "primary",
+                "ObjectiveType": "setpiece",
+                "ExcludeFromScoring": true,
+                "BriefingName": "$loc UI_CONTRACT_FERN_GETSHOTGUN",
+                "Image": "images/unlockables/item_perspective_6696a10d-9138-4184-8104-a6c7ec2e0eb1_0.jpg",
+                "TargetConditions": [{}],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_FERN_GETSHOTGUN",
+                    "iconType": 17
+                },
+                "BriefingText": "$loc UI_CONTRACT_FERN_GETSHOTGUN",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["1b1f5180-7cf7-406e-97fc-6c1a6e835b9c"]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "6696a10d-9138-4184-8104-a6c7ec2e0eb1"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "f893555c-c0f6-4630-ba67-66e4cbea0017",
+        "IsPublished": true,
+        "CreationTimestamp": "2018-10-17T14:35:18.194497Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_FERN_LEVEL_3_NAME",
+        "Description": "UI_CONTRACT_FERN_GROUP_DESC",
+        "CodeName_Hint": "Fern - Level 3",
+        "Location": "LOCATION_ANCESTRAL_BULLDOG",
+        "RequiredUnlockable": "ACCESS_HIT_BULLDOG",
+        "ScenePath": "assembly:/_pro/scenes/missions/ancestral/scene_bulldog_fern.entity",
+        "Type": "escalation",
+        "Release": "3.1.0 Escalation",
+        "InGroup": "4689ef5e-0ddd-44b3-adca-aebf3293d9e1",
+        "Entitlements": ["H3_EXPANSION"],
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "bbbff4c7-8f16-4bde-b619-b31323cb2aa6" },
+            { "IsNew": true, "Id": "407ddb00-ec26-43dd-bce8-6c1e3323e69d" },
+            { "IsNew": true, "Id": "9ec451bf-ff55-4eee-965a-92d26d879e3f" },
+            { "IsNew": true, "Id": "297701e2-652a-4ef5-97f7-f68ac4a696cf" },
+            { "IsNew": true, "Id": "a107317a-7b47-4bf6-b192-0c5108f94b61" },
+            { "IsNew": true, "Id": "40f0a91a-fb33-4fb5-8a0e-e8bc5a5ce89d" },
+            { "IsNew": true, "Id": "f41f18fe-0fe5-416a-a793-50727e594655" },
+            { "Id": "63055f1a-bcd2-4e0f-8caf-b446f01d02f3" },
+            { "Id": "3db72bb5-63d6-47fe-9332-d7ea3c195e06" }
+        ],
+        "LastUpdate": "2023-03-30T11:20:25.6821629Z",
+        "PublicId": "028287380447",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Ancestral_Fern.jpg"
+    },
+    "UserData": {}
+}

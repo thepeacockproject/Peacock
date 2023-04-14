@@ -24,7 +24,6 @@ import {
     MissionManifest,
     RegistryChallenge,
 } from "../types/types"
-import assert from "assert"
 import { SavedChallengeGroup } from "../types/challenges"
 import { controller } from "../controller"
 import { gameDifficulty } from "../utils"
@@ -108,6 +107,7 @@ export function inclusionDataCheck(
     contract: MissionManifest,
 ): boolean {
     if (!incData) return true
+    if (!contract) return false
 
     return (
         incData.ContractIds?.includes(contract.Metadata.Id) ||
@@ -147,8 +147,11 @@ function isChallengeInContract(
     challenge: RegistryChallenge,
     forCareer = false,
 ): boolean {
-    assert.ok(contractId)
-    assert.ok(locationId)
+    // Currently don't have all the escalation groups
+    if (!contractId || !locationId) {
+        return false
+    }
+
     if (!challenge) {
         return false
     }
@@ -166,6 +169,7 @@ function isChallengeInContract(
         return true
     }
 
+    const contract = controller.resolveContract(contractId, true)
     if (challenge.Type === "global") {
         return inclusionDataCheck(
             // Global challenges should not be shown for "tutorial" missions unless for the career page,
@@ -179,15 +183,16 @@ function isChallengeInContract(
                               (type) => type !== "tutorial",
                           ),
                   },
-            controller.resolveContract(contractId),
+            contract,
         )
     }
 
-    // Is this for the current contract or contract type?
+    // Is this for the current contract or group contract?
     const isForContract = (challenge.InclusionData?.ContractIds || []).includes(
-        contractId,
+        contract.Metadata.Id,
     )
 
+    // Is this for the current contract type?
     // As of v6.1.0, this is only used for ET challenges.
     const isForContractType = (
         challenge.InclusionData?.ContractTypes || []

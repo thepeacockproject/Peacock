@@ -1,0 +1,201 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "EnableExits": {
+            "$eq": [
+                "$6726232b-1926-4ed2-8b92-0e2c4bcd7384",
+                "$f2887157-faa3-4595-8005-1607df261c4b",
+                "Completed"
+            ]
+        },
+        "Objectives": [
+            {
+                "Id": "6726232b-1926-4ed2-8b92-0e2c4bcd7384",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_ASAGAO_OBJ_1_2" },
+                "BriefingText": "$loc UI_CONTRACT_ASAGAO_OBJ_1_2",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["5561ba7b-91a6-4403-a351-227015f67c2f"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "5561ba7b-91a6-4403-a351-227015f67c2f"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.OutfitRepositoryId"
+                                                        ]
+                                                    },
+                                                    "in": [
+                                                        "6a25f81d-cf2e-4e47-9b15-0f712a3f71d9",
+                                                        "b8deb948-a0a9-4dcb-9df4-1c2ecd29765f"
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillClass",
+                                                    "ballistic"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.WeaponSilenced",
+                                                    false
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "5561ba7b-91a6-4403-a351-227015f67c2f"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "f2887157-faa3-4595-8005-1607df261c4b",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_ASAGAO_OBJ_2_3" },
+                "BriefingText": "$loc UI_CONTRACT_ASAGAO_OBJ_2_3",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["2debbe58-179d-43d1-abd4-5c8430caa8c0"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "2debbe58-179d-43d1-abd4-5c8430caa8c0"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "b8dbb7b6-fef9-4782-923f-ddebc573625e"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillClass",
+                                                    "ballistic"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.WeaponSilenced",
+                                                    false
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "2debbe58-179d-43d1-abd4-5c8430caa8c0"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "1bafc1c9-c5bb-4783-845b-b1ec338271cd",
+                "Category": "primary",
+                "IsHidden": true,
+                "ExcludeFromScoring": true,
+                "BriefingText": "$loc UI_GAMECHANGERS_HOT_DISGUISE_TARGET_ALIVE_FAIL",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "States": {
+                        "Start": { "-": { "Transition": "Success" } },
+                        "Success": {
+                            "Target_Alive_Disguise_Used": {
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [
+            "5b368c64-ed49-4907-9075-d4a31953374a",
+            "8e54bad8-0e8c-4d4c-96f1-f0075b574479",
+            "0cf5e693-35ec-457e-a004-da4672b90376",
+            "eb4c8e84-ca1f-4242-b72a-cf90175d223f",
+            "572cd180-99db-40a8-9090-7736ef36aa23"
+        ],
+        "GameChangerReferences": []
+    },
+    "Metadata": {
+        "Id": "35ed4c87-e6af-4279-8555-22d167b59197",
+        "IsPublished": true,
+        "CreationTimestamp": "2016-05-04T09:51:27.393Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "TileImage": "",
+        "Title": "UI_CONTRACT_ASAGAO_LEVEL_5_TITLE",
+        "Description": "",
+        "CodeName_Hint": "Asagao Level 5",
+        "RequiredUnlockable": "ACCESS_HIT_SNOW_CRANE",
+        "Location": "LOCATION_HOKKAIDO",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Hokkaido/_scene_snowcrane.entity",
+        "Release": "1.7.0 Escalation",
+        "Type": "escalation",
+        "InGroup": "a1e5f4f4-ea9c-4a42-b826-50a212026d50",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "572cd180-99db-40a8-9090-7736ef36aa23" },
+            { "Id": "eb4c8e84-ca1f-4242-b72a-cf90175d223f" },
+            { "Id": "0cf5e693-35ec-457e-a004-da4672b90376" },
+            { "Id": "f2887157-faa3-4595-8005-1607df261c4b" },
+            { "Id": "8e54bad8-0e8c-4d4c-96f1-f0075b574479" },
+            { "Id": "5b368c64-ed49-4907-9075-d4a31953374a" },
+            { "Id": "6726232b-1926-4ed2-8b92-0e2c4bcd7384" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:28.9605136Z",
+        "PublicId": "010877214147",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

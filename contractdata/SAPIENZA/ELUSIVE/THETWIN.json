@@ -1,0 +1,110 @@
+{
+    "Data": {
+        "EnableSaving": true,
+        "EnableExits": {
+            "$eq": ["$e24e8b07-8ac7-4ec3-acd5-7b671308ce2f", "Completed"]
+        },
+        "Objectives": [
+            {
+                "Id": "e24e8b07-8ac7-4ec3-acd5-7b671308ce2f",
+                "Primary": true,
+                "ResetEvent": null,
+                "IsHidden": true,
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "97b05a61-84d6-4b22-8dcc-3658986e1758"
+                    }
+                }
+            },
+            {
+                "Id": "29122337-1643-48d2-a76f-d7c738378cb6",
+                "Category": "primary",
+                "OnActive": { "IfCompleted": { "Visible": false } },
+                "IsHidden": true,
+                "BriefingText": "$loc UI_CONTRACT_PISCO_SOUR_FAIL_GONZALES_HARMED",
+                "Type": "statemachine",
+                "ExcludeFromScoring": true,
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["168c6da4-c583-47f4-9435-a42d9ea22546"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Pacify": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "168c6da4-c583-47f4-9435-a42d9ea22546"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ],
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "168c6da4-c583-47f4-9435-a42d9ea22546"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_PRO/Scenes/Missions/CoastalTown/mission_piscosour.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_octopus.brick",
+                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_octopus.brick"
+                ]
+            }
+        ],
+        "GameChangers": []
+    },
+    "Metadata": {
+        "Id": "e87217e3-4809-4855-80d5-74bed66be58d",
+        "Title": "UI_CONTRACT_PISCO_SOUR_TITLE",
+        "Description": "UI_CONTRACT_PISCO_SOUR_DESC",
+        "BriefingVideo": "briefing_piscosour",
+        "DebriefingVideo": "debriefing_piscosour",
+        "CodeName_Hint": "Pisco Sour",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/CoastalTown/_scene_octopus.entity",
+        "Location": "LOCATION_COASTALTOWN",
+        "TileImage": "images/contracts/elusive/013_PiscoSour/Title.jpg",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Type": "elusive",
+        "PublicId": "003292234547",
+        "Entitlements": ["H1_LEGACY_STANDARD"],
+        "Season": 1
+    },
+    "UserData": {}
+}

@@ -21,6 +21,7 @@ import {
     contractCreationTutorialId,
     DEFAULT_MASTERY_MAXLEVEL,
     gameDifficulty,
+    isSuit,
     getMaxProfileLevel,
     PEACOCKVERSTRING,
     unlockOrderComparer,
@@ -32,7 +33,6 @@ import { getConfig, getVersionedConfig } from "./configSwizzleManager"
 import {
     contractIdToHitObject,
     controller,
-    isSuit,
     peacockRecentEscalations,
 } from "./controller"
 import { makeCampaigns } from "./menus/campaigns"
@@ -57,10 +57,7 @@ import type {
     Unlockable,
     UserCentricContract,
 } from "./types/types"
-import {
-    getMenuDetailsForEscalation,
-    getUserEscalationProgress,
-} from "./contracts/escalations/escalationService"
+import { no2016 } from "./contracts/escalations/escalationService"
 import {
     complications,
     generateCompletionData,
@@ -111,17 +108,11 @@ const menuDataRouter = Router()
 // /profiles/page/
 
 function dashEscalations(req: RequestWithJwt, res: Response) {
-    const userData = getUserData(req.jwt.unique_name, req.gameVersion)
-
     const contracts: UserCentricContract[] = []
 
     for (const groupId of peacockRecentEscalations) {
-        const level = getUserEscalationProgress(userData, groupId)
-
         const userCentric = generateUserCentric(
-            controller.resolveContract(
-                controller.escalationMappings[groupId][level],
-            )!,
+            controller.resolveContract(groupId, true)!,
             req.jwt.unique_name,
             req.gameVersion,
         )
@@ -621,7 +612,7 @@ menuDataRouter.get(
     "/missionrewards",
     (req: RequestWithJwt<{ contractSessionId: string }>, res) => {
         const { contractId } = getSession(req.jwt.unique_name)
-        const contractData = controller.resolveContract(contractId)
+        const contractData = controller.resolveContract(contractId, true)
 
         const userData = getUserData(req.jwt.unique_name, req.gameVersion)
 
@@ -659,7 +650,7 @@ menuDataRouter.get(
                 XPGain: 0,
                 Challenges: Object.values(
                     controller.challengeService.getChallengesForContract(
-                        getSession(req.jwt.unique_name).contractId,
+                        contractId,
                         req.gameVersion,
                         // TODO: Should a difficulty be passed here?
                     ),
@@ -1055,16 +1046,24 @@ menuDataRouter.get(
 
             // every unique escalation from the sublocation
             const allUniqueEscalations: string[] = [
+                ...(req.gameVersion === "h1"
+                    ? controller.missionsInLocations.escalations[
+                          "LOCATION_ICA_FACILITY_SHIP"
+                      ]
+                    : []),
                 ...new Set<string>(
                     controller.missionsInLocations.escalations[e.Id] || [],
                 ),
             ]
 
             for (const escalation of allUniqueEscalations) {
-                const details = getMenuDetailsForEscalation(
+                if (req.gameVersion === "h1" && no2016.includes(escalation))
+                    continue
+
+                const details = contractIdToHitObject(
                     escalation,
-                    req.jwt.unique_name,
                     req.gameVersion,
+                    req.jwt.unique_name,
                 )
 
                 if (details) {
@@ -1750,10 +1749,7 @@ menuDataRouter.get("/contractcreation/create", (req: RequestWithJwt, res) => {
                             Outfit: {
                                 RepositoryId: km.OutfitRepoId,
                                 Required: true,
-                                IsHitmanSuit: isSuit(
-                                    km.OutfitRepoId,
-                                    req.gameVersion,
-                                ),
+                                IsHitmanSuit: isSuit(km.OutfitRepoId),
                             },
                         }
                     }),

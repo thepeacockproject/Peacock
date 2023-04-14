@@ -422,6 +422,7 @@ export interface OpportunityStatistics {
 export interface ContractHistory {
     LastPlayedAt?: number
     Completed?: boolean
+    IsEscalation?: boolean
 }
 
 export interface UserProfile {
@@ -693,6 +694,7 @@ export interface UserCentricContract {
         CompletionData?: CompletionData
         DlcName: string
         DlcImage: string
+        EscalationCompleted?: boolean
         EscalationCompletedLevels?: number
         EscalationTotalLevels?: number
         InGroup?: string
@@ -919,6 +921,8 @@ export interface MissionManifestMetadata {
     UseContractProgressionData?: boolean
     CpdId?: string
     GroupDefinition?: ContractGroupDefinition
+    // Elusive custom property (like official's year)
+    Season?: number
 }
 
 export interface GroupObjectiveDisplayOrderItem {

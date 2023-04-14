@@ -1,0 +1,384 @@
+{
+    "Data": {
+        "Bricks": [
+            "Assembly:/_PRO/Scenes/missions/golden/mission_gecko/golden_desertrose.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/scenes/missions/golden/mission_gecko/vr_overrides_golden_gecko.brick",
+                    "assembly:/_PRO/scenes/missions/golden/mission_gecko/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/scenes/missions/golden/mission_gecko/vr_overrides_golden_gecko.brick"
+                ]
+            }
+        ],
+        "DevOnlyBricks": [],
+        "GameChangers": ["3db72bb5-63d6-47fe-9332-d7ea3c195e06"],
+        "Entrances": ["a4e53696-94ca-4eeb-8e82-e235c212897f"],
+        "MandatoryLoadout": [],
+        "GameChangerReferences": [],
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "_comment": "Eliminate janitor in sniper corridor in an explosion",
+                "Id": "be7755c2-d04d-415f-becd-1669ea9b1fad",
+                "Category": "primary",
+                "BriefingName": "",
+                "Image": "images/actors/actor_7f1b07a9-c640-4c1a-bd1b-a944093c5646.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "explosion",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_DESERTROSE_OBJ_4"
+                },
+                "BriefingText": "$loc UI_CONTRACT_DESERTROSE_OBJ_4",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["7f1b07a9-c640-4c1a-bd1b-a944093c5646"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "7f1b07a9-c640-4c1a-bd1b-a944093c5646"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillClass",
+                                                    "explosion"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "7f1b07a9-c640-4c1a-bd1b-a944093c5646"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Eliminate Guard above entrance to the right in an accident",
+                "Id": "c2257af9-ce31-49e5-b230-081c5ce50ba9",
+                "Category": "primary",
+                "BriefingName": "",
+                "Image": "images/actors/actor_64102a8d-0f3c-40cb-8ad1-3b2943be98bd.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "accident",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_DESERTROSE_OBJ_5"
+                },
+                "BriefingText": "$loc UI_CONTRACT_DESERTROSE_OBJ_5",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["64102a8d-0f3c-40cb-8ad1-3b2943be98bd"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "64102a8d-0f3c-40cb-8ad1-3b2943be98bd"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillMethodBroad",
+                                                    "accident"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "64102a8d-0f3c-40cb-8ad1-3b2943be98bd"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Eliminate toilet servant near black gold bar with a fireaxe",
+                "Id": "58f90cf6-4d07-4731-b1eb-d04a0cf3c5ef",
+                "Category": "primary",
+                "BriefingName": "",
+                "Image": "images/actors/actor_731da6de-0f6c-48ab-b0db-4d76e1f87d5b.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "a8bc4325-718e-45ba-b0e4-000729c70ce4",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_DESERTROSE_OBJ_6"
+                },
+                "BriefingText": "$loc UI_CONTRACT_DESERTROSE_OBJ_6",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["731da6de-0f6c-48ab-b0db-4d76e1f87d5b"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "731da6de-0f6c-48ab-b0db-4d76e1f87d5b"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "a8bc4325-718e-45ba-b0e4-000729c70ce4"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "731da6de-0f6c-48ab-b0db-4d76e1f87d5b"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Eliminate art techie at back of installation with electricity",
+                "Id": "130781f8-05cf-44ec-8584-5646dff9982e",
+                "Category": "primary",
+                "BriefingName": "",
+                "Image": "images/actors/actor_276bb5b4-9939-4581-8f6c-aee923c217d9.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "accident_electric",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_DESERTROSE_OBJ_7"
+                },
+                "BriefingText": "$loc UI_CONTRACT_DESERTROSE_OBJ_7",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["276bb5b4-9939-4581-8f6c-aee923c217d9"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "276bb5b4-9939-4581-8f6c-aee923c217d9"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "Electric"
+                                                        ]
+                                                    },
+                                                    "in": "$Value.DamageEvents"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "276bb5b4-9939-4581-8f6c-aee923c217d9"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Eliminate Penthouse chef by drowning (emetic poison)",
+                "Id": "0ae2e3ad-e971-450b-b4a2-37d5545e882f",
+                "Category": "primary",
+                "BriefingName": "",
+                "Image": "images/actors/actor_1e6d10fb-fdf7-4013-bf57-db2290b911b5.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "accident_drown",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_DESERTROSE_OBJ_8"
+                },
+                "BriefingText": "$loc UI_CONTRACT_DESERTROSE_OBJ_8",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["1e6d10fb-fdf7-4013-bf57-db2290b911b5"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "1e6d10fb-fdf7-4013-bf57-db2290b911b5"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceType",
+                                                    "7b28519a-3c66-4498-a61b-ae6926a85594"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "1e6d10fb-fdf7-4013-bf57-db2290b911b5"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "c47553e9-c43f-4075-b92b-77d14b550476",
+        "IsPublished": true,
+        "CreationTimestamp": "2018-10-17T14:35:18.194497Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_DESERTROSE_LEVEL_2_NAME",
+        "Description": "UI_CONTRACT_DESERTROSE_GROUP_DESC",
+        "CodeName_Hint": "Desert Rose - Level 2",
+        "Location": "LOCATION_GOLDEN_GECKO",
+        "ScenePath": "assembly:/_pro/scenes/missions/golden/mission_gecko/scene_gecko_desertrose.entity",
+        "Type": "escalation",
+        "Release": "3.1.0 Escalation",
+        "InGroup": "89305766-199e-43eb-9fcb-29e6f2b6e9ab",
+        "Entitlements": ["H3_EXPANSION"],
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "be7755c2-d04d-415f-becd-1669ea9b1fad" },
+            { "IsNew": true, "Id": "c2257af9-ce31-49e5-b230-081c5ce50ba9" },
+            { "IsNew": true, "Id": "58f90cf6-4d07-4731-b1eb-d04a0cf3c5ef" },
+            { "IsNew": true, "Id": "130781f8-05cf-44ec-8584-5646dff9982e" },
+            { "IsNew": true, "Id": "0ae2e3ad-e971-450b-b4a2-37d5545e882f" },
+            { "Id": "3db72bb5-63d6-47fe-9332-d7ea3c195e06" }
+        ],
+        "LastUpdate": "2023-03-30T11:20:25.6225374Z",
+        "PublicId": "027309490447",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Golden_Desert_Rose.jpg"
+    },
+    "UserData": {}
+}

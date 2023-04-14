@@ -1,0 +1,58 @@
+{
+    "Data": {
+        "EnableSaving": true,
+        "Objectives": [
+            {
+                "Id": "905e7cd5-1dd9-4ce3-bec2-a0120b921308",
+                "Primary": true,
+                "ResetEvent": null,
+                "FailedEvent": { "EventName": "TargetEscaped" },
+                "IsHidden": true,
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "905e7cd5-1dd9-4ce3-bec2-a0120b921308"
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/marrakesh/mission_marrakesh_screwdriver.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/missions/marrakesh/vr_overrides_spider.brick",
+                    "assembly:/_PRO/scenes/missions/marrakesh/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/missions/marrakesh/vr_overrides_spider.brick"
+                ]
+            }
+        ],
+        "GameChangers": []
+    },
+    "Metadata": {
+        "Id": "0d938ef9-05c7-4eb8-89cc-ae79b73c6992",
+        "Title": "UI_CONTRACT_SCREWDRIVER_TITLE",
+        "Description": "UI_CONTRACT_SCREWDRIVER_DESC",
+        "BriefingVideo": "briefing_screwdriver",
+        "DebriefingVideo": "debriefing_screwdriver",
+        "CodeName_Hint": "Screwdriver",
+        "Location": "LOCATION_MARRAKECH",
+        "ScenePath": "assembly:/_pro/scenes/missions/marrakesh/_scene_spider.entity",
+        "TileImage": "images/contracts/elusive/010_Screwdriver/Title.jpg",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Type": "elusive",
+        "PublicId": "006376609247",
+        "Entitlements": ["H1_LEGACY_STANDARD"],
+        "Season": 1
+    },
+    "UserData": {}
+}

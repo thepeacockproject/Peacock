@@ -72,7 +72,6 @@ import * as hooksImpl from "./hooksImpl"
 import { AsyncSeriesHook, SyncBailHook, SyncHook } from "./hooksImpl"
 import * as hitsCategoryServiceMod from "./contracts/hitsCategoryService"
 import { MenuSystemDatabase, menuSystemDatabase } from "./menus/menuSystem"
-import { escalationMappings } from "./contracts/escalationMappings"
 import { parse } from "json5"
 import { userAuths } from "./officialServerAuth"
 // @ts-expect-error Ignore JSON import
@@ -284,10 +283,10 @@ export const _theLastYardbirdScpc: MissionManifest =
     JSON.parse(LASTYARDBIRDSCPC)
 
 export const peacockRecentEscalations: readonly string[] = [
-    "35f1f534-ae2d-42be-8472-dd55e96625ea",
-    "edbacf4b-e402-4548-b723-cd4351571537",
-    "218302a3-f682-46f9-9ffd-bb3e82487b7c",
-    "9a461f89-86c5-44e4-998e-f2f66b496aa7",
+    "74415eca-d01e-4070-9bc9-5ef9b4e8f7d2",
+    "9e0188e8-bdad-476c-b4ce-2faa5d2be56c",
+    "0cceeecb-c8fe-42a4-aee4-d7b575f56a1b",
+    "667f48a3-7f6b-486e-8f6b-2f782a5c4857",
 ]
 
 /**
@@ -324,6 +323,14 @@ export const validateMission = (m: MissionManifest): boolean => {
     }
 
     return true
+}
+
+const internalContracts: Record<string, MissionManifest> = {}
+
+function registerInternals(contracts: MissionManifest[]): void {
+    for (const contract of contracts) {
+        internalContracts[contract.Metadata.Id] = contract
+    }
 }
 
 const modFrameworkDataPath: string | false =
@@ -389,7 +396,6 @@ export class Controller {
             boolean
         >
     }
-    public escalationMappings = escalationMappings
     public configManager: typeof configManagerType = {
         getConfig,
         configs,
@@ -408,13 +414,13 @@ export class Controller {
 
     public challengeService: ChallengeService
     public masteryService: MasteryService
+    escalationMappings: Map<string, Record<string, string>> = new Map()
     public progressionService: ProgressionService
     /**
      * A list of Simple Mod Framework mods installed.
      */
     public readonly installedMods: readonly string[]
     private _pubIdToContractId: Map<string, string> = new Map()
-    private _internalContracts: MissionManifest[]
     /** Internal elusive target contracts - only accessible during bootstrap. */
     private _internalElusives: MissionManifest[] | undefined
 
@@ -631,6 +637,13 @@ export class Controller {
         return manifest
     }
 
+    private getGroupContract(json: MissionManifest) {
+        if (json.Metadata.Type === "escalation") {
+            return this.resolveContract(json.Metadata.InGroup) ?? json
+        }
+        return json
+    }
+
     /**
      * Get a contract by its ID.
      *
@@ -640,24 +653,33 @@ export class Controller {
      * 3. Files in the `contracts` folder.
      *
      * @param id The contract's ID.
+     * @param getGroup When `id` points one of the levels in a contract group, controls whether to get the group contract instead of the individual mission. Defaulted to false. WARNING: If you set this to true, what is returned is not what is pointed to by the inputted `id`.
      * @returns The mission manifest object, or undefined if it wasn't found.
      */
-    public resolveContract(id: string): MissionManifest | undefined {
+    public resolveContract(
+        id: string,
+        getGroup = false,
+    ): MissionManifest | undefined {
         if (!id) {
             return undefined
         }
+
         const optionalPluginJson = this.hooks.getContractManifest.call(id)
 
         if (optionalPluginJson) {
-            return fastClone(optionalPluginJson)
+            return fastClone(
+                getGroup
+                    ? this.getGroupContract(optionalPluginJson)
+                    : optionalPluginJson,
+            )
         }
 
-        const registryJson = this._internalContracts.find(
-            (j) => j.Metadata.Id === id,
-        )
+        const registryJson: MissionManifest | undefined = internalContracts[id]
 
         if (registryJson) {
-            return fastClone(registryJson)
+            return fastClone(
+                getGroup ? this.getGroupContract(registryJson) : registryJson,
+            )
         }
 
         const openCtJson = this.contracts.has(id)
@@ -665,7 +687,9 @@ export class Controller {
             : undefined
 
         if (openCtJson) {
-            return fastClone(openCtJson)
+            return fastClone(
+                getGroup ? this.getGroupContract(openCtJson) : openCtJson,
+            )
         }
         return undefined
     }
@@ -681,16 +705,13 @@ export class Controller {
             return
         }
 
-        this.hooks.getContractManifest.tap(
-            `RegisterContract: ${manifest.Metadata.Id}`,
-            (id) => {
-                if (id === manifest.Metadata.Id) {
-                    return manifest
-                }
+        this.hooks.getContractManifest.tap(manifest.Metadata.Id, (id) => {
+            if (id === manifest.Metadata.Id) {
+                return manifest
+            }
 
-                return undefined
-            },
-        )
+            return undefined
+        })
     }
 
     /**
@@ -709,22 +730,11 @@ export class Controller {
 
         fixedLevels.forEach((level) => this.addMission(level))
 
-        if (!this.missionsInLocations.escalations[locationId]) {
-            this.missionsInLocations.escalations[locationId] = []
-        }
+        this.missionsInLocations.escalations[locationId] ??= []
 
         this.missionsInLocations.escalations[locationId].push(groupId)
 
-        const escalationGroup = {}
-
-        let i = 0
-
-        while (i + 1 <= fixedLevels.length) {
-            escalationGroup[i + 1] = fixedLevels[i].Metadata.Id
-            i++
-        }
-
-        this.escalationMappings[groupId] = escalationGroup
+        this.scanForGroups()
     }
 
     /**
@@ -837,8 +847,8 @@ export class Controller {
      */
     _addElusiveTargets(): void {
         if (getFlag("elusivesAreShown") === true) {
-            this._internalContracts.push(
-                ...this._internalElusives!.map((elusive) => {
+            registerInternals(
+                this._internalElusives!.map((elusive) => {
                     const e = { ...elusive }
 
                     assert.ok(e.Data.Objectives, "no objectives on ET")
@@ -863,7 +873,7 @@ export class Controller {
             return
         }
 
-        this._internalContracts.push(...this._internalElusives!)
+        registerInternals(this._internalElusives!)
         this._internalElusives = undefined
     }
 
@@ -1180,8 +1190,50 @@ export class Controller {
             el: MissionManifest[]
         }
 
-        this._internalContracts = decompressed.b
+        registerInternals(decompressed.b)
         this._internalElusives = decompressed.el
+        this.scanForGroups()
+    }
+
+    scanForGroups(): void {
+        let groupCount = 0
+
+        allGroups: for (const contractId of new Set<string>([
+            ...Object.keys(internalContracts),
+            ...this.hooks.getContractManifest.allTapNames,
+        ])) {
+            const contract = this.resolveContract(contractId)
+
+            if (!contract?.Metadata?.GroupDefinition) {
+                continue
+            }
+
+            const escalationGroup: Record<number, string> = {}
+
+            let i = 0
+
+            const order = contract.Metadata.GroupDefinition.Order
+
+            while (i + 1 <= order.length) {
+                const next = this.resolveContract(order[i])
+
+                if (!next) {
+                    log(
+                        LogLevel.ERROR,
+                        `Could not find next contract (${order[i]}) in group ${contractId}!`,
+                    )
+                    continue allGroups
+                }
+
+                escalationGroup[i + 1] = next.Metadata.Id
+                i++
+            }
+
+            this.escalationMappings.set(contract.Metadata.Id, escalationGroup)
+            groupCount++
+        }
+
+        log(LogLevel.DEBUG, `Discovered ${groupCount} escalation groups.`)
     }
 
     public storeIdToPublicId(contracts: UserCentricContract[]): void {
@@ -1217,27 +1269,6 @@ export function isPlugin(name: string, extension: string): boolean {
         // ends with Plugin.js, but isn't just Plugin.js
         name.endsWith(`Plugin.${extension}`)
     )
-}
-
-/**
- * Returns if the specified repository ID is a suit.
- *
- * @param repoId The repository ID.
- * @param gameVersion The game version.
- * @returns If the repository ID points to a suit.
- */
-export function isSuit(repoId: string, gameVersion: GameVersion): boolean {
-    const suitsToTypeMap = new Map<string, string>()
-
-    ;(getVersionedConfig("allunlockables", gameVersion, false) as Unlockable[])
-        .filter((unlockable) => unlockable.Type === "disguise")
-        .forEach((u) =>
-            suitsToTypeMap.set(u.Properties.RepositoryId, u.Subtype),
-        )
-
-    return suitsToTypeMap.has(repoId)
-        ? suitsToTypeMap.get(repoId) !== "disguise"
-        : false
 }
 
 /**

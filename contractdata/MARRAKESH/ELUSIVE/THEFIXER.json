@@ -1,0 +1,141 @@
+{
+    "Data": {
+        "EnableSaving": true,
+        "Objectives": [
+            {
+                "Id": "905e7cd5-1dd9-4ce3-bec2-a0120b921308",
+                "Primary": true,
+                "IsHidden": true,
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "38c1700e-0247-4c09-8985-d98573a39f24"
+                    }
+                }
+            },
+            {
+                "Id": "907e5a9e-8751-4887-8ed3-e8434131313a",
+                "IsHidden": true,
+                "ObjectiveType": "custom",
+                "Image": "images/contracts/elusive/019_Cosmopolitan/Contract_Elusive_Cosmopolitan_Diamond_ObjectiveTile.jpg",
+                "BriefingName": "$loc UI_CONTRACT_COSMOPOLITAN_OBJ_2_TITLE",
+                "BriefingText": "$loc UI_CONTRACT_COSMOPOLITAN_OBJ_2_BRIEF",
+                "LongBriefingText": "$loc UI_CONTRACT_COSMOPOLITAN_OBJ_2_DESC",
+                "Category": "primary",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_COSMOPOLITAN_OBJ_2_TITLE"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "87d60de1-c050-48a1-ba43-9d2dbc052de0"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            },
+                            "DiamondsSecured": {
+                                "Transition": "Failure"
+                            },
+                            "MeetingNeverHappened": {
+                                "Transition": "Failure"
+                            },
+                            "DiamondsNeverPickedup": {
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "1495cf66-c9a8-481e-92da-9990c4e2630f",
+                "IsHidden": true,
+                "ObjectiveType": "custom",
+                "Image": "images/unlockables/item_perspective_87d60de1-c050-48a1-ba43-9d2dbc052de0_0.jpg",
+                "BriefingName": "$loc UI_CONTRACT_COSMOPOLITAN_OBJ_3_TITLE",
+                "BriefingText": "$loc UI_CONTRACT_COSMOPOLITAN_OBJ_3_BRIEF",
+                "LongBriefingText": "$loc UI_CONTRACT_COSMOPOLITAN_OBJ_3_DESC",
+                "Category": "primary",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_COSMOPOLITAN_OBJ_3_TITLE"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {
+                        "Targets": ["87d60de1-c050-48a1-ba43-9d2dbc052de0"]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "87d60de1-c050-48a1-ba43-9d2dbc052de0"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            },
+                            "DiamondsSecured": {
+                                "Transition": "Failure"
+                            },
+                            "MeetingNeverHappened": {
+                                "Transition": "Failure"
+                            },
+                            "DiamondsNeverPickedup": {
+                                "Transition": "Failure"
+                            },
+                            "CourierExitedWithDiamonds": {
+                                "Transition": "Failure"
+                            },
+                            "CourierExitedNoDiamonds": {
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/marrakesh/mission_marrakesh_cosmopolitan.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/missions/marrakesh/vr_overrides_spider.brick",
+                    "assembly:/_PRO/scenes/missions/marrakesh/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/missions/marrakesh/vr_overrides_spider.brick"
+                ]
+            }
+        ],
+        "GameChangers": []
+    },
+    "Metadata": {
+        "Id": "ad549098-eb3d-4132-8ef8-fe77c6afbbaa",
+        "Title": "UI_CONTRACT_COSMOPOLITAN_TITLE",
+        "Description": "UI_CONTRACT_COSMOPOLITAN_DESC",
+        "BriefingVideo": "briefing_cosmopolitan",
+        "DebriefingVideo": "debriefing_cosmopolitan",
+        "CodeName_Hint": "Cosmopolitan",
+        "Location": "LOCATION_MARRAKECH",
+        "ScenePath": "assembly:/_pro/scenes/missions/marrakesh/_scene_spider.entity",
+        "TileImage": "images/contracts/elusive/019_Cosmopolitan/Title.jpg",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Type": "elusive",
+        "PublicId": "006883085247",
+        "Entitlements": ["H1_LEGACY_STANDARD"],
+        "Season": 1
+    },
+    "UserData": {}
+}

@@ -1,0 +1,560 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/elegant/scenario_frangipani.brick",
+            "assembly:/_pro/scenes/missions/elegant/scenario_frangipani_level3.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/elegant/vr_overrides_llama.brick",
+                    "assembly:/_pro/scenes/missions/elegant/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/elegant/vr_overrides_llama.brick"
+                ]
+            }
+        ],
+        "GameChangers": [],
+        "Entrances": ["0bafac7b-a4fb-49c7-8ba5-0e2acd7153b5"],
+        "MandatoryLoadout": [
+            {
+                "Id": "TOKEN_OUTFIT_HERO_ENVY_SUIT",
+                "Properties": {
+                    "LoadoutSlot": "Outfit",
+                    "RepositoryId": "8ae5d394-49d1-4aaa-a51d-85d0bbe6bca9"
+                }
+            }
+        ],
+        "GameChangerReferences": [],
+        "Objectives": [
+            {
+                "_comment": "--- HM Score ---",
+                "Id": "f926b2ee-9ac6-4bad-9358-8ed4b1f6fd98",
+                "Category": "secondary",
+                "ObjectiveType": "custom",
+                "ExcludeFromScoring": true,
+                "Image": "images/contracts/escalation/ContractEscalation_Elegant_Frangipani_Score.jpg",
+                "BriefingName": "$loc UI_CONTRACT_FRANGIPANI_OBJ_SCOREBRIEFING_NAME",
+                "BriefingText": "$loc UI_CONTRACT_FRANGIPANI_OBJ_SCOREBRIEFING_DESC",
+                "LongBriefingText": "$loc UI_CONTRACT_FRANGIPANI_OBJ_SCOREBRIEFING_LONG",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_FRANGIPANI_OBJ_SCOREZERO",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Scope": "hit",
+                "Definition": {
+                    "Context": {
+                        "HitmanScore": 0,
+                        "AssassinScore": 0,
+                        "UpdateScoreHack": 0
+                    },
+                    "ContextListeners": {
+                        "UpdateScoreHack": {
+                            "type": "custom",
+                            "HUDTemplate": {
+                                "display": {
+                                    "$loc": {
+                                        "key": "UI_CONTRACT_FRANGIPANI_OBJ_SCORE",
+                                        "data": [
+                                            "$.HitmanScore",
+                                            "$.AssassinScore"
+                                        ]
+                                    }
+                                },
+                                "iconType": 17
+                            }
+                        }
+                    },
+                    "States": {
+                        "Start": {
+                            "47Killed": [
+                                {
+                                    "Actions": {
+                                        "$inc": "HitmanScore",
+                                        "$dec": "UpdateScoreHack"
+                                    }
+                                }
+                            ],
+                            "AssassinKilled": [
+                                {
+                                    "Actions": {
+                                        "$inc": "AssassinScore",
+                                        "$dec": "UpdateScoreHack"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "--- Eliminate target 1 ---",
+                "Id": "961e85d3-adda-4693-b506-c852adffef8a",
+                "Category": "secondary",
+                "ObjectiveType": "custom",
+                "Image": "images/contracts/escalation/ContractEscalation_Elegant_Frangipani_Target_5_Lei.jpg",
+                "BriefingName": "$loc UI_CONTRACT_FRANGIPANI_OBJ_ELIMINATE_5",
+                "BriefingText": "$loc UI_CONTRACT_FRANGIPANI_OBJ_ELIMINATE_5_DESC",
+                "LongBriefingText": "$loc UI_CONTRACT_FRANGIPANI_OBJ_ELIMINATE_5_LONG",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_FRANGIPANI_OBJ_ELIMINATE_5_HUD",
+                    "iconType": 0
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["538cf045-c558-4a8b-a35f-859a3ae5917d"]
+                    },
+                    "States": {
+                        "Start": {
+                            "47KilledL3T1": { "Transition": "Success" },
+                            "AssassinKilledL3T1": { "Transition": "Failure" }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Eliminate Target In Grape Crusher OPTIONAL HIDDEN -----",
+                "Id": "ad257c8e-33d3-4c97-bf3c-5f101b88ca0f",
+                "Category": "secondary",
+                "ExcludeFromScoring": false,
+                "Visible": false,
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["538cf045-c558-4a8b-a35f-859a3ae5917d"]
+                    },
+                    "States": {
+                        "Start": {
+                            "GrapeCrusherKill": { "Transition": "Success" },
+                            "NotGrapeCrusherKill": { "Transition": "Failure" }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "--- Eliminate target 2 ---",
+                "Id": "4f0b769c-1259-4079-af55-d4645dd5234d",
+                "Category": "secondary",
+                "ObjectiveType": "custom",
+                "Image": "images/contracts/escalation/ContractEscalation_Elegant_Frangipani_Target_6_Derek.jpg",
+                "BriefingName": "$loc UI_CONTRACT_FRANGIPANI_OBJ_ELIMINATE_6",
+                "BriefingText": "$loc UI_CONTRACT_FRANGIPANI_OBJ_ELIMINATE_6_DESC",
+                "LongBriefingText": "$loc UI_CONTRACT_FRANGIPANI_OBJ_ELIMINATE_6_LONG",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_FRANGIPANI_OBJ_ELIMINATE_6_HUD",
+                    "iconType": 0
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["eedfb2ee-62f1-44ad-8834-ed19e511e9ce"]
+                    },
+                    "States": {
+                        "Start": {
+                            "47KilledL3T2": { "Transition": "Success" },
+                            "AssassinKilledL3T2": { "Transition": "Failure" }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Eliminate Target With Knife OPTIONAL HIDDEN -----",
+                "Id": "d9bbd8af-cb85-47d9-84ab-c3e94b9970ce",
+                "Category": "secondary",
+                "ExcludeFromScoring": false,
+                "Visible": false,
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["eedfb2ee-62f1-44ad-8834-ed19e511e9ce"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "eedfb2ee-62f1-44ad-8834-ed19e511e9ce"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "2c037ef5-a01b-4532-8216-1d535193a837"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "eedfb2ee-62f1-44ad-8834-ed19e511e9ce"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "2b1bd2af-554e-4ea7-a717-3f6d0eb0215f"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "eedfb2ee-62f1-44ad-8834-ed19e511e9ce"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "e17172cc-bf70-4df6-9828-d9856b1a24fd"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "eedfb2ee-62f1-44ad-8834-ed19e511e9ce"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "ac2b7cf1-523a-4aee-a73b-5b2ccfd6079f"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "eedfb2ee-62f1-44ad-8834-ed19e511e9ce"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "9e728dc1-3344-4615-be7a-1bcbdd7ad4aa"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "eedfb2ee-62f1-44ad-8834-ed19e511e9ce"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "--- Eliminate target 3 ---",
+                "Id": "ff275165-04bf-4b3b-87e0-85b73db15b40",
+                "Category": "secondary",
+                "ObjectiveType": "custom",
+                "Image": "images/contracts/escalation/ContractEscalation_Elegant_Frangipani_Target_7_Emma.jpg",
+                "BriefingName": "$loc UI_CONTRACT_FRANGIPANI_OBJ_ELIMINATE_7",
+                "BriefingText": "$loc UI_CONTRACT_FRANGIPANI_OBJ_ELIMINATE_7_DESC",
+                "LongBriefingText": "$loc UI_CONTRACT_FRANGIPANI_OBJ_ELIMINATE_7_LONG",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_FRANGIPANI_OBJ_ELIMINATE_7_HUD",
+                    "iconType": 0
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["2b33b5ee-8c04-4f8d-bfbd-c9a7595ad860"]
+                    },
+                    "States": {
+                        "Start": {
+                            "47KilledL3T3": { "Transition": "Success" },
+                            "AssassinKilledL3T3": { "Transition": "Failure" }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Eliminate Target With Poison OPTIONAL HIDDEN -----",
+                "Id": "b4617c68-6eb9-4db8-a9c0-2ae3829d0003",
+                "Category": "secondary",
+                "ExcludeFromScoring": false,
+                "Visible": false,
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["2b33b5ee-8c04-4f8d-bfbd-c9a7595ad860"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "2b33b5ee-8c04-4f8d-bfbd-c9a7595ad860"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillMethodBroad",
+                                                    "poison"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "2b33b5ee-8c04-4f8d-bfbd-c9a7595ad860"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Eliminate Target HIDDEN -----",
+                "Id": "7362dd78-1e32-4db2-9934-aaa006121906",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "ExcludeFromScoring": true,
+                "Visible": false,
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "AllTargetsDead": { "Transition": "Success" }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Activation Objective (Hack) -----",
+                "Id": "ac6134bc-83be-44d0-ab87-d7b98a37ac26",
+                "Category": "secondary",
+                "ObjectiveType": "custom",
+                "ExcludeFromScoring": true,
+                "Visible": false,
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "TurnOnOutline": { "Transition": "Success" }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- HIDDEN Do not eliminate the assassin -----",
+                "Id": "9c6e0a19-f6fd-4252-a50c-1835f0b09970",
+                "Category": "secondary",
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": true,
+                "ExcludeFromScoring": true,
+                "Image": "images/contracts/escalation/ContractEscalation_Elegant_Frangipani_DoNotEliminate.jpg",
+                "BriefingName": "$loc UI_CONTRACT_FRANGIPANI_OBJ_DONOTELIMINATE",
+                "BriefingText": "$loc UI_CONTRACT_FRANGIPANI_OBJ_DONOTELIMINATE_DESC",
+                "LongBriefingText": "$loc UI_CONTRACT_FRANGIPANI_OBJ_DONOTELIMINATE_LONG",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_FRANGIPANI_OBJ_DONOTELIMINATE_HUD",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "Allies": ["743a63d1-bb65-45b3-8801-ec2350f1fbe8"]
+                    },
+                    "States": {
+                        "Start": {
+                            "TurnOnOutline": { "Transition": "Active" }
+                        },
+                        "Active": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "743a63d1-bb65-45b3-8801-ec2350f1fbe8"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ],
+                            "Pacify": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "743a63d1-bb65-45b3-8801-ec2350f1fbe8"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ],
+                            "ContractEnd": { "Transition": "Success" }
+                        }
+                    }
+                }
+            },
+            {
+                "Activation": {
+                    "$eq": ["$9c6e0a19-f6fd-4252-a50c-1835f0b09970", "Failed"]
+                },
+                "_comment": "----- HIDDEN Do not eliminate the assassin primary -----",
+                "Id": "ca5bf790-85dc-4878-a8f0-edcd16b1f1c2",
+                "Primary": true,
+                "ObjectiveType": "custom",
+                "Image": "images/contracts/escalation/ContractEscalation_Elegant_Frangipani_DoNotEliminate.jpg",
+                "BriefingName": "$loc UI_CONTRACT_FRANGIPANI_OBJ_DONOTELIMINATE",
+                "BriefingText": "$loc UI_CONTRACT_FRANGIPANI_OBJ_DONOTELIMINATE_DESC",
+                "LongBriefingText": "$loc UI_CONTRACT_FRANGIPANI_OBJ_DONOTELIMINATE_LONG",
+                "Visible": false,
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_FRANGIPANI_OBJ_DONOTELIMINATE_HUD",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "ExcludeFromScoring": false,
+                "OnInactive": { "IfInProgress": { "State": "Completed" } },
+                "Definition": {
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "-": {},
+                            "FailThis": { "Transition": "Failure" }
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "25fb11e4-9cd5-4deb-a583-4982b9803298",
+        "IsPublished": true,
+        "CreationTimestamp": "2018-11-05T14:12:47.2836568Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_FRANGIPANI_LEVEL_2_NAME",
+        "Description": "UI_CONTRACT_FRANGIPANI_GROUP_DESC",
+        "CodeName_Hint": "Frangipani - Level 2",
+        "Location": "LOCATION_ELEGANT_LLAMA",
+        "RequiredUnlockable": "ACCESS_HIT_LLAMA",
+        "ScenePath": "assembly:/_pro/scenes/missions/elegant/scene_frangipani.entity",
+        "Type": "escalation",
+        "InGroup": "8c8ed496-948f-4672-879b-4d9575406577",
+        "Release": "3.70.x Escalation",
+        "Entitlements": ["H3_DEADLYSINS_ENVY"],
+        "GroupObjectiveDisplayOrder": [
+            {
+                "_comment": "--- Eliminate target 3 ---",
+                "IsNew": true,
+                "Id": "ff275165-04bf-4b3b-87e0-85b73db15b40"
+            },
+            {
+                "_comment": "--- Eliminate target 2 ---",
+                "IsNew": true,
+                "Id": "4f0b769c-1259-4079-af55-d4645dd5234d"
+            },
+            {
+                "_comment": "--- Eliminate target 1 ---",
+                "IsNew": true,
+                "Id": "961e85d3-adda-4693-b506-c852adffef8a"
+            },
+            {
+                "_comment": "--- Do not eliminate or pacify rival ---",
+                "Id": "9c6e0a19-f6fd-4252-a50c-1835f0b09970"
+            },
+            {
+                "_comment": "--- Score ---",
+                "Id": "f926b2ee-9ac6-4bad-9358-8ed4b1f6fd98"
+            }
+        ],
+        "LastUpdate": "2023-03-30T11:20:25.7118577Z",
+        "PublicId": "031699381547",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Elegant_Frangipani.jpg"
+    },
+    "UserData": {}
+}

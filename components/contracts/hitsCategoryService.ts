@@ -136,8 +136,23 @@ export class HitsCategoryService {
 
         this.hitsCategories
             .for("Elusive_Target_Hits")
-            .tap(tapName, (contracts) => {
-                contracts.push(...orderedETs)
+            .tap(tapName, (contracts, gameVersion) => {
+                for (const id of orderedETs) {
+                    const contract = controller.resolveContract(id)
+
+                    switch (gameVersion) {
+                        case "h1":
+                            if (contract.Metadata.Season === 1)
+                                contracts.push(id)
+                            break
+                        case "h2":
+                            if (contract.Metadata.Season <= 2)
+                                contracts.push(id)
+                            break
+                        default:
+                            contracts.push(id)
+                    }
+                }
             })
 
         this.hitsCategories
@@ -353,14 +368,18 @@ export class HitsCategoryService {
     ): boolean {
         switch (type) {
             case "completed":
-                return played[contractId]?.Completed
+                return (
+                    played[contractId]?.Completed &&
+                    !played[contractId]?.IsEscalation
+                )
             case "failed":
                 return (
                     played[contractId] !== undefined &&
-                    played[contractId].Completed === undefined
+                    played[contractId].Completed === undefined &&
+                    !played[contractId]?.IsEscalation
                 )
             case "all":
-                return true
+                return !played[contractId]?.IsEscalation ?? true
         }
     }
 

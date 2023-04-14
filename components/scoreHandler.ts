@@ -34,6 +34,7 @@ import { contractSessions, getCurrentState } from "./eventHandler"
 import { getConfig } from "./configSwizzleManager"
 import { _theLastYardbirdScpc, controller } from "./controller"
 import type {
+    ContractHistory,
     ContractSession,
     GameChanger,
     GameVersion,
@@ -199,10 +200,7 @@ export function calculatePlaystyle(
         if (a.Score > b.Score) {
             return -1
         }
-        if (b.Score > a.Score) {
-            return 1
-        }
-        return 0
+        return b.Score > a.Score ? 1 : 0
     })
 
     return playstylesCopy
@@ -530,7 +528,7 @@ export async function missionEnd(
         req.gameVersion === "scpc" &&
         sessionDetails.contractId === "ff9f46cf-00bd-4c12-b887-eac491c3a96d"
             ? _theLastYardbirdScpc
-            : controller.resolveContract(sessionDetails.contractId)
+            : controller.resolveContract(sessionDetails.contractId, true)
 
     if (!contractData) {
         res.status(404).send("contract not found")
@@ -556,9 +554,14 @@ export async function missionEnd(
             userData.Extensions.PeacockEscalations[eGroupId] = 1
         }
 
+        const history: ContractHistory = {
+            LastPlayedAt: new Date().getTime(),
+            IsEscalation: true,
+        }
+
         if (
             userData.Extensions.PeacockEscalations[eGroupId] ===
-            getLevelCount(controller.escalationMappings[eGroupId])
+            getLevelCount(controller.resolveContract(eGroupId))
         ) {
             // we are on the final level, and the user completed this level
             if (
@@ -569,10 +572,18 @@ export async function missionEnd(
                 // the user never finished this escalation before
                 userData.Extensions.PeacockCompletedEscalations.push(eGroupId)
             }
+
+            history.Completed = true
         } else {
             // not the final level
             userData.Extensions.PeacockEscalations[eGroupId] += 1
         }
+
+        if (!userData.Extensions.PeacockPlayedContracts[eGroupId]) {
+            userData.Extensions.PeacockPlayedContracts[eGroupId] = {}
+        }
+
+        userData.Extensions.PeacockPlayedContracts[eGroupId] = history
 
         writeUserData(req.jwt.unique_name, req.gameVersion)
     } else if (contractTypes.includes(contractData.Metadata.Type)) {
@@ -583,9 +594,11 @@ export async function missionEnd(
             userData.Extensions.PeacockPlayedContracts[id] = {}
         }
 
-        userData.Extensions.PeacockPlayedContracts[id].LastPlayedAt =
-            new Date().getTime()
-        userData.Extensions.PeacockPlayedContracts[id].Completed = true
+        userData.Extensions.PeacockPlayedContracts[id] = {
+            LastPlayedAt: new Date().getTime(),
+            Completed: true,
+        }
+
         writeUserData(req.jwt.unique_name, req.gameVersion)
     }
 

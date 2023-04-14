@@ -1,0 +1,151 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "e80fa6be-9418-401e-8905-9b6987e6e429",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "5c419edc-203d-4736-8cd9-bed24e34171c",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "weapontype",
+                        "RepositoryId": "73875794-5a86-410e-84a4-1b5b2f7e5a54",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_WOLFSBANE_OBJ_1"
+                },
+                "BriefingText": "$loc UI_CONTRACT_WOLFSBANE_OBJ_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["b942c2a5-99e5-46a7-a2b1-017ae56864cf"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "b942c2a5-99e5-46a7-a2b1-017ae56864cf"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "5c419edc-203d-4736-8cd9-bed24e34171c"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemCategory",
+                                                    "pistol"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "b942c2a5-99e5-46a7-a2b1-017ae56864cf"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [],
+        "MandatoryLoadout": [
+            {
+                "Id": "FIREARMS_HERO_PISTOL_TACTICAL_001_SU_SKIN01",
+                "Properties": {
+                    "LoadoutSlot": "concealedweapon",
+                    "RepositoryId": "73875794-5a86-410e-84a4-1b5b2f7e5a54"
+                }
+            },
+            {
+                "Id": "Melee_FiberWire_Descriptor",
+                "Properties": {
+                    "LoadoutSlot": "gear",
+                    "RepositoryId": "1a11a060-358c-4054-98ec-d3491af1d7c6"
+                }
+            },
+            {
+                "Id": "Tool_Coin",
+                "Properties": {
+                    "LoadoutSlot": "gear",
+                    "RepositoryId": "dda002e9-02b1-4208-82a5-cf059f3c79cf"
+                }
+            },
+            {
+                "Id": "Tool_Coin",
+                "Properties": {
+                    "LoadoutSlot": "gear",
+                    "RepositoryId": "dda002e9-02b1-4208-82a5-cf059f3c79cf"
+                }
+            },
+            {
+                "Id": "Tool_Coin",
+                "Properties": {
+                    "LoadoutSlot": "gear",
+                    "RepositoryId": "dda002e9-02b1-4208-82a5-cf059f3c79cf"
+                }
+            },
+            {
+                "Id": "Tool_Coin",
+                "Properties": {
+                    "LoadoutSlot": "gear",
+                    "RepositoryId": "dda002e9-02b1-4208-82a5-cf059f3c79cf"
+                }
+            },
+            {
+                "Id": "Tool_Coin",
+                "Properties": {
+                    "LoadoutSlot": "gear",
+                    "RepositoryId": "dda002e9-02b1-4208-82a5-cf059f3c79cf"
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "d4883292-d0b8-4a5c-8711-f5a3a1ae58f6",
+        "IsPublished": true,
+        "CreationTimestamp": "2016-01-13T13:46:45.21Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_WOLFSBANE_LEVEL_1_TITLE",
+        "Description": "UI_CONTRACT_WOLFSBANE_LEVEL_1_DESC",
+        "CodeName_Hint": "Wolfsbane - Level 1",
+        "Location": "LOCATION_ICA_FACILITY",
+        "ScenePath": "assembly:/_pro/scenes/missions/thefacility/_scene_polarbear_005.entity",
+        "Type": "escalation",
+        "InGroup": "c469d91d-01fc-4314-b22c-71cb804e92c0",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "e80fa6be-9418-401e-8905-9b6987e6e429" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:53.2263015Z",
+        "PublicId": "001146805847",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

@@ -1,0 +1,475 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Bricks": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/elegant/vr_overrides_llama.brick",
+                    "assembly:/_pro/scenes/missions/elegant/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/elegant/vr_overrides_llama.brick"
+                ]
+            }
+        ],
+        "GameChangers": [
+            "3db72bb5-63d6-47fe-9332-d7ea3c195e06",
+            "63055f1a-bcd2-4e0f-8caf-b446f01d02f3",
+            "f41f18fe-0fe5-416a-a793-50727e594655",
+            "c2da52c5-ff3e-41cd-a175-4ed9267f6c95"
+        ],
+        "Entrances": ["f45b0af4-e50d-477e-bb92-83136b04506f"],
+        "MandatoryLoadout": [
+            {
+                "Id": "TOKEN_OUTFIT_HERO_CHINESE_SUIT",
+                "Properties": {
+                    "LoadoutSlot": "Outfit",
+                    "RepositoryId": "628fc47d-db6d-4522-b50a-514f5dafb419"
+                }
+            }
+        ],
+        "GameChangerReferences": [],
+        "Objectives": [
+            {
+                "_comment": "----- Do not eliminate or pacify the sniper -----",
+                "Id": "4ea2cd3a-f9bb-4c80-96ca-0a829b99569a",
+                "Category": "secondary",
+                "ObjectiveType": "custom",
+                "ExcludeFromScoring": true,
+                "ForceShowOnLoadingScreen": false,
+                "Image": "images/contracts/escalation/contractescalation_elegant_jacaranda_sniper.jpg",
+                "BriefingName": "$loc UI_CONTRACT_JACARANDA_OBJECTIVE_SNIPER_NAME",
+                "BriefingText": "$loc UI_CONTRACT_JACARANDA_OBJECTIVE_SNIPER_NAME",
+                "LongBriefingText": "$loc UI_CONTRACT_JACARANDA_OBJECTIVE_SNIPER_NAME",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_JACARANDA_OBJECTIVE_SNIPER_NAME",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "Kill": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "645d1646-c910-4d8a-9f9a-b39aca226eef"
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- HIDDEN Do not eliminate the sniper -----",
+                "Id": "5b7b05c9-e562-453c-854e-a41e18dcaa34",
+                "Primary": true,
+                "Activation": {
+                    "$eq": [
+                        "$4ea2cd3a-f9bb-4c80-96ca-0a829b99569a",
+                        "Completed"
+                    ]
+                },
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": false,
+                "ExcludeFromScoring": true,
+                "OnInactive": { "IfInProgress": { "State": "Completed" } },
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfFailed": { "Visible": false },
+                    "IfCompleted": { "Visible": false }
+                },
+                "Image": "images/contracts/escalation/contractescalation_elegant_jacaranda_sniper.jpg",
+                "BriefingName": "$loc UI_CONTRACT_JACARANDA_OBJECTIVE_SNIPER_NAME",
+                "BriefingText": "$loc UI_CONTRACT_JACARANDA_OBJECTIVE_SNIPER_NAME",
+                "LongBriefingText": "$loc UI_CONTRACT_JACARANDA_OBJECTIVE_SNIPER_NAME",
+                "HUDTemplate": {
+                    "display": "$UI_CONTRACT_JACARANDA_OBJECTIVE_SNIPER_NAME",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "States": {
+                        "Start": { "SniperDead": { "Transition": "Failure" } }
+                    }
+                }
+            },
+            {
+                "_comment": "--- Eliminate Daniel Limpano ---",
+                "Id": "fa370486-132c-4fdf-bdf9-8cb319c0204b",
+                "Category": "primary",
+                "ForceShowOnLoadingScreen": true,
+                "OnInactive": { "IfCompleted": { "State": "Completed" } },
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "7d64d9df-5d30-4e98-9af0-7562ee145d5c",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_JACARANDA_OBJECTIVE_ELIMINATE_LIMPANO_NAME"
+                },
+                "BriefingText": "$loc UI_CONTRACT_JACARANDA_OBJECTIVE_ELIMINATE_LIMPANO_NAME",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["c6893838-45f5-4fe9-8607-b9177a0ae76b"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "c6893838-45f5-4fe9-8607-b9177a0ae76b"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "7d64d9df-5d30-4e98-9af0-7562ee145d5c"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "c6893838-45f5-4fe9-8607-b9177a0ae76b"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "--- Eliminate Target Alfredo Gonzales ---",
+                "Id": "347a56ca-eebb-4586-9c3a-d02110fe0749",
+                "Category": "primary",
+                "ForceShowOnLoadingScreen": true,
+                "OnInactive": { "IfCompleted": { "State": "Completed" } },
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "7d64d9df-5d30-4e98-9af0-7562ee145d5c",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_JACARANDA_OBJECTIVE_ELIMINATE_GONZALES_NAME"
+                },
+                "BriefingText": "$loc UI_CONTRACT_JACARANDA_OBJECTIVE_ELIMINATE_GONZALES_NAME",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["f8a2e8df-39b6-4147-b55d-43595ba95185"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "f8a2e8df-39b6-4147-b55d-43595ba95185"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "7d64d9df-5d30-4e98-9af0-7562ee145d5c"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "f8a2e8df-39b6-4147-b55d-43595ba95185"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "--- Eliminate Ben Torro ---",
+                "Id": "a2da06c7-90e3-4d0c-afa3-0f846bfea05b",
+                "Category": "primary",
+                "ForceShowOnLoadingScreen": true,
+                "OnInactive": { "IfCompleted": { "State": "Completed" } },
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "7d64d9df-5d30-4e98-9af0-7562ee145d5c",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_JACARANDA_OBJECTIVE_ELIMINATE_TORRO_NAME"
+                },
+                "BriefingText": "$loc UI_CONTRACT_JACARANDA_OBJECTIVE_ELIMINATE_TORRO_NAME",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["d68ccdf3-863f-4e62-add2-fd96199eedde"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "d68ccdf3-863f-4e62-add2-fd96199eedde"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "7d64d9df-5d30-4e98-9af0-7562ee145d5c"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "d68ccdf3-863f-4e62-add2-fd96199eedde"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "--- Eliminate Fabian Hector ---",
+                "Id": "509de6d6-d248-4ca5-bb2f-585a1d794991",
+                "Category": "primary",
+                "ForceShowOnLoadingScreen": true,
+                "OnInactive": { "IfCompleted": { "State": "Completed" } },
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "7d64d9df-5d30-4e98-9af0-7562ee145d5c",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_JACARANDA_OBJECTIVE_ELIMINATE_HECTOR_NAME"
+                },
+                "BriefingText": "$loc UI_CONTRACT_JACARANDA_OBJECTIVE_ELIMINATE_HECTOR_NAME",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["6e24d30f-d6e9-4ae4-995a-c62a6a53b190"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "6e24d30f-d6e9-4ae4-995a-c62a6a53b190"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "7d64d9df-5d30-4e98-9af0-7562ee145d5c"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "6e24d30f-d6e9-4ae4-995a-c62a6a53b190"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "--- Eliminate Target Antonio Lopez ---",
+                "Id": "2d15a004-9104-47be-b942-09300a04bbf2",
+                "Category": "primary",
+                "ForceShowOnLoadingScreen": true,
+                "OnInactive": { "IfCompleted": { "State": "Completed" } },
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "7d64d9df-5d30-4e98-9af0-7562ee145d5c",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_JACARANDA_OBJECTIVE_ELIMINATE_LOPEZ_NAME"
+                },
+                "BriefingText": "$loc UI_CONTRACT_JACARANDA_OBJECTIVE_ELIMINATE_LOPEZ_NAME",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["3a96f2d3-cb5a-4f30-ad6c-e4d1b4df829f"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "3a96f2d3-cb5a-4f30-ad6c-e4d1b4df829f"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "7d64d9df-5d30-4e98-9af0-7562ee145d5c"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "3a96f2d3-cb5a-4f30-ad6c-e4d1b4df829f"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "b6d195ed-218f-4027-b789-4db9d5553a17",
+        "IsPublished": true,
+        "CreationTimestamp": "2018-11-05T14:12:47.2836568Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_JACARANDA_LEVEL_3_NAME",
+        "Description": "UI_CONTRACT_JACARANDA_GROUP_DESC",
+        "CodeName_Hint": "Jacaranda - Level 3",
+        "Location": "LOCATION_ELEGANT_LLAMA",
+        "RequiredUnlockable": "ACCESS_HIT_LLAMA",
+        "ScenePath": "assembly:/_pro/scenes/missions/elegant/scene_llama_jacaranda.entity",
+        "Type": "escalation",
+        "InGroup": "14a21819-f81f-453d-8734-a3aab528fa62",
+        "Release": "3.4.x Escalation",
+        "GroupObjectiveDisplayOrder": [
+            {
+                "_comment": "--- Eliminate Target Antonio Lopez ---",
+                "IsNew": true,
+                "Id": "2d15a004-9104-47be-b942-09300a04bbf2"
+            },
+            {
+                "_comment": "--- HIDE_ALL_BODIES_PRIMARY ---",
+                "IsNew": true,
+                "Id": "c2da52c5-ff3e-41cd-a175-4ed9267f6c95"
+            },
+            {
+                "_comment": "--- TARGETS_ONLY_PRIMARY ---",
+                "IsNew": true,
+                "Id": "f41f18fe-0fe5-416a-a793-50727e594655"
+            },
+            {
+                "_comment": "--- Eliminate Daniel Limpano ---",
+                "Id": "fa370486-132c-4fdf-bdf9-8cb319c0204b"
+            },
+            {
+                "_comment": "--- Eliminate Target Alfredo Gonzales ---",
+                "Id": "347a56ca-eebb-4586-9c3a-d02110fe0749"
+            },
+            {
+                "_comment": "--- Eliminate Ben Torro ---",
+                "Id": "a2da06c7-90e3-4d0c-afa3-0f846bfea05b"
+            },
+            {
+                "_comment": "--- Eliminate Fabian Hector ---",
+                "Id": "509de6d6-d248-4ca5-bb2f-585a1d794991"
+            },
+            {
+                "_comment": "--- Do not eliminate or pacify the sniper ---",
+                "Id": "4ea2cd3a-f9bb-4c80-96ca-0a829b99569a"
+            },
+            {
+                "_comment": "--- NO_DISGUISE_CHANGES_PRIMARY ---",
+                "Id": "63055f1a-bcd2-4e0f-8caf-b446f01d02f3"
+            },
+            {
+                "_comment": "--- RESTRICTED_LOADOUT ---",
+                "Id": "3db72bb5-63d6-47fe-9332-d7ea3c195e06"
+            }
+        ],
+        "Entitlements": ["LOCATION_ELEGANT"],
+        "LastUpdate": "2023-03-30T11:20:26.4799021Z",
+        "PublicId": "031563084447",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Elegant_Jacaranda.jpg"
+    },
+    "UserData": {}
+}

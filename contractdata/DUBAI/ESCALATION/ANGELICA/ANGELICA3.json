@@ -1,0 +1,194 @@
+{
+    "Data": {
+        "Bricks": [
+            "Assembly:/_PRO/Scenes/missions/golden/mission_gecko/golden_angelica_level3.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/scenes/missions/golden/mission_gecko/vr_overrides_golden_gecko.brick",
+                    "assembly:/_PRO/scenes/missions/golden/mission_gecko/vr_overrides_ps4perf.brick",
+                    "assembly:/_pro/scenes/missions/golden/mission_gecko/vr_overrides_angelica.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/scenes/missions/golden/mission_gecko/vr_overrides_golden_gecko.brick",
+                    "assembly:/_pro/scenes/missions/golden/mission_gecko/vr_overrides_angelica.brick"
+                ]
+            }
+        ],
+        "DevOnlyBricks": [],
+        "GameChangers": ["4fd079b5-4238-453a-84c9-2183f3dc0b7e"],
+        "Entrances": ["e690549c-d035-46fe-b175-2b73e1c048d3"],
+        "MandatoryLoadout": [
+            {
+                "Id": "Tool_Coin",
+                "Properties": {
+                    "LoadoutSlot": "gear",
+                    "RepositoryId": "dda002e9-02b1-4208-82a5-cf059f3c79cf"
+                }
+            },
+            {
+                "Id": "FIREARMS_HERO_PISTOL_TACTICAL_ICA_19",
+                "Properties": {
+                    "LoadoutSlot": "concealedweapon",
+                    "RepositoryId": "73875794-5a86-410e-84a4-1b5b2f7e5a54"
+                }
+            },
+            {
+                "Id": "Melee_FiberWire_Descriptor",
+                "Properties": {
+                    "LoadoutSlot": "gear",
+                    "RepositoryId": "1a11a060-358c-4054-98ec-d3491af1d7c6"
+                }
+            }
+        ],
+        "GameChangerReferences": [],
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "_comment": "Eliminate the Sebastian Sato with the sieger 300",
+                "Id": "07033d8c-6bbf-4745-8319-5398d3bb70c3",
+                "Category": "primary",
+                "BriefingName": "$loc UI_CONTRACT_ANGELICA_LEVEL3_OBJ3_NAME",
+                "BriefingText": "$loc UI_CONTRACT_ANGELICA_LEVEL3_OBJ3_DESC",
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "RepositoryId": "54bba84c-6751-430e-b47d-e4b5ddf7a835",
+                        "HardCondition": true,
+                        "ObjectiveId": "07033d8c-6bbf-4745-8319-5398d3bb70c3",
+                        "KillMethod": "sniperrifle"
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_ANGELICA_LEVEL3_OBJ3_NAME"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["ade28c90-2f9d-4059-987c-a60c5c46cbfd"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Angelice_SniperOutOfBounds": {
+                                "Transition": "Failure"
+                            },
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "ade28c90-2f9d-4059-987c-a60c5c46cbfd"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "sniperrifle"
+                                                        ]
+                                                    },
+                                                    "in": [
+                                                        "$Value.KillMethodBroad",
+                                                        "$Value.KillMethodStrict"
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "ade28c90-2f9d-4059-987c-a60c5c46cbfd"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "--- Escape the The Burj Al-Ghazali ---",
+                "Id": "51c712ca-5209-4966-8369-8d06e0986230",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "Image": "images/contracts/escalation/ContractEscalation_Golden_Angelica_Escape.jpg",
+                "BriefingName": "$loc UI_CONTRACT_ANGELICA_LEVEL3_OBJ4_NAME",
+                "BriefingText": "$loc UI_CONTRACT_ANGELICA_LEVEL3_OBJ4_DESC",
+                "Activation": {
+                    "$eq": [
+                        "$07033d8c-6bbf-4745-8319-5398d3bb70c3",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": { "IfCompleted": { "State": "Completed" } },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_ANGELICA_LEVEL3_OBJ4_NAME",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {
+                        "Targets": ["9baffee9-f633-4a7c-a90f-36876f143302"]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "5d2ffdf1-9722-459c-9163-6b9ee3dc250f"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "d3ad9529-a962-4322-ab34-d890c2ce51c9",
+        "IsPublished": true,
+        "CreationTimestamp": "2021-03-17T14:23:18.1345515Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_ANGELICA_LEVEL_3_NAME",
+        "Description": "UI_CONTRACT_ANGELICA_GROUP_DESC",
+        "CodeName_Hint": "Angelica - Level 3",
+        "Location": "LOCATION_GOLDEN_GECKO",
+        "ScenePath": "assembly:/_pro/scenes/missions/golden/mission_gecko/scene_gecko_angelica.entity",
+        "Type": "escalation",
+        "Release": "3.3.0 Escalation",
+        "InGroup": "8885eeda-ad64-44fa-a944-1438b36c670c",
+        "Entitlements": [],
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "51c712ca-5209-4966-8369-8d06e0986230" },
+            { "IsNew": true, "Id": "07033d8c-6bbf-4745-8319-5398d3bb70c3" },
+            { "Id": "4fd079b5-4238-453a-84c9-2183f3dc0b7e" }
+        ],
+        "LastUpdate": "2023-03-30T11:20:24.199101Z",
+        "PublicId": "027035968047",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Golden_angelica.jpg"
+    },
+    "UserData": {}
+}

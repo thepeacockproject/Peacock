@@ -1,0 +1,245 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "_comment": "--- Identify secret admirer ---",
+                "Id": "ae722144-894b-4cc6-a551-fb2f839ce824",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "Image": "images/contracts/escalation/ContractEscalation_Edgy_Ambrosia_Identify.jpg",
+                "BriefingName": "$loc UI_CONTRACT_AMBROSIA_OBJ_IDENTIFY",
+                "BriefingText": "$loc UI_CONTRACT_AMBROSIA_OBJ_IDENTIFY_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_AMBROSIA_OBJ_IDENTIFY",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "Indentified": { "Transition": "Success" },
+                            "WrongIndentified": { "Transition": "Failure" }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "--- Eliminate the posers ---",
+                "Id": "8694628d-9e91-4bf4-9800-11950d5c2a7d",
+                "Category": "secondary",
+                "ObjectiveType": "custom",
+                "Image": "images/contracts/escalation/ContractEscalation_Edgy_Ambrosia_Eliminate.jpg",
+                "BriefingName": "$loc UI_CONTRACT_AMBROSIA_OBJ_ELIMINATE",
+                "BriefingText": "$loc UI_CONTRACT_AMBROSIA_OBJ_ELIMINATE_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_AMBROSIA_OBJ_ELIMINATE",
+                    "iconType": 0
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "States": {
+                        "Start": { "AllDone": { "Transition": "Success" } }
+                    }
+                }
+            },
+            {
+                "_comment": "--- HIDDEN Eliminate the posers ---",
+                "Id": "6aac5993-4b4a-4ec5-a9a0-6c46e804c437",
+                "Category": "secondary",
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": false,
+                "IsHidden": true,
+                "ExcludeFromScoring": true,
+                "Visible": false,
+                "Image": "images/contracts/escalation/ContractEscalation_Edgy_Ambrosia_Eliminate.jpg",
+                "BriefingName": "$loc UI_CONTRACT_AMBROSIA_OBJ_ELIMINATE",
+                "BriefingText": "$loc UI_CONTRACT_AMBROSIA_OBJ_ELIMINATE",
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": { "Targets": [], "TargetCount": 0 },
+                    "States": {
+                        "Start": {
+                            "TargetPicked": [
+                                {
+                                    "Actions": {
+                                        "$pushunique": [
+                                            "Targets",
+                                            "$Value.RepositoryId"
+                                        ],
+                                        "$inc": "TargetCount"
+                                    }
+                                }
+                            ],
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$inarray": {
+                                            "in": "$.Targets",
+                                            "?": {
+                                                "$eq": [
+                                                    "$.#",
+                                                    "$Value.RepositoryId"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "Actions": { "$dec": "TargetCount" }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.TargetCount", 0]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- HIDDEN Do not eliminate the admirer secondary -----",
+                "Id": "02a4ddc6-2f46-4b5a-a6e4-7bb8a811e87a",
+                "Category": "secondary",
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": false,
+                "IsHidden": true,
+                "Visible": false,
+                "ExcludeFromScoring": true,
+                "Image": "images/contracts/escalation/ContractEscalation_Edgy_Ambrosia_DoNotEliminate.jpg",
+                "BriefingName": "$loc UI_CONTRACT_AMBROSIA_OBJ_DONOTELIMINATE",
+                "BriefingText": "$loc UI_CONTRACT_AMBROSIA_OBJ_DONOTELIMINATE",
+                "LongBriefingText": "$loc UI_CONTRACT_AMBROSIA_OBJ_DONOTELIMINATE",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": { "Targets": [], "TargetCount": 0 },
+                    "States": {
+                        "Start": {
+                            "AdmirerPicked": [
+                                {
+                                    "Actions": {
+                                        "$pushunique": [
+                                            "Targets",
+                                            "$Value.RepositoryId"
+                                        ],
+                                        "$inc": "TargetCount"
+                                    }
+                                }
+                            ],
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$inarray": {
+                                            "in": "$.Targets",
+                                            "?": {
+                                                "$eq": [
+                                                    "$.#",
+                                                    "$Value.RepositoryId"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "Actions": { "$dec": "TargetCount" }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.TargetCount", 0]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Activation": {
+                    "$eq": ["$02a4ddc6-2f46-4b5a-a6e4-7bb8a811e87a", "Failed"]
+                },
+                "_comment": "----- HIDDEN Do not eliminate the admirer primary -----",
+                "Id": "dbfa0473-6423-487a-9427-873169468cf8",
+                "Primary": true,
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": false,
+                "Image": "images/contracts/escalation/ContractEscalation_Edgy_Ambrosia_DoNotEliminate.jpg",
+                "BriefingName": "$loc UI_CONTRACT_AMBROSIA_OBJ_DONOTELIMINATE",
+                "BriefingText": "$loc UI_CONTRACT_AMBROSIA_OBJ_DONOTELIMINATE",
+                "LongBriefingText": "$loc UI_CONTRACT_AMBROSIA_OBJ_DONOTELIMINATE",
+                "Visible": false,
+                "IsHidden": true,
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_AMBROSIA_OBJ_DONOTELIMINATE",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "ExcludeFromScoring": false,
+                "OnInactive": { "IfInProgress": { "State": "Completed" } },
+                "Definition": {
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "-": {},
+                            "FailThis": { "Transition": "Failure" }
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/edgy/mission_fox/vr_overrides_fox.brick",
+                    "assembly:/_pro/scenes/missions/edgy/mission_fox/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/edgy/mission_fox/vr_overrides_fox.brick"
+                ]
+            }
+        ],
+        "GameChangers": ["07b1bc1d-f52b-4004-a760-846c4bc3f172"],
+        "Entrances": ["c82062a2-eb04-48f8-ac39-ddf85bff338b"],
+        "MandatoryLoadout": [
+            {
+                "Id": "TOKEN_OUTFIT_HERO_LUST_SUIT",
+                "Properties": {
+                    "LoadoutSlot": "Outfit",
+                    "RepositoryId": "833835aa-e982-48b4-9fa5-681972027ab0"
+                }
+            }
+        ],
+        "GameChangerReferences": []
+    },
+    "Metadata": {
+        "Id": "cb712a0c-cf36-4c36-86d8-f57502e594bd",
+        "IsPublished": true,
+        "CreationTimestamp": "2018-11-05T14:12:47.2836568Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_AMBROSIA_LEVEL_1",
+        "Description": "UI_CONTRACT_AMBROSIA_GROUP_DESC",
+        "CodeName_Hint": "Ambrosia - Level 1",
+        "Location": "LOCATION_EDGY_FOX",
+        "RequiredUnlockable": "ACCESS_HIT_FOX",
+        "ScenePath": "assembly:/_pro/scenes/missions/edgy/mission_fox/scene_ambrosia.entity",
+        "Type": "escalation",
+        "InGroup": "e3b65e65-636b-4dfd-bb42-65a18c5dce4a",
+        "Release": "3.2.x escalation",
+        "Entitlements": ["H3_DEADLYSINS_LUST"],
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "ae722144-894b-4cc6-a551-fb2f839ce824" },
+            { "Id": "8694628d-9e91-4bf4-9800-11950d5c2a7d" },
+            { "Id": "07b1bc1d-f52b-4004-a760-846c4bc3f172" }
+        ],
+        "LastUpdate": "2023-03-30T11:20:24.155216Z",
+        "PublicId": "029813180047",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Edgy_Ambrosia.jpg"
+    },
+    "UserData": {}
+}

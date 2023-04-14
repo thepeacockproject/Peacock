@@ -1,0 +1,108 @@
+{
+    "Data": {
+        "Bricks": [
+            "Assembly:/_PRO/Scenes/missions/golden/mission_gecko/golden_angelica_level1.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/scenes/missions/golden/mission_gecko/vr_overrides_golden_gecko.brick",
+                    "assembly:/_PRO/scenes/missions/golden/mission_gecko/vr_overrides_ps4perf.brick",
+                    "assembly:/_pro/scenes/missions/golden/mission_gecko/vr_overrides_angelica.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/scenes/missions/golden/mission_gecko/vr_overrides_golden_gecko.brick",
+                    "assembly:/_pro/scenes/missions/golden/mission_gecko/vr_overrides_angelica.brick"
+                ]
+            }
+        ],
+        "DevOnlyBricks": [],
+        "GameChangers": [],
+        "Entrances": ["e690549c-d035-46fe-b175-2b73e1c048d3"],
+        "MandatoryLoadout": [
+            {
+                "Id": "Tool_Coin",
+                "Properties": {
+                    "LoadoutSlot": "gear",
+                    "RepositoryId": "dda002e9-02b1-4208-82a5-cf059f3c79cf"
+                }
+            },
+            {
+                "Id": "Melee_FiberWire_Descriptor",
+                "Properties": {
+                    "LoadoutSlot": "gear",
+                    "RepositoryId": "1a11a060-358c-4054-98ec-d3491af1d7c6"
+                }
+            }
+        ],
+        "GameChangerReferences": [],
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "_comment": "----- Eliminate Sebastian Sato  -----",
+                "Id": "67dde1f9-6696-42e3-b922-74f13fb819f7",
+                "Category": "primary",
+                "BriefingName": "",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_ANGELICA_LEVEL1_OBJ7_NAME"
+                },
+                "BriefingText": "$loc UI_CONTRACT_ANGELICA_LEVEL1_OBJ7_DESC",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["f87cccfe-1010-4743-ba3a-529f5d59c479"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "f87cccfe-1010-4743-ba3a-529f5d59c479"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "99813baa-ae89-4bce-9c03-acd8607eac51",
+        "IsPublished": true,
+        "CreationTimestamp": "2021-03-17T14:23:18.1345515Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_ANGELICA_LEVEL_1_NAME",
+        "Description": "UI_CONTRACT_ANGELICA_GROUP_DESC",
+        "CodeName_Hint": "Angelica - Level 1",
+        "Location": "LOCATION_GOLDEN_GECKO",
+        "ScenePath": "assembly:/_pro/scenes/missions/golden/mission_gecko/scene_gecko_angelica.entity",
+        "Type": "escalation",
+        "Release": "3.3.0 Escalation",
+        "InGroup": "8885eeda-ad64-44fa-a944-1438b36c670c",
+        "Entitlements": [],
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "67dde1f9-6696-42e3-b922-74f13fb819f7" }
+        ],
+        "LastUpdate": "2023-03-30T11:20:24.1704111Z",
+        "PublicId": "027747609647",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Golden_angelica.jpg"
+    },
+    "UserData": {}
+}

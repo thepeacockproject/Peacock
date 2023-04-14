@@ -16,7 +16,12 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type { MissionStory, RequestWithJwt, SceneConfig } from "../types/types"
+import type {
+    MissionManifest,
+    MissionStory,
+    RequestWithJwt,
+    SceneConfig,
+} from "../types/types"
 import { log, LogLevel } from "../loggingInterop"
 import { _legacyBull, _theLastYardbirdScpc, controller } from "../controller"
 import {
@@ -84,7 +89,7 @@ export async function planningView(
 
         // now reassign properties and continue
         req.query.contractid =
-            controller.escalationMappings[escalationGroupId]["1"]
+            controller.escalationMappings.get(escalationGroupId)["1"]
     }
 
     let contractData =
@@ -132,27 +137,43 @@ export async function planningView(
         BestLevel: undefined as number | undefined,
     }
 
-    const escalationGroupId = contractIdToEscalationGroupId(
-        req.query.contractid,
-    )
+    const escalation = contractData.Metadata.Type === "escalation"
 
-    if (escalationGroupId) {
+    // It is possible for req.query.contractid to be the id of a group OR a level in that group.
+    let escalationGroupId = contractData.Metadata.InGroup
+
+    if (escalation) {
+        let groupContractData: MissionManifest
+
+        // If contractData has InGroup, it means it is a level in the group.
+        if (contractData.Metadata.InGroup) {
+            groupContractData = controller.resolveContract(escalationGroupId)
+        } else {
+            escalationGroupId = req.query.contractid
+            groupContractData = contractData
+        }
         const p = getUserEscalationProgress(userData, escalationGroupId)
+
         const done =
             userData.Extensions.PeacockCompletedEscalations.includes(
                 escalationGroupId,
             )
 
         groupData.GroupId = escalationGroupId
-        groupData.GroupTitle = contractData.Metadata.Title
+        groupData.GroupTitle = groupContractData.Metadata.Title
         groupData.CompletedLevels = done ? p : p - 1
         groupData.Completed = done
-        groupData.TotalLevels = getLevelCount(
-            controller.escalationMappings[escalationGroupId],
-        )
+        groupData.TotalLevels = getLevelCount(groupContractData)
         groupData.BestScore = 0
         groupData.BestPlayer = nilUuid
         groupData.BestLevel = 0
+
+        // Fix contractData to the data of the level in the group.
+        if (!contractData.Metadata.InGroup) {
+            contractData = controller.resolveContract(
+                contractData.Metadata.GroupDefinition.Order[p - 1],
+            )
+        }
     }
 
     if (!contractData) {
@@ -257,8 +278,6 @@ export async function planningView(
     }
 
     const i = typedInv.find((item) => item.Unlockable.Id === briefcaseProp)
-
-    const escalation = contractData.Metadata.Type === "escalation"
 
     const userCentric = generateUserCentric(
         contractData,
@@ -404,10 +423,7 @@ export async function planningView(
             Contract: contractData,
             ElusiveContractState: "not_completed",
             UserCentric: userCentric,
-            IsFirstInGroup: escalation
-                ? controller.escalationMappings[escalationGroupId]["1"] ===
-                  req.query.contractid
-                : true,
+            IsFirstInGroup: escalation ? groupData.CompletedLevels === 0 : true,
             Creator: creatorProfile,
             UserContract: creatorProfile.DevId !== "IOI",
             UnlockedEntrances:

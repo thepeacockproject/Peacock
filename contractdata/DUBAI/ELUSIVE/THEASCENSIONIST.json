@@ -1,0 +1,137 @@
+{
+    "Data": {
+        "EnableSaving": true,
+        "Bricks": [],
+        "DevOnlyBricks": [
+            "assembly:/_pro/scenes/missions/golden/mission_gecko/dev_gibson.brick"
+        ],
+        "GameChangers": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/scenes/missions/golden/mission_gecko/vr_overrides_golden_gecko.brick",
+                    "assembly:/_PRO/scenes/missions/golden/mission_gecko/vr_overrides_ps4perf.brick",
+                    "assembly:/_pro/scenes/missions/golden/mission_gecko/vr_overrides_golden_gibson.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/scenes/missions/golden/mission_gecko/vr_overrides_golden_gecko.brick",
+                    "assembly:/_pro/scenes/missions/golden/mission_gecko/vr_overrides_golden_gibson.brick"
+                ]
+            }
+        ],
+        "Entrances": ["703b0196-a56e-41c3-86ce-a8aa77777472"],
+        "Objectives": [
+            {
+                "_comment": "----- Eliminate target -----",
+                "Id": "85c51ea1-5f20-4408-8606-c44f08f6b931",
+                "Primary": true,
+                "IsHidden": true,
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "010a84f5-db4d-47e0-8f27-41e6dc7fe21f"
+                    }
+                }
+            },
+            {
+                "_comment": "----- Hide target escaping objective -----",
+                "Id": "9859eb6c-6d5a-4770-85af-67d618c4a09d",
+                "Type": "statemachine",
+                "Category": "condition",
+                "ExcludeFromScoring": true,
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "TargetLeaving": { "Transition": "Success" }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Target escaping -----",
+                "Id": "b7d1b0b6-653c-43a8-ab3e-675465537a96",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "Activation": {
+                    "$eq": [
+                        "$9859eb6c-6d5a-4770-85af-67d618c4a09d",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": { "IfCompleted": { "State": "Completed" } },
+                "OnActive": { "IfCompleted": { "Visible": false } },
+                "BriefingName": "$loc UI_CONTRACT_GIBSON_OBJ_TARGETESCAPING_NAME",
+                "BriefingText": "$loc UI_CONTRACT_GIBSON_OBJ_TARGETESCAPING_TEXT",
+                "LongBriefingText": "$loc UI_CONTRACT_GIBSON_OBJ_TARGETESCAPING_NAME",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_GIBSON_OBJ_TARGETESCAPING_NAME",
+                    "iconType": 3
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "display": { "iconType": 3 },
+                    "Context": { "Timeout": 15 },
+                    "States": {
+                        "Start": {
+                            "TargetReachedExit": { "Transition": "Countdown" },
+                            "ObjectiveCompleted": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Id",
+                                            "85c51ea1-5f20-4408-8606-c44f08f6b931"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        },
+                        "Countdown": {
+                            "$timer": {
+                                "Condition": { "$after": "$.Timeout" },
+                                "Transition": "Failure"
+                            },
+                            "ObjectiveCompleted": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Id",
+                                            "85c51ea1-5f20-4408-8606-c44f08f6b931"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ],
+                            "TargetLeftExit": { "Transition": "Start" }
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "b2c0251e-1803-4e12-b860-b9fa6ce5c004",
+        "CodeName_Hint": "Gibson",
+        "Type": "elusive",
+        "Title": "UI_CONTRACT_GIBSON_TITLE",
+        "Description": "UI_CONTRACT_GIBSON_DESC",
+        "TileImage": "images/contracts/elusive/S3_Gibson/Title.jpg",
+        "Location": "LOCATION_GOLDEN_GECKO",
+        "ScenePath": "assembly:/_pro/scenes/missions/golden/mission_gecko/scene_gibson.entity",
+        "BriefingVideo": "briefing_gibson",
+        "DebriefingVideo": "debriefing_gibson",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "PublicId": "027229689747",
+        "Entitlements": ["LOCATION_GOLDEN"],
+        "Season": 3
+    },
+    "UserData": {}
+}

@@ -538,7 +538,7 @@ export class ChallengeService extends ChallengeRegistry {
         gameVersion: GameVersion,
         difficulty = 4,
     ): GroupIndexedChallengeLists {
-        const contract = this.controller.resolveContract(contractId)
+        const contract = this.controller.resolveContract(contractId, true)
 
         assert.ok(contract)
 
@@ -575,7 +575,9 @@ export class ChallengeService extends ChallengeRegistry {
 
         let contracts = isSniperLocation(child)
             ? this.controller.missionsInLocations.sniper[child]
-            : this.controller.missionsInLocations[child]
+            : (this.controller.missionsInLocations[child] ?? []).concat(
+                  this.controller.missionsInLocations.escalations[child],
+              )
         if (!contracts) {
             contracts = []
         }
@@ -600,13 +602,13 @@ export class ChallengeService extends ChallengeRegistry {
         // brand new.
         const { gameVersion, contractId, challengeContexts } = session
 
+        const contractJson = this.controller.resolveContract(contractId, true)
+
         const challengeGroups = this.getChallengesForContract(
-            contractId,
+            contractJson.Metadata.Id,
             gameVersion,
             session.difficulty,
         )
-
-        const contractJson = this.controller.resolveContract(contractId)
 
         if (contractJson.Metadata.Type === "evergreen") {
             session.evergreen = {
@@ -789,7 +791,7 @@ export class ChallengeService extends ChallengeRegistry {
         userId: string,
         difficulty = 4,
     ): CompiledChallengeTreeCategory[] {
-        const contractData = this.controller.resolveContract(contractId)
+        const contractData = this.controller.resolveContract(contractId, true)
 
         if (!contractData) {
             return []
@@ -809,7 +811,7 @@ export class ChallengeService extends ChallengeRegistry {
         }
 
         const forContract = this.getChallengesForContract(
-            contractId,
+            contractData.Metadata.Id,
             gameVersion,
             difficulty,
         )
