@@ -16,12 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type {
-    MissionManifest,
-    MissionStory,
-    RequestWithJwt,
-    SceneConfig,
-} from "../types/types"
+import type { MissionStory, RequestWithJwt, SceneConfig } from "../types/types"
 import { log, LogLevel } from "../loggingInterop"
 import { _legacyBull, _theLastYardbirdScpc, controller } from "../controller"
 import {
@@ -140,18 +135,12 @@ export async function planningView(
     )
 
     // It is possible for req.query.contractid to be the id of a group OR a level in that group.
-    let escalationGroupId = contractData.Metadata.InGroup
+    let escalationGroupId =
+        contractData.Metadata.InGroup ?? contractData.Metadata.Id
 
     if (escalation) {
-        let groupContractData: MissionManifest
+        const groupContractData = controller.resolveContract(escalationGroupId)
 
-        // If contractData has InGroup, it means it is a level in the group.
-        if (contractData.Metadata.InGroup) {
-            groupContractData = controller.resolveContract(escalationGroupId)
-        } else {
-            escalationGroupId = req.query.contractid
-            groupContractData = contractData
-        }
         const p = getUserEscalationProgress(userData, escalationGroupId)
 
         const done =
