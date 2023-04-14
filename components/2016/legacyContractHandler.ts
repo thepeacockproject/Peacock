@@ -26,6 +26,7 @@ import { getConfig } from "../configSwizzleManager"
 import type { GameChanger, RequestWithJwt } from "../types/types"
 import { randomUUID } from "crypto"
 import { getFlag } from "../flags"
+import { getPlayEscalationInfo } from "../contracts/escalations/escalationService"
 
 const legacyContractRouter = Router()
 
@@ -107,6 +108,18 @@ legacyContractRouter.post(
                     )
                 }
             }
+        }
+
+        // Add escalation data to Contract data HERE
+        contractData.Metadata = {
+            ...contractData.Metadata,
+            ...(contractData.Metadata.Type === "escalation"
+                ? getPlayEscalationInfo(
+                      req.jwt.unique_name,
+                      contractData.Metadata.InGroup,
+                      req.gameVersion,
+                  )
+                : {}),
         }
 
         res.json(contractData)
