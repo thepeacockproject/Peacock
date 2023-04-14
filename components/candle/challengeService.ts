@@ -222,12 +222,21 @@ export abstract class ChallengeRegistry {
         }
         const gameGroups = this.groups.get(gameVersion)
 
+        if (groupId === "feats" && gameVersion !== "h3") {
+            return mergeSavedChallengeGroups(
+                gameGroups.get(location)?.get(groupId),
+                gameGroups.get("GLOBAL_ESCALATION_CHALLENGES")?.get(groupId),
+            )
+        }
+
         if (groupId?.includes("featured")) {
             return gameGroups.get("GLOBAL_FEATURED_CHALLENGES")?.get(groupId)
         }
+
         if (groupId?.includes("escalation")) {
             return gameGroups.get("GLOBAL_ESCALATION_CHALLENGES")?.get(groupId)
         }
+
         // Included by default. Filtered later.
         if (groupId === "classic" && location !== "GLOBAL_CLASSIC_CHALLENGES") {
             return mergeSavedChallengeGroups(
@@ -235,6 +244,7 @@ export abstract class ChallengeRegistry {
                 gameGroups.get("GLOBAL_CLASSIC_CHALLENGES")?.get(groupId),
             )
         }
+
         if (
             groupId === "elusive" &&
             location !== "GLOBAL_ELUSIVES_CHALLENGES"
@@ -257,9 +267,19 @@ export abstract class ChallengeRegistry {
         }
         const gameChalGC = this.groupContents.get(gameVersion)
 
+        if (groupId === "feats" && gameVersion !== "h3") {
+            return new Set([
+                ...(gameChalGC.get(location)?.get(groupId) ?? []),
+                ...(gameChalGC
+                    .get("GLOBAL_ESCALATION_CHALLENGES")
+                    ?.get(groupId) ?? []),
+            ])
+        }
+
         if (groupId?.includes("featured")) {
             return gameChalGC.get("GLOBAL_FEATURED_CHALLENGES")?.get(groupId)
         }
+
         if (groupId?.includes("escalation")) {
             return gameChalGC.get("GLOBAL_ESCALATION_CHALLENGES")?.get(groupId)
         }
@@ -272,6 +292,7 @@ export abstract class ChallengeRegistry {
                     []),
             ])
         }
+
         if (
             groupId === "elusive" &&
             location !== "GLOBAL_ELUSIVES_CHALLENGES"
@@ -532,7 +553,8 @@ export class ChallengeService extends ChallengeRegistry {
         }
 
         // Rocky is the only parent location with no escalations. TODO: change this when pontus is added.
-        if (location !== "LOCATION_PARENT_ROCKY") {
+        // H2 & H1 have the escalation challenges in "feats"
+        if (location !== "LOCATION_PARENT_ROCKY" && gameVersion === "h3") {
             this.getGroupedChallengesByLoc(
                 filter,
                 "GLOBAL_ESCALATION_CHALLENGES",

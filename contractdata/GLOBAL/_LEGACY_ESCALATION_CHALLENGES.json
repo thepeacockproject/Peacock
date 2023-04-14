@@ -1,0 +1,157 @@
+{
+    "meta": {
+        "Location": "GLOBAL_ESCALATION_CHALLENGES",
+        "GameVersion": "h1"
+    },
+    "groups": [
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+            "Image": "images/challenges/categories/feats/tile.jpg",
+            "Icon": "challenge_category_feats",
+            "CategoryId": "feats",
+            "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_COMMUNITY",
+            "Challenges": [
+                {
+                    "Id": "239dd317-ea34-4689-b730-0726b51f71bd",
+                    "Name": "UI_CHALLENGES_GLOBAL_All_ESCALATION_MONTH1_NAME",
+                    "ImageName": "images/challenges/profile_challenges/escalation_month1.jpg",
+                    "Description": "UI_CHALLENGES_GLOBAL_All_ESCALATION_MONTH1_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        "FIREARMS_HERO_SMG_TACTICAL_012_ST_AIM_SU_SKIN03"
+                    ],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_GLOBAL",
+                    "TypeTitle": "UI_MENU_PAGE_CHALLENGE_TITLE_GLOBAL",
+                    "TypeIcon": "challenge",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "Completed": [],
+                            "Count": 0,
+                            "Goal": 10
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count",
+                                            "$pushunique": [
+                                                "Completed",
+                                                "$ContractId"
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$ContractId"
+                                                            ]
+                                                        },
+                                                        "in": [
+                                                            "4aba4161-608c-4f2c-b1b7-e6669a5eac44",
+                                                            "a08d65bc-3a72-4202-8d8e-c03444d2ba51",
+                                                            "6d60b35a-c41a-45a3-bfc8-16b6959ffdb9",
+                                                            "0ec2eabf-a9a5-4660-a143-ec194abe27ea",
+                                                            "49b24fc5-582b-4314-88a5-f282171b9a56",
+                                                            "8e16b428-5de7-4c56-a3ab-a1e244488ebc",
+                                                            "739e624b-2851-4925-bb5c-f86e8d196aeb",
+                                                            "29bc2f85-79ea-45b3-a9e0-bd4abcee1e67",
+                                                            "23ded45d-c08c-4077-bdc8-ec4118bc70ce",
+                                                            "390c756e-9fce-4100-8063-4b89eebfd91b",
+                                                            "e71bb57e-cba6-4b47-bdb1-2c89319d7e45",
+                                                            "dac764bf-d07f-461b-8f51-a511ed64a20a",
+                                                            "5f96ef53-926c-4e49-b3ec-93b2fbe51ccf",
+                                                            "689774c7-7059-42b5-96f8-a78f9fb31240",
+                                                            "7bf14497-f478-4cd7-b35f-b04933ca80bb",
+                                                            "8500f8dc-d6d8-4fb1-9df2-e8159d8a740e",
+                                                            "0aac363d-3e5d-4e9e-8d27-b890c0a8d3b5",
+                                                            "e2d7929f-9774-499a-bee6-7484719db474",
+                                                            "d3ea9e2e-85dc-41f1-b1bf-a478879ff8ba",
+                                                            "da459b80-2cb2-4c99-b57d-9531c10e34ac",
+                                                            "cdf92d1d-b08d-4427-aa40-56bbfa5a10d3",
+                                                            "59b2c722-9728-4e8f-a432-3ccb1d6a31f6",
+                                                            "3e5d074c-ec66-4b27-bacf-9e96a01cdd62",
+                                                            "ad80e67c-fa4c-4c29-b834-9b1f23bcf02a",
+                                                            "4b30ac0d-be8b-43f0-8894-277ad4bb8074",
+                                                            "40b08d95-82cf-4053-869e-0a110beb6dbb",
+                                                            "0519bc57-8666-49c5-aaef-52423707c3a7",
+                                                            "220d41ad-105f-44a4-b532-3f1942da88c3",
+                                                            "bff960fb-8206-47b7-8163-6dcd71c781f4",
+                                                            "e1d60c32-e4aa-4461-8139-2a37e90b6eb3",
+                                                            "daa5596e-61a8-4a1b-b979-fb5501c3d956",
+                                                            "911476b2-fd26-4e4e-a8c3-3201a27a6cc2",
+                                                            "5f2e6507-61a8-4e9b-9965-39dbedd9f122",
+                                                            "15998e88-bf9e-490b-8f91-a218ee2a5739",
+                                                            "cf8fc99a-a0d3-4e9c-871e-c01556ff3183",
+                                                            "e6ec6b2e-4f6b-44c7-bb3d-ace5482471bc",
+                                                            "4ed3bdfe-ecfc-41ab-ba6d-25d053838e15",
+                                                            "d48ed63e-2542-4215-8e6c-6ad3c29feb42",
+                                                            "150cfa6d-6be8-4b79-930d-07bd3ccde952",
+                                                            "8eed3a7f-b903-412d-85b6-e4262e7246d7",
+                                                            "8039ecb0-d903-4b7c-bfed-63c70f895e6f",
+                                                            "0f71205e-689a-4bb4-b3cf-bc7808d2b048",
+                                                            "de38d516-b4ab-4539-b9b1-89b475f372bb",
+                                                            "fc6ec4fe-59c7-4c2f-8dd1-00635e29239f",
+                                                            "2e83eda3-230f-429c-965a-c89e7ada97e3",
+                                                            "a6807292-1bc5-4fbb-9421-af3f5a2ee5d1",
+                                                            "7ec4bbd5-6c02-4640-b5dd-4e604081b4d2",
+                                                            "541bcd99-44dc-4e0a-8520-15a528223cac",
+                                                            "35ed4c87-e6af-4279-8555-22d167b59197",
+                                                            "b007a400-66b8-43c3-a919-3195e343f7b1",
+                                                            "aa456df8-2294-4e29-a792-fc0f46576830",
+                                                            "0a6f7d38-4bc3-49c2-ab06-7fd99b2bc6b3",
+                                                            "e33119f9-074c-40ab-bcdc-a814c94af747",
+                                                            "32c0c431-259c-45d7-ba47-5244a6b54818",
+                                                            "5db4c764-7ab7-40c1-8688-e2b98176fa35",
+                                                            "e2dd58f3-f5ff-41b3-9ba9-4d0420fc773b",
+                                                            "5cb1a153-3b56-417a-8e75-10066bf397b6"
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$any": {
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "$ContractId"
+                                                                ]
+                                                            },
+                                                            "in": "$.Completed"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "feats", "escalation"]
+                }
+            ]
+        }
+    ]
+}
