@@ -113,6 +113,7 @@ import MasteryDataForLocationTemplate from "../static/MasteryDataForLocationTemp
 import DefaultCpdConfig from "../static/DefaultCpdConfig.json"
 import EvergreenGameChangerProperties from "../static/EvergreenGameChangerProperties.json"
 import AreaMap from "../static/AreaMap.json"
+import HitsCategoryElusiveTemplate from "../static/HitsCategoryElusiveTemplate.json"
 import type { GameVersion } from "./types/types"
 import { fastClone } from "./utils"
 
@@ -213,6 +214,7 @@ const configs: Record<string, unknown> = {
     DefaultCpdConfig,
     EvergreenGameChangerProperties,
     AreaMap,
+    HitsCategoryElusiveTemplate,
 }
 
 Object.keys(configs).forEach((cfg) => {
