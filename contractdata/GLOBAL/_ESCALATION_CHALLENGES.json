@@ -1,0 +1,2022 @@
+{
+    "meta": {
+        "Location": "GLOBAL_ESCALATION_CHALLENGES",
+        "GameVersion": "h3"
+    },
+    "groups": [
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ESCALATION_HM1",
+            "Image": "images/challenges/categories/escalationtracks/tile_hm1.jpg",
+            "Icon": "featured",
+            "CategoryId": "escalation_hm1",
+            "Description": "",
+            "Challenges": [
+                {
+                    "Id": "7c4e7906-ad19-46c0-96f4-4fc301a562b4",
+                    "Name": "UI_CHALLENGES_ESCALATION_S1_TIER_1_NAME",
+                    "ImageName": "images/challenges/profile_challenges/escalation_s1_tier_1.jpg",
+                    "Description": "UI_CHALLENGES_ESCALATION_S1_TIER_1_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        "PROP_DEVICE_ACTIONFIGURE_PROXIMITY_EXPLOSIVE"
+                    ],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ESCALATION_HM1",
+                    "Icon": "featured",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 90101,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 1,
+                            "RequiredContracts": [
+                                "8039ecb0-d903-4b7c-bfed-63c70f895e6f",
+                                "e33119f9-074c-40ab-bcdc-a814c94af747",
+                                "8500f8dc-d6d8-4fb1-9df2-e8159d8a740e",
+                                "220d41ad-105f-44a4-b532-3f1942da88c3",
+                                "cdf92d1d-b08d-4427-aa40-56bbfa5a10d3",
+                                "0a6f7d38-4bc3-49c2-ab06-7fd99b2bc6b3",
+                                "7ec4bbd5-6c02-4640-b5dd-4e604081b4d2",
+                                "35ed4c87-e6af-4279-8555-22d167b59197",
+                                "5db4c764-7ab7-40c1-8688-e2b98176fa35",
+                                "e71bb57e-cba6-4b47-bdb1-2c89319d7e45",
+                                "e6ec6b2e-4f6b-44c7-bb3d-ace5482471bc",
+                                "e1d60c32-e4aa-4461-8139-2a37e90b6eb3",
+                                "e2dd58f3-f5ff-41b3-9ba9-4d0420fc773b",
+                                "ad80e67c-fa4c-4c29-b834-9b1f23bcf02a",
+                                "3e5d074c-ec66-4b27-bacf-9e96a01cdd62",
+                                "150cfa6d-6be8-4b79-930d-07bd3ccde952",
+                                "5cb1a153-3b56-417a-8e75-10066bf397b6",
+                                "dac764bf-d07f-461b-8f51-a511ed64a20a"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedContracts": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.CompletedContracts).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "profile",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$ContractId"
+                                                    ]
+                                                },
+                                                "in": "$.RequiredContracts"
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "CompletedContracts",
+                                                "$ContractId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$.Goal",
+                                                "($.CompletedContracts).Count"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": [
+                        "story",
+                        "escalation",
+                        "escalation_hm1"
+                    ],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": [
+                            "escalation"
+                        ],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "76a88800-05a6-469f-a536-27f795f9304e",
+                    "Name": "UI_CHALLENGES_ESCALATION_S1_TIER_2_NAME",
+                    "ImageName": "images/challenges/profile_challenges/escalation_s1_tier_2.jpg",
+                    "Description": "UI_CHALLENGES_ESCALATION_S1_TIER_2_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        "FIREARMS_HERO_RIFLE_FULLAUTO_016_SU_SKIN06"
+                    ],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ESCALATION_HM1",
+                    "Icon": "featured",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 90102,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 3,
+                            "RequiredContracts": [
+                                "8039ecb0-d903-4b7c-bfed-63c70f895e6f",
+                                "e33119f9-074c-40ab-bcdc-a814c94af747",
+                                "8500f8dc-d6d8-4fb1-9df2-e8159d8a740e",
+                                "220d41ad-105f-44a4-b532-3f1942da88c3",
+                                "cdf92d1d-b08d-4427-aa40-56bbfa5a10d3",
+                                "0a6f7d38-4bc3-49c2-ab06-7fd99b2bc6b3",
+                                "7ec4bbd5-6c02-4640-b5dd-4e604081b4d2",
+                                "35ed4c87-e6af-4279-8555-22d167b59197",
+                                "5db4c764-7ab7-40c1-8688-e2b98176fa35",
+                                "e71bb57e-cba6-4b47-bdb1-2c89319d7e45",
+                                "e6ec6b2e-4f6b-44c7-bb3d-ace5482471bc",
+                                "e1d60c32-e4aa-4461-8139-2a37e90b6eb3",
+                                "e2dd58f3-f5ff-41b3-9ba9-4d0420fc773b",
+                                "ad80e67c-fa4c-4c29-b834-9b1f23bcf02a",
+                                "3e5d074c-ec66-4b27-bacf-9e96a01cdd62",
+                                "150cfa6d-6be8-4b79-930d-07bd3ccde952",
+                                "5cb1a153-3b56-417a-8e75-10066bf397b6",
+                                "dac764bf-d07f-461b-8f51-a511ed64a20a"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedContracts": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.CompletedContracts).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "profile",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$ContractId"
+                                                    ]
+                                                },
+                                                "in": "$.RequiredContracts"
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "CompletedContracts",
+                                                "$ContractId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$.Goal",
+                                                "($.CompletedContracts).Count"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": [
+                        "story",
+                        "escalation",
+                        "escalation_hm1"
+                    ],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": [
+                            "escalation"
+                        ],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "c14f9d29-a3c8-4a7a-975c-1129060bb111",
+                    "Name": "UI_CHALLENGES_ESCALATION_S1_TIER_3_NAME",
+                    "ImageName": "images/challenges/profile_challenges/escalation_s1_tier_3.jpg",
+                    "Description": "UI_CHALLENGES_ESCALATION_S1_TIER_3_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        "PROP_DEVICE_ICA_RUBBERDUCK_PROXIMITY_EXPLOSIVE"
+                    ],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ESCALATION_HM1",
+                    "Icon": "featured",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 90103,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 6,
+                            "RequiredContracts": [
+                                "8039ecb0-d903-4b7c-bfed-63c70f895e6f",
+                                "e33119f9-074c-40ab-bcdc-a814c94af747",
+                                "8500f8dc-d6d8-4fb1-9df2-e8159d8a740e",
+                                "220d41ad-105f-44a4-b532-3f1942da88c3",
+                                "cdf92d1d-b08d-4427-aa40-56bbfa5a10d3",
+                                "0a6f7d38-4bc3-49c2-ab06-7fd99b2bc6b3",
+                                "7ec4bbd5-6c02-4640-b5dd-4e604081b4d2",
+                                "35ed4c87-e6af-4279-8555-22d167b59197",
+                                "5db4c764-7ab7-40c1-8688-e2b98176fa35",
+                                "e71bb57e-cba6-4b47-bdb1-2c89319d7e45",
+                                "e6ec6b2e-4f6b-44c7-bb3d-ace5482471bc",
+                                "e1d60c32-e4aa-4461-8139-2a37e90b6eb3",
+                                "e2dd58f3-f5ff-41b3-9ba9-4d0420fc773b",
+                                "ad80e67c-fa4c-4c29-b834-9b1f23bcf02a",
+                                "3e5d074c-ec66-4b27-bacf-9e96a01cdd62",
+                                "150cfa6d-6be8-4b79-930d-07bd3ccde952",
+                                "5cb1a153-3b56-417a-8e75-10066bf397b6",
+                                "dac764bf-d07f-461b-8f51-a511ed64a20a"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedContracts": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.CompletedContracts).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "profile",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$ContractId"
+                                                    ]
+                                                },
+                                                "in": "$.RequiredContracts"
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "CompletedContracts",
+                                                "$ContractId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$.Goal",
+                                                "($.CompletedContracts).Count"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": [
+                        "story",
+                        "escalation",
+                        "escalation_hm1"
+                    ],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": [
+                            "escalation"
+                        ],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "7f37d868-322e-4aba-a50e-312e6fa72fc6",
+                    "Name": "UI_CHALLENGES_ESCALATION_S1_TIER_4_NAME",
+                    "ImageName": "images/challenges/profile_challenges/escalation_s1_tier_4.jpg",
+                    "Description": "UI_CHALLENGES_ESCALATION_S1_TIER_4_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        "PROP_MELEE_PHONE_CORD"
+                    ],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ESCALATION_HM1",
+                    "Icon": "featured",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 90104,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 9,
+                            "RequiredContracts": [
+                                "8039ecb0-d903-4b7c-bfed-63c70f895e6f",
+                                "e33119f9-074c-40ab-bcdc-a814c94af747",
+                                "8500f8dc-d6d8-4fb1-9df2-e8159d8a740e",
+                                "220d41ad-105f-44a4-b532-3f1942da88c3",
+                                "cdf92d1d-b08d-4427-aa40-56bbfa5a10d3",
+                                "0a6f7d38-4bc3-49c2-ab06-7fd99b2bc6b3",
+                                "7ec4bbd5-6c02-4640-b5dd-4e604081b4d2",
+                                "35ed4c87-e6af-4279-8555-22d167b59197",
+                                "5db4c764-7ab7-40c1-8688-e2b98176fa35",
+                                "e71bb57e-cba6-4b47-bdb1-2c89319d7e45",
+                                "e6ec6b2e-4f6b-44c7-bb3d-ace5482471bc",
+                                "e1d60c32-e4aa-4461-8139-2a37e90b6eb3",
+                                "e2dd58f3-f5ff-41b3-9ba9-4d0420fc773b",
+                                "ad80e67c-fa4c-4c29-b834-9b1f23bcf02a",
+                                "3e5d074c-ec66-4b27-bacf-9e96a01cdd62",
+                                "150cfa6d-6be8-4b79-930d-07bd3ccde952",
+                                "5cb1a153-3b56-417a-8e75-10066bf397b6",
+                                "dac764bf-d07f-461b-8f51-a511ed64a20a"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedContracts": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.CompletedContracts).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "profile",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$ContractId"
+                                                    ]
+                                                },
+                                                "in": "$.RequiredContracts"
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "CompletedContracts",
+                                                "$ContractId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$.Goal",
+                                                "($.CompletedContracts).Count"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": [
+                        "story",
+                        "escalation",
+                        "escalation_hm1"
+                    ],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": [
+                            "escalation"
+                        ],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "96506bc7-b6b8-4fab-9d8a-78502b807c2b",
+                    "Name": "UI_CHALLENGES_ESCALATION_S1_TIER_5_NAME",
+                    "ImageName": "images/challenges/profile_challenges/escalation_s1_tier_5.jpg",
+                    "Description": "UI_CHALLENGES_ESCALATION_S1_TIER_5_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        "FIREARMS_HERO_RIFLE_SEMIAUTO_011_SU_SKIN10"
+                    ],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ESCALATION_HM1",
+                    "Icon": "featured",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 90105,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 12,
+                            "RequiredContracts": [
+                                "8039ecb0-d903-4b7c-bfed-63c70f895e6f",
+                                "e33119f9-074c-40ab-bcdc-a814c94af747",
+                                "8500f8dc-d6d8-4fb1-9df2-e8159d8a740e",
+                                "220d41ad-105f-44a4-b532-3f1942da88c3",
+                                "cdf92d1d-b08d-4427-aa40-56bbfa5a10d3",
+                                "0a6f7d38-4bc3-49c2-ab06-7fd99b2bc6b3",
+                                "7ec4bbd5-6c02-4640-b5dd-4e604081b4d2",
+                                "35ed4c87-e6af-4279-8555-22d167b59197",
+                                "5db4c764-7ab7-40c1-8688-e2b98176fa35",
+                                "e71bb57e-cba6-4b47-bdb1-2c89319d7e45",
+                                "e6ec6b2e-4f6b-44c7-bb3d-ace5482471bc",
+                                "e1d60c32-e4aa-4461-8139-2a37e90b6eb3",
+                                "e2dd58f3-f5ff-41b3-9ba9-4d0420fc773b",
+                                "ad80e67c-fa4c-4c29-b834-9b1f23bcf02a",
+                                "3e5d074c-ec66-4b27-bacf-9e96a01cdd62",
+                                "150cfa6d-6be8-4b79-930d-07bd3ccde952",
+                                "5cb1a153-3b56-417a-8e75-10066bf397b6",
+                                "dac764bf-d07f-461b-8f51-a511ed64a20a"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedContracts": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.CompletedContracts).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "profile",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$ContractId"
+                                                    ]
+                                                },
+                                                "in": "$.RequiredContracts"
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "CompletedContracts",
+                                                "$ContractId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$.Goal",
+                                                "($.CompletedContracts).Count"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": [
+                        "story",
+                        "escalation",
+                        "escalation_hm1"
+                    ],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": [
+                            "escalation"
+                        ],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "73e4a635-e144-4ba9-b291-d57ff0667e86",
+                    "Name": "UI_CHALLENGES_ESCALATION_S1_TIER_6_NAME",
+                    "ImageName": "images/challenges/profile_challenges/escalation_s1_tier_6.jpg",
+                    "Description": "UI_CHALLENGES_ESCALATION_S1_TIER_6_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        "TOKEN_OUTFIT_SNAKE_CHARMER_SUIT"
+                    ],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ESCALATION_HM1",
+                    "Icon": "featured",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 90106,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 15,
+                            "RequiredContracts": [
+                                "8039ecb0-d903-4b7c-bfed-63c70f895e6f",
+                                "e33119f9-074c-40ab-bcdc-a814c94af747",
+                                "8500f8dc-d6d8-4fb1-9df2-e8159d8a740e",
+                                "220d41ad-105f-44a4-b532-3f1942da88c3",
+                                "cdf92d1d-b08d-4427-aa40-56bbfa5a10d3",
+                                "0a6f7d38-4bc3-49c2-ab06-7fd99b2bc6b3",
+                                "7ec4bbd5-6c02-4640-b5dd-4e604081b4d2",
+                                "35ed4c87-e6af-4279-8555-22d167b59197",
+                                "5db4c764-7ab7-40c1-8688-e2b98176fa35",
+                                "e71bb57e-cba6-4b47-bdb1-2c89319d7e45",
+                                "e6ec6b2e-4f6b-44c7-bb3d-ace5482471bc",
+                                "e1d60c32-e4aa-4461-8139-2a37e90b6eb3",
+                                "e2dd58f3-f5ff-41b3-9ba9-4d0420fc773b",
+                                "ad80e67c-fa4c-4c29-b834-9b1f23bcf02a",
+                                "3e5d074c-ec66-4b27-bacf-9e96a01cdd62",
+                                "150cfa6d-6be8-4b79-930d-07bd3ccde952",
+                                "5cb1a153-3b56-417a-8e75-10066bf397b6",
+                                "dac764bf-d07f-461b-8f51-a511ed64a20a"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedContracts": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.CompletedContracts).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "profile",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$ContractId"
+                                                    ]
+                                                },
+                                                "in": "$.RequiredContracts"
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "CompletedContracts",
+                                                "$ContractId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$.Goal",
+                                                "($.CompletedContracts).Count"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": [
+                        "story",
+                        "escalation",
+                        "escalation_hm1"
+                    ],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": [
+                            "escalation"
+                        ],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                }
+            ]
+        },
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ESCALATION_HM2",
+            "Image": "images/challenges/categories/escalationtracks/tile_hm2.jpg",
+            "Icon": "featured",
+            "CategoryId": "escalation_hm2",
+            "Description": "",
+            "Challenges": [
+                {
+                    "Id": "c573a9aa-73cf-4efb-acc6-f391239cbeb5",
+                    "Name": "UI_CHALLENGES_ESCALATION_S2_TIER_1_NAME",
+                    "ImageName": "images/challenges/profile_challenges/escalation_s2_tier_1.jpg",
+                    "Description": "UI_CHALLENGES_ESCALATION_S2_TIER_1_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        "PROP_DEVICE_ICA_TRIPWIRE_EXPLOSIVE"
+                    ],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ESCALATION_HM2",
+                    "Icon": "featured",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 90201,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 1,
+                            "RequiredContracts": [
+                                "5d6f7b13-13be-414f-8010-3e97e5b7b490",
+                                "c03510ef-1932-4b59-997a-3d75ef6e8e8d",
+                                "a4013b71-f772-4e2a-8b35-6511ed132bcf",
+                                "e1e117f4-cf3e-4538-b085-4a226116f143",
+                                "19623520-8a89-4cc5-93f1-a4356fda16b2",
+                                "f0d8a930-3581-41c8-b985-31eaeef9b920",
+                                "79d966d9-5756-4a2f-b7e7-468a1a1ac351",
+                                "5adfcf3a-0696-4593-b755-c2c8d44f59a6",
+                                "f57fd6a8-cf49-499c-b560-bd377a00ffcf",
+                                "c28beef7-e223-4057-9701-db855c05744f",
+                                "f88cda79-c07c-4487-ac23-1b8b824b3497",
+                                "e5b6ccf4-1f29-4ec6-bfb8-2e9b78882c85",
+                                "dcc17268-84e5-4f49-badf-f0c631ab28cd",
+                                "c89d7f7c-eb2f-4530-9e06-1d6ad5187d8e",
+                                "4a0a66d4-0a53-4cfd-8122-978226b4e072",
+                                "3bf086b7-2fb6-49b3-bd95-7f46535801df",
+                                "2469e028-6d85-4b50-a54c-a32c36792241",
+                                "d6f4777a-14df-40c6-a541-d8c974d9d4a1",
+                                "dc16d4c4-f9a5-491f-a2f4-2c0b8e0a66a3",
+                                "469ce2cb-a2d1-4296-bfe6-8a95bbf43fac",
+                                "cb7d1f3e-996f-4955-9b87-bdc40e4160ee",
+                                "97c4148b-ecea-4735-87cd-563e9a4ad343",
+                                "abddddf9-3dbc-46cb-a8e4-087418d97435",
+                                "7f05929f-f1c7-49f7-9428-c9a847b12a87",
+                                "a1e125fe-b9ac-428b-8ff0-2ba5a3d508dd",
+                                "5a2a91be-4591-40f7-aada-f55fce0cadbe",
+                                "d7bc0701-e9c9-465c-a1af-561863697fca",
+                                "2ab943ef-ba1b-48bf-9391-5b7725b4d4c7",
+                                "04fdd55f-2ac5-4f1f-aa8d-00a9b0c6dfc4",
+                                "e04758d6-fb6c-4854-a0bf-753b80e93e96",
+                                "6ada7787-9a8f-474a-aa96-af9407a02b6f",
+                                "778f0ff0-fd13-4c7d-b120-a6bf75421c63",
+                                "952dd0bc-29ec-4080-b179-c1c0db8c3dc6",
+                                "c5ef7b7a-3cfb-4b99-a566-8b3ab4b36436"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedContracts": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.CompletedContracts).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "profile",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$ContractId"
+                                                    ]
+                                                },
+                                                "in": "$.RequiredContracts"
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "CompletedContracts",
+                                                "$ContractId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$.Goal",
+                                                "($.CompletedContracts).Count"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": [
+                        "story",
+                        "escalation",
+                        "escalation_hm2"
+                    ],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": [
+                            "escalation",
+                            "escalation_hm2"
+                        ],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "e9ebc8aa-26c3-484b-b866-f39e722a39c8",
+                    "Name": "UI_CHALLENGES_ESCALATION_S2_TIER_2_NAME",
+                    "ImageName": "images/challenges/profile_challenges/escalation_s2_tier_2.jpg",
+                    "Description": "UI_CHALLENGES_ESCALATION_S2_TIER_2_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        "FIREARMS_PISTOL_DARTGUN_SEDATIVE"
+                    ],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ESCALATION_HM2",
+                    "Icon": "featured",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 90202,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 3,
+                            "RequiredContracts": [
+                                "5d6f7b13-13be-414f-8010-3e97e5b7b490",
+                                "c03510ef-1932-4b59-997a-3d75ef6e8e8d",
+                                "a4013b71-f772-4e2a-8b35-6511ed132bcf",
+                                "e1e117f4-cf3e-4538-b085-4a226116f143",
+                                "19623520-8a89-4cc5-93f1-a4356fda16b2",
+                                "f0d8a930-3581-41c8-b985-31eaeef9b920",
+                                "79d966d9-5756-4a2f-b7e7-468a1a1ac351",
+                                "5adfcf3a-0696-4593-b755-c2c8d44f59a6",
+                                "f57fd6a8-cf49-499c-b560-bd377a00ffcf",
+                                "c28beef7-e223-4057-9701-db855c05744f",
+                                "f88cda79-c07c-4487-ac23-1b8b824b3497",
+                                "e5b6ccf4-1f29-4ec6-bfb8-2e9b78882c85",
+                                "dcc17268-84e5-4f49-badf-f0c631ab28cd",
+                                "c89d7f7c-eb2f-4530-9e06-1d6ad5187d8e",
+                                "4a0a66d4-0a53-4cfd-8122-978226b4e072",
+                                "3bf086b7-2fb6-49b3-bd95-7f46535801df",
+                                "2469e028-6d85-4b50-a54c-a32c36792241",
+                                "d6f4777a-14df-40c6-a541-d8c974d9d4a1",
+                                "dc16d4c4-f9a5-491f-a2f4-2c0b8e0a66a3",
+                                "469ce2cb-a2d1-4296-bfe6-8a95bbf43fac",
+                                "cb7d1f3e-996f-4955-9b87-bdc40e4160ee",
+                                "97c4148b-ecea-4735-87cd-563e9a4ad343",
+                                "abddddf9-3dbc-46cb-a8e4-087418d97435",
+                                "7f05929f-f1c7-49f7-9428-c9a847b12a87",
+                                "a1e125fe-b9ac-428b-8ff0-2ba5a3d508dd",
+                                "5a2a91be-4591-40f7-aada-f55fce0cadbe",
+                                "d7bc0701-e9c9-465c-a1af-561863697fca",
+                                "2ab943ef-ba1b-48bf-9391-5b7725b4d4c7",
+                                "04fdd55f-2ac5-4f1f-aa8d-00a9b0c6dfc4",
+                                "e04758d6-fb6c-4854-a0bf-753b80e93e96",
+                                "6ada7787-9a8f-474a-aa96-af9407a02b6f",
+                                "778f0ff0-fd13-4c7d-b120-a6bf75421c63",
+                                "952dd0bc-29ec-4080-b179-c1c0db8c3dc6",
+                                "c5ef7b7a-3cfb-4b99-a566-8b3ab4b36436"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedContracts": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.CompletedContracts).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "profile",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$ContractId"
+                                                    ]
+                                                },
+                                                "in": "$.RequiredContracts"
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "CompletedContracts",
+                                                "$ContractId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$.Goal",
+                                                "($.CompletedContracts).Count"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": [
+                        "story",
+                        "escalation",
+                        "escalation_hm2"
+                    ],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": [
+                            "escalation"
+                        ],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "fcda14d4-6aba-4f6f-a7ea-fb4c4bcbcc68",
+                    "Name": "UI_CHALLENGES_ESCALATION_S2_TIER_3_NAME",
+                    "ImageName": "images/challenges/profile_challenges/escalation_s2_tier_3.jpg",
+                    "Description": "UI_CHALLENGES_ESCALATION_S2_TIER_3_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        "PROP_DEVICE_REMOTE_CONCUSSION"
+                    ],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ESCALATION_HM2",
+                    "Icon": "featured",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 90203,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 6,
+                            "RequiredContracts": [
+                                "5d6f7b13-13be-414f-8010-3e97e5b7b490",
+                                "c03510ef-1932-4b59-997a-3d75ef6e8e8d",
+                                "a4013b71-f772-4e2a-8b35-6511ed132bcf",
+                                "e1e117f4-cf3e-4538-b085-4a226116f143",
+                                "19623520-8a89-4cc5-93f1-a4356fda16b2",
+                                "f0d8a930-3581-41c8-b985-31eaeef9b920",
+                                "79d966d9-5756-4a2f-b7e7-468a1a1ac351",
+                                "5adfcf3a-0696-4593-b755-c2c8d44f59a6",
+                                "f57fd6a8-cf49-499c-b560-bd377a00ffcf",
+                                "c28beef7-e223-4057-9701-db855c05744f",
+                                "f88cda79-c07c-4487-ac23-1b8b824b3497",
+                                "e5b6ccf4-1f29-4ec6-bfb8-2e9b78882c85",
+                                "dcc17268-84e5-4f49-badf-f0c631ab28cd",
+                                "c89d7f7c-eb2f-4530-9e06-1d6ad5187d8e",
+                                "4a0a66d4-0a53-4cfd-8122-978226b4e072",
+                                "3bf086b7-2fb6-49b3-bd95-7f46535801df",
+                                "2469e028-6d85-4b50-a54c-a32c36792241",
+                                "d6f4777a-14df-40c6-a541-d8c974d9d4a1",
+                                "dc16d4c4-f9a5-491f-a2f4-2c0b8e0a66a3",
+                                "469ce2cb-a2d1-4296-bfe6-8a95bbf43fac",
+                                "cb7d1f3e-996f-4955-9b87-bdc40e4160ee",
+                                "97c4148b-ecea-4735-87cd-563e9a4ad343",
+                                "abddddf9-3dbc-46cb-a8e4-087418d97435",
+                                "7f05929f-f1c7-49f7-9428-c9a847b12a87",
+                                "a1e125fe-b9ac-428b-8ff0-2ba5a3d508dd",
+                                "5a2a91be-4591-40f7-aada-f55fce0cadbe",
+                                "d7bc0701-e9c9-465c-a1af-561863697fca",
+                                "2ab943ef-ba1b-48bf-9391-5b7725b4d4c7",
+                                "04fdd55f-2ac5-4f1f-aa8d-00a9b0c6dfc4",
+                                "e04758d6-fb6c-4854-a0bf-753b80e93e96",
+                                "6ada7787-9a8f-474a-aa96-af9407a02b6f",
+                                "778f0ff0-fd13-4c7d-b120-a6bf75421c63",
+                                "952dd0bc-29ec-4080-b179-c1c0db8c3dc6",
+                                "c5ef7b7a-3cfb-4b99-a566-8b3ab4b36436"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedContracts": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.CompletedContracts).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "profile",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$ContractId"
+                                                    ]
+                                                },
+                                                "in": "$.RequiredContracts"
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "CompletedContracts",
+                                                "$ContractId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$.Goal",
+                                                "($.CompletedContracts).Count"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": [
+                        "story",
+                        "escalation",
+                        "escalation_hm2"
+                    ],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": [
+                            "escalation"
+                        ],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "873662ef-9692-4efc-a7fa-e8d1da650467",
+                    "Name": "UI_CHALLENGES_ESCALATION_S2_TIER_4_NAME",
+                    "ImageName": "images/challenges/profile_challenges/escalation_s2_tier_4.jpg",
+                    "Description": "UI_CHALLENGES_ESCALATION_S2_TIER_4_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        "PROP_EXPLOSIVE_MAGNESIUM_POWDER"
+                    ],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ESCALATION_HM2",
+                    "Icon": "featured",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 90204,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 9,
+                            "RequiredContracts": [
+                                "5d6f7b13-13be-414f-8010-3e97e5b7b490",
+                                "c03510ef-1932-4b59-997a-3d75ef6e8e8d",
+                                "a4013b71-f772-4e2a-8b35-6511ed132bcf",
+                                "e1e117f4-cf3e-4538-b085-4a226116f143",
+                                "19623520-8a89-4cc5-93f1-a4356fda16b2",
+                                "f0d8a930-3581-41c8-b985-31eaeef9b920",
+                                "79d966d9-5756-4a2f-b7e7-468a1a1ac351",
+                                "5adfcf3a-0696-4593-b755-c2c8d44f59a6",
+                                "f57fd6a8-cf49-499c-b560-bd377a00ffcf",
+                                "c28beef7-e223-4057-9701-db855c05744f",
+                                "f88cda79-c07c-4487-ac23-1b8b824b3497",
+                                "e5b6ccf4-1f29-4ec6-bfb8-2e9b78882c85",
+                                "dcc17268-84e5-4f49-badf-f0c631ab28cd",
+                                "c89d7f7c-eb2f-4530-9e06-1d6ad5187d8e",
+                                "4a0a66d4-0a53-4cfd-8122-978226b4e072",
+                                "3bf086b7-2fb6-49b3-bd95-7f46535801df",
+                                "2469e028-6d85-4b50-a54c-a32c36792241",
+                                "d6f4777a-14df-40c6-a541-d8c974d9d4a1",
+                                "dc16d4c4-f9a5-491f-a2f4-2c0b8e0a66a3",
+                                "469ce2cb-a2d1-4296-bfe6-8a95bbf43fac",
+                                "cb7d1f3e-996f-4955-9b87-bdc40e4160ee",
+                                "97c4148b-ecea-4735-87cd-563e9a4ad343",
+                                "abddddf9-3dbc-46cb-a8e4-087418d97435",
+                                "7f05929f-f1c7-49f7-9428-c9a847b12a87",
+                                "a1e125fe-b9ac-428b-8ff0-2ba5a3d508dd",
+                                "5a2a91be-4591-40f7-aada-f55fce0cadbe",
+                                "d7bc0701-e9c9-465c-a1af-561863697fca",
+                                "2ab943ef-ba1b-48bf-9391-5b7725b4d4c7",
+                                "04fdd55f-2ac5-4f1f-aa8d-00a9b0c6dfc4",
+                                "e04758d6-fb6c-4854-a0bf-753b80e93e96",
+                                "6ada7787-9a8f-474a-aa96-af9407a02b6f",
+                                "778f0ff0-fd13-4c7d-b120-a6bf75421c63",
+                                "952dd0bc-29ec-4080-b179-c1c0db8c3dc6",
+                                "c5ef7b7a-3cfb-4b99-a566-8b3ab4b36436"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedContracts": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.CompletedContracts).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "profile",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$ContractId"
+                                                    ]
+                                                },
+                                                "in": "$.RequiredContracts"
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "CompletedContracts",
+                                                "$ContractId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$.Goal",
+                                                "($.CompletedContracts).Count"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": [
+                        "story",
+                        "escalation",
+                        "escalation_hm2"
+                    ],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": [
+                            "escalation"
+                        ],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "82c28f6f-d986-4779-81ab-b46feed6b87b",
+                    "Name": "UI_CHALLENGES_ESCALATION_S2_TIER_5_NAME",
+                    "ImageName": "images/challenges/profile_challenges/escalation_s2_tier_5.jpg",
+                    "Description": "UI_CHALLENGES_ESCALATION_S2_TIER_5_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        "PROP_GAS_GRENADE_EMETIC"
+                    ],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ESCALATION_HM2",
+                    "Icon": "featured",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 90205,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 12,
+                            "RequiredContracts": [
+                                "5d6f7b13-13be-414f-8010-3e97e5b7b490",
+                                "c03510ef-1932-4b59-997a-3d75ef6e8e8d",
+                                "a4013b71-f772-4e2a-8b35-6511ed132bcf",
+                                "e1e117f4-cf3e-4538-b085-4a226116f143",
+                                "19623520-8a89-4cc5-93f1-a4356fda16b2",
+                                "f0d8a930-3581-41c8-b985-31eaeef9b920",
+                                "79d966d9-5756-4a2f-b7e7-468a1a1ac351",
+                                "5adfcf3a-0696-4593-b755-c2c8d44f59a6",
+                                "f57fd6a8-cf49-499c-b560-bd377a00ffcf",
+                                "c28beef7-e223-4057-9701-db855c05744f",
+                                "f88cda79-c07c-4487-ac23-1b8b824b3497",
+                                "e5b6ccf4-1f29-4ec6-bfb8-2e9b78882c85",
+                                "dcc17268-84e5-4f49-badf-f0c631ab28cd",
+                                "c89d7f7c-eb2f-4530-9e06-1d6ad5187d8e",
+                                "4a0a66d4-0a53-4cfd-8122-978226b4e072",
+                                "3bf086b7-2fb6-49b3-bd95-7f46535801df",
+                                "2469e028-6d85-4b50-a54c-a32c36792241",
+                                "d6f4777a-14df-40c6-a541-d8c974d9d4a1",
+                                "dc16d4c4-f9a5-491f-a2f4-2c0b8e0a66a3",
+                                "469ce2cb-a2d1-4296-bfe6-8a95bbf43fac",
+                                "cb7d1f3e-996f-4955-9b87-bdc40e4160ee",
+                                "97c4148b-ecea-4735-87cd-563e9a4ad343",
+                                "abddddf9-3dbc-46cb-a8e4-087418d97435",
+                                "7f05929f-f1c7-49f7-9428-c9a847b12a87",
+                                "a1e125fe-b9ac-428b-8ff0-2ba5a3d508dd",
+                                "5a2a91be-4591-40f7-aada-f55fce0cadbe",
+                                "d7bc0701-e9c9-465c-a1af-561863697fca",
+                                "2ab943ef-ba1b-48bf-9391-5b7725b4d4c7",
+                                "04fdd55f-2ac5-4f1f-aa8d-00a9b0c6dfc4",
+                                "e04758d6-fb6c-4854-a0bf-753b80e93e96",
+                                "6ada7787-9a8f-474a-aa96-af9407a02b6f",
+                                "778f0ff0-fd13-4c7d-b120-a6bf75421c63",
+                                "952dd0bc-29ec-4080-b179-c1c0db8c3dc6",
+                                "c5ef7b7a-3cfb-4b99-a566-8b3ab4b36436"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedContracts": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.CompletedContracts).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "profile",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$ContractId"
+                                                    ]
+                                                },
+                                                "in": "$.RequiredContracts"
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "CompletedContracts",
+                                                "$ContractId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$.Goal",
+                                                "($.CompletedContracts).Count"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": [
+                        "story",
+                        "escalation",
+                        "escalation_hm2"
+                    ],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": [
+                            "escalation"
+                        ],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "51fcf1a2-8270-44ef-bbaa-683273a4c0ae",
+                    "Name": "UI_CHALLENGES_ESCALATION_S2_TIER_6_NAME",
+                    "ImageName": "images/challenges/profile_challenges/escalation_s2_tier_6.jpg",
+                    "Description": "UI_CHALLENGES_ESCALATION_S2_TIER_6_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        "PROP_MELEE_ICE_AXE"
+                    ],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ESCALATION_HM2",
+                    "Icon": "featured",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 90206,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 15,
+                            "RequiredContracts": [
+                                "5d6f7b13-13be-414f-8010-3e97e5b7b490",
+                                "c03510ef-1932-4b59-997a-3d75ef6e8e8d",
+                                "a4013b71-f772-4e2a-8b35-6511ed132bcf",
+                                "e1e117f4-cf3e-4538-b085-4a226116f143",
+                                "19623520-8a89-4cc5-93f1-a4356fda16b2",
+                                "f0d8a930-3581-41c8-b985-31eaeef9b920",
+                                "79d966d9-5756-4a2f-b7e7-468a1a1ac351",
+                                "5adfcf3a-0696-4593-b755-c2c8d44f59a6",
+                                "f57fd6a8-cf49-499c-b560-bd377a00ffcf",
+                                "c28beef7-e223-4057-9701-db855c05744f",
+                                "f88cda79-c07c-4487-ac23-1b8b824b3497",
+                                "e5b6ccf4-1f29-4ec6-bfb8-2e9b78882c85",
+                                "dcc17268-84e5-4f49-badf-f0c631ab28cd",
+                                "c89d7f7c-eb2f-4530-9e06-1d6ad5187d8e",
+                                "4a0a66d4-0a53-4cfd-8122-978226b4e072",
+                                "3bf086b7-2fb6-49b3-bd95-7f46535801df",
+                                "2469e028-6d85-4b50-a54c-a32c36792241",
+                                "d6f4777a-14df-40c6-a541-d8c974d9d4a1",
+                                "dc16d4c4-f9a5-491f-a2f4-2c0b8e0a66a3",
+                                "469ce2cb-a2d1-4296-bfe6-8a95bbf43fac",
+                                "cb7d1f3e-996f-4955-9b87-bdc40e4160ee",
+                                "97c4148b-ecea-4735-87cd-563e9a4ad343",
+                                "abddddf9-3dbc-46cb-a8e4-087418d97435",
+                                "7f05929f-f1c7-49f7-9428-c9a847b12a87",
+                                "a1e125fe-b9ac-428b-8ff0-2ba5a3d508dd",
+                                "5a2a91be-4591-40f7-aada-f55fce0cadbe",
+                                "d7bc0701-e9c9-465c-a1af-561863697fca",
+                                "2ab943ef-ba1b-48bf-9391-5b7725b4d4c7",
+                                "04fdd55f-2ac5-4f1f-aa8d-00a9b0c6dfc4",
+                                "e04758d6-fb6c-4854-a0bf-753b80e93e96",
+                                "6ada7787-9a8f-474a-aa96-af9407a02b6f",
+                                "778f0ff0-fd13-4c7d-b120-a6bf75421c63",
+                                "952dd0bc-29ec-4080-b179-c1c0db8c3dc6",
+                                "c5ef7b7a-3cfb-4b99-a566-8b3ab4b36436"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedContracts": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.CompletedContracts).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "profile",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$ContractId"
+                                                    ]
+                                                },
+                                                "in": "$.RequiredContracts"
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "CompletedContracts",
+                                                "$ContractId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$.Goal",
+                                                "($.CompletedContracts).Count"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": [
+                        "story",
+                        "escalation",
+                        "escalation_hm2"
+                    ],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": [
+                            "escalation"
+                        ],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "3a1f35c0-7eed-48e9-87a0-d3d5504c3f9b",
+                    "Name": "UI_CHALLENGES_ESCALATION_S2_TIER_7_NAME",
+                    "ImageName": "images/challenges/profile_challenges/escalation_s2_tier_7.jpg",
+                    "Description": "UI_CHALLENGES_ESCALATION_S2_TIER_7_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        "FIREARMS_HERO_SMG_TACTICAL_012_ST_AIM_SU_SKIN03"
+                    ],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ESCALATION_HM2",
+                    "Icon": "featured",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 90207,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 18,
+                            "RequiredContracts": [
+                                "5d6f7b13-13be-414f-8010-3e97e5b7b490",
+                                "c03510ef-1932-4b59-997a-3d75ef6e8e8d",
+                                "a4013b71-f772-4e2a-8b35-6511ed132bcf",
+                                "e1e117f4-cf3e-4538-b085-4a226116f143",
+                                "19623520-8a89-4cc5-93f1-a4356fda16b2",
+                                "f0d8a930-3581-41c8-b985-31eaeef9b920",
+                                "79d966d9-5756-4a2f-b7e7-468a1a1ac351",
+                                "5adfcf3a-0696-4593-b755-c2c8d44f59a6",
+                                "f57fd6a8-cf49-499c-b560-bd377a00ffcf",
+                                "c28beef7-e223-4057-9701-db855c05744f",
+                                "f88cda79-c07c-4487-ac23-1b8b824b3497",
+                                "e5b6ccf4-1f29-4ec6-bfb8-2e9b78882c85",
+                                "dcc17268-84e5-4f49-badf-f0c631ab28cd",
+                                "c89d7f7c-eb2f-4530-9e06-1d6ad5187d8e",
+                                "4a0a66d4-0a53-4cfd-8122-978226b4e072",
+                                "3bf086b7-2fb6-49b3-bd95-7f46535801df",
+                                "2469e028-6d85-4b50-a54c-a32c36792241",
+                                "d6f4777a-14df-40c6-a541-d8c974d9d4a1",
+                                "dc16d4c4-f9a5-491f-a2f4-2c0b8e0a66a3",
+                                "469ce2cb-a2d1-4296-bfe6-8a95bbf43fac",
+                                "cb7d1f3e-996f-4955-9b87-bdc40e4160ee",
+                                "97c4148b-ecea-4735-87cd-563e9a4ad343",
+                                "abddddf9-3dbc-46cb-a8e4-087418d97435",
+                                "7f05929f-f1c7-49f7-9428-c9a847b12a87",
+                                "a1e125fe-b9ac-428b-8ff0-2ba5a3d508dd",
+                                "5a2a91be-4591-40f7-aada-f55fce0cadbe",
+                                "d7bc0701-e9c9-465c-a1af-561863697fca",
+                                "2ab943ef-ba1b-48bf-9391-5b7725b4d4c7",
+                                "04fdd55f-2ac5-4f1f-aa8d-00a9b0c6dfc4",
+                                "e04758d6-fb6c-4854-a0bf-753b80e93e96",
+                                "6ada7787-9a8f-474a-aa96-af9407a02b6f",
+                                "778f0ff0-fd13-4c7d-b120-a6bf75421c63",
+                                "952dd0bc-29ec-4080-b179-c1c0db8c3dc6",
+                                "c5ef7b7a-3cfb-4b99-a566-8b3ab4b36436"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedContracts": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.CompletedContracts).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "profile",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$ContractId"
+                                                    ]
+                                                },
+                                                "in": "$.RequiredContracts"
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "CompletedContracts",
+                                                "$ContractId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$.Goal",
+                                                "($.CompletedContracts).Count"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": [
+                        "story",
+                        "escalation",
+                        "escalation_hm2"
+                    ],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": [
+                            "escalation"
+                        ],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "a513903d-d4d5-40ac-84a2-54464ac42c2e",
+                    "Name": "UI_CHALLENGES_ESCALATION_S2_TIER_8_NAME",
+                    "ImageName": "images/challenges/profile_challenges/escalation_s2_tier_8.jpg",
+                    "Description": "UI_CHALLENGES_ESCALATION_S2_TIER_8_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        "PROP_DEVICE_ICA_MICRO_REMOTE_EXPLOSIVE"
+                    ],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ESCALATION_HM2",
+                    "Icon": "featured",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 90208,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 21,
+                            "RequiredContracts": [
+                                "5d6f7b13-13be-414f-8010-3e97e5b7b490",
+                                "c03510ef-1932-4b59-997a-3d75ef6e8e8d",
+                                "a4013b71-f772-4e2a-8b35-6511ed132bcf",
+                                "e1e117f4-cf3e-4538-b085-4a226116f143",
+                                "19623520-8a89-4cc5-93f1-a4356fda16b2",
+                                "f0d8a930-3581-41c8-b985-31eaeef9b920",
+                                "79d966d9-5756-4a2f-b7e7-468a1a1ac351",
+                                "5adfcf3a-0696-4593-b755-c2c8d44f59a6",
+                                "f57fd6a8-cf49-499c-b560-bd377a00ffcf",
+                                "c28beef7-e223-4057-9701-db855c05744f",
+                                "f88cda79-c07c-4487-ac23-1b8b824b3497",
+                                "e5b6ccf4-1f29-4ec6-bfb8-2e9b78882c85",
+                                "dcc17268-84e5-4f49-badf-f0c631ab28cd",
+                                "c89d7f7c-eb2f-4530-9e06-1d6ad5187d8e",
+                                "4a0a66d4-0a53-4cfd-8122-978226b4e072",
+                                "3bf086b7-2fb6-49b3-bd95-7f46535801df",
+                                "2469e028-6d85-4b50-a54c-a32c36792241",
+                                "d6f4777a-14df-40c6-a541-d8c974d9d4a1",
+                                "dc16d4c4-f9a5-491f-a2f4-2c0b8e0a66a3",
+                                "469ce2cb-a2d1-4296-bfe6-8a95bbf43fac",
+                                "cb7d1f3e-996f-4955-9b87-bdc40e4160ee",
+                                "97c4148b-ecea-4735-87cd-563e9a4ad343",
+                                "abddddf9-3dbc-46cb-a8e4-087418d97435",
+                                "7f05929f-f1c7-49f7-9428-c9a847b12a87",
+                                "a1e125fe-b9ac-428b-8ff0-2ba5a3d508dd",
+                                "5a2a91be-4591-40f7-aada-f55fce0cadbe",
+                                "d7bc0701-e9c9-465c-a1af-561863697fca",
+                                "2ab943ef-ba1b-48bf-9391-5b7725b4d4c7",
+                                "04fdd55f-2ac5-4f1f-aa8d-00a9b0c6dfc4",
+                                "e04758d6-fb6c-4854-a0bf-753b80e93e96",
+                                "6ada7787-9a8f-474a-aa96-af9407a02b6f",
+                                "778f0ff0-fd13-4c7d-b120-a6bf75421c63",
+                                "952dd0bc-29ec-4080-b179-c1c0db8c3dc6",
+                                "c5ef7b7a-3cfb-4b99-a566-8b3ab4b36436"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedContracts": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.CompletedContracts).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "profile",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$ContractId"
+                                                    ]
+                                                },
+                                                "in": "$.RequiredContracts"
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "CompletedContracts",
+                                                "$ContractId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$.Goal",
+                                                "($.CompletedContracts).Count"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": [
+                        "story",
+                        "escalation",
+                        "escalation_hm2"
+                    ],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": [
+                            "escalation"
+                        ],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "553567aa-12b9-4915-b46e-4494002ed7e5",
+                    "Name": "UI_CHALLENGES_ESCALATION_S2_TIER_9_NAME",
+                    "ImageName": "images/challenges/profile_challenges/escalation_s2_tier_9.jpg",
+                    "Description": "UI_CHALLENGES_ESCALATION_S2_TIER_9_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        "TOKEN_OUTFIT_HOT_SUMMER_SUIT"
+                    ],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ESCALATION_HM2",
+                    "Icon": "featured",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 90209,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 24,
+                            "RequiredContracts": [
+                                "5d6f7b13-13be-414f-8010-3e97e5b7b490",
+                                "c03510ef-1932-4b59-997a-3d75ef6e8e8d",
+                                "a4013b71-f772-4e2a-8b35-6511ed132bcf",
+                                "e1e117f4-cf3e-4538-b085-4a226116f143",
+                                "19623520-8a89-4cc5-93f1-a4356fda16b2",
+                                "f0d8a930-3581-41c8-b985-31eaeef9b920",
+                                "79d966d9-5756-4a2f-b7e7-468a1a1ac351",
+                                "5adfcf3a-0696-4593-b755-c2c8d44f59a6",
+                                "f57fd6a8-cf49-499c-b560-bd377a00ffcf",
+                                "c28beef7-e223-4057-9701-db855c05744f",
+                                "f88cda79-c07c-4487-ac23-1b8b824b3497",
+                                "e5b6ccf4-1f29-4ec6-bfb8-2e9b78882c85",
+                                "dcc17268-84e5-4f49-badf-f0c631ab28cd",
+                                "c89d7f7c-eb2f-4530-9e06-1d6ad5187d8e",
+                                "4a0a66d4-0a53-4cfd-8122-978226b4e072",
+                                "3bf086b7-2fb6-49b3-bd95-7f46535801df",
+                                "2469e028-6d85-4b50-a54c-a32c36792241",
+                                "d6f4777a-14df-40c6-a541-d8c974d9d4a1",
+                                "dc16d4c4-f9a5-491f-a2f4-2c0b8e0a66a3",
+                                "469ce2cb-a2d1-4296-bfe6-8a95bbf43fac",
+                                "cb7d1f3e-996f-4955-9b87-bdc40e4160ee",
+                                "97c4148b-ecea-4735-87cd-563e9a4ad343",
+                                "abddddf9-3dbc-46cb-a8e4-087418d97435",
+                                "7f05929f-f1c7-49f7-9428-c9a847b12a87",
+                                "a1e125fe-b9ac-428b-8ff0-2ba5a3d508dd",
+                                "5a2a91be-4591-40f7-aada-f55fce0cadbe",
+                                "d7bc0701-e9c9-465c-a1af-561863697fca",
+                                "2ab943ef-ba1b-48bf-9391-5b7725b4d4c7",
+                                "04fdd55f-2ac5-4f1f-aa8d-00a9b0c6dfc4",
+                                "e04758d6-fb6c-4854-a0bf-753b80e93e96",
+                                "6ada7787-9a8f-474a-aa96-af9407a02b6f",
+                                "778f0ff0-fd13-4c7d-b120-a6bf75421c63",
+                                "952dd0bc-29ec-4080-b179-c1c0db8c3dc6",
+                                "c5ef7b7a-3cfb-4b99-a566-8b3ab4b36436"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedContracts": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.CompletedContracts).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "profile",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$ContractId"
+                                                    ]
+                                                },
+                                                "in": "$.RequiredContracts"
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "CompletedContracts",
+                                                "$ContractId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$.Goal",
+                                                "($.CompletedContracts).Count"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": [
+                        "story",
+                        "escalation",
+                        "escalation_hm2"
+                    ],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": [
+                            "escalation"
+                        ],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "447af250-6af3-4ca0-a3d6-d651d9235902",
+                    "Name": "UI_CHALLENGES_ESCALATION_S2_TIER_10_NAME",
+                    "ImageName": "images/challenges/profile_challenges/escalation_s2_tier_10.jpg",
+                    "Description": "UI_CHALLENGES_ESCALATION_S2_TIER_10_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        "FIREARMS_HERO_PISTOL_EL_MATADOR"
+                    ],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ESCALATION_HM2",
+                    "Icon": "featured",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 90210,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 26,
+                            "RequiredContracts": [
+                                "5d6f7b13-13be-414f-8010-3e97e5b7b490",
+                                "c03510ef-1932-4b59-997a-3d75ef6e8e8d",
+                                "a4013b71-f772-4e2a-8b35-6511ed132bcf",
+                                "e1e117f4-cf3e-4538-b085-4a226116f143",
+                                "19623520-8a89-4cc5-93f1-a4356fda16b2",
+                                "f0d8a930-3581-41c8-b985-31eaeef9b920",
+                                "79d966d9-5756-4a2f-b7e7-468a1a1ac351",
+                                "5adfcf3a-0696-4593-b755-c2c8d44f59a6",
+                                "f57fd6a8-cf49-499c-b560-bd377a00ffcf",
+                                "c28beef7-e223-4057-9701-db855c05744f",
+                                "f88cda79-c07c-4487-ac23-1b8b824b3497",
+                                "e5b6ccf4-1f29-4ec6-bfb8-2e9b78882c85",
+                                "dcc17268-84e5-4f49-badf-f0c631ab28cd",
+                                "c89d7f7c-eb2f-4530-9e06-1d6ad5187d8e",
+                                "4a0a66d4-0a53-4cfd-8122-978226b4e072",
+                                "3bf086b7-2fb6-49b3-bd95-7f46535801df",
+                                "2469e028-6d85-4b50-a54c-a32c36792241",
+                                "d6f4777a-14df-40c6-a541-d8c974d9d4a1",
+                                "dc16d4c4-f9a5-491f-a2f4-2c0b8e0a66a3",
+                                "469ce2cb-a2d1-4296-bfe6-8a95bbf43fac",
+                                "cb7d1f3e-996f-4955-9b87-bdc40e4160ee",
+                                "97c4148b-ecea-4735-87cd-563e9a4ad343",
+                                "abddddf9-3dbc-46cb-a8e4-087418d97435",
+                                "7f05929f-f1c7-49f7-9428-c9a847b12a87",
+                                "a1e125fe-b9ac-428b-8ff0-2ba5a3d508dd",
+                                "5a2a91be-4591-40f7-aada-f55fce0cadbe",
+                                "d7bc0701-e9c9-465c-a1af-561863697fca",
+                                "2ab943ef-ba1b-48bf-9391-5b7725b4d4c7",
+                                "04fdd55f-2ac5-4f1f-aa8d-00a9b0c6dfc4",
+                                "e04758d6-fb6c-4854-a0bf-753b80e93e96",
+                                "6ada7787-9a8f-474a-aa96-af9407a02b6f",
+                                "778f0ff0-fd13-4c7d-b120-a6bf75421c63",
+                                "952dd0bc-29ec-4080-b179-c1c0db8c3dc6",
+                                "c5ef7b7a-3cfb-4b99-a566-8b3ab4b36436"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedContracts": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.CompletedContracts).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "profile",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$ContractId"
+                                                    ]
+                                                },
+                                                "in": "$.RequiredContracts"
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "CompletedContracts",
+                                                "$ContractId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$.Goal",
+                                                "($.CompletedContracts).Count"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": [
+                        "story",
+                        "escalation",
+                        "escalation_hm2"
+                    ],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": [
+                            "escalation"
+                        ],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "7df7f8ea-7341-4000-a359-9928b74c02e6",
+                    "Name": "UI_CHALLENGES_ESCALATION_S2_TIER_11_NAME",
+                    "ImageName": "images/challenges/profile_challenges/escalation_s2_tier_11.jpg",
+                    "Description": "UI_CHALLENGES_ESCALATION_S2_TIER_11_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": [
+                        "TOKEN_OUTFIT_MONGOOSE_ELUSIVE_SUIT"
+                    ],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ESCALATION_HM2",
+                    "Icon": "featured",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 90211,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 28,
+                            "RequiredContracts": [
+                                "5d6f7b13-13be-414f-8010-3e97e5b7b490",
+                                "c03510ef-1932-4b59-997a-3d75ef6e8e8d",
+                                "a4013b71-f772-4e2a-8b35-6511ed132bcf",
+                                "e1e117f4-cf3e-4538-b085-4a226116f143",
+                                "19623520-8a89-4cc5-93f1-a4356fda16b2",
+                                "f0d8a930-3581-41c8-b985-31eaeef9b920",
+                                "79d966d9-5756-4a2f-b7e7-468a1a1ac351",
+                                "5adfcf3a-0696-4593-b755-c2c8d44f59a6",
+                                "f57fd6a8-cf49-499c-b560-bd377a00ffcf",
+                                "c28beef7-e223-4057-9701-db855c05744f",
+                                "f88cda79-c07c-4487-ac23-1b8b824b3497",
+                                "e5b6ccf4-1f29-4ec6-bfb8-2e9b78882c85",
+                                "dcc17268-84e5-4f49-badf-f0c631ab28cd",
+                                "c89d7f7c-eb2f-4530-9e06-1d6ad5187d8e",
+                                "4a0a66d4-0a53-4cfd-8122-978226b4e072",
+                                "3bf086b7-2fb6-49b3-bd95-7f46535801df",
+                                "2469e028-6d85-4b50-a54c-a32c36792241",
+                                "d6f4777a-14df-40c6-a541-d8c974d9d4a1",
+                                "dc16d4c4-f9a5-491f-a2f4-2c0b8e0a66a3",
+                                "469ce2cb-a2d1-4296-bfe6-8a95bbf43fac",
+                                "cb7d1f3e-996f-4955-9b87-bdc40e4160ee",
+                                "97c4148b-ecea-4735-87cd-563e9a4ad343",
+                                "abddddf9-3dbc-46cb-a8e4-087418d97435",
+                                "7f05929f-f1c7-49f7-9428-c9a847b12a87",
+                                "a1e125fe-b9ac-428b-8ff0-2ba5a3d508dd",
+                                "5a2a91be-4591-40f7-aada-f55fce0cadbe",
+                                "d7bc0701-e9c9-465c-a1af-561863697fca",
+                                "2ab943ef-ba1b-48bf-9391-5b7725b4d4c7",
+                                "04fdd55f-2ac5-4f1f-aa8d-00a9b0c6dfc4",
+                                "e04758d6-fb6c-4854-a0bf-753b80e93e96",
+                                "6ada7787-9a8f-474a-aa96-af9407a02b6f",
+                                "778f0ff0-fd13-4c7d-b120-a6bf75421c63",
+                                "952dd0bc-29ec-4080-b179-c1c0db8c3dc6",
+                                "c5ef7b7a-3cfb-4b99-a566-8b3ab4b36436"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedContracts": []
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "($.CompletedContracts).Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "profile",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$ContractId"
+                                                    ]
+                                                },
+                                                "in": "$.RequiredContracts"
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "CompletedContracts",
+                                                "$ContractId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$.Goal",
+                                                "($.CompletedContracts).Count"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": [
+                        "story",
+                        "escalation",
+                        "escalation_hm2"
+                    ],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": [
+                            "escalation"
+                        ],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                }
+            ]
+        }
+    ]
+}

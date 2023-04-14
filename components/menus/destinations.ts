@@ -55,7 +55,7 @@ export function getDestinationCompletion(
     const userData = getUserData(req.jwt.unique_name, req.gameVersion)
     const challenges = controller.challengeService.getGroupedChallengeLists(
         {
-            type: ChallengeFilterType.None,
+            type: ChallengeFilterType.ParentLocation,
         },
         parent.Id,
         req.gameVersion,

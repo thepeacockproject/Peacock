@@ -68,11 +68,12 @@ export function compileRuntimeChallenge(
 }
 
 export enum ChallengeFilterType {
+    // Note that this option will include global elusives and escalations challenges.
     None = "None",
     Contract = "Contract",
     /** Only used for the CAREER -> CHALLENGES page */
     Contracts = "Contracts",
-    /** Only used for the location page */
+    /** Only used for the location page, and when calculating location completion */
     ParentLocation = "ParentLocation",
 }
 

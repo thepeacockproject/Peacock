@@ -1007,11 +1007,7 @@ export class Controller {
     private _handleChallengeResources(data: ChallengePackage): void {
         for (const group of data.groups) {
             if (
-                [
-                    "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ARCADE",
-                    "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ESCALATION_HM1",
-                    "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ESCALATION_HM2",
-                ].includes(group.Name)
+                group.Name === "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ARCADE"
             ) {
                 continue
             }
@@ -1325,7 +1321,7 @@ export function contractIdToHitObject(
 
     const challenges = controller.challengeService.getGroupedChallengeLists(
         {
-            type: ChallengeFilterType.None,
+            type: ChallengeFilterType.ParentLocation,
         },
         parentLocation?.Id,
         gameVersion,

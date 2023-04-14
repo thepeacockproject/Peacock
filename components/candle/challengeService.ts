@@ -225,6 +225,9 @@ export abstract class ChallengeRegistry {
         if (groupId?.includes("featured")) {
             return gameGroups.get("GLOBAL_FEATURED_CHALLENGES")?.get(groupId)
         }
+        if (groupId?.includes("escalation")) {
+            return gameGroups.get("GLOBAL_ESCALATION_CHALLENGES")?.get(groupId)
+        }
         // Included by default. Filtered later.
         if (groupId === "classic" && location !== "GLOBAL_CLASSIC_CHALLENGES") {
             return mergeSavedChallengeGroups(
@@ -256,6 +259,9 @@ export abstract class ChallengeRegistry {
 
         if (groupId?.includes("featured")) {
             return gameChalGC.get("GLOBAL_FEATURED_CHALLENGES")?.get(groupId)
+        }
+        if (groupId?.includes("escalation")) {
+            return gameChalGC.get("GLOBAL_ESCALATION_CHALLENGES")?.get(groupId)
         }
 
         // Included by default. Filtered later.
@@ -520,6 +526,16 @@ export class ChallengeService extends ChallengeRegistry {
             this.getGroupedChallengesByLoc(
                 filter,
                 "GLOBAL_FEATURED_CHALLENGES",
+                challenges,
+                gameVersion,
+            )
+        }
+
+        // Rocky is the only parent location with no escalations. TODO: change this when pontus is added.
+        if (location !== "LOCATION_PARENT_ROCKY") {
+            this.getGroupedChallengesByLoc(
+                filter,
+                "GLOBAL_ESCALATION_CHALLENGES",
                 challenges,
                 gameVersion,
             )
