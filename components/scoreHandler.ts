@@ -44,10 +44,7 @@ import type {
     RequestWithJwt,
     Seconds,
 } from "./types/types"
-import {
-    contractIdToEscalationGroupId,
-    getLevelCount,
-} from "./contracts/escalations/escalationService"
+import { getLevelCount } from "./contracts/escalations/escalationService"
 import { getUserData, writeUserData } from "./databaseHandler"
 import axios from "axios"
 import { getFlag } from "./flags"
@@ -536,10 +533,9 @@ export async function missionEnd(
     }
 
     //Handle escalation groups
-    if (contractData.Metadata.Type === "escalation") {
-        const eGroupId = contractIdToEscalationGroupId(
-            sessionDetails.contractId,
-        )
+    if (["escalation", "arcade"].includes(contractData.Metadata.Type)) {
+        const eGroupId =
+            contractData.Metadata.InGroup ?? contractData.Metadata.Id
 
         if (!eGroupId) {
             log(

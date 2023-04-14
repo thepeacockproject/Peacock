@@ -25,7 +25,6 @@ import type {
 import { log, LogLevel } from "../loggingInterop"
 import { _legacyBull, _theLastYardbirdScpc, controller } from "../controller"
 import {
-    contractIdToEscalationGroupId,
     getLevelCount,
     getUserEscalationProgress,
     resetUserEscalationProgress,
@@ -78,10 +77,17 @@ export async function planningView(
         }
     }
 
+    let contractData =
+        req.gameVersion === "h1" &&
+        req.query.contractid === "42bac555-bbb9-429d-a8ce-f1ffdf94211c"
+            ? _legacyBull
+            : req.query.contractid === "ff9f46cf-00bd-4c12-b887-eac491c3a96d"
+            ? _theLastYardbirdScpc
+            : controller.resolveContract(req.query.contractid)
+
     if (isForReset) {
-        const escalationGroupId = contractIdToEscalationGroupId(
-            req.query.contractid,
-        )
+        const escalationGroupId =
+            contractData.Metadata.InGroup ?? contractData.Metadata.Id
 
         resetUserEscalationProgress(userData, escalationGroupId)
 
@@ -91,14 +97,6 @@ export async function planningView(
         req.query.contractid =
             controller.escalationMappings.get(escalationGroupId)["1"]
     }
-
-    let contractData =
-        req.gameVersion === "h1" &&
-        req.query.contractid === "42bac555-bbb9-429d-a8ce-f1ffdf94211c"
-            ? _legacyBull
-            : req.query.contractid === "ff9f46cf-00bd-4c12-b887-eac491c3a96d"
-            ? _theLastYardbirdScpc
-            : controller.resolveContract(req.query.contractid)
 
     if (!contractData) {
         log(
@@ -137,7 +135,9 @@ export async function planningView(
         BestLevel: undefined as number | undefined,
     }
 
-    const escalation = contractData.Metadata.Type === "escalation"
+    const escalation = ["escalation", "arcade"].includes(
+        contractData.Metadata.Type,
+    )
 
     // It is possible for req.query.contractid to be the id of a group OR a level in that group.
     let escalationGroupId = contractData.Metadata.InGroup

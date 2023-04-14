@@ -88,16 +88,6 @@ export function resetUserEscalationProgress(
 }
 
 /**
- * Translates a contract ID to the escalation group contract that it is in's ID.
- * @deprecated: Use the "InGroup" field instead.
- * @param id The contract ID.
- * @returns The escalation's group contract ID or null if it isn't in a group.
- */
-export function contractIdToEscalationGroupId(id: string): string | undefined {
-    return controller.resolveContract(id)?.Metadata.InGroup
-}
-
-/**
  * Get the number of levels in the specified group.
  *
  * @param groupContract The escalation group's contract.

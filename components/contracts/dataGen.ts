@@ -208,7 +208,7 @@ export function generateUserCentric(
         },
     }
 
-    if (contractData.Metadata.Type === "escalation") {
+    if (["escalation", "arcade"].includes(contractData.Metadata.Type)) {
         const eGroupId =
             contractData.Metadata.InGroup ?? contractData.Metadata.Id
 

@@ -638,7 +638,7 @@ export class Controller {
     }
 
     private getGroupContract(json: MissionManifest) {
-        if (json.Metadata.Type === "escalation") {
+        if (["escalation", "arcade"].includes(json.Metadata.Type)) {
             return this.resolveContract(json.Metadata.InGroup) ?? json
         }
         return json

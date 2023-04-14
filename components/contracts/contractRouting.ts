@@ -89,7 +89,7 @@ contractRoutingRouter.post(
         // Add escalation data to Contract data HERE
         contractData.Metadata = {
             ...contractData.Metadata,
-            ...(contractData.Metadata.Type === "escalation"
+            ...(["escalation", "arcade"].includes(contractData.Metadata.Type)
                 ? getPlayEscalationInfo(
                       req.jwt.unique_name,
                       contractData.Metadata.InGroup,
