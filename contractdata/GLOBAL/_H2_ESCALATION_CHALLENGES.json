@@ -191,10 +191,7 @@
                                     },
                                     {
                                         "Condition": {
-                                            "$eq": [
-                                                "$.Count",
-                                                "$.Goal"
-                                            ]
+                                            "$eq": ["$.Count", "$.Goal"]
                                         },
                                         "Transition": "Success"
                                     }
@@ -202,16 +199,10 @@
                             }
                         }
                     },
-                    "Tags": [
-                        "story",
-                        "feats",
-                        "escalation"
-                    ],
+                    "Tags": ["story", "feats", "escalation"],
                     "InclusionData": {
                         "ContractIds": null,
-                        "ContractTypes": [
-                            "escalation"
-                        ],
+                        "ContractTypes": ["escalation"],
                         "Locations": null,
                         "GameModes": null
                     }
@@ -224,9 +215,7 @@
                     "Rewards": {
                         "MasteryXP": 0
                     },
-                    "Drops": [
-                        "PROP_DEVICE_ICA_TRIPWIRE_EXPLOSIVE"
-                    ],
+                    "Drops": ["PROP_DEVICE_ICA_TRIPWIRE_EXPLOSIVE"],
                     "IsPlayable": false,
                     "IsLocked": false,
                     "HideProgression": false,
@@ -362,10 +351,7 @@
                                             "$reset": "Targets"
                                         },
                                         {
-                                            "$set": [
-                                                "RecordingDestroyed",
-                                                true
-                                            ]
+                                            "$set": ["RecordingDestroyed", true]
                                         }
                                     ],
                                     "Condition": {
@@ -404,10 +390,7 @@
                                     "Transition": "Start"
                                 },
                                 "AccidentBodyFound": {
-                                    "$set": [
-                                        "LastAccidentTime",
-                                        "$Timestamp"
-                                    ]
+                                    "$set": ["LastAccidentTime", "$Timestamp"]
                                 },
                                 "MurderedBodySeen": [
                                     {
@@ -484,10 +467,7 @@
                                     },
                                     {
                                         "Condition": {
-                                            "$eq": [
-                                                "$.Count",
-                                                "$.Goal"
-                                            ]
+                                            "$eq": ["$.Count", "$.Goal"]
                                         },
                                         "Transition": "Success"
                                     }
@@ -569,10 +549,7 @@
                                     },
                                     {
                                         "Condition": {
-                                            "$eq": [
-                                                "$Value.IsTarget",
-                                                true
-                                            ]
+                                            "$eq": ["$Value.IsTarget", true]
                                         },
                                         "Actions": {
                                             "$pushunique": [
@@ -591,18 +568,12 @@
                                             ]
                                         },
                                         "Condition": {
-                                            "$eq": [
-                                                "$Value.event",
-                                                "spotted"
-                                            ]
+                                            "$eq": ["$Value.event", "spotted"]
                                         }
                                     },
                                     {
                                         "Actions": {
-                                            "$set": [
-                                                "RecordingDestroyed",
-                                                true
-                                            ]
+                                            "$set": ["RecordingDestroyed", true]
                                         },
                                         "Condition": {
                                             "$or": [
@@ -625,15 +596,10 @@
                             }
                         }
                     },
-                    "Tags": [
-                        "feats",
-                        "escalation"
-                    ],
+                    "Tags": ["feats", "escalation"],
                     "InclusionData": {
                         "ContractIds": null,
-                        "ContractTypes": [
-                            "escalation"
-                        ],
+                        "ContractTypes": ["escalation"],
                         "Locations": null,
                         "GameModes": null
                     }
