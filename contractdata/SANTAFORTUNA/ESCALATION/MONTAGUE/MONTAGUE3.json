@@ -28,13 +28,7 @@
                 },
                 "Type": "statemachine",
                 "Definition": {
-                    "States": {
-                        "Start": {
-                            "-": {
-                                "Transition": "Success"
-                            }
-                        }
-                    }
+                    "States": { "Start": { "-": { "Transition": "Success" } } }
                 }
             },
             {
@@ -47,11 +41,7 @@
                 "Resource": [],
                 "Category": "primary",
                 "ExcludeFromScoring": true,
-                "OnActive": {
-                    "IfCompleted": {
-                        "Visible": false
-                    }
-                },
+                "OnActive": { "IfCompleted": { "Visible": false } },
                 "BriefingText": "$loc UI_GAMECHANGERS_COLOMBIA_ALL_CAMERAS_OBJ_1",
                 "HUDTemplate": {
                     "display": "$loc UI_GAMECHANGERS_COLOMBIA_ALL_CAMERAS_OBJ_1"
@@ -60,11 +50,7 @@
                 "Definition": {
                     "Context": {},
                     "States": {
-                        "Start": {
-                            "-": {
-                                "Transition": "Success"
-                            }
-                        },
+                        "Start": { "-": { "Transition": "Success" } },
                         "Success": {
                             "SecuritySystemRecorder": {
                                 "Condition": {
@@ -75,20 +61,14 @@
                         },
                         "Recorded": {
                             "$timer": {
-                                "Condition": {
-                                    "$after": 120
-                                },
+                                "Condition": { "$after": 120 },
                                 "Transition": "Failure"
                             },
                             "SecuritySystemRecorder": {
                                 "Condition": {
                                     "$or": [
-                                        {
-                                            "$eq": ["$Value.event", "erased"]
-                                        },
-                                        {
-                                            "$eq": ["$Value.event", "destroyed"]
-                                        }
+                                        { "$eq": ["$Value.event", "erased"] },
+                                        { "$eq": ["$Value.event", "destroyed"] }
                                     ]
                                 },
                                 "Transition": "Success"
@@ -134,12 +114,8 @@
                     },
                     "States": {
                         "Start": {
-                            "LaptopHacked": {
-                                "Transition": "Success"
-                            },
-                            "Laptop_Destroyed": {
-                                "Transition": "Failure"
-                            }
+                            "LaptopHacked": { "Transition": "Success" },
+                            "Laptop_Destroyed": { "Transition": "Failure" }
                         }
                     }
                 }
