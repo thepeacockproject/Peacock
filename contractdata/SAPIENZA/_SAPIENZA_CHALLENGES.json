@@ -11874,56 +11874,6 @@
                     }
                 },
                 {
-                    "Id": "889f5682-4de6-4a36-9232-5fcd336c7a18",
-                    "Name": "UI_CHALLENGES_ELUSIVE_TARGET_SAPIENZA_NAME",
-                    "ImageName": "images/challenges/profile_challenges/elusive_target_sapienza.jpg",
-                    "Description": "UI_CHALLENGES_ELUSIVE_TARGET_SAPIENZA_DESC",
-                    "Rewards": {
-                        "MasteryXP": 0
-                    },
-                    "Drops": ["TOKEN_OUTFIT_HERO_SAPIENZASUITANDGLOVES"],
-                    "IsPlayable": false,
-                    "IsLocked": false,
-                    "HideProgression": false,
-                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
-                    "Icon": "elusive",
-                    "LocationId": "LOCATION_COASTALTOWN",
-                    "ParentLocationId": "LOCATION_PARENT_COASTALTOWN",
-                    "Type": "contract",
-                    "DifficultyLevels": [],
-                    "OrderIndex": 10000,
-                    "XpModifier": {},
-                    "RuntimeType": "Hit",
-                    "Definition": {
-                        "Context": {},
-                        "Scope": "session",
-                        "States": {
-                            "Start": {
-                                "ContractStart": {
-                                    "Condition": {
-                                        "$eq": [
-                                            "$Value.ContractType",
-                                            "elusive"
-                                        ]
-                                    },
-                                    "Transition": "State_ValidContract"
-                                }
-                            },
-                            "State_ValidContract": {
-                                "ContractEnd": [
-                                    {
-                                        "Transition": "Success"
-                                    }
-                                ]
-                            }
-                        }
-                    },
-                    "Tags": ["story", "elusive"],
-                    "InclusionData": {
-                        "ContractTypes": ["elusive"]
-                    }
-                },
-                {
                     "Id": "7178c898-4cae-4143-8dc4-5c4860c70fcf",
                     "Name": "UI_CHALLENGES_ET_CAIPIRINHA_TARGETDOWN_NAME",
                     "ImageName": "images/challenges/elusive_target/et_caipirinha_targetdown.jpg",
@@ -12190,56 +12140,6 @@
                     "Tags": ["story", "elusive", "hard"],
                     "InclusionData": {
                         "ContractIds": ["b555d6a4-8b4d-4e1e-b6bd-ebd135ad1e01"]
-                    }
-                },
-                {
-                    "Id": "889f5682-4de6-4a36-9232-5fcd336c7a18",
-                    "Name": "UI_CHALLENGES_ELUSIVE_TARGET_SAPIENZA_NAME",
-                    "ImageName": "images/challenges/profile_challenges/elusive_target_sapienza.jpg",
-                    "Description": "UI_CHALLENGES_ELUSIVE_TARGET_SAPIENZA_DESC",
-                    "Rewards": {
-                        "MasteryXP": 0
-                    },
-                    "Drops": ["TOKEN_OUTFIT_HERO_SAPIENZASUITANDGLOVES"],
-                    "IsPlayable": false,
-                    "IsLocked": false,
-                    "HideProgression": false,
-                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
-                    "Icon": "elusive",
-                    "LocationId": "LOCATION_COASTALTOWN_MOVIESET",
-                    "ParentLocationId": "LOCATION_PARENT_COASTALTOWN",
-                    "Type": "contract",
-                    "DifficultyLevels": [],
-                    "OrderIndex": 10000,
-                    "XpModifier": {},
-                    "RuntimeType": "Hit",
-                    "Definition": {
-                        "Context": {},
-                        "Scope": "session",
-                        "States": {
-                            "Start": {
-                                "ContractStart": {
-                                    "Condition": {
-                                        "$eq": [
-                                            "$Value.ContractType",
-                                            "elusive"
-                                        ]
-                                    },
-                                    "Transition": "State_ValidContract"
-                                }
-                            },
-                            "State_ValidContract": {
-                                "ContractEnd": [
-                                    {
-                                        "Transition": "Success"
-                                    }
-                                ]
-                            }
-                        }
-                    },
-                    "Tags": ["story", "elusive"],
-                    "InclusionData": {
-                        "ContractTypes": ["elusive"]
                     }
                 },
                 {

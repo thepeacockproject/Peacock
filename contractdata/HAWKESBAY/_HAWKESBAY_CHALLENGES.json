@@ -2915,6 +2915,46 @@
             "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_ELUSIVE",
             "Challenges": [
                 {
+                    "Id": "92e1d006-e274-4880-a275-14f8bd4bb9bd",
+                    "Name": "UI_CHALLENGES_ET_ADONIS_TARGETDOWN_NAME",
+                    "ImageName": "images/challenges/elusive_target/et_adonis_targetdown.jpg",
+                    "Description": "UI_CHALLENGES_ET_ADONIS_TARGETDOWN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+                    "Icon": "elusive",
+                    "LocationId": "LOCATION_NEWZEALAND",
+                    "ParentLocationId": "LOCATION_PARENT_NEWZEALAND",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$eq": ["$Value.IsTarget", true]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "elusive"],
+                    "InclusionData": {
+                        "ContractIds": ["44fd7474-d7be-4d3d-b944-6c1cf6ca09d1"]
+                    }
+                },
+                {
                     "Id": "17b976c4-9807-4515-9946-b840313f52dd",
                     "Name": "UI_CHALLENGES_ET_ADONIS_SILENT_ASSASSIN_NAME",
                     "ImageName": "images/challenges/elusive_target/et_adonis_silentassassin.jpg",
@@ -3139,46 +3179,6 @@
                         }
                     },
                     "Tags": ["story", "hard", "elusive"],
-                    "InclusionData": {
-                        "ContractIds": ["44fd7474-d7be-4d3d-b944-6c1cf6ca09d1"]
-                    }
-                },
-                {
-                    "Id": "92e1d006-e274-4880-a275-14f8bd4bb9bd",
-                    "Name": "UI_CHALLENGES_ET_ADONIS_TARGETDOWN_NAME",
-                    "ImageName": "images/challenges/elusive_target/et_adonis_targetdown.jpg",
-                    "Description": "UI_CHALLENGES_ET_ADONIS_TARGETDOWN_DESC",
-                    "Rewards": {
-                        "MasteryXP": 2000
-                    },
-                    "Drops": [],
-                    "IsPlayable": false,
-                    "IsLocked": false,
-                    "HideProgression": false,
-                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
-                    "Icon": "elusive",
-                    "LocationId": "LOCATION_NEWZEALAND",
-                    "ParentLocationId": "LOCATION_PARENT_NEWZEALAND",
-                    "Type": "contract",
-                    "DifficultyLevels": [],
-                    "OrderIndex": 10000,
-                    "XpModifier": {},
-                    "RuntimeType": "Hit",
-                    "Definition": {
-                        "Context": {},
-                        "Scope": "session",
-                        "States": {
-                            "Start": {
-                                "Kill": {
-                                    "Condition": {
-                                        "$eq": ["$Value.IsTarget", true]
-                                    },
-                                    "Transition": "Success"
-                                }
-                            }
-                        }
-                    },
-                    "Tags": ["story", "medium", "elusive"],
                     "InclusionData": {
                         "ContractIds": ["44fd7474-d7be-4d3d-b944-6c1cf6ca09d1"]
                     }

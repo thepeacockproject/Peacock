@@ -6061,6 +6061,46 @@
             "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_ELUSIVE",
             "Challenges": [
                 {
+                    "Id": "6becf34c-96ce-43ba-9977-e1302daec74c",
+                    "Name": "UI_CHALLENGES_ET_HIGHBALL_TARGETDOWN_NAME",
+                    "ImageName": "images/challenges/elusive_target/et_highball_targetdown.jpg",
+                    "Description": "UI_CHALLENGES_ET_HIGHBALL_TARGETDOWN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+                    "Icon": "elusive",
+                    "LocationId": "LOCATION_COLOMBIA",
+                    "ParentLocationId": "LOCATION_PARENT_COLOMBIA",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$eq": ["$Value.IsTarget", true]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "elusive"],
+                    "InclusionData": {
+                        "ContractIds": ["654685ab-d52d-49cb-815d-f98ee00454d3"]
+                    }
+                },
+                {
                     "Id": "140f1084-a489-4356-b49c-e555ade4cd5a",
                     "Name": "UI_CHALLENGES_ET_HIGHBALL_SILENT_ASSASSIN_NAME",
                     "ImageName": "images/challenges/elusive_target/et_highball_silentassassin.jpg",
@@ -6285,46 +6325,6 @@
                         }
                     },
                     "Tags": ["story", "hard", "elusive"],
-                    "InclusionData": {
-                        "ContractIds": ["654685ab-d52d-49cb-815d-f98ee00454d3"]
-                    }
-                },
-                {
-                    "Id": "6becf34c-96ce-43ba-9977-e1302daec74c",
-                    "Name": "UI_CHALLENGES_ET_HIGHBALL_TARGETDOWN_NAME",
-                    "ImageName": "images/challenges/elusive_target/et_highball_targetdown.jpg",
-                    "Description": "UI_CHALLENGES_ET_HIGHBALL_TARGETDOWN_DESC",
-                    "Rewards": {
-                        "MasteryXP": 2000
-                    },
-                    "Drops": [],
-                    "IsPlayable": false,
-                    "IsLocked": false,
-                    "HideProgression": false,
-                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
-                    "Icon": "elusive",
-                    "LocationId": "LOCATION_COLOMBIA",
-                    "ParentLocationId": "LOCATION_PARENT_COLOMBIA",
-                    "Type": "contract",
-                    "DifficultyLevels": [],
-                    "OrderIndex": 10000,
-                    "XpModifier": {},
-                    "RuntimeType": "Hit",
-                    "Definition": {
-                        "Context": {},
-                        "Scope": "session",
-                        "States": {
-                            "Start": {
-                                "Kill": {
-                                    "Condition": {
-                                        "$eq": ["$Value.IsTarget", true]
-                                    },
-                                    "Transition": "Success"
-                                }
-                            }
-                        }
-                    },
-                    "Tags": ["story", "medium", "elusive"],
                     "InclusionData": {
                         "ContractIds": ["654685ab-d52d-49cb-815d-f98ee00454d3"]
                     }

@@ -4080,6 +4080,46 @@
             "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_ELUSIVE",
             "Challenges": [
                 {
+                    "Id": "c2ae25d2-e4d0-4125-928d-44632ff2f7d1",
+                    "Name": "UI_CHALLENGES_ET_RADLER_TARGETDOWN_NAME",
+                    "ImageName": "images/challenges/elusive_target/et_radler_targetdown.jpg",
+                    "Description": "UI_CHALLENGES_ET_RADLER_TARGETDOWN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+                    "Icon": "elusive",
+                    "LocationId": "LOCATION_EDGY_FOX",
+                    "ParentLocationId": "LOCATION_PARENT_EDGY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$eq": ["$Value.IsTarget", true]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "elusive"],
+                    "InclusionData": {
+                        "ContractIds": ["3f0b8f19-d5d4-4611-ac8f-480f81c18f54"]
+                    }
+                },
+                {
                     "Id": "00d2fefd-6bdb-4450-81bd-45a4bb3c3887",
                     "Name": "UI_CHALLENGES_ET_RADLER_SILENT_ASSASSIN_NAME",
                     "ImageName": "images/challenges/elusive_target/et_radler_silentassassin.jpg",
@@ -4304,46 +4344,6 @@
                         }
                     },
                     "Tags": ["story", "hard", "elusive"],
-                    "InclusionData": {
-                        "ContractIds": ["3f0b8f19-d5d4-4611-ac8f-480f81c18f54"]
-                    }
-                },
-                {
-                    "Id": "c2ae25d2-e4d0-4125-928d-44632ff2f7d1",
-                    "Name": "UI_CHALLENGES_ET_RADLER_TARGETDOWN_NAME",
-                    "ImageName": "images/challenges/elusive_target/et_radler_targetdown.jpg",
-                    "Description": "UI_CHALLENGES_ET_RADLER_TARGETDOWN_DESC",
-                    "Rewards": {
-                        "MasteryXP": 2000
-                    },
-                    "Drops": [],
-                    "IsPlayable": false,
-                    "IsLocked": false,
-                    "HideProgression": false,
-                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
-                    "Icon": "elusive",
-                    "LocationId": "LOCATION_EDGY_FOX",
-                    "ParentLocationId": "LOCATION_PARENT_EDGY",
-                    "Type": "contract",
-                    "DifficultyLevels": [],
-                    "OrderIndex": 10000,
-                    "XpModifier": {},
-                    "RuntimeType": "Hit",
-                    "Definition": {
-                        "Context": {},
-                        "Scope": "session",
-                        "States": {
-                            "Start": {
-                                "Kill": {
-                                    "Condition": {
-                                        "$eq": ["$Value.IsTarget", true]
-                                    },
-                                    "Transition": "Success"
-                                }
-                            }
-                        }
-                    },
-                    "Tags": ["story", "medium", "elusive"],
                     "InclusionData": {
                         "ContractIds": ["3f0b8f19-d5d4-4611-ac8f-480f81c18f54"]
                     }

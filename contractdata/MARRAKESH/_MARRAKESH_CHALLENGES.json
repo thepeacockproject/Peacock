@@ -7541,6 +7541,46 @@
                     }
                 },
                 {
+                    "Id": "cd86ada7-71a3-43c9-9205-777ad958be2d",
+                    "Name": "UI_CHALLENGES_ET_MAITAI_TARGETDOWN_NAME",
+                    "ImageName": "images/challenges/elusive_target/et_maitai_targetdown.jpg",
+                    "Description": "UI_CHALLENGES_ET_MAITAI_TARGETDOWN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+                    "Icon": "elusive",
+                    "LocationId": "LOCATION_MARRAKECH_NIGHT",
+                    "ParentLocationId": "LOCATION_PARENT_MARRAKECH",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$eq": ["$Value.IsTarget", true]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "elusive", "medium"],
+                    "InclusionData": {
+                        "ContractIds": ["2e2c3f33-92ad-412f-a351-b7267697ff70"]
+                    }
+                },
+                {
                     "Id": "a1c7ed7a-caf1-4a9f-87cd-01c14029a1c9",
                     "Name": "UI_CHALLENGES_ET_MAITAI_SILENT_ASSASSIN_NAME",
                     "ImageName": "images/challenges/elusive_target/et_maitai_silentassassin.jpg",
@@ -7770,10 +7810,10 @@
                     }
                 },
                 {
-                    "Id": "cd86ada7-71a3-43c9-9205-777ad958be2d",
-                    "Name": "UI_CHALLENGES_ET_MAITAI_TARGETDOWN_NAME",
-                    "ImageName": "images/challenges/elusive_target/et_maitai_targetdown.jpg",
-                    "Description": "UI_CHALLENGES_ET_MAITAI_TARGETDOWN_DESC",
+                    "Id": "ea30d2a3-2d2d-4cda-b6bc-90d56441c9d3",
+                    "Name": "UI_CHALLENGES_ET_SCREWDRIVER_TARGETDOWN_NAME",
+                    "ImageName": "images/challenges/elusive_target/et_screwdriver_targetdown.jpg",
+                    "Description": "UI_CHALLENGES_ET_SCREWDRIVER_TARGETDOWN_DESC",
                     "Rewards": {
                         "MasteryXP": 2000
                     },
@@ -7783,7 +7823,7 @@
                     "HideProgression": false,
                     "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
                     "Icon": "elusive",
-                    "LocationId": "LOCATION_MARRAKECH_NIGHT",
+                    "LocationId": "LOCATION_MARRAKECH",
                     "ParentLocationId": "LOCATION_PARENT_MARRAKECH",
                     "Type": "contract",
                     "DifficultyLevels": [],
@@ -7804,59 +7844,9 @@
                             }
                         }
                     },
-                    "Tags": ["story", "elusive", "medium"],
+                    "Tags": ["story", "medium", "elusive"],
                     "InclusionData": {
-                        "ContractIds": ["2e2c3f33-92ad-412f-a351-b7267697ff70"]
-                    }
-                },
-                {
-                    "Id": "689fb08e-fb6d-4d41-84ba-8f819d5c89cd",
-                    "Name": "UI_CHALLENGES_ELUSIVE_TARGET_MARAKECH_NAME",
-                    "ImageName": "images/challenges/profile_challenges/elusive_target_marakech.jpg",
-                    "Description": "UI_CHALLENGES_ELUSIVE_TARGET_MARAKECH_DESC",
-                    "Rewards": {
-                        "MasteryXP": 0
-                    },
-                    "Drops": ["TOKEN_OUTFIT_HERO_MARRAKESHSUITANDGLOVES"],
-                    "IsPlayable": false,
-                    "IsLocked": false,
-                    "HideProgression": false,
-                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
-                    "Icon": "elusive",
-                    "LocationId": "LOCATION_MARRAKECH_NIGHT",
-                    "ParentLocationId": "LOCATION_PARENT_MARRAKECH",
-                    "Type": "contract",
-                    "DifficultyLevels": [],
-                    "OrderIndex": 10000,
-                    "XpModifier": {},
-                    "RuntimeType": "Hit",
-                    "Definition": {
-                        "Context": {},
-                        "Scope": "session",
-                        "States": {
-                            "Start": {
-                                "ContractStart": {
-                                    "Condition": {
-                                        "$eq": [
-                                            "$Value.ContractType",
-                                            "elusive"
-                                        ]
-                                    },
-                                    "Transition": "State_ValidContract"
-                                }
-                            },
-                            "State_ValidContract": {
-                                "ContractEnd": [
-                                    {
-                                        "Transition": "Success"
-                                    }
-                                ]
-                            }
-                        }
-                    },
-                    "Tags": ["story", "elusive"],
-                    "InclusionData": {
-                        "ContractTypes": ["elusive"]
+                        "ContractIds": ["0d938ef9-05c7-4eb8-89cc-ae79b73c6992"]
                     }
                 },
                 {
@@ -8089,46 +8079,6 @@
                     }
                 },
                 {
-                    "Id": "ea30d2a3-2d2d-4cda-b6bc-90d56441c9d3",
-                    "Name": "UI_CHALLENGES_ET_SCREWDRIVER_TARGETDOWN_NAME",
-                    "ImageName": "images/challenges/elusive_target/et_screwdriver_targetdown.jpg",
-                    "Description": "UI_CHALLENGES_ET_SCREWDRIVER_TARGETDOWN_DESC",
-                    "Rewards": {
-                        "MasteryXP": 2000
-                    },
-                    "Drops": [],
-                    "IsPlayable": false,
-                    "IsLocked": false,
-                    "HideProgression": false,
-                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
-                    "Icon": "elusive",
-                    "LocationId": "LOCATION_MARRAKECH",
-                    "ParentLocationId": "LOCATION_PARENT_MARRAKECH",
-                    "Type": "contract",
-                    "DifficultyLevels": [],
-                    "OrderIndex": 10000,
-                    "XpModifier": {},
-                    "RuntimeType": "Hit",
-                    "Definition": {
-                        "Context": {},
-                        "Scope": "session",
-                        "States": {
-                            "Start": {
-                                "Kill": {
-                                    "Condition": {
-                                        "$eq": ["$Value.IsTarget", true]
-                                    },
-                                    "Transition": "Success"
-                                }
-                            }
-                        }
-                    },
-                    "Tags": ["story", "medium", "elusive"],
-                    "InclusionData": {
-                        "ContractIds": ["0d938ef9-05c7-4eb8-89cc-ae79b73c6992"]
-                    }
-                },
-                {
                     "Id": "689fb08e-fb6d-4d41-84ba-8f819d5c89cd",
                     "Name": "UI_CHALLENGES_ELUSIVE_TARGET_MARAKECH_NAME",
                     "ImageName": "images/challenges/profile_challenges/elusive_target_marakech.jpg",
@@ -8142,7 +8092,7 @@
                     "HideProgression": false,
                     "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
                     "Icon": "elusive",
-                    "LocationId": "LOCATION_MARRAKECH",
+                    "LocationId": "LOCATION_MARRAKECH_NIGHT",
                     "ParentLocationId": "LOCATION_PARENT_MARRAKECH",
                     "Type": "contract",
                     "DifficultyLevels": [],
