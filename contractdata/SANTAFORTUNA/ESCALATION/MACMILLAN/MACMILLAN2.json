@@ -27,13 +27,7 @@
                 },
                 "Type": "statemachine",
                 "Definition": {
-                    "States": {
-                        "Start": {
-                            "-": {
-                                "Transition": "Success"
-                            }
-                        }
-                    }
+                    "States": { "Start": { "-": { "Transition": "Success" } } }
                 }
             },
             {
@@ -45,11 +39,7 @@
                 "IsHidden": null,
                 "Resource": [],
                 "Category": "primary",
-                "OnActive": {
-                    "IfCompleted": {
-                        "Visible": false
-                    }
-                },
+                "OnActive": { "IfCompleted": { "Visible": false } },
                 "BriefingText": "$loc UI_GAMECHANGERS_COLOMBIA_HIDING_IN_LVA_NAME",
                 "HUDTemplate": {
                     "display": "$loc UI_GAMECHANGERS_COLOMBIA_HIDING_IN_LVA_DESC"
@@ -61,9 +51,7 @@
                     "Context": {},
                     "States": {
                         "Start": {
-                            "IntroCutEnd": {
-                                "Transition": "TimerRunning"
-                            }
+                            "IntroCutEnd": { "Transition": "TimerRunning" }
                         },
                         "Success": {
                             "CurrentlyNotInLVA": {
@@ -71,18 +59,12 @@
                             }
                         },
                         "TimerRunning": {
-                            "exit_gate": {
-                                "Transition": "Success"
-                            },
+                            "exit_gate": { "Transition": "Success" },
                             "$timer": {
-                                "Condition": {
-                                    "$after": 15
-                                },
+                                "Condition": { "$after": 15 },
                                 "Transition": "Failure"
                             },
-                            "CurrentlyInLVA": {
-                                "Transition": "Success"
-                            }
+                            "CurrentlyInLVA": { "Transition": "Success" }
                         }
                     }
                 }
@@ -98,9 +80,7 @@
                         "HardCondition": true
                     }
                 ],
-                "HUDTemplate": {
-                    "display": "$loc UI_CONTRACT_CALLUNA_OBJ_1"
-                },
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_CALLUNA_OBJ_1" },
                 "BriefingText": "$loc UI_CONTRACT_CALLUNA_OBJ_1",
                 "Type": "statemachine",
                 "Definition": {
@@ -164,9 +144,7 @@
                         "HardCondition": true
                     }
                 ],
-                "HUDTemplate": {
-                    "display": "$loc UI_CONTRACT_CALLUNA_OBJ_2"
-                },
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_CALLUNA_OBJ_2" },
                 "BriefingText": "$loc UI_CONTRACT_CALLUNA_OBJ_2",
                 "Type": "statemachine",
                 "Definition": {
@@ -235,16 +213,9 @@
         "Type": "escalation",
         "TileImage": "images/contracts/escalation/contractescalation_colombia_calluna.jpg",
         "GroupObjectiveDisplayOrder": [
-            {
-                "IsNew": true,
-                "Id": "6517b906-933e-48cc-b361-5094e4013ff1"
-            },
-            {
-                "Id": "a66f63a6-b617-4ea4-9ab5-225dd001dd1b"
-            },
-            {
-                "Id": "a7f29a71-04e5-47aa-b170-7adce4359acf"
-            }
+            { "IsNew": true, "Id": "6517b906-933e-48cc-b361-5094e4013ff1" },
+            { "Id": "a66f63a6-b617-4ea4-9ab5-225dd001dd1b" },
+            { "Id": "a7f29a71-04e5-47aa-b170-7adce4359acf" }
         ],
         "Entitlements": ["H2_LEGACY_STANDARD"],
         "LastUpdate": "2021-04-20T12:25:01.3211285Z",

@@ -14,21 +14,13 @@
                 "BriefingText": "These rent a cops actually thought they could come inside the Carlisle Manor! You should have seen the look on their face when we told them to stay outside!",
                 "LongBriefingText": "These rent a cops actually thought they could come inside the Carlisle Manor and the look on their face when we told to stay outside!",
                 "UpdateActivationWhileCompleted": true,
-                "OnActive": {
-                    "IfCompleted": {
-                        "Visible": false
-                    }
-                },
-                "HUDTemplate": {
-                    "display": "Eliminate two mansion guards."
-                },
+                "OnActive": { "IfCompleted": { "Visible": false } },
+                "HUDTemplate": { "display": "Eliminate two mansion guards." },
                 "Definition": {
                     "Scope": "session",
                     "States": {
                         "Start": {
-                            "AmbientChanged": {
-                                "Transition": "Success"
-                            }
+                            "AmbientChanged": { "Transition": "Success" }
                         }
                     }
                 }
@@ -45,11 +37,7 @@
                 "BriefingText": "Teach these low grade grunts a thing or two about class and let them know it's coming from one of us.",
                 "LongBriefingText": "Teach these low grade grunts a thing or two about class and let them know it's coming from one of us.",
                 "UpdateActivationWhileCompleted": true,
-                "OnActive": {
-                    "IfCompleted": {
-                        "Visible": false
-                    }
-                },
+                "OnActive": { "IfCompleted": { "Visible": false } },
                 "HUDTemplate": {
                     "display": "Do not change starting disguise."
                 },
@@ -57,20 +45,14 @@
                     "Scope": "session",
                     "States": {
                         "Start": {
-                            "AmbientChanged": {
-                                "Transition": "Success"
-                            }
+                            "AmbientChanged": { "Transition": "Success" }
                         },
                         "Success": {
-                            "Disguise": {
-                                "Transition": "PleaseDoFail"
-                            }
+                            "Disguise": { "Transition": "PleaseDoFail" }
                         },
                         "PleaseDoFail": {
                             "$timer": {
-                                "Condition": {
-                                    "$after": 2
-                                },
+                                "Condition": { "$after": 2 },
                                 "Transition": "Failure"
                             }
                         }
@@ -87,9 +69,7 @@
                         "data": "$($repository bca845d7-81a3-4499-a821-298b5ad3fe47).Name"
                     }
                 },
-                "HUDTemplate": {
-                    "display": "Eliminate Vincent Brown"
-                },
+                "HUDTemplate": { "display": "Eliminate Vincent Brown" },
                 "Category": "primary",
                 "Definition": {
                     "Scope": "Hit",
@@ -149,9 +129,7 @@
                         "data": "$($repository 1639e08a-4150-4a92-a4b3-bcec99b336fe).Name"
                     }
                 },
-                "HUDTemplate": {
-                    "display": "Eliminate Paul Carter"
-                },
+                "HUDTemplate": { "display": "Eliminate Paul Carter" },
                 "Category": "primary",
                 "Definition": {
                     "Scope": "Hit",

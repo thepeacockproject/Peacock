@@ -8,9 +8,7 @@
                 "BriefingText": "Eliminate at least 5 of the possible targets outlined in-game by pacifying them or killing them with a Christmas-themed weapon.",
                 "ObjectiveType": "custom",
                 "Image": "images/challenges/paris/noel_master_santa.jpg",
-                "HUDTemplate": {
-                    "display": "Eliminate targets"
-                },
+                "HUDTemplate": { "display": "Eliminate targets" },
                 "Category": "primary",
                 "Definition": {
                     "Scope": "Hit",
@@ -57,9 +55,7 @@
                                 "Condition": {
                                     "$eq": ["$.ForceUpdateCounters", 0]
                                 },
-                                "Actions": {
-                                    "$inc": "ForceUpdateCounters"
-                                }
+                                "Actions": { "$inc": "ForceUpdateCounters" }
                             },
                             "Kill": {
                                 "Condition": {
@@ -142,9 +138,7 @@
                                     },
                                     "Transition": "Success"
                                 },
-                                {
-                                    "Transition": "Start"
-                                }
+                                { "Transition": "Start" }
                             ]
                         }
                     }
@@ -162,7 +156,8 @@
             "244e6667-4d99-40d1-a766-6324d133b669",
             "52c22399-fe49-48d4-bc5c-bf1726616444",
             "25ff09ba-134e-4292-901b-a43efc73c2ae"
-        ]
+        ],
+        "EnableSaving": false
     },
     "Metadata": {
         "Title": "UI_PEACOCK_SOUTHERN_COMFORT1",

@@ -136,15 +136,8 @@
                 "BriefingName": "Steal the Gold",
                 "LongBriefingText": "Steal all the gold from the vault",
                 "BriefingText": "Steal all the gold from the vault",
-                "HUDTemplate": {
-                    "display": "Steal the Gold",
-                    "iconType": 17
-                },
-                "OnActive": {
-                    "IfCompleted": {
-                        "Visible": true
-                    }
-                },
+                "HUDTemplate": { "display": "Steal the Gold", "iconType": 17 },
+                "OnActive": { "IfCompleted": { "Visible": true } },
                 "IsHidden": false,
                 "Type": "statemachine",
                 "Scope": "hit",
@@ -173,9 +166,7 @@
                                 "Condition": {
                                     "$eq": ["$.ForceUpdateCounters", 0]
                                 },
-                                "Actions": {
-                                    "$inc": "ForceUpdateCounters"
-                                }
+                                "Actions": { "$inc": "ForceUpdateCounters" }
                             },
                             "ItemPickedUp": {
                                 "Condition": {
@@ -213,14 +204,10 @@
                                             "$.GoldTotal"
                                         ]
                                     },
-                                    "Actions": {
-                                        "$set": ["GoldRemaining", 0]
-                                    },
+                                    "Actions": { "$set": ["GoldRemaining", 0] },
                                     "Transition": "Success"
                                 },
-                                {
-                                    "Transition": "Start"
-                                }
+                                { "Transition": "Start" }
                             ]
                         },
                         "Success": {
@@ -255,11 +242,7 @@
                     "display": "Steal the Burgers",
                     "iconType": 17
                 },
-                "OnActive": {
-                    "IfCompleted": {
-                        "Visible": true
-                    }
-                },
+                "OnActive": { "IfCompleted": { "Visible": true } },
                 "IsHidden": false,
                 "Type": "statemachine",
                 "Scope": "hit",
@@ -288,9 +271,7 @@
                                 "Condition": {
                                     "$eq": ["$.ForceUpdateCounters", 0]
                                 },
-                                "Actions": {
-                                    "$inc": "ForceUpdateCounters"
-                                }
+                                "Actions": { "$inc": "ForceUpdateCounters" }
                             },
                             "ItemPickedUp": {
                                 "Condition": {
@@ -320,9 +301,7 @@
                                     },
                                     "Transition": "Success"
                                 },
-                                {
-                                    "Transition": "Start"
-                                }
+                                { "Transition": "Start" }
                             ]
                         }
                     }
@@ -339,24 +318,11 @@
         "InGroup": "9a461f89-86c5-44e4-998e-f2f66b496aa7",
         "TileImage": "images/contracts/escalation/contractescalation_hedgebush.png",
         "GroupObjectiveDisplayOrder": [
-            {
-                "IsNew": true,
-                "Id": "c0ce83d5-bdc1-4f2e-bac4-397bfc7504e5"
-            },
-            {
-                "IsNew": true,
-                "Id": "8b432578-16eb-4d1d-804d-275d6e2d84eb"
-            },
-            {
-                "IsNew": true,
-                "Id": "ec6d7d32-b436-4f8b-8bd2-f5115354a1c7"
-            },
-            {
-                "Id": "0ac94c6b-05a0-444f-b999-ba378564c0c1"
-            },
-            {
-                "Id": "047b7d52-c73d-4e6b-9247-8591c6eb1a37"
-            }
+            { "IsNew": true, "Id": "c0ce83d5-bdc1-4f2e-bac4-397bfc7504e5" },
+            { "IsNew": true, "Id": "8b432578-16eb-4d1d-804d-275d6e2d84eb" },
+            { "IsNew": true, "Id": "ec6d7d32-b436-4f8b-8bd2-f5115354a1c7" },
+            { "Id": "0ac94c6b-05a0-444f-b999-ba378564c0c1" },
+            { "Id": "047b7d52-c73d-4e6b-9247-8591c6eb1a37" }
         ],
         "Entitlements": ["H2_LEGACY_EXPANSION"]
     }

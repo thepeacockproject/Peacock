@@ -37,13 +37,7 @@
                 },
                 "Type": "statemachine",
                 "Definition": {
-                    "States": {
-                        "Start": {
-                            "-": {
-                                "Transition": "Success"
-                            }
-                        }
-                    }
+                    "States": { "Start": { "-": { "Transition": "Success" } } }
                 }
             },
             {
@@ -55,11 +49,7 @@
                 "IsHidden": null,
                 "Resource": [],
                 "Category": "primary",
-                "OnActive": {
-                    "IfCompleted": {
-                        "Visible": false
-                    }
-                },
+                "OnActive": { "IfCompleted": { "Visible": false } },
                 "BriefingText": "$loc UI_GAMECHANGERS_COLOMBIA_HIDING_IN_LVA_NAME",
                 "HUDTemplate": {
                     "display": "$loc UI_GAMECHANGERS_COLOMBIA_HIDING_IN_LVA_DESC"
@@ -71,9 +61,7 @@
                     "Context": {},
                     "States": {
                         "Start": {
-                            "IntroCutEnd": {
-                                "Transition": "TimerRunning"
-                            }
+                            "IntroCutEnd": { "Transition": "TimerRunning" }
                         },
                         "Success": {
                             "CurrentlyNotInLVA": {
@@ -81,18 +69,12 @@
                             }
                         },
                         "TimerRunning": {
-                            "exit_gate": {
-                                "Transition": "Success"
-                            },
+                            "exit_gate": { "Transition": "Success" },
                             "$timer": {
-                                "Condition": {
-                                    "$after": 15
-                                },
+                                "Condition": { "$after": 15 },
                                 "Transition": "Failure"
                             },
-                            "CurrentlyInLVA": {
-                                "Transition": "Success"
-                            }
+                            "CurrentlyInLVA": { "Transition": "Success" }
                         }
                     }
                 }
@@ -115,13 +97,7 @@
                 },
                 "Type": "statemachine",
                 "Definition": {
-                    "States": {
-                        "Start": {
-                            "-": {
-                                "Transition": "Success"
-                            }
-                        }
-                    }
+                    "States": { "Start": { "-": { "Transition": "Success" } } }
                 }
             },
             {
@@ -135,9 +111,7 @@
                         "HardCondition": true
                     }
                 ],
-                "HUDTemplate": {
-                    "display": "$loc UI_CONTRACT_CALLUNA_OBJ_1"
-                },
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_CALLUNA_OBJ_1" },
                 "BriefingText": "$loc UI_CONTRACT_CALLUNA_OBJ_1",
                 "Type": "statemachine",
                 "Image": "images/actors/actor_56a589d8-bf28-489f-a30c-2ecea87177f5_1_0_0.jpg",
@@ -202,9 +176,7 @@
                         "HardCondition": true
                     }
                 ],
-                "HUDTemplate": {
-                    "display": "$loc UI_CONTRACT_CALLUNA_OBJ_2"
-                },
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_CALLUNA_OBJ_2" },
                 "BriefingText": "$loc UI_CONTRACT_CALLUNA_OBJ_2",
                 "Image": "images/actors/actor_56a589d8-bf28-489f-a30c-2ecea87177f5_5_0_0.jpg",
                 "Type": "statemachine",
@@ -254,9 +226,7 @@
                 "Id": "1ec56e15-d9d8-493e-ad28-c2592a0a7f77",
                 "Category": "primary",
                 "ObjectiveType": "customkill",
-                "HUDTemplate": {
-                    "display": "$loc UI_CONTRACT_CALLUNA_OBJ_3"
-                },
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_CALLUNA_OBJ_3" },
                 "BriefingText": "$loc UI_CONTRACT_CALLUNA_OBJ_3",
                 "Type": "statemachine",
                 "Image": "images/actors/actor_ab5a46a2-6e53-4b15-a48e-c336df1ef5ff_0_0_0.jpg",

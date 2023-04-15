@@ -28,13 +28,7 @@
                 },
                 "Type": "statemachine",
                 "Definition": {
-                    "States": {
-                        "Start": {
-                            "-": {
-                                "Transition": "Success"
-                            }
-                        }
-                    }
+                    "States": { "Start": { "-": { "Transition": "Success" } } }
                 }
             },
             {
@@ -48,11 +42,7 @@
                 "Type": "statemachine",
                 "Category": "condition",
                 "ExcludeFromScoring": true,
-                "OnActive": {
-                    "IfInProgress": {
-                        "Visible": false
-                    }
-                },
+                "OnActive": { "IfInProgress": { "Visible": false } },
                 "Definition": {
                     "Scope": "session",
                     "Context": {},
@@ -84,11 +74,7 @@
                         "Completed"
                     ]
                 },
-                "OnActive": {
-                    "IfCompleted": {
-                        "Visible": false
-                    }
-                },
+                "OnActive": { "IfCompleted": { "Visible": false } },
                 "ExcludeFromScoring": false,
                 "Image": "images/contracts/gamechangers/Gamechanger_Colombia_Shaman_Followers_Active.jpg",
                 "HUDTemplate": {
@@ -98,9 +84,7 @@
                 "BriefingText": "$loc UI_CONTRACT_TITANUMARUM_FOLLOW_BRIEFING_NAME",
                 "Type": "statemachine",
                 "Definition": {
-                    "display": {
-                        "iconType": 17
-                    },
+                    "display": { "iconType": 17 },
                     "Context": {
                         "AmountToFollow": 99,
                         "Targets": [],
@@ -127,13 +111,9 @@
                                     "$inc": "AmountToFollow"
                                 }
                             },
-                            "CAO": {
-                                "Transition": "Success"
-                            },
+                            "CAO": { "Transition": "Success" },
                             "DisguiseChanged": {
-                                "Actions": {
-                                    "$set": ["TargetsCounter", 0]
-                                },
+                                "Actions": { "$set": ["TargetsCounter", 0] },
                                 "Transition": "Start"
                             }
                         },
@@ -148,14 +128,10 @@
                                     },
                                     "Transition": "Success"
                                 },
-                                {
-                                    "Transition": "Start"
-                                }
+                                { "Transition": "Start" }
                             ]
                         },
-                        "CAO": {
-                            "Transition": "Success"
-                        }
+                        "CAO": { "Transition": "Success" }
                     }
                 }
             },
@@ -189,9 +165,7 @@
                             "AntigonoKilledWithoutEnoughFollowers": {
                                 "Transition": "Failure"
                             },
-                            "Disguise": {
-                                "Transition": "Start"
-                            }
+                            "Disguise": { "Transition": "Start" }
                         }
                     }
                 }
@@ -326,12 +300,8 @@
                             "EnoughFollowers": {
                                 "Transition": "ListenForKill"
                             },
-                            "AllFollowersDead": {
-                                "Transition": "Failure"
-                            },
-                            "ShamanOutfitLost": {
-                                "Transition": "Failure"
-                            }
+                            "AllFollowersDead": { "Transition": "Failure" },
+                            "ShamanOutfitLost": { "Transition": "Failure" }
                         },
                         "ListenForKill": {
                             "Kill": [
@@ -376,9 +346,7 @@
                                     "Transition": "Failure"
                                 }
                             ],
-                            "NotEnoughFollowers": {
-                                "Transition": "Start"
-                            }
+                            "NotEnoughFollowers": { "Transition": "Start" }
                         }
                     }
                 }
@@ -449,15 +417,9 @@
                                     "Transition": "Failure"
                                 }
                             ],
-                            "EnoughFollowers": {
-                                "Transition": "CheckForKill"
-                            },
-                            "AllFollowersDead": {
-                                "Transition": "Failure"
-                            },
-                            "ShamanOutfitLost": {
-                                "Transition": "Failure"
-                            }
+                            "EnoughFollowers": { "Transition": "CheckForKill" },
+                            "AllFollowersDead": { "Transition": "Failure" },
+                            "ShamanOutfitLost": { "Transition": "Failure" }
                         },
                         "CheckForKill": {
                             "Kill": [
@@ -496,9 +458,7 @@
                                     "Transition": "Failure"
                                 }
                             ],
-                            "NotEnoughFollowers": {
-                                "Transition": "Start"
-                            }
+                            "NotEnoughFollowers": { "Transition": "Start" }
                         }
                     }
                 }
