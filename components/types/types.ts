@@ -1232,10 +1232,20 @@ export interface CompiledChallengeRewardData {
 export type LoadoutSavingMechanism = "PROFILES" | "LEGACY"
 export type ImageLoadingStrategy = "SAVEASREQUESTED" | "ONLINE" | "OFFLINE"
 
-export type Flags = Record<
-    string,
-    { desc: string; default: boolean | string | number }
->
+export type Flag = {
+    title: string
+    desc: string
+    possibleValues?: string[]
+    default: boolean | string | number
+}
+
+export type FlagSection = {
+    title: string
+    desc: string
+    flags: Record<string, Flag>
+}
+
+export type Flags = Record<string, FlagSection>
 
 /**
  * A "hit" object.
