@@ -323,8 +323,30 @@
                         "actions": {
                             "accept": [
                                 {
-                                    "start-contract": {
-                                        "contractid": "f8ec92c2-4fa2-471e-ae08-545480c746ee"
+                                    "set-menu-context": {
+                                        "value": {
+                                            "onpageopened": {
+                                                "set-selected": {
+                                                    "target": "PLANNING_BUTTON_PLAY"
+                                                },
+                                                "trigger-input": {
+                                                    "action": "accept"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "link": {
+                                        "page": "planning",
+                                        "args": {
+                                            "url": "planning",
+                                            "args": {
+                                                "contractid": "f8ec92c2-4fa2-471e-ae08-545480c746ee",
+                                                "resetescalation": false
+                                            },
+                                            "contractid": "f8ec92c2-4fa2-471e-ae08-545480c746ee"
+                                        }
                                     }
                                 }
                             ],
