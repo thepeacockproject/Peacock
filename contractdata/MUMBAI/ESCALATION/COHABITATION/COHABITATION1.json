@@ -9,7 +9,9 @@
                 "Id": "5b7aa6df-cbc4-4fc0-9427-ad910ac39303",
                 "Category": "primary",
                 "ObjectiveType": "customkill",
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_PROTEA_OBJ_1" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_PROTEA_OBJ_1"
+                },
                 "BriefingText": "$loc UI_CONTRACT_PROTEA_OBJ_1",
                 "Type": "statemachine",
                 "Definition": {
@@ -78,10 +80,14 @@
                                     "Transition": "Failure"
                                 }
                             ],
-                            "LeftBuilding1": { "Transition": "Start" }
+                            "LeftBuilding1": {
+                                "Transition": "Start"
+                            }
                         },
                         "Start": {
-                            "IsInBuilding1": { "Transition": "InBuilding" },
+                            "IsInBuilding1": {
+                                "Transition": "InBuilding"
+                            },
                             "Kill": [
                                 {
                                     "Condition": {

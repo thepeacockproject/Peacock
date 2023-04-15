@@ -7,10 +7,12 @@
                 "Type": "statemachine",
                 "Id": "26009bfe-b1d2-4533-9d8c-a2362b8ff4a5",
                 "BriefingName": "Calm the staff",
-                "BriefingText": "Pirates have stolen code from the Haven\u00e2\u201e\u00a2 servers, and the staff is in panic.\nCalm the staff by pumping a sedative in their ventilation.",
+                "BriefingText": "Pirates have stolen code from the Haven™ servers, and the staff is in panic.\nCalm the staff by pumping a sedative in their ventilation.",
                 "Image": "images/objectives/contracts/pirates_problem_ventilation.jpg",
                 "ObjectiveType": "custom",
-                "HUDTemplate": { "display": "Calm the staff" },
+                "HUDTemplate": {
+                    "display": "Calm the staff"
+                },
                 "Category": "primary",
                 "Definition": {
                     "Context": {
@@ -29,9 +31,19 @@
                                     "Transition": "Success"
                                 }
                             ],
-                            "Kill": [{ "Transition": "Failure" }]
+                            "Kill": [
+                                {
+                                    "Transition": "Failure"
+                                }
+                            ]
                         },
-                        "Success": { "Kill": [{ "Transition": "Failure" }] }
+                        "Success": {
+                            "Kill": [
+                                {
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
                     }
                 }
             },
@@ -43,7 +55,9 @@
                 "BriefingText": "Make sure the issue doesn't escalate.",
                 "Image": "images/objectives/contracts/pirates_problem_alarm.jpg",
                 "ObjectiveType": "custom",
-                "HUDTemplate": { "display": "Trigger an alarm" },
+                "HUDTemplate": {
+                    "display": "Trigger an alarm"
+                },
                 "Category": "primary",
                 "Definition": {
                     "Context": {
@@ -83,9 +97,18 @@
         "InGroup": "f19f7ac8-39ec-498b-aa23-44c8e75d8693",
         "TileImage": "images/contracts/escalation/contractescalation_pirates_problem.jpg",
         "GroupObjectiveDisplayOrder": [
-            { "Id": "26009bfe-b1d2-4533-9d8c-a2362b8ff4a5", "IsNew": true },
-            { "Id": "843fa79f-6127-4911-b1c0-5edff6133b6f", "IsNew": true },
-            { "Id": "8618ebaa-f42b-42ce-be20-00d2b0a04897", "IsNew": true }
+            {
+                "Id": "26009bfe-b1d2-4533-9d8c-a2362b8ff4a5",
+                "IsNew": true
+            },
+            {
+                "Id": "843fa79f-6127-4911-b1c0-5edff6133b6f",
+                "IsNew": true
+            },
+            {
+                "Id": "8618ebaa-f42b-42ce-be20-00d2b0a04897",
+                "IsNew": true
+            }
         ]
     },
     "UserData": {}

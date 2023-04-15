@@ -151,7 +151,9 @@
                                     "Transition": "Failure"
                                 }
                             ],
-                            "KatanaLost": { "Transition": "Failure" }
+                            "KatanaLost": {
+                                "Transition": "Failure"
+                            }
                         }
                     }
                 }
@@ -174,12 +176,20 @@
                 "HUDTemplate": {
                     "display": "$loc UI_CONTRACT_BELLFLOWER_OBJ_TIMER_HUD"
                 },
-                "OnActive": { "IfCompleted": { "Visible": false } },
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
                 "Type": "statemachine",
                 "Definition": {
                     "Context": {},
                     "States": {
-                        "Start": { "-": { "Transition": "Success" } },
+                        "Start": {
+                            "-": {
+                                "Transition": "Success"
+                            }
+                        },
                         "Success": {
                             "ObjectiveCompleted": [
                                 {
@@ -195,7 +205,9 @@
                         },
                         "Active": {
                             "$timer": {
-                                "Condition": { "$after": 20 },
+                                "Condition": {
+                                    "$after": 20
+                                },
                                 "Transition": "Failure"
                             },
                             "ObjectiveCompleted": [
@@ -221,7 +233,11 @@
                                 }
                             ]
                         },
-                        "Reset": { "-": { "Transition": "Active" } }
+                        "Reset": {
+                            "-": {
+                                "Transition": "Active"
+                            }
+                        }
                     }
                 }
             },
@@ -276,7 +292,9 @@
                             "006bff27-d8b9-480e-9308-fac9a447d038"
                         ]
                     },
-                    "States": { "Start": {} }
+                    "States": {
+                        "Start": {}
+                    }
                 }
             },
             {
@@ -376,7 +394,9 @@
                                     "Transition": "Success"
                                 }
                             ],
-                            "SniperLost": { "Transition": "Failure" }
+                            "SniperLost": {
+                                "Transition": "Failure"
+                            }
                         }
                     }
                 }
@@ -386,7 +406,12 @@
     "Metadata": {
         "Id": "20156bab-35f4-4a61-96f8-271041e38bf6",
         "CodeName_Hint": "Belllflower - Level 2",
-        "Release": { "Major": 3, "Minor": 11, "Build": 0, "Revision": -1 },
+        "Release": {
+            "Major": 3,
+            "Minor": 11,
+            "Build": 0,
+            "Revision": -1
+        },
         "Type": "escalation",
         "Title": "UI_CONTRACT_BELLFLOWER_LEVEL_2_TITLE",
         "Description": "",
@@ -399,14 +424,37 @@
         "IsPublished": true,
         "Entitlements": ["H3_EXPANSION"],
         "GroupObjectiveDisplayOrder": [
-            { "Id": "f5a6437a-31a8-4f60-bbad-dd88aa51e6d2", "IsNew": true },
-            { "Id": "d636c3b6-d20c-4973-96e0-2901cba8e691", "IsNew": true },
-            { "Id": "963aa289-a25b-46f3-953d-4b59ffd69147", "IsNew": true },
-            { "Id": "3365728c-9ccc-438e-9c52-e6afd7eaa10c", "IsNew": true },
-            { "Id": "a28bb248-747d-4bbe-bb57-cd0e1a46a7b3", "IsNew": true },
-            { "Id": "79ace974-8886-4669-927e-84f4ee6256a6", "IsNew": true },
-            { "Id": "07b1bc1d-f52b-4004-a760-846c4bc3f172", "IsNew": true },
-            { "Id": "3db72bb5-63d6-47fe-9332-d7ea3c195e06" }
+            {
+                "Id": "f5a6437a-31a8-4f60-bbad-dd88aa51e6d2",
+                "IsNew": true
+            },
+            {
+                "Id": "d636c3b6-d20c-4973-96e0-2901cba8e691",
+                "IsNew": true
+            },
+            {
+                "Id": "963aa289-a25b-46f3-953d-4b59ffd69147",
+                "IsNew": true
+            },
+            {
+                "Id": "3365728c-9ccc-438e-9c52-e6afd7eaa10c",
+                "IsNew": true
+            },
+            {
+                "Id": "a28bb248-747d-4bbe-bb57-cd0e1a46a7b3",
+                "IsNew": true
+            },
+            {
+                "Id": "79ace974-8886-4669-927e-84f4ee6256a6",
+                "IsNew": true
+            },
+            {
+                "Id": "07b1bc1d-f52b-4004-a760-846c4bc3f172",
+                "IsNew": true
+            },
+            {
+                "Id": "3db72bb5-63d6-47fe-9332-d7ea3c195e06"
+            }
         ],
         "LastUpdate": "2023-03-30T11:20:24.9257715Z",
         "PublicId": "032079074647",

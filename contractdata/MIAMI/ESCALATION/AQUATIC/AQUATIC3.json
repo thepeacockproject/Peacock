@@ -20,7 +20,9 @@
                     "Context": {},
                     "States": {
                         "Start": {
-                            "C_Fish_Gained": { "Transition": "Success" }
+                            "C_Fish_Gained": {
+                                "Transition": "Success"
+                            }
                         }
                     }
                 }
@@ -32,7 +34,9 @@
                 "BriefingName": "$loc UI_CONTRACT_PLUMBAGO_OBJ_2_NAME",
                 "Image": "images/actors/actor_dc5b1ccd-0997-4834-93a0-db7543e729cc_1_0_0.jpg",
                 "TargetConditions": [],
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_PLUMBAGO_OBJ_2" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_PLUMBAGO_OBJ_2"
+                },
                 "BriefingText": "$loc UI_CONTRACT_PLUMBAGO_OBJ_2",
                 "Type": "statemachine",
                 "Definition": {
@@ -73,7 +77,9 @@
                                     "Transition": "Failure"
                                 }
                             ],
-                            "Target1Killed": { "Transition": "Failure" }
+                            "Target1Killed": {
+                                "Transition": "Failure"
+                            }
                         }
                     }
                 }
@@ -85,7 +91,9 @@
                 "BriefingName": "$loc UI_CONTRACT_PLUMBAGO_OBJ_3_NAME",
                 "Image": "images/actors/actor_dc5b1ccd-0997-4834-93a0-db7543e729cc_3_0_0.jpg",
                 "TargetConditions": [],
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_PLUMBAGO_OBJ_3" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_PLUMBAGO_OBJ_3"
+                },
                 "BriefingText": "$loc UI_CONTRACT_PLUMBAGO_OBJ_3",
                 "Type": "statemachine",
                 "Definition": {
@@ -126,7 +134,9 @@
                                     "Transition": "Failure"
                                 }
                             ],
-                            "Target2Killed": { "Transition": "Failure" }
+                            "Target2Killed": {
+                                "Transition": "Failure"
+                            }
                         }
                     }
                 }
@@ -138,7 +148,9 @@
                 "BriefingName": "$loc UI_CONTRACT_PLUMBAGO_OBJ_4_NAME",
                 "Image": "images/actors/actor_dc5b1ccd-0997-4834-93a0-db7543e729cc_0_0_0.jpg",
                 "TargetConditions": [],
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_PLUMBAGO_OBJ_4" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_PLUMBAGO_OBJ_4"
+                },
                 "BriefingText": "$loc UI_CONTRACT_PLUMBAGO_OBJ_4",
                 "Type": "statemachine",
                 "Definition": {
@@ -179,7 +191,9 @@
                                     "Transition": "Failure"
                                 }
                             ],
-                            "Target3Killed": { "Transition": "Failure" }
+                            "Target3Killed": {
+                                "Transition": "Failure"
+                            }
                         }
                     }
                 }
@@ -188,7 +202,11 @@
                 "Id": "e1fedcd5-9a92-4d7c-817d-2a47d4ad566e",
                 "Category": "secondary",
                 "ExcludeFromScoring": true,
-                "OnActive": { "IfCompleted": { "Visible": false } },
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
                 "Type": "statemachine",
                 "Definition": {
                     "Context": {
@@ -199,7 +217,11 @@
                         ]
                     },
                     "States": {
-                        "Start": { "ContractEnd": { "Transition": "Success" } }
+                        "Start": {
+                            "ContractEnd": {
+                                "Transition": "Success"
+                            }
+                        }
                     }
                 }
             }
@@ -226,13 +248,28 @@
         "Release": "2.1.x Escalation",
         "InGroup": "d0f44e71-6eab-4af4-9484-78d61dbe376a",
         "GroupObjectiveDisplayOrder": [
-            { "IsNew": true, "Id": "f32c7c6a-b4fc-4eba-949f-13751d9eaf1f" },
-            { "Id": "657e6353-4ac5-4bf7-85ab-419286de8b47" },
-            { "Id": "63055f1a-bcd2-4e0f-8caf-b446f01d02f3" },
-            { "Id": "702f9a33-c8d7-4823-9506-38598db0c898" },
-            { "Id": "bbfe79f1-f388-412d-8c97-cf3c054683b8" },
-            { "Id": "44ddd4f7-e46e-47ef-befa-5658b353a645" },
-            { "Id": "a102735e-82e8-4ab2-9ac5-889d240acf28" }
+            {
+                "IsNew": true,
+                "Id": "f32c7c6a-b4fc-4eba-949f-13751d9eaf1f"
+            },
+            {
+                "Id": "657e6353-4ac5-4bf7-85ab-419286de8b47"
+            },
+            {
+                "Id": "63055f1a-bcd2-4e0f-8caf-b446f01d02f3"
+            },
+            {
+                "Id": "702f9a33-c8d7-4823-9506-38598db0c898"
+            },
+            {
+                "Id": "bbfe79f1-f388-412d-8c97-cf3c054683b8"
+            },
+            {
+                "Id": "44ddd4f7-e46e-47ef-befa-5658b353a645"
+            },
+            {
+                "Id": "a102735e-82e8-4ab2-9ac5-889d240acf28"
+            }
         ],
         "Entitlements": ["H2_LEGACY_STANDARD"],
         "LastUpdate": "2021-10-12T11:25:00.2499524Z",

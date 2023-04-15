@@ -67,7 +67,9 @@
                     },
                     "States": {
                         "Start": {
-                            "BoxHit_Gun": { "Transition": "Failure" },
+                            "BoxHit_Gun": {
+                                "Transition": "Failure"
+                            },
                             "BoxHit": {
                                 "Actions": {
                                     "$dec": "AmountToHit",
@@ -87,7 +89,9 @@
                                     },
                                     "Transition": "Success"
                                 },
-                                { "Transition": "Start" }
+                                {
+                                    "Transition": "Start"
+                                }
                             ]
                         }
                     }

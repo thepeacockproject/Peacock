@@ -126,7 +126,9 @@
                                 },
                                 "Condition": {
                                     "$and": [
-                                        { "$eq": ["$Value.ActorType", 0] },
+                                        {
+                                            "$eq": ["$Value.ActorType", 0]
+                                        },
                                         {
                                             "$eq": [
                                                 "$Value.KillItemRepositoryId",
@@ -149,7 +151,9 @@
                                     },
                                     "Transition": "Success"
                                 },
-                                { "Transition": "Start" }
+                                {
+                                    "Transition": "Start"
+                                }
                             ]
                         }
                     }
@@ -199,10 +203,19 @@
         "Release": "2.1.x Escalation",
         "InGroup": "8c6daf5e-5974-4438-af20-71ff570c7ff3",
         "GroupObjectiveDisplayOrder": [
-            { "IsNew": true, "Id": "61f739cf-6538-46b8-8291-d5ebc6951bc9" },
-            { "Id": "d8528681-3577-49c9-aad5-73aed977fd18" },
-            { "Id": "bef74a3d-b453-4952-ac35-2d415ccd1f9d" },
-            { "Id": "77ad1380-a6c6-4ff5-9810-20d8e43ba47e" }
+            {
+                "IsNew": true,
+                "Id": "61f739cf-6538-46b8-8291-d5ebc6951bc9"
+            },
+            {
+                "Id": "d8528681-3577-49c9-aad5-73aed977fd18"
+            },
+            {
+                "Id": "bef74a3d-b453-4952-ac35-2d415ccd1f9d"
+            },
+            {
+                "Id": "77ad1380-a6c6-4ff5-9810-20d8e43ba47e"
+            }
         ],
         "LastUpdate": "2021-05-06T09:25:04.9027748Z",
         "PublicId": "021793422747",

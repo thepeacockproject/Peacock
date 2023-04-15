@@ -24,7 +24,13 @@
                 },
                 "Type": "statemachine",
                 "Definition": {
-                    "States": { "Start": { "-": { "Transition": "Success" } } }
+                    "States": {
+                        "Start": {
+                            "-": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
                 }
             },
             {
@@ -69,7 +75,9 @@
                     }
                 ],
                 "Image": "",
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_ARRAYAN_OBJ_2" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_ARRAYAN_OBJ_2"
+                },
                 "BriefingText": "$loc UI_CONTRACT_ARRAYAN_OBJ_2",
                 "Type": "statemachine",
                 "Definition": {
@@ -125,7 +133,9 @@
                     "Scope": "session",
                     "States": {
                         "Start": {
-                            "LetterbombLost": { "Transition": "Failure" }
+                            "LetterbombLost": {
+                                "Transition": "Failure"
+                            }
                         }
                     }
                 }
@@ -141,7 +151,9 @@
                     "Scope": "session",
                     "States": {
                         "Start": {
-                            "LetterbombOutOfReach": { "Transition": "Failure" }
+                            "LetterbombOutOfReach": {
+                                "Transition": "Failure"
+                            }
                         }
                     }
                 }
@@ -169,9 +181,16 @@
         "Release": "2.1.x Escalation",
         "TileImage": "images/contracts/escalation/contractescalation_colombia_arrayan.jpg",
         "GroupObjectiveDisplayOrder": [
-            { "IsNew": true, "Id": "51c8a014-dcc6-4714-a843-0295f9718c7a" },
-            { "Id": "6969e4a2-c3fe-4d6b-ac3a-f24c1f85acd1" },
-            { "Id": "a406080b-a868-4b40-8033-26c99c2e0323" }
+            {
+                "IsNew": true,
+                "Id": "51c8a014-dcc6-4714-a843-0295f9718c7a"
+            },
+            {
+                "Id": "6969e4a2-c3fe-4d6b-ac3a-f24c1f85acd1"
+            },
+            {
+                "Id": "a406080b-a868-4b40-8033-26c99c2e0323"
+            }
         ],
         "Entitlements": ["H2_LEGACY_STANDARD"],
         "LastUpdate": "2021-04-20T12:25:00.5036282Z",

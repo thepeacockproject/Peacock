@@ -34,7 +34,11 @@
                 "_comment": "----- Eliminate competitors -----",
                 "Id": "61e7269c-1829-45a3-a485-7f7409624fc5",
                 "Category": "primary",
-                "OnActive": { "IfCompleted": { "Visible": false } },
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
                 "ExcludeFromScoring": true,
                 "ForceShowOnLoadingScreen": true,
                 "Image": "Images/Contracts/Escalation/ContractEscalation_Ancestral_SmoothSnake_Obj_Contestants.jpg",
@@ -48,7 +52,11 @@
                 "Type": "statemachine",
                 "Definition": {
                     "States": {
-                        "Start": { "GameStarted": { "Transition": "Success" } }
+                        "Start": {
+                            "GameStarted": {
+                                "Transition": "Success"
+                            }
+                        }
                     }
                 }
             },
@@ -56,7 +64,11 @@
                 "_comment": "----- Do not eliminate client -----",
                 "Id": "d9fd8184-8b4b-419c-91f7-367db1701101",
                 "Category": "primary",
-                "OnActive": { "IfCompleted": { "Visible": false } },
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
                 "ExcludeFromScoring": true,
                 "ForceShowOnLoadingScreen": true,
                 "Image": "Images/Contracts/Escalation/ContractEscalation_Ancestral_SmoothSnake_Obj_Allies.jpg",
@@ -71,7 +83,11 @@
                 "Type": "statemachine",
                 "Definition": {
                     "States": {
-                        "Start": { "GameStarted": { "Transition": "Success" } }
+                        "Start": {
+                            "GameStarted": {
+                                "Transition": "Success"
+                            }
+                        }
                     }
                 }
             },
@@ -80,7 +96,11 @@
                 "Id": "ffd0b576-5c6d-4842-b36f-6b9250ba7041",
                 "Primary": true,
                 "IgnoreIfInactive": true,
-                "OnInactive": { "IfCompleted": { "State": "Completed" } },
+                "OnInactive": {
+                    "IfCompleted": {
+                        "State": "Completed"
+                    }
+                },
                 "Activation": {
                     "$eq": [
                         "$a309b797-f88e-44e1-935b-86fac32d91ae",
@@ -100,14 +120,22 @@
                 "Category": "Condition",
                 "ExcludeFromScoring": true,
                 "OnActive": {
-                    "IfInProgress": { "Visible": false },
-                    "IfCompleted": { "Visible": false },
-                    "IfFailed": { "Visible": false }
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    }
                 },
                 "ObjectiveType": "custom",
                 "Type": "statemachine",
                 "Definition": {
-                    "Context": { "Targets": [] },
+                    "Context": {
+                        "Targets": []
+                    },
                     "States": {
                         "Start": {
                             "TargetPicked": {
@@ -128,7 +156,11 @@
                 "Id": "ab90827f-98c0-4af9-8886-aa7b8f9d06a3",
                 "Primary": true,
                 "IgnoreIfInactive": true,
-                "OnInactive": { "IfCompleted": { "State": "Completed" } },
+                "OnInactive": {
+                    "IfCompleted": {
+                        "State": "Completed"
+                    }
+                },
                 "Activation": {
                     "$eq": [
                         "$f36a331f-ff8c-4e1c-82bb-70abaa87decc",
@@ -148,14 +180,22 @@
                 "Category": "Condition",
                 "ExcludeFromScoring": true,
                 "OnActive": {
-                    "IfInProgress": { "Visible": false },
-                    "IfCompleted": { "Visible": false },
-                    "IfFailed": { "Visible": false }
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    }
                 },
                 "ObjectiveType": "custom",
                 "Type": "statemachine",
                 "Definition": {
-                    "Context": { "Targets": [] },
+                    "Context": {
+                        "Targets": []
+                    },
                     "States": {
                         "Start": {
                             "TargetPicked": {
@@ -176,7 +216,11 @@
                 "Id": "3def1624-7d9c-4f9e-bf78-eadaf3a1ef63",
                 "Primary": true,
                 "IgnoreIfInactive": true,
-                "OnInactive": { "IfCompleted": { "State": "Completed" } },
+                "OnInactive": {
+                    "IfCompleted": {
+                        "State": "Completed"
+                    }
+                },
                 "Activation": {
                     "$eq": [
                         "$d07064c2-6b2c-4212-8c3f-34817fc0e1ba",
@@ -196,14 +240,22 @@
                 "Category": "Condition",
                 "ExcludeFromScoring": true,
                 "OnActive": {
-                    "IfInProgress": { "Visible": false },
-                    "IfCompleted": { "Visible": false },
-                    "IfFailed": { "Visible": false }
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    }
                 },
                 "ObjectiveType": "custom",
                 "Type": "statemachine",
                 "Definition": {
-                    "Context": { "Targets": [] },
+                    "Context": {
+                        "Targets": []
+                    },
                     "States": {
                         "Start": {
                             "TargetPicked": {
@@ -224,7 +276,11 @@
                 "Id": "a919a4e6-d5ce-468f-82f0-0bec501ca4c4",
                 "Primary": true,
                 "IgnoreIfInactive": true,
-                "OnInactive": { "IfCompleted": { "State": "Completed" } },
+                "OnInactive": {
+                    "IfCompleted": {
+                        "State": "Completed"
+                    }
+                },
                 "Activation": {
                     "$eq": [
                         "$ac27c760-7d51-4fca-97bd-73817c0e57ee",
@@ -244,14 +300,22 @@
                 "Category": "Condition",
                 "ExcludeFromScoring": true,
                 "OnActive": {
-                    "IfInProgress": { "Visible": false },
-                    "IfCompleted": { "Visible": false },
-                    "IfFailed": { "Visible": false }
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    }
                 },
                 "ObjectiveType": "custom",
                 "Type": "statemachine",
                 "Definition": {
-                    "Context": { "Targets": [] },
+                    "Context": {
+                        "Targets": []
+                    },
                     "States": {
                         "Start": {
                             "TargetPicked": {
@@ -273,9 +337,15 @@
                 "Category": "secondary",
                 "IgnoreIfInactive": true,
                 "OnInactive": {
-                    "IfInProgress": { "Visible": false },
-                    "IfCompleted": { "Visible": false },
-                    "IfFailed": { "Visible": false }
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    }
                 },
                 "Activation": {
                     "$eq": [
@@ -294,12 +364,18 @@
                 "ObjectiveType": "custom",
                 "Type": "statemachine",
                 "Definition": {
-                    "display": { "iconType": 17 },
+                    "display": {
+                        "iconType": 17
+                    },
                     "Context": {
                         "Allies": ["20bed705-9f0f-4a3e-ad07-2a7ef3938868"]
                     },
                     "States": {
-                        "Start": { "ContractEnd": { "Transition": "Success" } }
+                        "Start": {
+                            "ContractEnd": {
+                                "Transition": "Success"
+                            }
+                        }
                     }
                 }
             },
@@ -309,9 +385,15 @@
                 "Primary": true,
                 "ExcludeFromScoring": true,
                 "OnActive": {
-                    "IfInProgress": { "Visible": false },
-                    "IfFailed": { "Visible": false },
-                    "IfCompleted": { "Visible": false }
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    }
                 },
                 "Activation": {
                     "$eq": [
@@ -329,9 +411,15 @@
                 "ObjectiveType": "custom",
                 "Type": "statemachine",
                 "Definition": {
-                    "Context": { "Active": false },
+                    "Context": {
+                        "Active": false
+                    },
                     "States": {
-                        "Start": { "-": { "Transition": "Success" } },
+                        "Start": {
+                            "-": {
+                                "Transition": "Success"
+                            }
+                        },
                         "Success": {
                             "ClientPicked": {
                                 "Condition": {
@@ -340,12 +428,16 @@
                                         "20bed705-9f0f-4a3e-ad07-2a7ef3938868"
                                     ]
                                 },
-                                "Actions": { "$set": ["Active", true] }
+                                "Actions": {
+                                    "$set": ["Active", true]
+                                }
                             },
                             "Kill": {
                                 "Condition": {
                                     "$and": [
-                                        { "$eq": ["$.Active", true] },
+                                        {
+                                            "$eq": ["$.Active", true]
+                                        },
                                         {
                                             "$eq": [
                                                 "$Value.RepositoryId",
@@ -366,14 +458,22 @@
                 "Category": "Condition",
                 "ExcludeFromScoring": true,
                 "OnActive": {
-                    "IfInProgress": { "Visible": false },
-                    "IfCompleted": { "Visible": false },
-                    "IfFailed": { "Visible": false }
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    }
                 },
                 "ObjectiveType": "custom",
                 "Type": "statemachine",
                 "Definition": {
-                    "Context": { "Targets": [] },
+                    "Context": {
+                        "Targets": []
+                    },
                     "States": {
                         "Start": {
                             "ClientPicked": {
@@ -395,9 +495,15 @@
                 "Category": "secondary",
                 "IgnoreIfInactive": true,
                 "OnInactive": {
-                    "IfInProgress": { "Visible": false },
-                    "IfCompleted": { "Visible": false },
-                    "IfFailed": { "Visible": false }
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    }
                 },
                 "Activation": {
                     "$eq": [
@@ -416,12 +522,18 @@
                 "ObjectiveType": "custom",
                 "Type": "statemachine",
                 "Definition": {
-                    "display": { "iconType": 17 },
+                    "display": {
+                        "iconType": 17
+                    },
                     "Context": {
                         "Allies": ["defc9d36-a84d-46b9-be2c-f3a435287e96"]
                     },
                     "States": {
-                        "Start": { "ContractEnd": { "Transition": "Success" } }
+                        "Start": {
+                            "ContractEnd": {
+                                "Transition": "Success"
+                            }
+                        }
                     }
                 }
             },
@@ -431,9 +543,15 @@
                 "Primary": true,
                 "ExcludeFromScoring": true,
                 "OnActive": {
-                    "IfInProgress": { "Visible": false },
-                    "IfFailed": { "Visible": false },
-                    "IfCompleted": { "Visible": false }
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    }
                 },
                 "Activation": {
                     "$eq": [
@@ -451,9 +569,15 @@
                 "ObjectiveType": "custom",
                 "Type": "statemachine",
                 "Definition": {
-                    "Context": { "Active": false },
+                    "Context": {
+                        "Active": false
+                    },
                     "States": {
-                        "Start": { "-": { "Transition": "Success" } },
+                        "Start": {
+                            "-": {
+                                "Transition": "Success"
+                            }
+                        },
                         "Success": {
                             "ClientPicked": {
                                 "Condition": {
@@ -462,12 +586,16 @@
                                         "defc9d36-a84d-46b9-be2c-f3a435287e96"
                                     ]
                                 },
-                                "Actions": { "$set": ["Active", true] }
+                                "Actions": {
+                                    "$set": ["Active", true]
+                                }
                             },
                             "Kill": {
                                 "Condition": {
                                     "$and": [
-                                        { "$eq": ["$.Active", true] },
+                                        {
+                                            "$eq": ["$.Active", true]
+                                        },
                                         {
                                             "$eq": [
                                                 "$Value.RepositoryId",
@@ -488,14 +616,22 @@
                 "Category": "Condition",
                 "ExcludeFromScoring": true,
                 "OnActive": {
-                    "IfInProgress": { "Visible": false },
-                    "IfCompleted": { "Visible": false },
-                    "IfFailed": { "Visible": false }
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    }
                 },
                 "ObjectiveType": "custom",
                 "Type": "statemachine",
                 "Definition": {
-                    "Context": { "Targets": [] },
+                    "Context": {
+                        "Targets": []
+                    },
                     "States": {
                         "Start": {
                             "ClientPicked": {
@@ -517,9 +653,15 @@
                 "Category": "secondary",
                 "IgnoreIfInactive": true,
                 "OnInactive": {
-                    "IfInProgress": { "Visible": false },
-                    "IfCompleted": { "Visible": false },
-                    "IfFailed": { "Visible": false }
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    }
                 },
                 "Activation": {
                     "$eq": [
@@ -538,12 +680,18 @@
                 "ObjectiveType": "custom",
                 "Type": "statemachine",
                 "Definition": {
-                    "display": { "iconType": 17 },
+                    "display": {
+                        "iconType": 17
+                    },
                     "Context": {
                         "Allies": ["0dd81be5-208f-48d9-81fa-8439b9dfa095"]
                     },
                     "States": {
-                        "Start": { "ContractEnd": { "Transition": "Success" } }
+                        "Start": {
+                            "ContractEnd": {
+                                "Transition": "Success"
+                            }
+                        }
                     }
                 }
             },
@@ -553,9 +701,15 @@
                 "Primary": true,
                 "ExcludeFromScoring": true,
                 "OnActive": {
-                    "IfInProgress": { "Visible": false },
-                    "IfFailed": { "Visible": false },
-                    "IfCompleted": { "Visible": false }
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    }
                 },
                 "Activation": {
                     "$eq": [
@@ -573,9 +727,15 @@
                 "ObjectiveType": "custom",
                 "Type": "statemachine",
                 "Definition": {
-                    "Context": { "Active": false },
+                    "Context": {
+                        "Active": false
+                    },
                     "States": {
-                        "Start": { "-": { "Transition": "Success" } },
+                        "Start": {
+                            "-": {
+                                "Transition": "Success"
+                            }
+                        },
                         "Success": {
                             "ClientPicked": {
                                 "Condition": {
@@ -584,12 +744,16 @@
                                         "0dd81be5-208f-48d9-81fa-8439b9dfa095"
                                     ]
                                 },
-                                "Actions": { "$set": ["Active", true] }
+                                "Actions": {
+                                    "$set": ["Active", true]
+                                }
                             },
                             "Kill": {
                                 "Condition": {
                                     "$and": [
-                                        { "$eq": ["$.Active", true] },
+                                        {
+                                            "$eq": ["$.Active", true]
+                                        },
                                         {
                                             "$eq": [
                                                 "$Value.RepositoryId",
@@ -610,14 +774,22 @@
                 "Category": "Condition",
                 "ExcludeFromScoring": true,
                 "OnActive": {
-                    "IfInProgress": { "Visible": false },
-                    "IfCompleted": { "Visible": false },
-                    "IfFailed": { "Visible": false }
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    }
                 },
                 "ObjectiveType": "custom",
                 "Type": "statemachine",
                 "Definition": {
-                    "Context": { "Targets": [] },
+                    "Context": {
+                        "Targets": []
+                    },
                     "States": {
                         "Start": {
                             "ClientPicked": {
@@ -639,9 +811,15 @@
                 "Category": "secondary",
                 "IgnoreIfInactive": true,
                 "OnInactive": {
-                    "IfInProgress": { "Visible": false },
-                    "IfCompleted": { "Visible": false },
-                    "IfFailed": { "Visible": false }
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    }
                 },
                 "Activation": {
                     "$eq": [
@@ -660,12 +838,18 @@
                 "ObjectiveType": "custom",
                 "Type": "statemachine",
                 "Definition": {
-                    "display": { "iconType": 17 },
+                    "display": {
+                        "iconType": 17
+                    },
                     "Context": {
                         "Allies": ["7b02fa28-081e-420a-91ae-45726306573c"]
                     },
                     "States": {
-                        "Start": { "ContractEnd": { "Transition": "Success" } }
+                        "Start": {
+                            "ContractEnd": {
+                                "Transition": "Success"
+                            }
+                        }
                     }
                 }
             },
@@ -675,11 +859,21 @@
                 "Primary": true,
                 "ExcludeFromScoring": true,
                 "OnActive": {
-                    "IfInProgress": { "Visible": false },
-                    "IfFailed": { "Visible": false },
-                    "IfCompleted": { "Visible": false }
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    }
                 },
-                "OnInactive": { "IfFailed": { "State": "Completed" } },
+                "OnInactive": {
+                    "IfFailed": {
+                        "State": "Completed"
+                    }
+                },
                 "Activation": {
                     "$eq": [
                         "$a7a70d0a-0080-4a94-85b7-59449a584843",
@@ -696,9 +890,15 @@
                 "ObjectiveType": "custom",
                 "Type": "statemachine",
                 "Definition": {
-                    "Context": { "Active": false },
+                    "Context": {
+                        "Active": false
+                    },
                     "States": {
-                        "Start": { "-": { "Transition": "Success" } },
+                        "Start": {
+                            "-": {
+                                "Transition": "Success"
+                            }
+                        },
                         "Success": {
                             "ClientPicked": {
                                 "Condition": {
@@ -707,12 +907,16 @@
                                         "7b02fa28-081e-420a-91ae-45726306573c"
                                     ]
                                 },
-                                "Actions": { "$set": ["Active", true] }
+                                "Actions": {
+                                    "$set": ["Active", true]
+                                }
                             },
                             "Kill": {
                                 "Condition": {
                                     "$and": [
-                                        { "$eq": ["$.Active", true] },
+                                        {
+                                            "$eq": ["$.Active", true]
+                                        },
                                         {
                                             "$eq": [
                                                 "$Value.RepositoryId",
@@ -733,14 +937,22 @@
                 "Category": "Condition",
                 "ExcludeFromScoring": true,
                 "OnActive": {
-                    "IfInProgress": { "Visible": false },
-                    "IfCompleted": { "Visible": false },
-                    "IfFailed": { "Visible": false }
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    }
                 },
                 "ObjectiveType": "custom",
                 "Type": "statemachine",
                 "Definition": {
-                    "Context": { "Targets": [] },
+                    "Context": {
+                        "Targets": []
+                    },
                     "States": {
                         "Start": {
                             "ClientPicked": {
@@ -761,7 +973,11 @@
                 "Id": "62982ae4-4779-4302-9736-343d405c3baf",
                 "Primary": true,
                 "IgnoreIfInactive": true,
-                "OnInactive": { "IfCompleted": { "State": "Completed" } },
+                "OnInactive": {
+                    "IfCompleted": {
+                        "State": "Completed"
+                    }
+                },
                 "Activation": {
                     "$eq": [
                         "$1e585599-bb5d-4059-93db-ef9a3900fe5f",
@@ -806,7 +1022,9 @@
                         "Start": {
                             "-": {
                                 "Transition": "Active",
-                                "Actions": { "$inc": "Count" }
+                                "Actions": {
+                                    "$inc": "Count"
+                                }
                             }
                         },
                         "Active": {
@@ -823,7 +1041,9 @@
                                             }
                                         }
                                     },
-                                    "Actions": { "$inc": "Count" }
+                                    "Actions": {
+                                        "$inc": "Count"
+                                    }
                                 },
                                 {
                                     "Condition": {
@@ -842,16 +1062,24 @@
                 "Category": "Condition",
                 "ExcludeFromScoring": true,
                 "OnActive": {
-                    "IfInProgress": { "Visible": false },
-                    "IfCompleted": { "Visible": false },
-                    "IfFailed": { "Visible": false }
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    }
                 },
                 "ObjectiveType": "custom",
                 "Type": "statemachine",
                 "Definition": {
                     "States": {
                         "Start": {
-                            "AnyContestantTargets": { "Transition": "Success" }
+                            "AnyContestantTargets": {
+                                "Transition": "Success"
+                            }
                         }
                     }
                 }
@@ -874,16 +1102,41 @@
         "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
         "IsPublished": true,
         "GroupObjectiveDisplayOrder": [
-            { "Id": "61e7269c-1829-45a3-a485-7f7409624fc5", "IsNew": true },
-            { "Id": "d9fd8184-8b4b-419c-91f7-367db1701101" },
-            { "Id": "ffd0b576-5c6d-4842-b36f-6b9250ba7041", "IsNew": true },
-            { "Id": "ab90827f-98c0-4af9-8886-aa7b8f9d06a3", "IsNew": true },
-            { "Id": "3def1624-7d9c-4f9e-bf78-eadaf3a1ef63", "IsNew": true },
-            { "Id": "a919a4e6-d5ce-468f-82f0-0bec501ca4c4", "IsNew": true },
-            { "Id": "a243664c-79b9-4181-b814-82e7e82dd77c" },
-            { "Id": "799181b6-b85e-4d60-bd76-d746b43ae817" },
-            { "Id": "8a2616e7-e148-4212-9b4d-5131e94a7fac" },
-            { "Id": "887fe606-64e5-499b-a953-ba78096c6c19" }
+            {
+                "Id": "61e7269c-1829-45a3-a485-7f7409624fc5",
+                "IsNew": true
+            },
+            {
+                "Id": "d9fd8184-8b4b-419c-91f7-367db1701101"
+            },
+            {
+                "Id": "ffd0b576-5c6d-4842-b36f-6b9250ba7041",
+                "IsNew": true
+            },
+            {
+                "Id": "ab90827f-98c0-4af9-8886-aa7b8f9d06a3",
+                "IsNew": true
+            },
+            {
+                "Id": "3def1624-7d9c-4f9e-bf78-eadaf3a1ef63",
+                "IsNew": true
+            },
+            {
+                "Id": "a919a4e6-d5ce-468f-82f0-0bec501ca4c4",
+                "IsNew": true
+            },
+            {
+                "Id": "a243664c-79b9-4181-b814-82e7e82dd77c"
+            },
+            {
+                "Id": "799181b6-b85e-4d60-bd76-d746b43ae817"
+            },
+            {
+                "Id": "8a2616e7-e148-4212-9b4d-5131e94a7fac"
+            },
+            {
+                "Id": "887fe606-64e5-499b-a953-ba78096c6c19"
+            }
         ],
         "Entitlements": [],
         "PublicId": "033435740747",

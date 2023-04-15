@@ -29,9 +29,16 @@
                 "ExcludeFromScoring": true,
                 "Definition": {
                     "Scope": "hit",
-                    "Context": { "KilledActors": [], "Targets": [] },
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": []
+                    },
                     "States": {
-                        "Start": { "-": { "Transition": "Success" } },
+                        "Start": {
+                            "-": {
+                                "Transition": "Success"
+                            }
+                        },
                         "Success": {
                             "Pacify": [
                                 {
@@ -71,7 +78,9 @@
                 "Id": "f7bcc857-2698-437d-acfb-fe07e41cd3eb",
                 "Category": "primary",
                 "ObjectiveType": "customkill",
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_PROTEA_OBJ_1" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_PROTEA_OBJ_1"
+                },
                 "BriefingText": "$loc UI_CONTRACT_PROTEA_OBJ_1",
                 "Type": "statemachine",
                 "Definition": {
@@ -140,10 +149,14 @@
                                     "Transition": "Failure"
                                 }
                             ],
-                            "LeftBuilding1": { "Transition": "Start" }
+                            "LeftBuilding1": {
+                                "Transition": "Start"
+                            }
                         },
                         "Start": {
-                            "IsInBuilding1": { "Transition": "InBuilding1" },
+                            "IsInBuilding1": {
+                                "Transition": "InBuilding1"
+                            },
                             "Kill": [
                                 {
                                     "Condition": {
@@ -163,7 +176,9 @@
                 "Id": "6875ebc9-49c3-44f5-a986-75277e2d2ef5",
                 "Category": "primary",
                 "ObjectiveType": "customkill",
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_PROTEA_OBJ_2" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_PROTEA_OBJ_2"
+                },
                 "BriefingText": "$loc UI_CONTRACT_PROTEA_OBJ_2",
                 "Image": "images/actors/actor_06fb2890-e820-45f2-aef3-0cb7d0528ee1_3_0_0.jpg",
                 "Type": "statemachine",
@@ -233,10 +248,14 @@
                                     "Transition": "Failure"
                                 }
                             ],
-                            "LeftBuilding2": { "Transition": "Start" }
+                            "LeftBuilding2": {
+                                "Transition": "Start"
+                            }
                         },
                         "Start": {
-                            "IsInBuilding2": { "Transition": "InBuilding2" },
+                            "IsInBuilding2": {
+                                "Transition": "InBuilding2"
+                            },
                             "Kill": [
                                 {
                                     "Condition": {
@@ -256,7 +275,9 @@
                 "Id": "31c9c9dc-c43b-4f2d-8071-385dc251cbfe",
                 "Category": "primary",
                 "ObjectiveType": "customkill",
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_PROTEA_OBJ_3" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_PROTEA_OBJ_3"
+                },
                 "BriefingText": "$loc UI_CONTRACT_PROTEA_OBJ_3",
                 "Image": "images/actors/actor_6edb224d-0970-4d1d-8740-5e86d1e7af59_0_0_0.jpg",
                 "Type": "statemachine",
@@ -298,10 +319,14 @@
                                     "Transition": "Failure"
                                 }
                             ],
-                            "LeftBuilding3": { "Transition": "Start" }
+                            "LeftBuilding3": {
+                                "Transition": "Start"
+                            }
                         },
                         "Start": {
-                            "IsInBuilding3": { "Transition": "InBuilding3" },
+                            "IsInBuilding3": {
+                                "Transition": "InBuilding3"
+                            },
                             "Kill": [
                                 {
                                     "Condition": {

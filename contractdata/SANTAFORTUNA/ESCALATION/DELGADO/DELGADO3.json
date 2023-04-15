@@ -31,7 +31,13 @@
                 },
                 "Type": "statemachine",
                 "Definition": {
-                    "States": { "Start": { "-": { "Transition": "Success" } } }
+                    "States": {
+                        "Start": {
+                            "-": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
                 }
             },
             {
@@ -52,7 +58,13 @@
                 },
                 "Type": "statemachine",
                 "Definition": {
-                    "States": { "Start": { "-": { "Transition": "Success" } } }
+                    "States": {
+                        "Start": {
+                            "-": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
                 }
             },
             {
@@ -86,7 +98,9 @@
                                 },
                                 "Transition": "Success"
                             },
-                            "MatadorRetrieved": { "Transition": "Success" }
+                            "MatadorRetrieved": {
+                                "Transition": "Success"
+                            }
                         }
                     }
                 }
@@ -129,7 +143,11 @@
                 "Id": "39949b30-8fad-4230-80cd-223eea36c07e",
                 "Category": "primary",
                 "IgnoreIfInactive": true,
-                "OnInactive": { "IfFailed": { "Visible": false } },
+                "OnInactive": {
+                    "IfFailed": {
+                        "Visible": false
+                    }
+                },
                 "Activation": {
                     "$eq": [
                         "$a07d0133-8ca5-4c51-9da1-434d39e38141",
@@ -339,7 +357,9 @@
                                 },
                                 "Transition": "Success"
                             },
-                            "MatadorRetrieved": { "Transition": "Success" }
+                            "MatadorRetrieved": {
+                                "Transition": "Success"
+                            }
                         }
                     }
                 }
@@ -373,7 +393,11 @@
                         "Targets": ["d3a39873-f0da-4716-aaeb-3cdad45d7c0e"]
                     },
                     "States": {
-                        "Start": { "-": { "Transition": "WaitForPickup" } },
+                        "Start": {
+                            "-": {
+                                "Transition": "WaitForPickup"
+                            }
+                        },
                         "WaitForPickup": {
                             "ItemPickedUp": {
                                 "Condition": {
@@ -387,7 +411,9 @@
                         },
                         "KillCountdown": {
                             "$timer": {
-                                "Condition": { "$after": 80 },
+                                "Condition": {
+                                    "$after": 80
+                                },
                                 "Transition": "Failure"
                             },
                             "Kill": [
@@ -435,7 +461,9 @@
                                 },
                                 "Transition": "Success"
                             },
-                            "MatadorRetrieved": { "Transition": "Success" },
+                            "MatadorRetrieved": {
+                                "Transition": "Success"
+                            },
                             "BodyHidden": {
                                 "Condition": {
                                     "$eq": [
