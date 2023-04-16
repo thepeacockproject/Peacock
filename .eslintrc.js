@@ -35,6 +35,8 @@ module.exports = {
         project: [
             // server full
             "./tsconfig.json",
+            // plugins
+            "./plugins/tsconfig.json",
             // web UI
             "./webui/tsconfig.json",
             // tests

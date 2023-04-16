@@ -10,6 +10,7 @@
         "prettier": "pprettier --write \"**/*.{js,json,ts,md,tsx,css,mjs,html}\"",
         "prettier:check": "pprettier --check \"**/*.{js,json,ts,md,tsx,css,mjs,html}\"",
         "build": "yarn webui:build && node packaging/build.mjs",
+        "build-plugin": "tsc --project ./plugins/tsconfig.json",
         "typecheck-ws": "tsc",
         "typecheck": "yarn workspaces foreach -A run typecheck-ws",
         "lint": "eslint --format=pretty .",
