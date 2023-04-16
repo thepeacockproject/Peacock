@@ -652,6 +652,7 @@ menuDataRouter.get(
                     controller.challengeService.getChallengesForContract(
                         contractId,
                         req.gameVersion,
+                        req.jwt.unique_name,
                         // TODO: Should a difficulty be passed here?
                     ),
                 )

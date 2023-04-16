@@ -60,6 +60,7 @@ import {
 import assert from "assert"
 import { getVersionedConfig } from "../configSwizzleManager"
 import { SyncHook } from "../hooksImpl"
+import { getUserEscalationProgress } from "../contracts/escalations/escalationService"
 
 type ChallengeDefinitionLike = {
     Context?: Record<string, unknown>
@@ -579,18 +580,33 @@ export class ChallengeService extends ChallengeRegistry {
     getChallengesForContract(
         contractId: string,
         gameVersion: GameVersion,
+        userId: string,
         difficulty = 4,
     ): GroupIndexedChallengeLists {
+        const userData = getUserData(userId, gameVersion)
         const contract = this.controller.resolveContract(contractId, true)
+
+        const level =
+            contract.Metadata.Type === "arcade" &&
+            contract.Metadata.Id === contractId
+                ? // contractData, being a group contract, has the same Id as the input id parameter.
+                  // This means that we are requesting the challenges for the next level of the group
+                  this.controller.resolveContract(
+                      contract.Metadata.GroupDefinition.Order[
+                        getUserEscalationProgress(userData, contractId) - 1
+                    ],
+                      false,
+                  )
+                : this.controller.resolveContract(contractId, false)
 
         assert.ok(contract)
 
-        const contractParentLocation = getSubLocationFromContract(
-            contract,
+        const levelParentLocation = getSubLocationFromContract(
+            level,
             gameVersion,
         )?.Properties.ParentLocation
 
-        assert.ok(contractParentLocation)
+        assert.ok(levelParentLocation)
 
         return this.getGroupedChallengeLists(
             {
@@ -601,11 +617,11 @@ export class ChallengeService extends ChallengeRegistry {
                         "aee6a16f-6525-4d63-a37f-225e293c6118" &&
                     gameVersion !== "h1"
                         ? "LOCATION_ICA_FACILITY_SHIP"
-                        : contract.Metadata.Location,
+                        : level.Metadata.Location,
                 isFeatured: contract.Metadata.Type === "featured",
                 difficulty,
             },
-            contractParentLocation,
+            levelParentLocation,
             gameVersion,
         )
     }
@@ -653,8 +669,9 @@ export class ChallengeService extends ChallengeRegistry {
         const contractJson = this.controller.resolveContract(contractId, true)
 
         const challengeGroups = this.getChallengesForContract(
-            contractJson.Metadata.Id,
+            contractId,
             gameVersion,
+            session.userId,
             session.difficulty,
         )
 
@@ -839,16 +856,27 @@ export class ChallengeService extends ChallengeRegistry {
         userId: string,
         difficulty = 4,
     ): CompiledChallengeTreeCategory[] {
+        const userData = getUserData(userId, gameVersion)
+
         const contractData = this.controller.resolveContract(contractId, true)
+        const levelData =
+            contractData.Metadata.Type === "arcade" &&
+            contractData.Metadata.Id === contractId
+                ? // contractData, being a group contract, has the same Id as the input id parameter.
+                  // This means that we are requesting the challenges for the next level of the group
+                  this.controller.resolveContract(
+                      contractData.Metadata.GroupDefinition.Order[
+                          getUserEscalationProgress(userData, contractId) - 1
+                      ],
+                      false,
+                  )
+                : this.controller.resolveContract(contractId, false)
 
         if (!contractData) {
             return []
         }
 
-        const subLocation = getSubLocationFromContract(
-            contractData,
-            gameVersion,
-        )
+        const subLocation = getSubLocationFromContract(levelData, gameVersion)
 
         if (!subLocation) {
             log(
@@ -859,8 +887,9 @@ export class ChallengeService extends ChallengeRegistry {
         }
 
         const forContract = this.getChallengesForContract(
-            contractData.Metadata.Id,
+            levelData.Metadata.Id,
             gameVersion,
+            userId,
             difficulty,
         )
         return this.reBatchIntoSwitchedData(

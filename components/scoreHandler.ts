@@ -598,15 +598,17 @@ export async function missionEnd(
         writeUserData(req.jwt.unique_name, req.gameVersion)
     }
 
+    const levelData = controller.resolveContract(sessionDetails.contractId, false)
+
     //Resolve the id of the parent location
     const subLocation = getSubLocationByName(
-        contractData.Metadata.Location,
+        levelData.Metadata.Location,
         req.gameVersion,
     )
 
     const locationParentId = subLocation
         ? subLocation.Properties?.ParentLocation
-        : contractData.Metadata.Location
+        : levelData.Metadata.Location
 
     if (!locationParentId) {
         res.status(404).send("location parentid not found")
@@ -635,6 +637,7 @@ export async function missionEnd(
         controller.challengeService.getChallengesForContract(
             sessionDetails.contractId,
             req.gameVersion,
+            req.jwt.unique_name,
             sessionDetails.difficulty,
         )
     const locationChallengeCompletion =
@@ -709,7 +712,7 @@ export async function missionEnd(
     const totalXpGain = calculateXpResult.xp + masteryXpGain
 
     const completionData = generateCompletionData(
-        contractData.Metadata.Location,
+        levelData.Metadata.Location,
         req.jwt.unique_name,
         req.gameVersion,
         contractData.Metadata.Type,
