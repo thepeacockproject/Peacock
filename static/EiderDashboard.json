@@ -90,9 +90,9 @@
                                 },
                                 {
                                     "$databinding menusystem/pages/hub/dashboard/data/data_dashboardtile_vr.json": {
-                                        "view": "menu3.basic.MenuTileTall",
-                                        "row": 0,
-                                        "col": 2,
+                                        "view": "menu3.basic.ButtonTileXXSmall",
+                                        "row": 3,
+                                        "col": 8,
                                         "nrows": 3,
                                         "ncols": 2,
                                         "data": {
@@ -323,8 +323,30 @@
                         "actions": {
                             "accept": [
                                 {
-                                    "start-contract": {
-                                        "contractid": "f8ec92c2-4fa2-471e-ae08-545480c746ee"
+                                    "set-menu-context": {
+                                        "value": {
+                                            "onpageopened": {
+                                                "set-selected": {
+                                                    "target": "PLANNING_BUTTON_PLAY"
+                                                },
+                                                "trigger-input": {
+                                                    "action": "accept"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "link": {
+                                        "page": "planning",
+                                        "args": {
+                                            "url": "planning",
+                                            "args": {
+                                                "contractid": "f8ec92c2-4fa2-471e-ae08-545480c746ee",
+                                                "resetescalation": false
+                                            },
+                                            "contractid": "f8ec92c2-4fa2-471e-ae08-545480c746ee"
+                                        }
                                     }
                                 }
                             ],

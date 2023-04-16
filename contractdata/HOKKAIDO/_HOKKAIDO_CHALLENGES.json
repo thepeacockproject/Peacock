@@ -6342,6 +6342,49 @@
             "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_ELUSIVE",
             "Challenges": [
                 {
+                    "Id": "f5a95cfe-94cb-4049-b07d-90f1f7a3e559",
+                    "Name": "UI_CHALLENGES_ET_MOSCOWMULE_TARGETDOWN_A_NAME",
+                    "ImageName": "images/challenges/elusive_target/et_moscowmule_targetdown_b.jpg",
+                    "Description": "UI_CHALLENGES_ET_MOSCOWMULE_TARGETDOWN_A_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+                    "Icon": "elusive",
+                    "LocationId": "LOCATION_HOKKAIDO",
+                    "ParentLocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "88836cf0-852e-4244-9aa3-90174467b5b1"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "elusive"],
+                    "InclusionData": {
+                        "ContractIds": ["1c0377f3-6e32-4563-8baf-9677cdb3bb60"]
+                    }
+                },
+                {
                     "Id": "b4e7ba05-21e4-4c2a-94da-66604339e9d3",
                     "Name": "UI_CHALLENGES_ET_MOSCOWMULE_TARGETDOWN_B_NAME",
                     "ImageName": "images/challenges/elusive_target/et_moscowmule_targetdown_a.jpg",
@@ -6614,10 +6657,10 @@
                     }
                 },
                 {
-                    "Id": "f5a95cfe-94cb-4049-b07d-90f1f7a3e559",
-                    "Name": "UI_CHALLENGES_ET_MOSCOWMULE_TARGETDOWN_A_NAME",
-                    "ImageName": "images/challenges/elusive_target/et_moscowmule_targetdown_b.jpg",
-                    "Description": "UI_CHALLENGES_ET_MOSCOWMULE_TARGETDOWN_A_DESC",
+                    "Id": "c14a4341-925c-4d55-9744-244c8926da89",
+                    "Name": "UI_CHALLENGES_ET_DIRTYOCTOPUS_TARGETDOWN_NAME",
+                    "ImageName": "images/challenges/elusive_target/et_dirtyoctopus_targetdown.jpg",
+                    "Description": "UI_CHALLENGES_ET_DIRTYOCTOPUS_TARGETDOWN_DESC",
                     "Rewards": {
                         "MasteryXP": 2000
                     },
@@ -6635,75 +6678,61 @@
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
-                        "Context": {},
                         "Scope": "session",
+                        "Context": {
+                            "KilledActors": [],
+                            "Targets": []
+                        },
                         "States": {
                             "Start": {
-                                "Kill": {
-                                    "Condition": {
-                                        "$eq": [
-                                            "$Value.RepositoryId",
-                                            "88836cf0-852e-4244-9aa3-90174467b5b1"
-                                        ]
-                                    },
-                                    "Transition": "Success"
-                                }
-                            }
-                        }
-                    },
-                    "Tags": ["story", "medium", "elusive"],
-                    "InclusionData": {
-                        "ContractIds": ["1c0377f3-6e32-4563-8baf-9677cdb3bb60"]
-                    }
-                },
-                {
-                    "Id": "ef3d5783-d838-48a3-90ee-0e8afbd76877",
-                    "Name": "UI_CHALLENGES_ELUSIVE_TARGET_HOKKAIDO_NAME",
-                    "ImageName": "images/challenges/profile_challenges/elusive_target_hokkaido.jpg",
-                    "Description": "UI_CHALLENGES_ELUSIVE_TARGET_HOKKAIDO_DESC",
-                    "Rewards": {
-                        "MasteryXP": 0
-                    },
-                    "Drops": ["TOKEN_OUTFIT_HERO_HOKKAIDOSUIT_ET_ALTERNATIVE"],
-                    "IsPlayable": false,
-                    "IsLocked": false,
-                    "HideProgression": false,
-                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
-                    "Icon": "elusive",
-                    "LocationId": "LOCATION_HOKKAIDO",
-                    "ParentLocationId": "LOCATION_PARENT_HOKKAIDO",
-                    "Type": "contract",
-                    "DifficultyLevels": [],
-                    "OrderIndex": 10000,
-                    "XpModifier": {},
-                    "RuntimeType": "Hit",
-                    "Definition": {
-                        "Context": {},
-                        "Scope": "session",
-                        "States": {
-                            "Start": {
-                                "ContractStart": {
-                                    "Condition": {
-                                        "$eq": [
-                                            "$Value.ContractType",
-                                            "elusive"
-                                        ]
-                                    },
-                                    "Transition": "State_ValidContract"
-                                }
-                            },
-                            "State_ValidContract": {
-                                "ContractEnd": [
+                                "TargetPicked": [
                                     {
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Targets",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        },
+                                        "Transition": "TargetPicked"
+                                    }
+                                ]
+                            },
+                            "TargetPicked": {
+                                "Kill": [
+                                    {
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "KilledActors",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$all": {
+                                                "in": "$.Targets",
+                                                "?": {
+                                                    "$any": {
+                                                        "in": "$.KilledActors",
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$.##"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
                                         "Transition": "Success"
                                     }
                                 ]
                             }
                         }
                     },
-                    "Tags": ["story", "elusive"],
+                    "Tags": ["story", "medium", "elusive"],
                     "InclusionData": {
-                        "ContractTypes": ["elusive"]
+                        "ContractIds": ["deace35f-ab6d-44c9-b1a6-98757e854f74"]
                     }
                 },
                 {
@@ -6931,85 +6960,6 @@
                         }
                     },
                     "Tags": ["story", "hard", "elusive"],
-                    "InclusionData": {
-                        "ContractIds": ["deace35f-ab6d-44c9-b1a6-98757e854f74"]
-                    }
-                },
-                {
-                    "Id": "c14a4341-925c-4d55-9744-244c8926da89",
-                    "Name": "UI_CHALLENGES_ET_DIRTYOCTOPUS_TARGETDOWN_NAME",
-                    "ImageName": "images/challenges/elusive_target/et_dirtyoctopus_targetdown.jpg",
-                    "Description": "UI_CHALLENGES_ET_DIRTYOCTOPUS_TARGETDOWN_DESC",
-                    "Rewards": {
-                        "MasteryXP": 2000
-                    },
-                    "Drops": [],
-                    "IsPlayable": false,
-                    "IsLocked": false,
-                    "HideProgression": false,
-                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
-                    "Icon": "elusive",
-                    "LocationId": "LOCATION_HOKKAIDO",
-                    "ParentLocationId": "LOCATION_PARENT_HOKKAIDO",
-                    "Type": "contract",
-                    "DifficultyLevels": [],
-                    "OrderIndex": 10000,
-                    "XpModifier": {},
-                    "RuntimeType": "Hit",
-                    "Definition": {
-                        "Scope": "session",
-                        "Context": {
-                            "KilledActors": [],
-                            "Targets": []
-                        },
-                        "States": {
-                            "Start": {
-                                "TargetPicked": [
-                                    {
-                                        "Actions": {
-                                            "$pushunique": [
-                                                "Targets",
-                                                "$Value.RepositoryId"
-                                            ]
-                                        },
-                                        "Transition": "TargetPicked"
-                                    }
-                                ]
-                            },
-                            "TargetPicked": {
-                                "Kill": [
-                                    {
-                                        "Actions": {
-                                            "$pushunique": [
-                                                "KilledActors",
-                                                "$Value.RepositoryId"
-                                            ]
-                                        }
-                                    },
-                                    {
-                                        "Condition": {
-                                            "$all": {
-                                                "in": "$.Targets",
-                                                "?": {
-                                                    "$any": {
-                                                        "in": "$.KilledActors",
-                                                        "?": {
-                                                            "$eq": [
-                                                                "$.#",
-                                                                "$.##"
-                                                            ]
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        },
-                                        "Transition": "Success"
-                                    }
-                                ]
-                            }
-                        }
-                    },
-                    "Tags": ["story", "medium", "elusive"],
                     "InclusionData": {
                         "ContractIds": ["deace35f-ab6d-44c9-b1a6-98757e854f74"]
                     }

@@ -554,7 +554,12 @@ export class ChallengeService extends ChallengeRegistry {
 
         // Rocky is the only parent location with no escalations. TODO: change this when pontus is added.
         // H2 & H1 have the escalation challenges in "feats"
-        if (location !== "LOCATION_PARENT_ROCKY" && gameVersion === "h3") {
+        if (
+            !["LOCATION_PARENT_SNUG", "LOCATION_PARENT_ROCKY"].includes(
+                location,
+            ) &&
+            gameVersion === "h3"
+        ) {
             this.getGroupedChallengesByLoc(
                 filter,
                 "GLOBAL_ESCALATION_CHALLENGES",

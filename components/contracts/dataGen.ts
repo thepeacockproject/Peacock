@@ -276,6 +276,20 @@ export function mapObjectives(
                         gameChangerObjectives.push(objective)
                     }
                 } else {
+                    if (!gameChangerProps.ObjectivesCategory) {
+                        gameChangerProps.ObjectivesCategory = (() => {
+                            let obj: MissionManifestObjective
+                            for (obj of gameChangerProps.Objectives) {
+                                if (obj.Category === "primary") return "primary"
+                                if (obj.Category === "secondary")
+                                    return "secondary"
+                            }
+                            // If we've not hit a primary or secondary objective, we've hit a condition
+                            // I'm not exactly sure if below follows what official does - AF
+                            return "condition"
+                        })()
+                    }
+
                     result.set(gamechangerId, {
                         Type: "gamechanger",
                         Properties: {

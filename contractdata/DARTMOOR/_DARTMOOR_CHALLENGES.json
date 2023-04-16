@@ -5574,10 +5574,10 @@
             "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_ELUSIVE",
             "Challenges": [
                 {
-                    "Id": "009da118-9bbd-4378-a3af-7eb6f65467e0",
-                    "Name": "UI_CHALLENGES_ET_BRAMBLE_RETRIEVEPAINTING_NAME",
-                    "ImageName": "images/challenges/elusive_target/et_bramble_retrievedpainting.jpg",
-                    "Description": "UI_CHALLENGES_ET_BRAMBLE_RETRIEVEPAINTING_DESC",
+                    "Id": "aed4cac6-0f11-4e74-9a7c-90748b3c7384",
+                    "Name": "UI_CHALLENGES_ET_BRAMBLE_TARGETDOWN_NAME",
+                    "ImageName": "images/challenges/elusive_target/et_bramble_targetdown.jpg",
+                    "Description": "UI_CHALLENGES_ET_BRAMBLE_TARGETDOWN_DESC",
                     "Rewards": {
                         "MasteryXP": 2000
                     },
@@ -5595,18 +5595,13 @@
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
-                        "Constants": {
-                            "Target": "49853af0-d50b-4959-a446-15429b1f4530"
-                        },
+                        "Context": {},
                         "Scope": "session",
                         "States": {
                             "Start": {
-                                "ItemPickedUp": {
+                                "Kill": {
                                     "Condition": {
-                                        "$eq": [
-                                            "$.Target",
-                                            "$Value.RepositoryId"
-                                        ]
+                                        "$eq": ["$Value.IsTarget", true]
                                     },
                                     "Transition": "Success"
                                 }
@@ -5848,10 +5843,10 @@
                     }
                 },
                 {
-                    "Id": "aed4cac6-0f11-4e74-9a7c-90748b3c7384",
-                    "Name": "UI_CHALLENGES_ET_BRAMBLE_TARGETDOWN_NAME",
-                    "ImageName": "images/challenges/elusive_target/et_bramble_targetdown.jpg",
-                    "Description": "UI_CHALLENGES_ET_BRAMBLE_TARGETDOWN_DESC",
+                    "Id": "009da118-9bbd-4378-a3af-7eb6f65467e0",
+                    "Name": "UI_CHALLENGES_ET_BRAMBLE_RETRIEVEPAINTING_NAME",
+                    "ImageName": "images/challenges/elusive_target/et_bramble_retrievedpainting.jpg",
+                    "Description": "UI_CHALLENGES_ET_BRAMBLE_RETRIEVEPAINTING_DESC",
                     "Rewards": {
                         "MasteryXP": 2000
                     },
@@ -5869,13 +5864,18 @@
                     "XpModifier": {},
                     "RuntimeType": "Hit",
                     "Definition": {
-                        "Context": {},
+                        "Constants": {
+                            "Target": "49853af0-d50b-4959-a446-15429b1f4530"
+                        },
                         "Scope": "session",
                         "States": {
                             "Start": {
-                                "Kill": {
+                                "ItemPickedUp": {
                                     "Condition": {
-                                        "$eq": ["$Value.IsTarget", true]
+                                        "$eq": [
+                                            "$.Target",
+                                            "$Value.RepositoryId"
+                                        ]
                                     },
                                     "Transition": "Success"
                                 }
@@ -5885,6 +5885,71 @@
                     "Tags": ["story", "medium", "elusive"],
                     "InclusionData": {
                         "ContractIds": ["92951377-419d-4c31-aa21-2a3f03ef82d0"]
+                    }
+                },
+                {
+                    "Id": "e33b5539-b15e-4652-be2b-f154f12336fd",
+                    "Name": "UI_CHALLENGES_ET_VESPER_TARGETDOWN_NAME",
+                    "ImageName": "images/challenges/elusive_target/et_vesper_targetdown.jpg",
+                    "Description": "UI_CHALLENGES_ET_VESPER_TARGETDOWN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+                    "Icon": "elusive",
+                    "LocationId": "LOCATION_ANCESTRAL_BULLDOG",
+                    "ParentLocationId": "LOCATION_PARENT_ANCESTRAL",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "RequiredTargetCount": 2
+                        },
+                        "Context": {
+                            "KilledTargetCount": 0
+                        },
+                        "ContextListeners": {
+                            "KilledTargetCount": {
+                                "type": "challengecounter",
+                                "count": "$.KilledTargetCount",
+                                "total": "$.RequiredTargetCount"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$Value.IsTarget", true]
+                                        },
+                                        "Actions": {
+                                            "$inc": "KilledTargetCount"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$.KilledTargetCount",
+                                                "$.RequiredTargetCount"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "elusive"],
+                    "InclusionData": {
+                        "ContractIds": ["1fcaff1b-7fa3-4b9f-a586-9c7a1689b48d"]
                     }
                 },
                 {
@@ -6112,71 +6177,6 @@
                         }
                     },
                     "Tags": ["story", "hard", "elusive"],
-                    "InclusionData": {
-                        "ContractIds": ["1fcaff1b-7fa3-4b9f-a586-9c7a1689b48d"]
-                    }
-                },
-                {
-                    "Id": "e33b5539-b15e-4652-be2b-f154f12336fd",
-                    "Name": "UI_CHALLENGES_ET_VESPER_TARGETDOWN_NAME",
-                    "ImageName": "images/challenges/elusive_target/et_vesper_targetdown.jpg",
-                    "Description": "UI_CHALLENGES_ET_VESPER_TARGETDOWN_DESC",
-                    "Rewards": {
-                        "MasteryXP": 2000
-                    },
-                    "Drops": [],
-                    "IsPlayable": false,
-                    "IsLocked": false,
-                    "HideProgression": false,
-                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
-                    "Icon": "elusive",
-                    "LocationId": "LOCATION_ANCESTRAL_BULLDOG",
-                    "ParentLocationId": "LOCATION_PARENT_ANCESTRAL",
-                    "Type": "contract",
-                    "DifficultyLevels": [],
-                    "OrderIndex": 10000,
-                    "XpModifier": {},
-                    "RuntimeType": "Hit",
-                    "Definition": {
-                        "Constants": {
-                            "RequiredTargetCount": 2
-                        },
-                        "Context": {
-                            "KilledTargetCount": 0
-                        },
-                        "ContextListeners": {
-                            "KilledTargetCount": {
-                                "type": "challengecounter",
-                                "count": "$.KilledTargetCount",
-                                "total": "$.RequiredTargetCount"
-                            }
-                        },
-                        "Scope": "session",
-                        "States": {
-                            "Start": {
-                                "Kill": [
-                                    {
-                                        "Condition": {
-                                            "$eq": ["$Value.IsTarget", true]
-                                        },
-                                        "Actions": {
-                                            "$inc": "KilledTargetCount"
-                                        }
-                                    },
-                                    {
-                                        "Condition": {
-                                            "$eq": [
-                                                "$.KilledTargetCount",
-                                                "$.RequiredTargetCount"
-                                            ]
-                                        },
-                                        "Transition": "Success"
-                                    }
-                                ]
-                            }
-                        }
-                    },
-                    "Tags": ["story", "medium", "elusive"],
                     "InclusionData": {
                         "ContractIds": ["1fcaff1b-7fa3-4b9f-a586-9c7a1689b48d"]
                     }

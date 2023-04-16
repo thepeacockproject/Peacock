@@ -14,21 +14,13 @@
                 "BriefingText": "We just got word two of our guys were taken out. I know these arrogant little assholes are behind it!",
                 "LongBriefingText": "We just got word two of our guys were taken out. I know these arrogant little assholes are behind it!",
                 "UpdateActivationWhileCompleted": true,
-                "OnActive": {
-                    "IfCompleted": {
-                        "Visible": false
-                    }
-                },
-                "HUDTemplate": {
-                    "display": "Eliminate two mansion staff."
-                },
+                "OnActive": { "IfCompleted": { "Visible": false } },
+                "HUDTemplate": { "display": "Eliminate two mansion staff." },
                 "Definition": {
                     "Scope": "session",
                     "States": {
                         "Start": {
-                            "AmbientChanged": {
-                                "Transition": "Success"
-                            }
+                            "AmbientChanged": { "Transition": "Success" }
                         }
                     }
                 }
@@ -44,11 +36,7 @@
                 "BriefingName": "Do not change starting disguise.",
                 "BriefingText": "We can't just sit around and do nothing Vincent! I'm going in!",
                 "LongBriefingText": "We can't just sit around and do nothing Vincent! I'm going in!",
-                "OnActive": {
-                    "IfCompleted": {
-                        "Visible": false
-                    }
-                },
+                "OnActive": { "IfCompleted": { "Visible": false } },
                 "UpdateActivationWhileCompleted": true,
                 "HUDTemplate": {
                     "display": "Do not change starting disguise."
@@ -57,20 +45,14 @@
                     "Scope": "session",
                     "States": {
                         "Start": {
-                            "AmbientChanged": {
-                                "Transition": "Success"
-                            }
+                            "AmbientChanged": { "Transition": "Success" }
                         },
                         "Success": {
-                            "Disguise": {
-                                "Transition": "PleaseDoFail"
-                            }
+                            "Disguise": { "Transition": "PleaseDoFail" }
                         },
                         "PleaseDoFail": {
                             "$timer": {
-                                "Condition": {
-                                    "$after": 2
-                                },
+                                "Condition": { "$after": 2 },
                                 "Transition": "Failure"
                             }
                         }
@@ -87,9 +69,7 @@
                         "data": "$($repository 9f6b010a-b4cc-4bda-8200-f132aaad03a4).Name"
                     }
                 },
-                "HUDTemplate": {
-                    "display": "Eliminate Lawrence Hunt"
-                },
+                "HUDTemplate": { "display": "Eliminate Lawrence Hunt" },
                 "Category": "primary",
                 "Definition": {
                     "Scope": "Hit",
@@ -149,9 +129,7 @@
                         "data": "$($repository 3036afda-a6ab-4830-9f9a-192bcd5d958d).Name"
                     }
                 },
-                "HUDTemplate": {
-                    "display": "Eliminate Jay Harris"
-                },
+                "HUDTemplate": { "display": "Eliminate Jay Harris" },
                 "Category": "primary",
                 "Definition": {
                     "Scope": "Hit",
@@ -215,22 +193,10 @@
         "TileImage": "images/contracts/escalation/contractescalation_rosebush.png",
         "Entitlements": ["LOCATION_ANCESTRAL"],
         "GroupObjectiveDisplayOrder": [
-            {
-                "Id": "a12ccd08-ee68-4e92-860e-fc63fba72d7f",
-                "IsNew": true
-            },
-            {
-                "Id": "118041f6-34e5-4f33-9d6f-19b70d555189",
-                "IsNew": true
-            },
-            {
-                "Id": "a2125ded-5ed2-4bb1-a7e1-fb5c2446d9c8",
-                "IsNew": true
-            },
-            {
-                "Id": "f80cd9dd-0908-4e91-8e78-7345d90f506c",
-                "IsNew": true
-            }
+            { "Id": "a12ccd08-ee68-4e92-860e-fc63fba72d7f", "IsNew": true },
+            { "Id": "118041f6-34e5-4f33-9d6f-19b70d555189", "IsNew": true },
+            { "Id": "a2125ded-5ed2-4bb1-a7e1-fb5c2446d9c8", "IsNew": true },
+            { "Id": "f80cd9dd-0908-4e91-8e78-7345d90f506c", "IsNew": true }
         ]
     }
 }

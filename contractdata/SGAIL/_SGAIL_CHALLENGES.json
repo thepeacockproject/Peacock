@@ -4300,14 +4300,14 @@
                     }
                 },
                 {
-                    "Id": "ba8cd104-b198-41e3-acba-f560f396dd97",
-                    "Name": "UI_CHALLENGES_ELUSIVE_TARGET_NORTHSEA_NAME",
-                    "ImageName": "images/challenges/profile_challenges/elusive_target_magpie.jpg",
-                    "Description": "UI_CHALLENGES_ELUSIVE_TARGET_NORTHSEA_DESC",
+                    "Id": "cc4e642f-4257-4a72-9f0a-84d040124f79",
+                    "Name": "UI_CHALLENGES_ET_SKITTLEBOMB_TARGETDOWN_NAME",
+                    "ImageName": "images/challenges/elusive_target/et_skittlebomb_targetdown.jpg",
+                    "Description": "UI_CHALLENGES_ET_SKITTLEBOMB_TARGETDOWN_DESC",
                     "Rewards": {
-                        "MasteryXP": 0
+                        "MasteryXP": 2000
                     },
-                    "Drops": ["TOKEN_OUTFIT_MAGPIE_ELUSIVE_SUIT"],
+                    "Drops": [],
                     "IsPlayable": false,
                     "IsLocked": false,
                     "HideProgression": false,
@@ -4325,28 +4325,18 @@
                         "Scope": "session",
                         "States": {
                             "Start": {
-                                "ContractStart": {
+                                "Kill": {
                                     "Condition": {
-                                        "$eq": [
-                                            "$Value.ContractType",
-                                            "elusive"
-                                        ]
+                                        "$eq": ["$Value.IsTarget", true]
                                     },
-                                    "Transition": "State_ValidContract"
+                                    "Transition": "Success"
                                 }
-                            },
-                            "State_ValidContract": {
-                                "ContractEnd": [
-                                    {
-                                        "Transition": "Success"
-                                    }
-                                ]
                             }
                         }
                     },
-                    "Tags": ["story", "elusive"],
+                    "Tags": ["story", "medium", "elusive"],
                     "InclusionData": {
-                        "ContractTypes": ["elusive"]
+                        "ContractIds": ["cbc86bed-51ce-4699-89d4-0ded8f200cbc"]
                     }
                 },
                 {
@@ -4574,46 +4564,6 @@
                         }
                     },
                     "Tags": ["story", "hard", "elusive"],
-                    "InclusionData": {
-                        "ContractIds": ["cbc86bed-51ce-4699-89d4-0ded8f200cbc"]
-                    }
-                },
-                {
-                    "Id": "cc4e642f-4257-4a72-9f0a-84d040124f79",
-                    "Name": "UI_CHALLENGES_ET_SKITTLEBOMB_TARGETDOWN_NAME",
-                    "ImageName": "images/challenges/elusive_target/et_skittlebomb_targetdown.jpg",
-                    "Description": "UI_CHALLENGES_ET_SKITTLEBOMB_TARGETDOWN_DESC",
-                    "Rewards": {
-                        "MasteryXP": 2000
-                    },
-                    "Drops": [],
-                    "IsPlayable": false,
-                    "IsLocked": false,
-                    "HideProgression": false,
-                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
-                    "Icon": "elusive",
-                    "LocationId": "LOCATION_NORTHSEA",
-                    "ParentLocationId": "LOCATION_PARENT_NORTHSEA",
-                    "Type": "contract",
-                    "DifficultyLevels": [],
-                    "OrderIndex": 10000,
-                    "XpModifier": {},
-                    "RuntimeType": "Hit",
-                    "Definition": {
-                        "Context": {},
-                        "Scope": "session",
-                        "States": {
-                            "Start": {
-                                "Kill": {
-                                    "Condition": {
-                                        "$eq": ["$Value.IsTarget", true]
-                                    },
-                                    "Transition": "Success"
-                                }
-                            }
-                        }
-                    },
-                    "Tags": ["story", "medium", "elusive"],
                     "InclusionData": {
                         "ContractIds": ["cbc86bed-51ce-4699-89d4-0ded8f200cbc"]
                     }

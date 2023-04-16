@@ -5708,14 +5708,14 @@
                     }
                 },
                 {
-                    "Id": "9c399562-230b-4964-9945-9ee07e888838",
-                    "Name": "UI_CHALLENGES_ELUSIVE_TARGET_PARIS_NAME",
-                    "ImageName": "images/challenges/profile_challenges/elusive_target_paris.jpg",
-                    "Description": "UI_CHALLENGES_ELUSIVE_TARGET_PARIS_DESC",
+                    "Id": "ae3ea1a9-57b5-45b7-ab5b-c13d1e0fd0c9",
+                    "Name": "UI_CHALLENGES_ET_MARGARITA_TARGETDOWN_NAME",
+                    "ImageName": "images/challenges/elusive_target/et_margarita_targetdown.jpg",
+                    "Description": "UI_CHALLENGES_ET_MARGARITA_TARGETDOWN_DESC",
                     "Rewards": {
-                        "MasteryXP": 0
+                        "MasteryXP": 2000
                     },
-                    "Drops": ["TOKEN_OUTFIT_HERO_PARISSUITANDGLOVES"],
+                    "Drops": [],
                     "IsPlayable": false,
                     "IsLocked": false,
                     "HideProgression": false,
@@ -5733,28 +5733,18 @@
                         "Scope": "session",
                         "States": {
                             "Start": {
-                                "ContractStart": {
+                                "Kill": {
                                     "Condition": {
-                                        "$eq": [
-                                            "$Value.ContractType",
-                                            "elusive"
-                                        ]
+                                        "$eq": ["$Value.IsTarget", true]
                                     },
-                                    "Transition": "State_ValidContract"
+                                    "Transition": "Success"
                                 }
-                            },
-                            "State_ValidContract": {
-                                "ContractEnd": [
-                                    {
-                                        "Transition": "Success"
-                                    }
-                                ]
                             }
                         }
                     },
-                    "Tags": ["story", "elusive"],
+                    "Tags": ["story", "medium", "elusive"],
                     "InclusionData": {
-                        "ContractTypes": ["elusive"]
+                        "ContractIds": ["158b600a-6448-45d3-907f-77351b9656ee"]
                     }
                 },
                 {
@@ -5987,10 +5977,10 @@
                     }
                 },
                 {
-                    "Id": "ae3ea1a9-57b5-45b7-ab5b-c13d1e0fd0c9",
-                    "Name": "UI_CHALLENGES_ET_MARGARITA_TARGETDOWN_NAME",
-                    "ImageName": "images/challenges/elusive_target/et_margarita_targetdown.jpg",
-                    "Description": "UI_CHALLENGES_ET_MARGARITA_TARGETDOWN_DESC",
+                    "Id": "c1ec9827-1c65-49d4-a606-5eb322dec586",
+                    "Name": "UI_CHALLENGES_ET_KAMIKAZE_TARGETDOWN_NAME",
+                    "ImageName": "images/challenges/elusive_target/et_kamikaze_targetdown.jpg",
+                    "Description": "UI_CHALLENGES_ET_KAMIKAZE_TARGETDOWN_DESC",
                     "Rewards": {
                         "MasteryXP": 2000
                     },
@@ -6023,57 +6013,7 @@
                     },
                     "Tags": ["story", "medium", "elusive"],
                     "InclusionData": {
-                        "ContractIds": ["158b600a-6448-45d3-907f-77351b9656ee"]
-                    }
-                },
-                {
-                    "Id": "9c399562-230b-4964-9945-9ee07e888838",
-                    "Name": "UI_CHALLENGES_ELUSIVE_TARGET_PARIS_NAME",
-                    "ImageName": "images/challenges/profile_challenges/elusive_target_paris.jpg",
-                    "Description": "UI_CHALLENGES_ELUSIVE_TARGET_PARIS_DESC",
-                    "Rewards": {
-                        "MasteryXP": 0
-                    },
-                    "Drops": ["TOKEN_OUTFIT_HERO_PARISSUITANDGLOVES"],
-                    "IsPlayable": false,
-                    "IsLocked": false,
-                    "HideProgression": false,
-                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
-                    "Icon": "elusive",
-                    "LocationId": "LOCATION_PARIS",
-                    "ParentLocationId": "LOCATION_PARENT_PARIS",
-                    "Type": "contract",
-                    "DifficultyLevels": [],
-                    "OrderIndex": 10000,
-                    "XpModifier": {},
-                    "RuntimeType": "Hit",
-                    "Definition": {
-                        "Context": {},
-                        "Scope": "session",
-                        "States": {
-                            "Start": {
-                                "ContractStart": {
-                                    "Condition": {
-                                        "$eq": [
-                                            "$Value.ContractType",
-                                            "elusive"
-                                        ]
-                                    },
-                                    "Transition": "State_ValidContract"
-                                }
-                            },
-                            "State_ValidContract": {
-                                "ContractEnd": [
-                                    {
-                                        "Transition": "Success"
-                                    }
-                                ]
-                            }
-                        }
-                    },
-                    "Tags": ["story", "elusive"],
-                    "InclusionData": {
-                        "ContractTypes": ["elusive"]
+                        "ContractIds": ["2b928d67-c244-4601-bafb-7af664fb17bb"]
                     }
                 },
                 {
@@ -6303,96 +6243,6 @@
                     "Tags": ["story", "hard", "elusive"],
                     "InclusionData": {
                         "ContractIds": ["2b928d67-c244-4601-bafb-7af664fb17bb"]
-                    }
-                },
-                {
-                    "Id": "c1ec9827-1c65-49d4-a606-5eb322dec586",
-                    "Name": "UI_CHALLENGES_ET_KAMIKAZE_TARGETDOWN_NAME",
-                    "ImageName": "images/challenges/elusive_target/et_kamikaze_targetdown.jpg",
-                    "Description": "UI_CHALLENGES_ET_KAMIKAZE_TARGETDOWN_DESC",
-                    "Rewards": {
-                        "MasteryXP": 2000
-                    },
-                    "Drops": [],
-                    "IsPlayable": false,
-                    "IsLocked": false,
-                    "HideProgression": false,
-                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
-                    "Icon": "elusive",
-                    "LocationId": "LOCATION_PARIS",
-                    "ParentLocationId": "LOCATION_PARENT_PARIS",
-                    "Type": "contract",
-                    "DifficultyLevels": [],
-                    "OrderIndex": 10000,
-                    "XpModifier": {},
-                    "RuntimeType": "Hit",
-                    "Definition": {
-                        "Context": {},
-                        "Scope": "session",
-                        "States": {
-                            "Start": {
-                                "Kill": {
-                                    "Condition": {
-                                        "$eq": ["$Value.IsTarget", true]
-                                    },
-                                    "Transition": "Success"
-                                }
-                            }
-                        }
-                    },
-                    "Tags": ["story", "medium", "elusive"],
-                    "InclusionData": {
-                        "ContractIds": ["2b928d67-c244-4601-bafb-7af664fb17bb"]
-                    }
-                },
-                {
-                    "Id": "9c399562-230b-4964-9945-9ee07e888838",
-                    "Name": "UI_CHALLENGES_ELUSIVE_TARGET_PARIS_NAME",
-                    "ImageName": "images/challenges/profile_challenges/elusive_target_paris.jpg",
-                    "Description": "UI_CHALLENGES_ELUSIVE_TARGET_PARIS_DESC",
-                    "Rewards": {
-                        "MasteryXP": 0
-                    },
-                    "Drops": ["TOKEN_OUTFIT_HERO_PARISSUITANDGLOVES"],
-                    "IsPlayable": false,
-                    "IsLocked": false,
-                    "HideProgression": false,
-                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
-                    "Icon": "elusive",
-                    "LocationId": "LOCATION_PARIS",
-                    "ParentLocationId": "LOCATION_PARENT_PARIS",
-                    "Type": "contract",
-                    "DifficultyLevels": [],
-                    "OrderIndex": 10000,
-                    "XpModifier": {},
-                    "RuntimeType": "Hit",
-                    "Definition": {
-                        "Context": {},
-                        "Scope": "session",
-                        "States": {
-                            "Start": {
-                                "ContractStart": {
-                                    "Condition": {
-                                        "$eq": [
-                                            "$Value.ContractType",
-                                            "elusive"
-                                        ]
-                                    },
-                                    "Transition": "State_ValidContract"
-                                }
-                            },
-                            "State_ValidContract": {
-                                "ContractEnd": [
-                                    {
-                                        "Transition": "Success"
-                                    }
-                                ]
-                            }
-                        }
-                    },
-                    "Tags": ["story", "elusive"],
-                    "InclusionData": {
-                        "ContractTypes": ["elusive"]
                     }
                 },
                 {
@@ -8007,6 +7857,56 @@
                     "Tags": ["story", "hard", "elusive"],
                     "InclusionData": {
                         "ContractIds": ["0fea5e55-9aec-41ef-9e5b-4e5e5f536f82"]
+                    }
+                },
+                {
+                    "Id": "9c399562-230b-4964-9945-9ee07e888838",
+                    "Name": "UI_CHALLENGES_ELUSIVE_TARGET_PARIS_NAME",
+                    "ImageName": "images/challenges/profile_challenges/elusive_target_paris.jpg",
+                    "Description": "UI_CHALLENGES_ELUSIVE_TARGET_PARIS_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["TOKEN_OUTFIT_HERO_PARISSUITANDGLOVES"],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+                    "Icon": "elusive",
+                    "LocationId": "LOCATION_PARIS",
+                    "ParentLocationId": "LOCATION_PARENT_PARIS",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.ContractType",
+                                            "elusive"
+                                        ]
+                                    },
+                                    "Transition": "State_ValidContract"
+                                }
+                            },
+                            "State_ValidContract": {
+                                "ContractEnd": [
+                                    {
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "elusive"],
+                    "InclusionData": {
+                        "ContractTypes": ["elusive"]
                     }
                 }
             ]

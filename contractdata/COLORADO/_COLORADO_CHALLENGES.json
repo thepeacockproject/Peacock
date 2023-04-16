@@ -4916,6 +4916,46 @@
             "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_ELUSIVE",
             "Challenges": [
                 {
+                    "Id": "d8f8a8fb-4b3c-4e2a-ac20-2d864a449ebe",
+                    "Name": "UI_CHALLENGES_ET_BUSHWACKER_TARGETDOWN_NAME",
+                    "ImageName": "images/challenges/elusive_target/et_bushwacker_targetdown.jpg",
+                    "Description": "UI_CHALLENGES_ET_BUSHWACKER_TARGETDOWN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+                    "Icon": "elusive",
+                    "LocationId": "LOCATION_COLORADO",
+                    "ParentLocationId": "LOCATION_PARENT_COLORADO",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$eq": ["$Value.IsTarget", true]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "elusive"],
+                    "InclusionData": {
+                        "ContractIds": ["550c4d75-ca87-4be7-a18e-caf30e6c8136"]
+                    }
+                },
+                {
                     "Id": "bade239d-1102-4ddf-9dfa-c848c007bf3e",
                     "Name": "UI_CHALLENGES_ET_BUSHWACKER_SILENT_ASSASSIN_NAME",
                     "ImageName": "images/challenges/elusive_target/et_bushwacker_silentassassin.jpg",
@@ -5142,96 +5182,6 @@
                     "Tags": ["story", "hard", "elusive"],
                     "InclusionData": {
                         "ContractIds": ["550c4d75-ca87-4be7-a18e-caf30e6c8136"]
-                    }
-                },
-                {
-                    "Id": "d8f8a8fb-4b3c-4e2a-ac20-2d864a449ebe",
-                    "Name": "UI_CHALLENGES_ET_BUSHWACKER_TARGETDOWN_NAME",
-                    "ImageName": "images/challenges/elusive_target/et_bushwacker_targetdown.jpg",
-                    "Description": "UI_CHALLENGES_ET_BUSHWACKER_TARGETDOWN_DESC",
-                    "Rewards": {
-                        "MasteryXP": 2000
-                    },
-                    "Drops": [],
-                    "IsPlayable": false,
-                    "IsLocked": false,
-                    "HideProgression": false,
-                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
-                    "Icon": "elusive",
-                    "LocationId": "LOCATION_COLORADO",
-                    "ParentLocationId": "LOCATION_PARENT_COLORADO",
-                    "Type": "contract",
-                    "DifficultyLevels": [],
-                    "OrderIndex": 10000,
-                    "XpModifier": {},
-                    "RuntimeType": "Hit",
-                    "Definition": {
-                        "Context": {},
-                        "Scope": "session",
-                        "States": {
-                            "Start": {
-                                "Kill": {
-                                    "Condition": {
-                                        "$eq": ["$Value.IsTarget", true]
-                                    },
-                                    "Transition": "Success"
-                                }
-                            }
-                        }
-                    },
-                    "Tags": ["story", "medium", "elusive"],
-                    "InclusionData": {
-                        "ContractIds": ["550c4d75-ca87-4be7-a18e-caf30e6c8136"]
-                    }
-                },
-                {
-                    "Id": "efd539cf-7b0e-4940-b8dd-a7407deea12f",
-                    "Name": "UI_CHALLENGES_ELUSIVE_TARGET_COLORADO_NAME",
-                    "ImageName": "images/challenges/profile_challenges/elusive_target_colorado.jpg",
-                    "Description": "UI_CHALLENGES_ELUSIVE_TARGET_COLORADO_DESC",
-                    "Rewards": {
-                        "MasteryXP": 0
-                    },
-                    "Drops": ["TOKEN_OUTFIT_HERO_COLORADOSUIT_ALTERNATIVE"],
-                    "IsPlayable": false,
-                    "IsLocked": false,
-                    "HideProgression": false,
-                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
-                    "Icon": "elusive",
-                    "LocationId": "LOCATION_COLORADO",
-                    "ParentLocationId": "LOCATION_PARENT_COLORADO",
-                    "Type": "contract",
-                    "DifficultyLevels": [],
-                    "OrderIndex": 10000,
-                    "XpModifier": {},
-                    "RuntimeType": "Hit",
-                    "Definition": {
-                        "Context": {},
-                        "Scope": "session",
-                        "States": {
-                            "Start": {
-                                "ContractStart": {
-                                    "Condition": {
-                                        "$eq": [
-                                            "$Value.ContractType",
-                                            "elusive"
-                                        ]
-                                    },
-                                    "Transition": "State_ValidContract"
-                                }
-                            },
-                            "State_ValidContract": {
-                                "ContractEnd": [
-                                    {
-                                        "Transition": "Success"
-                                    }
-                                ]
-                            }
-                        }
-                    },
-                    "Tags": ["story", "elusive"],
-                    "InclusionData": {
-                        "ContractTypes": ["elusive"]
                     }
                 },
                 {
