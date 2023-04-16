@@ -484,10 +484,8 @@ export class ChallengeService extends ChallengeRegistry {
         challenges: [string, RegistryChallenge[]][],
         gameVersion: GameVersion,
     ) {
-        for (const groupId of this.groups
-            .get(gameVersion)
-            .get(location)
-            .keys()) {
+        const groups = this.groups.get(gameVersion).get(location)?.keys() ?? []
+        for (const groupId of groups) {
             // if this is the global group, skip it.
             if (groupId === "global") {
                 continue
