@@ -65,6 +65,7 @@ import {
 import picocolors from "picocolors"
 import { setCpd } from "./evergreen"
 import { getConfig } from "./configSwizzleManager"
+import { resetUserEscalationProgress } from "./contracts/escalations/escalationService"
 
 const eventRouter = Router()
 
@@ -422,6 +423,7 @@ function contractFailed(
     session.markedTargets.clear()
 
     const json = controller.resolveContract(session.contractId)!
+    const userData = getUserData(session.userId, session.gameVersion)
 
     let realName: string
 
@@ -443,12 +445,8 @@ function contractFailed(
         liveSplitManager.failMission(0)
     }
 
-    const contractData = controller.resolveContract(session.contractId)
-
     // If this is a contract, update the contract in the played list
-    if (contractTypes.includes(contractData.Metadata.Type)) {
-        const userData = getUserData(session.userId, session.gameVersion)
-
+    if (contractTypes.includes(json.Metadata.Type)) {
         const id = session.contractId
 
         if (!userData.Extensions.PeacockPlayedContracts[id]) {
@@ -457,6 +455,15 @@ function contractFailed(
 
         userData.Extensions.PeacockPlayedContracts[id].LastPlayedAt =
             new Date().getTime()
+        writeUserData(session.userId, session.gameVersion)
+    }
+
+    // If this is an arcade contract, reset it
+    if (json.Metadata.Type === "arcade") {
+        const escalationGroupId = json.Metadata.InGroup ?? json.Metadata.Id
+
+        resetUserEscalationProgress(userData, escalationGroupId)
+
         writeUserData(session.userId, session.gameVersion)
     }
 
