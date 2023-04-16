@@ -1006,12 +1006,6 @@ export class Controller {
 
     private _handleChallengeResources(data: ChallengePackage): void {
         for (const group of data.groups) {
-            if (
-                group.Name === "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ARCADE"
-            ) {
-                continue
-            }
-
             this.challengeService.registerGroup(
                 group,
                 data.meta.Location,

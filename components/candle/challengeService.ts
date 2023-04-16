@@ -234,6 +234,10 @@ export abstract class ChallengeRegistry {
             return gameGroups.get("GLOBAL_FEATURED_CHALLENGES")?.get(groupId)
         }
 
+        if (groupId?.includes("arcade")) {
+            return gameGroups.get("GLOBAL_ARCADE_CHALLENGES")?.get(groupId)
+        }
+
         if (groupId?.includes("escalation")) {
             return gameGroups.get("GLOBAL_ESCALATION_CHALLENGES")?.get(groupId)
         }
@@ -279,6 +283,10 @@ export abstract class ChallengeRegistry {
 
         if (groupId?.includes("featured")) {
             return gameChalGC.get("GLOBAL_FEATURED_CHALLENGES")?.get(groupId)
+        }
+
+        if (groupId?.includes("arcade")) {
+            return gameChalGC.get("GLOBAL_ARCADE_CHALLENGES")?.get(groupId)
         }
 
         if (groupId?.includes("escalation")) {
@@ -552,6 +560,13 @@ export class ChallengeService extends ChallengeRegistry {
                 gameVersion,
             )
         }
+        
+        this.getGroupedChallengesByLoc(
+            filter,
+            "GLOBAL_ARCADE_CHALLENGES",
+            challenges,
+            gameVersion,
+        )
 
         // Rocky is the only parent location with no escalations. TODO: change this when pontus is added.
         // H2 & H1 have the escalation challenges in "feats"
