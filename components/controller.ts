@@ -18,7 +18,6 @@
 
 import { existsSync, readdirSync, readFileSync } from "fs"
 import { readdir, readFile, writeFile } from "fs/promises"
-import * as atomically from "atomically"
 import { join } from "path"
 import {
     generateUserCentric,
@@ -53,8 +52,6 @@ import {
 } from "./configSwizzleManager"
 import { log, LogLevel } from "./loggingInterop"
 import * as axios from "axios"
-import * as ini from "js-ini"
-import * as statemachineParser from "@peacockproject/statemachine-parser"
 import {
     addDashesToPublicId,
     fastClone,
@@ -185,13 +182,6 @@ export const featuredContractGroups: string[][] = [
     ],
 ]
 
-const peacockRequireTable = {
-    "@peacockproject/statemachine-parser": statemachineParser,
-    axios,
-    ini,
-    atomically,
-}
-
 /**
  * A binding of the virtual require function that displays the problematic plugin's name.
  *
@@ -204,12 +194,6 @@ function createPeacockRequire(pluginName: string): NodeRequire {
      * @param specifier The requested module.
      */
     const peacockRequire: NodeRequire = (specifier: string) => {
-        if (
-            Object.prototype.hasOwnProperty.call(peacockRequireTable, specifier)
-        ) {
-            return peacockRequireTable[specifier]
-        }
-
         if (
             Object.prototype.hasOwnProperty.call(
                 generatedPeacockRequireTable,

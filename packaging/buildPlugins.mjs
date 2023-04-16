@@ -18,6 +18,7 @@
 
 import * as e from "esbuild"
 import glob from "glob"
+import packageJson from "../package.json" assert { type: "json" }
 
 const plugins = glob.sync("plugins/*.plugin.ts", {
     cwd: ".",
@@ -29,5 +30,8 @@ await e.build({
     outdir: "plugins",
     platform: "node",
     target: "es2021",
-    external: ["@peacockproject/core"],
+    external: [
+        "@peacockproject/core",
+        ...Object.keys(packageJson.dependencies),
+    ],
 })
