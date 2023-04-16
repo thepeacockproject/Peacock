@@ -560,7 +560,7 @@ export class ChallengeService extends ChallengeRegistry {
                 gameVersion,
             )
         }
-        
+
         this.getGroupedChallengesByLoc(
             filter,
             "GLOBAL_ARCADE_CHALLENGES",
@@ -608,8 +608,8 @@ export class ChallengeService extends ChallengeRegistry {
                   // This means that we are requesting the challenges for the next level of the group
                   this.controller.resolveContract(
                       contract.Metadata.GroupDefinition.Order[
-                        getUserEscalationProgress(userData, contractId) - 1
-                    ],
+                          getUserEscalationProgress(userData, contractId) - 1
+                      ],
                       false,
                   )
                 : this.controller.resolveContract(contractId, false)

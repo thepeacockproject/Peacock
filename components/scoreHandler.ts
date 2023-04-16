@@ -598,7 +598,10 @@ export async function missionEnd(
         writeUserData(req.jwt.unique_name, req.gameVersion)
     }
 
-    const levelData = controller.resolveContract(sessionDetails.contractId, false)
+    const levelData = controller.resolveContract(
+        sessionDetails.contractId,
+        false,
+    )
 
     //Resolve the id of the parent location
     const subLocation = getSubLocationByName(
