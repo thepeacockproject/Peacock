@@ -45,8 +45,16 @@ just fine.
 
 ## Contributing
 
-Writing bug reports is cool. You should do that. Or update this readme whenever
-it's needed.
+To contribute, you can use Pull Requests from your own fork. You can fix bugs
+reported in issues or add new features you think would be useful, new features
+not listed in issues would have to be discussed before merging.
+
+To update localisation files, edit `h2_locale.json` and `h3_locale.json` in the
+`resources` folder. Make sure to add the English (or translated) versions to all
+languages (other than `xx`, this section can be ignored). Then make sure
+`rpkg_cli.exe`, `HMLanguageTools.exe`, and `ResourceLib_*.dll` are in the
+`resources` folder. Then, from the root project folder, run
+`yarn rebuild-locale` and push the new RPKGs and edited locale JSON files.
 
 Thank you to people who have contributed!
 
