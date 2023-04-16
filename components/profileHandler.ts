@@ -62,7 +62,7 @@ const profileRouter = Router()
 
 // /authentication/api/userchannel/
 
-interface FakePlayer {
+export interface FakePlayer {
     id: string
     name: string
     platformId: string

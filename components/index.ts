@@ -19,6 +19,9 @@
 /* eslint-disable no-inner-declarations */
 // noinspection RequiredAttributes
 
+// load as soon as possible to prevent dependency issues
+import "./generatedPeacockRequireTable"
+
 // load flags as soon as possible
 import { getFlag, loadFlags } from "./flags"
 
