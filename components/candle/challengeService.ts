@@ -599,7 +599,7 @@ export class ChallengeService extends ChallengeRegistry {
                 locationId:
                     contract.Metadata.Id ===
                         "aee6a16f-6525-4d63-a37f-225e293c6118" &&
-                    gameVersion === "h3"
+                    gameVersion !== "h1"
                         ? "LOCATION_ICA_FACILITY_SHIP"
                         : contract.Metadata.Location,
                 isFeatured: contract.Metadata.Type === "featured",
