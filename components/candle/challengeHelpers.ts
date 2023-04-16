@@ -27,6 +27,7 @@ import {
 import { SavedChallengeGroup } from "../types/challenges"
 import { controller } from "../controller"
 import { gameDifficulty } from "../utils"
+import { locationsWithETA } from "../contracts/elusiveTargetArcades"
 
 export function compileScoringChallenge(
     challenge: RegistryChallenge,
@@ -235,15 +236,27 @@ export function filterChallenge(
             )
         }
         case ChallengeFilterType.Contracts: {
-            return options.contractIds.some((contractId) =>
-                isChallengeInContract(
-                    contractId,
-                    options.locationId,
-                    gameDifficulty.master, // Get challenges of all difficulties
-                    challenge,
-                    true,
-                ),
-            )
+            if (
+                options.contractIds.some((contractId) =>
+                    isChallengeInContract(
+                        contractId,
+                        options.locationId,
+                        gameDifficulty.master, // Get challenges of all difficulties
+                        challenge,
+                        true,
+                    ),
+                )
+            ) {
+                return true
+            } else if (
+                // If the location has an ET that appeared in an ETA, then all global arcade challenges are shown
+                locationsWithETA.includes(options.locationId) &&
+                challenge.Tags.includes("arcade") &&
+                challenge.Type === "global"
+            ) {
+                return true
+            }
+            return false
         }
         case ChallengeFilterType.ParentLocation: {
             // Challenges are already organized by location

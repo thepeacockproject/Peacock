@@ -244,7 +244,6 @@ export const missionsInLocations = {
         ],
         LOCATION_TRAPPED_WOLVERINE: ["078a50d1-6427-4fc3-9099-e46390e637a0"],
     },
-    // As arcade doesn't have specific locations, this is just an array.
     arcade: {
         LOCATION_NORTHSEA: [
             "b9f55fc3-c53f-4661-a4b6-9956303422aa",
@@ -302,72 +301,7 @@ export const missionsInLocations = {
         LOCATION_SALTY_SEAGULL: ["00e57709-e049-44c9-a2c3-7655e19884fb"],
         LOCATION_CAGED_FALCON: ["25b20d86-bb5a-4ebd-b6bb-81ed2779c180"],
     },
-    elusive: {
-        LOCATION_BANGKOK: [
-            "b0bed170-8652-4188-8b9a-92caf9f97e5b",
-            "b0b8995c-7b3f-4fa6-91a2-be4bc8edc046",
-            "87f8293a-29cd-4cb1-ade7-dd6bb056d38e",
-        ],
-        LOCATION_EDGY_FOX: ["3f0b8f19-d5d4-4611-ac8f-480f81c18f54"],
-        LOCATION_WET_RAT: ["6fad7901-279f-45df-ab8d-087a3cb06dcc"],
-        LOCATION_COLORADO: [
-            "655c5a57-69d1-48b6-a14b-2ae396c16174",
-            "550c4d75-ca87-4be7-a18e-caf30e6c8136",
-        ],
-        LOCATION_ANCESTRAL_BULLDOG: [
-            "92951377-419d-4c31-aa21-2a3f03ef82d0",
-            "1fcaff1b-7fa3-4b9f-a586-9c7a1689b48d",
-        ],
-        LOCATION_GOLDEN_GECKO: ["b2c0251e-1803-4e12-b860-b9fa6ce5c004"],
-        LOCATION_NEWZEALAND: ["44fd7474-d7be-4d3d-b944-6c1cf6ca09d1"],
-        LOCATION_HOKKAIDO: [
-            "deace35f-ab6d-44c9-b1a6-98757e854f74",
-            "1c0377f3-6e32-4563-8baf-9677cdb3bb60",
-        ],
-        LOCATION_MARRAKECH: [
-            "c3c7126e-32cd-4502-b5ce-90b5ae436806",
-            "ad549098-eb3d-4132-8ef8-fe77c6afbbaa",
-            "0d938ef9-05c7-4eb8-89cc-ae79b73c6992",
-        ],
-        LOCATION_MARRAKECH_NIGHT: [
-            "3716b654-a42c-45df-9db9-61795a6a3e46",
-            "2e2c3f33-92ad-412f-a351-b7267697ff70",
-        ],
-        LOCATION_ELEGANT_LLAMA: [
-            "9a36cc55-bfc4-4f8b-99d2-c65cf4de365d",
-            "d030216e-a8d6-4446-a1f6-2fc1a2461464",
-        ],
-        LOCATION_MIAMI: [
-            "06a58b66-56f4-45c3-ba1b-d03998212289",
-            "ecf353e8-3dd8-4958-b255-f963926aea51",
-        ],
-        LOCATION_PARIS: [
-            "2b928d67-c244-4601-bafb-7af664fb17bb",
-            "5dc115d3-e5d4-4023-a11a-27c6f7194bea",
-            "158b600a-6448-45d3-907f-77351b9656ee",
-            "92a87b10-a230-4986-bb35-06f16e84b11f",
-            "8813e0a4-08ac-494f-a847-687a2da3582f",
-            "16d78245-5392-413c-b3db-989d6685c32a",
-            "0fea5e55-9aec-41ef-9e5b-4e5e5f536f82",
-            "a9d93d2a-c541-49ab-8ba1-9e345cf7e806",
-            "13680605-83ed-4b8c-a44d-30cc5b4fb17a",
-        ],
-        LOCATION_COLOMBIA: ["654685ab-d52d-49cb-815d-f98ee00454d3"],
-        LOCATION_COASTALTOWN_MOVIESET: ["b555d6a4-8b4d-4e1e-b6bd-ebd135ad1e01"],
-        LOCATION_COASTALTOWN: [
-            "ff188c8b-e1eb-4c59-af75-6b6fe3da5955",
-            "8462b2e5-4d34-4300-896f-fe1dc98fa877",
-            "0dc242ce-084e-4f6d-980f-e65885cd6955",
-            "0fd17346-bcb4-4bcc-acc3-5e1b6b184ef4",
-            "e87217e3-4809-4855-80d5-74bed66be58d",
-            "8f13ea71-b207-4955-9eb8-ede757f3baa6",
-        ],
-        LOCATION_NORTHSEA: [
-            "263eca3d-d25d-40ce-ba0a-48a221cd0b9e",
-            "cbc86bed-51ce-4699-89d4-0ded8f200cbc",
-        ],
-        LOCATION_NORTHAMERICA: ["9f5b8d74-1f70-49ea-94e2-21d2de3e5cf3"],
-    },
+    elusive: {},
     sarajevo: {},
     /**
      * Special property for pro mode missions (2016 exclusive).
