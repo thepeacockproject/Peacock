@@ -70,3 +70,29 @@ export const locationsWithETA = [
     "LOCATION_NORTHSEA",
     "LOCATION_NORTHAMERICA",
 ]
+
+/**
+ * These are the parent locations with sublocations that have ETAs,
+ * and thus need to show ETA challenges on their challenges page.
+ * 
+ * It is possible to determine whether a parent is such a parent location
+ * when filtering out challenges for the parent location, but it is
+ * much more efficient to do it this way.
+ */
+export const parentsWithETA = [
+    "LOCATION_PARENT_BANGKOK",
+    "LOCATION_PARENT_EDGY",
+    "LOCATION_PARENT_WET",
+    "LOCATION_PARENT_COLORADO",
+    "LOCATION_PARENT_ANCESTRAL",
+    "LOCATION_PARENT_GOLDEN",
+    "LOCATION_PARENT_NEWZEALAND",
+    "LOCATION_PARENT_HOKKAIDO",
+    "LOCATION_PARENT_MARRAKECH",
+    "LOCATION_PARENT_ELEGANT",
+    "LOCATION_PARENT_PARIS",
+    "LOCATION_PARENT_COLOMBIA",
+    "LOCATION_PARENT_COASTALTOWN",
+    "LOCATION_PARENT_NORTHSEA",
+    "LOCATION_PARENT_NORTHAMERICA",
+]

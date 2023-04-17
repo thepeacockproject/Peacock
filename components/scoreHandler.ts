@@ -632,6 +632,7 @@ export async function missionEnd(
         controller.challengeService.getGroupedChallengeLists(
             {
                 type: ChallengeFilterType.ParentLocation,
+                parent: locationParentId,
             },
             locationParentId,
             req.gameVersion,

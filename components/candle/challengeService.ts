@@ -1034,6 +1034,7 @@ export class ChallengeService extends ChallengeRegistry {
         const forLocation = this.getGroupedChallengeLists(
             {
                 type: ChallengeFilterType.ParentLocation,
+                parent: locationParentId,
             },
             locationParentId,
             gameVersion,

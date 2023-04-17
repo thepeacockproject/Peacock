@@ -27,7 +27,10 @@ import {
 import { SavedChallengeGroup } from "../types/challenges"
 import { controller } from "../controller"
 import { gameDifficulty } from "../utils"
-import { locationsWithETA } from "../contracts/elusiveTargetArcades"
+import {
+    locationsWithETA,
+    parentsWithETA,
+} from "../contracts/elusiveTargetArcades"
 
 export function compileScoringChallenge(
     challenge: RegistryChallenge,
@@ -96,6 +99,7 @@ export type ChallengeFilterOptions =
       }
     | {
           type: ChallengeFilterType.ParentLocation
+          parent: string
       }
 
 /**
@@ -149,7 +153,6 @@ function isChallengeInContract(
     challenge: RegistryChallenge,
     forCareer = false,
 ): boolean {
-    // Currently don't have all the escalation groups
     if (!contractId || !locationId) {
         return false
     }
@@ -259,9 +262,19 @@ export function filterChallenge(
             return false
         }
         case ChallengeFilterType.ParentLocation: {
-            // Challenges are already organized by location
-            // So we only need to filter out the elusive target challenges
-            return !challenge.Tags.includes("elusive")
+            // Challenges are already organized by parent location
+            // But they contain elusive target challenges, which need to be filtered out
+            if (challenge.Tags.includes("elusive")) {
+                return false
+            }
+            if (challenge.Tags.includes("arcade")) {
+                return (
+                    challenge.ParentLocationId === options.parent ||
+                    (challenge.ParentLocationId === "" &&
+                        parentsWithETA.includes(options.parent))
+                )
+            }
+            return true
         }
     }
 }
