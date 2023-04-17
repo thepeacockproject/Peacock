@@ -221,12 +221,36 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
                   },
               }
 
+    const masteryData = []
+
     for (const parent in locations.parents) {
         career[parent] = {
             Children: [],
             Location: locations.parents[parent],
             Name: locations.parents[parent].DisplayNameLocKey,
         }
+
+        if (
+            controller.masteryService.getMasteryDataForDestination(
+                parent,
+                req.gameVersion,
+                req.jwt.unique_name,
+            ).length
+        )
+            masteryData.push({
+                CompletionData: controller.masteryService.getLocationCompletion(
+                    parent,
+                    parent,
+                    req.gameVersion,
+                    req.jwt.unique_name,
+                ),
+                Id: locations.parents[parent].Id,
+                Image: locations.parents[parent].Properties.Icon,
+                IsLocked: locations.parents[parent].Properties.IsLocked,
+                Location: locations.parents[parent],
+                RequiredResources:
+                    locations.parents[parent].Properties.RequiredResources,
+            })
     }
 
     for (const child in locations.children) {
@@ -304,7 +328,7 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
                 ChallengeData: {
                     Children: Object.values(career),
                 },
-                MasteryData: {},
+                MasteryData: masteryData,
             },
             StoryData: makeCampaigns(req.gameVersion, req.jwt.unique_name),
             FilterData: getVersionedConfig(

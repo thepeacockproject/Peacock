@@ -16,7 +16,10 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { getSubLocationByName } from "../contracts/dataGen"
+import {
+    getParentLocationByName,
+    getSubLocationByName,
+} from "../contracts/dataGen"
 import { log, LogLevel } from "../loggingInterop"
 import { getConfig, getVersionedConfig } from "../configSwizzleManager"
 import { getUserData } from "../databaseHandler"
@@ -80,10 +83,9 @@ export class MasteryService {
         gameVersion: GameVersion,
         userId: string,
     ): MasteryDataTemplate {
-        const subLocation: Unlockable = getSubLocationByName(
-            locationId,
-            gameVersion,
-        )
+        const location: Unlockable =
+            getSubLocationByName(locationId, gameVersion) ??
+            getParentLocationByName(locationId, gameVersion)
 
         const masteryDataTemplate: MasteryDataTemplate =
             getConfig<MasteryDataTemplate>(
@@ -92,7 +94,7 @@ export class MasteryService {
             )
 
         const masteryData = this.getMasteryData(
-            subLocation.Properties.ParentLocation,
+            location.Properties.ParentLocation ?? location.Id,
             gameVersion,
             userId,
         )
@@ -100,7 +102,7 @@ export class MasteryService {
         return {
             template: masteryDataTemplate,
             data: {
-                Location: subLocation,
+                Location: location,
                 MasteryData: masteryData,
             },
         }
@@ -112,6 +114,7 @@ export class MasteryService {
      * @param gameVersion The game version.
      * @param completionId An Id used to look up completion data in the user's profile. Can be `parentLocationId` or `progressionKey`.
      * @param maxLevel The max level for this progression.
+     * @param levelToXpRequired A function to get the XP required for a level.
      */
     private getCompletionData(
         userId: string,
