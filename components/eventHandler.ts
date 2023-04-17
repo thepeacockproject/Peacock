@@ -255,6 +255,7 @@ export function newSession(
     )
 
     contractSessions.set(sessionId, {
+        Id: sessionId,
         gameVersion,
         sessionStart: timestamp,
         lastUpdate: timestamp,
@@ -304,7 +305,6 @@ export function newSession(
 
     controller.challengeService.startContract(
         userId,
-        sessionId,
         contractSessions.get(sessionId)!,
     )
 }
@@ -590,11 +590,7 @@ function saveEvents(
             }
         }
 
-        controller.challengeService.onContractEvent(
-            event,
-            event.ContractSessionId,
-            session,
-        )
+        controller.challengeService.onContractEvent(event, session)
 
         if (event.Name.startsWith("ScoringScreenEndState_")) {
             session.evergreen.scoringScreenEndState = event.Name

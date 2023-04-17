@@ -254,7 +254,6 @@ export function calculateXp(
 
 export function calculateScore(
     gameVersion: GameVersion,
-    contractSessionId: string,
     contractSession: ContractSession,
     contractData: MissionManifest,
     timeTotal: Seconds,
@@ -278,7 +277,7 @@ export function calculateScore(
                                 contractSession.completedObjectives,
                             )) ||
                         "Success" ===
-                            getCurrentState(contractSessionId, obj.Id),
+                            getCurrentState(contractSession.Id, obj.Id),
                 ),
             fractionNumerator: 2,
             fractionDenominator: 3,
@@ -777,7 +776,6 @@ export async function missionEnd(
     //Calculate score and summary
     const calculateScoreResult = calculateScore(
         req.gameVersion,
-        req.query.contractSessionId,
         sessionDetails,
         contractData,
         timeTotal,

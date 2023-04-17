@@ -216,6 +216,7 @@ export interface ContractSessionLastKill {
  * Primarily used for scoring, saving, and loading.
  */
 export interface ContractSession {
+    Id: string
     gameVersion: GameVersion
     sessionStart: Date | number
     lastUpdate: Date | number

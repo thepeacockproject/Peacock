@@ -672,11 +672,7 @@ export class ChallengeService extends ChallengeRegistry {
         )
     }
 
-    startContract(
-        userId: string,
-        sessionId: string,
-        session: ContractSession,
-    ): void {
+    startContract(userId: string, session: ContractSession): void {
         // we know we will have challenge contexts because this session is
         // brand new.
         const { gameVersion, contractId, challengeContexts } = session
@@ -834,7 +830,6 @@ export class ChallengeService extends ChallengeRegistry {
      */
     onContractEvent(
         event: ClientToServerEvent,
-        sessionId: string,
         session: ContractSession,
     ): void {
         if (!session.challengeContexts) {
