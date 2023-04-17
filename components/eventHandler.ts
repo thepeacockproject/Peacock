@@ -460,11 +460,22 @@ function contractFailed(
 
     // If this is an arcade contract, reset it
     arcadeFail: if (json.Metadata.Type === "arcade") {
-        if (
+        manualExit: if (
             event.Value ===
-                "Contract ended manually: User pressed exit to Main menu" &&
-            session.completedObjectives.size === 0
+            "Contract ended manually: User pressed exit to Main menu"
         ) {
+            if (session.completedObjectives.size === 0) break arcadeFail
+
+            for (const obj of json.Data.Objectives) {
+                if (
+                    session.completedObjectives.has(obj.Id) &&
+                    obj.Category === "primary"
+                ) {
+                    break manualExit
+                }
+            }
+
+            // Any completed objectives are secondary gamechangers, so we don't need to reset the contract
             break arcadeFail
         }
 
