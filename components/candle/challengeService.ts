@@ -1427,6 +1427,19 @@ export class ChallengeService extends ChallengeRegistry {
             log(LogLevel.DEBUG, `Challenge ${challenge.Id} completed`)
         }
 
+        this.onContractEvent(
+            {
+                Value: {
+                    ChallengeId: challenge.Id,
+                },
+                ContractSessionId: session.Id,
+                ContractId: session.contractId,
+                Name: "ChallengeCompleted",
+                Timestamp: new Date().getTime(),
+            },
+            session,
+        )
+
         const userData = getUserData(userId, gameVersion)
 
         //ASSUMED: Challenges that are not global should always be completed
