@@ -656,9 +656,7 @@ export class ChallengeService extends ChallengeRegistry {
                   .concat(
                       this.controller.missionsInLocations.escalations[child],
                   )
-                  .concat(
-                      this.controller.missionsInLocations.arcade[child],
-                  )
+                  .concat(this.controller.missionsInLocations.arcade[child])
         if (!contracts) {
             contracts = []
         }

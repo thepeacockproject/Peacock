@@ -74,7 +74,7 @@ export const locationsWithETA = [
 /**
  * These are the parent locations with sublocations that have ETAs,
  * and thus need to show ETA challenges on their challenges page.
- * 
+ *
  * It is possible to determine whether a parent is such a parent location
  * when filtering out challenges for the parent location, but it is
  * much more efficient to do it this way.
