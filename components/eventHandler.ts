@@ -459,7 +459,15 @@ function contractFailed(
     }
 
     // If this is an arcade contract, reset it
-    if (json.Metadata.Type === "arcade") {
+    arcadeFail: if (json.Metadata.Type === "arcade") {
+        if (
+            event.Value ===
+                "Contract ended manually: User pressed exit to Main menu" &&
+            session.completedObjectives.size === 0
+        ) {
+            break arcadeFail
+        }
+
         const escalationGroupId = json.Metadata.InGroup ?? json.Metadata.Id
 
         resetUserEscalationProgress(userData, escalationGroupId)
