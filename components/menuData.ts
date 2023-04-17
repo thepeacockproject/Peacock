@@ -236,14 +236,30 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
                 req.gameVersion,
                 req.jwt.unique_name,
             ).length
-        )
-            masteryData.push({
-                CompletionData: controller.masteryService.getLocationCompletion(
+        ) {
+            const completionData =
+                controller.masteryService.getLocationCompletion(
                     parent,
                     parent,
                     req.gameVersion,
                     req.jwt.unique_name,
-                ),
+                )
+
+            masteryData.push({
+                CompletionData: completionData,
+                ...(req.gameVersion === "h1"
+                    ? {
+                          Data: {
+                              normal: {
+                                  CompletionData: completionData,
+                              },
+                              // pro1 is currently a copy of normal completion as it is not implemented
+                              pro1: {
+                                  CompletionData: completionData,
+                              },
+                          },
+                      }
+                    : {}),
                 Id: locations.parents[parent].Id,
                 Image: locations.parents[parent].Properties.Icon,
                 IsLocked: locations.parents[parent].Properties.IsLocked,
@@ -251,6 +267,7 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
                 RequiredResources:
                     locations.parents[parent].Properties.RequiredResources,
             })
+        }
     }
 
     for (const child in locations.children) {
