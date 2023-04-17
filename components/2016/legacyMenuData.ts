@@ -295,7 +295,7 @@ legacyMenuDataRouter.get(
                             LocationId: req.query.locationId,
                             ...masteryData[0],
                         },
-                        Available: false,
+                        Available: true,
                     },
                 ],
                 LocationId: req.query.locationId,
