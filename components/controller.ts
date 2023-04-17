@@ -18,9 +18,7 @@
 
 import { existsSync, readdirSync, readFileSync } from "fs"
 import { readdir, readFile, writeFile } from "fs/promises"
-import * as atomically from "atomically"
 import { join } from "path"
-import * as dataGen from "./contracts/dataGen"
 import {
     generateUserCentric,
     getSubLocationFromContract,
@@ -52,12 +50,8 @@ import {
     getVersionedConfig,
     swizzle,
 } from "./configSwizzleManager"
-import * as logging from "./loggingInterop"
 import { log, LogLevel } from "./loggingInterop"
 import * as axios from "axios"
-import * as ini from "js-ini"
-import * as statemachineParser from "@peacockproject/statemachine-parser"
-import * as utils from "./utils"
 import {
     addDashesToPublicId,
     fastClone,
@@ -65,13 +59,8 @@ import {
     hitmapsUrl,
     versions,
 } from "./utils"
-import * as sessionSerialization from "./sessionSerialization"
-import * as databaseHandler from "./databaseHandler"
-import * as playnext from "./menus/playnext"
-import * as hooksImpl from "./hooksImpl"
 import { AsyncSeriesHook, SyncBailHook, SyncHook } from "./hooksImpl"
-import * as hitsCategoryServiceMod from "./contracts/hitsCategoryService"
-import { MenuSystemDatabase, menuSystemDatabase } from "./menus/menuSystem"
+import { menuSystemDatabase } from "./menus/menuSystem"
 import { parse } from "json5"
 import { userAuths } from "./officialServerAuth"
 // @ts-expect-error Ignore JSON import
@@ -93,6 +82,7 @@ import { ChallengeFilterType } from "./candle/challengeHelpers"
 import { MasteryService } from "./candle/masteryService"
 import { MasteryPackage } from "./types/mastery"
 import { ProgressionService } from "./candle/progressionService"
+import generatedPeacockRequireTable from "./generatedPeacockRequireTable"
 
 /**
  * An array of string arrays that contains the IDs of the featured contracts.
@@ -192,44 +182,6 @@ export const featuredContractGroups: string[][] = [
     ],
 ]
 
-const peacockRequireTable = {
-    "@peacockproject/core/contracts/dataGen": { __esModule: true, ...dataGen },
-    "@peacockproject/core/databaseHandler": {
-        __esModule: true,
-        ...databaseHandler,
-    },
-    "@peacockproject/core/utils": {
-        __esModule: true,
-        ...utils,
-    },
-    "@peacockproject/core/loggingInterop": { __esModule: true, ...logging },
-    "@peacockproject/core/sessionSerialization": {
-        __esModule: true,
-        ...sessionSerialization,
-    },
-    "@peacockproject/statemachine-parser": statemachineParser,
-    "@peacockproject/core/menus/playnext": {
-        __esModule: true,
-        ...playnext,
-    },
-    "@peacockproject/core/hooksImpl": {
-        __esModule: true,
-        ...hooksImpl,
-    },
-    "@peacockproject/core/contracts/hitsCategoryService": {
-        __esModule: true,
-        hitsCategoryService: hitsCategoryServiceMod,
-    },
-    "@peacockproject/core/menus/menuSystem": {
-        __esModule: true,
-        MenuSystemDatabase,
-        menuSystemDatabase,
-    },
-    axios,
-    ini,
-    atomically,
-}
-
 /**
  * A binding of the virtual require function that displays the problematic plugin's name.
  *
@@ -243,9 +195,12 @@ function createPeacockRequire(pluginName: string): NodeRequire {
      */
     const peacockRequire: NodeRequire = (specifier: string) => {
         if (
-            Object.prototype.hasOwnProperty.call(peacockRequireTable, specifier)
+            Object.prototype.hasOwnProperty.call(
+                generatedPeacockRequireTable,
+                specifier,
+            )
         ) {
-            return peacockRequireTable[specifier]
+            return generatedPeacockRequireTable[specifier]
         }
 
         try {
@@ -563,7 +518,7 @@ export class Controller {
 
         await this._loadPlugins()
 
-        if (pluginDevHost) {
+        if (PEACOCK_DEV && pluginDevHost) {
             await this._loadWorkspacePlugins()
         }
 
