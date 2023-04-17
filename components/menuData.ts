@@ -990,6 +990,12 @@ menuDataRouter.get(
         )
 
         const locationData = locData.parents[LOCATION]
+        const masteryData =
+            controller.masteryService.getMasteryDataForDestination(
+                req.query.locationId,
+                req.gameVersion,
+                req.jwt.unique_name,
+            )
 
         const response = {
             template:
@@ -1011,11 +1017,8 @@ menuDataRouter.get(
                         ),
                 },
                 MasteryData:
-                    controller.masteryService.getMasteryDataForDestination(
-                        req.query.locationId,
-                        req.gameVersion,
-                        req.jwt.unique_name,
-                    ),
+                    // No pro1 mastery, in an ideal world we'd pass normal as 0 and pro1 as 1
+                    req.gameVersion === "h1" ? masteryData[0] : masteryData,
                 DifficultyData: undefined,
             },
         }
