@@ -82,6 +82,26 @@ export function getSubLocationByName(
 }
 
 /**
+ * Get a parent location by name.
+ *
+ * @param name The parent location's name (e.g. `LOCATION_PARENT_ICA_FACILITY`).
+ * @param gameVersion The game's version.
+ * @returns The parent location.
+ */
+export function getParentLocationByName(
+    name: string,
+    gameVersion: GameVersion,
+): Unlockable | undefined {
+    const locationsData = getVersionedConfig<PeacockLocationsData>(
+        "LocationsData",
+        gameVersion,
+        false,
+    )
+
+    return fastClone(locationsData.parents[name])
+}
+
+/**
  * Generates a CompletionData object.
  *
  * @param subLocationId The ID of the targeted sub-location.

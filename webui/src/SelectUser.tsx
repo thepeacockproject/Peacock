@@ -51,7 +51,7 @@ export function SelectUser({
                                 {user.platform}
                             </div>
                             <div className="pagination-nav__label centered">
-                                {user.name}
+                                {user.name ?? "No Name Found"}
                             </div>
                         </button>
                     </div>

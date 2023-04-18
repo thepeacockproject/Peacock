@@ -25,12 +25,16 @@ import { GameVersionTabs } from "../components/GameVersionTabs"
 import { EscalationLevelPicker } from "../EscalationLevelPicker"
 
 export interface CodenameMeta {
-    readonly codename: string
-    readonly name: string
-    /**
-     * Escalation group ID.
-     */
-    readonly id?: string
+    [location: string]: {
+        readonly codename: string
+        readonly name: string
+        /**
+         * Escalation group ID.
+         */
+        readonly id?: string
+        readonly isPeacock?: boolean
+        readonly hidden?: boolean
+    }[]
 }
 
 export function EscalationLevelPage() {
@@ -96,7 +100,7 @@ export function EscalationLevelPage() {
                     !isReadyToSelectUser &&
                     user && (
                         <EscalationLevelPicker
-                            codenames={codenameData as readonly CodenameMeta[]}
+                            codenames={codenameData as CodenameMeta}
                             gv={gameVersion}
                             user={user!}
                         />
