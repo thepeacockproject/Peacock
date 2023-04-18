@@ -130,12 +130,10 @@ export function EscalationLevelPicker({
     const final: Record<string, React.ReactElement[][]> = {}
     const locsInGame = locsInGv.slice(0, gv).flat()
 
-    console.log(locsInGame)
     for (const location in codenames) {
         if (!locsInGame.includes(location)) {
             continue
         }
-        console.log(location)
 
         const rows: React.ReactElement[][] = [[]]
         let latestRow = 0
