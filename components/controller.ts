@@ -672,22 +672,25 @@ export class Controller {
     /**
      * Adds an escalation to the game.
      *
-     * @param groupId The escalation group ID. All levels must have the `Metadata.InGroup` value set to this!
+     * @param groupContract The escalation group contract, ALL levels must have the Id of this in Metadata.InGroup
      * @param locationId The location of the escalation's ID.
      * @param levels The escalation's levels.
      */
     public addEscalation(
-        groupId: string,
+        groupContract: MissionManifest,
         locationId: string,
         ...levels: MissionManifest[]
     ): void {
         const fixedLevels = [...levels].filter(Boolean)
 
+        this.addMission(groupContract)
         fixedLevels.forEach((level) => this.addMission(level))
 
         this.missionsInLocations.escalations[locationId] ??= []
 
-        this.missionsInLocations.escalations[locationId].push(groupId)
+        this.missionsInLocations.escalations[locationId].push(
+            groupContract.Metadata.Id,
+        )
 
         this.scanForGroups()
     }

@@ -903,6 +903,7 @@ export interface MissionManifestMetadata {
     // Begin escalation-exclusive properties
     InGroup?: string
     NextContractId?: string
+    GroupDefinition?: ContractGroupDefinition
     GroupData?: {
         Level: number
         TotalLevels: number
@@ -920,7 +921,6 @@ export interface MissionManifestMetadata {
     IsEvergreenSafehouse?: boolean
     UseContractProgressionData?: boolean
     CpdId?: string
-    GroupDefinition?: ContractGroupDefinition
     // Elusive custom property (like official's year)
     Season?: number
 }
