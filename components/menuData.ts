@@ -221,11 +221,52 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
                   },
               }
 
+    const masteryData = []
+
     for (const parent in locations.parents) {
         career[parent] = {
             Children: [],
             Location: locations.parents[parent],
             Name: locations.parents[parent].DisplayNameLocKey,
+        }
+
+        if (
+            controller.masteryService.getMasteryDataForDestination(
+                parent,
+                req.gameVersion,
+                req.jwt.unique_name,
+            ).length
+        ) {
+            const completionData =
+                controller.masteryService.getLocationCompletion(
+                    parent,
+                    parent,
+                    req.gameVersion,
+                    req.jwt.unique_name,
+                )
+
+            masteryData.push({
+                CompletionData: completionData,
+                ...(req.gameVersion === "h1"
+                    ? {
+                          Data: {
+                              normal: {
+                                  CompletionData: completionData,
+                              },
+                              // pro1 is currently a copy of normal completion as it is not implemented
+                              pro1: {
+                                  CompletionData: completionData,
+                              },
+                          },
+                      }
+                    : {}),
+                Id: locations.parents[parent].Id,
+                Image: locations.parents[parent].Properties.Icon,
+                IsLocked: locations.parents[parent].Properties.IsLocked,
+                Location: locations.parents[parent],
+                RequiredResources:
+                    locations.parents[parent].Properties.RequiredResources,
+            })
         }
     }
 
@@ -304,7 +345,7 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
                 ChallengeData: {
                     Children: Object.values(career),
                 },
-                MasteryData: {},
+                MasteryData: masteryData,
             },
             StoryData: makeCampaigns(req.gameVersion, req.jwt.unique_name),
             FilterData: getVersionedConfig(
@@ -949,6 +990,12 @@ menuDataRouter.get(
         )
 
         const locationData = locData.parents[LOCATION]
+        const masteryData =
+            controller.masteryService.getMasteryDataForDestination(
+                req.query.locationId,
+                req.gameVersion,
+                req.jwt.unique_name,
+            )
 
         const response = {
             template:
@@ -970,11 +1017,8 @@ menuDataRouter.get(
                         ),
                 },
                 MasteryData:
-                    controller.masteryService.getMasteryDataForDestination(
-                        req.query.locationId,
-                        req.gameVersion,
-                        req.jwt.unique_name,
-                    ),
+                    // No pro1 mastery, in an ideal world we'd pass normal as 0 and pro1 as 1
+                    req.gameVersion === "h1" ? masteryData[0] : masteryData,
                 DifficultyData: undefined,
             },
         }
