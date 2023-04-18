@@ -110,6 +110,7 @@ import PeacockGameChangerProperties from "../static/PeacockGameChangerProperties
 import MultiplayerPresets from "../static/MultiplayerPresets.json"
 import LobbySlimTemplate from "../static/LobbySlimTemplate.json"
 import MasteryDataForLocationTemplate from "../static/MasteryDataForLocationTemplate.json"
+import LegacyMasteryLocationTemplate from "../static/LegacyMasteryLocationTemplate.json"
 import DefaultCpdConfig from "../static/DefaultCpdConfig.json"
 import EvergreenGameChangerProperties from "../static/EvergreenGameChangerProperties.json"
 import AreaMap from "../static/AreaMap.json"
@@ -211,6 +212,7 @@ const configs: Record<string, unknown> = {
     MultiplayerPresets,
     LobbySlimTemplate,
     MasteryDataForLocationTemplate,
+    LegacyMasteryLocationTemplate,
     DefaultCpdConfig,
     EvergreenGameChangerProperties,
     AreaMap,
