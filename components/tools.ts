@@ -34,14 +34,18 @@ import picocolors from "picocolors"
 import { Filename, PortablePath, ppath, xfs } from "@yarnpkg/fslib"
 import { makeEmptyArchive, ZipFS } from "@yarnpkg/libzip"
 
-// NOTE: make sure to update ALL 3 OF THESE VALUES, or things will break!!
-const IMAGE_PACK_BIN =
-    "https://codeload.github.com/thepeacockproject/ImagePack/zip/b8415da0be992d6a2e7d10cb5d3ccd9aea4f9296"
+// NOTE: make sure to update BOTH OF THESE VALUES, or things will break!!
+/**
+ * The full hash of the latest commit in the ImagePack repository.
+ */
+const hash = "b8415da0be992d6a2e7d10cb5d3ccd9aea4f9296"
 /**
  * Size of the image pack zip in bytes.
  */
-const IMAGE_PACK_LEN = 117286836
-const IMAGE_PACK_BASE_DIR = "ImagePack-b8415da0be992d6a2e7d10cb5d3ccd9aea4f9296"
+const IMAGE_PACK_LEN = 125317150
+
+const IMAGE_PACK_BIN = `https://codeload.github.com/thepeacockproject/ImagePack/zip/${hash}`
+const IMAGE_PACK_BASE_DIR = `ImagePack-${hash}`
 
 export async function toolsMenu() {
     const init = await prompts({
