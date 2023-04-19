@@ -21,13 +21,14 @@ import type {
     EscalationInfo,
     GameVersion,
     MissionManifest,
+    MissionType,
     UserProfile,
 } from "../../types/types"
 import { getUserData } from "../../databaseHandler"
 import { log, LogLevel } from "../../loggingInterop"
 
 /**
- * Put a level in here to hide it from the menus on 2016.
+ * Put a group id in here to hide it from the menus on 2016.
  * This should only be used if:
  *   - The content is custom.
  *   - The content is on a 2016 map.
@@ -39,6 +40,12 @@ export const no2016 = [
     "74415eca-d01e-4070-9bc9-5ef9b4e8f7d2",
     "07bbf22b-d6ae-4883-bec2-122eeeb7b665",
 ]
+
+/**
+ * An array of contract types to determine whether the escalation service
+ * should be used.
+ */
+export const escalationTypes: MissionType[] = ["escalation", "arcade"]
 
 /**
  * Gets a user's progress on the specified escalation's group ID.

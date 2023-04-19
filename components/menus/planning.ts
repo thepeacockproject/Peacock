@@ -20,6 +20,7 @@ import type { MissionStory, RequestWithJwt, SceneConfig } from "../types/types"
 import { log, LogLevel } from "../loggingInterop"
 import { _legacyBull, _theLastYardbirdScpc, controller } from "../controller"
 import {
+    escalationTypes,
     getLevelCount,
     getUserEscalationProgress,
     resetUserEscalationProgress,
@@ -130,9 +131,7 @@ export async function planningView(
         BestLevel: undefined as number | undefined,
     }
 
-    const escalation = ["escalation", "arcade"].includes(
-        contractData.Metadata.Type,
-    )
+    const escalation = escalationTypes.includes(contractData.Metadata.Type)
 
     // It is possible for req.query.contractid to be the id of a group OR a level in that group.
     let escalationGroupId =

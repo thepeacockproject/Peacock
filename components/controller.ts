@@ -83,6 +83,7 @@ import { MasteryService } from "./candle/masteryService"
 import { MasteryPackage } from "./types/mastery"
 import { ProgressionService } from "./candle/progressionService"
 import generatedPeacockRequireTable from "./generatedPeacockRequireTable"
+import { escalationTypes } from "./contracts/escalations/escalationService"
 
 /**
  * An array of string arrays that contains the IDs of the featured contracts.
@@ -593,7 +594,7 @@ export class Controller {
     }
 
     private getGroupContract(json: MissionManifest) {
-        if (["escalation", "arcade"].includes(json.Metadata.Type)) {
+        if (escalationTypes.includes(json.Metadata.Type)) {
             return this.resolveContract(json.Metadata.InGroup) ?? json
         }
         return json
