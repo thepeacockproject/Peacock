@@ -165,15 +165,6 @@ function isChallengeInContract(
         return false
     }
 
-    if (
-        locationId === "LOCATION_HOKKAIDO_SHIM_MAMUSHI" &&
-        challenge.LocationId === "LOCATION_HOKKAIDO"
-    ) {
-        // Special case: winter festival has its own locationId, but for Hokkaido-wide challenges,
-        // the locationId is "LOCATION_HOKKAIDO",  not "LOCATION_PARENT_HOKKAIDO".
-        return true
-    }
-
     const contract = controller.resolveContract(contractId, true)
     if (challenge.Type === "global") {
         return inclusionDataCheck(
@@ -214,7 +205,11 @@ function isChallengeInContract(
         // 1. The current sub-location, e.g. "LOCATION_COASTALTOWN_NIGHT". This is the most common.
         // 2. The parent location (yup, that can happen), e.g. "LOCATION_PARENT_HOKKAIDO" in Discover Hokkaido.
         challenge.LocationId === locationId ||
-        challenge.LocationId === challenge.ParentLocationId
+        challenge.LocationId === challenge.ParentLocationId ||
+        // Special case: winter festival has its own locationId, but for Hokkaido-wide challenges,
+        // the locationId is "LOCATION_HOKKAIDO",  not "LOCATION_PARENT_HOKKAIDO".
+        (challenge.LocationId === "LOCATION_HOKKAIDO" &&
+            locationId === "LOCATION_HOKKAIDO_SHIM_MAMUSHI")
 
     return (
         isForContract ||
