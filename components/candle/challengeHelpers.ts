@@ -27,10 +27,6 @@ import {
 import { SavedChallengeGroup } from "../types/challenges"
 import { controller } from "../controller"
 import { gameDifficulty } from "../utils"
-import {
-    locationsWithETA,
-    parentsWithETA,
-} from "../contracts/elusiveTargetArcades"
 
 export function compileScoringChallenge(
     challenge: RegistryChallenge,
@@ -248,7 +244,7 @@ export function filterChallenge(
                 return true
             } else if (
                 // If the location has an ET that appeared in an ETA, then all global arcade challenges are shown
-                locationsWithETA.includes(options.locationId) &&
+                controller.locationsWithETA.has(options.locationId) &&
                 challenge.Tags.includes("arcade") &&
                 challenge.Type === "global"
             ) {
@@ -266,7 +262,7 @@ export function filterChallenge(
                 return (
                     challenge.ParentLocationId === options.parent ||
                     (challenge.ParentLocationId === "" &&
-                        parentsWithETA.includes(options.parent))
+                        controller.parentsWithETA.has(options.parent))
                 )
             }
             return true

@@ -84,6 +84,7 @@ import { MasteryPackage } from "./types/mastery"
 import { ProgressionService } from "./candle/progressionService"
 import generatedPeacockRequireTable from "./generatedPeacockRequireTable"
 import { escalationTypes } from "./contracts/escalations/escalationService"
+import { orderedETAs } from "./contracts/elusiveTargetArcades"
 
 /**
  * An array of string arrays that contains the IDs of the featured contracts.
@@ -380,6 +381,9 @@ export class Controller {
     /** Internal elusive target contracts - only accessible during bootstrap. */
     private _internalElusives: MissionManifest[] | undefined
 
+    public locationsWithETA = new Set<string>()
+    public parentsWithETA = new Set<string>()
+
     /**
      * The constructor.
      */
@@ -462,6 +466,7 @@ export class Controller {
         this.progressionService = new ProgressionService()
 
         this._addElusiveTargets()
+        this._getETALocations()
         this.index()
 
         if (modFrameworkDataPath && existsSync(modFrameworkDataPath)) {
@@ -533,6 +538,38 @@ export class Controller {
         } catch (e) {
             log(LogLevel.ERROR, `Fatal error with challenge bootstrap: ${e}`)
             log(LogLevel.ERROR, e.stack)
+        }
+    }
+
+    private _getETALocations(): void {
+        for (const cId of orderedETAs) {
+            const contract = this.resolveContract(cId, true)
+
+            if (!contract) {
+                continue
+            }
+
+            for (const lId of contract.Metadata.GroupDefinition.Order) {
+                const level = this.resolveContract(lId, false)
+                if (!level) {
+                    continue
+                }
+                this.locationsWithETA.add(level.Metadata.Location)
+            }
+
+            this.locationsWithETA.add(contract.Metadata.Location)
+        }
+
+        const locations = getVersionedConfig<PeacockLocationsData>(
+            "LocationsData",
+            "h3",
+            false,
+        )
+
+        for (const location of this.locationsWithETA) {
+            this.parentsWithETA.add(
+                locations.children[location].Properties.ParentLocation,
+            )
         }
     }
 
