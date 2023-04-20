@@ -673,7 +673,7 @@ export async function missionEnd(
     let justTickedChallenges = 0
     let masteryXpGain = 0
 
-    Object.values(contractChallenges)
+    Object.values(locationChallenges)
         .flat()
         .filter((challengeData) => {
             return (
