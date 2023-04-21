@@ -10,12 +10,13 @@
                 "Category": "primary",
                 "Image": "images/contracts/escalation/rosebush_2_1.png",
                 "IsHidden": false,
-                "BriefingName": "Eliminate two mansion staff.",
-                "BriefingText": "We just got word two of our guys were taken out. I know these arrogant little assholes are behind it!",
-                "LongBriefingText": "We just got word two of our guys were taken out. I know these arrogant little assholes are behind it!",
+                "BriefingName": "$loc UI_PEACOCK_ROSEBUSH_MANSION_STAFF",
+                "BriefingText": "$loc UI_PEACOCK_ROSEBUSH_MANSION_STAFF_DESC",
                 "UpdateActivationWhileCompleted": true,
                 "OnActive": { "IfCompleted": { "Visible": false } },
-                "HUDTemplate": { "display": "Eliminate two mansion staff." },
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_ROSEBUSH_MANSION_STAFF_HUD"
+                },
                 "Definition": {
                     "Scope": "session",
                     "States": {
@@ -33,13 +34,12 @@
                 "Category": "primary",
                 "Image": "images/contracts/escalation/rosebush_2_2.png",
                 "IsHidden": false,
-                "BriefingName": "Do not change starting disguise.",
-                "BriefingText": "We can't just sit around and do nothing Vincent! I'm going in!",
-                "LongBriefingText": "We can't just sit around and do nothing Vincent! I'm going in!",
+                "BriefingName": "$loc UI_GAMECHANGERS_GLOBAL_NO_DISGUISE_CHANGE_NAME",
+                "BriefingText": "$loc UI_PEACOCK_ROSEBUSH_DISGUISE2",
                 "OnActive": { "IfCompleted": { "Visible": false } },
                 "UpdateActivationWhileCompleted": true,
                 "HUDTemplate": {
-                    "display": "Do not change starting disguise."
+                    "display": "UI_GAMECHANGERS_GLOBAL_NO_DISGUISE_CHANGE_NAME"
                 },
                 "Definition": {
                     "Scope": "session",
@@ -69,7 +69,14 @@
                         "data": "$($repository 9f6b010a-b4cc-4bda-8200-f132aaad03a4).Name"
                     }
                 },
-                "HUDTemplate": { "display": "Eliminate Lawrence Hunt" },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 9f6b010a-b4cc-4bda-8200-f132aaad03a4).Name"
+                        }
+                    }
+                },
                 "Category": "primary",
                 "Definition": {
                     "Scope": "Hit",
@@ -129,7 +136,14 @@
                         "data": "$($repository 3036afda-a6ab-4830-9f9a-192bcd5d958d).Name"
                     }
                 },
-                "HUDTemplate": { "display": "Eliminate Jay Harris" },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 3036afda-a6ab-4830-9f9a-192bcd5d958d).Name"
+                        }
+                    }
+                },
                 "Category": "primary",
                 "Definition": {
                     "Scope": "Hit",

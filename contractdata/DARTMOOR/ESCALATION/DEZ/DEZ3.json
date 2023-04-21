@@ -10,12 +10,11 @@
                 "Category": "primary",
                 "Image": "images/contracts/escalation/rosebush_3.png",
                 "IsHidden": false,
-                "BriefingName": "Finish it.",
-                "BriefingText": "It's all out war now.",
-                "LongBriefingText": "It's all out war now.",
+                "BriefingName": "$loc UI_PEACOCK_ROSEBUSH_FINISH",
+                "BriefingText": "$loc UI_PEACOCK_ROSEBUSH_FINISH_DESC",
                 "UpdateActivationWhileCompleted": true,
                 "OnActive": { "IfCompleted": { "Visible": false } },
-                "HUDTemplate": { "display": "Finish it." },
+                "HUDTemplate": { "display": "$loc UI_PEACOCK_ROSEBUSH_FINISH" },
                 "Definition": {
                     "Scope": "session",
                     "States": {
@@ -35,7 +34,14 @@
                         "data": "$($repository 9f6b010a-b4cc-4bda-8200-f132aaad03a4).Name"
                     }
                 },
-                "HUDTemplate": { "display": "Eliminate Lawrence Hunt" },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 9f6b010a-b4cc-4bda-8200-f132aaad03a4).Name"
+                        }
+                    }
+                },
                 "Category": "primary",
                 "Definition": {
                     "Scope": "Hit",
@@ -95,7 +101,14 @@
                         "data": "$($repository bca845d7-81a3-4499-a821-298b5ad3fe47).Name"
                     }
                 },
-                "HUDTemplate": { "display": "Eliminate Vincent Brown" },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository bca845d7-81a3-4499-a821-298b5ad3fe47).Name"
+                        }
+                    }
+                },
                 "Category": "primary",
                 "Definition": {
                     "Scope": "Hit",
@@ -155,7 +168,14 @@
                         "data": "$($repository 3036afda-a6ab-4830-9f9a-192bcd5d958d).Name"
                     }
                 },
-                "HUDTemplate": { "display": "Eliminate Jay Harris" },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 3036afda-a6ab-4830-9f9a-192bcd5d958d).Name"
+                        }
+                    }
+                },
                 "Category": "primary",
                 "Definition": {
                     "Scope": "Hit",
@@ -215,7 +235,14 @@
                         "data": "$($repository 1639e08a-4150-4a92-a4b3-bcec99b336fe).Name"
                     }
                 },
-                "HUDTemplate": { "display": "Eliminate Paul Carter" },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 3036afda-a6ab-4830-9f9a-192bcd5d958d).Name"
+                        }
+                    }
+                },
                 "Category": "primary",
                 "Definition": {
                     "Scope": "Hit",

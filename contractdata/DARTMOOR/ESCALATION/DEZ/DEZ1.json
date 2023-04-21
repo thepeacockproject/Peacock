@@ -10,12 +10,13 @@
                 "Category": "primary",
                 "Image": "images/contracts/escalation/rosebush_1_1.png",
                 "IsHidden": false,
-                "BriefingName": "Eliminate two mansion guards.",
-                "BriefingText": "These rent a cops actually thought they could come inside the Carlisle Manor! You should have seen the look on their face when we told them to stay outside!",
-                "LongBriefingText": "These rent a cops actually thought they could come inside the Carlisle Manor and the look on their face when we told to stay outside!",
+                "BriefingName": "$loc UI_PEACOCK_ROSEBUSH_MANSION_GUARDS",
+                "BriefingText": "$loc UI_PEACOCK_ROSEBUSH_MANSION_GUARDS_DESC",
                 "UpdateActivationWhileCompleted": true,
                 "OnActive": { "IfCompleted": { "Visible": false } },
-                "HUDTemplate": { "display": "Eliminate two mansion guards." },
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_ROSEBUSH_MANSION_GUARDS_HUD"
+                },
                 "Definition": {
                     "Scope": "session",
                     "States": {
@@ -33,13 +34,12 @@
                 "Category": "primary",
                 "Image": "images/contracts/escalation/rosebush_1_2.png",
                 "IsHidden": false,
-                "BriefingName": "Do not change starting disguise.",
-                "BriefingText": "Teach these low grade grunts a thing or two about class and let them know it's coming from one of us.",
-                "LongBriefingText": "Teach these low grade grunts a thing or two about class and let them know it's coming from one of us.",
+                "BriefingName": "$loc UI_GAMECHANGERS_GLOBAL_NO_DISGUISE_CHANGE_NAME",
+                "BriefingText": "$loc UI_PEACOCK_ROSEBUSH_DISGUISE1",
                 "UpdateActivationWhileCompleted": true,
                 "OnActive": { "IfCompleted": { "Visible": false } },
                 "HUDTemplate": {
-                    "display": "Do not change starting disguise."
+                    "display": "$loc UI_GAMECHANGERS_GLOBAL_NO_DISGUISE_CHANGE_NAME"
                 },
                 "Definition": {
                     "Scope": "session",
@@ -69,7 +69,14 @@
                         "data": "$($repository bca845d7-81a3-4499-a821-298b5ad3fe47).Name"
                     }
                 },
-                "HUDTemplate": { "display": "Eliminate Vincent Brown" },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository bca845d7-81a3-4499-a821-298b5ad3fe47).Name"
+                        }
+                    }
+                },
                 "Category": "primary",
                 "Definition": {
                     "Scope": "Hit",
@@ -129,7 +136,14 @@
                         "data": "$($repository 1639e08a-4150-4a92-a4b3-bcec99b336fe).Name"
                     }
                 },
-                "HUDTemplate": { "display": "Eliminate Paul Carter" },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 1639e08a-4150-4a92-a4b3-bcec99b336fe).Name"
+                        }
+                    }
+                },
                 "Category": "primary",
                 "Definition": {
                     "Scope": "Hit",

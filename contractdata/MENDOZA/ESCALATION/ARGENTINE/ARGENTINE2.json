@@ -4,13 +4,13 @@
             {
                 "Id": "8d606509-7d54-4dac-8142-a4349fd6279d",
                 "Type": "statemachine",
-                "BriefingName": "Leak Report",
-                "BriefingText": "Get the Leak Report from the basement safe",
+                "BriefingName": "$loc LLAMA_QUESTITEMS_YATESFILES_NAME",
+                "BriefingText": "$loc UI_PEACOCK_GRAPEBUSH_FILES_DESC",
                 "Image": "images/unlockables/item_perspective_773e7624-307e-418e-b6cf-f9bc6dc6b295_0.jpg",
                 "Primary": true,
                 "ObjectiveType": "custom",
                 "HUDTemplate": {
-                    "display": "Get the Leak Report from the basement safe",
+                    "display": "$loc UI_PEACOCK_GRAPEBUSH_FILES",
                     "iconType": 17
                 },
                 "Definition": {
@@ -35,10 +35,15 @@
             {
                 "Id": "fe4be56b-82e6-444a-ae9e-408e92b65380",
                 "Type": "statemachine",
-                "BriefingName": "Eliminate Heriberto Romano",
-                "BriefingText": "Eliminate Heriberto Romano",
                 "Primary": true,
-                "HUDTemplate": { "display": "Eliminate Heriberto Romano" },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository db85e020-98d2-485e-ba21-ebfc53b91daa).Name"
+                        }
+                    }
+                },
                 "Definition": {
                     "Context": {
                         "Targets": ["db85e020-98d2-485e-ba21-ebfc53b91daa"]
@@ -61,10 +66,15 @@
             {
                 "Id": "122428ab-7075-4842-b54c-757c221723ef",
                 "Type": "statemachine",
-                "BriefingName": "Eliminate Reno Davide",
-                "BriefingText": "Eliminate Reno Davide",
                 "Primary": true,
-                "HUDTemplate": { "display": "Eliminate Reno Davide" },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 5497400e-8806-49b9-bca0-76f58266b959).Name"
+                        }
+                    }
+                },
                 "Definition": {
                     "Context": {
                         "Targets": ["5497400e-8806-49b9-bca0-76f58266b959"]
@@ -87,11 +97,9 @@
             {
                 "Id": "acbe897b-5957-4ae7-ae68-a9ae9a0c6779",
                 "Type": "statemachine",
-                "BriefingName": "Eliminate Violetta Mendez in an accident",
-                "BriefingText": "Eliminate Violetta Mendez",
                 "Primary": true,
                 "HUDTemplate": {
-                    "display": "Eliminate Violetta Mendez in an accident"
+                    "display": "$loc UI_PEACOCK_GRAPEBUSH_OBJ1"
                 },
                 "Definition": {
                     "Context": {
