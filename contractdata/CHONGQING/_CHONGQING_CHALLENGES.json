@@ -3327,6 +3327,49 @@
                         }
                     },
                     "Tags": ["story", "medium", "feats"]
+                },
+                {
+                    "Id": "70f28168-f912-4076-9457-7cf55ca4ecce",
+                    "Name": "UI_PEACOCK_KOATS_CONSPIRACY",
+                    "ImageName": "images/contracts/escalation/ContractEscalation_KOats_Conspiracy.jpg",
+                    "Description": "UI_CHALLENGES_ESCLATION_COMPLETE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_WET_RAT",
+                    "ParentLocationId": "LOCATION_PARENT_WET",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$ContractId",
+                                            "3b160b4f-1222-40a1-9a67-423c05b32340"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["feats", "hard"],
+                    "InclusionData": {
+                        "ContractIds": ["07ffa72a-bbac-45ca-8c9f-b9c1b526153a"]
+                    }
                 }
             ]
         },

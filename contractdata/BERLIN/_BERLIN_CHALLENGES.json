@@ -2628,6 +2628,49 @@
                         }
                     },
                     "Tags": ["story", "feats", "hard"]
+                },
+                {
+                    "Id": "54ddadb4-edc7-47eb-a442-9c9536626168",
+                    "Name": "UI_PEACOCK_SHANGRILA",
+                    "ImageName": "images/contracts/escalation/contractescalation-shangrila.png",
+                    "Description": "UI_CHALLENGES_ESCLATION_COMPLETE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_EDGY_FOX",
+                    "ParentLocationId": "LOCATION_PARENT_EDGY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$ContractId",
+                                            "ffb1da03-fcbf-4d7f-8371-de685498516e"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["feats", "hard"],
+                    "InclusionData": {
+                        "ContractIds": ["ccdc7043-62af-44e8-a5fc-38b008c2044e"]
+                    }
                 }
             ]
         },

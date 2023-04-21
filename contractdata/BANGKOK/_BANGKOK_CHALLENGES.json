@@ -3825,6 +3825,92 @@
                         }
                     },
                     "Tags": ["story", "hard", "feats"]
+                },
+                {
+                    "Id": "6ff3d293-026f-4fba-afd7-fc9a60a464d4",
+                    "Name": "UI_CONTRACT_BLOOD_LILY_GROUP_TITLE",
+                    "ImageName": "images/contracts/escalation/ContractEscalation_Bangkok_BloodLily.jpg",
+                    "Description": "UI_CHALLENGES_ESCLATION_COMPLETE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_BANGKOK",
+                    "ParentLocationId": "LOCATION_PARENT_BANGKOK",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$ContractId",
+                                            "de38d516-b4ab-4539-b9b1-89b475f372bb"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["feats", "hard"],
+                    "InclusionData": {
+                        "ContractIds": ["45c831c4-b455-4d21-90f3-6f09b28ee01b"]
+                    }
+                },
+                {
+                    "Id": "a3e32a43-2ef5-4d8c-af6a-25c06c04a347",
+                    "Name": "UI_CONTRACT_HIBISCUS_GROUP_TITLE",
+                    "ImageName": "images/contracts/escalation/ContractEscalation_Bangkok_Hibiscus.jpg",
+                    "Description": "UI_CHALLENGES_ESCLATION_COMPLETE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_BANGKOK",
+                    "ParentLocationId": "LOCATION_PARENT_BANGKOK",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$ContractId",
+                                            "2e83eda3-230f-429c-965a-c89e7ada97e3"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["feats", "hard"],
+                    "InclusionData": {
+                        "ContractIds": ["ccbde3e2-67e7-4534-95ec-e9bd7ef65273"]
+                    }
                 }
             ]
         },

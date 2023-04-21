@@ -2168,6 +2168,49 @@
                         }
                     },
                     "Tags": ["story", "easy", "feats"]
+                },
+                {
+                    "Id": "40350248-2cd9-4203-aa0b-156e711bb1b3",
+                    "Name": "UI_PEACOCK_HEDGEBUSH",
+                    "ImageName": "images/contracts/escalation/contractescalation_hedgebush.png",
+                    "Description": "UI_CHALLENGES_ESCLATION_COMPLETE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_GREEDY_RACCOON",
+                    "ParentLocationId": "LOCATION_PARENT_GREEDY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$ContractId",
+                                            "6968e2a0-b7cf-4cb8-8da5-4871d8c564a5"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["feats", "hard"],
+                    "InclusionData": {
+                        "ContractIds": ["9a461f89-86c5-44e4-998e-f2f66b496aa7"]
+                    }
                 }
             ]
         },

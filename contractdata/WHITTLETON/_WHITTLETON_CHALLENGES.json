@@ -4563,6 +4563,49 @@
                         }
                     },
                     "Tags": ["story", "feats", "easy"]
+                },
+                {
+                    "Id": "5859d182-9798-4d50-86e1-5864f37ed809",
+                    "Name": "UI_PEACOCK_THORNBUSH",
+                    "ImageName": "images/contracts/escalation/contractescalation_thornbush.png",
+                    "Description": "UI_CHALLENGES_ESCLATION_COMPLETE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_NORTHAMERICA",
+                    "ParentLocationId": "LOCATION_PARENT_NORTHAMERICA",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$ContractId",
+                                            "45b1b927-5bf0-4dae-bc73-8ee1730652cc"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["feats", "hard"],
+                    "InclusionData": {
+                        "ContractIds": ["218302a3-f682-46f9-9ffd-bb3e82487b7c"]
+                    }
                 }
             ]
         },
