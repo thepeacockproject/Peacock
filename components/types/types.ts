@@ -1408,6 +1408,13 @@ export interface PlayNextGetCampaignsHookReturn {
      * An object containing the campaign's details.
      */
     campaignDetails: PlayNextCampaignDetails
+    /**
+     * An array index for plugins to override play next tiles that Peacock
+     * internally added
+     *
+     * @since v6.3.0
+     */
+    overrideIndex?: number
 }
 
 export type SafehouseCategory = {

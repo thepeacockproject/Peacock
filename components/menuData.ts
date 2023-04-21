@@ -21,8 +21,8 @@ import {
     contractCreationTutorialId,
     DEFAULT_MASTERY_MAXLEVEL,
     gameDifficulty,
-    isSuit,
     getMaxProfileLevel,
+    isSuit,
     PEACOCKVERSTRING,
     unlockOrderComparer,
     uuidRegex,
@@ -1407,14 +1407,23 @@ menuDataRouter.get(
         )
 
         if (pluginData) {
-            cats.push(
-                createPlayNextTile(
+            if (pluginData.overrideIndex !== undefined) {
+                cats[pluginData.overrideIndex] = createPlayNextTile(
                     req.jwt.unique_name,
                     pluginData.nextContractId,
                     req.gameVersion,
                     pluginData.campaignDetails,
-                ),
-            )
+                )
+            } else {
+                cats.push(
+                    createPlayNextTile(
+                        req.jwt.unique_name,
+                        pluginData.nextContractId,
+                        req.gameVersion,
+                        pluginData.campaignDetails,
+                    ),
+                )
+            }
         }
         //#endregion
 
