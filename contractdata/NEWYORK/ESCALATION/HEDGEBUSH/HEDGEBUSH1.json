@@ -51,10 +51,12 @@
                 "ObjectiveType": "custom",
                 "ForceShowOnLoadingScreen": true,
                 "Image": "images/contracts/escalation/hedgebush_obj_gold.png",
-                "BriefingName": "Steal the Gold",
-                "LongBriefingText": "Steal all the gold from the vault",
-                "BriefingText": "Steal all the gold from the vault",
-                "HUDTemplate": { "display": "Steal the Gold", "iconType": 17 },
+                "BriefingName": "$loc UI_PEACOCK_HEDGEBUSH_GOLD",
+                "BriefingText": "$loc UI_PEACOCK_HEDGEBUSH_GOLD_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_HEDGEBUSH_GOLD",
+                    "iconType": 17
+                },
                 "OnActive": { "IfCompleted": { "Visible": true } },
                 "IsHidden": false,
                 "Type": "statemachine",
