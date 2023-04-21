@@ -16,14 +16,11 @@ contractSessions
 userdata
 peacock_patcher.conf
 
-resources/rpkg-cli.exe
-resources/HMLanguageTools.exe
-resources/ResourceLib_*.dll
-resources/quickentity_rs.dll
-resources/hash_list.txt
-resources/dynamic_resources_*/**/*.*
-resources/LOCR
+resources/**/*.*
+!resources/locale.json
 !resources/dynamic_resources_*/*.meta
+!resources/dynamic_resources_*.rpkg
+!resources/rebuildLocale.cjs
 
 components/contracts.json
 DEBUG_PROFILE.json
