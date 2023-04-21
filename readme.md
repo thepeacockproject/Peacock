@@ -51,8 +51,8 @@ not listed in issues would have to be discussed before merging.
 
 To update localisation files, edit `locale.json` in the
 `resources` folder. If adding new strings, make sure to add the English versions
-to all languages. If you are  translating existing strings, you only need to
-translate ones that are in that  language. Then make sure `rpkg_cli.exe`,
+to all languages. If you are translating existing strings, you only need to
+translate ones that are in that language. Then make sure `rpkg_cli.exe`,
 `HMLanguageTools.exe`, and `ResourceLib_*.dll` are in the `resources` folder.
 Then, from the root project folder, run `yarn rebuild-locale` and push the new
 RPKGs and edited locale JSON files.
