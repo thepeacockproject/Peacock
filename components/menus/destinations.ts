@@ -56,6 +56,7 @@ export function getDestinationCompletion(
     const challenges = controller.challengeService.getGroupedChallengeLists(
         {
             type: ChallengeFilterType.ParentLocation,
+            parent: parent.Id,
         },
         parent.Id,
         req.gameVersion,

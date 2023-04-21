@@ -1,0 +1,98 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Bricks": ["assembly:/_PRO/Scenes/Missions/Paris/_scene_Lumumba.brick"],
+        "DevOnlyBricks": [],
+        "GameChangers": ["915e9254-7e61-4b62-839e-ee917b36cdce"],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_agility_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_ps4perf.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_not_peacock.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_agility_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_not_peacock.brick"
+                ]
+            }
+        ],
+        "Objectives": [
+            {
+                "Id": "1cccf663-a835-43ec-9515-5db94b52699f",
+                "Primary": true,
+                "IsHidden": true,
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "2c11757e-905e-44e7-8115-81e6a5a72ee2"
+                    }
+                }
+            },
+            {
+                "Id": "c6c864fe-287c-4345-8a04-03682a65498f",
+                "IsHidden": true,
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "Image": "images/unlockables/item_perspective_55d34557-5b46-422f-84ce-7bb13cfcef96_0.jpg",
+                "BriefingName": "$loc UI_CONTRACT_LUMUMBA_OBJ_2_TITLE",
+                "BriefingText": "$loc UI_CONTRACT_LUMUMBA_OBJ_2_DESC",
+                "LongBriefingText": "$loc UI_CONTRACT_LUMUMBA_OBJ_2_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_LUMUMBA_OBJ_2_TITLE"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {
+                        "Targets": ["6c05ffd3-a02b-45b6-9c05-ac3f6fcc0561"]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "6c05ffd3-a02b-45b6-9c05-ac3f6fcc0561"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "74845e43-8d97-47d3-b125-59e081214e3e",
+        "CodeName_Hint": "Blueberry - Level 1 - Lumumba",
+        "Release": "Arcade/Black",
+        "Type": "arcade",
+        "Title": "UI_CONTRACT_BLUEBERRY_LEVEL1_TITLE",
+        "Description": "UI_CONTRACT_LUMUMBA_DESC",
+        "TileImage": "images/contracts/elusive/031_Lumumba/Title.jpg",
+        "Location": "LOCATION_PARIS",
+        "InGroup": "07bc9bbf-7cba-4cdf-92bb-3ab57f09b1cc",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Paris/_scene_paris.entity",
+        "Entitlements": ["LOCATION_GOLDEN"],
+        "BriefingVideo": "briefing_lumumba",
+        "DebriefingVideo": "debriefing_lumumba",
+        "CreationTimestamp": "2012-12-12T12:12:12.743Z",
+        "LastUpdate": "2023-02-24T10:14:36.773783Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "IsPublished": true,
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "915e9254-7e61-4b62-839e-ee917b36cdce", "IsNew": true }
+        ],
+        "PublicId": "002803492347"
+    },
+    "UserData": {}
+}

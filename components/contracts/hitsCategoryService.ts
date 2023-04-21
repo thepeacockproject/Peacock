@@ -33,6 +33,7 @@ import { orderedETs } from "./elusiveTargets"
 import { userAuths } from "../officialServerAuth"
 import { log, LogLevel } from "../loggingInterop"
 import { fastClone, getRemoteService } from "../utils"
+import { orderedETAs } from "./elusiveTargetArcades"
 
 /**
  * The filters supported for HitsCategories.
@@ -199,7 +200,15 @@ export class HitsCategoryService {
                 )
             })
 
-        // intentionally don't handle Arcade
+        // Arcade
+
+        this.hitsCategories
+            .for("Arcade")
+            .tap(tapName, (contracts, gameVersion) => {
+                // Just in case
+                if (gameVersion !== "h3") return
+                contracts.push(...orderedETAs)
+            })
     }
 
     private async fetchFromOfficial(

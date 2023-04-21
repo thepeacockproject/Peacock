@@ -1,0 +1,101 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "_comment": "----- Eliminate Miranda Jamison -----",
+                "Id": "f9f212b8-71da-4489-98cf-cb242f36a9b9",
+                "Primary": true,
+                "IsHidden": true,
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "4c7c489d-3992-41ad-b2af-df3b3c431b53"
+                    }
+                }
+            },
+            {
+                "_comment": "----- Retrieve the Logbook -----",
+                "Id": "8d2e7efa-e47d-4a5e-8e0d-4d768bfb6d38",
+                "Category": "primary",
+                "IsHidden": true,
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": true,
+                "Image": "images/contracts/elusive/S2_GoldenDoublet/Objective1.jpg",
+                "BriefingName": "$loc UI_CONTRACT_GOLDENDOUBLET_OBJ_1_TITLE",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_GOLDENDOUBLET_OBJ_1_TITLE",
+                    "iconType": 17
+                },
+                "BriefingText": "$loc UI_CONTRACT_GOLDENDOUBLET_OBJ_1_DESC",
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {
+                        "Targets": ["264bb993-399a-4a60-9911-7c31cee0a2aa"]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "a2b90ea0-a4b9-4ce6-b5e5-2b36b12d5970"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_PRO/scenes/missions/theark/elusive_goldendoublet.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/theark/vr_overrides_magpie.brick",
+                    "assembly:/_pro/scenes/missions/theark/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/theark/vr_overrides_magpie.brick"
+                ]
+            }
+        ],
+        "Entrances": [
+            "42bfbe45-85c8-4555-b1fb-256b7006ee06",
+            "5e30a7b9-7e06-464e-b2eb-1aa23635f500",
+            "9c35b39c-53ca-4d5c-8ec4-90d1fc5a4bb0",
+            "82a5698f-6cd6-4f68-a0a8-3bf1288eda48"
+        ],
+        "GameChangers": ["1f8f0b8b-1f65-4d6c-a2f4-fc8adffa394a"]
+    },
+    "Metadata": {
+        "Id": "4fd0d55b-3352-4a4d-bb80-5000c018920d",
+        "Title": "UI_CONTRACT_APRICOT_LEVEL02_NAME",
+        "CodeName_Hint": "Arcade Apricot Golden Doublet",
+        "Description": "UI_CONTRACT_GOLDENDOUBLET_DESC",
+        "BriefingVideo": "briefing_goldendoublet",
+        "DebriefingVideo": "debriefing_goldendoublet",
+        "ScenePath": "assembly:/_pro/scenes/missions/theark/scene_magpie.entity",
+        "Entitlements": ["LOCATION_GOLDEN"],
+        "TileImage": "images/contracts/elusive/S2_GoldenDoublet/Title.jpg",
+        "Location": "LOCATION_NORTHSEA",
+        "IsPublished": true,
+        "LastUpdate": "2023-02-24T10:14:36.5118949Z",
+        "CreationTimestamp": "2018-10-11T08:41:48.0124427Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Release": "3.100.0 Arcade",
+        "Type": "arcade",
+        "InGroup": "90121ee0-0431-4a97-9bc8-8a7e2ca30d65",
+        "PublicId": "021245658247"
+    },
+    "UserData": {}
+}

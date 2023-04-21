@@ -88,6 +88,7 @@ legacyProfileRouter.post(
                 controller.challengeService.getChallengesForContract(
                     json.Metadata.Id,
                     req.gameVersion,
+                    req.jwt.unique_name,
                 ),
             )
                 .flat()

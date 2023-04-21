@@ -1,0 +1,96 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "Primary": true,
+                "Text": null,
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "e63259c4-1a82-4299-9633-6ac54991e1e9"
+                    }
+                },
+                "ResetEvent": null,
+                "FailedEvent": null,
+                "Id": "85f63c02-f1c1-4d41-b1d0-a3ef765d2850",
+                "IsHidden": true
+            },
+            {
+                "Id": "f574d4f6-fcb5-48c3-b3c9-15595069080b",
+                "IsHidden": true,
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "Image": "images/unlockables/item_perspective_74a4f6ee-b465-437c-bef9-3a67c9932853_0.jpg",
+                "BriefingName": "$loc UI_CONTRACT_MAITAI_OBJ_2_TITLE",
+                "BriefingText": "$loc UI_CONTRACT_MAITAI_OBJ_2_TITLE",
+                "LongBriefingText": "$loc UI_CONTRACT_MAITAI_OBJ_2_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_MAITAI_OBJ_2_TITLE"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {
+                        "Targets": ["f8b7e382-6893-48b5-b34e-aec668d20564"]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "f8b7e382-6893-48b5-b34e-aec668d20564"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/marrakesh/mission_marrakesh_maitai.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/missions/marrakesh/vr_agility_overrides_marrakesh_variations.brick",
+                    "assembly:/_PRO/scenes/missions/marrakesh/vr_overrides_python.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/missions/marrakesh/vr_agility_overrides_marrakesh_variations.brick",
+                    "assembly:/_PRO/scenes/missions/marrakesh/vr_overrides_python.brick"
+                ]
+            }
+        ],
+        "GameChangers": ["1efef5c0-7381-4e22-ac04-ffbd0822cc96"]
+    },
+    "Metadata": {
+        "Id": "06fcf93a-9c3a-4c19-a2ce-b25e112d2603",
+        "IsPublished": true,
+        "Title": "UI_CONTRACT_PEAR_LEVEL05_NAME",
+        "Description": "UI_CONTRACT_MAI_TAI_DESC",
+        "BriefingVideo": "briefing_maitai",
+        "DebriefingVideo": "debriefing_maitai",
+        "CodeName_Hint": "Arcade Pear Mai Tai",
+        "Location": "LOCATION_MARRAKECH_NIGHT",
+        "ScenePath": "assembly:/_pro/scenes/missions/marrakesh/_scene_python.entity",
+        "Entitlements": ["LOCATION_GOLDEN"],
+        "TileImage": "images/contracts/elusive/014_MaiTai/Title.jpg",
+        "LastUpdate": "2023-02-24T10:14:37.9901295Z",
+        "CreationTimestamp": "2012-12-12T12:12:12.743Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Type": "arcade",
+        "Release": "3.100.0 Arcade",
+        "InGroup": "b4d555eb-e2c9-40c2-b155-328a7019fd28",
+        "PublicId": "007945900047"
+    },
+    "UserData": {}
+}

@@ -41,7 +41,10 @@ import type {
     MissionStory,
     RequestWithJwt,
 } from "../types/types"
-import { getPlayEscalationInfo } from "./escalations/escalationService"
+import {
+    escalationTypes,
+    getPlayEscalationInfo,
+} from "./escalations/escalationService"
 import { log, LogLevel } from "../loggingInterop"
 import { randomUUID } from "crypto"
 import {
@@ -89,7 +92,7 @@ contractRoutingRouter.post(
         // Add escalation data to Contract data HERE
         contractData.Metadata = {
             ...contractData.Metadata,
-            ...(contractData.Metadata.Type === "escalation"
+            ...(escalationTypes.includes(contractData.Metadata.Type)
                 ? getPlayEscalationInfo(
                       req.jwt.unique_name,
                       contractData.Metadata.InGroup,

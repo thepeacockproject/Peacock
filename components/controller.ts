@@ -83,6 +83,8 @@ import { MasteryService } from "./candle/masteryService"
 import { MasteryPackage } from "./types/mastery"
 import { ProgressionService } from "./candle/progressionService"
 import generatedPeacockRequireTable from "./generatedPeacockRequireTable"
+import { escalationTypes } from "./contracts/escalations/escalationService"
+import { orderedETAs } from "./contracts/elusiveTargetArcades"
 
 /**
  * An array of string arrays that contains the IDs of the featured contracts.
@@ -379,6 +381,9 @@ export class Controller {
     /** Internal elusive target contracts - only accessible during bootstrap. */
     private _internalElusives: MissionManifest[] | undefined
 
+    public locationsWithETA = new Set<string>()
+    public parentsWithETA = new Set<string>()
+
     /**
      * The constructor.
      */
@@ -461,6 +466,7 @@ export class Controller {
         this.progressionService = new ProgressionService()
 
         this._addElusiveTargets()
+        this._getETALocations()
         this.index()
 
         if (modFrameworkDataPath && existsSync(modFrameworkDataPath)) {
@@ -535,6 +541,38 @@ export class Controller {
         }
     }
 
+    private _getETALocations(): void {
+        for (const cId of orderedETAs) {
+            const contract = this.resolveContract(cId, true)
+
+            if (!contract) {
+                continue
+            }
+
+            for (const lId of contract.Metadata.GroupDefinition.Order) {
+                const level = this.resolveContract(lId, false)
+                if (!level) {
+                    continue
+                }
+                this.locationsWithETA.add(level.Metadata.Location)
+            }
+
+            this.locationsWithETA.add(contract.Metadata.Location)
+        }
+
+        const locations = getVersionedConfig<PeacockLocationsData>(
+            "LocationsData",
+            "h3",
+            false,
+        )
+
+        for (const location of this.locationsWithETA) {
+            this.parentsWithETA.add(
+                locations.children[location].Properties.ParentLocation,
+            )
+        }
+    }
+
     /**
      * Gets a contract from the registry by its public ID,
      * or downloads it from the official servers if possible.
@@ -593,7 +631,7 @@ export class Controller {
     }
 
     private getGroupContract(json: MissionManifest) {
-        if (json.Metadata.Type === "escalation") {
+        if (escalationTypes.includes(json.Metadata.Type)) {
             return this.resolveContract(json.Metadata.InGroup) ?? json
         }
         return json
@@ -964,12 +1002,6 @@ export class Controller {
 
     private _handleChallengeResources(data: ChallengePackage): void {
         for (const group of data.groups) {
-            if (
-                group.Name === "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ARCADE"
-            ) {
-                continue
-            }
-
             this.challengeService.registerGroup(
                 group,
                 data.meta.Location,
@@ -1280,6 +1312,7 @@ export function contractIdToHitObject(
     const challenges = controller.challengeService.getGroupedChallengeLists(
         {
             type: ChallengeFilterType.ParentLocation,
+            parent: parentLocation?.Id,
         },
         parentLocation?.Id,
         gameVersion,

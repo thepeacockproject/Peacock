@@ -33,6 +33,7 @@ import { log, LogLevel } from "../loggingInterop"
 import { getUserData } from "../databaseHandler"
 import { controller } from "../controller"
 import {
+    escalationTypes,
     getLevelCount,
     getUserEscalationProgress,
 } from "./escalations/escalationService"
@@ -228,7 +229,7 @@ export function generateUserCentric(
         },
     }
 
-    if (contractData.Metadata.Type === "escalation") {
+    if (escalationTypes.includes(contractData.Metadata.Type)) {
         const eGroupId =
             contractData.Metadata.InGroup ?? contractData.Metadata.Id
 

@@ -237,12 +237,7 @@ export class MenuSystemDatabase {
                         $if: {
                             $condition: {
                                 $or: [
-                                    {
-                                        $and: [
-                                            "$not $eq({$currentcontractcontext}.ContractType,arcade)",
-                                            "$not $eq({$currentcontractcontext}.ContractType,evergreen)",
-                                        ],
-                                    },
+                                    "$not $eq({$currentcontractcontext}.ContractType,evergreen)",
                                     "$isallowedtorestart",
                                 ],
                             },
@@ -265,13 +260,7 @@ export class MenuSystemDatabase {
                                 ],
                             },
                             $then: {
-                                $if: {
-                                    $condition: {
-                                        $or: [
-                                            "$not $eq({$currentcontractcontext}.ContractType,arcade)",
-                                            "$isallowedtorestart",
-                                        ],
-                                    },
+                                "$if $isallowedtorestart": {
                                     $then: {
                                         view: "menu3.basic.ListElementSmall",
                                         pressable:
@@ -450,57 +439,12 @@ export class MenuSystemDatabase {
                         $mergeobjects: [
                             {
                                 accept: {
-                                    "$switch $.Contract.Metadata.Type": [
-                                        {
-                                            case: "arcade",
-                                            return: {
-                                                "show-modal": {
-                                                    config: {
-                                                        view: "menu3.modal.ModalDialogGeneric",
-                                                        buttons: [
-                                                            "$loc UI_DIALOG_CONFIRM",
-                                                            {
-                                                                label: "$loc UI_DIALOG_CANCEL",
-                                                                type: "cancel",
-                                                            },
-                                                        ],
-                                                        data: {
-                                                            title: "$loc UI_CONTRACT_HEADER_ARCADE",
-                                                            information: [
-                                                                {
-                                                                    description:
-                                                                        "$loc UI_MENU_PAGE_PLANNING_ARCADE_PLAY_WARNING",
-                                                                },
-                                                            ],
-                                                        },
-                                                    },
-                                                    onbutton: [
-                                                        {
-                                                            "start-contract": {
-                                                                contract:
-                                                                    "$.Contract",
-                                                                difficulty:
-                                                                    "$.@parent.CurrentDifficulty",
-                                                                objectives:
-                                                                    "$.@parent.Objectives",
-                                                            },
-                                                        },
-                                                    ],
-                                                },
-                                            },
-                                        },
-                                        {
-                                            default: {
-                                                "start-contract": {
-                                                    contract: "$.Contract",
-                                                    difficulty:
-                                                        "$.@parent.CurrentDifficulty",
-                                                    objectives:
-                                                        "$.@parent.Objectives",
-                                                },
-                                            },
-                                        },
-                                    ],
+                                    "start-contract": {
+                                        contract: "$.Contract",
+                                        difficulty:
+                                            "$.@parent.CurrentDifficulty",
+                                        objectives: "$.@parent.Objectives",
+                                    },
                                 },
                             },
                             {

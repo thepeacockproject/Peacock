@@ -95,6 +95,7 @@ export type ChallengeFilterOptions =
       }
     | {
           type: ChallengeFilterType.ParentLocation
+          parent: string
       }
 
 /**
@@ -148,7 +149,6 @@ function isChallengeInContract(
     challenge: RegistryChallenge,
     forCareer = false,
 ): boolean {
-    // Currently don't have all the escalation groups
     if (!contractId || !locationId) {
         return false
     }
@@ -230,20 +230,42 @@ export function filterChallenge(
             )
         }
         case ChallengeFilterType.Contracts: {
-            return options.contractIds.some((contractId) =>
-                isChallengeInContract(
-                    contractId,
-                    options.locationId,
-                    gameDifficulty.master, // Get challenges of all difficulties
-                    challenge,
-                    true,
-                ),
-            )
+            if (
+                options.contractIds.some((contractId) =>
+                    isChallengeInContract(
+                        contractId,
+                        options.locationId,
+                        gameDifficulty.master, // Get challenges of all difficulties
+                        challenge,
+                        true,
+                    ),
+                )
+            ) {
+                return true
+            } else if (
+                // If the location has an ET that appeared in an ETA, then all global arcade challenges are shown
+                controller.locationsWithETA.has(options.locationId) &&
+                challenge.Tags.includes("arcade") &&
+                challenge.Type === "global"
+            ) {
+                return true
+            }
+            return false
         }
         case ChallengeFilterType.ParentLocation: {
-            // Challenges are already organized by location
-            // So we only need to filter out the elusive target challenges
-            return !challenge.Tags.includes("elusive")
+            // Challenges are already organized by parent location
+            // But they contain elusive target challenges, which need to be filtered out
+            if (challenge.Tags.includes("elusive")) {
+                return false
+            }
+            if (challenge.Tags.includes("arcade")) {
+                return (
+                    challenge.ParentLocationId === options.parent ||
+                    (challenge.ParentLocationId === "" &&
+                        controller.parentsWithETA.has(options.parent))
+                )
+            }
+            return true
         }
     }
 }

@@ -45,7 +45,7 @@ import type {
     Seconds,
 } from "./types/types"
 import {
-    contractIdToEscalationGroupId,
+    escalationTypes,
     getLevelCount,
 } from "./contracts/escalations/escalationService"
 import { getUserData, writeUserData } from "./databaseHandler"
@@ -257,7 +257,6 @@ export function calculateXp(
 
 export function calculateScore(
     gameVersion: GameVersion,
-    contractSessionId: string,
     contractSession: ContractSession,
     contractData: MissionManifest,
     timeTotal: Seconds,
@@ -281,7 +280,7 @@ export function calculateScore(
                                 contractSession.completedObjectives,
                             )) ||
                         "Success" ===
-                            getCurrentState(contractSessionId, obj.Id),
+                            getCurrentState(contractSession.Id, obj.Id),
                 ),
             fractionNumerator: 2,
             fractionDenominator: 3,
@@ -536,10 +535,9 @@ export async function missionEnd(
     }
 
     //Handle escalation groups
-    if (contractData.Metadata.Type === "escalation") {
-        const eGroupId = contractIdToEscalationGroupId(
-            sessionDetails.contractId,
-        )
+    if (escalationTypes.includes(contractData.Metadata.Type)) {
+        const eGroupId =
+            contractData.Metadata.InGroup ?? contractData.Metadata.Id
 
         if (!eGroupId) {
             log(
@@ -602,15 +600,20 @@ export async function missionEnd(
         writeUserData(req.jwt.unique_name, req.gameVersion)
     }
 
+    const levelData = controller.resolveContract(
+        sessionDetails.contractId,
+        false,
+    )
+
     //Resolve the id of the parent location
     const subLocation = getSubLocationByName(
-        contractData.Metadata.Location,
+        levelData.Metadata.Location,
         req.gameVersion,
     )
 
     const locationParentId = subLocation
         ? subLocation.Properties?.ParentLocation
-        : contractData.Metadata.Location
+        : levelData.Metadata.Location
 
     if (!locationParentId) {
         res.status(404).send("location parentid not found")
@@ -631,6 +634,7 @@ export async function missionEnd(
         controller.challengeService.getGroupedChallengeLists(
             {
                 type: ChallengeFilterType.ParentLocation,
+                parent: locationParentId,
             },
             locationParentId,
             req.gameVersion,
@@ -639,6 +643,7 @@ export async function missionEnd(
         controller.challengeService.getChallengesForContract(
             sessionDetails.contractId,
             req.gameVersion,
+            req.jwt.unique_name,
             sessionDetails.difficulty,
         )
     const locationChallengeCompletion =
@@ -713,7 +718,7 @@ export async function missionEnd(
     const totalXpGain = calculateXpResult.xp + masteryXpGain
 
     const completionData = generateCompletionData(
-        contractData.Metadata.Location,
+        levelData.Metadata.Location,
         req.jwt.unique_name,
         req.gameVersion,
         contractData.Metadata.Type,
@@ -774,7 +779,6 @@ export async function missionEnd(
     //Calculate score and summary
     const calculateScoreResult = calculateScore(
         req.gameVersion,
-        req.query.contractSessionId,
         sessionDetails,
         contractData,
         timeTotal,
