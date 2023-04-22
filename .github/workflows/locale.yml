@@ -1,0 +1,103 @@
+name: Localisation
+
+on:
+  push:
+    branches: ["v*"]
+    paths: ["resources/locale.json"]
+
+jobs:
+  rebuild-locale:
+    name: Rebuild Localisation
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Peacock
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.PEACOCKBOT_TOKEN }}
+          path: "./Peacock"
+
+      - name: Checkout Peacock Strings
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.PEACOCKBOT_TOKEN }}
+          repository: thepeacockproject/peacock-strings
+          path: "./PeacockStrings"
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: "./Peacock/.nvmrc"
+          cache: "yarn"
+          cache-dependency-path: "./Peacock/yarn.lock"
+      
+      - name: Install Packages
+        run: |
+          cd Peacock
+          yarn install --immutable
+
+      #- name: Download ResourceLib
+      #  uses: robinraju/release-downloader@v1.7
+      #  with:
+      #    repository: "OrfeasZ/ZHMTools"
+      #    latest: true
+      #    fileName: "ResourceLib-win-x64.zip"
+      #    out-file-path: "Peacock/resources"
+
+      - name: Download RPKG-CLI
+        uses: robinraju/release-downloader@v1.7
+        with:
+          repository: "glacier-modding/RPKG-Tool"
+          tag: v2.29.0
+          fileName: "rpkg_v2.29.0-cli.zip"
+          out-file-path: "Peacock/resources"
+
+      - name: Download HMLanguageTools
+        uses: robinraju/release-downloader@v1.7
+        with:
+          repository: "AnthonyFuller/TonyTools"
+          latest: true
+          fileName: "TonyTools.zip"
+          out-file-path: "Peacock/resources"
+
+      - name: Unzip dependencies
+        run: |
+          cd Peacock/resources
+          7z x rpkg_v2.29.0-cli.zip
+          7z x TonyTools.zip
+
+      - name: Rebuild Locale Packages
+        run: |
+          cd Peacock
+          yarn rebuild-locale
+
+      - name: Create PR for updated RPKGs
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.PEACOCKBOT_TOKEN }}
+          path: "./Peacock"
+          add-paths: |
+            resources/dynamic_resources_h2.rpkg
+            resources/dynamic_resources_h3.rpkg
+          commit-message: "Update locale packages"
+          title: "Update locale packages"
+          body: Automated PR
+          reviewers: AnthonyFuller
+          branch: locale-packages
+          delete-branch: true
+          committer: PeacockBot <admin@thepeacockproject.org>
+          author: PeacockBot <admin@thepeacockproject.org>
+
+      - name: Copy peacockstrings.locr.json
+        run: |
+          copy ./Peacock/resources/peacockstrings.locr.json ./PeacockStrings/content/chunk0/peacockstrings.locr.json
+
+      - name: Push updated Peacock LOCR
+        uses: EndBug/add-and-commit@v9
+        with:
+          cwd: "./PeacockStrings"
+          add: content/chunk0/peacockstrings.locr.json
+          author_name: PeacockBot
+          author_email: admin@thepeacockproject.org
+          message: "feat: update strings"
+
+    
