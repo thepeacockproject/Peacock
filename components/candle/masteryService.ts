@@ -130,6 +130,7 @@ export class MasteryService {
         userProfile.Extensions.progression.Locations[completionId] ??= {
             Xp: 0,
             Level: 1,
+            PreviouslySeenXp: 0,
         }
 
         const completionData =
@@ -149,6 +150,7 @@ export class MasteryService {
             Level: completionData.Level,
             MaxLevel: maxLevel,
             XP: completionData.Xp,
+            PreviouslySeenXp: completionData.PreviouslySeenXp,
             Completion:
                 (completionData.Xp - thisLevelXp) / (nextLevelXp - thisLevelXp),
             XpLeft: nextLevelXp - completionData.Xp,
@@ -269,6 +271,7 @@ export class MasteryService {
             locationParentId,
             gameVersion,
             userId,
+            locationParentId.includes("SNUG") ? "evergreen" : "mission",
         )
 
         const drops: MasteryDrop[] = masteryData.Drops.filter((drop) => {

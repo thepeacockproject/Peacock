@@ -243,6 +243,7 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
                     parent,
                     req.gameVersion,
                     req.jwt.unique_name,
+                    parent.includes("SNUG") ? "evergreen" : "mission",
                 )
 
             masteryData.push({

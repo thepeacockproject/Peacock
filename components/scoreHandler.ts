@@ -206,7 +206,7 @@ export function calculatePlaystyle(
     return playstylesCopy
 }
 
-export function calculateXp(
+export function calculateGlobalXp(
     contractSession: ContractSession,
     gameVersion: GameVersion,
 ): CalculateXpResult {
@@ -670,15 +670,16 @@ export async function missionEnd(
     const playerProgressionData =
         userData.Extensions.progression.PlayerProfileXP
 
-    //Calculate XP based on all challenges, including the global ones.
-    const calculateXpResult: CalculateXpResult = calculateXp(
+    // Calculate XP based on global challenges.
+    const calculateXpResult: CalculateXpResult = calculateGlobalXp(
         sessionDetails,
         req.gameVersion,
     )
     let justTickedChallenges = 0
-    let masteryXpGain = 0
+    let totalXpGain = calculateXpResult.xp
 
-    Object.values(contractChallenges)
+    // Calculate XP based on non-global challenges.
+    Object.values(locationChallenges)
         .flat()
         .filter((challengeData) => {
             return (
@@ -699,7 +700,7 @@ export async function missionEnd(
 
             justTickedChallenges++
 
-            masteryXpGain += challengeData.Rewards.MasteryXP
+            totalXpGain += challengeData.Rewards.MasteryXP
 
             calculateXpResult.completedChallenges.push({
                 ChallengeId: challengeData.Id,
@@ -714,9 +715,6 @@ export async function missionEnd(
             })
         })
 
-    //NOTE: Official doesn't seem to make up it's mind whether or not XPGain is the same for both Mastery and Profile...
-    const totalXpGain = calculateXpResult.xp + masteryXpGain
-
     const completionData = generateCompletionData(
         levelData.Metadata.Location,
         req.jwt.unique_name,
@@ -725,10 +723,17 @@ export async function missionEnd(
     )
 
     //Calculate the old location progression based on the current one and process it
-    const oldLocationXp = completionData.XP - masteryXpGain
+    const oldLocationXp = completionData.PreviouslySeenXp
+        ? completionData.PreviouslySeenXp
+        : completionData.XP - totalXpGain
     let oldLocationLevel = levelForXp(oldLocationXp)
+
     const newLocationXp = completionData.XP
     let newLocationLevel = levelForXp(newLocationXp)
+    userData.Extensions.progression.Locations[
+        locationParentId.toLowerCase()
+    ].PreviouslySeenXp = newLocationXp
+    writeUserData(req.jwt.unique_name, req.gameVersion)
 
     const masteryData =
         controller.masteryService.getMasteryPackage(locationParentId)
@@ -850,7 +855,7 @@ export async function missionEnd(
         locationLevelInfo = EVERGREEN_LEVEL_INFO
 
         //Override the location levels to trigger potential drops
-        oldLocationLevel = evergreenLevelForXp(completionData.XP - totalXpGain)
+        oldLocationLevel = evergreenLevelForXp(oldLocationXp)
         newLocationLevel = completionData.Level
 
         //Override the silent assassin rank

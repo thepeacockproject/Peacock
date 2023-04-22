@@ -76,6 +76,7 @@ export class ProgressionService {
         ] ??= {
             Xp: 0,
             Level: 1,
+            PreviouslySeenXp: 0,
         })
     }
 
