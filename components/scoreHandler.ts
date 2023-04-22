@@ -720,10 +720,14 @@ export async function missionEnd(
     )
 
     //Calculate the old location progression based on the current one and process it
-    const oldLocationXp = completionData.XP - masteryXpGain
+    const oldLocationXp = completionData.PreviouslySeenXp
+        ? completionData.PreviouslySeenXp
+        : completionData.XP - masteryXpGain
     let oldLocationLevel = levelForXp(oldLocationXp)
     const newLocationXp = completionData.XP
     let newLocationLevel = levelForXp(newLocationXp)
+    completionData.PreviouslySeenXp = newLocationXp
+    writeUserData(req.jwt.unique_name, req.gameVersion)
 
     const masteryData =
         controller.masteryService.getMasteryPackage(locationParentId)

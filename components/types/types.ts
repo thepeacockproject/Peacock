@@ -480,6 +480,7 @@ export interface UserProfile {
                 [location: string]: {
                     Xp: number
                     Level: number
+                    PreviouslySeenXp: number
                 }
             }
         }
@@ -660,6 +661,7 @@ export interface CompletionData {
     Level: number
     MaxLevel: number
     XP: number
+    PreviouslySeenXp: number
     Completion: number
     XpLeft: number
     Id: string

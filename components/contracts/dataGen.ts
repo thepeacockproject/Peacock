@@ -136,6 +136,7 @@ export function generateCompletionData(
             Level: 1,
             MaxLevel: 1,
             XP: 0,
+            PreviouslySeenXp: 0,
             Completion: 1.0,
             XpLeft: 0,
             Id: locationId,
