@@ -671,7 +671,7 @@ export async function missionEnd(
         req.gameVersion,
     )
     let justTickedChallenges = 0
-    let totalXpGain = calculateXpResult.xp 
+    let totalXpGain = calculateXpResult.xp
 
     // Calculate XP based on non-global challenges.
     Object.values(locationChallenges)
