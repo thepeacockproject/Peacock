@@ -271,6 +271,7 @@ export class MasteryService {
             locationParentId,
             gameVersion,
             userId,
+            locationParentId.includes("SNUG") ? "evergreen" : "mission",
         )
 
         const drops: MasteryDrop[] = masteryData.Drops.filter((drop) => {
