@@ -33,7 +33,7 @@ jobs:
       - name: Install Packages
         run: |
           cd Peacock
-          yarn install --frozen-lockfile
+          yarn install --immutable
 
       #- name: Download ResourceLib
       #  uses: robinraju/release-downloader@v1.7
@@ -47,7 +47,7 @@ jobs:
         uses: robinraju/release-downloader@v1.7
         with:
           repository: "glacier-modding/RPKG-Tool"
-          latest: true
+          tag: v2.29.0
           fileName: "rpkg_v2.29.0-cli.zip"
           out-file-path: "Peacock/resources"
 
@@ -58,6 +58,12 @@ jobs:
           latest: true
           fileName: "TonyTools.zip"
           out-file-path: "Peacock/resources"
+
+      - name: Unzip dependencies
+        run: |
+          cd Peacock/resources
+          7z x rpkg_v2.29.0-cli.zip
+          7z x TonyTools.zip
 
       - name: Rebuild Locale Packages
         run: |
