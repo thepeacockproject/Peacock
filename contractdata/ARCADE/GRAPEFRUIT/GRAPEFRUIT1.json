@@ -1,0 +1,113 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/edgy/mission_fox/elusive_radler.brick"
+        ],
+        "GameChangers": ["3db72bb5-63d6-47fe-9332-d7ea3c195e06"],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/edgy/mission_fox/vr_overrides_fox.brick",
+                    "assembly:/_pro/scenes/missions/edgy/mission_fox/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/edgy/mission_fox/vr_overrides_fox.brick"
+                ]
+            }
+        ],
+        "Entrances": ["000fc136-f098-43a2-b204-26c038a55490"],
+        "MandatoryLoadout": [
+            {
+                "Id": "TOKEN_OUTFIT_REWARD_HERO_RAVING_SUIT",
+                "Properties": {
+                    "LoadoutSlot": "disguise",
+                    "RepositoryId": "3c6a9b35-82ac-4e08-8e32-d9fd77cbd7d3"
+                }
+            }
+        ],
+        "Objectives": [
+            {
+                "Id": "b7f349f0-f4fe-4755-ba1c-124fb4abadbe",
+                "Primary": true,
+                "IsHidden": true,
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "9d1c5d01-a793-4c0a-875b-3b48ad584537"
+                    }
+                }
+            },
+            {
+                "_comment": "----- Do not eliminate the guide -----",
+                "Id": "d5331a6d-4d91-4949-884f-eb981048a137",
+                "Category": "secondary",
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": true,
+                "Image": "images/contracts/elusive/s3_radler/objective2.jpg",
+                "BriefingName": "$loc UI_CONTRACT_RADLER_OBJ_2_TITLE",
+                "BriefingText": "$loc UI_CONTRACT_RADLER_OBJ_2_DESC",
+                "LongBriefingText": "$loc UI_CONTRACT_RADLER_OBJ_2_DESC_LONG",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_RADLER_OBJ_2_TITLE",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "ExcludeFromScoring": false,
+                "Definition": {
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "ContractEnd": { "Transition": "Success" },
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "a66118e9-9c3e-4251-849c-d3146d218bd5"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "d0c0e40c-6f57-4282-8e0a-8cdf18426a1a",
+        "CodeName_Hint": "Grapefruit - Level 1 - Radler",
+        "Release": "Arcade/Green",
+        "Type": "arcade",
+        "Title": "UI_CONTRACT_GRAPEFRUIT_LEVEL1_TITLE",
+        "Description": "UI_CONTRACT_GRAPEFRUIT_LEVEL1_DESC",
+        "TileImage": "images/contracts/elusive/S3_Radler/Title.jpg",
+        "Location": "LOCATION_EDGY_FOX",
+        "InGroup": "be787ec9-e7b9-4984-bb39-fda4c71705ec",
+        "ScenePath": "assembly:/_pro/scenes/missions/edgy/mission_fox/scene_radler.entity",
+        "Entitlements": ["LOCATION_GOLDEN"],
+        "BriefingVideo": "briefing_radler",
+        "DebriefingVideo": "debriefing_radler",
+        "CreationTimestamp": "2012-12-12T12:12:12.743Z",
+        "LastUpdate": "2023-02-24T10:14:37.1435802Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "IsPublished": true,
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "3db72bb5-63d6-47fe-9332-d7ea3c195e06", "IsNew": true }
+        ],
+        "PublicId": "029307843247"
+    },
+    "UserData": {}
+}

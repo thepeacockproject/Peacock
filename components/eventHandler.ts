@@ -65,6 +65,7 @@ import {
 import picocolors from "picocolors"
 import { setCpd } from "./evergreen"
 import { getConfig } from "./configSwizzleManager"
+import { resetUserEscalationProgress } from "./contracts/escalations/escalationService"
 
 const eventRouter = Router()
 
@@ -254,6 +255,7 @@ export function newSession(
     )
 
     contractSessions.set(sessionId, {
+        Id: sessionId,
         gameVersion,
         sessionStart: timestamp,
         lastUpdate: timestamp,
@@ -303,7 +305,6 @@ export function newSession(
 
     controller.challengeService.startContract(
         userId,
-        sessionId,
         contractSessions.get(sessionId)!,
     )
 }
@@ -422,6 +423,7 @@ function contractFailed(
     session.markedTargets.clear()
 
     const json = controller.resolveContract(session.contractId)!
+    const userData = getUserData(session.userId, session.gameVersion)
 
     let realName: string
 
@@ -443,12 +445,8 @@ function contractFailed(
         liveSplitManager.failMission(0)
     }
 
-    const contractData = controller.resolveContract(session.contractId)
-
     // If this is a contract, update the contract in the played list
-    if (contractTypes.includes(contractData.Metadata.Type)) {
-        const userData = getUserData(session.userId, session.gameVersion)
-
+    if (contractTypes.includes(json.Metadata.Type)) {
         const id = session.contractId
 
         if (!userData.Extensions.PeacockPlayedContracts[id]) {
@@ -457,6 +455,34 @@ function contractFailed(
 
         userData.Extensions.PeacockPlayedContracts[id].LastPlayedAt =
             new Date().getTime()
+        writeUserData(session.userId, session.gameVersion)
+    }
+
+    // If this is an arcade contract, reset it
+    arcadeFail: if (json.Metadata.Type === "arcade") {
+        manualExit: if (
+            event.Value ===
+            "Contract ended manually: User pressed exit to Main menu"
+        ) {
+            if (session.completedObjectives.size === 0) break arcadeFail
+
+            for (const obj of json.Data.Objectives) {
+                if (
+                    session.completedObjectives.has(obj.Id) &&
+                    obj.Category === "primary"
+                ) {
+                    break manualExit
+                }
+            }
+
+            // Any completed objectives are secondary gamechangers, so we don't need to reset the contract
+            break arcadeFail
+        }
+
+        const escalationGroupId = json.Metadata.InGroup ?? json.Metadata.Id
+
+        resetUserEscalationProgress(userData, escalationGroupId)
+
         writeUserData(session.userId, session.gameVersion)
     }
 
@@ -575,11 +601,7 @@ function saveEvents(
             }
         }
 
-        controller.challengeService.onContractEvent(
-            event,
-            event.ContractSessionId,
-            session,
-        )
+        controller.challengeService.onContractEvent(event, session)
 
         if (event.Name.startsWith("ScoringScreenEndState_")) {
             session.evergreen.scoringScreenEndState = event.Name

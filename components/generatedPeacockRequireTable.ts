@@ -70,6 +70,7 @@ import * as reportRouting from "./contracts/reportRouting"
 import * as missionsInLocation from "./contracts/missionsInLocation"
 import * as hitsCategoryService from "./contracts/hitsCategoryService"
 import * as elusiveTargets from "./contracts/elusiveTargets"
+import * as elusiveTargetArcades from "./contracts/elusiveTargetArcades"
 import * as dataGen from "./contracts/dataGen"
 import * as contractsModeRouting from "./contracts/contractsModeRouting"
 import * as contractRouting from "./contracts/contractRouting"
@@ -219,6 +220,10 @@ export default {
     "@peacockproject/core/contracts/elusiveTargets": {
         __esModule: true,
         ...elusiveTargets,
+    },
+    "@peacockproject/core/contracts/elusiveTargetArcades": {
+        __esModule: true,
+        ...elusiveTargetArcades,
     },
     "@peacockproject/core/contracts/dataGen": { __esModule: true, ...dataGen },
     "@peacockproject/core/contracts/contractsModeRouting": {

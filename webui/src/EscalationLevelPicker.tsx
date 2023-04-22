@@ -62,6 +62,7 @@ const locsInGv = [
         "Mendoza",
         "Carpathian Mountains",
         "Ambrose Island",
+        "Elusive Target Arcade",
     ],
 ]
 

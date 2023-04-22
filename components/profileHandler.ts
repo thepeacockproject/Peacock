@@ -518,6 +518,7 @@ profileRouter.post(
                 controller.challengeService.getChallengesForContract(
                     json.Metadata.Id,
                     req.gameVersion,
+                    req.jwt.unique_name,
                     req.body.difficultyLevel,
                 ),
             )
