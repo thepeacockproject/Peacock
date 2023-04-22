@@ -70,15 +70,22 @@ jobs:
           cd Peacock
           yarn rebuild-locale
 
-      - name: Push updated RPKGs
-        uses: EndBug/add-and-commit@v9
+      - name: Create PR for updated RPKGs
+        uses: peter-evans/create-pull-request@v5
         with:
-          cwd: "./Peacock"
-          add: |
+          token: ${{ secrets.PEACOCKBOT_TOKEN }}
+          path: "./Peacock"
+          add-paths: |
             resources/dynamic_resources_h2.rpkg
             resources/dynamic_resources_h3.rpkg
-          default_author: github_actor
-          message: "Update locale packages"
+          commit-message: "Update locale packages"
+          title: "Update locale packages"
+          body: Automated PR
+          reviewers: AnthonyFuller
+          branch: locale-packages
+          delete-branch: true
+          committer: github-actions <41898282+github-actions[bot]@users.noreply.github.com>
+          author: github-actions <41898282+github-actions[bot]@users.noreply.github.com>
 
       - name: Copy peacockstrings.locr.json
         run: |
