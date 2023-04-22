@@ -61,46 +61,10 @@
         ],
         "Objectives": [
             {
-                "Id": "fdc7a60b-aa7f-4628-bd03-00c93393967f",
-                "Name": "UI_GAMECHANGERS_GLOBAL_NO_CIVILIAN_CASUALTIES_NAME",
-                "BriefingName": "$loc UI_GAMECHANGERS_GLOBAL_NO_CIVILIAN_CASUALTIES_NAME",
-                "Description": "UI_GAMECHANGERS_GLOBAL_NO_CIVILIAN_CASUALTIES_DESC",
-                "Image": "images/contracts/gamechangers/Gamechanger_Global_NoCivilianCasualties.jpg",
-                "ObjectiveType": "custom",
-                "ObjectivesCategory": "primary",
-                "Category": "primary",
-                "HUDTemplate": {
-                    "display": "$loc UI_GAMECHANGERS_GLOBAL_NO_CIVILIAN_CASUALTIES_NAME"
-                },
-                "BriefingText": "$loc UI_GAMECHANGERS_GLOBAL_NO_NON_TARGET_CIVILIAN_PACIFICATION_OR_KILLS_DESC",
-                "Type": "statemachine",
-                "Definition": {
-                    "Scope": "session",
-                    "States": {
-                        "Start": {
-                            "Kill": [
-                                {
-                                    "Condition": {
-                                        "$eq": ["$Value.IsTarget", true]
-                                    },
-                                    "Transition": "Success"
-                                },
-                                {
-                                    "Condition": {
-                                        "$eq": ["$Value.ActorType", 0]
-                                    },
-                                    "Transition": "Failure"
-                                }
-                            ]
-                        }
-                    }
-                }
-            },
-            {
                 "Id": "d2fb89c1-03a4-4c64-ab7f-5b39967708d2",
                 "Name": "UI_GAMECHANGERS_GLOBAL_DO_NOT_GET_SPOTTED_NAME",
                 "BriefingName": "$loc UI_GAMECHANGERS_GLOBAL_DO_NOT_GET_SPOTTED_NAME",
-                "Description": "Don't get spotted or Julian will start the bomb countdown",
+                "Description": "$loc UI_PEACOCK_TRADITIONS_SPOTTED_DESC",
                 "Image": "images/contracts/gamechangers/Gamechanger_Global_Spotted.jpg",
                 "OnInactive": {
                     "IfCompleted": {
@@ -117,11 +81,11 @@
                 "IsHidden": null,
                 "Resource": [],
                 "HUDTemplate": {
-                    "display": "47, you've been spotted! The bomb countdown has started. Hurry up and find the bomb detonator!"
+                    "display": "$loc UI_PEACOCK_TRADITIONS_SPOTTED_HUD"
                 },
                 "Category": "primary",
                 "ObjectiveType": "custom",
-                "BriefingText": "Don't get spotted or Julian will start the bomb countdown",
+                "BriefingText": "$loc UI_PEACOCK_TRADITIONS_SPOTTED_DESC",
                 "Type": "statemachine",
                 "Definition": {
                     "Scope": "session",
@@ -251,13 +215,11 @@
                     }
                 },
                 "ObjectiveType": "custom",
-                "Description": "Defuse the bomb hidden in the hotel",
-                "BriefingName": "Defuse the bomb hidden in the hotel",
-                "BriefingText": "Defuse the bomb hidden in the hotel",
-                "LongBriefingText": "Defuse the bomb hidden in the hotel",
+                "BriefingName": "$loc UI_PEACOCK_TRADITIONS_BOMB",
+                "BriefingText": "$loc UI_PEACOCK_TRADITIONS_BOMB_DESC",
                 "DisplayAsKillObjective": false,
                 "HUDTemplate": {
-                    "display": "Defuse the bomb hidden in the hotel"
+                    "display": "$loc UI_PEACOCK_TRADITIONS_BOMB"
                 },
                 "Category": "primary",
                 "Primary": true,
@@ -324,11 +286,10 @@
                 },
                 "ObjectiveType": "custom",
                 "IsHidden": true,
-                "BriefingName": "Don't kill or pacify your contact",
-                "BriefingText": "Don't kill or pacify your contact",
-                "LongBriefingText": "Don't kill or pacify your contact",
+                "BriefingName": "$loc UI_PEACOCK_TRADITIONS_CONTACT",
+                "BriefingText": "$loc UI_PEACOCK_TRADITIONS_CONTACT_DESC",
                 "HUDTemplate": {
-                    "display": "Don't kill or pacify your contact",
+                    "display": "$loc UI_PEACOCK_TRADITIONS_CONTACT_HUD",
                     "iconType": 13
                 },
                 "Category": "primary",
@@ -404,12 +365,11 @@
                     }
                 },
                 "ObjectiveType": "custom",
-                "BriefingName": "Retrieve your room keycard",
-                "BriefingText": "Go to the reception and check in as Tobias Reaper. Take your room keycard to receive the next instructions to meet your contact.",
-                "LongBriefingText": "Go to the reception and check in as Tobias Reaper. Take your room keycard to receive the next instructions to meet your contact.",
+                "BriefingName": "$loc UI_PEACOCK_TRADITIONS_KEYCARD",
+                "BriefingText": "$loc UI_PEACOCK_TRADITIONS_KEYCARD_DESC",
                 "DisplayAsKillObjective": false,
                 "HUDTemplate": {
-                    "display": "Retrieve your room keycard at the reception to receive the next instructions to meet your contact.",
+                    "display": "$loc UI_PEACOCK_TRADITIONS_KEYCARD_HUD",
                     "iconType": 13
                 },
                 "Category": "primary",
@@ -518,12 +478,11 @@
                 },
                 "ObjectiveType": "custom",
                 "Image": "images/unlockables/item_perspective_e5a9424b-4aba-4334-b2a6-24f569a9e0bc_0.jpg",
-                "BriefingName": "Retrieve The Room 207 Keycard",
-                "BriefingText": "Go to the bar on the first floor, blend in as a client and meet your contact to retrieve the target's room keycard. She'll call you her 'next ex-husband'",
-                "LongBriefingText": "Go to the bar on the first floor, blend in as a client and meet your contact to retrieve the target's room keycard. She'll call you her 'next ex-husband'",
+                "BriefingName": "$loc UI_PEACOCK_TRADITIONS_207KEYCARD",
+                "BriefingText": "$loc UI_PEACOCK_TRADITIONS_207KEYCARD_DESC",
                 "DisplayAsKillObjective": false,
                 "HUDTemplate": {
-                    "display": "Meet your contact at the bar on the first floor to retrieve the target's room keycard",
+                    "display": "$loc UI_PEACOCK_TRADITIONS_207KEYCARD_HUD",
                     "iconType": 13
                 },
                 "Category": "primary",
@@ -624,7 +583,7 @@
                     ]
                 },
                 "Category": "primary",
-                "BriefingName": "Eliminate Julian",
+                "BriefingName": "$loc UI_PEACOCK_TRADITIONS_JULIAN",
                 "Image": "images/actors/actor_0f3c5e32-3533-4cb8-99dd-0700c45abe3a_0_0_0.jpg",
                 "TargetConditions": [
                     {
@@ -634,9 +593,9 @@
                     }
                 ],
                 "HUDTemplate": {
-                    "display": "Eliminate Julian with an electrocution accident"
+                    "display": "$loc UI_PEACOCK_TRADITIONS_JULIAN_HUD"
                 },
-                "BriefingText": "Jackie Carrington sedated the target in his room. Eliminate him. You must make it look like an electric accident or there will be suspicions on Jackie.",
+                "BriefingText": "$loc UI_PEACOCK_TRADITIONS_JULIAN_DESC",
                 "Type": "statemachine",
                 "Definition": {
                     "Scope": "session",
@@ -711,12 +670,11 @@
                 "IgnoreIfInactive": true,
                 "ObjectiveType": "custom",
                 "Image": "images/contracts/AssRace/AssRaceTarget.jpg",
-                "BriefingName": "Pacify and stash the stalker in a container for extraction",
-                "BriefingText": "47, it seems someone is watching your contact. He was sitting next to you at the bar when you met her. Pacify and stash him in a container for extraction and interrogation",
-                "LongBriefingText": "47, it seems someone is watching your contact. He was sitting next to you at the bar when you met her. Pacify and stash him in a container for extraction and interrogation",
+                "BriefingName": "$loc UI_PEACOCK_TRADITIONS_STALKER",
+                "BriefingText": "$loc UI_PEACOCK_TRADITIONS_STALKER_DESC",
                 "DisplayAsKillObjective": false,
                 "HUDTemplate": {
-                    "display": "47, it seems someone is watching your contact. Pacify and stash the stalker in a container for interrogation"
+                    "display": "$loc UI_PEACOCK_TRADITIONS_STALKER_HUD"
                 },
                 "Category": "primary",
                 "Primary": true,
@@ -791,13 +749,12 @@
                     ]
                 },
                 "ObjectiveType": "custom",
-                "BriefingName": "Eliminate All Militia Soldiers in the Medow Brown Lounge",
+                "BriefingName": "$loc UI_PEACOCK_TRADITIONS_MILITIA",
                 "Image": "images/stashpoints/bangkok_agencypickup_balcony_planter.jpg",
                 "HUDTemplate": {
-                    "display": "He's not alone... Eliminate all Militia Soldiers in the Medow Brown Lounge to clear the area"
+                    "display": "$loc UI_PEACOCK_TRADITIONS_MILITIA1_HUD"
                 },
-                "BriefingText": "The stalker was not alone... it looks like a setup, 47. Eliminate All Militia Soldiers in the Medow Brown Lounge to clear the area",
-                "LongBriefingText": "The stalker was not alone... it looks like a setup, 47. Eliminate All Militia Soldiers in the Medow Brown Lounge to clear the area",
+                "BriefingText": "$loc UI_PEACOCK_TRADITIONS_MILITIA1_DESC",
                 "Type": "statemachine",
                 "Definition": {
                     "ContextListeners": {
@@ -895,13 +852,12 @@
                     ]
                 },
                 "ObjectiveType": "custom",
-                "BriefingName": "Eliminate All Militia Soldiers in the Delivery Area",
+                "BriefingName": "$loc UI_PEACOCK_TRADITIONS_MILITIA",
                 "Image": "images/challenges/bangkok/zika_soldier.jpg",
                 "HUDTemplate": {
-                    "display": "Eliminate All Militia Soldiers in the Delivery Area"
+                    "display": "$loc UI_PEACOCK_TRADITIONS_MILITIA2_HUD"
                 },
-                "BriefingText": "Eliminate All Militia Soldiers in the Delivery Area",
-                "LongBriefingText": "Eliminate All Militia Soldiers in the Delivery Area",
+                "BriefingText": "$loc UI_PEACOCK_TRADITIONS_MILITIA2_HUD",
                 "Type": "statemachine",
                 "Definition": {
                     "ContextListeners": {
@@ -1005,13 +961,11 @@
                     }
                 },
                 "ObjectiveType": "custom",
-                "Description": "The stalker began to talk... A man disguised as a high ranking security guard in the basement has the detonator, retrieve it now!",
-                "BriefingName": "Retrieve the Detonator",
-                "BriefingText": "The stalker began to talk... A man disguised as a high ranking security guard in the basement has the detonator, retrieve it now!",
-                "LongBriefingText": "The stalker began to talk... A man disguised as a high ranking security guard in the basement has the detonator, retrieve it now!",
+                "BriefingName": "$loc UI_PEACOCK_TRADITIONS_DETONATOR",
+                "BriefingText": "$loc UI_PEACOCK_TRADITIONS_DETONATOR_DESC",
                 "DisplayAsKillObjective": false,
                 "HUDTemplate": {
-                    "display": "The stalker began to talk... A man disguised as a high ranking security guard in the basement has the detonator, retrieve it now!"
+                    "display": "$loc UI_PEACOCK_TRADITIONS_DETONATOR"
                 },
                 "Category": "primary",
                 "Primary": true,
@@ -1064,12 +1018,11 @@
                 "ObjectiveType": "custom",
                 "BriefingName": "$loc UI_CONTRACT_GERANIUM_FREEZER_BRIEFING_NAME",
                 "Image": "images/contracts/gamechangers/Gamechanger_Bangkok_Freezer.jpg",
-                "LongBriefingText": "47, Julian had a plan B: he unleashed a deadly virus in the kitchen! Eliminate the two infected and hide them in the freezer. We'll extract their bodies later. Hurry up before it's too late!",
                 "HUDTemplate": {
-                    "display": "Julian had a plan B: he has infected two people with a virus. Hide them in the freezer to prevent the spread",
+                    "display": "$loc UI_PEACOCK_TRADITIONS_PLANB_HUD",
                     "iconType": 13
                 },
-                "BriefingText": "47, Julian had a plan B: he unleashed a deadly virus in the kitchen! Two people are infected. Eliminate the two infected and hide them in the freezer. We'll extract their bodies later.",
+                "BriefingText": "$loc UI_PEACOCK_TRADITIONS_PLANB_DESC",
                 "Type": "statemachine",
                 "Definition": {
                     "Scope": "session",
@@ -1168,11 +1121,14 @@
                 "Image": "images/actors/actor_85971c2e-34ae-423f-9653-bc32c5f3e4f7_4_0_0.jpg",
                 "Category": "primary",
                 "HUDTemplate": {
-                    "display": "Eliminate Tharn Srisai",
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository ea65261d-d657-4e7f-8e3b-7027e637e673).Name"
+                        }
+                    },
                     "iconType": 19
                 },
-                "BriefingText": "Eliminate Tharn Srisai and hide him in the freezer",
-                "LongBriefingText": "Eliminate Tharn Srisai and hide him in the freezer",
                 "Type": "statemachine",
                 "Definition": {
                     "Scope": "session",
@@ -1222,11 +1178,14 @@
                 "Image": "images/actors/actor_e25c63f1-ad42-442a-800e-059f52b60d0f_0_0_0.jpg",
                 "Category": "primary",
                 "HUDTemplate": {
-                    "display": "Eliminate Naruemon Thanom",
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 1f2fff64-d0a6-4fb6-a89d-c320215b9730).Name"
+                        }
+                    },
                     "iconType": 19
                 },
-                "BriefingText": "Eliminate Naruemon Thanom and hide her in the freezer",
-                "LongBriefingText": "Eliminate Naruemon Thanom and hide her in the freezer",
                 "Type": "statemachine",
                 "Definition": {
                     "Scope": "session",
@@ -1277,11 +1236,10 @@
                 "Image": "images/unlockables/item_perspective_f75e4353-59c4-4e29-9b1c-a62c3056a870_0.jpg",
                 "ForceShowOnLoadingScreen": true,
                 "IsHidden": false,
-                "BriefingName": "Do a self-injection of Anti-Virus, now!",
-                "BriefingText": "Do a self-injection of Anti-Virus, now!",
-                "LongBriefingText": "Do a self-injection of Anti-Virus, now!",
+                "BriefingName": "$loc UI_PEACOCK_TRADITIONS_ANTIVIRUS",
+                "BriefingText": "$loc UI_PEACOCK_TRADITIONS_ANTIVIRUS_HUD",
                 "HUDTemplate": {
-                    "display": "Do a self-injection of Anti-Virus, now!"
+                    "display": "$loc UI_PEACOCK_TRADITIONS_ANTIVIRUS_HUD"
                 },
                 "Type": "statemachine",
                 "Definition": {
@@ -1306,8 +1264,7 @@
             {
                 "Id": "421c9667-5055-4439-92a3-fa75c49c3050",
                 "Name": "Erase your tracks from the Security System Recorder",
-                "BriefingName": "Erase your tracks",
-                "Description": "Erase your tracks from the Security System Recorder",
+                "BriefingName": "$loc UI_PEACOCK_TRADITIONS_ERASE",
                 "Image": "images/contracts/gamechangers/Gamechanger_Global_BigBrother.jpg",
                 "ObjectivesCategory": "primary",
                 "ObjectiveType": "custom",
@@ -1334,10 +1291,9 @@
                     }
                 },
                 "Category": "primary",
-                "BriefingText": "Take the tapes from the Security System Recorder. We need them intact.",
-                "LongBriefingText": "Take the tapes from the Security System Recorder. We need them intact.",
+                "BriefingText": "$loc UI_PEACOCK_TRADITIONS_ERASE_DESC",
                 "HUDTemplate": {
-                    "display": "Take the tapes from the Security System Recorder. We need them intact."
+                    "display": "$loc UI_PEACOCK_TRADITIONS_ERASE_HUD"
                 },
                 "Type": "statemachine",
                 "Definition": {
@@ -1394,10 +1350,10 @@
                         "Visible": false
                     }
                 },
-                "BriefingText": "47... Wait... We're watching the security tapes. Jackie Carrington hid the bomb. She's is the real 'Julian'. She fooled us but she doesn't know you know. Finish her once and for all",
-                "LongBriefingText": "47... Wait... We're watching the security tapes. Jackie Carrington hid the bomb. She's is the real 'Julian'. She fooled us but she doesn't know you know. Finish her once and for all",
+                "BriefingName": "$loc UI_PEACOCK_TRADITIONS_JACKIE",
+                "BriefingText": "$loc UI_PEACOCK_TRADITIONS_JACKIE_DESC",
                 "HUDTemplate": {
-                    "display": "47... Wait... We're watching the security tapes. Jackie Carrington hid the bomb. She's is the real 'Julian'. Finish her once and for all"
+                    "display": "$loc UI_PEACOCK_TRADITIONS_JACKIE_HUD"
                 },
                 "ObjectivesCategory": "primary",
                 "Definition": {
@@ -1449,10 +1405,10 @@
                         "Visible": false
                     }
                 },
-                "BriefingText": "Eliminate Jackie's accomplice who covered her tracks",
-                "LongBriefingText": "Eliminate Jackie's accomplice who covered her tracks",
+                "BriefingName": "$loc UI_PEACOCK_TRADITIONS_ACCOMPLICE",
+                "BriefingText": "$loc UI_PEACOCK_TRADITIONS_ACCOMPLICE_DESC",
                 "HUDTemplate": {
-                    "display": "Eliminate Jackie's accomplice who covered her tracks"
+                    "display": "$loc UI_PEACOCK_TRADITIONS_ACCOMPLICE_HUD"
                 },
                 "ObjectivesCategory": "primary",
                 "Definition": {
@@ -1482,17 +1438,17 @@
             "assembly:/_pro/scenes/missions/bangkok/gamechanger_targets_in_freezer.brick",
             "assembly:/_pro/scenes/missions/bangkok/gamechanger_extreme_security_basement.brick"
         ],
-        "GameChangers": []
+        "GameChangers": ["fdc7a60b-aa7f-4628-bd03-00c93393967f"]
     },
     "Metadata": {
         "Id": "90c291f6-7ac3-46de-99b2-082e38fccb24",
-        "Title": "Traditions of the Trade",
-        "Description": "Welcome to Bangkok, 47.\r\rAt the Thermal Bath Hotel in Bangkok, a peace summit is being held. Attending are all the leaders of the world's great nations, and naturally, the renowned hotel is swarming with security so you'll have only a small part of your usual equipment. \r\rNone of these notabilities are your target. The Austrian terrorist, who named himself 'Julian', is planning to blow up the hotel. If successful, it will change the world forever. \r \r 'Julian' is your target. We don't know how he looks so you'll have to get in touch with Jackie Carrington, your contact. She'll let you instructions on a note with your room keycard at the reception. You're registered as Tobias Reaper. Normally we would not care about the leaders, but preventing the attack will make us popular with many governments and could mean a new clientele for our business.\r\r Our customer has requested to secure the hotel so your objectives are clear : find Julian and defuse the bomb. \r\rWe think the bomb will explode at 8 PM, so you only have 30 minutes to prevent the explosion.\r\rGood luck 47.\r\r Mission created by Kercyx based on the original Hitman: Codename 47 game. Are you ready for a real challenge?",
+        "Title": "$loc UI_PEACOCK_TRADITIONS",
+        "Description": "$loc UI_PEACOCK_TRADITIONS_DESC",
         "ScenePath": "assembly:/_pro/scenes/missions/bangkok/scene_zika.entity",
         "TileImage": "images/stashpoints/bangkok_agencypickup_47s_suite.jpg",
         "Location": "LOCATION_BANGKOK_ZIKA",
         "IsPublished": true,
-        "Type": "featured",
+        "Type": "mission",
         "Entitlements": ["H1_LEGACY_EXPANSION"]
     },
     "UserData": {}
