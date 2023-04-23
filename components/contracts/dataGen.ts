@@ -308,7 +308,9 @@ export function mapObjectives(
                             }
                             // If we've not hit a primary or secondary objective, we've hit a condition
                             // I'm not exactly sure if below follows what official does - AF
-                            return "condition"
+                            // EDIT: Turns out, conditions still show as optional, setting this to
+                            //       primary for now, awaiting future investigation - AF
+                            return "primary"
                         })()
                     }
 
