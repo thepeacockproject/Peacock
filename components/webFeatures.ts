@@ -184,7 +184,7 @@ webFeaturesRouter.get(
         ) {
             read.Extensions.PeacockCompletedEscalations =
                 read.Extensions.PeacockCompletedEscalations.filter(
-                    (val) => val !== req.query.level,
+                    (val) => val !== req.query.id,
                 )
         }
 
