@@ -49,13 +49,28 @@ To contribute, you can use Pull Requests from your own fork. You can fix bugs
 reported in issues or add new features you think would be useful, new features
 not listed in issues would have to be discussed before merging.
 
-To update localisation files, edit `locale.json` in the
-`resources` folder. If adding new strings, make sure to add the English versions
-to all languages. If you are translating existing strings, you only need to
-translate ones that are in that language. Then make sure `rpkg_cli.exe`,
-`HMLanguageTools.exe`, and `ResourceLib_*.dll` are in the `resources` folder.
-Then, from the root project folder, run `yarn rebuild-locale` and push the new
-RPKGs and edited locale JSON files.
+### Localisation
+
+#### Automated
+The Peacock repository has an automated workflow to rebuild locale packages.
+All you need to do to update localisation files is:
+1. Edit `locale.json`.
+   - If you're adding new strings, make sure to add the English versions to
+     all languages.
+   - If you are translation existing strings, you only need to translate the
+     ones that are in the language(s) you are translating.
+2. Then push `locale.json`.
+3. Then, make a Pull Request. When it is reviewed and merged, locale packages
+   will automatically be rebuilt.
+
+#### Manual
+If you need to manually rebuild locale packages for whatever reason (testing
+or otherwise), follow steps 1 and 2 above, then do the following:
+1. Make sure `rpkg_cli.exe`, `HMLanguageTools.exe`, and `ResourceLib_*.dll` are
+   in the `resources` folder.
+2. Then, from the root project folder, run `yarn rebuild-locale`.
+3. These generated RPKGs should **not** be pushed or merged into Peacock as
+   the automated workflow will take care of this for you.
 
 Thank you to people who have contributed!
 
