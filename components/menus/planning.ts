@@ -369,7 +369,7 @@ export async function planningView(
         LOCATION_HOKKAIDO_SHIM_MAMUSHI: 20,
     }
 
-    if (sublocation?.Properties?.LimitedLoadout) {
+    if (sublocation?.Properties?.LimitedLoadout && getFlag("enableMasteryProgression")) {
         const loadoutUnlockable = getUnlockableById(
             req.gameVersion,
             req.gameVersion === "h1"
