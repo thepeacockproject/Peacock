@@ -31,7 +31,7 @@ import { createWriteStream, existsSync, mkdirSync } from "fs"
 import ProgressBar from "progress"
 import { resolve as pathResolve } from "path"
 import picocolors from "picocolors"
-import { Filename, PortablePath, ppath, xfs } from "@yarnpkg/fslib"
+import { Filename, npath, PortablePath, ppath, xfs } from "@yarnpkg/fslib"
 import { makeEmptyArchive, ZipFS } from "@yarnpkg/libzip"
 
 // NOTE: make sure to update BOTH OF THESE VALUES, or things will break!!
@@ -129,7 +129,7 @@ async function exportDebugInfo(): Promise<void> {
     const zipFile = ppath.resolve(ppath.cwd(), "DEBUG_PROFILE.zip")
 
     // we'll start by creating an empty zip file
-    await writeFile(zipFile, makeEmptyArchive())
+    await writeFile(npath.fromPortablePath(zipFile), makeEmptyArchive())
 
     const zip = new ZipFS(zipFile, { create: true })
 
