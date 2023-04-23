@@ -59,7 +59,7 @@ All you need to do to update localisation files is:
 1. Edit `locale.json`.
     - If you're adding new strings, make sure to add the English versions to
       all languages.
-    - If you are translation existing strings, you only need to translate the
+    - If you're translating existing strings, you only need to translate the
       ones that are in the language(s) you are translating.
 2. Then push `locale.json`.
 3. Then, make a Pull Request. When it is reviewed and merged, locale packages
