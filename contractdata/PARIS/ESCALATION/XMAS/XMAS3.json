@@ -92,39 +92,59 @@
                                 },
                                 "Actions": { "$inc": "ForceUpdateCounters" }
                             },
-                            "Kill": {
-                                "Condition": {
-                                    "$and": [
-                                        {
-                                            "$inarray": {
-                                                "in": "$.Targets",
-                                                "?": {
-                                                    "$eq": [
-                                                        "$.#",
-                                                        "$Value.RepositoryId"
-                                                    ]
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$inarray": {
+                                                    "in": "$.Targets",
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.RepositoryId"
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "$inarray": {
+                                                    "in": "$.LethalWeapons",
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$Value.KillItemRepositoryId",
+                                                            "$.#"
+                                                        ]
+                                                    }
                                                 }
                                             }
-                                        },
-                                        {
-                                            "$inarray": {
-                                                "in": "$.LethalWeapons",
-                                                "?": {
-                                                    "$eq": [
-                                                        "$Value.KillItemRepositoryId",
-                                                        "$.#"
-                                                    ]
-                                                }
+                                        ]
+                                    },
+                                    "Actions": {
+                                        "$inc": "TargetsKilled",
+                                        "$dec": "TargetsPending",
+                                        "$remove": [
+                                            "$.Targets",
+                                            "$Value.RepositoryId"
+                                        ]
+                                    },
+                                    "Transition": "CheckCount"
+                                },
+                                {
+                                    "Condition": {
+                                        "$inarray": {
+                                            "in": "$.Targets",
+                                            "?": {
+                                                "$eq": [
+                                                    "$.#",
+                                                    "$Value.RepositoryId"
+                                                ]
                                             }
                                         }
-                                    ]
-                                },
-                                "Actions": {
-                                    "$inc": "TargetsKilled",
-                                    "$dec": "TargetsPending"
-                                },
-                                "Transition": "CheckCount"
-                            },
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ],
                             "Pacify": {
                                 "Condition": {
                                     "$and": [
@@ -154,7 +174,11 @@
                                 },
                                 "Actions": {
                                     "$inc": "TargetsKilled",
-                                    "$dec": "TargetsPending"
+                                    "$dec": "TargetsPending",
+                                    "$remove": [
+                                        "Targets",
+                                        "$Value.RepositoryId"
+                                    ]
                                 },
                                 "Transition": "CheckCount"
                             }
@@ -180,7 +204,6 @@
                 }
             },
             {
-                "_comment": "c85a7b4d-d5aa-4fc2-9ed4-d24df2b33758",
                 "Type": "statemachine",
                 "Id": "a7e20d05-0109-406d-8d24-b64a287c106a",
                 "BriefingName": "$loc UI_PEACOCK_SOUTHERN_COMFORT_KILL_SANTA",
@@ -229,6 +252,11 @@
         "Type": "escalation",
         "Id": "7e392d08-e3db-4f96-8bf2-97d28369dbec",
         "ScenePath": "assembly:/_PRO/Scenes/Missions/Paris/_scene_paris.entity",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "a7e20d05-0109-406d-8d24-b64a287c106a" },
+            { "Id": "c4b808ea-607c-484a-a6a1-9ba8bfb038ec" },
+            { "Id": "e3368651-38e4-4e0c-91a0-95d76078b09f" }
+        ],
         "Location": "LOCATION_PARIS",
         "InGroup": "07bbf22b-d6ae-4883-bec2-122eeeb7b665",
         "TileImage": "images/contracts/featured/RedMenace.jpg",

@@ -59,39 +59,59 @@
                                 },
                                 "Actions": { "$inc": "ForceUpdateCounters" }
                             },
-                            "Kill": {
-                                "Condition": {
-                                    "$and": [
-                                        {
-                                            "$inarray": {
-                                                "in": "$.Targets",
-                                                "?": {
-                                                    "$eq": [
-                                                        "$.#",
-                                                        "$Value.RepositoryId"
-                                                    ]
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$inarray": {
+                                                    "in": "$.Targets",
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.RepositoryId"
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "$inarray": {
+                                                    "in": "$.LethalWeapons",
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$Value.KillItemRepositoryId",
+                                                            "$.#"
+                                                        ]
+                                                    }
                                                 }
                                             }
-                                        },
-                                        {
-                                            "$inarray": {
-                                                "in": "$.LethalWeapons",
-                                                "?": {
-                                                    "$eq": [
-                                                        "$Value.KillItemRepositoryId",
-                                                        "$.#"
-                                                    ]
-                                                }
+                                        ]
+                                    },
+                                    "Actions": {
+                                        "$inc": "TargetsKilled",
+                                        "$dec": "TargetsPending",
+                                        "$remove": [
+                                            "$.Targets",
+                                            "$Value.RepositoryId"
+                                        ]
+                                    },
+                                    "Transition": "CheckCount"
+                                },
+                                {
+                                    "Condition": {
+                                        "$inarray": {
+                                            "in": "$.Targets",
+                                            "?": {
+                                                "$eq": [
+                                                    "$.#",
+                                                    "$Value.RepositoryId"
+                                                ]
                                             }
                                         }
-                                    ]
-                                },
-                                "Actions": {
-                                    "$inc": "TargetsKilled",
-                                    "$dec": "TargetsPending"
-                                },
-                                "Transition": "CheckCount"
-                            },
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ],
                             "Pacify": {
                                 "Condition": {
                                     "$and": [
@@ -121,7 +141,11 @@
                                 },
                                 "Actions": {
                                     "$inc": "TargetsKilled",
-                                    "$dec": "TargetsPending"
+                                    "$dec": "TargetsPending",
+                                    "$remove": [
+                                        "Targets",
+                                        "$Value.RepositoryId"
+                                    ]
                                 },
                                 "Transition": "CheckCount"
                             }

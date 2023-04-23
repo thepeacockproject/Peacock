@@ -49,6 +49,50 @@
                 }
             },
             {
+                "Id": "f478ee46-c044-4be8-ad2d-8f95dfafef36",
+                "Type": "statemachine",
+                "ObjectiveType": "custom",
+                "Category": "primary",
+                "Image": "images/contracts/escalation/shangrila-bike.png",
+                "IsHidden": false,
+                "BriefingName": "$loc UI_PEACOCK_SHANGRILA_BIKES",
+                "BriefingText": "$loc UI_PEACOCK_SHANGRILA_BIKES_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_SHANGRILA_BIKES",
+                    "iconType": 17
+                },
+                "Definition": {
+                    "Context": {
+                        "RemainingBikesCount": 4,
+                        "Targets": ["f203d1bf-7fcc-4e32-be60-f5f71a6914d1"]
+                    },
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "setpieces": [
+                                {
+                                    "Actions": {
+                                        "$dec": "RemainingBikesCount"
+                                    },
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "f203d1bf-7fcc-4e32-be60-f5f71a6914d1"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.RemainingBikesCount", 0]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
                 "_comment": "target 2",
                 "BriefingText": {
                     "$loc": {
@@ -176,8 +220,10 @@
         "ScenePath": "assembly:/_pro/scenes/missions/edgy/mission_fox/scene_fox_basic.entity",
         "InGroup": "ccdc7043-62af-44e8-a5fc-38b008c2044e",
         "GroupObjectiveDisplayOrder": [
+            { "Id": "821e8a67-a0ce-4c7c-960e-d1a8bafde229", "IsNew": true },
+            { "Id": "6d9db050-8076-4be7-8ea6-2b6e1c545bb6" },
             { "Id": "9be548d8-098a-473f-a9ac-09baef21df78", "IsNew": true },
-            { "Id": "821e8a67-a0ce-4c7c-960e-d1a8bafde229", "IsNew": true }
+            { "Id": "f478ee46-c044-4be8-ad2d-8f95dfafef36" }
         ],
         "TileImage": "images/contracts/escalation/contractescalation-shangrila.png",
         "Entitlements": ["LOCATION_EDGY"]

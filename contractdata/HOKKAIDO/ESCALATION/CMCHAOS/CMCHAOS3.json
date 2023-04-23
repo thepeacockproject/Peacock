@@ -3,32 +3,32 @@
         "EnableSaving": false,
         "Objectives": [
             {
-                "Id": "dbc52be2-38ba-4bdf-be97-ec2799c821ab",
-                "Primary": true,
-                "SuccessEvent": {
-                    "EventName": "Kill",
-                    "EventValues": {
-                        "RepositoryId": "2f5b82e1-fa91-4e3f-9fa9-e86d1459129c"
-                    }
-                }
-            },
-            {
-                "Id": "ad69a093-7021-4371-bec5-577963be4d3f",
-                "Primary": true,
-                "SuccessEvent": {
-                    "EventName": "Kill",
-                    "EventValues": {
-                        "RepositoryId": "4a6f0107-c3f2-47cd-bcf5-ef821e15f3a8"
-                    }
-                }
-            },
-            {
-                "Id": "f9ceb566-e1aa-489a-88d5-3a4567f123c0",
-                "Primary": true,
-                "SuccessEvent": {
-                    "EventName": "Kill",
-                    "EventValues": {
-                        "RepositoryId": "953a2632-a2e7-4842-a484-c8953c5bc43b"
+                "Id": "8cbbc13c-f685-485d-9412-885b225bca75",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "Image": "images/objectives/contracts/currymaker_chaos_spa.jpg",
+                "BriefingName": "$loc UI_PEACOCK_CURRYMAKER_CHAOS_SPA",
+                "BriefingText": "$loc UI_PEACOCK_CURRYMAKER_CHAOS_SPA",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_CURRYMAKER_CHAOS_SPA"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {
+                        "Targets": ["f7bf52eb-aebc-4449-9884-1d55abb1ac7e"]
+                    },
+                    "States": {
+                        "Start": {
+                            "setpieces": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "dcbb688e-53fb-4dc8-a5e2-53421bfdb5ce"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
                     }
                 }
             },
@@ -73,32 +73,32 @@
                 }
             },
             {
-                "Id": "8cbbc13c-f685-485d-9412-885b225bca75",
-                "Category": "primary",
-                "ObjectiveType": "custom",
-                "Image": "images/objectives/contracts/currymaker_chaos_spa.jpg",
-                "BriefingName": "$loc UI_PEACOCK_CURRYMAKER_CHAOS_SPA",
-                "BriefingText": "$loc UI_PEACOCK_CURRYMAKER_CHAOS_SPA",
-                "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_CURRYMAKER_CHAOS_SPA"
-                },
-                "Type": "statemachine",
-                "Definition": {
-                    "Context": {
-                        "Targets": ["f7bf52eb-aebc-4449-9884-1d55abb1ac7e"]
-                    },
-                    "States": {
-                        "Start": {
-                            "setpieces": {
-                                "Condition": {
-                                    "$eq": [
-                                        "$Value.RepositoryId",
-                                        "dcbb688e-53fb-4dc8-a5e2-53421bfdb5ce"
-                                    ]
-                                },
-                                "Transition": "Success"
-                            }
-                        }
+                "Id": "f9ceb566-e1aa-489a-88d5-3a4567f123c0",
+                "Primary": true,
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "953a2632-a2e7-4842-a484-c8953c5bc43b"
+                    }
+                }
+            },
+            {
+                "Id": "dbc52be2-38ba-4bdf-be97-ec2799c821ab",
+                "Primary": true,
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "2f5b82e1-fa91-4e3f-9fa9-e86d1459129c"
+                    }
+                }
+            },
+            {
+                "Id": "ad69a093-7021-4371-bec5-577963be4d3f",
+                "Primary": true,
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "4a6f0107-c3f2-47cd-bcf5-ef821e15f3a8"
                     }
                 }
             }
@@ -124,12 +124,12 @@
         "Type": "escalation",
         "InGroup": "115425b1-e797-47bf-b517-410dc7507397",
         "GroupObjectiveDisplayOrder": [
+            { "Id": "284d6fa3-98a6-4051-b036-30c02a1c4fe2", "IsNew": true },
+            { "Id": "f9ceb566-e1aa-489a-88d5-3a4567f123c0" },
             { "Id": "dbc52be2-38ba-4bdf-be97-ec2799c821ab" },
             { "Id": "ad69a093-7021-4371-bec5-577963be4d3f" },
-            { "Id": "c7bc9353-cccb-4753-ac26-8a5bc0080422" },
-            { "Id": "f9ceb566-e1aa-489a-88d5-3a4567f123c0" },
-            { "Id": "284d6fa3-98a6-4051-b036-30c02a1c4fe2" },
-            { "Id": "8cbbc13c-f685-485d-9412-885b225bca75" }
+            { "Id": "8cbbc13c-f685-485d-9412-885b225bca75", "IsNew": true },
+            { "Id": "c7bc9353-cccb-4753-ac26-8a5bc0080422" }
         ],
         "Entitlements": ["H1_LEGACY_STANDARD"],
         "LastUpdate": "2021-03-30T13:03:21.7628627Z",
