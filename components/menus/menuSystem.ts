@@ -84,6 +84,10 @@ export class MenuSystemDatabase {
                     configs.push(
                         "menusystem/elements/settings/data/isnonvroptionvisible.json",
                     )
+
+                    configs.push(
+                        "images/unlockables/outfit_ef223b60-b53a-4c7b-b914-13c3310fc61a_0.jpg",
+                    )
                 }
 
                 if (["h3", "h1"].includes(gameVersion)) {
