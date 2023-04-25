@@ -24,7 +24,7 @@ import { createHash } from "crypto"
 import { Packr } from "msgpackr"
 import { brotliCompress } from "zlib"
 import { promisify } from "util"
-import glob from "glob"
+import glob from "fast-glob"
 import prettier from "prettier"
 
 const packer = new Packr({
