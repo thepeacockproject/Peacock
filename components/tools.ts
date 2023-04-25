@@ -101,8 +101,13 @@ async function exportDebugInfo(): Promise<void> {
         ...cpu,
     }))
 
-    const files = await readdir(process.cwd())
-    const plugins = await Promise.allSettled(
+    const files = [
+        ...(await readdir(process.cwd())),
+        ...(await readdir(pathResolve(process.cwd(), "plugins"))).map(
+            (file) => `plugins/${file}`,
+        ),
+    ]
+    const plugins = await Promise.all(
         [
             ...files.filter((file) => isPlugin(file, "js")),
             ...files.filter((file) => isPlugin(file, "cjs")),
