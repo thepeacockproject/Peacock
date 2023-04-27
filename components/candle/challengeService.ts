@@ -344,11 +344,12 @@ export abstract class ChallengeRegistry {
      */
     protected static _parseContextListeners(
         challenge: RegistryChallenge,
+        Context?: Record<string, unknown>,
     ): ParsedContextListenerInfo {
         return parseContextListeners(
             challenge.Definition?.ContextListeners || {},
             {
-                ...(challenge.Definition?.Context || {}),
+                ...(Context || challenge.Definition?.Context || {}),
                 ...(challenge.Definition?.Constants || {}),
             },
         )
@@ -451,8 +452,8 @@ export class ChallengeService extends ChallengeRegistry {
         data[challengeId] ??= {
             Ticked: false,
             Completed: false,
-            State: (<ChallengeDefinitionLike>challenge?.Definition)?.Context ||
-            {},
+            State:
+                (<ChallengeDefinitionLike>challenge?.Definition)?.Context || {},
         }
 
         const dependencies = this.getDependenciesForChallenge(
@@ -913,18 +914,7 @@ export class ChallengeService extends ChallengeRegistry {
         gameVersion: GameVersion,
         compiler: Compiler,
     ): CompiledChallengeTreeData[] {
-        const progression = getUserData(userId, gameVersion).Extensions
-            .ChallengeProgression
         return challenges.map((challengeData) => {
-            // Update challenge progression with the user's latest progression data
-            if (
-                !progression[challengeData.Id].Completed &&
-                (challengeData.Definition.Scope === "profile" ||
-                    challengeData.Definition.Scope === "hit")
-            ) {
-                challengeData.Definition.Context =
-                    progression[challengeData.Id].State
-            }
             const compiled = compiler(
                 challengeData,
                 this.getPersistentChallengeProgression(
@@ -969,8 +959,10 @@ export class ChallengeService extends ChallengeRegistry {
             missing.push(dependency)
         }
 
-        const { challengeCountData } =
-            ChallengeService._parseContextListeners(challengeData)
+        const { challengeCountData } = ChallengeService._parseContextListeners(
+            challengeData,
+            userData.Extensions.ChallengeProgression[challengeData.Id].State,
+        )
 
         // If this challenge is counting something, AND it relies on other challenges (e.g. SA5, SA12, ...)
         // Then the "count & total" return format prevails.
