@@ -854,13 +854,13 @@ async function loadSession(
             Ticked: false,
         }
 
-        const scope = controller.challengeService.getChallengeById(
+        const challenge = controller.challengeService.getChallengeById(
             cid,
             sessionData.gameVersion,
-        ).Definition.Scope
+        )
         if (
             !userData.Extensions.ChallengeProgression[cid].Completed &&
-            (scope === "hit" || scope === "profile")
+            controller.challengeService.needSaveProgression(challenge)
         ) {
             sessionData.challengeContexts[cid].context =
                 userData.Extensions.ChallengeProgression[cid].State
