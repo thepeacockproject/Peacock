@@ -344,11 +344,12 @@ export abstract class ChallengeRegistry {
      */
     protected static _parseContextListeners(
         challenge: RegistryChallenge,
+        Context?: Record<string, unknown>,
     ): ParsedContextListenerInfo {
         return parseContextListeners(
             challenge.Definition?.ContextListeners || {},
             {
-                ...(challenge.Definition?.Context || {}),
+                ...(Context || challenge.Definition?.Context || {}),
                 ...(challenge.Definition?.Constants || {}),
             },
         )
@@ -373,6 +374,19 @@ export class ChallengeService extends ChallengeRegistry {
         this.hooks = {
             onChallengeCompleted: new SyncHook(),
         }
+    }
+
+    /**
+     *  Check if the challenge needs to be saved in the user's progression data
+     *  i.e. challenges with scopes being "profile" or "hit".
+     * @param challenge The challenge.
+     * @returns   Whether the challenge needs to be saved in the user's progression data.
+     */
+    needSaveProgression(challenge: RegistryChallenge): boolean {
+        return (
+            challenge.Definition.Scope === "profile" ||
+            challenge.Definition.Scope === "hit"
+        )
     }
 
     /**
@@ -434,16 +448,12 @@ export class ChallengeService extends ChallengeRegistry {
             }
         }
 
-        // the default context, used if the user has no progression for this
-        // challenge
-        const initialContext =
-            (<ChallengeDefinitionLike>challenge?.Definition)?.Context || {}
-
         // apply default context if no progression exists
         data[challengeId] ??= {
             Ticked: false,
             Completed: false,
-            State: initialContext,
+            State:
+                (<ChallengeDefinitionLike>challenge?.Definition)?.Context || {},
         }
 
         const dependencies = this.getDependenciesForChallenge(
@@ -709,10 +719,7 @@ export class ChallengeService extends ChallengeRegistry {
             for (const challenge of challengeGroups[group]) {
                 const isDone = this.fastGetIsCompleted(profile, challenge.Id)
 
-                if (
-                    challenge.Definition.Scope === "profile" ||
-                    challenge.Definition.Scope === "hit"
-                ) {
+                if (this.needSaveProgression(challenge)) {
                     profile.Extensions.ChallengeProgression[challenge.Id] ??= {
                         Ticked: false,
                         Completed: false,
@@ -722,17 +729,13 @@ export class ChallengeService extends ChallengeRegistry {
                     }
                 }
 
-                // For challenges with scopes being "profile" or "hit",
-                // update challenge progression with the user's progression data
-                const ctx =
-                    challenge.Definition.Scope === "profile" ||
-                    challenge.Definition.Scope === "hit"
-                        ? profile.Extensions.ChallengeProgression[challenge.Id]
-                              .State
-                        : fastClone(
-                              (<ChallengeDefinitionLike>challenge.Definition)
-                                  ?.Context || {},
-                          ) || {}
+                const ctx = this.needSaveProgression(challenge)
+                    ? profile.Extensions.ChallengeProgression[challenge.Id]
+                          .State
+                    : fastClone(
+                          (<ChallengeDefinitionLike>challenge.Definition)
+                              ?.Context || {},
+                      ) || {}
 
                 challengeContexts[challenge.Id] = {
                     context: ctx,
@@ -794,12 +797,7 @@ export class ChallengeService extends ChallengeRegistry {
                 options,
             )
 
-            // For challenges with scopes being "profile" or "hit",
-            // save challenge progression to the user's progression data
-            if (
-                challenge.Definition.Scope === "profile" ||
-                challenge.Definition.Scope === "hit"
-            ) {
+            if (this.needSaveProgression(challenge)) {
                 userData.Extensions.ChallengeProgression[challengeId].State =
                     result.context
 
@@ -916,18 +914,7 @@ export class ChallengeService extends ChallengeRegistry {
         gameVersion: GameVersion,
         compiler: Compiler,
     ): CompiledChallengeTreeData[] {
-        const progression = getUserData(userId, gameVersion).Extensions
-            .ChallengeProgression
         return challenges.map((challengeData) => {
-            // Update challenge progression with the user's latest progression data
-            if (
-                !progression[challengeData.Id].Completed &&
-                (challengeData.Definition.Scope === "profile" ||
-                    challengeData.Definition.Scope === "hit")
-            ) {
-                challengeData.Definition.Context =
-                    progression[challengeData.Id].State
-            }
             const compiled = compiler(
                 challengeData,
                 this.getPersistentChallengeProgression(
@@ -937,12 +924,6 @@ export class ChallengeService extends ChallengeRegistry {
                 ),
                 gameVersion,
                 userId,
-            )
-
-            compiled.ChallengeProgress = this.getChallengeDependencyData(
-                challengeData,
-                userId,
-                gameVersion,
             )
 
             return compiled
@@ -978,8 +959,10 @@ export class ChallengeService extends ChallengeRegistry {
             missing.push(dependency)
         }
 
-        const { challengeCountData } =
-            ChallengeService._parseContextListeners(challengeData)
+        const { challengeCountData } = ChallengeService._parseContextListeners(
+            challengeData,
+            userData.Extensions.ChallengeProgression[challengeData.Id].State,
+        )
 
         // If this challenge is counting something, AND it relies on other challenges (e.g. SA5, SA12, ...)
         // Then the "count & total" return format prevails.
@@ -1251,7 +1234,6 @@ export class ChallengeService extends ChallengeRegistry {
     ): CompiledChallengeTreeData {
         let contract: MissionManifest | null
 
-        // TODO: Properly get escalation groups for this
         if (challenge.Type === "contract") {
             contract = this.controller.resolveContract(
                 challenge.InclusionData?.ContractIds?.[0] || "",
