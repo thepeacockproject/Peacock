@@ -3203,6 +3203,46 @@
                         }
                     },
                     "Tags": ["story", "medium", "discovery"]
+                },
+                {
+                    "Id": "722cd20e-bac2-4094-9d85-e31586575050",
+                    "Name": "UI_PEACOCK_CHALLENGES_MIAMI_DOLPHIN_NAME",
+                    "ImageName": "images/challenges/Miami/Dolphin.jpg",
+                    "Description": "UI_CHALLENGES_SAPIENZA_EXP_KRAKEN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": ["TOKEN_OUTFIT_HERO_BLUESPECIAL_SUIT"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_EXPLORATION",
+                    "Icon": "challenge_category_discovery",
+                    "LocationId": "LOCATION_MIAMI",
+                    "ParentLocationId": "LOCATION_PARENT_MIAMI",
+                    "Type": "location",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "exit_gate": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "3770a0a1-e39f-4010-adce-49d190b23ff3"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "discovery", "easy", "peacock"]
                 }
             ]
         },
@@ -6843,7 +6883,7 @@
                     "ImageName": "images/challenges/profile_challenges/elusive_target_flamingo.jpg",
                     "Description": "UI_CHALLENGES_ELUSIVE_TARGET_MIAMI_DESC",
                     "Rewards": {
-                        "MasteryXP": 0
+                        "MasteryXP": 2000
                     },
                     "Drops": [],
                     "IsPlayable": false,
