@@ -34,18 +34,7 @@ import picocolors from "picocolors"
 import { Filename, npath, PortablePath, ppath, xfs } from "@yarnpkg/fslib"
 import { makeEmptyArchive, ZipFS } from "@yarnpkg/libzip"
 
-// NOTE: make sure to update BOTH OF THESE VALUES, or things will break!!
-/**
- * The full hash of the latest commit in the ImagePack repository.
- */
-const hash = "b8415da0be992d6a2e7d10cb5d3ccd9aea4f9296"
-/**
- * Size of the image pack zip in bytes.
- */
-const IMAGE_PACK_LEN = 125317150
-
-const IMAGE_PACK_BIN = `https://codeload.github.com/thepeacockproject/ImagePack/zip/${hash}`
-const IMAGE_PACK_BASE_DIR = `ImagePack-${hash}`
+const IMAGE_PACK_REPO = "thepeacockproject/ImagePack"
 
 export async function toolsMenu() {
     const init = await prompts({
@@ -101,8 +90,13 @@ async function exportDebugInfo(): Promise<void> {
         ...cpu,
     }))
 
-    const files = await readdir(process.cwd())
-    const plugins = await Promise.allSettled(
+    const files = [
+        ...(await readdir(process.cwd())),
+        ...(await readdir(pathResolve(process.cwd(), "plugins"))).map(
+            (file) => `plugins/${file}`,
+        ),
+    ]
+    const plugins = await Promise.all(
         [
             ...files.filter((file) => isPlugin(file, "js")),
             ...files.filter((file) => isPlugin(file, "cjs")),
@@ -194,16 +188,29 @@ async function downloadImagePack(): Promise<void> {
         pathResolve(__dirname, "offlineassets.zip"),
     )
 
-    const totalLength = IMAGE_PACK_LEN
     log(LogLevel.INFO, "Starting asset download...")
 
-    let resp
+    let resp, totalLength
 
     try {
+        const releaseInfo = await axios.get(
+            `https://api.github.com/repos/${IMAGE_PACK_REPO}/releases/latest`,
+        )
+
+        if (releaseInfo.status !== 200) {
+            throw new Error("Failed to get release info!")
+        }
+
         // eslint-disable-next-line prefer-const
-        resp = await axios.get<Stream>(IMAGE_PACK_BIN, {
-            responseType: "stream",
-        })
+        totalLength = releaseInfo.data["assets"][0]["size"]
+
+        // eslint-disable-next-line prefer-const
+        resp = await axios.get<Stream>(
+            releaseInfo.data["assets"][0]["browser_download_url"],
+            {
+                responseType: "stream",
+            },
+        )
     } catch (e) {
         log(LogLevel.ERROR, "Unable to complete download due to an error!")
         throw e
@@ -240,7 +247,7 @@ async function downloadImagePack(): Promise<void> {
 
     await xfs.copyPromise(
         ppath.resolve("images" as PortablePath),
-        `/${IMAGE_PACK_BASE_DIR}/images` as PortablePath,
+        `/images` as PortablePath,
         {
             baseFs: zipFS,
             overwrite: true,

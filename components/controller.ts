@@ -285,6 +285,35 @@ export const validateMission = (m: MissionManifest): boolean => {
 const internalContracts: Record<string, MissionManifest> = {}
 
 function registerInternals(contracts: MissionManifest[]): void {
+    if (getFlag("elusivesAreShown") === true) {
+        contracts = contracts.map((contract) => {
+            const c = { ...contract }
+
+            switch (c.Metadata.Type) {
+                // @ts-expect-error no-fallthrough
+                case "arcade":
+                    // Fallthrough to objective handling if it isn't a group definition
+                    if (c.Metadata.GroupDefinition) break
+                // @eslint-disable-next-line no-fallthrough
+                case "elusive":
+                    assert.ok(
+                        c.Data.Objectives,
+                        "elusive/arcade has no objectives",
+                    )
+                    c.Data.Objectives = c.Data.Objectives.map((obj) => {
+                        if (obj.SuccessEvent?.EventName === "Kill") {
+                            obj.IsHidden = false
+                        }
+
+                        return obj
+                    })
+                    break
+            }
+
+            return c
+        })
+    }
+
     for (const contract of contracts) {
         internalContracts[contract.Metadata.Id] = contract
     }
@@ -842,33 +871,6 @@ export class Controller {
      * @internal
      */
     _addElusiveTargets(): void {
-        if (getFlag("elusivesAreShown") === true) {
-            registerInternals(
-                this._internalElusives!.map((elusive) => {
-                    const e = { ...elusive }
-
-                    assert.ok(e.Data.Objectives, "no objectives on ET")
-
-                    e.Data.Objectives = e.Data.Objectives.map(
-                        (missionObjective) => {
-                            if (
-                                missionObjective.SuccessEvent?.EventName ===
-                                "Kill"
-                            ) {
-                                missionObjective.IsHidden = false
-                            }
-
-                            return missionObjective
-                        },
-                    )
-
-                    return e
-                }),
-            )
-            this._internalElusives = undefined
-            return
-        }
-
         registerInternals(this._internalElusives!)
         this._internalElusives = undefined
     }

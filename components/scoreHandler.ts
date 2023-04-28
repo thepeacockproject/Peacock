@@ -678,8 +678,13 @@ export async function missionEnd(
     let justTickedChallenges = 0
     let totalXpGain = calculateXpResult.xp
 
-    // Calculate XP based on non-global challenges.
-    Object.values(locationChallenges)
+    // Calculate XP based on non-global challenges. Remember to add elusive challenges of the contract
+    Object.values({
+        ...locationChallenges,
+        ...(Object.keys(contractChallenges).includes("elusive") && {
+            elusive: contractChallenges.elusive,
+        }),
+    })
         .flat()
         .filter((challengeData) => {
             return (

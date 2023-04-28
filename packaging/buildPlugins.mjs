@@ -17,7 +17,7 @@
  */
 
 import * as e from "esbuild"
-import glob from "glob"
+import glob from "fast-glob"
 import packageJson from "../package.json" assert { type: "json" }
 
 const plugins = glob.sync("plugins/*.plugin.ts", {
