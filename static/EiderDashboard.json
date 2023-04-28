@@ -161,7 +161,7 @@
                         "nrows": 1.5,
                         "ncols": 2,
                         "data": {
-                            "title": "Go Offline",
+                            "title": "$loc UI_PEACOCK_GO_OFFLINE",
                             "icon": "goonline",
                             "image": "$res images/ui/tiles/button_goonline.jpg"
                         },
@@ -179,7 +179,7 @@
                                             "pressable": false,
                                             "data": {
                                                 "header": "",
-                                                "title": "Go Offline",
+                                                "title": "$loc UI_PEACOCK_GO_OFFLINE",
                                                 "typeicon": "goonline"
                                             }
                                         }
@@ -201,8 +201,8 @@
                         "nrows": 1.5,
                         "ncols": 2,
                         "data": {
-                            "header": "Powered by",
-                            "title": "The Peacock Project",
+                            "header": "$loc UI_PEACOCK_POWERED_BY",
+                            "title": "$loc UI_PEACOCK_BRANDING",
                             "icon": "story",
                             "image": "$res images/contracts/novikov_and_magolis/tile.jpg"
                         },
@@ -226,8 +226,8 @@
                                             "selectable": false,
                                             "pressable": false,
                                             "data": {
-                                                "header": "Powered by",
-                                                "title": "The Peacock Project",
+                                                "header": "$loc UI_PEACOCK_POWERED_BY",
+                                                "title": "$loc UI_PEACOCK_BRANDING",
                                                 "typeicon": "story"
                                             }
                                         }
@@ -271,16 +271,18 @@
                             "select": {
                                 "replace-children": {
                                     "target": "headline_container",
-                                    "children": {
-                                        "view": "menu3.basic.HeadlineElement",
-                                        "selectable": false,
-                                        "pressable": false,
-                                        "data": {
-                                            "header": "",
-                                            "title": "$loc UI_DIALOG_LOAD_GAME",
-                                            "typeicon": "load"
+                                    "children": [
+                                        {
+                                            "view": "menu3.basic.HeadlineElement",
+                                            "selectable": false,
+                                            "pressable": false,
+                                            "data": {
+                                                "header": "",
+                                                "title": "$loc UI_DIALOG_LOAD_GAME",
+                                                "typeicon": "load"
+                                            }
                                         }
-                                    }
+                                    ]
                                 }
                             },
                             "deselect": {
@@ -374,7 +376,7 @@
                                 }
                             },
                             "actiony": {
-                                "prompt_label": "Go to Destination",
+                                "prompt_label": "$loc UI_PEACOCK_GO_TO_DESTINATION",
                                 "link": {
                                     "page": "gamemode_evergreen",
                                     "args": {
