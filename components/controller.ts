@@ -77,7 +77,6 @@ import { promisify } from "util"
 import { brotliDecompress } from "zlib"
 import assert from "assert"
 import { Response } from "express"
-import { MissionEndRequestQuery } from "./types/gameSchemas"
 import { ChallengeFilterType } from "./candle/challengeHelpers"
 import { MasteryService } from "./candle/masteryService"
 import { MasteryPackage } from "./types/mastery"
@@ -374,13 +373,7 @@ export class Controller {
             ],
             PlayNextGetCampaignsHookReturn | undefined
         >
-        getMissionEnd: SyncBailHook<
-            [
-                /** req */ RequestWithJwt<MissionEndRequestQuery>,
-                /** res */ Response,
-            ],
-            boolean
-        >
+        onMissionEnd: SyncHook<[/** session */ ContractSession]>
     }
     public configManager: typeof configManagerType = {
         getConfig,
@@ -427,7 +420,7 @@ export class Controller {
             contributeCampaigns: new SyncHook(),
             getSearchResults: new AsyncSeriesHook(),
             getNextCampaignMission: new SyncBailHook(),
-            getMissionEnd: new SyncBailHook(),
+            onMissionEnd: new SyncHook(),
         }
 
         if (modFrameworkDataPath && existsSync(modFrameworkDataPath)) {

@@ -745,7 +745,7 @@ menuDataRouter.get(
             })
         }
 
-        await innerMissionEnd(req, res)
+        await missionEnd(req, res)
     },
 )
 
@@ -963,22 +963,9 @@ menuDataRouter.get("/missionendready", async (req, res) => {
     }
 })
 
-menuDataRouter.get("/missionend", innerMissionEnd)
+menuDataRouter.get("/missionend", missionEnd)
 
-menuDataRouter.get("/scoreoverviewandunlocks", innerMissionEnd)
-
-async function innerMissionEnd(
-    req: RequestWithJwt<MissionEndRequestQuery>,
-    res: Response,
-): Promise<void> {
-    const result = controller.hooks.getMissionEnd.call(req, res)
-
-    if (result) {
-        return
-    }
-
-    await missionEnd(req, res)
-}
+menuDataRouter.get("/scoreoverviewandunlocks", missionEnd)
 
 menuDataRouter.get(
     "/Destination",
