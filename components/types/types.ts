@@ -184,6 +184,7 @@ export type MissionType =
     | "arcade"
     | "vsrace"
     | "evergreen"
+    | "flashback"
 
 /**
  * The data acquired when using the "contract search" functionality.
@@ -876,13 +877,11 @@ export interface MissionManifestMetadata {
     Difficulty?: "pro1" | string
     CharacterSetup?: {
         Mode: "singleplayer" | "multiplayer" | string
-        Characters: [
-            {
-                Name: string
-                Id: string
-                MandatoryLoadout?: string[]
-            },
-        ]
+        Characters: {
+            Name: string
+            Id: string
+            MandatoryLoadout?: string[]
+        }[]
     }[]
     CharacterLoadoutData?: {
         Id: string
