@@ -46,6 +46,7 @@ function getIPCPath(id: number): string {
 function getIPC(id = 0): Promise<net.Socket | undefined> {
     return new Promise((resolve) => {
         const path = getIPCPath(id)
+
         const onerror = (err: Error) => {
             if (id < 10) {
                 resolve(getIPC(id + 1))
@@ -130,7 +131,7 @@ function decode(socket: net.Socket, callback): void {
 
     try {
         const data = JSON.parse(working.full + raw)
-        callback({ op, data }) // eslint-disable-line callback-return
+        callback({ op, data })
         working.full = ""
         working.op = undefined
     } catch (err) {

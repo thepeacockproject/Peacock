@@ -127,6 +127,7 @@ export function getPlayEscalationInfo(
     )
 
     let nextContractId = "00000000-0000-0000-0000-000000000000"
+
     if (p < totalLevelCount) {
         nextContractId = groupCt[p + 1]
     }

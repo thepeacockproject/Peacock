@@ -124,6 +124,7 @@ webFeaturesRouter.get(
         if (!validateUserAndGv(req, res)) {
             return
         }
+
         if (!req.query.level) {
             formErrorMessage(
                 res,
@@ -131,6 +132,7 @@ webFeaturesRouter.get(
             )
             return
         }
+
         if (
             isNaN(parseInt(req.query.level)) ||
             parseInt(req.query.level) <= 0
@@ -153,6 +155,7 @@ webFeaturesRouter.get(
             formErrorMessage(res, "Failed to load user data.")
             return
         }
+
         if (controller.escalationMappings.get(req.query.id) === undefined) {
             formErrorMessage(res, "Unknown escalation.")
             return

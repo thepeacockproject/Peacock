@@ -367,6 +367,7 @@ function getContractOpportunityData(
             if (!Object.keys(missionStories).includes(ms)) {
                 continue
             }
+
             missionStories[ms].PreviouslyCompleted =
                 ms in userData.Extensions.opportunityprogression
             const current = fastClone(missionStories[ms])

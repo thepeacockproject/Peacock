@@ -16,7 +16,6 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/* eslint-disable no-inner-declarations */
 // noinspection RequiredAttributes
 
 // load as soon as possible to prevent dependency issues
@@ -385,7 +384,7 @@ if (getFlag("developmentAllowRuntimeRestart")) {
             return
         }
 
-        //Make sure the userdata is always loaded if a proper JWT token is available
+        // Make sure the userdata is always loaded if a proper JWT token is available
         await cheapLoadUserData(req.jwt.unique_name, req.gameVersion)
 
         next()
@@ -587,7 +586,7 @@ function startServer(options: { hmr: boolean; pluginDevHost: boolean }): void {
 
     if (options.hmr) {
         log(LogLevel.DEBUG, "Experimental HMR enabled.")
-        // eslint-disable-next-line @typescript-eslint/require-await
+
         setupHotListener("contracts", () => {
             log(LogLevel.INFO, "Detected a change in contracts! Re-indexing...")
             controller.index()

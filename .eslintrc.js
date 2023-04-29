@@ -66,5 +66,34 @@ module.exports = {
         "react-hooks/rules-of-hooks": "error",
         "react-hooks/exhaustive-deps": "warn",
         "@peacockproject/import-components": "error",
+        "padding-line-between-statements": [
+            "error",
+            {
+                blankLine: "always",
+                prev: "block-like",
+                next: "*",
+            },
+            {
+                blankLine: "always",
+                prev: "*",
+                next: "block-like",
+            },
+            {
+                blankLine: "never",
+                prev: "block-like",
+                next: "case",
+            },
+            {
+                blankLine: "never",
+                prev: "case",
+                next: "block-like",
+            },
+        ],
+        "spaced-comment": [
+            "error",
+            "always",
+            { markers: ["*", "@__NOINLINE__", "#region", "#endregion"] },
+        ],
     },
+    reportUnusedDisableDirectives: true,
 }

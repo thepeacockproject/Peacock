@@ -34,6 +34,7 @@ import * as oauthToken from "./oauthToken"
 import * as officialServerAuth from "./officialServerAuth"
 import * as ownership from "./ownership"
 import * as platformEntitlements from "./platformEntitlements"
+import * as playStyles from "./playStyles"
 import * as profileHandler from "./profileHandler"
 import * as scoreHandler from "./scoreHandler"
 import * as sessionSerialization from "./sessionSerialization"
@@ -125,6 +126,7 @@ export default {
         __esModule: true,
         ...platformEntitlements,
     },
+    "@peacockproject/core/playStyles": { __esModule: true, ...playStyles },
     "@peacockproject/core/profileHandler": {
         __esModule: true,
         ...profileHandler,

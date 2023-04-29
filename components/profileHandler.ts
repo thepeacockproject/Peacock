@@ -327,6 +327,7 @@ export async function resolveProfiles(
                 }
 
                 const fakePlayer = fakePlayerRegistry.getFromId(id)
+
                 if (fakePlayer) {
                     return Promise.resolve({
                         Id: id,
@@ -608,7 +609,7 @@ profileRouter.post(
                     ),
             },
             LevelsDefinition: {
-                //TODO: Add Evergreen LevelInfo here?
+                // TODO: Add Evergreen LevelInfo here?
                 Location: [0],
                 PlayerProfile: {
                     Version: 1,
@@ -625,7 +626,7 @@ profileRouter.post(
     jsonMiddleware(),
     async (req: RequestWithJwt, res) => {
         if (getFlag("loadoutSaving") === "PROFILES") {
-            //#region Save with loadout profiles
+            // #region Save with loadout profiles
             let loadout = loadouts.getLoadoutFor(req.gameVersion)
 
             if (!loadout) {
@@ -635,9 +636,9 @@ profileRouter.post(
             loadout.data[req.body.location] = req.body.loadout
 
             await loadouts.save()
-            //#endregion
+            // #endregion
         } else {
-            //#region Save with legacy (per-user) system
+            // #region Save with legacy (per-user) system
             const userdata = getUserData(req.jwt.unique_name, req.gameVersion)
 
             if (userdata.Extensions.defaultloadout === undefined) {
@@ -648,7 +649,7 @@ profileRouter.post(
                 req.body.loadout
 
             writeUserData(req.jwt.unique_name, req.gameVersion)
-            //#endregion
+            // #endregion
         }
 
         res.status(204).end()
@@ -670,10 +671,12 @@ profileRouter.post(
 
             try {
                 await saveSession(save, userData)
+
                 // Successfully saved, so edit user data
                 if (!userData.Extensions.Saves) {
                     userData.Extensions.Saves = {}
                 }
+
                 userData.Extensions.Saves[save.Value.Name] = {
                     Timestamp: save.TimeStamp,
                     ContractSessionId: save.ContractSessionId,
@@ -721,9 +724,11 @@ async function saveSession(
             cause: "non-existent",
         })
     }
+
     if (!userData.Extensions.Saves) {
         userData.Extensions.Saves = {}
     }
+
     if (slot in userData.Extensions.Saves) {
         const delta = save.TimeStamp - userData.Extensions.Saves[slot].Timestamp
 
@@ -772,6 +777,7 @@ profileRouter.post(
     jsonMiddleware(),
     async (req: RequestWithJwt<never, LoadSaveBody>, res) => {
         const userData = getUserData(req.jwt.unique_name, req.gameVersion)
+
         if (
             !req.body.contractSessionId ||
             !req.body.saveToken ||
@@ -831,15 +837,15 @@ async function loadSession(
 ): Promise<void> {
     if (!sessionData) {
         try {
-            //First, try the loading the session from the filesystem.
+            // First, try the loading the session from the filesystem.
             sessionData = await getContractSession(token + "_" + sessionId)
         } catch (e) {
-            //Otherwise, see if we still have this session in memory.
-            //This may be the currently active session, but we need a fallback of some sorts in case a player disconnected.
+            // Otherwise, see if we still have this session in memory.
+            // This may be the currently active session, but we need a fallback of some sorts in case a player disconnected.
             if (contractSessions.has(sessionId)) {
                 sessionData = contractSessions.get(sessionId)
             } else {
-                //Rethrow the error
+                // Rethrow the error
                 throw e
             }
         }
@@ -858,6 +864,7 @@ async function loadSession(
             cid,
             sessionData.gameVersion,
         )
+
         if (
             !userData.Extensions.ChallengeProgression[cid].Completed &&
             controller.challengeService.needSaveProgression(challenge)

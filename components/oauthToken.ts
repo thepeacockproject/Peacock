@@ -191,6 +191,7 @@ export async function handleOauthToken(
     } catch (e) {
         log(LogLevel.DEBUG, "Unable to load profile information.")
     }
+
     /* 
        Never store user auth for scpc
        Always store user auth for H1 & H2
@@ -240,7 +241,6 @@ export async function handleOauthToken(
         }
     }
 
-    // eslint-disable-next-line no-inner-declarations
     async function getEntitlements(): Promise<string[]> {
         if (isFrankenstein) {
             return new SteamScpcStrategy().get()
@@ -283,6 +283,7 @@ export async function handleOauthToken(
     }
 
     const newEntP = await getEntitlements()
+
     if (newEntP.length === 0) {
         if (userData.Extensions.entP) {
             log(

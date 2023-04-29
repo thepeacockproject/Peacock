@@ -689,6 +689,7 @@ function saveEvents(
                 } else {
                     session.npcKills.add(killValue.RepositoryId)
                 }
+
                 break
             }
             case "CrowdNPC_Died":
@@ -708,6 +709,7 @@ function saveEvents(
                 if (req.gameVersion === "h1") {
                     session.legacyHasBodyBeenFound = true
                 }
+
                 break
             case "Disguise":
                 log(LogLevel.DEBUG, `Now disguised: ${event.Value as string}`)
@@ -736,14 +738,17 @@ function saveEvents(
                 for (const actor of (event as SpottedC2SEvent).Value) {
                     session.spottedBy.add(actor)
                 }
+
                 break
             case "Witnesses":
                 for (const actor of (event as WitnessesC2SEvent).Value) {
                     session.witnesses.add(actor)
                 }
+
                 break
             case "SecuritySystemRecorder": {
                 const eventValue = (<SecuritySystemRecorderC2SEvent>event).Value
+
                 if (
                     eventValue.event === "spotted" &&
                     session.recording !== PeacockCameraStatus.Erased
@@ -755,6 +760,7 @@ function saveEvents(
                 ) {
                     session.recording = PeacockCameraStatus.Erased
                 }
+
                 break
             }
             case "IntroCutEnd":
@@ -765,6 +771,7 @@ function saveEvents(
                         `Mission started at: ${session.timerStart}`,
                     )
                 }
+
                 break
             case "exit_gate":
                 session.timerEnd = event.Timestamp
@@ -775,6 +782,7 @@ function saveEvents(
                     session.timerEnd = event.Timestamp
                     log(LogLevel.DEBUG, `Mission ended at: ${session.timerEnd}`)
                 }
+
                 break
             case "ObjectiveCompleted":
                 session.completedObjectives.add(
@@ -792,12 +800,14 @@ function saveEvents(
                     session.bodiesFoundBy.add(
                         (<MurderedBodySeenC2SEvent>event).Value.Witness,
                     )
+
                     if (event.Timestamp === session.lastKill.timestamp) {
                         session.killsNoticedBy.add(
                             (<MurderedBodySeenC2SEvent>event).Value.Witness,
                         )
                     }
                 }
+
                 break
             case "ActorTagged": {
                 const val = (<ActorTaggedC2SEvent>event).Value
@@ -807,6 +817,7 @@ function saveEvents(
                 } else if (val.Tagged) {
                     session.markedTargets.add(val.RepositoryId)
                 }
+
                 break
             }
             case "StartingSuit":
@@ -819,9 +830,11 @@ function saveEvents(
             case "OpportunityEvents": {
                 const val = (<OpportunityEventsC2SEvent>event).Value
                 const opportunities = userData.Extensions.opportunityprogression
+
                 if (val.Event === "Completed") {
                     opportunities[val.RepositoryId] = true
                 }
+
                 writeUserData(req.jwt.unique_name, req.gameVersion)
                 break
             }
@@ -882,6 +895,7 @@ function saveEvents(
                 if (session.evergreen) {
                     session.evergreen.failed = true
                 }
+
                 break
             // Sinkhole events we don't care about
             case "ItemPickedUp":

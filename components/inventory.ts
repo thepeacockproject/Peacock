@@ -427,6 +427,7 @@ function updateWithDefaultSuit(
             Properties: {},
         })
     }
+
     return newInv
 }
 
@@ -500,6 +501,7 @@ export function createInventory(
     // The mastery check has already locked any unattained attainable suits,
     // and location-wide default suits will be given afterwards.
     const defaults = Object.values(defaultSuits)
+
     if ((getFlag("getDefaultSuits") as boolean) === false) {
         unlockables = unlockables.filter(
             (u) =>

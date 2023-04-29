@@ -432,6 +432,7 @@ menuDataRouter.get("/SafehouseCategory", (req: RequestWithJwt, res) => {
             (cat) => cat.Category === item.Unlockable.Type,
         )
         let subcategory
+
         if (!category) {
             category = {
                 Category: item.Unlockable.Type,
@@ -544,6 +545,7 @@ menuDataRouter.get(
         const userData = getUserData(req.jwt.unique_name, req.gameVersion)
 
         let contractData: MissionManifest | undefined = undefined
+
         if (req.query.contractid) {
             contractData = controller.resolveContract(req.query.contractid)
         }
@@ -632,7 +634,7 @@ menuDataRouter.get(
                 OptionalData: {
                     stashpoint: req.query.stashpoint || "",
                     AllowLargeItems: req.query.allowlargeitems,
-                    AllowContainers: req.query.allowcontainers, //?? true
+                    AllowContainers: req.query.allowcontainers, // ?? true
                 },
             },
             ShowSlotName: req.query.slotname,
@@ -1298,7 +1300,7 @@ menuDataRouter.get(
 
         const cats = []
 
-        //#region Main story missions
+        // #region Main story missions
         const currentIdIndex = orderedMissions.indexOf(req.query.contractId)
 
         if (
@@ -1330,9 +1332,9 @@ menuDataRouter.get(
 
             cats.push(createMainOpportunityTile(req.query.contractId))
         }
-        //#endregion
+        // #endregion
 
-        //#region PZ missions
+        // #region PZ missions
         const pzIdIndex = orderedPZMissions.indexOf(req.query.contractId)
 
         if (pzIdIndex !== -1 && pzIdIndex !== orderedPZMissions.length - 1) {
@@ -1349,9 +1351,9 @@ menuDataRouter.get(
                 ),
             )
         }
-        //#endregion
+        // #endregion
 
-        //#region Atlantide
+        // #region Atlantide
 
         if (req.query.contractId === "f1ba328f-e3dd-4ef8-bb26-0363499fdd95") {
             const nextMissionId = "0b616e62-af0c-495b-82e3-b778e82b5912"
@@ -1367,9 +1369,9 @@ menuDataRouter.get(
                 ),
             )
         }
-        //#endregion
+        // #endregion
 
-        //#region Plugin missions
+        // #region Plugin missions
         const pluginData = controller.hooks.getNextCampaignMission.call(
             req.query.contractId,
             req.gameVersion,
@@ -1394,7 +1396,7 @@ menuDataRouter.get(
                 )
             }
         }
-        //#endregion
+        // #endregion
 
         res.json({
             template: getConfig("PlayNextTemplate", false),
@@ -1867,7 +1869,7 @@ menuDataRouter.get("/PlayerProfile", (req: RequestWithJwt, res) => {
     playerProfilePage.data.SubLocationData = []
 
     for (const subLocationKey in locationData.children) {
-        //Ewww...
+        // Ewww...
         if (
             subLocationKey === "LOCATION_ICA_FACILITY_ARRIVAL" ||
             subLocationKey === "LOCATION_HOKKAIDO_SHIM_MAMUSHI" ||
@@ -1886,7 +1888,7 @@ menuDataRouter.get("/PlayerProfile", (req: RequestWithJwt, res) => {
             req.gameVersion,
         )
 
-        //TODO: Make getDestinationCompletion do something like this.
+        // TODO: Make getDestinationCompletion do something like this.
         const challenges = controller.challengeService.getChallengesForLocation(
             subLocation.Id,
             req.gameVersion,

@@ -55,6 +55,7 @@ legacyContractRouter.post(
             res.status(400).send("no such contract")
             return
         }
+
         if (
             contractData.Metadata.Type === "elusive" &&
             getFlag("legacyElusivesEnableSaving")

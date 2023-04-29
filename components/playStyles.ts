@@ -110,6 +110,7 @@ export function calculatePlaystyle(
             if (k.KillMethodBroad === "explosive") {
                 playstylesCopy[12].Score += 6000
             }
+
             if (k.KillMethodBroad === "accident") {
                 playstylesCopy[19].Score += 6000
             }
@@ -148,6 +149,7 @@ export function calculatePlaystyle(
         if (a.Score > b.Score) {
             return -1
         }
+
         return b.Score > a.Score ? 1 : 0
     })
 

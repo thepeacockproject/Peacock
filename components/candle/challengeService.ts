@@ -148,6 +148,7 @@ export abstract class ChallengeRegistry {
         if (!this.groupContents.has(gameVersion)) {
             return
         }
+
         const gameChallenges = this.groupContents.get(gameVersion)
         challenge.inGroup = groupId
         this.challenges.get(gameVersion)?.set(challenge.Id, challenge)
@@ -176,10 +177,13 @@ export abstract class ChallengeRegistry {
         if (!this.groups.has(gameVersion)) {
             return
         }
+
         const gameGroups = this.groups.get(gameVersion)
+
         if (!gameGroups.has(location)) {
             gameGroups.set(location, new Map())
         }
+
         gameGroups.get(location).set(group.CategoryId, group)
     }
 
@@ -201,6 +205,7 @@ export abstract class ChallengeRegistry {
                         (dropId) => (acc[dropId] = challenge.Id),
                     )
                 }
+
                 return acc
             },
             {},
@@ -221,6 +226,7 @@ export abstract class ChallengeRegistry {
         if (!this.groups.has(gameVersion)) {
             return undefined
         }
+
         const gameGroups = this.groups.get(gameVersion)
 
         if (groupId === "feats" && gameVersion !== "h3") {
@@ -259,6 +265,7 @@ export abstract class ChallengeRegistry {
                 gameGroups.get("GLOBAL_ELUSIVES_CHALLENGES")?.get(groupId),
             )
         }
+
         return gameGroups.get(location)?.get(groupId)
     }
 
@@ -270,6 +277,7 @@ export abstract class ChallengeRegistry {
         if (!this.groupContents.has(gameVersion)) {
             return undefined
         }
+
         const gameChalGC = this.groupContents.get(gameVersion)
 
         if (groupId === "feats" && gameVersion !== "h3") {
@@ -313,6 +321,7 @@ export abstract class ChallengeRegistry {
                     ?.get(groupId) ?? []),
             ])
         }
+
         return gameChalGC.get(location)?.get(groupId)
     }
 
@@ -487,6 +496,7 @@ export class ChallengeService extends ChallengeRegistry {
      * @param filter The filter to use.
      * @param location The parent location whose challenges to get.
      * @param challenges The array to write results to.
+     * @param gameVersion The game's version.
      */
     getGroupedChallengesByLoc(
         filter: ChallengeFilterOptions,
@@ -495,6 +505,7 @@ export class ChallengeService extends ChallengeRegistry {
         gameVersion: GameVersion,
     ) {
         const groups = this.groups.get(gameVersion).get(location)?.keys() ?? []
+
         for (const groupId of groups) {
             // if this is the global group, skip it.
             if (groupId === "global") {
@@ -506,6 +517,7 @@ export class ChallengeService extends ChallengeRegistry {
                 location,
                 gameVersion,
             )
+
             if (groupContents) {
                 let groupChallenges: RegistryChallenge[] | string[] = [
                     ...groupContents,
@@ -667,6 +679,7 @@ export class ChallengeService extends ChallengeRegistry {
                       this.controller.missionsInLocations.escalations[child],
                   )
                   .concat(this.controller.missionsInLocations.arcade[child])
+
         if (!contracts) {
             contracts = []
         }
@@ -704,7 +717,7 @@ export class ChallengeService extends ChallengeRegistry {
             }
         }
 
-        //TODO: Add this to getChallengesForContract without breaking the rest of Peacock?
+        // TODO: Add this to getChallengesForContract without breaking the rest of Peacock?
         challengeGroups["global"] = this.getGroupByIdLoc(
             "global",
             "GLOBAL",
@@ -803,10 +816,12 @@ export class ChallengeService extends ChallengeRegistry {
 
                 writeUserData(session.userId, session.gameVersion)
             }
+
             // Need to update session context for all challenges
             // to correctly determine challenge completion
             data.state = result.state
             data.context = result.context || challenge.Definition?.Context || {}
+
             if (previousState !== "Success" && result.state === "Success") {
                 this.onChallengeCompleted(
                     session,
@@ -915,7 +930,7 @@ export class ChallengeService extends ChallengeRegistry {
         compiler: Compiler,
     ): CompiledChallengeTreeData[] {
         return challenges.map((challengeData) => {
-            const compiled = compiler(
+            return compiler(
                 challengeData,
                 this.getPersistentChallengeProgression(
                     userId,
@@ -925,8 +940,6 @@ export class ChallengeService extends ChallengeRegistry {
                 gameVersion,
                 userId,
             )
-
-            return compiled
         })
     }
 
@@ -1282,7 +1295,7 @@ export class ChallengeService extends ChallengeRegistry {
                 progression,
                 gameVersion,
                 userId,
-                true, //isDestination
+                true, // isDestination
             ),
             UserCentricContract:
                 challenge.Type === "contract"
@@ -1424,7 +1437,7 @@ export class ChallengeService extends ChallengeRegistry {
 
         const userData = getUserData(userId, gameVersion)
 
-        //ASSUMED: Challenges that are not global should always be completed
+        // ASSUMED: Challenges that are not global should always be completed
         if (!challenge.Tags.includes("global")) {
             userData.Extensions.ChallengeProgression ??= {}
 
@@ -1438,13 +1451,13 @@ export class ChallengeService extends ChallengeRegistry {
                 true
         }
 
-        //Always count the number of completions
+        // Always count the number of completions
         if (session.challengeContexts[challenge.Id]) {
             session.challengeContexts[challenge.Id].timesCompleted++
         }
 
-        //If we have a Definition-scope with a Repeatable, we may want to restart it.
-        //TODO: Figure out what Base/Delta means. For now if Repeatable is set, we restart the challenge.
+        // If we have a Definition-scope with a Repeatable, we may want to restart it.
+        // TODO: Figure out what Base/Delta means. For now if Repeatable is set, we restart the challenge.
         if (
             challenge.Definition.Repeatable &&
             session.challengeContexts[challenge.Id]

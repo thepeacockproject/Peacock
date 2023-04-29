@@ -115,6 +115,7 @@ export function EscalationLevelPicker({
             })
             .then((value) => {
                 let message: string
+
                 if (value.data.success) {
                     message = "Changes made. "
                     setProgressWeb(fork)
@@ -122,6 +123,7 @@ export function EscalationLevelPicker({
                     message = "Error: " + value.data.error
                     alert(message)
                 }
+
                 return console.debug(message)
             })
             .catch(console.error)
@@ -138,6 +140,7 @@ export function EscalationLevelPicker({
 
         const rows: React.ReactElement[][] = [[]]
         let latestRow = 0
+
         for (const codename of codenames[location]) {
             if (
                 !codename.id ||
@@ -194,6 +197,7 @@ export function EscalationLevelPicker({
 
             rows[latestRow].push(comp)
         }
+
         if (rows[0].length) final[location] = rows
     }
     //#endregion

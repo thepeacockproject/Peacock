@@ -162,6 +162,7 @@ function isChallengeInContract(
     }
 
     const contract = controller.resolveContract(contractId, true)
+
     if (challenge.Type === "global") {
         return inclusionDataCheck(
             // Global challenges should not be shown for "tutorial" missions unless for the career page,
@@ -250,6 +251,7 @@ export function filterChallenge(
             ) {
                 return true
             }
+
             return false
         }
         case ChallengeFilterType.ParentLocation: {
@@ -258,6 +260,7 @@ export function filterChallenge(
             if (challenge.Tags.includes("elusive")) {
                 return false
             }
+
             if (challenge.Tags.includes("arcade")) {
                 return (
                     challenge.ParentLocationId === options.parent ||
@@ -265,6 +268,7 @@ export function filterChallenge(
                         controller.parentsWithETA.has(options.parent))
                 )
             }
+
             return true
         }
     }

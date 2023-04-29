@@ -286,9 +286,11 @@ export function mapObjectives(
                 true,
             ),
         }
+
         for (const gamechangerId of gameChangers) {
             if (isEvergreenSafehouse) break
             const gameChangerProps = gameChangerData[gamechangerId]
+
             if (gameChangerProps) {
                 if (gameChangerProps.IsHidden) {
                     if (gameChangerProps.Objectives?.length === 1) {
@@ -301,11 +303,13 @@ export function mapObjectives(
                     if (!gameChangerProps.ObjectivesCategory) {
                         gameChangerProps.ObjectivesCategory = (() => {
                             let obj: MissionManifestObjective
+
                             for (obj of gameChangerProps.Objectives) {
                                 if (obj.Category === "primary") return "primary"
                                 if (obj.Category === "secondary")
                                     return "secondary"
                             }
+
                             // If we've not hit a primary or secondary objective, we've hit a condition
                             // I'm not exactly sure if below follows what official does - AF
                             // EDIT: Turns out, conditions still show as optional, setting this to
@@ -339,6 +343,7 @@ export function mapObjectives(
         if (!objective.Category) {
             objective.Category = objective.Primary ? "primary" : "secondary"
         }
+
         if (
             objective.Activation ||
             (objective.OnActive?.IfInProgress &&
@@ -374,6 +379,7 @@ export function mapObjectives(
             )
         ) {
             let id: string | null | undefined = null
+
             if (
                 objective.Definition?.Context?.Targets &&
                 (objective.Definition.Context.Targets as string[]).length === 1
@@ -449,14 +455,17 @@ export function mapObjectives(
 
     const sortedResult: MissionManifestObjective[] = []
     const resultIds: Set<string> = new Set()
+
     for (const { Id, IsNew } of displayOrder || []) {
         if (!resultIds.has(Id)) {
             // if not yet added
             const objective = result.get(Id)
+
             if (objective) {
                 if (IsNew) {
                     objective.Properties.IsNew = true
                 }
+
                 sortedResult.push(objective)
                 resultIds.add(Id)
             }
@@ -475,6 +484,7 @@ export function mapObjectives(
     ).concat((gameChangers || []).map((x) => ({ Id: x })))) {
         if (!resultIds.has(Id)) {
             const resultobjective = result.get(Id)
+
             if (
                 resultobjective &&
                 (!ExcludeFromScoring || ForceShowOnLoadingScreen)

@@ -274,6 +274,7 @@ export function handleMultiplayerEvent(
 
             return true
         }
+
         default:
             return false
     }
