@@ -626,7 +626,6 @@ profileRouter.post(
     jsonMiddleware(),
     async (req: RequestWithJwt, res) => {
         if (getFlag("loadoutSaving") === "PROFILES") {
-            // #region Save with loadout profiles
             let loadout = loadouts.getLoadoutFor(req.gameVersion)
 
             if (!loadout) {
@@ -636,9 +635,7 @@ profileRouter.post(
             loadout.data[req.body.location] = req.body.loadout
 
             await loadouts.save()
-            // #endregion
         } else {
-            // #region Save with legacy (per-user) system
             const userdata = getUserData(req.jwt.unique_name, req.gameVersion)
 
             if (userdata.Extensions.defaultloadout === undefined) {
@@ -649,7 +646,6 @@ profileRouter.post(
                 req.body.loadout
 
             writeUserData(req.jwt.unique_name, req.gameVersion)
-            // #endregion
         }
 
         res.status(204).end()

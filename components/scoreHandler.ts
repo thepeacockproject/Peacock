@@ -258,7 +258,6 @@ export function calculateScore(
         }) as ScoringHeadline,
     )
 
-    // #region Time
     const timeHours = Math.floor(timeTotal / 3600)
     const timeMinutes = Math.floor((timeTotal - timeHours * 3600) / 60)
     const timeSeconds = Math.floor(
@@ -313,7 +312,6 @@ export function calculateScore(
             scoreTotal: timebonus,
         }) as ScoringHeadline,
     )
-    // #endregion
 
     for (const type of ["total", "subtotal"]) {
         scoringHeadlines.push(
@@ -989,7 +987,6 @@ export async function missionEnd(
         await liveSplitManager.completeMission(timeTotal)
     }
 
-    // #region Leaderboards
     if (
         getFlag("leaderboards") === true &&
         req.gameVersion !== "scpc" &&
@@ -1061,7 +1058,6 @@ export async function missionEnd(
             )
         }
     }
-    // #endregion
 
     res.json({
         template:

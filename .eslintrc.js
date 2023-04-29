@@ -92,7 +92,7 @@ module.exports = {
         "spaced-comment": [
             "error",
             "always",
-            { markers: ["*", "@__NOINLINE__", "#region", "#endregion"] },
+            { markers: ["*", "@__NOINLINE__"] },
         ],
     },
     reportUnusedDisableDirectives: true,
