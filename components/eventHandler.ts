@@ -461,8 +461,7 @@ function contractFailed(
     // If this is an arcade contract, reset it
     arcadeFail: if (json.Metadata.Type === "arcade") {
         manualExit: if (
-            event.Value ===
-            "Contract ended manually: User pressed exit to Main menu"
+            (event.Value as string).startsWith("Contract ended manually")
         ) {
             if (session.completedObjectives.size === 0) break arcadeFail
 
