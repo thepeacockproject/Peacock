@@ -173,7 +173,10 @@ app.get(
     "/config/:audience/:serverVersion(\\d+_\\d+_\\d+)",
     (req: RequestWithJwt<{ issuer: string }>, res) => {
         const proto = req.protocol
-        const config = getConfig("config", true) as ServerConnectionConfig
+        const config = getConfig(
+            "ServerVersionConfig",
+            true,
+        ) as ServerConnectionConfig
         const serverhost = req.get("Host")
 
         config.Versions[0].GAME_VER = req.params.serverVersion.startsWith("8")
@@ -232,7 +235,7 @@ app.get(
 app.get("/files/privacypolicy/hm3/privacypolicy_*.json", (req, res) => {
     res.set("Content-Type", "application/octet-stream")
     res.set("x-ms-meta-version", "20181001")
-    res.send(getConfig("privacypolicy", false))
+    res.send(getConfig("PrivacyPolicy", false))
 })
 
 app.post(
@@ -255,7 +258,7 @@ app.post("/oauth/token", (req: RequestWithJwt, res) =>
 
 app.get("/files/onlineconfig.json", (req, res) => {
     res.set("Content-Type", "application/octet-stream")
-    res.send(getConfig("onlineconfig", false))
+    res.send(getConfig("OnlineConfig", false))
 })
 
 app.get(

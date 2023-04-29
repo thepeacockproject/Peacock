@@ -16,6 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { missionEnd } from "./scoreHandler"
 import { Response, Router } from "express"
 import {
     contractCreationTutorialId,
@@ -28,7 +29,6 @@ import {
     uuidRegex,
 } from "./utils"
 import { contractSessions, getSession } from "./eventHandler"
-import { missionEnd } from "./scoreHandler"
 import { getConfig, getVersionedConfig } from "./configSwizzleManager"
 import {
     contractIdToHitObject,
@@ -659,27 +659,7 @@ menuDataRouter.get(
         const userData = getUserData(req.jwt.unique_name, req.gameVersion)
 
         res.json({
-            template: {
-                controller: "group",
-                id: "mission_rewards",
-                selectable: false,
-                pressable: false,
-                children: [
-                    {
-                        view: "menu3.MissionRewardPage",
-                        selectable: false,
-                        pressable: false,
-                        data: {
-                            $setup: {
-                                "$set Drops": {
-                                    "$each $.Drops": "$item $.Unlockable",
-                                },
-                                $in: "$",
-                            },
-                        },
-                    },
-                ],
-            },
+            template: getConfig("MissionRewardsTemplate", false),
             data: {
                 LevelInfo: [
                     0, 6000, 12000, 18000, 24000, 30000, 36000, 42000, 48000,
@@ -740,7 +720,7 @@ menuDataRouter.get(
 
         res.json = function fakeJsonBind(input) {
             return resJsonFunc.call(this, {
-                template: getConfig("scoreoverviewtemplate", false),
+                template: getConfig("ScoreOverviewTemplate", false),
                 data: input.data.ScoreOverview,
             })
         }
