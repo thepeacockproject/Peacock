@@ -26,7 +26,7 @@ import {
 } from "../types/types"
 import { SavedChallengeGroup } from "../types/challenges"
 import { controller } from "../controller"
-import { gameDifficulty } from "../utils"
+import { gameDifficulty, isSniperLocation } from "../utils"
 
 export function compileScoringChallenge(
     challenge: RegistryChallenge,
@@ -266,6 +266,16 @@ export function filterChallenge(
                     challenge.ParentLocationId === options.parent ||
                     (challenge.ParentLocationId === "" &&
                         controller.parentsWithETA.has(options.parent))
+                )
+            }
+
+            if (challenge.Tags.includes("escalation")) {
+                // TODO: change this when pontus is added.
+                return (
+                    !isSniperLocation(options.parent) &&
+                    !["LOCATION_PARENT_SNUG", "LOCATION_PARENT_ROCKY"].includes(
+                        options.parent,
+                    )
                 )
             }
 
