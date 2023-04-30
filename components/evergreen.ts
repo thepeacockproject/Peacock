@@ -52,7 +52,7 @@ export async function getCpd(
         await setCpd(defaultCPD, uID, cpdID)
     }
 
-    //NOTE: Override the EvergreenLevel with the latest Mastery Level
+    // NOTE: Override the EvergreenLevel with the latest Mastery Level
     if (getFlag("gameplayUnlockAllFreelancerMasteries")) {
         userData.Extensions.CPD[cpdID]["EvergreenLevel"] =
             EVERGREEN_LEVEL_INFO.length

@@ -102,12 +102,14 @@ export async function planningView(
         const publicId = controller.contractIdToPublicId.get(
             req.query.contractid,
         )
+
         if (publicId) {
             const officialJson = await controller.downloadContract(
                 req.jwt.unique_name,
                 publicId,
                 req.gameVersion,
             )
+
             if (officialJson) {
                 contractData = fastClone(officialJson)
             }
@@ -254,6 +256,7 @@ export async function planningView(
         suit = dlForLocation["3"]
         tool1 = dlForLocation["4"]
         tool2 = dlForLocation["5"]
+
         for (const key of Object.keys(dlForLocation)) {
             if (["2", "3", "4", "5"].includes(key)) {
                 // we're looking for keys that aren't taken up by other things

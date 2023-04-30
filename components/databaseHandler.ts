@@ -95,7 +95,7 @@ export function getUserData(
 ): UserProfile {
     const data = asyncGuard.getProfile(`${userId}.${gameVersion}`)
 
-    //NOTE: ProfileLevel always starts at 1
+    // NOTE: ProfileLevel always starts at 1
     if (data?.Extensions?.progression?.PlayerProfileXP?.ProfileLevel === 0) {
         data.Extensions.progression.PlayerProfileXP.ProfileLevel = 1
     }

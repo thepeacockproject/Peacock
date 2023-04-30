@@ -16,6 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { missionEnd } from "./scoreHandler"
 import { Response, Router } from "express"
 import {
     contractCreationTutorialId,
@@ -28,7 +29,6 @@ import {
     uuidRegex,
 } from "./utils"
 import { contractSessions, getSession } from "./eventHandler"
-import { missionEnd } from "./scoreHandler"
 import { getConfig, getVersionedConfig } from "./configSwizzleManager"
 import {
     contractIdToHitObject,
@@ -432,6 +432,7 @@ menuDataRouter.get("/SafehouseCategory", (req: RequestWithJwt, res) => {
             (cat) => cat.Category === item.Unlockable.Type,
         )
         let subcategory
+
         if (!category) {
             category = {
                 Category: item.Unlockable.Type,
@@ -544,6 +545,7 @@ menuDataRouter.get(
         const userData = getUserData(req.jwt.unique_name, req.gameVersion)
 
         let contractData: MissionManifest | undefined = undefined
+
         if (req.query.contractid) {
             contractData = controller.resolveContract(req.query.contractid)
         }
@@ -632,7 +634,7 @@ menuDataRouter.get(
                 OptionalData: {
                     stashpoint: req.query.stashpoint || "",
                     AllowLargeItems: req.query.allowlargeitems,
-                    AllowContainers: req.query.allowcontainers, //?? true
+                    AllowContainers: req.query.allowcontainers, // ?? true
                 },
             },
             ShowSlotName: req.query.slotname,
@@ -659,27 +661,7 @@ menuDataRouter.get(
         const userData = getUserData(req.jwt.unique_name, req.gameVersion)
 
         res.json({
-            template: {
-                controller: "group",
-                id: "mission_rewards",
-                selectable: false,
-                pressable: false,
-                children: [
-                    {
-                        view: "menu3.MissionRewardPage",
-                        selectable: false,
-                        pressable: false,
-                        data: {
-                            $setup: {
-                                "$set Drops": {
-                                    "$each $.Drops": "$item $.Unlockable",
-                                },
-                                $in: "$",
-                            },
-                        },
-                    },
-                ],
-            },
+            template: getConfig("MissionRewardsTemplate", false),
             data: {
                 LevelInfo: [
                     0, 6000, 12000, 18000, 24000, 30000, 36000, 42000, 48000,
@@ -740,12 +722,12 @@ menuDataRouter.get(
 
         res.json = function fakeJsonBind(input) {
             return resJsonFunc.call(this, {
-                template: getConfig("scoreoverviewtemplate", false),
+                template: getConfig("ScoreOverviewTemplate", false),
                 data: input.data.ScoreOverview,
             })
         }
 
-        await innerMissionEnd(req, res)
+        await missionEnd(req, res)
     },
 )
 
@@ -963,22 +945,9 @@ menuDataRouter.get("/missionendready", async (req, res) => {
     }
 })
 
-menuDataRouter.get("/missionend", innerMissionEnd)
+menuDataRouter.get("/missionend", missionEnd)
 
-menuDataRouter.get("/scoreoverviewandunlocks", innerMissionEnd)
-
-async function innerMissionEnd(
-    req: RequestWithJwt<MissionEndRequestQuery>,
-    res: Response,
-): Promise<void> {
-    const result = controller.hooks.getMissionEnd.call(req, res)
-
-    if (result) {
-        return
-    }
-
-    await missionEnd(req, res)
-}
+menuDataRouter.get("/scoreoverviewandunlocks", missionEnd)
 
 menuDataRouter.get(
     "/Destination",
@@ -1331,7 +1300,6 @@ menuDataRouter.get(
 
         const cats = []
 
-        //#region Main story missions
         const currentIdIndex = orderedMissions.indexOf(req.query.contractId)
 
         if (
@@ -1363,9 +1331,7 @@ menuDataRouter.get(
 
             cats.push(createMainOpportunityTile(req.query.contractId))
         }
-        //#endregion
 
-        //#region PZ missions
         const pzIdIndex = orderedPZMissions.indexOf(req.query.contractId)
 
         if (pzIdIndex !== -1 && pzIdIndex !== orderedPZMissions.length - 1) {
@@ -1382,9 +1348,6 @@ menuDataRouter.get(
                 ),
             )
         }
-        //#endregion
-
-        //#region Atlantide
 
         if (req.query.contractId === "f1ba328f-e3dd-4ef8-bb26-0363499fdd95") {
             const nextMissionId = "0b616e62-af0c-495b-82e3-b778e82b5912"
@@ -1400,9 +1363,7 @@ menuDataRouter.get(
                 ),
             )
         }
-        //#endregion
 
-        //#region Plugin missions
         const pluginData = controller.hooks.getNextCampaignMission.call(
             req.query.contractId,
             req.gameVersion,
@@ -1427,7 +1388,6 @@ menuDataRouter.get(
                 )
             }
         }
-        //#endregion
 
         res.json({
             template: getConfig("PlayNextTemplate", false),
@@ -1900,7 +1860,7 @@ menuDataRouter.get("/PlayerProfile", (req: RequestWithJwt, res) => {
     playerProfilePage.data.SubLocationData = []
 
     for (const subLocationKey in locationData.children) {
-        //Ewww...
+        // Ewww...
         if (
             subLocationKey === "LOCATION_ICA_FACILITY_ARRIVAL" ||
             subLocationKey === "LOCATION_HOKKAIDO_SHIM_MAMUSHI" ||
@@ -1919,7 +1879,7 @@ menuDataRouter.get("/PlayerProfile", (req: RequestWithJwt, res) => {
             req.gameVersion,
         )
 
-        //TODO: Make getDestinationCompletion do something like this.
+        // TODO: Make getDestinationCompletion do something like this.
         const challenges = controller.challengeService.getChallengesForLocation(
             subLocation.Id,
             req.gameVersion,

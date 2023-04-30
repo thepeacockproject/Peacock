@@ -30,10 +30,12 @@ legacyEventRouter.post(
         req.body.lastPushDt = "0"
 
         const originalJsonFunc = res.json
+
         res.json = function (originalData) {
             delete originalData.PushMessages
             return originalJsonFunc.call(this, originalData)
         }
+
         next()
     },
 )

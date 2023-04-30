@@ -123,7 +123,7 @@ export class MasteryService {
         maxLevel: number,
         levelToXpRequired: (level: number) => number,
     ) {
-        //Get the user profile
+        // Get the user profile
         const userProfile = getUserData(userId, gameVersion)
 
         // Generate default completion before trying to acquire it
@@ -173,7 +173,7 @@ export class MasteryService {
         userId: string,
         contractType = "mission",
     ): CompletionData {
-        //Get the mastery data
+        // Get the mastery data
         const masteryData: MasteryPackage =
             this.getMasteryPackage(locationParentId)
 
@@ -242,7 +242,7 @@ export class MasteryService {
         gameVersion: GameVersion,
         userId: string,
     ): MasteryData[] {
-        //Get the mastery data
+        // Get the mastery data
         const masteryData: MasteryPackage =
             this.getMasteryPackage(locationParentId)
 
@@ -250,22 +250,22 @@ export class MasteryService {
             return []
         }
 
-        //Put all Ids into a set for quick lookup
+        // Put all Ids into a set for quick lookup
         const dropIdSet = new Set(masteryData.Drops.map((drop) => drop.Id))
 
-        //Get all unlockables with matching Ids
+        // Get all unlockables with matching Ids
         const unlockableData: Unlockable[] = getVersionedConfig<Unlockable[]>(
             "allunlockables",
             gameVersion,
             true,
         ).filter((unlockable) => dropIdSet.has(unlockable.Id))
 
-        //Put all unlockabkes in a map for quick lookup
+        // Put all unlockabkes in a map for quick lookup
         const unlockableMap = new Map(
             unlockableData.map((unlockable) => [unlockable.Id, unlockable]),
         )
 
-        //Map all the data into a new structure
+        // Map all the data into a new structure
         const completionData = this.getLocationCompletion(
             locationParentId,
             locationParentId,

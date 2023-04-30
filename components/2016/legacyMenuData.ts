@@ -219,6 +219,7 @@ legacyMenuDataRouter.get("/Safehouse", (req: RequestWithJwt, res, next) => {
     // call /SafehouseCategory but rewrite the result a bit
     req.url = `/SafehouseCategory?page=0&type=${req.query.type}&subtype=`
     const originalJsonFunc = res.json
+
     res.json = function (originalData) {
         return originalJsonFunc.call(this, {
             template,
@@ -227,6 +228,7 @@ legacyMenuDataRouter.get("/Safehouse", (req: RequestWithJwt, res, next) => {
             },
         })
     }
+
     next()
 })
 

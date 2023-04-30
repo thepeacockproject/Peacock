@@ -49,6 +49,7 @@ export function LoadoutPage() {
                         loadoutId={activeEditingId}
                         backFunction={(isRemoving = false) => {
                             setActiveEditingName(void 0)
+
                             if (isRemoving) {
                                 setForceReload(Math.random() * Math.random())
                             }

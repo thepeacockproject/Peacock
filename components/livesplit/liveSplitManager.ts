@@ -81,10 +81,12 @@ export class LiveSplitManager {
         }
 
         const campaign = getCampaignMissions(contractId, gameVersion, userId)
+
         if (campaign === undefined) {
             this._invalidateRun(contractId)
             return
         }
+
         this._currentCampaign = campaign
 
         const isStartOfCampaign =
@@ -99,6 +101,7 @@ export class LiveSplitManager {
 
         if (this._inValidCampaignRun) {
             const numComplete = this._completedMissions.length
+
             if (contractId === this._currentMission) {
                 const lastCompleted = this._completedMissions[numComplete - 1]
 
@@ -108,6 +111,7 @@ export class LiveSplitManager {
                     // do pop the completed mission though as we're entering a new attempt
                     this._completedMissions.pop()
                     this._unsplitLastTimeCalcEntry()
+
                     if (!this._isRaceMode) {
                         logLiveSplitError(
                             await this._liveSplitClient.unsplit(),
@@ -188,6 +192,7 @@ export class LiveSplitManager {
             )
             this._completedMissions.push(this._currentMission)
             await this._pushGameTime()
+
             if (this._isRaceMode) {
                 if (
                     this._completedMissions.length ===
@@ -214,6 +219,7 @@ export class LiveSplitManager {
                 }
             } else {
                 logLiveSplitError(await this._liveSplitClient.split(), "split")
+
                 if (
                     this._completedMissions.length ===
                     this._currentCampaign.length
@@ -458,6 +464,7 @@ export class LiveSplitManager {
         })
 
         const totalEntries = completedEntries.length + resetEntries.length
+
         if (totalEntries + 1 > 40) {
             // We need to make multiple TimeCalc links
             const completedEntriesLink = new URL(baseUrl)
@@ -497,12 +504,14 @@ export class LiveSplitManager {
 
         resetEntries.forEach((entry) => {
             timecalcLine += 1
+
             if (resetLocation === entry.location) {
                 resetCount += 1
             } else {
                 resetLocation = entry.location
                 resetCount = 1
             }
+
             searchParams.set(
                 `t${timecalcLine}`,
                 `${this._formatSecondsToTime(entry.time)}`,

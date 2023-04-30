@@ -88,9 +88,9 @@ function genSingleVideo(
             if (!video.Entitlements.includes("LOCATION_NEWZEALAND")) {
                 video.Entitlements = []
             }
+
             break
         }
-
         case "h3": {
             video.Data = {
                 DlcName: "GAME_STORE_METADATA_S3_GAME_TITLE",
@@ -104,6 +104,7 @@ function genSingleVideo(
             if (video.Entitlements.includes("LOCATION_NEWZEALAND")) {
                 video.Entitlements = ["H2_LEGACY_STANDARD"]
             }
+
             break
         }
 
@@ -383,12 +384,10 @@ export function makeCampaigns(
             )
             break
         }
-
         case "h2": {
             c.push(prologueCampaign!, s1Campaign!, s2Campaign!, pzCampaign)
             break
         }
-
         case "h3": {
             c.push(prologueCampaign!, s1Campaign!, s2Campaign!, s3Campaign!, {
                 Name: "UI_MENU_PAGE_SIDE_MISSIONS_TITLE",

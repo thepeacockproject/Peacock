@@ -115,6 +115,7 @@ export function EscalationLevelPicker({
             })
             .then((value) => {
                 let message: string
+
                 if (value.data.success) {
                     message = "Changes made. "
                     setProgressWeb(fork)
@@ -122,12 +123,12 @@ export function EscalationLevelPicker({
                     message = "Error: " + value.data.error
                     alert(message)
                 }
+
                 return console.debug(message)
             })
             .catch(console.error)
     }
 
-    //#region Bootleg column paginator
     const final: Record<string, React.ReactElement[][]> = {}
     const locsInGame = locsInGv.slice(0, gv).flat()
 
@@ -138,6 +139,7 @@ export function EscalationLevelPicker({
 
         const rows: React.ReactElement[][] = [[]]
         let latestRow = 0
+
         for (const codename of codenames[location]) {
             if (
                 !codename.id ||
@@ -194,9 +196,9 @@ export function EscalationLevelPicker({
 
             rows[latestRow].push(comp)
         }
+
         if (rows[0].length) final[location] = rows
     }
-    //#endregion
 
     return (
         <section className="app-grid">

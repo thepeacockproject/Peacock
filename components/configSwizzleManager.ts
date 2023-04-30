@@ -19,7 +19,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-nocheck
 
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs"
+import { existsSync, mkdirSync, writeFileSync } from "fs"
 import { join } from "path"
 import { log, LogLevel } from "./loggingInterop"
 
@@ -29,9 +29,9 @@ import FilterData from "../static/FilterData.json"
 import LocationsData from "../static/LocationsData.json"
 import GameChangerProperties from "../static/GameChangerProperties.json"
 import allunlockables from "../static/allunlockables.json"
-import connectionConfigTemplate from "../static/config.json"
-import onlineconfig from "../static/onlineconfig.json"
-import privacypolicy from "../static/privacypolicy.json"
+import ServerVersionConfig from "../static/ServerVersionConfig.json"
+import OnlineConfig from "../static/OnlineConfig.json"
+import PrivacyPolicy from "../static/PrivacyPolicy.json"
 import UserDefault from "../static/UserDefault.json"
 import AgencyPickups from "../static/AgencyPickups.json"
 import Entrances from "../static/Entrances.json"
@@ -105,7 +105,7 @@ import SniperLoadouts from "../static/SniperLoadouts.json"
 import Scpcallunlockables from "../static/Scpcallunlockables.json"
 import DiscordRichAssetsForBricks from "../static/DiscordRichAssetsForBricks.json"
 import EscalationCodenames from "../static/EscalationCodenames.json"
-import scoreoverviewtemplate from "../static/scoreoverviewtemplate.json"
+import ScoreOverviewTemplate from "../static/ScoreOverviewTemplate.json"
 import PeacockGameChangerProperties from "../static/PeacockGameChangerProperties.json"
 import MultiplayerPresets from "../static/MultiplayerPresets.json"
 import LobbySlimTemplate from "../static/LobbySlimTemplate.json"
@@ -115,6 +115,7 @@ import DefaultCpdConfig from "../static/DefaultCpdConfig.json"
 import EvergreenGameChangerProperties from "../static/EvergreenGameChangerProperties.json"
 import AreaMap from "../static/AreaMap.json"
 import HitsCategoryElusiveTemplate from "../static/HitsCategoryElusiveTemplate.json"
+import MissionRewardsTemplate from "../static/MissionRewardsTemplate.json"
 import type { GameVersion } from "./types/types"
 import { fastClone } from "./utils"
 
@@ -123,7 +124,7 @@ import { fastClone } from "./utils"
  *
  * @private
  */
-const configs: Record<string, unknown> = {
+const configs = {
     Roadmap,
     StoreData,
     FilterData,
@@ -132,9 +133,9 @@ const configs: Record<string, unknown> = {
     LeaderboardEntriesTemplate,
     GameChangerProperties,
     allunlockables,
-    config: connectionConfigTemplate,
-    onlineconfig,
-    privacypolicy,
+    ServerVersionConfig,
+    OnlineConfig,
+    PrivacyPolicy,
     UserDefault,
     AgencyPickups,
     Entrances,
@@ -207,7 +208,7 @@ const configs: Record<string, unknown> = {
     Scpcallunlockables,
     DiscordRichAssetsForBricks,
     EscalationCodenames,
-    scoreoverviewtemplate,
+    ScoreOverviewTemplate,
     PeacockGameChangerProperties,
     MultiplayerPresets,
     LobbySlimTemplate,
@@ -217,18 +218,12 @@ const configs: Record<string, unknown> = {
     EvergreenGameChangerProperties,
     AreaMap,
     HitsCategoryElusiveTemplate,
+    MissionRewardsTemplate,
 }
 
 Object.keys(configs).forEach((cfg) => {
     // Parse the string into an object
     configs[cfg] = JSON.parse(configs[cfg])
-
-    const overridePath = join("overrides", `${cfg}.json`)
-
-    if (existsSync(overridePath)) {
-        log(LogLevel.INFO, `Loaded override config for ${cfg}.`)
-        configs[cfg] = JSON.parse(readFileSync(overridePath).toString())
-    }
 })
 
 export { configs }
@@ -242,7 +237,10 @@ export { configs }
  * @returns The config.
  * @throws {Error} If the config file specified doesn't exist.
  */
-export function getConfig<T = unknown>(config: string, clone: boolean): T {
+export function getConfig<T = unknown>(
+    config: keyof typeof configs,
+    clone: boolean,
+): T {
     if (configs.hasOwnProperty.call(configs, config)) {
         if (!clone) {
             return configs[config]

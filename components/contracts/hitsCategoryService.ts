@@ -331,12 +331,14 @@ export class HitsCategoryService {
         category: string,
     ): string {
         const user = getUserData(userId, gameVersion)
+
         if (type === "default") {
             type = user.Extensions.gamepersistentdata.HitsFilterType[category]
         } else {
             user.Extensions.gamepersistentdata.HitsFilterType[category] = type
             writeUserData(userId, gameVersion)
         }
+
         return type
     }
 
@@ -415,6 +417,7 @@ export class HitsCategoryService {
                 userId,
             )
         }
+
         const categoryTypes = categoryName.split("_")
         const category =
             categoryName === "Elusive_Target_Hits"

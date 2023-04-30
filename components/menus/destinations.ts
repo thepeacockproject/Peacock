@@ -69,11 +69,13 @@ export function getDestinationCompletion(
         .map((e) => e.CommonRepositoryId)
 
     let opportunityCompletedCount = 0
+
     for (const ms in userData.Extensions.opportunityprogression) {
         if (opportunities.includes(ms)) {
             opportunityCompletedCount++
         }
     }
+
     const challengeCompletion =
         controller.challengeService.countTotalNCompletedChallenges(
             challenges,
@@ -106,15 +108,19 @@ export function getCompletionPercent(
     if (challengeDone === undefined) {
         challengeDone = 0
     }
+
     if (challengeTotal === undefined) {
         challengeTotal = 0
     }
+
     if (opportunityDone === undefined) {
         opportunityDone = 0
     }
+
     if (opportunityTotal === undefined) {
         opportunityTotal = 0
     }
+
     const totalCompletables = challengeTotal + opportunityTotal
     const totalCompleted = challengeDone + opportunityDone
     return totalCompletables === 0
@@ -129,6 +135,7 @@ export function destinationsMenu(req: RequestWithJwt): GameFacingDestination[] {
         req.gameVersion,
         true,
     )
+
     for (const [destination, parent] of Object.entries(locations.parents)) {
         parent.GameAsset = null
         parent.DisplayNameLocKey =

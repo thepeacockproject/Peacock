@@ -77,7 +77,6 @@ import { promisify } from "util"
 import { brotliDecompress } from "zlib"
 import assert from "assert"
 import { Response } from "express"
-import { MissionEndRequestQuery } from "./types/gameSchemas"
 import { ChallengeFilterType } from "./candle/challengeHelpers"
 import { MasteryService } from "./candle/masteryService"
 import { MasteryPackage } from "./types/mastery"
@@ -374,13 +373,7 @@ export class Controller {
             ],
             PlayNextGetCampaignsHookReturn | undefined
         >
-        getMissionEnd: SyncBailHook<
-            [
-                /** req */ RequestWithJwt<MissionEndRequestQuery>,
-                /** res */ Response,
-            ],
-            boolean
-        >
+        onMissionEnd: SyncHook<[/** session */ ContractSession]>
     }
     public configManager: typeof configManagerType = {
         getConfig,
@@ -427,7 +420,7 @@ export class Controller {
             contributeCampaigns: new SyncHook(),
             getSearchResults: new AsyncSeriesHook(),
             getNextCampaignMission: new SyncBailHook(),
-            getMissionEnd: new SyncBailHook(),
+            onMissionEnd: new SyncHook(),
         }
 
         if (modFrameworkDataPath && existsSync(modFrameworkDataPath)) {
@@ -580,9 +573,11 @@ export class Controller {
 
             for (const lId of contract.Metadata.GroupDefinition.Order) {
                 const level = this.resolveContract(lId, false)
+
                 if (!level) {
                     continue
                 }
+
                 this.locationsWithETA.add(level.Metadata.Location)
             }
 
@@ -663,6 +658,7 @@ export class Controller {
         if (escalationTypes.includes(json.Metadata.Type)) {
             return this.resolveContract(json.Metadata.InGroup) ?? json
         }
+
         return json
     }
 
@@ -713,6 +709,7 @@ export class Controller {
                 getGroup ? this.getGroupContract(openCtJson) : openCtJson,
             )
         }
+
         return undefined
     }
 
@@ -852,6 +849,7 @@ export class Controller {
                 }
 
                 this.contracts.set(f.Metadata.Id, f)
+
                 if (f.Metadata.PublicId) {
                     this._pubIdToContractId.set(
                         f.Metadata.PublicId,
@@ -923,7 +921,7 @@ export class Controller {
             const tags = e.Tags || []
             tags.push("global")
 
-            //NOTE: Treat all other fields as undefined
+            // NOTE: Treat all other fields as undefined
             return <RegistryChallenge>{
                 Id: e.Id,
                 Tags: tags,
@@ -1079,6 +1077,7 @@ export class Controller {
                 await this._executePlugin(plugin, src, sourceFile)
             }
         }
+
         const entries = (await readdir(process.cwd())).filter(
             (n) => isPlugin(n, "js") || isPlugin(n, "cjs"),
         )

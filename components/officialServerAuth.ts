@@ -107,6 +107,7 @@ export class OfficialServerAuth {
             this.initialized = true
         } catch (e) {
             handleAxiosError(e)
+
             if (PEACOCK_DEV) {
                 log(
                     LogLevel.WARN,

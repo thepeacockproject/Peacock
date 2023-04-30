@@ -153,7 +153,7 @@ export function xpRequiredForLevel(level: number): number {
     return Math.max(0, (level - 1) * XP_PER_LEVEL)
 }
 
-//TODO: Determine some mathematical function
+// TODO: Determine some mathematical function
 export const EVERGREEN_LEVEL_INFO: number[] = [
     0, 5000, 10000, 17000, 24000, 31000, 38000, 45000, 52000, 61000, 70000,
     79000, 88000, 97000, 106000, 115000, 124000, 133000, 142000, 154000, 166000,
@@ -185,7 +185,7 @@ export function xpRequiredForEvergreenLevel(level: number): number {
     return EVERGREEN_LEVEL_INFO[level - 1]
 }
 
-//TODO: Determine some mathematical function
+// TODO: Determine some mathematical function
 export const SNIPER_LEVEL_INFO: number[] = [
     0, 50000, 150000, 500000, 1000000, 1700000, 2500000, 3500000, 5000000,
     7000000, 9500000, 12500000, 16000000, 20000000, 25000000, 31000000,
@@ -293,11 +293,13 @@ export function castUserProfile(profile: UserProfile): UserProfile {
             case "REVEALED":
                 {
                     const areas = Object.keys(getConfig("AreaMap", false))
+
                     for (const area of areas) {
                         j.Extensions.gamepersistentdata.PersistentBool[area] =
                             true
                     }
                 }
+
                 break
             case "CLOUDED":
                 j.Extensions.gamepersistentdata.PersistentBool = {
@@ -370,16 +372,15 @@ export function attainableDefaults(gameVersion: GameVersion): string[] {
 }
 
 /**
- * Gets the default suit for a given sublocation and parent location.
- * Priority is given to the sublocation, then the parent location, then 47's signature suit.
- * @param sub  The sublocation.
- * @param parent The parent location.
- * @returns  The default suit for the given sublocation and parent location.
+ * Gets the default suit for a given sub-location and parent location.
+ * Priority is given to the sub-location, then the parent location, then 47's signature suit.
+ * @param subLocation The sub-location.
+ * @returns The default suit for the given sub-location and parent location.
  */
-export function getDefaultSuitFor(sublocation: Unlockable) {
+export function getDefaultSuitFor(subLocation: Unlockable) {
     return (
-        defaultSuits[sublocation.Id] ||
-        defaultSuits[sublocation.Properties.ParentLocation] ||
+        defaultSuits[subLocation.Id] ||
+        defaultSuits[subLocation.Properties.ParentLocation] ||
         "TOKEN_OUTFIT_HITMANSUIT"
     )
 }
@@ -402,6 +403,7 @@ export function isObjectiveActive(
             )
         }
     }
+
     return false
 }
 
@@ -551,6 +553,7 @@ export function fastClone<T>(item: T): T {
             } else {
                 // object literal
                 result = {}
+
                 for (const i in item) {
                     result[i] = fastClone(item[i])
                 }
@@ -572,9 +575,14 @@ export function fastClone<T>(item: T): T {
 export function isSuit(repoId: string): boolean {
     const suitsToTypeMap: Record<string, string> = {}
 
-    getConfig<readonly Unlockable[]>("allunlockables", false)
-        .filter((unlockable) => unlockable.Type === "disguise")
-        .forEach((u) => (suitsToTypeMap[u.Properties.RepositoryId] = u.Subtype))
+    const unlockablesFiltered = getConfig<readonly Unlockable[]>(
+        "allunlockables",
+        false,
+    ).filter((unlockable) => unlockable.Type === "disguise")
+
+    for (const u of unlockablesFiltered) {
+        suitsToTypeMap[u.Properties.RepositoryId] = u.Subtype
+    }
 
     return suitsToTypeMap[repoId]
         ? suitsToTypeMap[repoId] !== "disguise"
