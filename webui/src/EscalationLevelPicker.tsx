@@ -129,7 +129,6 @@ export function EscalationLevelPicker({
             .catch(console.error)
     }
 
-    //#region Bootleg column paginator
     const final: Record<string, React.ReactElement[][]> = {}
     const locsInGame = locsInGv.slice(0, gv).flat()
 
@@ -200,7 +199,6 @@ export function EscalationLevelPicker({
 
         if (rows[0].length) final[location] = rows
     }
-    //#endregion
 
     return (
         <section className="app-grid">
