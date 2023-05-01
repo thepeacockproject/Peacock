@@ -167,10 +167,11 @@ export function setupScoring(
 
     for (const module of modules) {
         const name = module.Type.split(".").at(-1)
+
         if (name === "scoring") {
+            // TODO: Add co-op defs
             const definition = {
                 ...module.ScoringDefinitions[0],
-                //...module.ScoringDefinitions[1],
             }
 
             let state = "Start"
