@@ -27,6 +27,8 @@ import {
 } from "./challenges"
 import { SessionGhostModeDetails } from "../multiplayer/multiplayerService"
 import { IContextListener } from "../statemachines/contextListeners"
+import { ManifestScoringModule, ScoringModule } from "./scoring"
+import { Timer } from "@peacockproject/statemachine-parser"
 
 /**
  * A duration or relative point in time expressed in seconds.
@@ -275,6 +277,25 @@ export interface ContractSession {
         scoringScreenEndState: string
         failed: boolean
     }
+    /**
+     * Scoring settings, context, and definition.
+     * Currently only used for Sniper Challenge missions.
+     *
+     * Settings: Keyed by the type property in modules.
+     * Context: The current context of the scoring state machine.
+     * Definition: The initial definition of the scoring state machine.
+     *
+     * @since v6.3.0
+     */
+    scoring?: {
+        Settings: {
+            [name: string]: ScoringModule
+        }
+        Context: unknown
+        Definition: unknown
+        State: string
+        Timers: Timer[]
+    }
 }
 
 /**
@@ -521,6 +542,7 @@ export interface UserProfile {
     XboxLiveId: string | null
     PSNAccountId: string | null
     PSNOnlineId: string | null
+    Version: number
 }
 
 export interface RatingKill {
@@ -925,6 +947,8 @@ export interface MissionManifestMetadata {
     CpdId?: string
     // Elusive custom property (like official's year)
     Season?: number
+    // Used for sniper scoring
+    Modules?: ManifestScoringModule[]
 }
 
 export interface GroupObjectiveDisplayOrderItem {

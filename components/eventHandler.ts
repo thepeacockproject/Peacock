@@ -66,6 +66,7 @@ import picocolors from "picocolors"
 import { setCpd } from "./evergreen"
 import { getConfig } from "./configSwizzleManager"
 import { resetUserEscalationProgress } from "./contracts/escalations/escalationService"
+import { ManifestScoringModule } from "./types/scoring"
 
 const eventRouter = Router()
 
@@ -144,6 +145,67 @@ export function registerObjectiveListener(
 
     session.objectiveContexts.set(objective.Id, context)
     session.objectiveStates.set(objective.Id, state)
+}
+
+/**
+ * Sets up scoring state machines.
+ *
+ * @param session The contract session.
+ * @param modules Array of scoring modules.
+ */
+export function setupScoring(
+    session: ContractSession,
+    modules: ManifestScoringModule[],
+): void {
+    const scoring = {
+        Settings: {},
+        Context: undefined,
+        Definition: undefined,
+        State: undefined,
+        Timers: [],
+    }
+
+    for (const module of modules) {
+        const name = module.Type.split(".").at(-1)
+        if (name === "scoring") {
+            const definition = {
+                ...module.ScoringDefinitions[0],
+                //...module.ScoringDefinitions[1],
+            }
+
+            let state = "Start"
+            let context = definition.Context
+
+            const immediate = handleEvent(
+                // @ts-expect-error Type issue
+                definition,
+                context,
+                {},
+                {
+                    eventName: "-",
+                    currentState: state,
+                    timers: scoring.Timers,
+                },
+            )
+
+            if (immediate.state) {
+                state = immediate.state
+            }
+
+            if (immediate.context) {
+                context = immediate.context
+            }
+
+            scoring.Definition = definition
+            scoring.Context = context
+            scoring.State = state
+        } else {
+            scoring.Settings[name] = module
+            delete scoring.Settings[name]["Type"]
+        }
+    }
+
+    session.scoring = scoring
 }
 
 /**
@@ -597,6 +659,38 @@ function saveEvents(
                 )
                 log(LogLevel.ERROR, e)
                 log(LogLevel.ERROR, e.stack)
+            }
+        }
+
+        if (session.scoring) {
+            log(
+                LogLevel.DEBUG,
+                `Current: ${session.scoring.Context["TotalScore"]} // ${session.scoring.State}`,
+            )
+
+            const scoringContext = session.scoring.Context
+            const scoringState = session.scoring.State
+
+            const val = handleEvent(
+                session.scoring.Definition as never,
+                scoringContext,
+                event.Value,
+                {
+                    eventName: event.Name,
+                    timestamp: event.Timestamp,
+                    currentState: scoringState,
+                    timers: session.scoring.Timers,
+                },
+            )
+
+            if (val.context) {
+                session.scoring.Context = val.context
+                session.scoring.State = val.state
+
+                log(
+                    LogLevel.DEBUG,
+                    `Current: ${session.scoring.Context["TotalScore"]} // ${session.scoring.State}`,
+                )
             }
         }
 
