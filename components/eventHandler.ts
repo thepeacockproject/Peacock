@@ -741,6 +741,10 @@ function saveEvents(
             case "Kill": {
                 const killValue = (event as KillC2SEvent).Value
 
+                if (session.firstKillTimestamp === undefined) {
+                    session.firstKillTimestamp = event.Timestamp
+                }
+
                 if (session.lastKill.timestamp === event.Timestamp) {
                     session.lastKill.repositoryIds?.push(killValue.RepositoryId)
                 } else {

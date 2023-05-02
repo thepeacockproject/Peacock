@@ -63,13 +63,18 @@ import { getCompletionPercent } from "./menus/destinations"
 import {
     CalculateXpResult,
     CalculateScoreResult,
+    CalculateSniperScoreResult,
     MissionEndResponse,
     MissionEndDrop,
     MissionEndEvergreen,
     MissionEndChallenge,
 } from "./types/score"
 import { MasteryData } from "./types/mastery"
-import { getDataForUnlockables } from "./inventory"
+import {
+    getDataForUnlockables,
+    InventoryItem,
+    createInventory,
+} from "./inventory"
 import { calculatePlaystyle } from "./playStyles"
 
 export function calculateGlobalXp(
@@ -359,6 +364,150 @@ export function calculateScore(
         score: totalScore,
         scoreWithBonus: totalScoreWithBonus,
     }
+}
+
+export function calculateSniperScore(
+    contractSession: ContractSession,
+    timeTotal: Seconds,
+    inventory: InventoryItem[],
+): [CalculateSniperScoreResult, ScoringHeadline[]] {
+    const timeMinutes = Math.floor(timeTotal / 60)
+    const timeSeconds = Math.floor(timeTotal % 60)
+    const timeMiliseconds = Math.floor(((timeTotal % 60) - timeSeconds) * 1000)
+
+    const bonusTimeStart =
+        contractSession.firstKillTimestamp ?? contractSession.timerStart
+    const bonusTimeEnd = contractSession.timerEnd
+    const bonusTimeTotal: Seconds =
+        (bonusTimeEnd as number) - (bonusTimeStart as number)
+
+    let timeBonus = 0
+
+    // TODO? generate this curve from contractSession.scoring.Settings["timebonus"] somehow
+    const scorePoints = [
+        [0, 50000], // 50000 bonus score at 0 secs (0 min)
+        [240, 40000], // 40000 bonus score at 240 secs (4 min)
+        [480, 35000], // 35000 bonus score at 480 secs (8 min)
+        [900, 0], // 0 bonus score at 900 secs (15 min)
+    ]
+    let prevsecs: number, prevscore: number
+
+    for (const [secs, score] of scorePoints) {
+        if (bonusTimeTotal > secs) {
+            prevsecs = secs
+            prevscore = score
+            continue
+        }
+
+        // linear interpolation between current and previous scorePoints
+        timeBonus =
+            prevscore -
+            ((prevscore - score) * (bonusTimeTotal - prevsecs)) /
+                (secs - prevsecs)
+        break
+    }
+
+    timeBonus = Math.floor(timeBonus)
+
+    const defaultHeadline: Partial<ScoringHeadline> = {
+        type: "summary",
+        count: "",
+        scoreIsFloatingType: false,
+        fractionNumerator: 0,
+        fractionDenominator: 0,
+        scoreTotal: 0,
+    }
+
+    const baseScore = contractSession.scoring.Context["TotalScore"]
+    const challengeMultiplier = contractSession.scoring.Settings["challenges"][
+        "Unlockables"
+    ].reduce((acc, unlockable) => {
+        const item = inventory.find((item) => item.Unlockable.Id === unlockable)
+
+        if (item) {
+            return acc + item.Unlockable.Properties["Multiplier"]
+        }
+
+        return acc
+    }, 1.0)
+    const bulletsMissed = 0 // TODO? not sure if neccessary, the penalty is always 0 for inbuilt contracts
+    const bulletsMissedPenalty =
+        bulletsMissed *
+        contractSession.scoring.Settings["bulletsused"]["penalty"]
+    const silentAssassin = false // TODO
+    const saBonus = silentAssassin
+        ? contractSession.scoring.Settings["silentassassin"]["score"]
+        : 0
+    const saMultiplier = silentAssassin
+        ? contractSession.scoring.Settings["silentassassin"]["multiplier"]
+        : 1.0
+
+    const subTotalScore = baseScore + timeBonus + saBonus - bulletsMissedPenalty
+    const totalScore = Math.round(
+        subTotalScore * challengeMultiplier * saMultiplier,
+    )
+
+    const headlines = [
+        {
+            headline: "UI_SNIPERSCORING_SUMMARY_BASESCORE",
+            scoreTotal: baseScore,
+        },
+        {
+            headline: "UI_SNIPERSCORING_SUMMARY_BULLETS_MISSED_PENALTY",
+            scoreTotal: bulletsMissedPenalty,
+        },
+        {
+            headline: "UI_SNIPERSCORING_SUMMARY_TIME_BONUS",
+            count: `${String(timeMinutes).padStart(2, "0")}:${String(
+                timeSeconds,
+            ).padStart(2, "0")}.${String(timeMiliseconds).padStart(3, "0")}`,
+            scoreTotal: timeBonus,
+        },
+        {
+            headline: "UI_SNIPERSCORING_SUMMARY_SILENT_ASSASIN_BONUS",
+            scoreTotal: saBonus,
+        },
+        {
+            headline: "UI_SNIPERSCORING_SUMMARY_SUBTOTAL",
+            scoreTotal: subTotalScore,
+        },
+        {
+            headline: "UI_SNIPERSCORING_SUMMARY_CHALLENGE_MULTIPLIER",
+            scoreIsFloatingType: true,
+            scoreTotal: challengeMultiplier,
+        },
+        {
+            headline: "UI_SNIPERSCORING_SUMMARY_SILENT_ASSASIN_MULTIPLIER",
+            scoreIsFloatingType: true,
+            scoreTotal: saMultiplier,
+        },
+        {
+            type: "total",
+            headline: "UI_SNIPERSCORING_SUMMARY_TOTAL",
+            scoreTotal: totalScore,
+        },
+    ].map((e) => {
+        return Object.assign(
+            Object.assign({}, defaultHeadline),
+            e,
+        ) as ScoringHeadline
+    })
+
+    return [
+        {
+            FinalScore: totalScore,
+            BaseScore: baseScore,
+            TotalChallengeMultiplier: challengeMultiplier,
+            BulletsMissed: bulletsMissed,
+            BulletsMissedPenalty: bulletsMissedPenalty,
+            TimeTaken: timeTotal,
+            TimeBonus: timeBonus,
+            SilentAssassin: silentAssassin,
+            SilentAssassinBonus: saBonus,
+            SilentAssassinMultiplier: saMultiplier,
+        },
+        headlines,
+    ]
 }
 
 export async function missionEnd(
@@ -777,18 +926,18 @@ export async function missionEnd(
             Name: mainUnlockableProperties.Name,
         }
 
-        sniperChallengeScore = {
-            FinalScore: 112000,
-            BaseScore: 112000,
-            TotalChallengeMultiplier: 1.0,
-            BulletsMissed: 0,
-            BulletsMissedPenalty: 0,
-            TimeTaken: timeTotal,
-            TimeBonus: 0,
-            SilentAssassin: false,
-            SilentAssassinBonus: 0,
-            SilentAssassinMultiplier: 1.0,
-        }
+        const userInventory = createInventory(
+            req.jwt.unique_name,
+            req.gameVersion,
+            userData.Extensions.entP,
+        )
+
+        const [sniperScore, headlines] = calculateSniperScore(
+            sessionDetails,
+            timeTotal,
+            userInventory,
+        )
+        sniperChallengeScore = sniperScore
 
         // Override the contract score
         contractScore = undefined
@@ -796,73 +945,8 @@ export async function missionEnd(
         // Override the playstyle
         playstyle = undefined
 
-        // Override the calculated score
-        const timeMinutes = Math.floor(timeTotal / 60)
-        const timeSeconds = Math.floor(timeTotal % 60)
-        const timeMiliseconds = Math.floor(
-            ((timeTotal % 60) - timeSeconds) * 1000,
-        )
-
-        const defaultHeadline: Partial<ScoringHeadline> = {
-            type: "summary",
-            count: "",
-            scoreIsFloatingType: false,
-            fractionNumerator: 0,
-            fractionDenominator: 0,
-            scoreTotal: 0,
-        }
-
-        const headlines = [
-            {
-                headline: "UI_SNIPERSCORING_SUMMARY_BASESCORE",
-                scoreTotal: 112000,
-            },
-            {
-                headline: "UI_SNIPERSCORING_SUMMARY_BULLETS_MISSED_PENALTY",
-                scoreTotal: 0,
-            },
-            {
-                headline: "UI_SNIPERSCORING_SUMMARY_TIME_BONUS",
-                count: `${String(timeMinutes).padStart(2, "0")}:${String(
-                    timeSeconds,
-                ).padStart(2, "0")}.${String(timeMiliseconds).padStart(
-                    3,
-                    "0",
-                )}`,
-                scoreTotal: 0,
-            },
-            {
-                headline: "UI_SNIPERSCORING_SUMMARY_SILENT_ASSASIN_BONUS",
-                scoreTotal: 0,
-            },
-            {
-                headline: "UI_SNIPERSCORING_SUMMARY_SUBTOTAL",
-                scoreTotal: 112000,
-            },
-            {
-                headline: "UI_SNIPERSCORING_SUMMARY_CHALLENGE_MULTIPLIER",
-                scoreIsFloatingType: true,
-                scoreTotal: 1.0,
-            },
-            {
-                headline: "UI_SNIPERSCORING_SUMMARY_SILENT_ASSASIN_MULTIPLIER",
-                scoreIsFloatingType: true,
-                scoreTotal: 1.0,
-            },
-            {
-                type: "total",
-                headline: "UI_SNIPERSCORING_SUMMARY_TOTAL",
-                scoreTotal: 112000,
-            },
-        ]
-
         calculateScoreResult.stars = undefined
-        calculateScoreResult.scoringHeadlines = headlines.map((e) => {
-            return Object.assign(
-                Object.assign({}, defaultHeadline),
-                e,
-            ) as ScoringHeadline
-        })
+        calculateScoreResult.scoringHeadlines = headlines
     }
 
     // Mastery Drops

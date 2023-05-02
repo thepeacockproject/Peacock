@@ -296,6 +296,12 @@ export interface ContractSession {
         State: string
         Timers: Timer[]
     }
+    /**
+     * Timestamp of first kill.
+     * Used for calculating Sniper Challenge time bonus.
+     * @since v6.4.0
+     */
+    firstKillTimestamp?: number
 }
 
 /**
