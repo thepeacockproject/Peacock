@@ -1159,10 +1159,6 @@ menuDataRouter.get(
                                 !(
                                     req.gameVersion === "h1" &&
                                     m === "c414a084-a7b9-43ce-b6ca-590620acd87e"
-                                ) &&
-                                !(
-                                    req.gameVersion !== "h3" &&
-                                    m === "90c291f6-7ac3-46de-99b2-082e38fccb24"
                                 ),
                         )
                         .forEach((c) => {
