@@ -449,10 +449,6 @@ export function makeCampaigns(
                                 "4e45e91a-94ca-4d89-89fc-1b250e608e73",
                                 gameVersion,
                             ),
-                            genSingleMission(
-                                "99bd3287-1d83-4429-a769-45045dfcbf31",
-                                gameVersion,
-                            ),
                         ],
                     },
                 ].filter((o) => o !== undefined),
