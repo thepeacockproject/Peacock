@@ -1424,7 +1424,8 @@ export class ChallengeService extends ChallengeRegistry {
                 ContractSessionId: session.Id,
                 ContractId: session.contractId,
                 Name: "ChallengeCompleted",
-                Timestamp: new Date().getTime(),
+                // The timestamp (used for timers) is not important here, since it's not an event sent by the game.
+                Timestamp: 0,
             },
             session,
         )
