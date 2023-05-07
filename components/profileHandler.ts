@@ -840,6 +840,7 @@ async function loadSession(
     for (const cid in sessionData.challengeContexts) {
         // Make sure the ChallengeProgression is available, otherwise loading might fail!
         userData.Extensions.ChallengeProgression[cid] ??= {
+            CurrentState: "Start",
             State: {},
             Completed: false,
             Ticked: false,
