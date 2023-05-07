@@ -1928,7 +1928,7 @@ menuDataRouter.get("/PlayerProfile", (req: RequestWithJwt, res) => {
                 f.LocationProgression.Level =
                     (
                         userProfile.Extensions.progression.Locations[
-                            f.LocationId.toLocaleLowerCase()
+                            f.LocationId
                         ] as ProgressionData
                     ).Level || 1
             }

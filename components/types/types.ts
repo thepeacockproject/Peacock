@@ -539,6 +539,7 @@ export interface UserProfile {
     XboxLiveId: string | null
     PSNAccountId: string | null
     PSNOnlineId: string | null
+    Version: number
 }
 
 export interface RatingKill {

@@ -75,12 +75,8 @@ export class ProgressionService {
         subPkgId?: string,
     ) {
         return subPkgId
-            ? userProfile.Extensions.progression.Locations[
-                  location.toLocaleLowerCase()
-              ][subPkgId]
-            : userProfile.Extensions.progression.Locations[
-                  location.toLocaleLowerCase()
-              ]
+            ? userProfile.Extensions.progression.Locations[location][subPkgId]
+            : userProfile.Extensions.progression.Locations[location]
     }
 
     // Return mastery drops from location from a level range
@@ -158,7 +154,7 @@ export class ProgressionService {
         // TODO: Grant sniper XP here too
         const locationData = this.getMasteryProgressionForLocation(
             userProfile,
-            parentLocationId.toLocaleLowerCase(),
+            parentLocationId,
             gameVersion === "h1"
                 ? contract.Metadata.Difficulty ?? "normal"
                 : undefined,

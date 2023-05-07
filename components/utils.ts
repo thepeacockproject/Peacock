@@ -57,6 +57,13 @@ export const versions: GameVersion[] = ["h1", "h2", "h3"]
 
 export const contractCreationTutorialId = "d7e2607c-6916-48e2-9588-976c7d8998bb"
 
+/**
+ * The latest profile version, this should be changed in conjunction with the updating mechanism.
+ *
+ * See docs/USER_PROFILES.md for more.
+ */
+export const LATEST_PROFILE_VERSION = 1
+
 export async function checkForUpdates(): Promise<void> {
     if (getFlag("updateChecking") === false) {
         return
@@ -209,6 +216,121 @@ export function clampValue(value: number, min: number, max: number) {
 }
 
 /**
+ * Updates a user profile depending on the current version (if any).
+ * @param profile The userprofile to update
+ * @param gameVersion The game version
+ * @returns The updated user profile
+ */
+function updateUserProfile(
+    profile: UserProfile,
+    gameVersion: GameVersion,
+): void {
+    /**
+     * This switch is structured such that the current profile version will return.
+     * thus stopping the function.
+     *
+     * As the version number is incremented, the previous version should be added
+     * as a case to update it to the newest version.
+     */
+    switch (profile.Version) {
+        case LATEST_PROFILE_VERSION:
+            // This profile updated to the latest version, we're done.
+            return
+        default: {
+            // Check that the profile version is indeed undefined. If it isn't,
+            // we've forgotten to add a version to the switch.
+            if (profile.Version !== undefined) {
+                log(
+                    LogLevel.ERROR,
+                    `Unhandled profile version ${profile.Version}`,
+                )
+                return
+            }
+
+            // Profile has no version, update it to version 1, then re-run
+            // the function to update it to subsequent versions.
+
+            const sniperLocs = {
+                LOCATION_PARENT_AUSTRIA: [
+                    "FIREARMS_SC_HERO_SNIPER_HM",
+                    "FIREARMS_SC_HERO_SNIPER_KNIGHT",
+                    "FIREARMS_SC_HERO_SNIPER_STONE",
+                ],
+                LOCATION_PARENT_SALTY: [
+                    "FIREARMS_SC_SEAGULL_HM",
+                    "FIREARMS_SC_SEAGULL_KNIGHT",
+                    "FIREARMS_SC_SEAGULL_STONE",
+                ],
+                LOCATION_PARENT_CAGED: [
+                    "FIREARMS_SC_FALCON_HM",
+                    "FIREARMS_SC_FALCON_KNIGHT",
+                    "FIREARMS_SC_FALCON_STONE",
+                ],
+            }
+
+            // Doing this filter removes sniper unlockable progression, you couldn't
+            // progress on this track, so we allow it.
+            profile.Extensions.progression.Locations = Object.keys(
+                profile.Extensions.progression.Locations,
+            )
+                .filter((key) => key.includes("_parent_"))
+                .reduce((obj, key) => {
+                    const newKey = key.toLocaleUpperCase()
+
+                    if (gameVersion === "h1") {
+                        // No sniper locations, but we add normal and pro1
+                        const curData =
+                            profile.Extensions.progression.Locations[key]
+
+                        obj[newKey] = {
+                            // Data from previous profiles only contains normal, pro1 is default.
+                            normal: {
+                                Xp: curData.Xp ?? 0,
+                                Level: curData.Level ?? 1,
+                                PreviouslySeenXp: curData.PreviouslySeenXp ?? 0,
+                            },
+                            pro1: {
+                                Xp: 0,
+                                Level: 1,
+                                PreviouslySeenXp: 0,
+                            },
+                        }
+                    } else {
+                        // We need to update sniper locations.
+                        const curData =
+                            profile.Extensions.progression.Locations[key]
+
+                        obj[newKey] = sniperLocs[newKey]
+                            ? sniperLocs[newKey].reduce((obj, uId) => {
+                                  obj[uId] = {
+                                      Xp: 0,
+                                      Level: 1,
+                                      PreviouslySeenXp: 0,
+                                  }
+
+                                  return obj
+                              }, {})
+                            : {
+                                  Xp: curData.Xp ?? 0,
+                                  Level: curData.Level ?? 1,
+                                  PreviouslySeenXp:
+                                      curData.PreviouslySeenXp ?? 0,
+                              }
+                    }
+
+                    return obj
+                }, {})
+
+            delete profile.Extensions.progression["Unlockables"]
+
+            profile.Version = 1
+
+            return updateUserProfile(profile, gameVersion)
+        }
+    }
+}
+
+/**
  * Returns whether a location is a sniper location. Works for both parent and child locations.
  * @param location The location ID string.
  * @returns A boolean denoting the result.
@@ -223,6 +345,7 @@ export function isSniperLocation(location: string): boolean {
 
 export function castUserProfile(
     profile: UserProfile,
+    gameVersion: GameVersion,
     path?: string,
 ): UserProfile {
     const j = fastClone(profile)
@@ -312,6 +435,13 @@ export function castUserProfile(
                 }
                 break
         }
+    }
+
+    if (j.Version !== LATEST_PROFILE_VERSION) {
+        // This profile is not the latest version. We must update it.
+        log(LogLevel.DEBUG, `Profile is outdated, updating...`)
+        updateUserProfile(j, gameVersion)
+        dirty = true
     }
 
     if (dirty) {

@@ -151,6 +151,7 @@ export async function loadUserData(
 
     const userProfile = castUserProfile(
         JSON.parse((await readFile(path)).toString()),
+        gameVersion,
         path,
     )
 

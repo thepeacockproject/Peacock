@@ -21,6 +21,7 @@ import path from "path"
 import {
     castUserProfile,
     getMaxProfileLevel,
+    LATEST_PROFILE_VERSION,
     nilUuid,
     uuidRegex,
     XP_PER_LEVEL,
@@ -287,6 +288,7 @@ export async function resolveProfiles(
                         XboxLiveId: null,
                         PSNAccountId: null,
                         PSNOnlineId: null,
+                        Version: LATEST_PROFILE_VERSION,
                     })
                 }
 
@@ -312,6 +314,7 @@ export async function resolveProfiles(
                         XboxLiveId: null,
                         PSNAccountId: null,
                         PSNOnlineId: null,
+                        Version: LATEST_PROFILE_VERSION,
                     })
                 }
 
@@ -341,6 +344,7 @@ export async function resolveProfiles(
                         XboxLiveId: null,
                         PSNAccountId: null,
                         PSNOnlineId: null,
+                        Version: LATEST_PROFILE_VERSION,
                     })
                 }
 
@@ -380,7 +384,7 @@ export async function resolveProfiles(
             let userdata: UserProfile = outcome.value
 
             if (!fakeIds.includes(outcome?.value?.Id)) {
-                userdata = castUserProfile(outcome.value)
+                userdata = castUserProfile(outcome.value, gameVersion)
             }
 
             // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -72,7 +72,7 @@ export class MasteryService {
             for (const subPkg of masteryPackage.SubPackages) {
                 for (const drop of subPkg.Drops) {
                     this.unlockableMasteryData.set(drop.Id, {
-                        Location: masteryPackage.LocationId.toLocaleLowerCase(),
+                        Location: masteryPackage.LocationId,
                         SubPackageId: subPkg.Id,
                         Level: drop.Level,
                     })
@@ -81,7 +81,7 @@ export class MasteryService {
         } else {
             for (const drop of masteryPackage.Drops) {
                 this.unlockableMasteryData.set(drop.Id, {
-                    Location: masteryPackage.LocationId.toLocaleLowerCase(),
+                    Location: masteryPackage.LocationId,
                     Level: drop.Level,
                 })
             }
@@ -188,12 +188,10 @@ export class MasteryService {
         } */
 
         const completionData = subPackageId
-            ? userProfile.Extensions.progression.Locations[
-                  locationParentId.toLocaleLowerCase()
-              ][subPackageId]
-            : userProfile.Extensions.progression.Locations[
-                  locationParentId.toLocaleLowerCase()
+            ? userProfile.Extensions.progression.Locations[locationParentId][
+                  subPackageId
               ]
+            : userProfile.Extensions.progression.Locations[locationParentId]
 
         const nextLevel: number = clampValue(
             completionData.Level + 1,
