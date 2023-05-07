@@ -216,6 +216,7 @@ export abstract class ChallengeRegistry {
      * Gets a challenge group by its parent location and group ID.
      * @param groupId The group ID of the challenge group.
      * @param location The parent location for this challenge group.
+     * @param gameVersion The game version.
      * @returns A `SavedChallengeGroup` if such a group exists, or `undefined` if not.
      */
     getGroupByIdLoc(
@@ -349,6 +350,7 @@ export abstract class ChallengeRegistry {
      * Parse a challenge's context listeners into the format used internally.
      *
      * @param challenge The challenge.
+     * @param Context? the current context of the challenge.
      * @returns The context listener details.
      */
     protected static _parseContextListeners(
@@ -833,8 +835,7 @@ export class ChallengeService extends ChallengeRegistry {
     /**
      * Upon an event, updates the context for all challenges in a contract session. Challenges not in the session are ignored.
      * @param event  The event to handle.
-     * @param sessionId  The ID of the session. Unused as of v6.0.0.
-     * @param session  The session.
+     * @param session  The contract session the event is for.
      */
     onContractEvent(
         event: ClientToServerEvent,

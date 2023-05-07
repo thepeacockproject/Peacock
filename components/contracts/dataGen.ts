@@ -109,7 +109,6 @@ export function getParentLocationByName(
  * @param userId The ID of the user.
  * @param gameVersion The game's version.
  * @param contractType The type of the contract, only used to distinguish evergreen from other types (default).
- * @param isParent Is the sublocation specified a parent location? (default false)
  * @param subPackageId The sub package id you want (think of mastery, only needed for difficulty really).
  * @returns The completion data object.
  */
