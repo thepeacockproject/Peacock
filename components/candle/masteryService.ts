@@ -235,6 +235,9 @@ export class MasteryService {
         // Get the mastery data
         const masteryPkg = this.getMasteryPackage(locationParentId, gameVersion)
 
+        // We use the result from this function a bit, so we're just caching it
+        const isSniper = isSniperLocation(locationParentId)
+
         if (!masteryPkg || (masteryPkg.SubPackages && !subPackageId)) {
             return undefined
         }
@@ -261,14 +264,10 @@ export class MasteryService {
                     : xpRequiredForLevel,
                 subPackageId,
             ),
-            Id: isSniperLocation(locationParentId)
-                ? subPackageId
-                : masteryPkg.LocationId,
-            SubLocationId: isSniperLocation(locationParentId)
-                ? ""
-                : subLocationId,
+            Id: isSniper ? subPackageId : masteryPkg.LocationId,
+            SubLocationId: isSniper ? "" : subLocationId,
             HideProgression: masteryPkg.HideProgression || false,
-            IsLocationProgression: true,
+            IsLocationProgression: !isSniper,
             Name: undefined,
         }
     }
