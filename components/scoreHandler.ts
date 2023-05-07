@@ -600,7 +600,7 @@ export async function missionEnd(
     const newLocationXp = completionData.XP
     let newLocationLevel = levelForXp(newLocationXp)
     userData.Extensions.progression.Locations[
-        locationParentId.toLowerCase()
+        locationParentId
     ].PreviouslySeenXp = newLocationXp
     writeUserData(req.jwt.unique_name, req.gameVersion)
 
