@@ -436,7 +436,6 @@ function updateWithDefaultSuit(
  * Generate a player's inventory with unlockables.
  * @param profileId  The profile ID of the player
  * @param gameVersion  The game version
- * @param entP  The player's entitlements
  * @param sublocation  The sublocation to generate the inventory for. Used to award default suits for the sublocation. Defaulted to undefined.
  * @returns The player's inventory
  */
