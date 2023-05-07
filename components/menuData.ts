@@ -381,13 +381,7 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
 })
 
 menuDataRouter.get("/SafehouseCategory", (req: RequestWithJwt, res) => {
-    const exts = getUserData(req.jwt.unique_name, req.gameVersion).Extensions
-
-    const inventory = createInventory(
-        req.jwt.unique_name,
-        req.gameVersion,
-        exts.entP,
-    )
+    const inventory = createInventory(req.jwt.unique_name, req.gameVersion)
 
     const safehouseData = {
         template:
@@ -547,8 +541,6 @@ menuDataRouter.get(
             return
         }
 
-        const userData = getUserData(req.jwt.unique_name, req.gameVersion)
-
         let contractData: MissionManifest | undefined = undefined
 
         if (req.query.contractid) {
@@ -558,7 +550,6 @@ menuDataRouter.get(
         const inventory = createInventory(
             req.jwt.unique_name,
             req.gameVersion,
-            userData.Extensions.entP,
             getSubLocationByName(
                 contractData?.Metadata.Location,
                 req.gameVersion,
@@ -751,16 +742,7 @@ menuDataRouter.get(
             ),
         } as CommonSelectScreenConfig
 
-        const exts = getUserData(
-            req.jwt.unique_name,
-            req.gameVersion,
-        ).Extensions
-
-        const inventory = createInventory(
-            req.jwt.unique_name,
-            req.gameVersion,
-            exts.entP,
-        )
+        const inventory = createInventory(req.jwt.unique_name, req.gameVersion)
 
         const contractData = controller.resolveContract(req.query.contractId)
 
@@ -848,16 +830,7 @@ menuDataRouter.get(
             ),
         }
 
-        const exts = getUserData(
-            req.jwt.unique_name,
-            req.gameVersion,
-        ).Extensions
-
-        const inventory = createInventory(
-            req.jwt.unique_name,
-            req.gameVersion,
-            exts.entP,
-        )
+        const inventory = createInventory(req.jwt.unique_name, req.gameVersion)
 
         const contractData = controller.resolveContract(req.query.contractId)
 
@@ -994,13 +967,17 @@ menuDataRouter.get(
                         ),
                 },
                 MasteryData:
-                    // No pro1 mastery, in an ideal world we'd pass normal as 0 and pro1 as 1
                     req.gameVersion === "h1" ? masteryData[0] : masteryData,
                 DifficultyData: undefined,
             },
         }
 
         if (req.gameVersion === "h1") {
+            const inventory = createInventory(
+                req.jwt.unique_name,
+                req.gameVersion,
+            )
+
             response.data.DifficultyData = {
                 AvailableDifficultyModes: [
                     {
@@ -1009,7 +986,11 @@ menuDataRouter.get(
                     },
                     {
                         Name: "pro1",
-                        Available: true,
+                        Available: inventory.some(
+                            (e) =>
+                                e.Unlockable.Id ===
+                                locationData.Properties.DifficultyUnlock.pro1,
+                        ),
                     },
                 ],
                 Difficulty: req.query.difficulty,
@@ -1028,8 +1009,6 @@ menuDataRouter.get(
         response.data.Location = locationData
 
         if (req.query.difficulty === "pro1") {
-            log(LogLevel.DEBUG, "Adjusting for legacy-pro1.")
-
             const obj = {
                 Location: locationData,
                 SubLocation: locationData,
@@ -1159,7 +1138,7 @@ menuDataRouter.get(
                 if (theMissions !== undefined) {
                     ;(theMissions as string[])
                         .filter(
-                            // removes snow festival on h1, traditions on non-h3
+                            // removes snow festival on h1
                             (m) =>
                                 m &&
                                 !(

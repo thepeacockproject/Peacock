@@ -206,7 +206,6 @@ export async function planningView(
     const typedInv = createInventory(
         req.jwt.unique_name,
         req.gameVersion,
-        userData.Extensions.entP,
         sublocation,
     )
 

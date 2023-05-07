@@ -193,14 +193,7 @@ profileRouter.post(
 profileRouter.post(
     "/UnlockableService/GetInventory",
     (req: RequestWithJwt, res) => {
-        const exts = getUserData(
-            req.jwt.unique_name,
-            req.gameVersion,
-        ).Extensions
-
-        res.json(
-            createInventory(req.jwt.unique_name, req.gameVersion, exts.entP),
-        )
+        res.json(createInventory(req.jwt.unique_name, req.gameVersion))
     },
 )
 
@@ -256,11 +249,7 @@ profileRouter.post(
         writeUserData(req.jwt.unique_name, req.gameVersion)
 
         res.json({
-            Inventory: createInventory(
-                req.jwt.unique_name,
-                req.gameVersion,
-                userdata.Extensions.entP,
-            ),
+            Inventory: createInventory(req.jwt.unique_name, req.gameVersion),
             Stats: req.body.localStats,
         })
     },

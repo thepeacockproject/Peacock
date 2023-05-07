@@ -86,7 +86,6 @@ legacyMenuDataRouter.get(
         const inventory = createInventory(
             req.jwt.unique_name,
             req.gameVersion,
-            userProfile.Extensions.entP,
             sublocation,
         )
 

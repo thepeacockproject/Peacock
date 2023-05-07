@@ -443,7 +443,6 @@ function updateWithDefaultSuit(
 export function createInventory(
     profileId: string,
     gameVersion: GameVersion,
-    entP: string[],
     sublocation = undefined,
 ): InventoryItem[] {
     if (inventoryUserCache.has(profileId)) {
@@ -535,7 +534,7 @@ export function createInventory(
             }
         })
         // filter again, this time removing legacy unlockables
-        .filter(filterAllowedContent(gameVersion, entP))
+        .filter(filterAllowedContent(gameVersion, userProfile.Extensions.entP))
 
     for (const unlockable of filtered) {
         unlockable!.ProfileId = profileId
