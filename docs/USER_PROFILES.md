@@ -21,5 +21,4 @@ Version 1 introduced the profile versioning system. The changes are:
     -   Legacy profiles now have `normal` and `pro1`.
     -   Sniper locations now have their unlockables contained inside the location.
 -   Unused properties were removed from locations in `u.Extensions.progression.Locations`.
-    -   It is worth noting that this was only done in the default profile, existing profiles are not updated with this change.
 -   `u.Extensions.progression.Unlockables` has been removed.
