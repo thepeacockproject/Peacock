@@ -290,12 +290,11 @@ legacyMenuDataRouter.get(
                         },
                         Available: true,
                     },
-                    // This is currently a copy of "normal" as pro1 is not implemented
                     {
                         Name: "pro1",
                         Data: {
                             LocationId: req.query.locationId,
-                            ...masteryData[0],
+                            ...masteryData[1],
                         },
                         Available: true,
                     },

@@ -147,6 +147,7 @@ function filterUnlockedContent(
                 controller.progressionService.getMasteryProgressionForLocation(
                     userProfile,
                     unlockableMasteryData.Location,
+                    unlockableMasteryData.SubPackageId,
                 )
 
             const canUnlock = locationData.Level >= unlockableMasteryData.Level

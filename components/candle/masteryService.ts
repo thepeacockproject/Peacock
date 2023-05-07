@@ -28,34 +28,63 @@ import {
     MasteryDataTemplate,
     MasteryDrop,
     MasteryPackage,
+    MasteryPackageDrop,
     UnlockableMasteryData,
 } from "../types/mastery"
 import { CompletionData, GameVersion, Unlockable } from "../types/types"
 import {
     clampValue,
     DEFAULT_MASTERY_MAXLEVEL,
+    isSniperLocation,
     xpRequiredForEvergreenLevel,
     xpRequiredForLevel,
     xpRequiredForSniperLevel,
 } from "../utils"
 
 export class MasteryService {
-    private masteryData: Map<string, MasteryPackage> = new Map()
+    /**
+     * @Key1 Game version.
+     * @Key2 The parent location Id.
+     * @Value A `MasteryPackage` object.
+     */
+    protected masteryPackages: Map<GameVersion, Map<string, MasteryPackage>> =
+        new Map([
+            ["h1", new Map()],
+            ["h2", new Map()],
+            ["h3", new Map()],
+            ["scpc", new Map()],
+        ])
     private unlockableMasteryData: Map<string, UnlockableMasteryData> =
         new Map()
 
     registerMasteryData(masteryPackage: MasteryPackage) {
-        this.masteryData.set(masteryPackage.Id, masteryPackage)
+        for (const gv of masteryPackage.GameVersions) {
+            this.masteryPackages
+                .get(gv)
+                .set(masteryPackage.LocationId, masteryPackage)
+        }
 
         /**
          * Generates the same data in a reverse order. It could be considered redundant but this allows for
          * faster access to location and level based on unlockable ID, avoiding big-O operation for `getMasteryForUnlockable`
          */
-        for (const drop of masteryPackage.Drops) {
-            this.unlockableMasteryData.set(drop.Id, {
-                Location: masteryPackage.Id.toLocaleLowerCase(),
-                Level: drop.Level,
-            })
+        if (masteryPackage.SubPackages) {
+            for (const subPkg of masteryPackage.SubPackages) {
+                for (const drop of subPkg.Drops) {
+                    this.unlockableMasteryData.set(drop.Id, {
+                        Location: masteryPackage.LocationId.toLocaleLowerCase(),
+                        SubPackageId: subPkg.Id,
+                        Level: drop.Level,
+                    })
+                }
+            }
+        } else {
+            for (const drop of masteryPackage.Drops) {
+                this.unlockableMasteryData.set(drop.Id, {
+                    Location: masteryPackage.LocationId.toLocaleLowerCase(),
+                    Level: drop.Level,
+                })
+            }
         }
     }
 
@@ -78,6 +107,22 @@ export class MasteryService {
         return this.getMasteryData(locationParentId, gameVersion, userId)
     }
 
+    getMasteryDataForSubPackage(
+        locationParentId: string,
+        subPackageId: string,
+        gameVersion: GameVersion,
+        userId: string,
+    ): MasteryData {
+        // Since we're getting a subpackage, we know there will only be one entry in this array.
+        // If the array is empty it will return undefined.
+        return this.getMasteryData(
+            locationParentId,
+            gameVersion,
+            userId,
+            subPackageId,
+        )[0]
+    }
+
     getMasteryDataForLocation(
         locationId: string,
         gameVersion: GameVersion,
@@ -90,7 +135,7 @@ export class MasteryService {
         const masteryDataTemplate: MasteryDataTemplate =
             getConfig<MasteryDataTemplate>(
                 "MasteryDataForLocationTemplate",
-                true,
+                false,
             )
 
         const masteryData = this.getMasteryData(
@@ -112,29 +157,37 @@ export class MasteryService {
      * Get generic completion data stored in a user's profile. Called by both `getLocationCompletion` and `getFirearmCompletion`.
      * @param userId The id of the user.
      * @param gameVersion The game version.
-     * @param completionId An Id used to look up completion data in the user's profile. Can be `parentLocationId` or `progressionKey`.
+     * @param locationParentId The location's parent ID, used for progression storage @since v6.4.0
      * @param maxLevel The max level for this progression.
      * @param levelToXpRequired A function to get the XP required for a level.
+     * @param subPackageId? The subpackage id you want.
      */
     private getCompletionData(
         userId: string,
         gameVersion: GameVersion,
-        completionId: string,
+        locationParentId: string,
         maxLevel: number,
         levelToXpRequired: (level: number) => number,
+        subPackageId?: string,
     ) {
         // Get the user profile
         const userProfile = getUserData(userId, gameVersion)
 
-        // Generate default completion before trying to acquire it
-        userProfile.Extensions.progression.Locations[completionId] ??= {
+        // @since v6.4.0 this has been commented out as the default profile should
+        // have all the required properties - AF
+        /* userProfile.Extensions.progression.Locations[locationParentId] ??= {
             Xp: 0,
             Level: 1,
             PreviouslySeenXp: 0,
-        }
+        } */
 
-        const completionData =
-            userProfile.Extensions.progression.Locations[completionId]
+        const completionData = subPackageId
+            ? userProfile.Extensions.progression.Locations[
+                  locationParentId.toLocaleLowerCase()
+              ][subPackageId]
+            : userProfile.Extensions.progression.Locations[
+                  locationParentId.toLocaleLowerCase()
+              ]
 
         const nextLevel: number = clampValue(
             completionData.Level + 1,
@@ -164,6 +217,7 @@ export class MasteryService {
      * @param gameVersion The game version.
      * @param userId The id of the user.
      * @param contractType The type of the contract, only used to distinguish evergreen from other types (default).
+     * @param subPackageId? The id of the subpackage you want.
      * @returns The CompletionData object.
      */
     getLocationCompletion(
@@ -172,12 +226,20 @@ export class MasteryService {
         gameVersion: GameVersion,
         userId: string,
         contractType = "mission",
+        subPackageId?: string,
     ): CompletionData {
         // Get the mastery data
-        const masteryData: MasteryPackage =
-            this.getMasteryPackage(locationParentId)
+        const masteryPkg = this.getMasteryPackage(locationParentId, gameVersion)
 
-        if (!masteryData) {
+        if (!masteryPkg || (masteryPkg.SubPackages && !subPackageId)) {
+            return undefined
+        }
+
+        const subPackage = masteryPkg.SubPackages
+            ? masteryPkg.SubPackages.filter((pkg) => pkg.Id === subPackageId)[0]
+            : undefined
+
+        if (!subPackage && subPackageId) {
             return undefined
         }
 
@@ -185,120 +247,183 @@ export class MasteryService {
             ...this.getCompletionData(
                 userId,
                 gameVersion,
-                locationParentId.toLowerCase(),
-                masteryData.MaxLevel || DEFAULT_MASTERY_MAXLEVEL,
-                contractType === "evergreen"
+                locationParentId,
+                (subPackage ? subPackage.MaxLevel : masteryPkg.MaxLevel) ||
+                    DEFAULT_MASTERY_MAXLEVEL,
+                contractType === "sniper"
+                    ? xpRequiredForSniperLevel
+                    : contractType === "evergreen"
                     ? xpRequiredForEvergreenLevel
                     : xpRequiredForLevel,
+                subPackageId,
             ),
-            Id: masteryData.Id,
-            SubLocationId: subLocationId,
-            HideProgression: masteryData.HideProgression || false,
+            Id: isSniperLocation(locationParentId)
+                ? subPackageId
+                : masteryPkg.LocationId,
+            SubLocationId: isSniperLocation(locationParentId)
+                ? ""
+                : subLocationId,
+            HideProgression: masteryPkg.HideProgression || false,
             IsLocationProgression: true,
             Name: undefined,
         }
     }
 
-    /**
-     * Get the completion data for a firearm. Used for sniper assassin mastery.
-     * @param progressionKey The Id of the progression. E.g. FIREARMS_SC_HERO_SNIPER_HM.
-     * @param unlockableName The name of the unlockable.
-     * @param userId The id of the user.
-     * @param gameVersion The game version.
-     * @returns The CompletionData object.
-     */
-    getFirearmCompletion(
-        progressionKey: string,
-        unlockableName: string,
-        userId: string,
+    getMasteryPackage(
+        locationParentId: string,
         gameVersion: GameVersion,
-    ): CompletionData {
-        return {
-            ...this.getCompletionData(
-                userId,
-                gameVersion,
-                progressionKey,
-                DEFAULT_MASTERY_MAXLEVEL,
-                xpRequiredForSniperLevel,
-            ),
-            Id: progressionKey,
-            SubLocationId: "",
-            HideProgression: false,
-            IsLocationProgression: false,
-            Name: unlockableName,
-        }
-    }
-
-    getMasteryPackage(locationParentId: string): MasteryPackage {
-        if (!this.masteryData.has(locationParentId)) {
+    ): MasteryPackage {
+        if (!this.masteryPackages.get(gameVersion).has(locationParentId)) {
             return undefined
         }
 
-        return this.masteryData.get(locationParentId)
+        return this.masteryPackages.get(gameVersion).get(locationParentId)
+    }
+
+    private processDrops(
+        curLevel: number,
+        drops: MasteryPackageDrop[],
+        unlockableMap: Map<string, Unlockable>,
+    ): MasteryDrop[] {
+        return drops
+            .filter((drop) => {
+                if (!unlockableMap.has(drop.Id)) {
+                    log(LogLevel.DEBUG, `No unlockable found for ${drop.Id}`)
+
+                    return false
+                }
+
+                return true
+            })
+            .map((drop) => {
+                const unlockable: Unlockable = unlockableMap.get(drop.Id)
+
+                return {
+                    IsLevelMarker: false,
+                    Unlockable: unlockable,
+                    Level: drop.Level,
+                    IsLocked: drop.Level > curLevel,
+                    TypeLocaKey: `UI_MENU_PAGE_MASTERY_UNLOCKABLE_NAME_${unlockable.Type}`,
+                }
+            })
     }
 
     private getMasteryData(
         locationParentId: string,
         gameVersion: GameVersion,
         userId: string,
+        subPackageId?: string,
     ): MasteryData[] {
         // Get the mastery data
-        const masteryData: MasteryPackage =
-            this.getMasteryPackage(locationParentId)
+        const masteryPkg: MasteryPackage = this.getMasteryPackage(
+            locationParentId,
+            gameVersion,
+        )
 
-        if (!masteryData || masteryData.Drops.length === 0) {
+        if (!masteryPkg || (!masteryPkg.Drops && !masteryPkg.SubPackages)) {
             return []
         }
 
+        // We use the result from this function a lot in here, so we're just "caching" it
+        const isSniper = isSniperLocation(locationParentId)
+
         // Put all Ids into a set for quick lookup
-        const dropIdSet = new Set(masteryData.Drops.map((drop) => drop.Id))
+        let dropIdSet = undefined
 
-        // Get all unlockables with matching Ids
-        const unlockableData: Unlockable[] = getVersionedConfig<Unlockable[]>(
-            "allunlockables",
-            gameVersion,
-            true,
-        ).filter((unlockable) => dropIdSet.has(unlockable.Id))
+        if (masteryPkg.SubPackages) {
+            dropIdSet = new Set(
+                masteryPkg.SubPackages.map((pkg) =>
+                    subPackageId && pkg.Id !== subPackageId
+                        ? []
+                        : pkg.Drops.map((drop) => drop.Id),
+                ).reduce((a, e) => a.concat(e)),
+            )
 
-        // Put all unlockabkes in a map for quick lookup
+            // Add the main unlockable to the set to generate the page properly
+            if (isSniper) {
+                masteryPkg.SubPackages.forEach((pkg) => dropIdSet.add(pkg.Id))
+            }
+
+            if (!dropIdSet || dropIdSet.size === 0) {
+                log(
+                    LogLevel.ERROR,
+                    "Unknown subPackageId specified for location",
+                )
+
+                return []
+            }
+        } else {
+            dropIdSet = new Set(masteryPkg.Drops.map((drop) => drop.Id))
+        }
+
+        // Get all unlockables with matching Ids and put them in a map for quick lookup
         const unlockableMap = new Map(
-            unlockableData.map((unlockable) => [unlockable.Id, unlockable]),
+            [
+                ...getVersionedConfig<Unlockable[]>(
+                    "allunlockables",
+                    gameVersion,
+                    true,
+                ),
+                ...(isSniper
+                    ? getConfig<Unlockable[]>("SniperUnlockables", true)
+                    : []),
+            ]
+                .filter((unlockable) => dropIdSet.has(unlockable.Id))
+                .map((unlockable) => [unlockable.Id, unlockable]),
         )
 
-        // Map all the data into a new structure
-        const completionData = this.getLocationCompletion(
-            locationParentId,
-            locationParentId,
-            gameVersion,
-            userId,
-            locationParentId.includes("SNUG") ? "evergreen" : "mission",
-        )
+        const masteryData: MasteryData[] = []
 
-        const drops: MasteryDrop[] = masteryData.Drops.filter((drop) => {
-            if (!unlockableMap.has(drop.Id)) {
-                log(LogLevel.DEBUG, `No unlockable found for ${drop.Id}`)
+        if (masteryPkg.SubPackages) {
+            for (const subPkg of masteryPkg.SubPackages) {
+                if (subPackageId && subPkg.Id !== subPackageId) continue
 
-                return false
+                const completionData = this.getLocationCompletion(
+                    locationParentId,
+                    locationParentId,
+                    gameVersion,
+                    userId,
+                    isSniper
+                        ? "sniper"
+                        : locationParentId.includes("SNUG")
+                        ? "evergreen"
+                        : "mission",
+                    subPkg.Id,
+                )
+
+                masteryData.push({
+                    CompletionData: completionData,
+                    Drops: this.processDrops(
+                        completionData.Level,
+                        subPkg.Drops,
+                        unlockableMap,
+                    ),
+                    Unlockable: isSniper
+                        ? unlockableMap.get(subPkg.Id)
+                        : undefined,
+                })
             }
+        } else {
+            // All sniper locations are subpackages, so we don't need to add "sniper"
+            // to the contractType expression.
+            const completionData = this.getLocationCompletion(
+                locationParentId,
+                locationParentId,
+                gameVersion,
+                userId,
+                locationParentId.includes("SNUG") ? "evergreen" : "mission",
+            )
 
-            return true
-        }).map((drop) => {
-            const unlockable: Unlockable = unlockableMap.get(drop.Id)
-
-            return {
-                IsLevelMarker: false,
-                Unlockable: unlockable,
-                Level: drop.Level,
-                IsLocked: drop.Level > completionData.Level,
-                TypeLocaKey: `UI_MENU_PAGE_MASTERY_UNLOCKABLE_NAME_${unlockable.Type}`,
-            }
-        })
-
-        return [
-            {
+            masteryData.push({
                 CompletionData: completionData,
-                Drops: drops,
-            },
-        ]
+                Drops: this.processDrops(
+                    completionData.Level,
+                    masteryPkg.Drops,
+                    unlockableMap,
+                ),
+            })
+        }
+
+        return masteryData
     }
 }

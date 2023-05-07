@@ -58,7 +58,7 @@ import {
     mergeSavedChallengeGroups,
 } from "./challengeHelpers"
 import assert from "assert"
-import { getVersionedConfig } from "../configSwizzleManager"
+import { getConfig, getVersionedConfig } from "../configSwizzleManager"
 import { SyncHook } from "../hooksImpl"
 import { getUserEscalationProgress } from "../contracts/escalations/escalationService"
 
@@ -552,6 +552,7 @@ export class ChallengeService extends ChallengeRegistry {
      *
      * @param filter The filter to use.
      * @param location The parent location whose challenges to get.
+     * @param gameVersion The game version.
      * @returns A GroupIndexedChallengeLists containing the resulting challenge groups.
      */
     getGroupedChallengeLists(
@@ -1177,11 +1178,14 @@ export class ChallengeService extends ChallengeRegistry {
         userId: string,
         isDestination = false,
     ): CompiledChallengeTreeData {
-        const allUnlockables = getVersionedConfig<Unlockable[]>(
-            "allunlockables",
-            gameVersion,
-            false,
-        )
+        const allUnlockables = [
+            ...getVersionedConfig<Unlockable[]>(
+                "allunlockables",
+                gameVersion,
+                false,
+            ),
+            ...getConfig<Unlockable[]>("SniperUnlockables", false),
+        ]
 
         const drops = challenge.Drops.map((e) =>
             allUnlockables.find((f) => f.Id === e),
@@ -1339,6 +1343,7 @@ export class ChallengeService extends ChallengeRegistry {
 
     /**
      * Checks if the conditions to complete a challenge are met. If so, calls `onChallengeCompleted` for it.
+     * @param session The contract session where the challenge was completed.
      * @param challengeId The id of the challenge.
      * @param userData The profile of the user.
      * @param parentId A parent challenge of this challenge, the completion of which might cause this challenge to complete. Pass `undefined` if such a parent is unknown or doesn't exist.
@@ -1466,6 +1471,7 @@ export class ChallengeService extends ChallengeRegistry {
             challenge?.Drops ?? [],
             session,
             userData,
+            gameVersion,
             challenge.LocationId,
         )
 
