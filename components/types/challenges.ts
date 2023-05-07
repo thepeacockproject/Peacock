@@ -84,6 +84,9 @@ export interface ChallengePackage {
 export type ProfileChallengeData = {
     Ticked: boolean
     Completed: boolean
+    // The state is stored in "CurrentState".
+    CurrentState: string
+    // "State" actually means "Context" here.
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     State: any
 }

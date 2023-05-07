@@ -853,6 +853,7 @@ function saveEvents(
 
                     // Nullability checks
                     progress[challengeId] ??= {
+                        CurrentState: "Start",
                         Ticked: false,
                         Completed: false,
                         State: {
