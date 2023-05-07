@@ -103,8 +103,14 @@ export class MasteryService {
         locationParentId: string,
         gameVersion: GameVersion,
         userId: string,
+        difficulty?: string,
     ): MasteryData[] {
-        return this.getMasteryData(locationParentId, gameVersion, userId)
+        return this.getMasteryData(
+            locationParentId,
+            gameVersion,
+            userId,
+            difficulty,
+        )
     }
 
     getMasteryDataForSubPackage(

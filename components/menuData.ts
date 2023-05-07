@@ -971,6 +971,7 @@ menuDataRouter.get(
                 req.query.locationId,
                 req.gameVersion,
                 req.jwt.unique_name,
+                req.query.difficulty,
             )
 
         const response = {
