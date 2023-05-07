@@ -3,7 +3,8 @@
 This file serves to document the various changes made to user profiles.
 
 The default user profile for before the versioning system can be found at the following links for
-[H2/3](https://google.com) and [H2016](https://google.com).
+[H2/3](https://github.com/thepeacockproject/Peacock/blob/2a7f41b1c0160191ada0990542c426010b663f29/static/UserDefault.json)
+and [H2016](https://github.com/thepeacockproject/Peacock/blob/2a7f41b1c0160191ada0990542c426010b663f29/static/LegacyUserDefault.json).
 
 ## Notes about the versioning system
 
