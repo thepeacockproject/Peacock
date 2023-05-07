@@ -221,7 +221,10 @@ export function isSniperLocation(location: string): boolean {
     )
 }
 
-export function castUserProfile(profile: UserProfile): UserProfile {
+export function castUserProfile(
+    profile: UserProfile,
+    path?: string,
+): UserProfile {
     const j = fastClone(profile)
 
     if (!j.Extensions || Object.keys(j.Extensions).length === 0) {
@@ -312,7 +315,7 @@ export function castUserProfile(profile: UserProfile): UserProfile {
     }
 
     if (dirty) {
-        writeFileSync(`userdata/users/${j.Id}.json`, JSON.stringify(j))
+        writeFileSync(path ?? `userdata/users/${j.Id}.json`, JSON.stringify(j))
         log(LogLevel.INFO, "Profile successfully repaired!")
     }
 
