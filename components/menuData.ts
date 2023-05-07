@@ -415,6 +415,7 @@ menuDataRouter.get("/SafehouseCategory", (req: RequestWithJwt, res) => {
             item.Unlockable.Type === "location" ||
             item.Unlockable.Type === "package" ||
             item.Unlockable.Type === "loadoutunlock" ||
+            item.Unlockable.Type === "difficultyunlock" ||
             item.Unlockable.Type === "agencypickup"
         ) {
             continue // these types should not be displayed when not asked for
