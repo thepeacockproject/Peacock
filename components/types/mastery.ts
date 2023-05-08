@@ -38,7 +38,7 @@ interface MasterySubPackage {
 }
 
 /**
- * @since v6.4.0
+ * @since v7.0.0
  * The Id field has been renamed to LocationId to properly reflect what it is.
  *
  * Mastery packages may have Drops OR SubPackages, never the two.

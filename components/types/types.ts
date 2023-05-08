@@ -540,7 +540,7 @@ export interface UserProfile {
     PSNAccountId: string | null
     PSNOnlineId: string | null
     /**
-     * @since v6.4.0 user profiles are now versioned.
+     * @since v7.0.0 user profiles are now versioned.
      */
     Version: number
 }

@@ -177,7 +177,7 @@ export class MasteryService {
      * Get generic completion data stored in a user's profile. Called by both `getLocationCompletion` and `getFirearmCompletion`.
      * @param userId The id of the user.
      * @param gameVersion The game version.
-     * @param locationParentId The location's parent ID, used for progression storage @since v6.4.0
+     * @param locationParentId The location's parent ID, used for progression storage @since v7.0.0
      * @param maxLevel The max level for this progression.
      * @param levelToXpRequired A function to get the XP required for a level.
      * @param subPackageId? The subpackage id you want.
@@ -193,7 +193,7 @@ export class MasteryService {
         // Get the user profile
         const userProfile = getUserData(userId, gameVersion)
 
-        // @since v6.4.0 this has been commented out as the default profile should
+        // @since v7.0.0 this has been commented out as the default profile should
         // have all the required properties - AF
         /* userProfile.Extensions.progression.Locations[locationParentId] ??= {
             Xp: 0,
