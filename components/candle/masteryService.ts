@@ -54,36 +54,48 @@ export class MasteryService {
             ["h3", new Map()],
             ["scpc", new Map()],
         ])
-    private unlockableMasteryData: Map<string, UnlockableMasteryData> =
-        new Map()
+    /**
+     * @Key1 Game version.
+     * @Key2 Unlockable Id.
+     * @Value A `MasteryPackage` object.
+     */
+    private unlockableMasteryData: Map<
+        string,
+        Map<string, UnlockableMasteryData>
+    > = new Map([
+        ["h1", new Map()],
+        ["h2", new Map()],
+        ["h3", new Map()],
+        ["scpc", new Map()],
+    ])
 
     registerMasteryData(masteryPackage: MasteryPackage) {
         for (const gv of masteryPackage.GameVersions) {
             this.masteryPackages
                 .get(gv)
                 .set(masteryPackage.LocationId, masteryPackage)
-        }
 
-        /**
-         * Generates the same data in a reverse order. It could be considered redundant but this allows for
-         * faster access to location and level based on unlockable ID, avoiding big-O operation for `getMasteryForUnlockable`
-         */
-        if (masteryPackage.SubPackages) {
-            for (const subPkg of masteryPackage.SubPackages) {
-                for (const drop of subPkg.Drops) {
-                    this.unlockableMasteryData.set(drop.Id, {
+            /**
+             * Generates the same data in a reverse order. It could be considered redundant but this allows for
+             * faster access to location and level based on unlockable ID, avoiding big-O operation for `getMasteryForUnlockable`
+             */
+            if (masteryPackage.SubPackages) {
+                for (const subPkg of masteryPackage.SubPackages) {
+                    for (const drop of subPkg.Drops) {
+                        this.unlockableMasteryData.get(gv).set(drop.Id, {
+                            Location: masteryPackage.LocationId,
+                            SubPackageId: subPkg.Id,
+                            Level: drop.Level,
+                        })
+                    }
+                }
+            } else {
+                for (const drop of masteryPackage.Drops) {
+                    this.unlockableMasteryData.get(gv).set(drop.Id, {
                         Location: masteryPackage.LocationId,
-                        SubPackageId: subPkg.Id,
                         Level: drop.Level,
                     })
                 }
-            }
-        } else {
-            for (const drop of masteryPackage.Drops) {
-                this.unlockableMasteryData.set(drop.Id, {
-                    Location: masteryPackage.LocationId,
-                    Level: drop.Level,
-                })
             }
         }
     }
@@ -91,12 +103,14 @@ export class MasteryService {
     /**
      * Returns mastery data for unlockable, if there's any
      * @param unlockable
+     * @param gameVersion
      * @returns { Location: string, Level: number  } | undefined
      */
     getMasteryForUnlockable(
         unlockable: Unlockable,
+        gameVersion: GameVersion,
     ): UnlockableMasteryData | undefined {
-        return this.unlockableMasteryData.get(unlockable.Id)
+        return this.unlockableMasteryData.get(gameVersion).get(unlockable.Id)
     }
 
     getMasteryDataForDestination(
