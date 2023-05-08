@@ -285,7 +285,7 @@ export interface ContractSession {
      * Context: The current context of the scoring state machine.
      * Definition: The initial definition of the scoring state machine.
      *
-     * @since v6.4.0
+     * @since v7.0.0
      */
     scoring?: {
         Settings: {
@@ -299,7 +299,7 @@ export interface ContractSession {
     /**
      * Timestamp of first kill.
      * Used for calculating Sniper Challenge time bonus.
-     * @since v6.4.0
+     * @since v7.0.0
      */
     firstKillTimestamp?: number
 }
