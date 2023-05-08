@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { getVersionedConfig } from "./configSwizzleManager"
+import { getConfig, getVersionedConfig } from "./configSwizzleManager"
 import type { GameVersion, Unlockable, UserProfile } from "./types/types"
 import {
     brokenItems,
@@ -457,11 +457,14 @@ export function createInventory(
     const userProfile = getUserData(profileId, gameVersion)
 
     // add all unlockables to player's inventory
-    const allunlockables = getVersionedConfig<Unlockable[]>(
-        "allunlockables",
-        gameVersion,
-        true,
-    ).filter((u) => u.Type !== "location") // locations not in inventory
+    const allunlockables = [
+        ...getVersionedConfig<Unlockable[]>(
+            "allunlockables",
+            gameVersion,
+            true,
+        ),
+        ...getConfig<Unlockable[]>("SniperUnlockables", true),
+    ].filter((u) => u.Type !== "location") // locations not in inventory
 
     let unlockables: Unlockable[] = allunlockables
 
