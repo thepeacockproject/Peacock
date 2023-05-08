@@ -21,6 +21,7 @@ import type { NextFunction, Response } from "express"
 import type {
     GameVersion,
     MissionManifestObjective,
+    PeacockLocationsData,
     RepositoryId,
     RequestWithJwt,
     ServerVersion,
@@ -31,7 +32,7 @@ import axios, { AxiosError } from "axios"
 import { log, LogLevel } from "./loggingInterop"
 import { writeFileSync } from "fs"
 import { getFlag } from "./flags"
-import { getConfig } from "./configSwizzleManager"
+import { getConfig, getVersionedConfig } from "./configSwizzleManager"
 
 /**
  * True if the server is being run by the launcher, false otherwise.
@@ -268,20 +269,23 @@ function updateUserProfile(
                 ],
             }
 
-            // Doing this filter removes sniper unlockable progression, you couldn't
-            // progress on this track, so we allow it.
-            profile.Extensions.progression.Locations = Object.keys(
-                profile.Extensions.progression.Locations,
-            )
-                .filter((key) => key.includes("_parent_"))
-                .reduce((obj, key) => {
+            // We need this to ensure all locations are added.
+            const allLocs = Object.keys(
+                getVersionedConfig<PeacockLocationsData>(
+                    "LocationsData",
+                    gameVersion,
+                    false,
+                ).parents,
+            ).map((key) => key.toLocaleLowerCase())
+
+            profile.Extensions.progression.Locations = allLocs.reduce(
+                (obj, key) => {
                     const newKey = key.toLocaleUpperCase()
+                    const curData =
+                        profile.Extensions.progression.Locations[key]
 
                     if (gameVersion === "h1") {
                         // No sniper locations, but we add normal and pro1
-                        const curData =
-                            profile.Extensions.progression.Locations[key]
-
                         obj[newKey] = {
                             // Data from previous profiles only contains normal, pro1 is default.
                             normal: {
@@ -297,9 +301,6 @@ function updateUserProfile(
                         }
                     } else {
                         // We need to update sniper locations.
-                        const curData =
-                            profile.Extensions.progression.Locations[key]
-
                         obj[newKey] = sniperLocs[newKey]
                             ? sniperLocs[newKey].reduce((obj, uId) => {
                                   obj[uId] = {
@@ -319,7 +320,9 @@ function updateUserProfile(
                     }
 
                     return obj
-                }, {})
+                },
+                {},
+            )
 
             delete profile.Extensions.progression["Unlockables"]
 

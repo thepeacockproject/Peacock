@@ -98,12 +98,14 @@ export function clearInventoryCache(): void {
  * @param userProfile
  * @param packagedUnlocks
  * @param challengesUnlockables
+ * @param gameVersion
  * @returns [Unlockable[], Unlockable[]]
  */
 function filterUnlockedContent(
     userProfile: UserProfile,
     packagedUnlocks: Map<string, boolean>,
     challengesUnlockables: object,
+    gameVersion: GameVersion,
 ) {
     return function (
         acc: [Unlockable[], Unlockable[]],
@@ -141,7 +143,10 @@ function filterUnlockedContent(
         // If the unlockable is mastery locked, checks if its unlocked based on user location progression
         else if (
             (unlockableMasteryData =
-                controller.masteryService.getMasteryForUnlockable(unlockable))
+                controller.masteryService.getMasteryForUnlockable(
+                    unlockable,
+                    gameVersion,
+                ))
         ) {
             const locationData =
                 controller.progressionService.getMasteryProgressionForLocation(
@@ -492,6 +497,7 @@ export function createInventory(
                         userProfile,
                         packagedUnlocks,
                         challengesUnlockables,
+                        gameVersion,
                     ),
                     [[], []],
                 )
