@@ -266,11 +266,11 @@ export class MasteryService {
 
         const name = isSniper
             ? getVersionedConfig<Unlockable[]>(
-                  "allunlockables",
+                  "SniperUnlockables",
                   gameVersion,
                   false,
-              ).find((unlockable) => unlockable.Id === subPackageId)
-                  .DisplayNameLocKey
+              ).find((unlockable) => unlockable.Id === subPackageId).Properties
+                  .Name
             : undefined
 
         return {

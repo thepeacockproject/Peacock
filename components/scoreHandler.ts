@@ -31,7 +31,7 @@ import {
     xpRequiredForLevel,
 } from "./utils"
 import { contractSessions, getCurrentState } from "./eventHandler"
-import { getConfig } from "./configSwizzleManager"
+import { getConfig, getVersionedConfig } from "./configSwizzleManager"
 import { _theLastYardbirdScpc, controller } from "./controller"
 import type {
     ContractHistory,
@@ -76,6 +76,7 @@ import {
     createInventory,
 } from "./inventory"
 import { calculatePlaystyle } from "./playStyles"
+import { Unlockable } from "./types/types"
 
 export function calculateGlobalXp(
     contractSession: ContractSession,
@@ -912,14 +913,19 @@ export async function missionEnd(
     // TODO: Calculate proper Sniper XP and Score
     // TODO: Move most of this to its own calculateSniperScore function
     if (contractData.Metadata.Type === "sniper") {
-        // Using req.query.masteryUnlockableId below should be okay.
         unlockableProgression = {
             LevelInfo: SNIPER_LEVEL_INFO,
             XP: SNIPER_LEVEL_INFO[SNIPER_LEVEL_INFO.length - 1],
             Level: SNIPER_LEVEL_INFO.length,
             XPGain: 0,
             Id: req.query.masteryUnlockableId,
-            Name: req.query.masteryUnlockableId,
+            Name: getVersionedConfig<Unlockable[]>(
+                "SniperUnlockables",
+                req.gameVersion,
+                false,
+            ).find(
+                (unlockable) => unlockable.Id === req.query.masteryUnlockableId,
+            ).Properties.Name,
         }
 
         const userInventory = createInventory(
