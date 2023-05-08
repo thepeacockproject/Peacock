@@ -1,0 +1,249 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "Type": "statemachine",
+                "IsHidden": true,
+                "Id": "a9951cdb-0ce6-4ab9-b579-65298839d5a2",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository f4eb50bc-1a58-4487-a568-de5ffe19b7ff).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository f4eb50bc-1a58-4487-a568-de5ffe19b7ff).Name"
+                        }
+                    }
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["f4eb50bc-1a58-4487-a568-de5ffe19b7ff"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "f4eb50bc-1a58-4487-a568-de5ffe19b7ff"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "dfa0c4e9-37df-4b4e-830b-1d4eda6149af",
+                        "HardCondition": false,
+                        "ObjectiveId": "9286bce1-af2c-4f95-950b-dbbbe7f72e7e"
+                    }
+                ]
+            },
+            {
+                "Type": "statemachine",
+                "Id": "9286bce1-af2c-4f95-950b-dbbbe7f72e7e",
+                "IsHidden": true,
+                "Category": "secondary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["f4eb50bc-1a58-4487-a568-de5ffe19b7ff"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "f4eb50bc-1a58-4487-a568-de5ffe19b7ff"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "dfa0c4e9-37df-4b4e-830b-1d4eda6149af"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "f4eb50bc-1a58-4487-a568-de5ffe19b7ff"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "e9c6a29c-9690-4f7b-b674-411118d1cb04",
+                "IsHidden": true,
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository 88836cf0-852e-4244-9aa3-90174467b5b1).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 88836cf0-852e-4244-9aa3-90174467b5b1).Name"
+                        }
+                    }
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["88836cf0-852e-4244-9aa3-90174467b5b1"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "88836cf0-852e-4244-9aa3-90174467b5b1"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "dfa0c4e9-37df-4b4e-830b-1d4eda6149af",
+                        "HardCondition": false,
+                        "ObjectiveId": "b2d7caf1-f0bc-493b-a183-920275b7c15e"
+                    }
+                ]
+            },
+            {
+                "Type": "statemachine",
+                "Id": "b2d7caf1-f0bc-493b-a183-920275b7c15e",
+                "IsHidden": true,
+                "Category": "secondary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["88836cf0-852e-4244-9aa3-90174467b5b1"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "88836cf0-852e-4244-9aa3-90174467b5b1"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "dfa0c4e9-37df-4b4e-830b-1d4eda6149af"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "88836cf0-852e-4244-9aa3-90174467b5b1"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Entrances": [
+            "0e7dd303-c9bb-42cc-aca0-70499931d098",
+            "2fc483c8-500c-4475-ba5d-e2cdd6ccc64c",
+            "74b1ad25-06cd-41a2-9cf5-9dd5dac7345d",
+            "85ef518f-0e94-4e5e-9fd2-66fb84d2d0bb",
+            "a786fc74-b379-41f4-a4ac-ce970ee88b2c",
+            "bdc80464-31dd-440d-ad79-2767b923a0a4",
+            "df752dfa-623d-4750-83a6-8b4aba1d8e08",
+            "fedf6cd3-d076-4037-b7d8-1449726b4c0a"
+        ],
+        "Bricks": [
+            "assembly:/_PRO/Scenes/Missions/Hokkaido/_scene_moscowmule.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/hokkaido/vr_overrides_snowcrane.brick",
+                    "assembly:/_PRO/scenes/missions/hokkaido/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/hokkaido/vr_overrides_snowcrane.brick"
+                ]
+            }
+        ],
+        "GameChangers": ["f0f53067-2617-4128-8cb7-2a0ae4757a3f"]
+    },
+    "Metadata": {
+        "Id": "7cd2c1f5-40d4-449b-bb5d-877c877410b6",
+        "IsPublished": true,
+        "Title": "UI_CONTRACT_PAPAYA_LEVEL03_NAME",
+        "Description": "UI_CONTRACT_MOSCOWMULE_DESC",
+        "BriefingVideo": "briefing_moscowmule",
+        "DebriefingVideo": "debriefing_moscowmule",
+        "CodeName_Hint": "Arcade Papaya Moscow Mule",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Hokkaido/_Scene_SnowCrane.entity",
+        "Entitlements": ["LOCATION_GOLDEN"],
+        "TileImage": "images/contracts/elusive/017_MoscowMule/Title.jpg",
+        "Location": "LOCATION_HOKKAIDO",
+        "LastUpdate": "2023-02-24T10:14:37.7906221Z",
+        "CreationTimestamp": "2012-12-12T12:12:12.743Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Type": "arcade",
+        "Release": "3.100.0 Arcade",
+        "InGroup": "7569d5e4-5270-4b69-96c8-e47b99876390",
+        "PublicId": "010500573247"
+    },
+    "UserData": {}
+}

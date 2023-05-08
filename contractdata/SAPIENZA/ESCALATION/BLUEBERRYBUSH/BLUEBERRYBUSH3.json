@@ -1,0 +1,269 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Bricks": [],
+        "Objectives": [
+            {
+                "_comment": "----- Kill Rocco's Sister -----",
+                "Type": "statemachine",
+                "Id": "3846c991-edda-4b66-8d0f-d2a702b20fcf",
+                "BriefingText": "$loc UI_PEACOCK_BLUEBERRYBUSH_OBJ1",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_BLUEBERRYBUSH_OBJ1"
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["8de9aa5e-6d61-442f-a4c0-e5bba91cd3cd"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "8de9aa5e-6d61-442f-a4c0-e5bba91cd3cd"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "accident"
+                                                        ]
+                                                    },
+                                                    "in": [
+                                                        "$Value.KillMethodBroad",
+                                                        "$Value.KillMethodStrict"
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "8de9aa5e-6d61-442f-a4c0-e5bba91cd3cd"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "HardCondition": true,
+                        "KillMethod": "accident"
+                    }
+                ]
+            },
+            {
+                "_comment": "----- Kill the Right Guard -----",
+                "Type": "statemachine",
+                "Id": "28275372-d543-49ba-a799-97b9ca4b4cdf",
+                "BriefingText": "$loc UI_PEACOCK_BLUEBERRYBUSH_OBJ2",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_BLUEBERRYBUSH_OBJ2"
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["77154a7c-89d0-49df-82ae-6810e27ec9ca"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "77154a7c-89d0-49df-82ae-6810e27ec9ca"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "accident"
+                                                        ]
+                                                    },
+                                                    "in": [
+                                                        "$Value.KillMethodBroad",
+                                                        "$Value.KillMethodStrict"
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "77154a7c-89d0-49df-82ae-6810e27ec9ca"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "HardCondition": true,
+                        "KillMethod": "accident"
+                    }
+                ]
+            },
+            {
+                "_comment": "----- Kill the Guard near Cleaned Car -----",
+                "Type": "statemachine",
+                "Id": "7e8cd02d-b6c9-48be-a363-b1d1c3b55dd1",
+                "BriefingText": "$loc UI_PEACOCK_BLUEBERRYBUSH_OBJ3",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_BLUEBERRYBUSH_OBJ3"
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["a023e9ed-fdd5-4e0b-ac00-b010c876f29b"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "a023e9ed-fdd5-4e0b-ac00-b010c876f29b"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "accident"
+                                                        ]
+                                                    },
+                                                    "in": [
+                                                        "$Value.KillMethodBroad",
+                                                        "$Value.KillMethodStrict"
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "a023e9ed-fdd5-4e0b-ac00-b010c876f29b"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "HardCondition": true,
+                        "KillMethod": "accident"
+                    }
+                ]
+            },
+            {
+                "_comment": "----- Kill the Balcony Guard -----",
+                "Type": "statemachine",
+                "Id": "f48adfa1-6a75-48e9-b06c-cb4404349835",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository 402f45f3-4c2f-4c15-a029-90555ead33a6).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 402f45f3-4c2f-4c15-a029-90555ead33a6).Name"
+                        }
+                    }
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["402f45f3-4c2f-4c15-a029-90555ead33a6"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "402f45f3-4c2f-4c15-a029-90555ead33a6"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "GameChangers": [
+            "f8feee12-0353-44ef-8b80-dfe0a0e11061",
+            "98610b95-8908-4110-b9b8-c5d9696e7fbe",
+            "834a20cc-7cfc-4ec3-8858-c3a213e3de56"
+        ]
+    },
+    "Metadata": {
+        "Id": "490cbf23-92ca-4cdb-b301-9a576442ad2b",
+        "PublicId": "06656372635",
+        "Title": "UI_PEACOCK_BLUEBERRYBUSH3",
+        "Type": "escalation",
+        "Location": "LOCATION_COASTALTOWN",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/CoastalTown/_scene_octopus.entity",
+        "InGroup": "74415eca-d01e-4070-9bc9-5ef9b4e8f7d2",
+        "TileImage": "images/contracts/escalation/contractescalation_blueberrybush.png",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "f48adfa1-6a75-48e9-b06c-cb4404349835" },
+            { "IsNew": true, "Id": "7e8cd02d-b6c9-48be-a363-b1d1c3b55dd1" },
+            { "Id": "28275372-d543-49ba-a799-97b9ca4b4cdf" },
+            { "Id": "3846c991-edda-4b66-8d0f-d2a702b20fcf" },
+            { "IsNew": true, "Id": "834a20cc-7cfc-4ec3-8858-c3a213e3de56" },
+            { "Id": "98610b95-8908-4110-b9b8-c5d9696e7fbe" },
+            { "Id": "f8feee12-0353-44ef-8b80-dfe0a0e11061" }
+        ],
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    }
+}

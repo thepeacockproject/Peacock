@@ -1,0 +1,159 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "cfd75605-336f-4cef-8b5d-e3f856a3ad8b",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "94f52181-b9ec-4363-baef-d53b4e424b74",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_CAMELLIA_OBJ_1_2"
+                },
+                "BriefingText": "$loc UI_CONTRACT_CAMELLIA_OBJ_1_2",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["5e510aeb-7959-4551-aafa-8aab3bc24a3e"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "5e510aeb-7959-4551-aafa-8aab3bc24a3e"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "94f52181-b9ec-4363-baef-d53b4e424b74"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "5e510aeb-7959-4551-aafa-8aab3bc24a3e"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "8c35ee6a-410e-4e84-9973-0367a6726085",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "94f52181-b9ec-4363-baef-d53b4e424b74",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_CAMELLIA_OBJ_2_2"
+                },
+                "BriefingText": "$loc UI_CONTRACT_CAMELLIA_OBJ_2_2",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["18bd15f9-dc81-4783-9dde-c005abec7198"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "18bd15f9-dc81-4783-9dde-c005abec7198"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "94f52181-b9ec-4363-baef-d53b4e424b74"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "18bd15f9-dc81-4783-9dde-c005abec7198"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [
+            "7ebcf738-69d2-4941-814c-09e4e60f3ac1",
+            "0cf5e693-35ec-457e-a004-da4672b90376",
+            "da07626c-0aa3-463a-92ff-8e7adbbf6230"
+        ],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "5f2e6507-61a8-4e9b-9965-39dbedd9f122",
+        "IsPublished": true,
+        "CreationTimestamp": "2016-03-31T09:23:30.59Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_CAMELLIA_LEVEL_5_TITLE",
+        "Description": "UI_CONTRACT_CAMELLIA_LEVEL_5_DESC",
+        "CodeName_Hint": "Camellia - Level 5",
+        "Location": "LOCATION_MARRAKECH",
+        "ScenePath": "assembly:/_pro/scenes/missions/marrakesh/_scene_spider.entity",
+        "Type": "escalation",
+        "InGroup": "ebf8ab97-6ff3-4063-9737-c6f237031de7",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "da07626c-0aa3-463a-92ff-8e7adbbf6230" },
+            { "Id": "0cf5e693-35ec-457e-a004-da4672b90376" },
+            { "Id": "7ebcf738-69d2-4941-814c-09e4e60f3ac1" },
+            { "Id": "8c35ee6a-410e-4e84-9973-0367a6726085" },
+            { "Id": "cfd75605-336f-4cef-8b5d-e3f856a3ad8b" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:32.5855313Z",
+        "PublicId": "006809281947",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

@@ -1,0 +1,184 @@
+{
+    "Data": {
+        "Bricks": [
+            "Assembly:/_PRO/Scenes/missions/edgy/mission_fox/scenario_grasssnake_level2.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/edgy/mission_fox/vr_overrides_fox.brick",
+                    "assembly:/_pro/scenes/missions/edgy/mission_fox/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/edgy/mission_fox/vr_overrides_fox.brick"
+                ]
+            }
+        ],
+        "DevOnlyBricks": [],
+        "MandatoryLoadout": [
+            {
+                "Id": "TOKEN_OUTFIT_HERO_EASTER_SUIT",
+                "Properties": {
+                    "LoadoutSlot": "Outfit",
+                    "RepositoryId": "16be233a-1eb8-4736-b87f-c2a69a2db14b"
+                }
+            }
+        ],
+        "GameChangers": [
+            "3db72bb5-63d6-47fe-9332-d7ea3c195e06",
+            "07b1bc1d-f52b-4004-a760-846c4bc3f172"
+        ],
+        "Entrances": ["694656e1-badf-4c20-9ff0-2a052c32aac8"],
+        "GameChangerReferences": [],
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "_comment": "--- Eliminate the Pink Bunny ---",
+                "Id": "4f88b438-f94f-4988-867d-39400fbdb01a",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "Image": "images/contracts/escalation/ContractEscalation_Edgy_Grasssnake_KillTarget1.jpg",
+                "BriefingName": "$loc UI_CONTRACT_GRASSSNAKE_OBJ2_NAME",
+                "BriefingText": "$loc UI_CONTRACT_GRASSSNAKE_OBJ2_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_GRASSSNAKE_OBJ2_NAME"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "Targets": ["18f44cee-aa36-45e5-8bac-435b364b06d3"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "18f44cee-aa36-45e5-8bac-435b364b06d3"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Eliminate the Blue Bunny",
+                "Id": "a1cd4f48-4002-4b7b-90c0-1c6ab9b2d3c7",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "Image": "images/contracts/escalation/ContractEscalation_Edgy_Grasssnake_KillTarget2.jpg",
+                "BriefingName": "$loc UI_CONTRACT_GRASSSNAKE_OBJ3_NAME",
+                "BriefingText": "$loc UI_CONTRACT_GRASSSNAKE_OBJ3_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_GRASSSNAKE_OBJ3_NAME"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "Targets": ["3e40ca98-94be-4927-8771-a97c650ac6ce"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "3e40ca98-94be-4927-8771-a97c650ac6ce"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "--- Eliminate the Red Rabbit ---",
+                "Id": "c3df9ac7-84ae-44a5-939d-830fc7f7807c",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "Image": "images/contracts/escalation/ContractEscalation_Edgy_Grasssnake_KillTarget3.jpg",
+                "BriefingName": "$loc UI_CONTRACT_GRASSSNAKE_OBJ4_NAME",
+                "BriefingText": "$loc UI_CONTRACT_GRASSSNAKE_OBJ4_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_GRASSSNAKE_OBJ4_NAME"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "Targets": ["3f3574d0-0d1c-4696-8565-997f7a30bcbb"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "3f3574d0-0d1c-4696-8565-997f7a30bcbb"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "a9e69460-73f2-4928-806d-f79d9e6368bc",
+        "IsPublished": true,
+        "IsSeasonal": true,
+        "CreationTimestamp": "2021-03-30T13:03:20.1160619Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Edgy_Grasssnake.jpg",
+        "Title": "UI_CONTRACT_GRASSSNAKE_LEVEL_2_NAME",
+        "Description": "",
+        "CodeName_Hint": "Grasssnake - Level 2",
+        "Location": "LOCATION_EDGY_FOX",
+        "RequiredUnlockable": "ACCESS_HIT_FOX",
+        "ScenePath": "assembly:/_pro/scenes/missions/edgy/mission_fox/scene_grasssnake.entity",
+        "Type": "escalation",
+        "Release": "3.1.0 Escalation",
+        "InGroup": "9d88605f-6871-46a8-bd46-9804ea04fca9",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "c3df9ac7-84ae-44a5-939d-830fc7f7807c" },
+            { "IsNew": true, "Id": "a1cd4f48-4002-4b7b-90c0-1c6ab9b2d3c7" },
+            { "IsNew": true, "Id": "4f88b438-f94f-4988-867d-39400fbdb01a" },
+            { "IsNew": true, "Id": "07b1bc1d-f52b-4004-a760-846c4bc3f172" },
+            { "Id": "3db72bb5-63d6-47fe-9332-d7ea3c195e06" }
+        ],
+        "Entitlements": ["LOCATION_EDGY"],
+        "PublicId": "029833346847"
+    },
+    "UserData": {}
+}

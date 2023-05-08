@@ -1,0 +1,170 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "Id": "36bebf52-6872-40f9-9b77-4fee742314e9",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "Image": "Images/Actors/actor_6d3d59b4-571c-4dbb-9737-205fb34a1ffa_1_0_0.jpg",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_NUTMEG_LEVEL_0_OBJ"
+                },
+                "BriefingText": "$loc UI_CONTRACT_NUTMEG_LEVEL_0_OBJ",
+                "BriefingName": "$loc UI_CONTRACT_NUTMEG_LEVEL_0_NAME",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["a034163c-f1c9-4c18-8583-207504a5058b"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Level_Setup_Events": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "Crew1DumpedShaft"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "Crew1Failed"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "a0c3f505-e55e-4a2b-9cda-1737469e428f",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "Image": "Images/Actors/actor_06fb2890-e820-45f2-aef3-0cb7d0528ee1_1_0_0.jpg",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_NUTMEG_LEVEL_2_OBJ"
+                },
+                "BriefingText": "$loc UI_CONTRACT_NUTMEG_LEVEL_2_OBJ",
+                "BriefingName": "$loc UI_CONTRACT_NUTMEG_LEVEL_2_NAME",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["70a54ef8-ccfe-421e-84aa-6c9c037a2998"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Level_Setup_Events": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "BodyGuardDumpedShaft"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "BodyGuardFailed"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "46536b85-befd-48e7-aeb0-2fa1ae9fa202",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "Image": "Images/Actors/actor_81f55bbc-a120-4757-a778-b73fd775d1a4_0_0_0.jpg",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_NUTMEG_LEVEL_1_OBJ"
+                },
+                "BriefingText": "$loc UI_CONTRACT_NUTMEG_LEVEL_1_OBJ",
+                "BriefingName": "$loc UI_CONTRACT_NUTMEG_LEVEL_1_NAME",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["cf44b935-9604-4757-901d-3771860bc357"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Level_Setup_Events": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "ArtistDumpedShaft"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "ArtistFailed"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [
+            "a900aca4-99c2-4407-a037-d14fdc78c0cf",
+            "9f409781-0a06-4748-b08d-784e78c6d481",
+            "63055f1a-bcd2-4e0f-8caf-b446f01d02f3"
+        ],
+        "GameChangerReferences": []
+    },
+    "Metadata": {
+        "Id": "469ce2cb-a2d1-4296-bfe6-8a95bbf43fac",
+        "IsPublished": true,
+        "CreationTimestamp": "2018-12-04T16:53:37.6874899Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_NUTMEG_LEVEL_3_TITLE",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Mumbai_Nutmeg.jpg",
+        "Description": "",
+        "CodeName_Hint": "Nutmeg Level 3",
+        "RequiredUnlockable": "ACCESS_HIT_MONGOOSE",
+        "Location": "LOCATION_MUMBAI",
+        "ScenePath": "assembly:/_pro/scenes/missions/mumbai/scene_mongoose.entity",
+        "Type": "escalation",
+        "Release": "",
+        "InGroup": "b47f34cb-6537-421c-8fc8-720a4a118540",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "46536b85-befd-48e7-aeb0-2fa1ae9fa202" },
+            { "IsNew": true, "Id": "63055f1a-bcd2-4e0f-8caf-b446f01d02f3" },
+            { "Id": "9f409781-0a06-4748-b08d-784e78c6d481" },
+            { "Id": "a0c3f505-e55e-4a2b-9cda-1737469e428f" },
+            { "Id": "36bebf52-6872-40f9-9b77-4fee742314e9" }
+        ],
+        "LastUpdate": "2021-05-06T09:25:04.8045219Z",
+        "PublicId": "013603501747",
+        "Entitlements": ["H2_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

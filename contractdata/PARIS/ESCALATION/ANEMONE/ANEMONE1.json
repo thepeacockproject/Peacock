@@ -1,0 +1,99 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "f0476810-bdae-4642-8f8f-dc8ed20595da",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "96e32a7a-129a-4dd6-9b5b-3000a58f2a0f",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "6ecf1f15-453c-4783-9c70-8777c83934d7",
+                        "HardCondition": true
+                    }
+                ],
+                "BriefingText": "$loc UI_CONTRACT_ANEMONE_OBJ_1",
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_ANEMONE_OBJ_1" },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["ab22f88d-f567-43a2-b20f-0ecc17257ffe"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "ab22f88d-f567-43a2-b20f-0ecc17257ffe"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "6ecf1f15-453c-4783-9c70-8777c83934d7"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "96e32a7a-129a-4dd6-9b5b-3000a58f2a0f"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "ab22f88d-f567-43a2-b20f-0ecc17257ffe"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "80b099d6-ab46-4505-8415-c9971022cac3",
+        "InGroup": "77c7b56f-2410-4919-a4bc-64435c6cff55",
+        "IsPublished": true,
+        "CreationTimestamp": "2015-09-28T09:44:19.037Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_ANEMONE_LEVEL_1_TITLE",
+        "Description": "UI_CONTRACT_ANEMONE_LEVEL_1_DESC",
+        "CodeName_Hint": "Anemone - Level 1",
+        "Location": "LOCATION_PARIS",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Paris/_scene_paris.entity",
+        "Type": "escalation",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "f0476810-bdae-4642-8f8f-dc8ed20595da" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:27.3667601Z",
+        "PublicId": "002448809147",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

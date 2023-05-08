@@ -1,0 +1,346 @@
+{
+    "Data": {
+        "EnableExits": {
+            "$eq": [
+                "$80ff5eb6-ac86-4257-a2ed-909dfad4478b",
+                "$9fe39a90-de41-4228-ab32-93a6a6da4fd1",
+                "Completed"
+            ]
+        },
+        "EnableSaving": false,
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/wet/scenario_azalea.brick",
+            "assembly:/_pro/scenes/missions/wet/scenario_azalea_level2.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/wet/vr_overrides_rat.brick",
+                    "assembly:/_pro/scenes/missions/Wet/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/wet/vr_overrides_rat.brick"
+                ]
+            }
+        ],
+        "GameChangers": [
+            "3db72bb5-63d6-47fe-9332-d7ea3c195e06",
+            "63055f1a-bcd2-4e0f-8caf-b446f01d02f3"
+        ],
+        "Entrances": [],
+        "MandatoryLoadout": [],
+        "GameChangerReferences": [],
+        "Objectives": [
+            {
+                "_comment": "--- Feed the pig statue Fish ---",
+                "Id": "80ff5eb6-ac86-4257-a2ed-909dfad4478b",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "Image": "images/contracts/escalation/ContractEscalation_Wet_Azalea_Fish.jpg",
+                "BriefingName": "$loc UI_CONTRACT_AZALEA_MAINOBJECTIVE_L2_FISH",
+                "BriefingText": "$loc UI_CONTRACT_AZALEA_OBJECTIVE_FISH_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_AZALEA_MAINOBJECTIVE_L2_FISH",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Scope": "hit",
+                "Definition": {
+                    "Context": {
+                        "total": 3,
+                        "TargetCounter": 0,
+                        "update_counter": 1
+                    },
+                    "ContextListeners": {
+                        "update_counter": {
+                            "type": "custom",
+                            "HUDTemplate": {
+                                "display": {
+                                    "$loc": {
+                                        "key": "UI_CONTRACT_AZALEA_DYNAMIC_L2_FISH",
+                                        "data": ["$.TargetCounter", "$.total"]
+                                    }
+                                },
+                                "iconType": 17
+                            }
+                        }
+                    },
+                    "States": {
+                        "Start": {
+                            "PIG_FEED_FISH": [
+                                {
+                                    "Actions": {
+                                        "$inc": "TargetCounter",
+                                        "$dec": "update_counter"
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.TargetCounter", "$.total"]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "--- Feed the pig statue Meat ---",
+                "Id": "9fe39a90-de41-4228-ab32-93a6a6da4fd1",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "Image": "images/contracts/escalation/ContractEscalation_Wet_Azalea_Meat.jpg",
+                "BriefingName": "$loc UI_CONTRACT_AZALEA_MAINOBJECTIVE_L2_MEAT",
+                "BriefingText": "$loc UI_CONTRACT_AZALEA_OBJECTIVE_MEAT_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_AZALEA_MAINOBJECTIVE_L2_MEAT",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Scope": "hit",
+                "Definition": {
+                    "Context": {
+                        "total": 2,
+                        "TargetCounter": 0,
+                        "update_counter": 1
+                    },
+                    "ContextListeners": {
+                        "update_counter": {
+                            "type": "custom",
+                            "HUDTemplate": {
+                                "display": {
+                                    "$loc": {
+                                        "key": "UI_CONTRACT_AZALEA_DYNAMIC_MEAT",
+                                        "data": ["$.TargetCounter", "$.total"]
+                                    }
+                                },
+                                "iconType": 17
+                            }
+                        }
+                    },
+                    "States": {
+                        "Start": {
+                            "PIG_FEED_MEAT": [
+                                {
+                                    "Actions": {
+                                        "$inc": "TargetCounter",
+                                        "$dec": "update_counter"
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.TargetCounter", "$.total"]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Feed the pig an additional meat bone -----",
+                "Id": "6120663a-5f44-4ce2-958c-f505a69f0354",
+                "Category": "secondary",
+                "ObjectiveType": "custom",
+                "Activation": {
+                    "$eq": [
+                        "$d012144a-d454-4888-b44c-4ee6bab40e01",
+                        "Completed"
+                    ]
+                },
+                "Image": "Images/Contracts/Escalation/ContractEscalation_Wet_Azalea_Level2_Secondary.jpg",
+                "BriefingName": "$loc UI_CONTRACT_AZALEA_OBJ_OPTIONAL_MEATBONE_NAME",
+                "BriefingText": "$loc UI_CONTRACT_AZALEA_OBJ_OPTIONAL_MEATBONE_TEXT",
+                "LongBriefingText": "$loc UI_CONTRACT_AZALEA_OBJ_OPTIONAL_MEATBONE_LONG",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_AZALEA_OBJ_OPTIONAL_MEATBONE_HUD",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Scope": "hit",
+                "Definition": {
+                    "Context": {
+                        "total": 2,
+                        "TargetCounter": 0,
+                        "update_counter": 1
+                    },
+                    "ContextListeners": {
+                        "update_counter": {
+                            "type": "custom",
+                            "HUDTemplate": {
+                                "display": {
+                                    "$loc": {
+                                        "key": "UI_CONTRACT_AZALEA_OBJ_OPTIONAL_MEATBONE_DYNAMIC",
+                                        "data": ["$.TargetCounter", "$.total"]
+                                    }
+                                },
+                                "iconType": 17
+                            }
+                        }
+                    },
+                    "States": {
+                        "Start": {
+                            "ObjectiveCompleted": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Id",
+                                            "9fe39a90-de41-4228-ab32-93a6a6da4fd1"
+                                        ]
+                                    },
+                                    "Transition": "Active"
+                                }
+                            ]
+                        },
+                        "Active": {
+                            "PIG_FEED_MEAT": [
+                                {
+                                    "Actions": {
+                                        "$inc": "TargetCounter",
+                                        "$dec": "update_counter"
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.TargetCounter", "$.total"]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Hide objective to feed the big an additional meat bone -----",
+                "Id": "d012144a-d454-4888-b44c-4ee6bab40e01",
+                "Category": "Condition",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                },
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": { "Targets": [] },
+                    "States": {
+                        "Start": {
+                            "EnableOptionalObjective": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Invisible Primary: All pigs are targets -----",
+                "Id": "ac9f5646-2d74-484b-be66-92425ce7ee78",
+                "Category": "secondary",
+                "IsHidden": true,
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                },
+                "ObjectiveType": "custom",
+                "Image": "",
+                "BriefingName": "",
+                "BriefingText": "",
+                "HUDTemplate": { "display": "" },
+                "Type": "statemachine",
+                "Scope": "hit",
+                "Definition": {
+                    "Context": {
+                        "Targets": [
+                            "141c9f18-5d59-4efc-b917-eef6b967bb36",
+                            "174cd820-1a89-40ae-aeb8-6a493aa1f5e8",
+                            "26f0094f-ce2f-451f-983f-129a6d883496",
+                            "2aa17419-ba9f-4b74-870e-33ba7cb29650",
+                            "32954934-def9-4cdc-a9e9-eef51cfea568",
+                            "34a4af2f-2c82-4ab6-93cb-87ee96a3d645",
+                            "35f9ca53-5f4a-45a0-a4f3-539d24f369e1",
+                            "3cf310d8-4294-4a9b-ade8-951d08f2c16f",
+                            "42ae6eeb-47d0-4848-acc9-668019e57774",
+                            "54097648-86d3-4f62-bf6c-f237d0ed71c7",
+                            "66176389-4086-4624-90a9-04b685dd03ae",
+                            "6758ddb4-b288-45e4-bd27-d02a32e46c73",
+                            "7b622717-744d-4468-a823-d8459d52d729",
+                            "7b6578d0-d930-4082-87bc-73409c8002f6",
+                            "7bf641f5-e304-4ca5-a347-6474a48957c8",
+                            "7ef877dc-cb38-420e-84e3-4a4f73db7469",
+                            "864e3889-43fa-46f9-98e2-24dc97c31f89",
+                            "888c6548-a6be-4603-ba17-687d521479fb",
+                            "90a52636-4eb3-4958-979c-5ff95dbb23f4",
+                            "99500daf-405c-4f85-8e4e-552aee003329",
+                            "9b36c447-9823-4347-84cb-00a45403ff4b",
+                            "9c338cc9-9e5a-4a8b-9b80-47a6de199278",
+                            "a6a3dab0-f28d-4456-8162-3cd80ba5bc9b",
+                            "a831a49f-a287-45ac-9f48-7d5bd470d273",
+                            "ab7f1546-8d37-4b8f-8ede-5cb4537269de",
+                            "ad59789b-5d10-448e-9649-0f65470955f1",
+                            "aecbe850-d191-4a3f-b97b-fc8a32e3598a",
+                            "b31ee4ec-a31d-4480-9f88-a5d89f189cac",
+                            "b455e061-3270-4f99-91ad-9f92864de226",
+                            "b5c8b843-4fb8-437b-b2ba-f82795fad72a",
+                            "b9609ecf-24ae-4d68-9de0-206afe225349",
+                            "be46e7ee-44fc-4504-996b-e25e39d05275",
+                            "c14ff176-b58a-45cb-8993-6166acd8b00a",
+                            "c50a226f-c143-4bc6-ad86-513395cfbb31",
+                            "d0dc7c25-c8fd-49b6-8cd3-c606db200b9d",
+                            "d275c5a2-1549-4479-889a-80d1afbb518a",
+                            "dac2ab4f-2130-4488-a257-b9fdcac20d84",
+                            "e330ba3f-1f15-40f5-941b-fc8724103ca1",
+                            "e529041f-35ba-41b9-81f5-f105181616c3",
+                            "e843b329-64db-4472-a1dd-5139d84a2027",
+                            "eb061bf8-c0cc-4b0c-8794-b04f710a63be",
+                            "eb5523c3-a0f5-4e65-a175-c1fe1e8df404",
+                            "ec7f5936-7d24-47ef-85d2-6117653e3e1a",
+                            "ec9d5b69-4625-4577-90fb-d3b207eafe30",
+                            "ed13a119-8c06-42fd-a289-1ef93d14f1fb",
+                            "f8041b53-378c-451e-aa51-77a975e7ba32"
+                        ]
+                    },
+                    "States": {
+                        "Start": { "ContractEnd": { "Transition": "Success" } }
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "fbf95b41-49cd-4118-b729-3cbcd7708357",
+        "IsPublished": true,
+        "CreationTimestamp": "2021-01-12T12:24:16.194497Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_AZALEA_LEVEL_2_TITLE",
+        "Description": "UI_CONTRACT_AZALEA_LEVEL_2_TITLE",
+        "CodeName_Hint": "Azalea Level 2",
+        "Location": "LOCATION_WET_RAT",
+        "RequiredUnlockable": "ACCESS_HIT_RAT",
+        "ScenePath": "assembly:/_pro/scenes/missions/wet/scene_wet_azalea.entity",
+        "Type": "escalation",
+        "Release": "3.6.0 Escalation",
+        "InGroup": "5121acde-313d-4517-ae70-6a54ca5d775a",
+        "Entitlements": ["H3_DEADLYSINS_GLUTTONY"],
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "6120663a-5f44-4ce2-958c-f505a69f0354" },
+            { "IsNew": true, "Id": "9fe39a90-de41-4228-ab32-93a6a6da4fd1" },
+            { "IsNew": true, "Id": "80ff5eb6-ac86-4257-a2ed-909dfad4478b" }
+        ],
+        "LastUpdate": "2023-03-30T11:20:24.565075Z",
+        "PublicId": "030539833347",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Wet_Azalea.jpg"
+    },
+    "UserData": {}
+}

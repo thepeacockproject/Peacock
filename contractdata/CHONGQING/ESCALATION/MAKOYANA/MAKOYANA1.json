@@ -1,0 +1,520 @@
+{
+    "Data": {
+        "EnableExits": {
+            "$eq": ["$205401fb-5604-4fdd-813a-6d19ac76b8ff", "Completed"]
+        },
+        "EnableSaving": false,
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/wet/scenario_makoyana.brick",
+            "assembly:/_pro/scenes/missions/wet/scenario_makoyana_level1.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/wet/vr_overrides_rat.brick",
+                    "assembly:/_pro/scenes/missions/Wet/vr_overrides_ps4perf.brick",
+                    "assembly:/_PRO/Scenes/missions/Wet/vr_overrides_makoyana_level1.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/wet/vr_overrides_rat.brick",
+                    "assembly:/_PRO/Scenes/missions/Wet/vr_overrides_makoyana_level1.brick"
+                ]
+            }
+        ],
+        "GameChangers": [
+            "3db72bb5-63d6-47fe-9332-d7ea3c195e06",
+            "63055f1a-bcd2-4e0f-8caf-b446f01d02f3",
+            "55e29f8f-579a-4cb2-b235-2166d23deffe"
+        ],
+        "Entrances": [],
+        "MandatoryLoadout": [],
+        "GameChangerReferences": [],
+        "Objectives": [
+            {
+                "_comment": "Do as your told_test objective",
+                "Id": "fc00c722-9095-4d2f-a8fd-e6dfb28f28ee",
+                "Category": "primary",
+                "ObjectiveType": "setpiece",
+                "BriefingName": "$loc UI_CONTRACT_MAKOYANA_FIRSTOBJECTIVE",
+                "Image": "images/contracts/escalation/ContractEscalation_Wet_Makoyana_FirstObjective.jpg",
+                "TargetConditions": [{}],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_MAKOYANA_FIRSTOBJECTIVE",
+                    "iconType": 17
+                },
+                "BriefingText": "$loc UI_CONTRACT_MAKOYANA_FIRSTOBJECTIVE",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "LetterOpener": false,
+                        "DevilDuck": false,
+                        "KilledActors": [],
+                        "Targets": ["bcea911f-fa04-45b4-8ba0-a308101aa190"]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$or": [
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "9488fa1e-10e1-49c9-bb24-6635d2e5bd49"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "ccdd6689-092d-49b2-85f8-416a02e25566"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Silent objective to start Fiber wire path -----",
+                "Id": "73928b41-96ae-4f0b-88c2-9b0ba76b94d2",
+                "Type": "statemachine",
+                "Category": "condition",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                },
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "PickedUpLetterOpener": { "Transition": "Success" }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Silent objective to start explosive path -----",
+                "Id": "197e23fe-9eff-4b89-80fe-f80a464951f4",
+                "Type": "statemachine",
+                "Category": "condition",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                },
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "PickedUpRubberDuck": [{ "Transition": "Success" }]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "FAIL condition for throwing Tanto away",
+                "Id": "92e09cac-75fa-4e89-90e8-2c4ba23bdac3",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "BriefingName": "",
+                "TargetConditions": [],
+                "HUDTemplate": {
+                    "display": "$loc UI_FAILMESSAGE_MAKOYANA_KEYITEMLOST"
+                },
+                "BriefingText": "$loc UI_FAILMESSAGE_MAKOYANA_KEYITEMLOST",
+                "Type": "statemachine",
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "TANTO_LEFT_LEVEL": { "Transition": "Failure" }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Tanto target 2",
+                "Id": "3ce4e822-192b-4263-8aac-e0ac10ce54ca",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "BriefingName": "",
+                "Image": "images/actors/actor_331b9871-cca0-49ce-b2a2-a58596f9e6e8.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "9488fa1e-10e1-49c9-bb24-6635d2e5bd49",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "c4fe3a20-f62a-4154-ae91-7d163d5b99fd",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_MAKOYANA_OBJ5" },
+                "BriefingText": "$loc UI_CONTRACT_MAKOYANA_OBJ5",
+                "Type": "statemachine",
+                "IgnoreIfInactive": true,
+                "Activation": {
+                    "$eq": [
+                        "$73928b41-96ae-4f0b-88c2-9b0ba76b94d2",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": { "IfInProgress": { "Visible": false } },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["331b9871-cca0-49ce-b2a2-a58596f9e6e8"]
+                    },
+                    "States": {
+                        "Start": {
+                            "PickedUpLetterOpener": {
+                                "Transition": "CheckKills"
+                            }
+                        },
+                        "CheckKills": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "331b9871-cca0-49ce-b2a2-a58596f9e6e8"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "9488fa1e-10e1-49c9-bb24-6635d2e5bd49"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "331b9871-cca0-49ce-b2a2-a58596f9e6e8"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Tanto target 3",
+                "Id": "2a608350-8908-45eb-893b-ed389318a461",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "BriefingName": "",
+                "Image": "images/actors/actor_5638d1a0-335b-4c35-8b6a-9f3b48fe7485.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "9488fa1e-10e1-49c9-bb24-6635d2e5bd49",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "c4fe3a20-f62a-4154-ae91-7d163d5b99fd",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_MAKOYANA_OBJ6" },
+                "BriefingText": "$loc UI_CONTRACT_MAKOYANA_OBJ6",
+                "Type": "statemachine",
+                "IgnoreIfInactive": true,
+                "Activation": {
+                    "$eq": [
+                        "$73928b41-96ae-4f0b-88c2-9b0ba76b94d2",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": { "IfInProgress": { "Visible": false } },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["5638d1a0-335b-4c35-8b6a-9f3b48fe7485"]
+                    },
+                    "States": {
+                        "Start": {
+                            "PickedUpLetterOpener": {
+                                "Transition": "CheckKills"
+                            }
+                        },
+                        "CheckKills": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "5638d1a0-335b-4c35-8b6a-9f3b48fe7485"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "9488fa1e-10e1-49c9-bb24-6635d2e5bd49"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "5638d1a0-335b-4c35-8b6a-9f3b48fe7485"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Explosive objective 1",
+                "Id": "f641d118-21fb-417e-83af-e8310a3e2122",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "BriefingName": "",
+                "Image": "images/actors/actor_7f1b07a9-c640-4c1a-bd1b-a944093c5646.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "explosion",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "c4fe3a20-f62a-4154-ae91-7d163d5b99fd",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_MAKOYANA_OBJ2" },
+                "BriefingText": "$loc UI_CONTRACT_MAKOYANA_OBJ2",
+                "Type": "statemachine",
+                "IgnoreIfInactive": true,
+                "Activation": {
+                    "$eq": [
+                        "$197e23fe-9eff-4b89-80fe-f80a464951f4",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": { "IfInProgress": { "Visible": false } },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["06c04989-3010-444a-a828-a23280550d6a"]
+                    },
+                    "States": {
+                        "Start": {
+                            "PickedUpRubberDuck": { "Transition": "CheckKills" }
+                        },
+                        "CheckKills": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "06c04989-3010-444a-a828-a23280550d6a"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillClass",
+                                                    "explosion"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "06c04989-3010-444a-a828-a23280550d6a"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Explosive Objective 2",
+                "Id": "cdf6a89f-eca4-42a1-b16e-0ac3bf689b68",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "BriefingName": "",
+                "Image": "images/actors/actor_ea41b988-861d-45f4-9371-4acb5747f2b8.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "explosion",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "c4fe3a20-f62a-4154-ae91-7d163d5b99fd",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_MAKOYANA_OBJ3" },
+                "BriefingText": "$loc UI_CONTRACT_MAKOYANA_OBJ3",
+                "Type": "statemachine",
+                "IgnoreIfInactive": true,
+                "Activation": {
+                    "$eq": [
+                        "$197e23fe-9eff-4b89-80fe-f80a464951f4",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": { "IfInProgress": { "Visible": false } },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["ea41b988-861d-45f4-9371-4acb5747f2b8"]
+                    },
+                    "States": {
+                        "Start": {
+                            "PickedUpRubberDuck": { "Transition": "CheckKills" }
+                        },
+                        "CheckKills": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "ea41b988-861d-45f4-9371-4acb5747f2b8"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillClass",
+                                                    "explosion"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "ea41b988-861d-45f4-9371-4acb5747f2b8"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Silent objective to hande exit enabling -----",
+                "Id": "205401fb-5604-4fdd-813a-6d19ac76b8ff",
+                "Type": "statemachine",
+                "Category": "condition",
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                },
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "LetterOpenersKilled": [
+                                { "Transition": "Success" }
+                            ],
+                            "RubberDucksKilled": [{ "Transition": "Success" }]
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "605ccf31-14b3-42d1-b2ff-22710fc87168",
+        "IsPublished": true,
+        "CreationTimestamp": "2021-01-12T12:24:16.194497Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_MAKOYANA_LEVEL_1_TITLE",
+        "Description": "UI_CONTRACT_MAKOYANA_LEVEL_1_TITLE",
+        "CodeName_Hint": "Makoyana Level 1",
+        "Location": "LOCATION_WET_RAT",
+        "RequiredUnlockable": "ACCESS_HIT_RAT",
+        "ScenePath": "assembly:/_pro/scenes/missions/wet/scene_wet_makoyana.entity",
+        "Type": "escalation",
+        "Release": "3.3.0 Escalation",
+        "InGroup": "494d97a6-9e31-45e0-9dae-f3793c731336",
+        "Entitlements": ["H3_DEADLYSINS_PRIDE"],
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "fc00c722-9095-4d2f-a8fd-e6dfb28f28ee" },
+            { "Id": "3db72bb5-63d6-47fe-9332-d7ea3c195e06" },
+            { "Id": "63055f1a-bcd2-4e0f-8caf-b446f01d02f3" },
+            { "Id": "55e29f8f-579a-4cb2-b235-2166d23deffe" }
+        ],
+        "LastUpdate": "2023-03-30T11:20:26.8560279Z",
+        "PublicId": "030428650947",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Wet_Makoyana.jpg"
+    },
+    "UserData": {}
+}

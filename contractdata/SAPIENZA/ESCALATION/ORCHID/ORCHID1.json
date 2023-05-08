@@ -1,0 +1,84 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "a7eeae32-d9c1-45d4-890e-25a989f73eb5",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_ORCHID_LEVEL_1_OBJ_1"
+                },
+                "BriefingText": "$loc UI_CONTRACT_ORCHID_LEVEL_1_OBJ_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["9ee7b5bc-2a0a-4303-bcaf-4fcce64022cb"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "9ee7b5bc-2a0a-4303-bcaf-4fcce64022cb"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillClass",
+                                                    "melee"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "9ee7b5bc-2a0a-4303-bcaf-4fcce64022cb"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "7e31a12e-0d6e-40c3-8db5-3bb4f79a939d",
+        "IsPublished": true,
+        "CreationTimestamp": "2015-08-27T13:06:48.353Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_ORCHID_LEVEL_1_TITLE",
+        "Description": "UI_CONTRACT_ORCHID_LEVEL_1_DESC",
+        "CodeName_Hint": "Orchid - Level 1",
+        "Location": "LOCATION_COASTALTOWN",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/CoastalTown/_scene_octopus.entity",
+        "InGroup": "f08934c0-73f3-460c-a612-231035131c96",
+        "Type": "escalation",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "a7eeae32-d9c1-45d4-890e-25a989f73eb5" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:46.6332067Z",
+        "PublicId": "003668825747",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

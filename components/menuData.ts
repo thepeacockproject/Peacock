@@ -16,23 +16,23 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { missionEnd } from "./scoreHandler"
 import { Response, Router } from "express"
 import {
     contractCreationTutorialId,
     DEFAULT_MASTERY_MAXLEVEL,
     gameDifficulty,
     getMaxProfileLevel,
+    isSuit,
     PEACOCKVERSTRING,
     unlockOrderComparer,
     uuidRegex,
 } from "./utils"
 import { contractSessions, getSession } from "./eventHandler"
-import { missionEnd } from "./scoreHandler"
 import { getConfig, getVersionedConfig } from "./configSwizzleManager"
 import {
     contractIdToHitObject,
     controller,
-    isSuit,
     peacockRecentEscalations,
 } from "./controller"
 import { makeCampaigns } from "./menus/campaigns"
@@ -42,6 +42,7 @@ import {
     getDestinationCompletion,
 } from "./menus/destinations"
 import type {
+    ChallengeCategoryCompletion,
     CommonSelectScreenConfig,
     ContractSearchResult,
     GameVersion,
@@ -56,14 +57,12 @@ import type {
     Unlockable,
     UserCentricContract,
 } from "./types/types"
-import {
-    getMenuDetailsForEscalation,
-    getUserEscalationProgress,
-} from "./contracts/escalations/escalationService"
+import { no2016 } from "./contracts/escalations/escalationService"
 import {
     complications,
     generateCompletionData,
     generateUserCentric,
+    getSubLocationByName,
 } from "./contracts/dataGen"
 import { log, LogLevel } from "./loggingInterop"
 import {
@@ -109,17 +108,11 @@ const menuDataRouter = Router()
 // /profiles/page/
 
 function dashEscalations(req: RequestWithJwt, res: Response) {
-    const userData = getUserData(req.jwt.unique_name, req.gameVersion)
-
     const contracts: UserCentricContract[] = []
 
     for (const groupId of peacockRecentEscalations) {
-        const level = getUserEscalationProgress(userData, groupId)
-
         const userCentric = generateUserCentric(
-            controller.resolveContract(
-                controller.escalationMappings[groupId][level],
-            )!,
+            controller.resolveContract(groupId, true)!,
             req.jwt.unique_name,
             req.gameVersion,
         )
@@ -215,18 +208,20 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
         req.gameVersion,
         true,
     )
-    const career = {
-        // TODO: Add data on elusive challenges. They are not shown on the Career->Challenges page. What the client does with this information is unclear. They are not supported by Peacock as of v5.6.2.
-        ELUSIVES_UNSUPPORTED:
-            req.gameVersion === "h3"
-                ? {
+    const career =
+        req.gameVersion === "h3"
+            ? {}
+            : {
+                  // TODO: Add data on elusive challenges. They are only shown on the Career->Challenges page for H1 and H2. They are not supported by Peacock as of v6.0.0.
+                  ELUSIVES_UNSUPPORTED: {
                       Children: [],
                       Name: "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
                       Location:
                           locations.parents["LOCATION_PARENT_ICA_FACILITY"],
-                  }
-                : {},
-    }
+                  },
+              }
+
+    const masteryData = []
 
     for (const parent in locations.parents) {
         career[parent] = {
@@ -234,13 +229,53 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
             Location: locations.parents[parent],
             Name: locations.parents[parent].DisplayNameLocKey,
         }
+
+        if (
+            controller.masteryService.getMasteryDataForDestination(
+                parent,
+                req.gameVersion,
+                req.jwt.unique_name,
+            ).length
+        ) {
+            const completionData =
+                controller.masteryService.getLocationCompletion(
+                    parent,
+                    parent,
+                    req.gameVersion,
+                    req.jwt.unique_name,
+                    parent.includes("SNUG") ? "evergreen" : "mission",
+                )
+
+            masteryData.push({
+                CompletionData: completionData,
+                ...(req.gameVersion === "h1"
+                    ? {
+                          Data: {
+                              normal: {
+                                  CompletionData: completionData,
+                              },
+                              // pro1 is currently a copy of normal completion as it is not implemented
+                              pro1: {
+                                  CompletionData: completionData,
+                              },
+                          },
+                      }
+                    : {}),
+                Id: locations.parents[parent].Id,
+                Image: locations.parents[parent].Properties.Icon,
+                IsLocked: locations.parents[parent].Properties.IsLocked,
+                Location: locations.parents[parent],
+                RequiredResources:
+                    locations.parents[parent].Properties.RequiredResources,
+            })
+        }
     }
 
     for (const child in locations.children) {
         if (
             child === "LOCATION_ICA_FACILITY_ARRIVAL" ||
             child === "LOCATION_HOKKAIDO_SHIM_MAMUSHI" ||
-            child.search("SNUG_") > 0
+            child.includes("SNUG_")
         ) {
             continue
         }
@@ -311,7 +346,7 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
                 ChallengeData: {
                     Children: Object.values(career),
                 },
-                MasteryData: {},
+                MasteryData: masteryData,
             },
             StoryData: makeCampaigns(req.gameVersion, req.jwt.unique_name),
             FilterData: getVersionedConfig(
@@ -397,6 +432,7 @@ menuDataRouter.get("/SafehouseCategory", (req: RequestWithJwt, res) => {
             (cat) => cat.Category === item.Unlockable.Type,
         )
         let subcategory
+
         if (!category) {
             category = {
                 Category: item.Unlockable.Type,
@@ -508,16 +544,21 @@ menuDataRouter.get(
 
         const userData = getUserData(req.jwt.unique_name, req.gameVersion)
 
+        let contractData: MissionManifest | undefined = undefined
+
+        if (req.query.contractid) {
+            contractData = controller.resolveContract(req.query.contractid)
+        }
+
         const inventory = createInventory(
             req.jwt.unique_name,
             req.gameVersion,
             userData.Extensions.entP,
+            getSubLocationByName(
+                contractData?.Metadata.Location,
+                req.gameVersion,
+            ),
         )
-
-        let contractData: MissionManifest | undefined = undefined
-        if (req.query.contractid) {
-            contractData = controller.resolveContract(req.query.contractid)
-        }
 
         if (req.query.slotname.endsWith(req.query.slotid!.toString())) {
             req.query.slotname = req.query.slotname.slice(
@@ -593,7 +634,7 @@ menuDataRouter.get(
                 OptionalData: {
                     stashpoint: req.query.stashpoint || "",
                     AllowLargeItems: req.query.allowlargeitems,
-                    AllowContainers: req.query.allowcontainers, //?? true
+                    AllowContainers: req.query.allowcontainers, // ?? true
                 },
             },
             ShowSlotName: req.query.slotname,
@@ -615,32 +656,12 @@ menuDataRouter.get(
     "/missionrewards",
     (req: RequestWithJwt<{ contractSessionId: string }>, res) => {
         const { contractId } = getSession(req.jwt.unique_name)
-        const contractData = controller.resolveContract(contractId)
+        const contractData = controller.resolveContract(contractId, true)
 
         const userData = getUserData(req.jwt.unique_name, req.gameVersion)
 
         res.json({
-            template: {
-                controller: "group",
-                id: "mission_rewards",
-                selectable: false,
-                pressable: false,
-                children: [
-                    {
-                        view: "menu3.MissionRewardPage",
-                        selectable: false,
-                        pressable: false,
-                        data: {
-                            $setup: {
-                                "$set Drops": {
-                                    "$each $.Drops": "$item $.Unlockable",
-                                },
-                                $in: "$",
-                            },
-                        },
-                    },
-                ],
-            },
+            template: getConfig("MissionRewardsTemplate", false),
             data: {
                 LevelInfo: [
                     0, 6000, 12000, 18000, 24000, 30000, 36000, 42000, 48000,
@@ -653,8 +674,9 @@ menuDataRouter.get(
                 XPGain: 0,
                 Challenges: Object.values(
                     controller.challengeService.getChallengesForContract(
-                        getSession(req.jwt.unique_name).contractId,
+                        contractId,
                         req.gameVersion,
+                        req.jwt.unique_name,
                         // TODO: Should a difficulty be passed here?
                     ),
                 )
@@ -700,12 +722,12 @@ menuDataRouter.get(
 
         res.json = function fakeJsonBind(input) {
             return resJsonFunc.call(this, {
-                template: getConfig("scoreoverviewtemplate", false),
+                template: getConfig("ScoreOverviewTemplate", false),
                 data: input.data.ScoreOverview,
             })
         }
 
-        await innerMissionEnd(req, res)
+        await missionEnd(req, res)
     },
 )
 
@@ -923,22 +945,9 @@ menuDataRouter.get("/missionendready", async (req, res) => {
     }
 })
 
-menuDataRouter.get("/missionend", innerMissionEnd)
+menuDataRouter.get("/missionend", missionEnd)
 
-menuDataRouter.get("/scoreoverviewandunlocks", innerMissionEnd)
-
-async function innerMissionEnd(
-    req: RequestWithJwt<MissionEndRequestQuery>,
-    res: Response,
-): Promise<void> {
-    const result = controller.hooks.getMissionEnd.call(req, res)
-
-    if (result) {
-        return
-    }
-
-    await missionEnd(req, res)
-}
+menuDataRouter.get("/scoreoverviewandunlocks", missionEnd)
 
 menuDataRouter.get(
     "/Destination",
@@ -952,6 +961,12 @@ menuDataRouter.get(
         )
 
         const locationData = locData.parents[LOCATION]
+        const masteryData =
+            controller.masteryService.getMasteryDataForDestination(
+                req.query.locationId,
+                req.gameVersion,
+                req.jwt.unique_name,
+            )
 
         const response = {
             template:
@@ -961,7 +976,7 @@ menuDataRouter.get(
             data: {
                 Location: {},
                 MissionData: {
-                    ...getDestinationCompletion(locationData, req),
+                    ...getDestinationCompletion(locationData, undefined, req),
                     ...{ SubLocationMissionsData: [] },
                 },
                 ChallengeData: {
@@ -973,11 +988,8 @@ menuDataRouter.get(
                         ),
                 },
                 MasteryData:
-                    controller.masteryService.getMasteryDataForDestination(
-                        req.query.locationId,
-                        req.gameVersion,
-                        req.jwt.unique_name,
-                    ),
+                    // No pro1 mastery, in an ideal world we'd pass normal as 0 and pro1 as 1
+                    req.gameVersion === "h1" ? masteryData[0] : masteryData,
                 DifficultyData: undefined,
             },
         }
@@ -1049,16 +1061,24 @@ menuDataRouter.get(
 
             // every unique escalation from the sublocation
             const allUniqueEscalations: string[] = [
+                ...(req.gameVersion === "h1" && e.Id === "LOCATION_ICA_FACILITY"
+                    ? controller.missionsInLocations.escalations[
+                          "LOCATION_ICA_FACILITY_SHIP"
+                      ]
+                    : []),
                 ...new Set<string>(
                     controller.missionsInLocations.escalations[e.Id] || [],
                 ),
             ]
 
             for (const escalation of allUniqueEscalations) {
-                const details = getMenuDetailsForEscalation(
+                if (req.gameVersion === "h1" && no2016.includes(escalation))
+                    continue
+
+                const details = contractIdToHitObject(
                     escalation,
-                    req.jwt.unique_name,
                     req.gameVersion,
+                    req.jwt.unique_name,
                 )
 
                 if (details) {
@@ -1139,10 +1159,6 @@ menuDataRouter.get(
                                 !(
                                     req.gameVersion === "h1" &&
                                     m === "c414a084-a7b9-43ce-b6ca-590620acd87e"
-                                ) &&
-                                !(
-                                    req.gameVersion !== "h3" &&
-                                    m === "90c291f6-7ac3-46de-99b2-082e38fccb24"
                                 ),
                         )
                         .forEach((c) => {
@@ -1280,7 +1296,6 @@ menuDataRouter.get(
 
         const cats = []
 
-        //#region Main story missions
         const currentIdIndex = orderedMissions.indexOf(req.query.contractId)
 
         if (
@@ -1312,9 +1327,7 @@ menuDataRouter.get(
 
             cats.push(createMainOpportunityTile(req.query.contractId))
         }
-        //#endregion
 
-        //#region PZ missions
         const pzIdIndex = orderedPZMissions.indexOf(req.query.contractId)
 
         if (pzIdIndex !== -1 && pzIdIndex !== orderedPZMissions.length - 1) {
@@ -1331,9 +1344,6 @@ menuDataRouter.get(
                 ),
             )
         }
-        //#endregion
-
-        //#region Atlantide
 
         if (req.query.contractId === "f1ba328f-e3dd-4ef8-bb26-0363499fdd95") {
             const nextMissionId = "0b616e62-af0c-495b-82e3-b778e82b5912"
@@ -1349,25 +1359,31 @@ menuDataRouter.get(
                 ),
             )
         }
-        //#endregion
 
-        //#region Plugin missions
         const pluginData = controller.hooks.getNextCampaignMission.call(
             req.query.contractId,
             req.gameVersion,
         )
 
         if (pluginData) {
-            cats.push(
-                createPlayNextTile(
+            if (pluginData.overrideIndex !== undefined) {
+                cats[pluginData.overrideIndex] = createPlayNextTile(
                     req.jwt.unique_name,
                     pluginData.nextContractId,
                     req.gameVersion,
                     pluginData.campaignDetails,
-                ),
-            )
+                )
+            } else {
+                cats.push(
+                    createPlayNextTile(
+                        req.jwt.unique_name,
+                        pluginData.nextContractId,
+                        req.gameVersion,
+                        pluginData.campaignDetails,
+                    ),
+                )
+            }
         }
-        //#endregion
 
         res.json({
             template: getConfig("PlayNextTemplate", false),
@@ -1744,10 +1760,7 @@ menuDataRouter.get("/contractcreation/create", (req: RequestWithJwt, res) => {
                             Outfit: {
                                 RepositoryId: km.OutfitRepoId,
                                 Required: true,
-                                IsHitmanSuit: isSuit(
-                                    km.OutfitRepoId,
-                                    req.gameVersion,
-                                ),
+                                IsHitmanSuit: isSuit(km.OutfitRepoId),
                             },
                         }
                     }),
@@ -1828,12 +1841,81 @@ menuDataRouter.post(
     createLoadSaveMiddleware("SaveMenuTemplate"),
 )
 
-//TODO: Add statistics
 menuDataRouter.get("/PlayerProfile", (req: RequestWithJwt, res) => {
     const playerProfilePage = getConfig<PlayerProfileView>(
         "PlayerProfilePage",
         true,
     )
+
+    const locationData = getVersionedConfig<PeacockLocationsData>(
+        "LocationsData",
+        req.gameVersion,
+        false,
+    )
+
+    playerProfilePage.data.SubLocationData = []
+
+    for (const subLocationKey in locationData.children) {
+        // Ewww...
+        if (
+            subLocationKey === "LOCATION_ICA_FACILITY_ARRIVAL" ||
+            subLocationKey === "LOCATION_HOKKAIDO_SHIM_MAMUSHI" ||
+            subLocationKey.includes("SNUG_")
+        ) {
+            continue
+        }
+
+        const subLocation = locationData.children[subLocationKey]
+        const parentLocation =
+            locationData.parents[subLocation.Properties.ParentLocation]
+
+        const completionData = generateCompletionData(
+            subLocation.Id,
+            req.jwt.unique_name,
+            req.gameVersion,
+        )
+
+        // TODO: Make getDestinationCompletion do something like this.
+        const challenges = controller.challengeService.getChallengesForLocation(
+            subLocation.Id,
+            req.gameVersion,
+        )
+
+        const challengeCategoryCompletion: ChallengeCategoryCompletion[] = []
+
+        for (const challengeGroup in challenges) {
+            const challengeCompletion =
+                controller.challengeService.countTotalNCompletedChallenges(
+                    {
+                        challengeGroup: challenges[challengeGroup],
+                    },
+                    req.jwt.unique_name,
+                    req.gameVersion,
+                )
+
+            challengeCategoryCompletion.push({
+                Name: challenges[challengeGroup][0].CategoryName,
+                ...challengeCompletion,
+            })
+        }
+
+        const destinationCompletion = getDestinationCompletion(
+            parentLocation,
+            subLocation,
+            req,
+        )
+
+        playerProfilePage.data.SubLocationData.push({
+            ParentLocation: parentLocation,
+            Location: subLocation,
+            CompletionData: completionData,
+            ChallengeCategoryCompletion: challengeCategoryCompletion,
+            ChallengeCompletion: destinationCompletion.ChallengeCompletion,
+            OpportunityStatistics: destinationCompletion.OpportunityStatistics,
+            LocationCompletionPercent:
+                destinationCompletion.LocationCompletionPercent,
+        })
+    }
 
     const userProfile = getUserData(req.jwt.unique_name, req.gameVersion)
     playerProfilePage.data.PlayerProfileXp.Total =

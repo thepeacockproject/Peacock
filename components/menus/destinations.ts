@@ -22,6 +22,7 @@ import type {
     GameLocationsData,
     GameVersion,
     MissionStory,
+    OpportunityStatistics,
     PeacockLocationsData,
     RequestWithJwt,
     Unlockable,
@@ -37,10 +38,7 @@ type GameFacingDestination = {
         CompletedChallengesCount: number
     }
     CompletionData: CompletionData
-    OpportunityStatistics: {
-        Count: number
-        Completed: number
-    }
+    OpportunityStatistics: OpportunityStatistics
     LocationCompletionPercent: number
     Location: Unlockable
 }
@@ -51,30 +49,33 @@ const missionStories = getConfig<Record<string, MissionStory>>(
 
 export function getDestinationCompletion(
     parent: Unlockable,
+    child: Unlockable | undefined,
     req: RequestWithJwt,
 ) {
     const userData = getUserData(req.jwt.unique_name, req.gameVersion)
     const challenges = controller.challengeService.getGroupedChallengeLists(
         {
-            type: ChallengeFilterType.None,
+            type: ChallengeFilterType.ParentLocation,
+            parent: parent.Id,
         },
         parent.Id,
         req.gameVersion,
     )
 
-    if (parent.Opportunities === undefined) {
-        parent.Opportunities = 0
-    }
+    const opportunities = Object.values(missionStories)
+        .filter((e) =>
+            child ? e.SubLocation === child.Id : e.Location === parent.Id,
+        )
+        .map((e) => e.CommonRepositoryId)
 
     let opportunityCompletedCount = 0
+
     for (const ms in userData.Extensions.opportunityprogression) {
-        if (
-            Object.keys(missionStories).includes(ms) &&
-            missionStories[ms].Location === parent.Id
-        ) {
+        if (opportunities.includes(ms)) {
             opportunityCompletedCount++
         }
     }
+
     const challengeCompletion =
         controller.challengeService.countTotalNCompletedChallenges(
             challenges,
@@ -85,14 +86,14 @@ export function getDestinationCompletion(
     return {
         ChallengeCompletion: challengeCompletion,
         OpportunityStatistics: {
-            Count: parent.Opportunities,
+            Count: opportunities.length,
             Completed: opportunityCompletedCount,
         },
         LocationCompletionPercent: getCompletionPercent(
             challengeCompletion.CompletedChallengesCount,
             challengeCompletion.ChallengesCount,
             opportunityCompletedCount,
-            parent.Opportunities,
+            opportunities.length,
         ),
         Location: parent,
     }
@@ -107,15 +108,19 @@ export function getCompletionPercent(
     if (challengeDone === undefined) {
         challengeDone = 0
     }
+
     if (challengeTotal === undefined) {
         challengeTotal = 0
     }
+
     if (opportunityDone === undefined) {
         opportunityDone = 0
     }
+
     if (opportunityTotal === undefined) {
         opportunityTotal = 0
     }
+
     const totalCompletables = challengeTotal + opportunityTotal
     const totalCompleted = challengeDone + opportunityDone
     return totalCompletables === 0
@@ -130,13 +135,14 @@ export function destinationsMenu(req: RequestWithJwt): GameFacingDestination[] {
         req.gameVersion,
         true,
     )
+
     for (const [destination, parent] of Object.entries(locations.parents)) {
         parent.GameAsset = null
         parent.DisplayNameLocKey =
             "UI_LOCATION_PARENT_" + destination.substring(16) + "_NAME"
 
         const template: GameFacingDestination = {
-            ...getDestinationCompletion(parent, req),
+            ...getDestinationCompletion(parent, undefined, req),
             ...{
                 CompletionData: generateCompletionData(
                     destination,

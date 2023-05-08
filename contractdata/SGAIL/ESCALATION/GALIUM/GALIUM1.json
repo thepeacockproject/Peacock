@@ -1,0 +1,88 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "72ae0277-77c6-42d3-8548-199a28b67f5f",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "weapontype",
+                        "RepositoryId": "2953e9ac-e25b-41ae-afbf-4a47f86c4f54",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_GALIUM_LEVEL_1_OBJ_1"
+                },
+                "BriefingText": "$loc UI_CONTRACT_GALIUM_LEVEL_1_OBJ_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["7da7595f-0309-45ee-9f8e-48abffde613d"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "7da7595f-0309-45ee-9f8e-48abffde613d"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemCategory",
+                                                    "pistol"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "7da7595f-0309-45ee-9f8e-48abffde613d"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": ["abf09e23-299d-410c-a185-6188f687224b"],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "4c8480a9-359b-44d8-8e17-08430b7d01f2",
+        "IsPublished": false,
+        "CreationTimestamp": "2018-10-04T15:21:50.3066392Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_GALIUM_LEVEL_1_TITLE",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Magpie_Galium.jpg",
+        "Description": "UI_CONTRACT_GALIUM_LEVEL_1_DESC",
+        "CodeName_Hint": "Galium Level 1",
+        "Location": "LOCATION_NORTHSEA",
+        "ScenePath": "assembly:/_pro/scenes/missions/theark/scene_magpie.entity",
+        "Type": "escalation",
+        "Release": "",
+        "GameModes": null,
+        "EngineModes": null,
+        "IsVersus": false,
+        "InGroup": "dbb0e22d-084b-4b57-8616-42290982fd90",
+        "LastUpdate": "2021-05-06T09:25:03.6641205Z",
+        "PublicId": "021504198947",
+        "Entitlements": ["H2_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

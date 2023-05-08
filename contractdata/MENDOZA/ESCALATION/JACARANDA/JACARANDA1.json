@@ -1,0 +1,312 @@
+{
+    "Data": {
+        "Bricks": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/elegant/vr_overrides_llama.brick",
+                    "assembly:/_pro/scenes/missions/elegant/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/elegant/vr_overrides_llama.brick"
+                ]
+            }
+        ],
+        "DevOnlyBricks": [],
+        "GameChangers": ["3db72bb5-63d6-47fe-9332-d7ea3c195e06"],
+        "Entrances": ["f45b0af4-e50d-477e-bb92-83136b04506f"],
+        "MandatoryLoadout": [
+            {
+                "Id": "TOKEN_OUTFIT_ELEGANT_HERO_LLAMASUIT",
+                "Properties": {
+                    "LoadoutSlot": "Outfit",
+                    "RepositoryId": "d7a96dc3-e511-4602-bdbd-bafa9284793e"
+                }
+            }
+        ],
+        "GameChangerReferences": [],
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "_comment": "----- Do not eliminate or pacify the sniper -----",
+                "Id": "9a2210e7-965b-485d-b1ea-ebe224ad56cb",
+                "Category": "secondary",
+                "ObjectiveType": "custom",
+                "ExcludeFromScoring": true,
+                "ForceShowOnLoadingScreen": true,
+                "Image": "images/contracts/escalation/contractescalation_elegant_jacaranda_sniper.jpg",
+                "BriefingName": "$loc UI_CONTRACT_JACARANDA_OBJECTIVE_SNIPER_NAME",
+                "BriefingText": "$loc UI_CONTRACT_JACARANDA_OBJECTIVE_SNIPER_NAME",
+                "LongBriefingText": "$loc UI_CONTRACT_JACARANDA_OBJECTIVE_SNIPER_NAME",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_JACARANDA_OBJECTIVE_SNIPER_NAME",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "Kill": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "645d1646-c910-4d8a-9f9a-b39aca226eef"
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- HIDDEN Do not eliminate the sniper -----",
+                "Id": "c0dba8be-79b1-44d0-bd27-4f6d124a00ce",
+                "Primary": true,
+                "Activation": {
+                    "$eq": [
+                        "$9a2210e7-965b-485d-b1ea-ebe224ad56cb",
+                        "Completed"
+                    ]
+                },
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": false,
+                "ExcludeFromScoring": true,
+                "OnInactive": { "IfInProgress": { "State": "Completed" } },
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfFailed": { "Visible": false },
+                    "IfCompleted": { "Visible": false }
+                },
+                "Image": "images/contracts/escalation/contractescalation_elegant_jacaranda_sniper.jpg",
+                "BriefingName": "$loc UI_CONTRACT_JACARANDA_OBJECTIVE_SNIPER_NAME",
+                "BriefingText": "$loc UI_CONTRACT_JACARANDA_OBJECTIVE_SNIPER_NAME",
+                "LongBriefingText": "$loc UI_CONTRACT_JACARANDA_OBJECTIVE_SNIPER_NAME",
+                "HUDTemplate": {
+                    "display": "$UI_CONTRACT_JACARANDA_OBJECTIVE_SNIPER_NAME",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "States": {
+                        "Start": { "SniperDead": { "Transition": "Failure" } }
+                    }
+                }
+            },
+            {
+                "_comment": "--- Acquire earpiece ---",
+                "Id": "873b897f-7749-4e03-9be7-51a86b4dd88b",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "Image": "images/contracts/escalation/contractescalation_elegant_jacaranda_earpiece.jpg",
+                "BriefingName": "$loc UI_CONTRACT_JACARANDA_OBJECTIVE_EARPIECE_NAME",
+                "BriefingText": "$loc UI_CONTRACT_JACARANDA_OBJECTIVE_EARPIECE_NAME",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_JACARANDA_OBJECTIVE_EARPIECE_NAME",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {
+                        "Targets": ["fa2b936a-7c8c-4e30-a495-6f2e95ae03a7"]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "fa2b936a-7c8c-4e30-a495-6f2e95ae03a7"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "--- Eliminate Daniel Limpano ---",
+                "Id": "0a98698d-86c3-47bb-a3f6-ba9897fe6cb4",
+                "Category": "primary",
+                "ForceShowOnLoadingScreen": true,
+                "Activation": {
+                    "$eq": [
+                        "$873b897f-7749-4e03-9be7-51a86b4dd88b",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": { "IfCompleted": { "State": "Completed" } },
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "7d64d9df-5d30-4e98-9af0-7562ee145d5c",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_JACARANDA_OBJECTIVE_ELIMINATE_LIMPANO_NAME"
+                },
+                "BriefingText": "$loc UI_CONTRACT_JACARANDA_OBJECTIVE_ELIMINATE_LIMPANO_NAME",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["c6893838-45f5-4fe9-8607-b9177a0ae76b"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "c6893838-45f5-4fe9-8607-b9177a0ae76b"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "7d64d9df-5d30-4e98-9af0-7562ee145d5c"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "c6893838-45f5-4fe9-8607-b9177a0ae76b"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "--- Eliminate Target Alfredo Gonzales ---",
+                "Id": "da83bc86-1e1b-4ba8-927a-6e05c6c16403",
+                "Category": "primary",
+                "ForceShowOnLoadingScreen": true,
+                "Activation": {
+                    "$eq": [
+                        "$873b897f-7749-4e03-9be7-51a86b4dd88b",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": { "IfCompleted": { "State": "Completed" } },
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "7d64d9df-5d30-4e98-9af0-7562ee145d5c",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_JACARANDA_OBJECTIVE_ELIMINATE_GONZALES_NAME"
+                },
+                "BriefingText": "$loc UI_CONTRACT_JACARANDA_OBJECTIVE_ELIMINATE_GONZALES_NAME",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["f8a2e8df-39b6-4147-b55d-43595ba95185"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "f8a2e8df-39b6-4147-b55d-43595ba95185"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "7d64d9df-5d30-4e98-9af0-7562ee145d5c"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "f8a2e8df-39b6-4147-b55d-43595ba95185"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "9d5c7904-d0dd-4baf-b8f6-687a1e874659",
+        "IsPublished": true,
+        "CreationTimestamp": "2018-11-05T14:12:47.2836568Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_JACARANDA_LEVEL_1_NAME",
+        "Description": "UI_CONTRACT_JACARANDA_GROUP_DESC",
+        "CodeName_Hint": "Jacaranda - Level 1",
+        "Location": "LOCATION_ELEGANT_LLAMA",
+        "RequiredUnlockable": "ACCESS_HIT_LLAMA",
+        "ScenePath": "assembly:/_pro/scenes/missions/elegant/scene_llama_jacaranda.entity",
+        "Type": "escalation",
+        "InGroup": "14a21819-f81f-453d-8734-a3aab528fa62",
+        "Release": "3.4.x Escalation",
+        "GroupObjectiveDisplayOrder": [
+            {
+                "_comment": "--- Acquire earpiece ---",
+                "Id": "873b897f-7749-4e03-9be7-51a86b4dd88b"
+            },
+            {
+                "_comment": "--- Eliminate Daniel Limpano ---",
+                "Id": "0a98698d-86c3-47bb-a3f6-ba9897fe6cb4"
+            },
+            {
+                "_comment": "--- Eliminate Target Alfredo Gonzales ---",
+                "Id": "da83bc86-1e1b-4ba8-927a-6e05c6c16403"
+            },
+            {
+                "_comment": "--- Do not eliminate or pacify the sniper ---",
+                "Id": "9a2210e7-965b-485d-b1ea-ebe224ad56cb"
+            },
+            {
+                "_comment": "--- RESTRICTED_LOADOUT ---",
+                "Id": "3db72bb5-63d6-47fe-9332-d7ea3c195e06"
+            }
+        ],
+        "Entitlements": ["LOCATION_ELEGANT"],
+        "LastUpdate": "2023-03-30T11:20:26.4497658Z",
+        "PublicId": "031277986047",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Elegant_Jacaranda.jpg"
+    },
+    "UserData": {}
+}

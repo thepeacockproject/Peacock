@@ -1,0 +1,251 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "EnableExits": {
+            "$eq": [
+                "$4b50ba64-cda7-4396-825a-f21b375b8413",
+                "$fb58b9bb-a89f-407f-b912-d5e09818700e",
+                "$379185ad-dae2-40b7-8069-fecf19cfb05d",
+                "Completed"
+            ]
+        },
+        "Objectives": [
+            {
+                "Id": "4b50ba64-cda7-4396-825a-f21b375b8413",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "124d145e-469e-485d-a628-ced82ddf1b75",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "58dceb1c-d7db-41dc-9750-55e3ab87fdf0",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_CATCHFLY_OBJ_1" },
+                "BriefingText": "$loc UI_CONTRACT_CATCHFLY_OBJ_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["63ce19e1-3956-46d1-8979-62f939ffefa6"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "63ce19e1-3956-46d1-8979-62f939ffefa6"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "124d145e-469e-485d-a628-ced82ddf1b75"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "58dceb1c-d7db-41dc-9750-55e3ab87fdf0"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "63ce19e1-3956-46d1-8979-62f939ffefa6"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "fb58b9bb-a89f-407f-b912-d5e09818700e",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_CATCHFLY_OBJ_2" },
+                "BriefingText": "$loc UI_CONTRACT_CATCHFLY_OBJ_2",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["bc7ca5bb-5338-4242-8e65-8562ab521bd6"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "bc7ca5bb-5338-4242-8e65-8562ab521bd6"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemCategory",
+                                                    "shotgun"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.WeaponSilenced",
+                                                    false
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "bc7ca5bb-5338-4242-8e65-8562ab521bd6"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillClass",
+                                                    "explosion"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "bc7ca5bb-5338-4242-8e65-8562ab521bd6"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "379185ad-dae2-40b7-8069-fecf19cfb05d",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "124d145e-469e-485d-a628-ced82ddf1b75",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "58dceb1c-d7db-41dc-9750-55e3ab87fdf0",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_CATCHFLY_OBJ_3" },
+                "BriefingText": "$loc UI_CONTRACT_CATCHFLY_OBJ_3",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["02ec00db-dc54-4ce6-8d87-3657ff59440a"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "02ec00db-dc54-4ce6-8d87-3657ff59440a"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "124d145e-469e-485d-a628-ced82ddf1b75"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "58dceb1c-d7db-41dc-9750-55e3ab87fdf0"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "02ec00db-dc54-4ce6-8d87-3657ff59440a"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": ["aa165461-41c8-4f22-b56a-14fa00dafb67"],
+        "GameChangerReferences": [],
+        "Entrances": [],
+        "Stashpoints": []
+    },
+    "Metadata": {
+        "Id": "b0b3cc31-8cff-4042-ad85-1328860e42be",
+        "IsPublished": true,
+        "CreationTimestamp": "2016-05-04T09:51:27.3937089Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Miami_Catchfly.jpg",
+        "Title": "UI_CONTRACT_CATCHFLY_LEVEL_2_TITLE",
+        "Description": "",
+        "CodeName_Hint": "Catchfly Level 2",
+        "Location": "LOCATION_MIAMI",
+        "ScenePath": "assembly:/_pro/scenes/missions/miami/scene_flamingo.entity",
+        "Release": "2.12.x Escalation",
+        "Type": "escalation",
+        "InGroup": "066ce378-0418-452a-b02e-a5e4ee711096",
+        "Entitlements": ["H2_LEGACY_STANDARD"],
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "379185ad-dae2-40b7-8069-fecf19cfb05d" },
+            { "IsNew": true, "Id": "fb58b9bb-a89f-407f-b912-d5e09818700e" },
+            { "Id": "4b50ba64-cda7-4396-825a-f21b375b8413" },
+            { "Id": "aa165461-41c8-4f22-b56a-14fa00dafb67" }
+        ],
+        "LastUpdate": "2021-05-06T09:25:03.1432769Z",
+        "PublicId": "011719401547"
+    },
+    "UserData": {}
+}

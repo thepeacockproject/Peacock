@@ -1,0 +1,88 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "f2b757c5-429b-4269-9c3e-52d792e5dab0",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "ecf1b752-0cd6-4283-a1a5-743fc0249525",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_CLEMATIS_OBJECTIVE_1"
+                },
+                "BriefingText": "$loc UI_CONTRACT_CLEMATIS_OBJECTIVE_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["225d60db-0150-41b1-aec1-fceb1896d9c4"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "225d60db-0150-41b1-aec1-fceb1896d9c4"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "ecf1b752-0cd6-4283-a1a5-743fc0249525"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "225d60db-0150-41b1-aec1-fceb1896d9c4"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [],
+        "GameChangerReferences": [],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "023f4657-55c8-4704-b8a0-4aa35be5ac74",
+        "IsPublished": true,
+        "CreationTimestamp": "2016-04-18T11:09:44.703Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_CLEMATIS_LEVEL_1_TITLE",
+        "Description": "UI_CONTRACT_CLEMATIS_LEVEL_1_DESC",
+        "CodeName_Hint": "Clematis - Level 1",
+        "ScenePath": "assembly:/_pro/scenes/missions/marrakesh/_scene_spider.entity",
+        "Location": "LOCATION_MARRAKECH",
+        "Type": "escalation",
+        "RequiredUnlockable": "ACCESS_HIT_SPIDER",
+        "InGroup": "896233eb-e7c5-4915-bf2b-5867799d8bb4",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "f2b757c5-429b-4269-9c3e-52d792e5dab0" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:33.9605396Z",
+        "PublicId": "006221815647",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

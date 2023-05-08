@@ -4,13 +4,9 @@
         "location": "$.Contract.Metadata.Location"
     },
     "onpageopened": {
-        "set-selected": {
-            "target": "$arg SelectedAgencyPickup"
-        }
+        "set-selected": { "target": "$arg SelectedAgencyPickup" }
     },
-    "onpageclosed": {
-        "set-mastery-data": {}
-    },
+    "onpageclosed": { "set-mastery-data": {} },
     "buttons": [
         {
             "actiontype": "accept",
@@ -29,17 +25,11 @@
         "$setupcomponents": {
             "difficulty-manager": {
                 "always-reload-setup": true,
-                "setup": {
-                    "difficulty": "$.Contract.Metadata.Difficulty"
-                }
+                "setup": { "difficulty": "$.Contract.Metadata.Difficulty" }
             }
         },
         "controller": "list",
-        "actions": {
-            "select": {
-                "select-category": {}
-            }
-        },
+        "actions": { "select": { "select-category": {} } },
         "children": [
             {
                 "controller": "group",
@@ -54,10 +44,7 @@
                     "view": "menu3.basic.HeadlineElement"
                 }
             },
-            {
-                "id": "category_container",
-                "controller": "list"
-            },
+            { "id": "category_container", "controller": "list" },
             {
                 "view": "menu3.containers.ScrollingTabsContainer",
                 "controller": "category",
@@ -98,14 +85,8 @@
                                         ]
                                     }
                                 },
-                                {
-                                    "case": "orbis",
-                                    "return": "ica"
-                                },
-                                {
-                                    "case": "campaign",
-                                    "return": "mission"
-                                },
+                                { "case": "orbis", "return": "ica" },
+                                { "case": "campaign", "return": "mission" },
                                 {
                                     "case": "sniper",
                                     "return": "sniperrifle"
@@ -140,9 +121,7 @@
                                                         "case": "featured",
                                                         "return": false
                                                     },
-                                                    {
-                                                        "default": true
-                                                    }
+                                                    { "default": true }
                                                 ]
                                             }
                                         }
@@ -230,9 +209,7 @@
                             "controller": "group",
                             "view": "menu3.containers.ScrollingListContainer",
                             "direction": "horizontal",
-                            "data": {
-                                "direction": "horizontal"
-                            },
+                            "data": { "direction": "horizontal" },
                             "row": 1,
                             "pages": true,
                             "nrows": 3,
@@ -281,8 +258,30 @@
                                                         }
                                                     }
                                                 },
-                                                "title": "$loc $($repository $.id).Name_LOC",
-                                                "image": "$res $($repository $.id).Image",
+                                                "title": {
+                                                    "$if": {
+                                                        "$condition": {
+                                                            "$and": [
+                                                                "$stringvalid $.LocalizedReproItem.lockedname",
+                                                                "$not $.unlocked"
+                                                            ]
+                                                        },
+                                                        "$then": "$.LocalizedReproItem.lockedname",
+                                                        "$else": "$loc $($repository $.id).Name_LOC"
+                                                    }
+                                                },
+                                                "image": {
+                                                    "$if": {
+                                                        "$condition": {
+                                                            "$and": [
+                                                                "$stringvalid $.LocalizedReproItem.lockedimage",
+                                                                "$not $.unlocked"
+                                                            ]
+                                                        },
+                                                        "$then": "$.LocalizedReproItem.lockedimage",
+                                                        "$else": "$res $($repository $.id).Image"
+                                                    }
+                                                },
                                                 "icon": "stashpointempty",
                                                 "agencypickup": {
                                                     "$switch $arg SelectedAgencyPickup": [
@@ -304,9 +303,7 @@
                                                                 "rarity": "$($arg SelectedItem).rarity"
                                                             }
                                                         },
-                                                        {
-                                                            "default": null
-                                                        }
+                                                        { "default": null }
                                                     ]
                                                 },
                                                 "locked": "$not $.unlocked",
@@ -339,7 +336,8 @@
                                                                 "allowlargeitems": "$.allowlargeitems",
                                                                 "allowcontainers": false,
                                                                 "slotid": "6",
-                                                                "slotname": "stashpoint6"
+                                                                "slotname": "stashpoint6",
+                                                                "usecacheonreturn": "$arg usecacheonreturn"
                                                             },
                                                             "contractid": "$arg contractid",
                                                             "stashpoint": "$.id",
@@ -349,7 +347,8 @@
                                                             "selecteditem": "$($arg SelectedItem).id",
                                                             "selectedtype": "$arg SelectedItemSubType",
                                                             "usewhitelineheader": true,
-                                                            "extra-title": "$loc $($repository $.id).Name_LOC"
+                                                            "extra-title": "$loc $($repository $.id).Name_LOC",
+                                                            "usecacheonreturn": "$arg usecacheonreturn"
                                                         }
                                                     }
                                                 },
@@ -373,7 +372,18 @@
                                                                             }
                                                                         ]
                                                                     },
-                                                                    "title": "$loc $($repository $.id).Name_LOC",
+                                                                    "title": {
+                                                                        "$if": {
+                                                                            "$condition": {
+                                                                                "$and": [
+                                                                                    "$stringvalid $.LocalizedReproItem.lockedname",
+                                                                                    "$not $.unlocked"
+                                                                                ]
+                                                                            },
+                                                                            "$then": "$.LocalizedReproItem.lockedname",
+                                                                            "$else": "$loc $($repository $.id).Name_LOC"
+                                                                        }
+                                                                    },
                                                                     "typeicon": {
                                                                         "$if $.unlocked": {
                                                                             "$then": "stashpointempty",
@@ -397,7 +407,42 @@
                                                                 }
                                                             ],
                                                             "data": {
-                                                                "description": "$.LocalizedReproItem.desc",
+                                                                "description": {
+                                                                    "$if": {
+                                                                        "$condition": {
+                                                                            "$and": [
+                                                                                "$stringvalid $.LocalizedReproItem.lockeddesc",
+                                                                                "$not $.unlocked"
+                                                                            ]
+                                                                        },
+                                                                        "$then": "$.LocalizedReproItem.lockeddesc",
+                                                                        "$else": "$.LocalizedReproItem.desc"
+                                                                    }
+                                                                },
+                                                                "name": {
+                                                                    "$if": {
+                                                                        "$condition": {
+                                                                            "$and": [
+                                                                                "$stringvalid $.LocalizedReproItem.lockedname",
+                                                                                "$not $.unlocked"
+                                                                            ]
+                                                                        },
+                                                                        "$then": "$.LocalizedReproItem.lockedname",
+                                                                        "$else": "$.LocalizedReproItem.name"
+                                                                    }
+                                                                },
+                                                                "image": {
+                                                                    "$if": {
+                                                                        "$condition": {
+                                                                            "$and": [
+                                                                                "$stringvalid $.LocalizedReproItem.lockedimage",
+                                                                                "$not $.unlocked"
+                                                                            ]
+                                                                        },
+                                                                        "$then": "$.LocalizedReproItem.lockedimage",
+                                                                        "$else": "$.LocalizedReproItem.image"
+                                                                    }
+                                                                },
                                                                 "type": "$loc UI_MENU_PAGE_PLANNING_ELEMENT_SMUGGLED_ITEM",
                                                                 "icon": "stashpointempty",
                                                                 "item": "$($repository $.id)",

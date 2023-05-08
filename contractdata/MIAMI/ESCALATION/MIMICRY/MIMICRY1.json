@@ -1,0 +1,112 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "Id": "ea10c2e3-1c75-4ecf-be55-0a5a0787c0f6",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "085e639e-2cf4-4e9b-bd9b-f9fd5b899676",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "accident",
+                        "HardCondition": true
+                    }
+                ],
+                "DisplayAsKillObjective": true,
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_BAKERIAN_OBJ_1" },
+                "BriefingText": "$loc UI_CONTRACT_BAKERIAN_OBJ_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["d96dd365-1035-4c34-a605-32899a8fd67a"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "d96dd365-1035-4c34-a605-32899a8fd67a"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "085e639e-2cf4-4e9b-bd9b-f9fd5b899676"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "accident"
+                                                        ]
+                                                    },
+                                                    "in": [
+                                                        "$Value.KillMethodBroad",
+                                                        "$Value.KillMethodStrict"
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "d96dd365-1035-4c34-a605-32899a8fd67a"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [],
+        "GameChangerReferences": []
+    },
+    "Metadata": {
+        "Id": "f46a799f-1387-483b-abe1-25be8b5ffded",
+        "IsPublished": true,
+        "CreationTimestamp": "2018-11-02T11:42:33.6627089Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_BAKERIAN_LEVEL_1_TITLE",
+        "Description": "",
+        "CodeName_Hint": "Bakerian Level 1",
+        "Location": "LOCATION_MIAMI",
+        "RequiredUnlockable": "ACCESS_HIT_FLAMINGO",
+        "ScenePath": "assembly:/_pro/scenes/missions/miami/scene_flamingo.entity",
+        "Type": "escalation",
+        "Release": "2.13.x Escalation",
+        "GameModes": null,
+        "EngineModes": null,
+        "IsVersus": false,
+        "InGroup": "be3ea01f-ec56-4fcb-95ec-164a1d9980f3",
+        "LastUpdate": "2021-05-06T09:25:02.7632928Z",
+        "PublicId": "011318302947",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Miami_Bakerian.jpg",
+        "Entitlements": ["H2_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

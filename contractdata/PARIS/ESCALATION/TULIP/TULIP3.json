@@ -1,0 +1,96 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "4938115b-7708-4622-ae1f-5b72ded95baf",
+                "Category": "primary",
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "3ec5ac4d-77c0-4840-8c1a-3cec7441158f"
+                    }
+                }
+            },
+            {
+                "Id": "0561ef8f-602e-4166-bba6-7f100a76e415",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_TULIP_LEVEL_3_OBJ_1"
+                },
+                "BriefingText": "$loc UI_CONTRACT_TULIP_LEVEL_3_OBJ_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["65976c9c-75c7-4379-a2ab-e6ccf4df5b58"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "65976c9c-75c7-4379-a2ab-e6ccf4df5b58"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.Explosive",
+                                                    true
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "65976c9c-75c7-4379-a2ab-e6ccf4df5b58"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": ["ba550fb7-47f0-488d-9c37-accbaaf44e36"],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "16a0120d-413a-4a78-a6da-e013899569fe",
+        "InGroup": "a1e7fdb4-88a4-4dbd-9ef2-d9bd1762cec2",
+        "IsPublished": true,
+        "CreationTimestamp": "2015-08-19T08:02:16.433Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_TULIP_LEVEL_3_TITLE",
+        "Description": "UI_CONTRACT_TULIP_LEVEL_3_DESC",
+        "CodeName_Hint": "Tulip - Level 3",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Paris/_scene_paris.entity",
+        "Location": "LOCATION_PARIS",
+        "Type": "escalation",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "0561ef8f-602e-4166-bba6-7f100a76e415" },
+            { "Id": "ba550fb7-47f0-488d-9c37-accbaaf44e36" },
+            { "Id": "4938115b-7708-4622-ae1f-5b72ded95baf" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:51.8981662Z",
+        "PublicId": "002369532347",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

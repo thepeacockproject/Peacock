@@ -24,7 +24,6 @@ import { join } from "path"
 import { uuidRegex, versions } from "./utils"
 import { getUserData, loadUserData, writeUserData } from "./databaseHandler"
 import { readdirSync } from "fs"
-import { getLevelCount } from "./contracts/escalations/escalationService"
 import { controller } from "./controller"
 import { log, LogLevel } from "./loggingInterop"
 
@@ -125,6 +124,7 @@ webFeaturesRouter.get(
         if (!validateUserAndGv(req, res)) {
             return
         }
+
         if (!req.query.level) {
             formErrorMessage(
                 res,
@@ -132,6 +132,7 @@ webFeaturesRouter.get(
             )
             return
         }
+
         if (
             isNaN(parseInt(req.query.level)) ||
             parseInt(req.query.level) <= 0
@@ -154,14 +155,15 @@ webFeaturesRouter.get(
             formErrorMessage(res, "Failed to load user data.")
             return
         }
-        if (controller.escalationMappings[req.query.id] === undefined) {
+
+        if (controller.escalationMappings.get(req.query.id) === undefined) {
             formErrorMessage(res, "Unknown escalation.")
             return
         }
 
         if (
-            getLevelCount(controller.escalationMappings[req.query.id]) <
-            parseInt(req.query.level, 10)
+            Object.keys(controller.escalationMappings.get(req.query.id))
+                .length < parseInt(req.query.level, 10)
         ) {
             formErrorMessage(
                 res,
@@ -179,6 +181,15 @@ webFeaturesRouter.get(
         read.Extensions.PeacockEscalations[req.query.id] = parseInt(
             req.query.level,
         )
+
+        if (
+            read.Extensions.PeacockCompletedEscalations.includes(req.query.id)
+        ) {
+            read.Extensions.PeacockCompletedEscalations =
+                read.Extensions.PeacockCompletedEscalations.filter(
+                    (val) => val !== req.query.id,
+                )
+        }
 
         writeUserData(req.query.user, req.query.gv)
 

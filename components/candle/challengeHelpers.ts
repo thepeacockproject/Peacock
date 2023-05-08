@@ -24,10 +24,9 @@ import {
     MissionManifest,
     RegistryChallenge,
 } from "../types/types"
-import assert from "assert"
 import { SavedChallengeGroup } from "../types/challenges"
 import { controller } from "../controller"
-import { gameDifficulty } from "../utils"
+import { gameDifficulty, isSniperLocation } from "../utils"
 
 export function compileScoringChallenge(
     challenge: RegistryChallenge,
@@ -69,10 +68,13 @@ export function compileRuntimeChallenge(
 }
 
 export enum ChallengeFilterType {
+    // Note that this option will include global elusives and escalations challenges.
     None = "None",
     Contract = "Contract",
     /** Only used for the CAREER -> CHALLENGES page */
     Contracts = "Contracts",
+    /** Only used for the location page, and when calculating location completion */
+    ParentLocation = "ParentLocation",
 }
 
 export type ChallengeFilterOptions =
@@ -91,6 +93,10 @@ export type ChallengeFilterOptions =
           contractIds: string[]
           locationId: string
       }
+    | {
+          type: ChallengeFilterType.ParentLocation
+          parent: string
+      }
 
 /**
  * Checks if the metadata of a contract matches the definition in the InclusionData of a challenge.
@@ -103,6 +109,7 @@ export function inclusionDataCheck(
     contract: MissionManifest,
 ): boolean {
     if (!incData) return true
+    if (!contract) return false
 
     return (
         incData.ContractIds?.includes(contract.Metadata.Id) ||
@@ -142,8 +149,10 @@ function isChallengeInContract(
     challenge: RegistryChallenge,
     forCareer = false,
 ): boolean {
-    assert.ok(contractId)
-    assert.ok(locationId)
+    if (!contractId || !locationId) {
+        return false
+    }
+
     if (!challenge) {
         return false
     }
@@ -152,14 +161,7 @@ function isChallengeInContract(
         return false
     }
 
-    if (
-        locationId === "LOCATION_HOKKAIDO_SHIM_MAMUSHI" &&
-        challenge.LocationId === "LOCATION_HOKKAIDO"
-    ) {
-        // Special case: winter festival has its own locationId, but for Hokkaido-wide challenges,
-        // the locationId is "LOCATION_HOKKAIDO",  not "LOCATION_PARENT_HOKKAIDO".
-        return true
-    }
+    const contract = controller.resolveContract(contractId, true)
 
     if (challenge.Type === "global") {
         return inclusionDataCheck(
@@ -174,14 +176,20 @@ function isChallengeInContract(
                               (type) => type !== "tutorial",
                           ),
                   },
-            controller.resolveContract(contractId),
+            contract,
         )
     }
 
-    // Is this for the current contract?
+    // Is this for the current contract or group contract?
     const isForContract = (challenge.InclusionData?.ContractIds || []).includes(
-        contractId,
+        contract.Metadata.Id,
     )
+
+    // Is this for the current contract type?
+    // As of v6.1.0, this is only used for ET challenges.
+    const isForContractType = (
+        challenge.InclusionData?.ContractTypes || []
+    ).includes(controller.resolveContract(contractId).Metadata.Type)
 
     // Is this a location-wide challenge?
     // "location" is more widely used, but "parentlocation" is used in Ambrose and Berlin, as well as some "Discover XX" challenges.
@@ -194,9 +202,17 @@ function isChallengeInContract(
         // 1. The current sub-location, e.g. "LOCATION_COASTALTOWN_NIGHT". This is the most common.
         // 2. The parent location (yup, that can happen), e.g. "LOCATION_PARENT_HOKKAIDO" in Discover Hokkaido.
         challenge.LocationId === locationId ||
-        challenge.LocationId === challenge.ParentLocationId
+        challenge.LocationId === challenge.ParentLocationId ||
+        // Special case: winter festival has its own locationId, but for Hokkaido-wide challenges,
+        // the locationId is "LOCATION_HOKKAIDO",  not "LOCATION_PARENT_HOKKAIDO".
+        (challenge.LocationId === "LOCATION_HOKKAIDO" &&
+            locationId === "LOCATION_HOKKAIDO_SHIM_MAMUSHI")
 
-    return isForContract || (isForLocation && isCurrentLocation)
+    return (
+        isForContract ||
+        isForContractType ||
+        (isForLocation && isCurrentLocation)
+    )
 }
 
 export function filterChallenge(
@@ -215,15 +231,55 @@ export function filterChallenge(
             )
         }
         case ChallengeFilterType.Contracts: {
-            return options.contractIds.some((contractId) =>
-                isChallengeInContract(
-                    contractId,
-                    options.locationId,
-                    gameDifficulty.master, // Get challenges of all difficulties
-                    challenge,
-                    true,
-                ),
-            )
+            if (
+                options.contractIds.some((contractId) =>
+                    isChallengeInContract(
+                        contractId,
+                        options.locationId,
+                        gameDifficulty.master, // Get challenges of all difficulties
+                        challenge,
+                        true,
+                    ),
+                )
+            ) {
+                return true
+            } else if (
+                // If the location has an ET that appeared in an ETA, then all global arcade challenges are shown
+                controller.locationsWithETA.has(options.locationId) &&
+                challenge.Tags.includes("arcade") &&
+                challenge.Type === "global"
+            ) {
+                return true
+            }
+
+            return false
+        }
+        case ChallengeFilterType.ParentLocation: {
+            // Challenges are already organized by parent location
+            // But they contain elusive target challenges, which need to be filtered out
+            if (challenge.Tags.includes("elusive")) {
+                return false
+            }
+
+            if (challenge.Tags.includes("arcade")) {
+                return (
+                    challenge.ParentLocationId === options.parent ||
+                    (challenge.ParentLocationId === "" &&
+                        controller.parentsWithETA.has(options.parent))
+                )
+            }
+
+            if (challenge.Tags.includes("escalation")) {
+                // TODO: change this when pontus is added.
+                return (
+                    !isSniperLocation(options.parent) &&
+                    !["LOCATION_PARENT_SNUG", "LOCATION_PARENT_ROCKY"].includes(
+                        options.parent,
+                    )
+                )
+            }
+
+            return true
         }
     }
 }

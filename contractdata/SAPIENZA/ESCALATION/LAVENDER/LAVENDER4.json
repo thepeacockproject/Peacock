@@ -1,0 +1,151 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "2563b3d9-dd56-427e-bf30-1450c66b8f4b",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "98888ced-60f9-4f83-a93b-bf0ef2963341",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_LAVENDER_LEVEL_4_OBJ_1"
+                },
+                "BriefingText": "$loc UI_CONTRACT_LAVENDER_LEVEL_4_OBJ_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["25d93a2c-5053-42f7-89ba-88d7b3b747e3"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "25d93a2c-5053-42f7-89ba-88d7b3b747e3"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "98888ced-60f9-4f83-a93b-bf0ef2963341"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "25d93a2c-5053-42f7-89ba-88d7b3b747e3"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "f899ee4b-9aba-4267-9052-88786e917e84",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_LAVENDER_LEVEL_4_OBJ_2"
+                },
+                "BriefingText": "$loc UI_CONTRACT_LAVENDER_LEVEL_4_OBJ_2",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["6aeab464-6e6e-4a37-a858-a3e134db672f"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "6aeab464-6e6e-4a37-a858-a3e134db672f"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.Explosive",
+                                                    true
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "6aeab464-6e6e-4a37-a858-a3e134db672f"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [
+            "421c9667-5055-4439-92a3-fa75c49c3050",
+            "da07626c-0aa3-463a-92ff-8e7adbbf6230"
+        ],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "ff1c0065-3d05-4cbf-a8b1-c5d9b5b94ed6",
+        "IsPublished": true,
+        "CreationTimestamp": "2015-08-26T09:02:46.833Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_LAVENDER_LEVEL_4_TITLE",
+        "Description": "UI_CONTRACT_LAVENDER_LEVEL_4_DESC",
+        "CodeName_Hint": "Lavender - Level 4",
+        "Location": "LOCATION_COASTALTOWN",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/CoastalTown/_scene_octopus.entity",
+        "InGroup": "525bd318-04e6-4672-9d01-6bba74362fc5",
+        "Type": "escalation",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "da07626c-0aa3-463a-92ff-8e7adbbf6230" },
+            { "Id": "f899ee4b-9aba-4267-9052-88786e917e84" },
+            { "Id": "421c9667-5055-4439-92a3-fa75c49c3050" },
+            { "Id": "2563b3d9-dd56-427e-bf30-1450c66b8f4b" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:43.6168845Z",
+        "PublicId": "003529239947",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

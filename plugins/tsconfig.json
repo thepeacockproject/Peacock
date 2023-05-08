@@ -1,0 +1,13 @@
+{
+    "extends": ["../tsconfig.json"],
+    "compilerOptions": {
+        // Reset rootDir to default to make rootDirs take effect
+        "rootDir": null,
+        "rootDirs": ["../components", "."],
+        "paths": {
+            "@peacockproject/core/*": ["./components/*"]
+        }
+    },
+    "include": ["*.ts"],
+    "exclude": []
+}

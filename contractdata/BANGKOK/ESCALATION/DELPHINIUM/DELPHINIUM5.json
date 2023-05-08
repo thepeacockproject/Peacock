@@ -1,0 +1,239 @@
+{
+    "Data": {
+        "EnableExits": {
+            "$eq": [
+                "$d12ae90e-c6a6-4295-8e7a-474ab0a50e6c",
+                "$6f917468-bcd4-4adb-b6c6-cf0baa0c9a6b",
+                "$c3494e07-beee-42b9-9b62-1db3c2d63a41",
+                "Completed"
+            ]
+        },
+        "Objectives": [
+            {
+                "Id": "d12ae90e-c6a6-4295-8e7a-474ab0a50e6c",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "3a8207bb-84f5-438f-8f30-5c83aef2af80",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "7f6da010-1a96-4783-83e0-48c55a3e7103",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_DELPHINIUM_OBJ_1"
+                },
+                "BriefingText": "$loc UI_CONTRACT_DELPHINIUM_OBJ_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["ac9fa06a-a37f-4033-ac40-8fcf4e384f4a"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "ac9fa06a-a37f-4033-ac40-8fcf4e384f4a"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "3a8207bb-84f5-438f-8f30-5c83aef2af80"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "7f6da010-1a96-4783-83e0-48c55a3e7103"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "ac9fa06a-a37f-4033-ac40-8fcf4e384f4a"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "6f917468-bcd4-4adb-b6c6-cf0baa0c9a6b",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "7f6da010-1a96-4783-83e0-48c55a3e7103",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_DELPHINIUM_OBJ_2"
+                },
+                "BriefingText": "$loc UI_CONTRACT_DELPHINIUM_OBJ_2",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["f9331697-0f8d-49ca-b09a-e536e4f971af"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "f9331697-0f8d-49ca-b09a-e536e4f971af"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "7f6da010-1a96-4783-83e0-48c55a3e7103"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "f9331697-0f8d-49ca-b09a-e536e4f971af"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "c3494e07-beee-42b9-9b62-1db3c2d63a41",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "7f6da010-1a96-4783-83e0-48c55a3e7103",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_DELPHINIUM_OBJ_3"
+                },
+                "BriefingText": "$loc UI_CONTRACT_DELPHINIUM_OBJ_3",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["b910ac67-f24a-43da-830a-087c5ccc274c"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "b910ac67-f24a-43da-830a-087c5ccc274c"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "7f6da010-1a96-4783-83e0-48c55a3e7103"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "b910ac67-f24a-43da-830a-087c5ccc274c"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [
+            "bd0a9413-cb4d-493f-95f3-849ea7469e45",
+            "ed849749-8bd1-4080-bad2-8c105062397f",
+            "cfe160ec-985d-4f0a-99b2-0fd342d6e889"
+        ],
+        "GameChangerReferences": [],
+        "Entrances": [
+            "3d59f7ff-11b5-4498-925d-d3a2ea148a4e",
+            "9ddbd515-2519-4c16-98aa-0f87af5d8ef5",
+            "3aa4388f-6f87-44a4-b3dc-ac015bf65264",
+            "61f8efe4-7e9e-4add-b69e-bf40213209c2",
+            "b33ae290-5ea1-4229-b41f-680a76d40320",
+            "57e5073f-b4e6-4717-a8db-cbc94cb51087",
+            "c2302bad-8e77-4d72-88c2-36ac1ad8c1b4"
+        ],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "e33119f9-074c-40ab-bcdc-a814c94af747",
+        "IsPublished": true,
+        "CreationTimestamp": "2016-04-18T09:51:27.393Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_DELPHINIUM_LEVEL_5_TITLE",
+        "Description": "",
+        "CodeName_Hint": "Delphinium Level 5",
+        "RequiredUnlockable": "ACCESS_HIT_TIGER",
+        "Location": "LOCATION_BANGKOK",
+        "ScenePath": "assembly:/_pro/scenes/missions/Bangkok/_scene_tiger.entity",
+        "Type": "escalation",
+        "InGroup": "f425e64f-99df-4ebf-9f7d-909a65a26aef",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "cfe160ec-985d-4f0a-99b2-0fd342d6e889" },
+            { "IsNew": true, "Id": "ed849749-8bd1-4080-bad2-8c105062397f" },
+            { "Id": "c3494e07-beee-42b9-9b62-1db3c2d63a41" },
+            { "Id": "bd0a9413-cb4d-493f-95f3-849ea7469e45" },
+            { "Id": "6f917468-bcd4-4adb-b6c6-cf0baa0c9a6b" },
+            { "Id": "d12ae90e-c6a6-4295-8e7a-474ab0a50e6c" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:36.7886729Z",
+        "PublicId": "008138913247",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

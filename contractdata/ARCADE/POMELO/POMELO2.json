@@ -1,0 +1,105 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Bricks": [
+            "assembly:/_PRO/scenes/missions/theark/elusive_skittlebomb.brick"
+        ],
+        "GameChangers": ["f0f53067-2617-4128-8cb7-2a0ae4757a3f"],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/theark/vr_overrides_magpie.brick",
+                    "assembly:/_pro/scenes/missions/theark/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/theark/vr_overrides_magpie.brick"
+                ]
+            }
+        ],
+        "Entrances": [
+            "42bfbe45-85c8-4555-b1fb-256b7006ee06",
+            "9c35b39c-53ca-4d5c-8ec4-90d1fc5a4bb0",
+            "5e30a7b9-7e06-464e-b2eb-1aa23635f500",
+            "95af0d95-bc0d-402e-acb3-ea918a791300",
+            "f6a11cec-cd25-4a4d-80cd-e9939cc081c1",
+            "0df05e9f-78ef-4ce7-b627-b9d1ad55f607"
+        ],
+        "Objectives": [
+            {
+                "Id": "0c66f7ef-91d3-4e9b-b1a0-3d26cb850f57",
+                "Primary": true,
+                "IsHidden": true,
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "0808d791-d0ba-4c71-880f-a31c88ad69d9"
+                    }
+                }
+            },
+            {
+                "Id": "9f14eb28-cc91-44ba-93c4-7b90bae6b912",
+                "Category": "primary",
+                "ForceShowOnLoadingScreen": true,
+                "IsHidden": true,
+                "ObjectiveType": "custom",
+                "Image": "images/contracts/elusive/s2_skittlebomb/objective2.jpg",
+                "BriefingName": "$loc UI_CONTRACT_SKITTLEBOMB_OBJ_2_TITLE",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_SKITTLEBOMB_OBJ_2_TITLE",
+                    "iconType": 17
+                },
+                "BriefingText": "$loc UI_CONTRACT_SKITTLEBOMB_OBJ_2_DESC",
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {
+                        "Targets": ["39dee301-8480-4d74-a100-9a797297bda7"]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "e303a7f6-2f5e-4c2f-84df-f851c14583a5"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "4a5fed90-4725-4475-ae4c-5d359a9fbf3c",
+        "CodeName_Hint": "Pomelo - Level 2 - Skittle Bomb",
+        "Release": "Arcade/Lightpurple",
+        "Type": "arcade",
+        "Title": "UI_CONTRACT_POMELO_LEVEL2_TITLE",
+        "Description": "UI_CONTRACT_POMELO_LEVEL2_DESC",
+        "TileImage": "images/contracts/elusive/s2_skittlebomb/Title.jpg",
+        "Location": "LOCATION_NORTHSEA",
+        "InGroup": "479ec396-b96f-4e01-94d9-aedaa0582ed9",
+        "ScenePath": "assembly:/_pro/scenes/missions/theark/scene_magpie.entity",
+        "Entitlements": ["LOCATION_GOLDEN"],
+        "BriefingVideo": "briefing_skittlebomb",
+        "DebriefingVideo": "debriefing_skittlebomb",
+        "CreationTimestamp": "2012-12-12T12:12:12.743Z",
+        "LastUpdate": "2023-02-24T10:14:38.1744456Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "IsPublished": true,
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "f0f53067-2617-4128-8cb7-2a0ae4757a3f" },
+            { "Id": "9f14eb28-cc91-44ba-93c4-7b90bae6b912" }
+        ],
+        "PublicId": "021705724647"
+    },
+    "UserData": {}
+}

@@ -153,7 +153,7 @@ export function xpRequiredForLevel(level: number): number {
     return Math.max(0, (level - 1) * XP_PER_LEVEL)
 }
 
-//TODO: Determine some mathematical function
+// TODO: Determine some mathematical function
 export const EVERGREEN_LEVEL_INFO: number[] = [
     0, 5000, 10000, 17000, 24000, 31000, 38000, 45000, 52000, 61000, 70000,
     79000, 88000, 97000, 106000, 115000, 124000, 133000, 142000, 154000, 166000,
@@ -185,7 +185,7 @@ export function xpRequiredForEvergreenLevel(level: number): number {
     return EVERGREEN_LEVEL_INFO[level - 1]
 }
 
-//TODO: Determine some mathematical function
+// TODO: Determine some mathematical function
 export const SNIPER_LEVEL_INFO: number[] = [
     0, 50000, 150000, 500000, 1000000, 1700000, 2500000, 3500000, 5000000,
     7000000, 9500000, 12500000, 16000000, 20000000, 25000000, 31000000,
@@ -291,10 +291,15 @@ export function castUserProfile(profile: UserProfile): UserProfile {
     if (j.Extensions?.gamepersistentdata?.PersistentBool) {
         switch (getFlag("mapDiscoveryState")) {
             case "REVEALED":
-                j.Extensions.gamepersistentdata.PersistentBool = {
-                    ...j.Extensions.gamepersistentdata.PersistentBool,
-                    ...getConfig("PersistentBools", true),
+                {
+                    const areas = Object.keys(getConfig("AreaMap", false))
+
+                    for (const area of areas) {
+                        j.Extensions.gamepersistentdata.PersistentBool[area] =
+                            true
+                    }
                 }
+
                 break
             case "CLOUDED":
                 j.Extensions.gamepersistentdata.PersistentBool = {
@@ -314,53 +319,70 @@ export function castUserProfile(profile: UserProfile): UserProfile {
     return j
 }
 
-export function getDefaultSuitFor(location: string) {
-    switch (location) {
-        case "LOCATION_PARENT_ICA_FACILITY":
-            return "TOKEN_OUTFIT_GREENLAND_HERO_TRAININGSUIT"
-        case "LOCATION_PARENT_PARIS":
-            return "TOKEN_OUTFIT_PARIS_HERO_PARISSUIT"
-        case "LOCATION_PARENT_COASTALTOWN":
-            return "TOKEN_OUTFIT_SAPIENZA_HERO_SAPIENZASUIT"
-        case "LOCATION_PARENT_MARRAKECH":
-            return "TOKEN_OUTFIT_MARRAKESH_HERO_MARRAKESHSUIT"
-        case "LOCATION_PARENT_BANGKOK":
-            return "TOKEN_OUTFIT_BANGKOK_HERO_BANGKOKSUIT"
-        case "LOCATION_PARENT_COLORADO":
-            return "TOKEN_OUTFIT_COLORADO_HERO_COLORADOSUIT"
-        case "LOCATION_PARENT_HOKKAIDO":
-            return "TOKEN_OUTFIT_HOKKAIDO_HERO_HOKKAIDOSUIT"
-        case "LOCATION_PARENT_NEWZEALAND":
-            return "TOKEN_OUTFIT_NEWZEALAND_HERO_NEWZEALANDSUIT"
-        case "LOCATION_PARENT_MIAMI":
-            return "TOKEN_OUTFIT_MIAMI_HERO_MIAMISUIT"
-        case "LOCATION_PARENT_COLOMBIA":
-            return "TOKEN_OUTFIT_COLOMBIA_HERO_COLOMBIASUIT"
-        case "LOCATION_PARENT_MUMBAI":
-            return "TOKEN_OUTFIT_MUMBAI_HERO_MUMBAISUIT"
-        case "LOCATION_PARENT_NORTHAMERICA":
-            return "TOKEN_OUTFIT_NORTHAMERICA_HERO_NORTHAMERICASUIT"
-        case "LOCATION_PARENT_NORTHSEA":
-            return "TOKEN_OUTFIT_NORTHSEA_HERO_NORTHSEASUIT"
-        case "LOCATION_PARENT_GREEDY":
-            return "TOKEN_OUTFIT_GREEDY_HERO_GREEDYSUIT"
-        case "LOCATION_PARENT_OPULENT":
-            return "TOKEN_OUTFIT_OPULENT_HERO_OPULENTSUIT"
-        case "LOCATION_PARENT_GOLDEN":
-            return "TOKEN_OUTFIT_HERO_GECKO_SUIT"
-        case "LOCATION_PARENT_ANCESTRAL":
-            return "TOKEN_OUTFIT_ANCESTRAL_HERO_ANCESTRALSUIT"
-        case "LOCATION_PARENT_EDGY":
-            return "TOKEN_OUTFIT_EDGY_HERO_EDGYSUIT"
-        case "LOCATION_PARENT_WET":
-            return "TOKEN_OUTFIT_WET_HERO_WETSUIT"
-        case "LOCATION_PARENT_ELEGANT":
-            return "TOKEN_OUTFIT_ELEGANT_HERO_LLAMASUIT"
-        case "LOCATION_PARENT_ROCKY":
-            return "TOKEN_OUTFIT_HERO_DUGONG_SUIT"
-        default:
-            return "TOKEN_OUTFIT_HITMANSUIT"
-    }
+export const defaultSuits = {
+    LOCATION_PARENT_ICA_FACILITY: "TOKEN_OUTFIT_GREENLAND_HERO_TRAININGSUIT",
+    LOCATION_PARENT_PARIS: "TOKEN_OUTFIT_PARIS_HERO_PARISSUIT",
+    LOCATION_PARENT_COASTALTOWN: "TOKEN_OUTFIT_SAPIENZA_HERO_SAPIENZASUIT",
+    LOCATION_COASTALTOWN_MOVIESET:
+        "TOKEN_OUTFIT_SAPIENZA_HERO_SAPIENZASUIT_NOGLASSES",
+    LOCATION_COASTALTOWN_EBOLA:
+        "TOKEN_OUTFIT_SAPIENZA_HERO_SAPIENZASUIT_NOGLASSES",
+    LOCATION_PARENT_MARRAKECH: "TOKEN_OUTFIT_MARRAKESH_HERO_MARRAKESHSUIT",
+    LOCATION_PARENT_BANGKOK: "TOKEN_OUTFIT_BANGKOK_HERO_BANGKOKSUIT",
+    LOCATION_PARENT_COLORADO: "TOKEN_OUTFIT_COLORADO_HERO_COLORADOSUIT",
+    LOCATION_PARENT_HOKKAIDO: "TOKEN_OUTFIT_HOKKAIDO_HERO_HOKKAIDOSUIT",
+    LOCATION_PARENT_NEWZEALAND: "TOKEN_OUTFIT_WET_SUIT",
+    LOCATION_PARENT_MIAMI: "TOKEN_OUTFIT_MIAMI_HERO_MIAMISUIT",
+    LOCATION_PARENT_COLOMBIA: "TOKEN_OUTFIT_COLOMBIA_HERO_COLOMBIASUIT",
+    LOCATION_PARENT_MUMBAI: "TOKEN_OUTFIT_MUMBAI_HERO_MUMBAISUIT",
+    LOCATION_PARENT_NORTHAMERICA:
+        "TOKEN_OUTFIT_NORTHAMERICA_HERO_NORTHAMERICASUIT",
+    LOCATION_PARENT_NORTHSEA: "TOKEN_OUTFIT_NORTHSEA_HERO_NORTHSEASUIT",
+    LOCATION_PARENT_GREEDY: "TOKEN_OUTFIT_GREEDY_HERO_GREEDYSUIT",
+    LOCATION_PARENT_OPULENT: "TOKEN_OUTFIT_OPULENT_HERO_OPULENTSUIT",
+    LOCATION_PARENT_GOLDEN: "TOKEN_OUTFIT_HERO_GECKO_SUIT",
+    LOCATION_PARENT_ANCESTRAL: "TOKEN_OUTFIT_ANCESTRAL_HERO_ANCESTRALSUIT",
+    LOCATION_ANCESTRAL_SMOOTHSNAKE:
+        "TOKEN_OUTFIT_ANCESTRAL_HERO_SMOOTHSNAKESUIT",
+    LOCATION_PARENT_EDGY: "TOKEN_OUTFIT_EDGY_HERO_EDGYSUIT",
+    LOCATION_PARENT_WET: "TOKEN_OUTFIT_WET_HERO_WETSUIT",
+    LOCATION_PARENT_ELEGANT: "TOKEN_OUTFIT_ELEGANT_HERO_LLAMASUIT",
+    LOCATION_PARENT_TRAPPED: "TOKEN_OUTFIT_TRAPPED_WOLVERINE_SUIT",
+    LOCATION_PARENT_ROCKY: "TOKEN_OUTFIT_HERO_DUGONG_SUIT",
+}
+
+/**
+ * Default suits that are attainable via challenges or mastery in this version.
+ * NOTE: Currently this is hardcoded. To allow for flexibility and extensibility, this should be generated in real-time
+ * using the Drops of challenges and masteries. However, that would require looping through all challenges and masteries
+ * for all default suits, which is slow. This is a trade-off.
+ * @param   gameVersion The game version.
+ * @returns  The default suits that are attainable via challenges or mastery.
+ */
+export function attainableDefaults(gameVersion: GameVersion): string[] {
+    return gameVersion === "h1"
+        ? []
+        : gameVersion === "h2"
+        ? ["TOKEN_OUTFIT_WET_SUIT"]
+        : [
+              "TOKEN_OUTFIT_GREENLAND_HERO_TRAININGSUIT",
+              "TOKEN_OUTFIT_WET_SUIT",
+              "TOKEN_OUTFIT_HERO_DUGONG_SUIT",
+          ]
+}
+
+/**
+ * Gets the default suit for a given sub-location and parent location.
+ * Priority is given to the sub-location, then the parent location, then 47's signature suit.
+ * @param subLocation The sub-location.
+ * @returns The default suit for the given sub-location and parent location.
+ */
+export function getDefaultSuitFor(subLocation: Unlockable) {
+    return (
+        defaultSuits[subLocation.Id] ||
+        defaultSuits[subLocation.Properties.ParentLocation] ||
+        "TOKEN_OUTFIT_HITMANSUIT"
+    )
 }
 
 export const nilUuid = "00000000-0000-0000-0000-000000000000"
@@ -381,6 +403,7 @@ export function isObjectiveActive(
             )
         }
     }
+
     return false
 }
 
@@ -530,6 +553,7 @@ export function fastClone<T>(item: T): T {
             } else {
                 // object literal
                 result = {}
+
                 for (const i in item) {
                     result[i] = fastClone(item[i])
                 }
@@ -540,4 +564,27 @@ export function fastClone<T>(item: T): T {
     }
 
     return result
+}
+
+/**
+ * Returns if the specified repository ID is a suit.
+ *
+ * @param repoId The repository ID.
+ * @returns If the repository ID points to a suit.
+ */
+export function isSuit(repoId: string): boolean {
+    const suitsToTypeMap: Record<string, string> = {}
+
+    const unlockablesFiltered = getConfig<readonly Unlockable[]>(
+        "allunlockables",
+        false,
+    ).filter((unlockable) => unlockable.Type === "disguise")
+
+    for (const u of unlockablesFiltered) {
+        suitsToTypeMap[u.Properties.RepositoryId] = u.Subtype
+    }
+
+    return suitsToTypeMap[repoId]
+        ? suitsToTypeMap[repoId] !== "disguise"
+        : false
 }

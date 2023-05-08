@@ -1,0 +1,124 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "2e05ae79-8732-4cef-a3d3-4fe9b1cdd3bd",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "2894c92d-b780-412f-a48f-5c5ddf0dafc8",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_BEGONIA_OBJ_1_1"
+                },
+                "BriefingText": "$loc UI_CONTRACT_BEGONIA_OBJ_1_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["685a140b-79c3-41d1-a6b0-78d085f1bcc7"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "685a140b-79c3-41d1-a6b0-78d085f1bcc7"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "2894c92d-b780-412f-a48f-5c5ddf0dafc8"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "685a140b-79c3-41d1-a6b0-78d085f1bcc7"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "4a9ee335-bb2e-4092-b1fe-96e833266f67",
+                "Category": "primary",
+                "ObjectiveType": "setpiece",
+                "Image": "images/contracts/gamechangers/Gamechanger_Sapienza_DataExtraction_Lab.jpg",
+                "BriefingName": "$loc UI_GAMECHANGERS_SAPIENZA_HACKABLE_LAPTOP_LAB_NAME",
+                "BriefingText": "$loc UI_CONTRACT_BEGONIA_OBJ_2",
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_BEGONIA_OBJ_2" },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {
+                        "Targets": ["23e0a54d-5927-4a7f-8305-3c24821a56dc"]
+                    },
+                    "States": {
+                        "Start": {
+                            "LaptopHacked": { "Transition": "Success" },
+                            "Laptop_Destroyed": { "Transition": "Failure" }
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "479b321e-0e63-4987-909e-9b05cd96213c",
+                "Category": "primary",
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "5f31147f-ccfd-4f34-9fa6-4c7630f5279e"
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": ["3730bd53-ed5a-4d59-b2dc-9b9b009f8a8c"],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "28b063b8-3f11-42da-abc9-46ca08736f37",
+        "IsPublished": true,
+        "CreationTimestamp": "2015-11-16T16:11:04.293Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_BEGONIA_LEVEL_3_TITLE",
+        "Description": "",
+        "CodeName_Hint": "Begonia - Level 3",
+        "Location": "LOCATION_COASTALTOWN",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/CoastalTown/_scene_octopus.entity",
+        "Type": "escalation",
+        "InGroup": "95bb86f8-fbbf-4eb0-b2fa-bd379c0a4878",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "479b321e-0e63-4987-909e-9b05cd96213c" },
+            { "Id": "4a9ee335-bb2e-4092-b1fe-96e833266f67" },
+            { "Id": "3730bd53-ed5a-4d59-b2dc-9b9b009f8a8c" },
+            { "Id": "2e05ae79-8732-4cef-a3d3-4fe9b1cdd3bd" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:29.7730147Z",
+        "PublicId": "003831433947",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

@@ -1,0 +1,206 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "218f73bc-c5a7-44cc-bb65-c181d3c04b14",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "weapontype",
+                        "RepositoryId": "901a3b51-51a0-4236-bdf2-23d20696b358",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_PEONY_OBJ_1" },
+                "BriefingText": "$loc UI_CONTRACT_PEONY_OBJ_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["ab6d4ee5-6252-4592-8ea6-76dd77ec708d"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "ab6d4ee5-6252-4592-8ea6-76dd77ec708d"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemCategory",
+                                                    "shotgun"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "ab6d4ee5-6252-4592-8ea6-76dd77ec708d"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "4537be7c-1cd1-4b87-a91e-7e7b0931bd79",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "weapontype",
+                        "RepositoryId": "c6c1ceca-5740-474b-aa77-6655bc87e5a8",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "26ae3261-2a1d-49b2-8cab-d626d0887836",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_PEONY_OBJ_2" },
+                "BriefingText": "$loc UI_CONTRACT_PEONY_OBJ_2",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["5fbd8b71-f798-48d3-9db1-263bd29352f2"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "5fbd8b71-f798-48d3-9db1-263bd29352f2"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemCategory",
+                                                    "assaultrifle"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "26ae3261-2a1d-49b2-8cab-d626d0887836"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "5fbd8b71-f798-48d3-9db1-263bd29352f2"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "6445146d-c961-4b3d-a658-0406f39f19bd",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_PEONY_OBJ_3" },
+                "BriefingText": "$loc UI_CONTRACT_PEONY_OBJ_3",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["dab6ebca-cd7d-467a-b569-ab5a1a6e693f"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "dab6ebca-cd7d-467a-b569-ab5a1a6e693f"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillClass",
+                                                    "explosion"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "dab6ebca-cd7d-467a-b569-ab5a1a6e693f"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [
+            "c857ca64-24be-44e7-be91-b74f1394d3b8",
+            "576b385f-2213-4f72-a17c-c346338d3d9f"
+        ],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "7bf14497-f478-4cd7-b35f-b04933ca80bb",
+        "InGroup": "e75663c8-afca-45a1-af18-25fe3e663848",
+        "IsPublished": true,
+        "CreationTimestamp": "2015-10-19T12:15:28.31Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_PEONY_LEVEL_5_TITLE",
+        "Description": "UI_CONTRACT_PEONY_LEVEL_5_DESC",
+        "CodeName_Hint": "Peony - Level 5",
+        "Location": "LOCATION_PARIS",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Paris/_scene_paris.entity",
+        "Type": "escalation",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "576b385f-2213-4f72-a17c-c346338d3d9f" },
+            { "Id": "c857ca64-24be-44e7-be91-b74f1394d3b8" },
+            { "Id": "6445146d-c961-4b3d-a658-0406f39f19bd" },
+            { "Id": "4537be7c-1cd1-4b87-a91e-7e7b0931bd79" },
+            { "Id": "218f73bc-c5a7-44cc-bb65-c181d3c04b14" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:47.5231479Z",
+        "PublicId": "002879871647",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

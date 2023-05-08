@@ -1,0 +1,402 @@
+{
+    "Data": {
+        "EnableExits": {
+            "$eq": ["$4bb96825-ac68-496b-aadc-9cab1efe0e83", "Completed"]
+        },
+        "Bricks": [
+            "Assembly:/_PRO/Scenes/missions/golden/mission_gecko/golden_lunaria.brick",
+            "Assembly:/_PRO/Scenes/missions/golden/mission_gecko/golden_lunaria_level1.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/scenes/missions/golden/mission_gecko/vr_overrides_golden_gecko.brick",
+                    "assembly:/_PRO/scenes/missions/golden/mission_gecko/vr_overrides_ps4perf.brick",
+                    "assembly:/_PRO/scenes/missions/golden/mission_gecko/vr_overrides_lunaria.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/scenes/missions/golden/mission_gecko/vr_overrides_golden_gecko.brick",
+                    "assembly:/_PRO/scenes/missions/golden/mission_gecko/vr_overrides_lunaria.brick"
+                ]
+            }
+        ],
+        "DevOnlyBricks": [],
+        "GameChangers": [
+            "3db72bb5-63d6-47fe-9332-d7ea3c195e06",
+            "b25d2017-f68e-4914-8c3c-19b21dfb18dd",
+            "4fd079b5-4238-453a-84c9-2183f3dc0b7e"
+        ],
+        "Entrances": [],
+        "MandatoryLoadout": [],
+        "GameChangerReferences": [],
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "_comment": "----- Silent objective to start everything -----",
+                "Id": "06264d54-1e76-4e8c-a4e4-9316b380f23e",
+                "Type": "statemachine",
+                "Category": "condition",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                },
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "ContractStart": [{ "Transition": "Success" }]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Eliminate noncontroversial npc",
+                "Id": "06812740-d5f1-46bd-907d-0f9ff49983c6",
+                "Category": "primary",
+                "BriefingName": "",
+                "Image": "images/actors/actor_94c19497-fcee-4f5d-ab30-d4bda104e1ac.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "snap_neck",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_LUNARIA_BREAKNECK_01"
+                },
+                "BriefingText": "$loc UI_CONTRACT_LUNARIA_BREAKNECK_01",
+                "Type": "statemachine",
+                "Activation": {
+                    "$eq": [
+                        "$06264d54-1e76-4e8c-a4e4-9316b380f23e",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": { "IfInProgress": { "Visible": false } },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["94c19497-fcee-4f5d-ab30-d4bda104e1ac"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "94c19497-fcee-4f5d-ab30-d4bda104e1ac"
+                                                ]
+                                            },
+                                            {
+                                                "$or": [
+                                                    {
+                                                        "$any": {
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "CoupDeGrace"
+                                                                ]
+                                                            },
+                                                            "in": "$Value.DamageEvents"
+                                                        }
+                                                    },
+                                                    {
+                                                        "$any": {
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "Subdue"
+                                                                ]
+                                                            },
+                                                            "in": "$Value.DamageEvents"
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "94c19497-fcee-4f5d-ab30-d4bda104e1ac"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Eliminate staffer near black gold bar. Break neck",
+                "Id": "f118a284-d8be-4350-bc3e-2aa52f3e8ed4",
+                "Category": "primary",
+                "BriefingName": "",
+                "Image": "images/actors/actor_5711a570-eefa-44ac-a8a3-d72ef2880f1e.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "snap_neck",
+                        "HardCondition": true
+                    }
+                ],
+                "ExcludeFromScoring": true,
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_LUNARIA_BREAKNECK_02"
+                },
+                "BriefingText": "$loc UI_CONTRACT_LUNARIA_BREAKNECK_02",
+                "Type": "statemachine",
+                "Activation": {
+                    "$eq": [
+                        "$06812740-d5f1-46bd-907d-0f9ff49983c6",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": { "IfInProgress": { "Visible": false } },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["5711a570-eefa-44ac-a8a3-d72ef2880f1e"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "5711a570-eefa-44ac-a8a3-d72ef2880f1e"
+                                                ]
+                                            },
+                                            {
+                                                "$or": [
+                                                    {
+                                                        "$any": {
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "CoupDeGrace"
+                                                                ]
+                                                            },
+                                                            "in": "$Value.DamageEvents"
+                                                        }
+                                                    },
+                                                    {
+                                                        "$any": {
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "Subdue"
+                                                                ]
+                                                            },
+                                                            "in": "$Value.DamageEvents"
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "5711a570-eefa-44ac-a8a3-d72ef2880f1e"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Eliminate techie on the balcony. thrown item",
+                "Id": "1058ce12-fa73-43e7-a99a-c5d674c131c3",
+                "Category": "primary",
+                "BriefingName": "",
+                "ExcludeFromScoring": true,
+                "Image": "images/actors/actor_c5964a9b-73a1-4c39-b7d6-6cab1e13d388.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "throw",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_LUNARIA_THROWNITEM01"
+                },
+                "BriefingText": "$loc UI_CONTRACT_LUNARIA_THROWNITEM01",
+                "Type": "statemachine",
+                "Activation": {
+                    "$eq": [
+                        "$f118a284-d8be-4350-bc3e-2aa52f3e8ed4",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": { "IfInProgress": { "Visible": false } },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["c5964a9b-73a1-4c39-b7d6-6cab1e13d388"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "c5964a9b-73a1-4c39-b7d6-6cab1e13d388"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": ["$.#", "throw"]
+                                                    },
+                                                    "in": [
+                                                        "$Value.KillMethodBroad",
+                                                        "$Value.KillMethodStrict"
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "c5964a9b-73a1-4c39-b7d6-6cab1e13d388"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Silent objective to unlock exits -----",
+                "Id": "4bb96825-ac68-496b-aadc-9cab1efe0e83",
+                "Type": "statemachine",
+                "Category": "condition",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                },
+                "Definition": {
+                    "Context": {
+                        "Greedies": [
+                            "94c19497-fcee-4f5d-ab30-d4bda104e1ac",
+                            "5711a570-eefa-44ac-a8a3-d72ef2880f1e",
+                            "c5964a9b-73a1-4c39-b7d6-6cab1e13d388"
+                        ],
+                        "GreedKilledCounter": 0,
+                        "GreedKilledGoal": 1,
+                        "update_counter": 1
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$inarray": {
+                                            "in": "$.Greedies",
+                                            "?": {
+                                                "$eq": [
+                                                    "$.#",
+                                                    "$Value.RepositoryId"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "Actions": {
+                                        "$inc": "GreedKilledCounter",
+                                        "$dec": "update_counter"
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.GreedKilledCounter", 1]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "d97d1485-e313-42c7-9d74-9efc9c1aab4e",
+        "IsPublished": true,
+        "CreationTimestamp": "2018-10-17T14:35:18.194497Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_LUNARIA_LEVEL_1_NAME",
+        "Description": "UI_CONTRACT_LUNARIA_GROUP_DESC",
+        "CodeName_Hint": "Lunaria - Level 1",
+        "Location": "LOCATION_GOLDEN_GECKO",
+        "ScenePath": "assembly:/_pro/scenes/missions/golden/mission_gecko/scene_gecko_lunaria.entity",
+        "Type": "escalation",
+        "Release": "3.2.0 Escalation",
+        "InGroup": "ae04c7a0-4028-4524-b27f-6a62f020fdca",
+        "Entitlements": ["H3_DEADLYSINS_GREED"],
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "06812740-d5f1-46bd-907d-0f9ff49983c6" },
+            { "IsNew": true, "Id": "f118a284-d8be-4350-bc3e-2aa52f3e8ed4" },
+            { "IsNew": true, "Id": "1058ce12-fa73-43e7-a99a-c5d674c131c3" },
+            { "IsNew": true, "Id": "3db72bb5-63d6-47fe-9332-d7ea3c195e06" },
+            { "IsNew": true, "Id": "f80d9b6b-d65d-4ffe-ba1b-ab760227d7e6" },
+            { "IsNew": true, "Id": "b25d2017-f68e-4914-8c3c-19b21dfb18dd" },
+            { "IsNew": true, "Id": "4fd079b5-4238-453a-84c9-2183f3dc0b7e" }
+        ],
+        "LastUpdate": "2023-03-30T11:20:26.7566325Z",
+        "PublicId": "027932432547",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Golden_Lunaria.jpg"
+    },
+    "UserData": {}
+}

@@ -1,0 +1,156 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "0cccbea8-cf5e-443c-aa7f-6c5114ee5d5d",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "BriefingName": "$loc UI_CONTRACT_TORENIA_OBJECTIVE_1_NAME",
+                "Image": "images/actors/actor_642c20f9-bf41-41b4-b0bb-2491b5be938a_0_0_0.jpg",
+                "TargetConditions": [],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_TORENIA_OBJECTIVE_1"
+                },
+                "BriefingText": "$loc UI_CONTRACT_TORENIA_OBJECTIVE_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "Targets": ["ab22f88d-f567-43a2-b20f-0ecc17257ffe"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Pacify": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "ab22f88d-f567-43a2-b20f-0ecc17257ffe"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "b549ea89-e9cc-44f4-87ae-7145a7060028"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "657d1b4b-ed9a-4f7f-b30a-cea748d2b644"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "ab22f88d-f567-43a2-b20f-0ecc17257ffe"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ],
+                            "Bat_OutOfReach": { "Transition": "Failure" },
+                            "Kill": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "ab22f88d-f567-43a2-b20f-0ecc17257ffe"
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "33f8488a-d8d9-46d9-be32-2a361208957e",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "BriefingName": "$loc UI_CONTRACT_TORENIA_BALOON_BRIEFING_NAME",
+                "Image": "images/contracts/escalation/ContractEscalation_Paris_Torenia_Balloons_Obj.jpg",
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_TORENIA_OBJ_2" },
+                "BriefingText": "$loc UI_CONTRACT_TORENIA_BALOON_BRIEFING_DESC",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "AmountToShoot": 5,
+                        "Targets": [],
+                        "TargetsCounter": 0
+                    },
+                    "ContextListeners": {
+                        "TargetsCounter": {
+                            "type": "objective-counter",
+                            "header": "UI_CONTRACT_TORENIA_BALOON_HEAD"
+                        }
+                    },
+                    "States": {
+                        "Start": {
+                            "BalloonShot": {
+                                "Actions": {
+                                    "$dec": "AmountToShoot",
+                                    "$inc": "TargetsCounter"
+                                },
+                                "Transition": "CheckCount"
+                            }
+                        },
+                        "CheckCount": {
+                            "-": [
+                                {
+                                    "Actions": {
+                                        "$set": ["TargetsCounter", 0]
+                                    },
+                                    "Condition": {
+                                        "$eq": ["$.AmountToShoot", 0]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                { "Transition": "Start" }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [
+            "63055f1a-bcd2-4e0f-8caf-b446f01d02f3",
+            "61d70ece-aa00-4840-9479-c9f6cd5e9e95"
+        ],
+        "Entrances": ["461d35f5-55f5-4b07-884c-1fc1af3d1dc0"],
+        "Stashpoints": [],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "2eb41963-a140-4ecb-9a05-327d4fd65408",
+        "IsPublished": true,
+        "CreationTimestamp": "2015-08-19T12:08:33.08Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_TORENIA_LEVEL_2_TITLE",
+        "Description": "",
+        "CodeName_Hint": "Torenia - Level 2",
+        "RequiredUnlockable": "ACCESS_HIT_PEACOCK",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Paris/_scene_paris_torenia.entity",
+        "Location": "LOCATION_PARIS",
+        "Type": "escalation",
+        "InGroup": "4f6ee6ec-b6d7-4958-9838-0352c10294a0",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "33f8488a-d8d9-46d9-be32-2a361208957e" },
+            { "Id": "0cccbea8-cf5e-443c-aa7f-6c5114ee5d5d" },
+            { "Id": "63055f1a-bcd2-4e0f-8caf-b446f01d02f3" },
+            { "Id": "61d70ece-aa00-4840-9479-c9f6cd5e9e95" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:51.4762958Z",
+        "PublicId": "002223078447",
+        "Entitlements": ["TOKEN_OUTFIT_PARIS_CLOWN", "H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

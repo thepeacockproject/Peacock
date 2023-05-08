@@ -1,0 +1,232 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "_comment": "Jed West",
+                "Type": "statemachine",
+                "Id": "5a49ee9f-97e7-4e3b-90e6-0baa6d01b094",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository 233503c3-d3bd-4900-b501-90d4c95b03d4).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_THORNBUSH_OBJ1"
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["233503c3-d3bd-4900-b501-90d4c95b03d4"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "233503c3-d3bd-4900-b501-90d4c95b03d4"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "fiberwire"
+                                                        ]
+                                                    },
+                                                    "in": [
+                                                        "$Value.KillMethodBroad",
+                                                        "$Value.KillMethodStrict"
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "233503c3-d3bd-4900-b501-90d4c95b03d4"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "RepositoryId": "1a11a060-358c-4054-98ec-d3491af1d7c6",
+                        "HardCondition": true,
+                        "KillMethod": "fiberwire"
+                    }
+                ]
+            },
+            {
+                "_comment": "Richard Wilson",
+                "Type": "statemachine",
+                "ObjectiveType": "customkill",
+                "Id": "77daefbe-1b3c-40ab-b0eb-502dfe10231e",
+                "BriefingText": "$loc UI_PEACOCK_THORNBUSH_OBJ2_EXT",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_THORNBUSH_OBJ2"
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["7af86858-df9d-478b-b5d8-803379cd165f"]
+                    },
+                    "States": {
+                        "Start": {
+                            "IntroCutEnd": { "Transition": "InFirstTimer" }
+                        },
+                        "InFirstTimer": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "acc9d7b8-80f1-4bb0-ba81-3a69b09e0543"
+                                    ]
+                                },
+                                "Transition": "InSecondTimer"
+                            },
+                            "Kill": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "7af86858-df9d-478b-b5d8-803379cd165f"
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            }
+                        },
+                        "InSecondTimer": {
+                            "$timer": {
+                                "Condition": { "$after": 35 },
+                                "Transition": "Failure"
+                            },
+                            "Kill": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "7af86858-df9d-478b-b5d8-803379cd165f"
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            },
+                            "Pacify": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "7af86858-df9d-478b-b5d8-803379cd165f"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "acc9d7b8-80f1-4bb0-ba81-3a69b09e0543"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "7af86858-df9d-478b-b5d8-803379cd165f"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "bone",
+                "Id": "bb3b562d-b08b-41e5-ac57-801dc80532b0",
+                "Type": "statemachine",
+                "ObjectiveType": "custom",
+                "Category": "primary",
+                "BriefingName": "$loc UI_PROP_MELEE_MEAT_JOINT_NAME",
+                "BriefingText": "$loc UI_PEACOCK_THORNBUSH_OBJ3_EXT",
+                "HUDTemplate": {
+                    "iconType": 17,
+                    "display": "$loc UI_PEACOCK_THORNBUSH_OBJ3"
+                },
+                "Image": "images/unlockables/item_perspective_acc9d7b8-80f1-4bb0-ba81-3a69b09e0543_0.jpg",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["acc9d7b8-80f1-4bb0-ba81-3a69b09e0543"]
+                    },
+                    "States": {
+                        "Start": {
+                            "IntroCutEnd": { "Transition": "InFirstTimer" }
+                        },
+                        "InFirstTimer": {
+                            "$timer": {
+                                "Condition": { "$after": 35 },
+                                "Transition": "Failure"
+                            },
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "acc9d7b8-80f1-4bb0-ba81-3a69b09e0543"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            },
+                            "Pacify": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "7af86858-df9d-478b-b5d8-803379cd165f"
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Title": "UI_PEACOCK_THORNBUSH2",
+        "InGroup": "218302a3-f682-46f9-9ffd-bb3e82487b7c",
+        "Id": "b07af7b6-01cb-4cee-83bf-2c73f71bf2a3",
+        "Type": "escalation",
+        "Entitlements": ["H2_LEGACY_STANDARD"],
+        "TileImage": "images/contracts/escalation/contractescalation_thornbush.png",
+        "Location": "LOCATION_NORTHAMERICA",
+        "ScenePath": "assembly:/_pro/scenes/missions/skunk/scene_skunk.entity",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "77daefbe-1b3c-40ab-b0eb-502dfe10231e", "IsNew": true },
+            { "Id": "5a49ee9f-97e7-4e3b-90e6-0baa6d01b094" },
+            { "Id": "bb3b562d-b08b-41e5-ac57-801dc80532b0", "IsNew": true }
+        ]
+    },
+    "Peacock": { "noAgencyPickupsActive": true }
+}

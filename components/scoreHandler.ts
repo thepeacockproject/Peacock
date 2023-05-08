@@ -34,17 +34,17 @@ import { contractSessions, getCurrentState } from "./eventHandler"
 import { getConfig } from "./configSwizzleManager"
 import { _theLastYardbirdScpc, controller } from "./controller"
 import type {
+    ContractHistory,
     ContractSession,
     GameChanger,
     GameVersion,
     MissionManifest,
     MissionManifestObjective,
-    RatingKill,
     RequestWithJwt,
     Seconds,
 } from "./types/types"
 import {
-    contractIdToEscalationGroupId,
+    escalationTypes,
     getLevelCount,
 } from "./contracts/escalations/escalationService"
 import { getUserData, writeUserData } from "./databaseHandler"
@@ -56,7 +56,7 @@ import {
     getSubLocationByName,
 } from "./contracts/dataGen"
 import { liveSplitManager } from "./livesplit/liveSplitManager"
-import { Playstyle, ScoringHeadline } from "./types/scoring"
+import { ScoringHeadline } from "./types/scoring"
 import { MissionEndRequestQuery } from "./types/gameSchemas"
 import { ChallengeFilterType } from "./candle/challengeHelpers"
 import { getCompletionPercent } from "./menus/destinations"
@@ -70,152 +70,16 @@ import {
 } from "./types/score"
 import { MasteryData } from "./types/mastery"
 import { getDataForUnlockables } from "./inventory"
+import { calculatePlaystyle } from "./playStyles"
 
-/**
- * Checks the criteria of each possible play-style, ranking them by scoring.
- *
- * @author CurryMaker
- * @param session The contract session.
- * @returns The play-styles, ranked from best fit to worst fit.
- */
-//TODO: This could use an update with more playstyles
-export function calculatePlaystyle(
-    session: Partial<{ kills: Set<RatingKill> }>,
-): Playstyle[] {
-    const playstylesCopy = getConfig("Playstyles", true) as Playstyle[]
-
-    // Resetting the scores...
-    playstylesCopy.forEach((p) => {
-        p.Score = 0
-    })
-
-    const doneWeaponTypes: string[] = []
-    const doneKillMethods: string[] = []
-    const doneAccidents: string[] = []
-
-    session.kills.forEach((k) => {
-        if (k.KillClass === "ballistic") {
-            if (k.KillItemCategory === "pistol") {
-                playstylesCopy[1].Score += 6000
-            }
-
-            if (k.IsHeadshot) {
-                playstylesCopy[0].Score += 6000
-            } else {
-                playstylesCopy[0].Score -= 2000
-            }
-
-            if (doneWeaponTypes.includes(k.KillItemCategory)) {
-                playstylesCopy[2].Score -= 2000
-            } else {
-                playstylesCopy[2].Score += 6000
-                doneWeaponTypes.push(k.KillItemCategory)
-            }
-
-            if (k.KillItemCategory === "shotgun") {
-                playstylesCopy[7].Score += 6000
-            }
-
-            if (k.KillItemCategory === "assaultrifle") {
-                playstylesCopy[9].Score += 6000
-            }
-
-            if (k.KillItemCategory === "sniperrifle") {
-                playstylesCopy[10].Score += 6000
-            }
-
-            if (k.KillItemCategory === "smg") {
-                playstylesCopy[15].Score += 6000
-            }
-        } else if (k.KillClass === "melee") {
-            if (
-                k.KillMethodBroad === "accident" &&
-                k.KillItemCategory === undefined
-            ) {
-                playstylesCopy[4].Score += 6000
-            }
-
-            if (k.KillMethodStrict === "fiberwire") {
-                playstylesCopy[13].Score += 6000
-            }
-
-            if (k.KillMethodBroad === "unarmed") {
-                playstylesCopy[16].Score += 6000
-            }
-
-            if (k.KillMethodStrict === "accident_drown") {
-                playstylesCopy[6].Score += 6000
-            }
-
-            if (k.KillMethodBroad === "accident") {
-                if (doneAccidents.includes(k.KillMethodStrict)) {
-                    playstylesCopy[8].Score -= 2000
-                } else {
-                    playstylesCopy[8].Score += 6000
-                    doneAccidents.push(k.KillMethodStrict)
-                }
-            }
-
-            playstylesCopy[5].Score += 6000
-        } else if (k.KillClass === "explosion") {
-            if (k.KillMethodBroad === "explosive") {
-                playstylesCopy[12].Score += 6000
-            }
-            if (k.KillMethodBroad === "accident") {
-                playstylesCopy[19].Score += 6000
-            }
-        } else if (k.KillClass === "unknown") {
-            if (k.KillMethodStrict === "accident_electric") {
-                playstylesCopy[11].Score += 6000
-            }
-
-            if (k.KillMethodStrict === "accident_suspended_object") {
-                playstylesCopy[14].Score += 6000
-            }
-
-            if (k.KillMethodStrict === "accident_burn") {
-                playstylesCopy[18].Score += 6000
-            }
-
-            if (doneAccidents.includes(k.KillMethodStrict)) {
-                playstylesCopy[8].Score -= 2000
-            } else {
-                playstylesCopy[8].Score += 6000
-                doneAccidents.push(k.KillMethodStrict)
-            }
-        } else if (k.KillClass === "poison") {
-            playstylesCopy[17].Score += 6000
-        }
-
-        if (doneKillMethods.includes(k.KillClass)) {
-            playstylesCopy[3].Score -= 2000
-        } else {
-            playstylesCopy[3].Score += 6000
-            doneKillMethods.push(k.KillClass)
-        }
-    })
-
-    playstylesCopy.sort((a, b) => {
-        if (a.Score > b.Score) {
-            return -1
-        }
-        if (b.Score > a.Score) {
-            return 1
-        }
-        return 0
-    })
-
-    return playstylesCopy
-}
-
-export function calculateXp(
+export function calculateGlobalXp(
     contractSession: ContractSession,
     gameVersion: GameVersion,
 ): CalculateXpResult {
     const completedChallenges: MissionEndChallenge[] = []
     let totalXp = 0
 
-    //TODO: Merge with the non-global challenges?
+    // TODO: Merge with the non-global challenges?
     for (const challengeId of Object.keys(contractSession.challengeContexts)) {
         const data = contractSession.challengeContexts[challengeId]
 
@@ -241,7 +105,7 @@ export function calculateXp(
             ChallengeName: challenge.Name,
             ChallengeImageUrl: challenge.ImageName,
             ChallengeDescription: challenge.Description,
-            //TODO: We probably have to use Repeatable here somehow to determine when to "repeat" a challenge.
+            // TODO: We probably have to use Repeatable here somehow to determine when to "repeat" a challenge.
             XPGain: challengeXp,
             IsGlobal: true,
             IsActionReward: challenge.Tags.includes("actionreward"),
@@ -259,12 +123,11 @@ export function calculateXp(
 
 export function calculateScore(
     gameVersion: GameVersion,
-    contractSessionId: string,
     contractSession: ContractSession,
     contractData: MissionManifest,
     timeTotal: Seconds,
 ): CalculateScoreResult {
-    //Bonuses
+    // Bonuses
     const bonuses = [
         {
             headline: "UI_SCORING_SUMMARY_OBJECTIVES",
@@ -283,7 +146,7 @@ export function calculateScore(
                                 contractSession.completedObjectives,
                             )) ||
                         "Success" ===
-                            getCurrentState(contractSessionId, obj.Id),
+                            getCurrentState(contractSession.Id, obj.Id),
                 ),
             fractionNumerator: 2,
             fractionDenominator: 3,
@@ -335,7 +198,7 @@ export function calculateScore(
         },
     ]
 
-    //Non-target kills
+    // Non-target kills
     const nonTargetKills =
         contractData?.Metadata.AllowNonTargetKills === true
             ? 0
@@ -343,7 +206,7 @@ export function calculateScore(
 
     let totalScore = -5000 * nonTargetKills
 
-    //Headlines and bonuses
+    // Headlines and bonuses
     const scoringHeadlines = []
     const awardedBonuses = []
     const failedBonuses = []
@@ -395,7 +258,6 @@ export function calculateScore(
         }) as ScoringHeadline,
     )
 
-    //#region Time
     const timeHours = Math.floor(timeTotal / 3600)
     const timeMinutes = Math.floor((timeTotal - timeHours * 3600) / 60)
     const timeSeconds = Math.floor(
@@ -450,7 +312,6 @@ export function calculateScore(
             scoreTotal: timebonus,
         }) as ScoringHeadline,
     )
-    //#endregion
 
     for (const type of ["total", "subtotal"]) {
         scoringHeadlines.push(
@@ -462,7 +323,7 @@ export function calculateScore(
         )
     }
 
-    //Stars
+    // Stars
     let stars =
         5 -
         [...bonuses, { condition: nonTargetKills === 0 }].filter(
@@ -471,7 +332,7 @@ export function calculateScore(
 
     stars = stars < 0 ? 0 : stars // clamp to 0
 
-    //Achieved masteries
+    // Achieved masteries
     const achievedMasteries = [
         {
             score: -5000 * nonTargetKills,
@@ -482,7 +343,7 @@ export function calculateScore(
         },
     ]
 
-    //NOTE: need to have all bonuses except objectives for SA
+    // NOTE: need to have all bonuses except objectives for SA
     const silentAssassin = [
         ...bonuses.slice(1),
         { condition: nonTargetKills === 0 },
@@ -504,7 +365,7 @@ export async function missionEnd(
     req: RequestWithJwt<MissionEndRequestQuery>,
     res: Response,
 ): Promise<void> {
-    //Resolve the contract session
+    // Resolve the contract session
     if (!req.query.contractSessionId) {
         res.status(400).end()
         return
@@ -522,26 +383,25 @@ export async function missionEnd(
         return
     }
 
-    //Resolve userdata
+    // Resolve userdata
     const userData = getUserData(req.jwt.unique_name, req.gameVersion)
 
-    //Resolve contract data
+    // Resolve contract data
     const contractData =
         req.gameVersion === "scpc" &&
         sessionDetails.contractId === "ff9f46cf-00bd-4c12-b887-eac491c3a96d"
             ? _theLastYardbirdScpc
-            : controller.resolveContract(sessionDetails.contractId)
+            : controller.resolveContract(sessionDetails.contractId, true)
 
     if (!contractData) {
         res.status(404).send("contract not found")
         return
     }
 
-    //Handle escalation groups
-    if (contractData.Metadata.Type === "escalation") {
-        const eGroupId = contractIdToEscalationGroupId(
-            sessionDetails.contractId,
-        )
+    // Handle escalation groups
+    if (escalationTypes.includes(contractData.Metadata.Type)) {
+        const eGroupId =
+            contractData.Metadata.InGroup ?? contractData.Metadata.Id
 
         if (!eGroupId) {
             log(
@@ -556,9 +416,14 @@ export async function missionEnd(
             userData.Extensions.PeacockEscalations[eGroupId] = 1
         }
 
+        const history: ContractHistory = {
+            LastPlayedAt: new Date().getTime(),
+            IsEscalation: true,
+        }
+
         if (
             userData.Extensions.PeacockEscalations[eGroupId] ===
-            getLevelCount(controller.escalationMappings[eGroupId])
+            getLevelCount(controller.resolveContract(eGroupId))
         ) {
             // we are on the final level, and the user completed this level
             if (
@@ -569,10 +434,18 @@ export async function missionEnd(
                 // the user never finished this escalation before
                 userData.Extensions.PeacockCompletedEscalations.push(eGroupId)
             }
+
+            history.Completed = true
         } else {
             // not the final level
             userData.Extensions.PeacockEscalations[eGroupId] += 1
         }
+
+        if (!userData.Extensions.PeacockPlayedContracts[eGroupId]) {
+            userData.Extensions.PeacockPlayedContracts[eGroupId] = {}
+        }
+
+        userData.Extensions.PeacockPlayedContracts[eGroupId] = history
 
         writeUserData(req.jwt.unique_name, req.gameVersion)
     } else if (contractTypes.includes(contractData.Metadata.Type)) {
@@ -583,28 +456,35 @@ export async function missionEnd(
             userData.Extensions.PeacockPlayedContracts[id] = {}
         }
 
-        userData.Extensions.PeacockPlayedContracts[id].LastPlayedAt =
-            new Date().getTime()
-        userData.Extensions.PeacockPlayedContracts[id].Completed = true
+        userData.Extensions.PeacockPlayedContracts[id] = {
+            LastPlayedAt: new Date().getTime(),
+            Completed: true,
+        }
+
         writeUserData(req.jwt.unique_name, req.gameVersion)
     }
 
-    //Resolve the id of the parent location
+    const levelData = controller.resolveContract(
+        sessionDetails.contractId,
+        false,
+    )
+
+    // Resolve the id of the parent location
     const subLocation = getSubLocationByName(
-        contractData.Metadata.Location,
+        levelData.Metadata.Location,
         req.gameVersion,
     )
 
     const locationParentId = subLocation
         ? subLocation.Properties?.ParentLocation
-        : contractData.Metadata.Location
+        : levelData.Metadata.Location
 
     if (!locationParentId) {
         res.status(404).send("location parentid not found")
         return
     }
 
-    //Resolve all opportunities for the location
+    // Resolve all opportunities for the location
     const opportunities = contractData.Metadata.Opportunities
     const opportunityCount = opportunities ? opportunities.length : 0
     const opportunityCompleted = opportunities
@@ -613,11 +493,12 @@ export async function missionEnd(
           ).length
         : 0
 
-    //Resolve all challenges for the location
+    // Resolve all challenges for the location
     const locationChallenges =
         controller.challengeService.getGroupedChallengeLists(
             {
-                type: ChallengeFilterType.None,
+                type: ChallengeFilterType.ParentLocation,
+                parent: locationParentId,
             },
             locationParentId,
             req.gameVersion,
@@ -626,6 +507,7 @@ export async function missionEnd(
         controller.challengeService.getChallengesForContract(
             sessionDetails.contractId,
             req.gameVersion,
+            req.jwt.unique_name,
             sessionDetails.difficulty,
         )
     const locationChallengeCompletion =
@@ -652,15 +534,21 @@ export async function missionEnd(
     const playerProgressionData =
         userData.Extensions.progression.PlayerProfileXP
 
-    //Calculate XP based on all challenges, including the global ones.
-    const calculateXpResult: CalculateXpResult = calculateXp(
+    // Calculate XP based on global challenges.
+    const calculateXpResult: CalculateXpResult = calculateGlobalXp(
         sessionDetails,
         req.gameVersion,
     )
     let justTickedChallenges = 0
-    let masteryXpGain = 0
+    let totalXpGain = calculateXpResult.xp
 
-    Object.values(contractChallenges)
+    // Calculate XP based on non-global challenges. Remember to add elusive challenges of the contract
+    Object.values({
+        ...locationChallenges,
+        ...(Object.keys(contractChallenges).includes("elusive") && {
+            elusive: contractChallenges.elusive,
+        }),
+    })
         .flat()
         .filter((challengeData) => {
             return (
@@ -681,7 +569,7 @@ export async function missionEnd(
 
             justTickedChallenges++
 
-            masteryXpGain += challengeData.Rewards.MasteryXP
+            totalXpGain += challengeData.Rewards.MasteryXP
 
             calculateXpResult.completedChallenges.push({
                 ChallengeId: challengeData.Id,
@@ -696,21 +584,25 @@ export async function missionEnd(
             })
         })
 
-    //NOTE: Official doesn't seem to make up it's mind whether or not XPGain is the same for both Mastery and Profile...
-    const totalXpGain = calculateXpResult.xp + masteryXpGain
-
     const completionData = generateCompletionData(
-        contractData.Metadata.Location,
+        levelData.Metadata.Location,
         req.jwt.unique_name,
         req.gameVersion,
         contractData.Metadata.Type,
     )
 
-    //Calculate the old location progression based on the current one and process it
-    const oldLocationXp = completionData.XP - masteryXpGain
+    // Calculate the old location progression based on the current one and process it
+    const oldLocationXp = completionData.PreviouslySeenXp
+        ? completionData.PreviouslySeenXp
+        : completionData.XP - totalXpGain
     let oldLocationLevel = levelForXp(oldLocationXp)
+
     const newLocationXp = completionData.XP
     let newLocationLevel = levelForXp(newLocationXp)
+    userData.Extensions.progression.Locations[
+        locationParentId.toLowerCase()
+    ].PreviouslySeenXp = newLocationXp
+    writeUserData(req.jwt.unique_name, req.gameVersion)
 
     const masteryData =
         controller.masteryService.getMasteryPackage(locationParentId)
@@ -726,13 +618,13 @@ export async function missionEnd(
         })
     }
 
-    //Calculate the old playerprofile progression based on the current one and process it
+    // Calculate the old playerprofile progression based on the current one and process it
     const oldPlayerProfileXp = playerProgressionData.Total - totalXpGain
     const oldPlayerProfileLevel = levelForXp(oldPlayerProfileXp)
     const newPlayerProfileXp = playerProgressionData.Total
     const newPlayerProfileLevel = levelForXp(newPlayerProfileXp)
 
-    //NOTE: We assume the ProfileLevel is currently already up-to-date
+    // NOTE: We assume the ProfileLevel is currently already up-to-date
     const profileLevelInfo = []
 
     for (
@@ -745,12 +637,12 @@ export async function missionEnd(
 
     const profileLevelInfoOffset = oldPlayerProfileLevel - 1
 
-    //Time
+    // Time
     const timeTotal: Seconds =
         (sessionDetails.timerEnd as number) -
         (sessionDetails.timerStart as number)
 
-    //Playstyle
+    // Playstyle
     const calculatedPlaystyles = calculatePlaystyle(sessionDetails)
 
     let playstyle =
@@ -758,16 +650,15 @@ export async function missionEnd(
             ? calculatedPlaystyles[0]
             : undefined
 
-    //Calculate score and summary
+    // Calculate score and summary
     const calculateScoreResult = calculateScore(
         req.gameVersion,
-        req.query.contractSessionId,
         sessionDetails,
         contractData,
         timeTotal,
     )
 
-    //Evergreen
+    // Evergreen
     const evergreenData: MissionEndEvergreen = <MissionEndEvergreen>{
         PayoutsCompleted: [],
         PayoutsFailed: [],
@@ -781,8 +672,8 @@ export async function missionEnd(
 
         let totalPayout = 0
 
-        //ASSUMPTION: All payout objectives have a "condition"-category objective
-        //and a "secondary"-category objective with a "MyPayout" in the context.
+        // ASSUMPTION: All payout objectives have a "condition"-category objective
+        // and a "secondary"-category objective with a "MyPayout" in the context.
         Object.keys(gameChangerProperties).forEach((e) => {
             const gameChanger = gameChangerProperties[e]
 
@@ -832,11 +723,11 @@ export async function missionEnd(
 
         locationLevelInfo = EVERGREEN_LEVEL_INFO
 
-        //Override the location levels to trigger potential drops
-        oldLocationLevel = evergreenLevelForXp(completionData.XP - totalXpGain)
+        // Override the location levels to trigger potential drops
+        oldLocationLevel = evergreenLevelForXp(oldLocationXp)
         newLocationLevel = completionData.Level
 
-        //Override the silent assassin rank
+        // Override the silent assassin rank
         if (calculateScoreResult.silentAssassin) {
             playstyle = {
                 Id: "595f6ff1-85bf-4e4f-a9ee-76038a455648",
@@ -848,11 +739,11 @@ export async function missionEnd(
 
         calculateScoreResult.silentAssassin = false
 
-        //Overide the calculated score
+        // Overide the calculated score
         calculateScoreResult.stars = undefined
     }
 
-    //Sniper
+    // Sniper
     let unlockableProgression = undefined
     let sniperChallengeScore = undefined
 
@@ -867,8 +758,8 @@ export async function missionEnd(
         SilentAssassin: calculateScoreResult.silentAssassin,
     }
 
-    //TODO: Calculate proper Sniper XP and Score
-    //TODO: Move most of this to its own calculateSniperScore function
+    // TODO: Calculate proper Sniper XP and Score
+    // TODO: Move most of this to its own calculateSniperScore function
     if (contractData.Metadata.Type === "sniper") {
         const sniperLoadouts = getConfig("SniperLoadouts", true)
 
@@ -899,13 +790,13 @@ export async function missionEnd(
             SilentAssassinMultiplier: 1.0,
         }
 
-        //Override the contract score
+        // Override the contract score
         contractScore = undefined
 
-        //Override the playstyle
+        // Override the playstyle
         playstyle = undefined
 
-        //Override the calculated score
+        // Override the calculated score
         const timeMinutes = Math.floor(timeTotal / 60)
         const timeSeconds = Math.floor(timeTotal % 60)
         const timeMiliseconds = Math.floor(
@@ -974,7 +865,7 @@ export async function missionEnd(
         })
     }
 
-    //Mastery Drops
+    // Mastery Drops
     let masteryDrops: MissionEndDrop[] = []
 
     if (newLocationLevel - oldLocationLevel > 0) {
@@ -1014,10 +905,11 @@ export async function missionEnd(
                     })
                 }
             }
+
             return acc
         }, [])
 
-    //Setup the result
+    // Setup the result
     const result: MissionEndResponse = {
         MissionReward: {
             LocationProgression: {
@@ -1025,7 +917,7 @@ export async function missionEnd(
                 XP: completionData.XP,
                 Level: completionData.Level,
                 Completion: completionData.Completion,
-                //NOTE: Official makes this 0 if maximum Mastery is reached
+                // NOTE: Official makes this 0 if maximum Mastery is reached
                 XPGain: completionData.Level === maxLevel ? 0 : totalXpGain,
                 HideProgression: masteryData?.HideProgression || false,
             },
@@ -1038,7 +930,7 @@ export async function missionEnd(
             },
             Challenges: calculateXpResult.completedChallenges,
             Drops: [...masteryDrops, ...challengeDrops],
-            //TODO: Do these exist? Appears to be optional.
+            // TODO: Do these exist? Appears to be optional.
             OpportunityRewards: [],
             UnlockableProgression: unlockableProgression,
             CompletionData: completionData,
@@ -1054,7 +946,7 @@ export async function missionEnd(
             XP: completionData.XP,
             Level: completionData.Level,
             Completion: completionData.Completion,
-            //NOTE: Official appears to always make this 0
+            // NOTE: Official appears to always make this 0
             XPGain: 0,
             ChallengesCompleted: justTickedChallenges,
             LocationHideProgression: masteryData?.HideProgression || false,
@@ -1069,7 +961,7 @@ export async function missionEnd(
                 contractScore?.SilentAssassin ||
                 sniperChallengeScore?.silentAssassin ||
                 false,
-            //TODO: Use data from the leaderboard?
+            // TODO: Use data from the leaderboard?
             NewRank: 1,
             RankCount: 1,
             Rank: 1,
@@ -1084,7 +976,7 @@ export async function missionEnd(
         },
     }
 
-    //Finalize the response
+    // Finalize the response
     if ((getFlag("autoSplitterForceSilentAssassin") as boolean) === true) {
         if (result.ScoreOverview.SilentAssassin) {
             await liveSplitManager.completeMission(timeTotal)
@@ -1095,7 +987,6 @@ export async function missionEnd(
         await liveSplitManager.completeMission(timeTotal)
     }
 
-    //#region Leaderboards
     if (
         getFlag("leaderboards") === true &&
         req.gameVersion !== "scpc" &&
@@ -1167,7 +1058,6 @@ export async function missionEnd(
             )
         }
     }
-    //#endregion
 
     res.json({
         template:

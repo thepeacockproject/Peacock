@@ -32,13 +32,14 @@ import {
 import { writeUserData } from "../databaseHandler"
 
 export class ProgressionService {
-    //NOTE: Official will always grant XP to both Location Mastery and the Player Profile
+    // NOTE: Official will always grant XP to both Location Mastery and the Player Profile
     grantProfileProgression(
         actionXp: number,
         masteryXp: number,
         dropIds: string[],
         contractSession: ContractSession,
         userProfile: UserProfile,
+        location: string,
     ) {
         // Total XP for profile XP is the total sum of the action and mastery XP's
         const xp = actionXp + masteryXp
@@ -52,6 +53,7 @@ export class ProgressionService {
             actionXp,
             contractSession,
             userProfile,
+            location,
         )
 
         // Award provided drops. E.g. From challenges
@@ -74,6 +76,7 @@ export class ProgressionService {
         ] ??= {
             Xp: 0,
             Level: 1,
+            PreviouslySeenXp: 0,
         })
     }
 
@@ -122,6 +125,7 @@ export class ProgressionService {
         actionXp: number,
         contractSession: ContractSession,
         userProfile: UserProfile,
+        location: string,
     ): boolean {
         const contract = controller.resolveContract(contractSession.contractId)
 
@@ -130,13 +134,13 @@ export class ProgressionService {
         }
 
         const subLocation = getSubLocationByName(
-            contract.Metadata.Location,
+            location ?? contract.Metadata.Location,
             contractSession.gameVersion,
         )
 
         const parentLocationId = subLocation
             ? subLocation.Properties?.ParentLocation
-            : contract.Metadata.Location
+            : location ?? contract.Metadata.Location
 
         if (!parentLocationId) {
             return false
@@ -185,7 +189,7 @@ export class ProgressionService {
             }
         }
 
-        //Update the SubLocation data
+        // Update the SubLocation data
         const profileData = userProfile.Extensions.progression.PlayerProfileXP
 
         let foundSubLocation = profileData.Sublocations.find(
@@ -205,7 +209,7 @@ export class ProgressionService {
         foundSubLocation.Xp += masteryXp
         foundSubLocation.ActionXp += actionXp
 
-        //Update the EvergreenLevel with the latest Mastery Level
+        // Update the EvergreenLevel with the latest Mastery Level
         if (isEvergreenContract) {
             userProfile.Extensions.CPD[contract.Metadata.CpdId][
                 "EvergreenLevel"
@@ -216,7 +220,7 @@ export class ProgressionService {
     }
 
     // Grants xp to user profile
-    //TODO: Combine with grantLocationMasteryXp?
+    // TODO: Combine with grantLocationMasteryXp?
     private grantUserXp(
         xp: number,
         contractSession: ContractSession,

@@ -1,0 +1,79 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "95f6a50f-8e50-4da8-9475-b7c94d235642",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "accident",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_LARKSPUR_OBJ_1" },
+                "BriefingText": "$loc UI_CONTRACT_LARKSPUR_OBJ_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["19dd4206-5386-4a88-9899-0e1bd46d2805"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "19dd4206-5386-4a88-9899-0e1bd46d2805"
+                                                ]
+                                            },
+                                            { "$eq": ["$Value.Accident", true] }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "19dd4206-5386-4a88-9899-0e1bd46d2805"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "9d8814dc-ed19-4b4a-8590-2bb9f957ba29",
+        "InGroup": "51038604-c3f4-41e9-889b-25d9d5de93c6",
+        "IsPublished": true,
+        "CreationTimestamp": "2015-11-04T09:13:00.577Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_LARKSPUR_LEVEL_1_TITLE",
+        "Description": "UI_CONTRACT_LARKSPUR_LEVEL_1_DESC",
+        "CodeName_Hint": "Larkspur - level 1",
+        "Location": "LOCATION_PARIS",
+        "ScenePath": "assembly:/_pro/scenes/missions/paris/_scene_paris.entity",
+        "Type": "escalation",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "95f6a50f-8e50-4da8-9475-b7c94d235642" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:42.9918801Z",
+        "PublicId": "002566858347",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

@@ -1,0 +1,177 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "fbec3664-5fdd-44cc-8b67-6ce6e3109862",
+                "Category": "primary",
+                "ObjectiveType": "setpiece",
+                "BriefingText": "$loc UI_CONTRACT_PRIMROSE_OBJ_1",
+                "Image": "images/contracts/gamechangers/Gamechanger_Paris_BreakAndEnter_2ndFloor.jpg",
+                "BriefingName": "$loc UI_GAMECHANGERS_PARIS_SAFE_SECOND_FLOOR_NAME",
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_PRIMROSE_OBJ_1" },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {
+                        "Targets": ["d2b55056-e543-4c0e-85f5-eddf96a8a3df"]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "195dcd6b-6663-4768-9e0a-c94e244cbea4"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            },
+                            "Gamechanger_Safe_Content_Destroyed": {
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "2bc975e7-e3e7-4096-a9e0-1dd735f00f58",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "b5664bed-462a-417c-bc07-6d9d3f666e2d",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_PRIMROSE_OBJ_2" },
+                "BriefingText": "$loc UI_CONTRACT_PRIMROSE_OBJ_2",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["857ae943-2efd-454c-ac43-07aa49cca43f"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "857ae943-2efd-454c-ac43-07aa49cca43f"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "b5664bed-462a-417c-bc07-6d9d3f666e2d"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "857ae943-2efd-454c-ac43-07aa49cca43f"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "58313621-37db-43dd-b468-dcf88ed55ead",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "b5664bed-462a-417c-bc07-6d9d3f666e2d",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_PRIMROSE_OBJ_3" },
+                "BriefingText": "$loc UI_CONTRACT_PRIMROSE_OBJ_3",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["2a0f2a31-b101-496e-8061-fb32284f7d15"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "2a0f2a31-b101-496e-8061-fb32284f7d15"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "b5664bed-462a-417c-bc07-6d9d3f666e2d"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "2a0f2a31-b101-496e-8061-fb32284f7d15"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [
+            "830b0d0e-57ed-4028-8325-dda9ae6a61d3",
+            "06d64781-a81b-49e0-aa00-4f4dc4866ce3"
+        ],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "87532edc-a71b-40f7-86f5-bef01e87d0fc",
+        "IsPublished": true,
+        "CreationTimestamp": "2015-10-08T07:54:53.527Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_PRIMROSE_LEVEL_4_TITLE",
+        "Description": "UI_CONTRACT_PRIMROSE_LEVEL_4_DESC",
+        "CodeName_Hint": "Primrose - Level 4",
+        "Location": "LOCATION_PARIS",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Paris/_scene_paris.entity",
+        "Type": "escalation",
+        "InGroup": "2e365b7c-817d-4213-8fb1-496fa8067e7b",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "58313621-37db-43dd-b468-dcf88ed55ead" },
+            { "Id": "06d64781-a81b-49e0-aa00-4f4dc4866ce3" },
+            { "Id": "2bc975e7-e3e7-4096-a9e0-1dd735f00f58" },
+            { "Id": "fbec3664-5fdd-44cc-8b67-6ce6e3109862" },
+            { "Id": "830b0d0e-57ed-4028-8325-dda9ae6a61d3" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:47.8982369Z",
+        "PublicId": "002913791247",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

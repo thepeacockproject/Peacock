@@ -1,0 +1,396 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "_comment": "----- Pacify Chief Of Police -----",
+                "Id": "78c109cc-8226-4cc4-8a59-88b0038639b6",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "BriefingName": "$loc UI_CONTRACT_GINSENG_OBJ_GORDON_NAME",
+                "Image": "images/contracts/escalation/ContractEscalation_Wet_Ginseng_COP.jpg",
+                "TargetConditions": [],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_GINSENG_OBJ_GORDON_DESC"
+                },
+                "BriefingText": "$loc UI_CONTRACT_GINSENG_OBJ_GORDON_DESC",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["31219ca9-fa04-4a1d-92a6-2eb099d1841e"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Pacify": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "31219ca9-fa04-4a1d-92a6-2eb099d1841e"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "31219ca9-fa04-4a1d-92a6-2eb099d1841e"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ],
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "31219ca9-fa04-4a1d-92a6-2eb099d1841e"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ],
+                            "Dead": { "Transition": "Failure" }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Eliminate Blue Lotus With An Explosion -----",
+                "Id": "e5b70095-8ef8-426e-906b-4e1c28a8d088",
+                "ObjectiveType": "custom",
+                "Primary": true,
+                "Image": "images/contracts/escalation/ContractEscalation_Wet_Ginseng_BlueLotus.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "628fc47d-db6d-4522-b50a-514f5dafb419",
+                        "HardCondition": true
+                    }
+                ],
+                "BriefingName": "$loc UI_CONTRACT_GINSENG_OBJ_BLUELOTUS_1_NAME",
+                "BriefingText": "$loc UI_CONTRACT_GINSENG_OBJ_BLUELOTUS_2_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_GINSENG_OBJ_BLUELOTUS_2_DESC"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["23b61f4b-3f1b-4a35-9e1c-2dcba9fc7f56"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "23b61f4b-3f1b-4a35-9e1c-2dcba9fc7f56"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillClass",
+                                                    "explosion"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "23b61f4b-3f1b-4a35-9e1c-2dcba9fc7f56"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Eliminate Red Dragon With The Sniper Rifle -----",
+                "Id": "74280171-0f39-4273-bbe9-3359c9de11d8",
+                "Primary": true,
+                "Image": "images/contracts/escalation/ContractEscalation_Wet_Ginseng_RedDragon.jpg",
+                "ObjectiveType": "custom",
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "559d8002-9dc5-4da7-ab54-18c8ad20f047",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "628fc47d-db6d-4522-b50a-514f5dafb419",
+                        "HardCondition": true
+                    }
+                ],
+                "BriefingName": "$loc UI_CONTRACT_GINSENG_OBJ_REDDRAGON_1_NAME",
+                "BriefingText": "$loc UI_CONTRACT_GINSENG_OBJ_REDDRAGON_2_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_GINSENG_OBJ_REDDRAGON_2_DESC"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["da6a9323-a323-412d-8096-eb721402e2fd"]
+                    },
+                    "States": {
+                        "Start": {
+                            "RedDragonFail": { "Transition": "Failure" },
+                            "RedDragonComplete": { "Transition": "Success" }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Eliminate Tzun With A Pistol-----",
+                "Id": "3bdc42dd-9780-47f0-9277-3c795b91b634",
+                "Primary": true,
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                },
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "628fc47d-db6d-4522-b50a-514f5dafb419",
+                        "HardCondition": true
+                    }
+                ],
+                "UpdateActivationWhileCompleted": true,
+                "BriefingText": "$loc UI_CONTRACT_GINSENG_OBJ_TZUN_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_GINSENG_OBJ_TZUN_NAME"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["4cd93805-3a87-4408-a2f2-b1a38bf4764f"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "4cd93805-3a87-4408-a2f2-b1a38bf4764f"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemCategory",
+                                                    "pistol"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "4cd93805-3a87-4408-a2f2-b1a38bf4764f"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Tzun Fail Dummy-----",
+                "Id": "cb3cfc58-bc9d-433e-9ff9-e02e03ca1c52",
+                "Primary": true,
+                "ObjectiveType": "customkill",
+                "Image": "images/contracts/escalation/ContractEscalation_Wet_Ginseng_Mogwai.jpg",
+                "ForceShowOnLoadingScreen": true,
+                "ExcludeFromScoring": false,
+                "OnActive": {
+                    "IfInProgress": { "Visible": true },
+                    "IfCompleted": { "Visible": true },
+                    "IfFailed": { "Visible": true }
+                },
+                "BriefingText": "$loc UI_CONTRACT_GINSENG_OBJ_TZUN_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_GINSENG_OBJ_TZUN_NAME"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["4cd93805-3a87-4408-a2f2-b1a38bf4764f"]
+                    },
+                    "States": {
+                        "Start": {
+                            "TzunFail": { "Transition": "Failure" },
+                            "TzunComplete": { "Transition": "Success" }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Eliminate Lee Hong With The Sniper Rifle -----",
+                "Id": "7c360fb3-529e-43f3-9131-8c3534ad8739",
+                "Primary": true,
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "559d8002-9dc5-4da7-ab54-18c8ad20f047",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "628fc47d-db6d-4522-b50a-514f5dafb419",
+                        "HardCondition": true
+                    }
+                ],
+                "BriefingText": "$loc UI_CONTRACT_GINSENG_OBJ_LEEHONG_2_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_GINSENG_OBJ_LEEHONG_2_NAME"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["0cb9d334-99b3-4cab-9dba-6d7c3691a328"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "0cb9d334-99b3-4cab-9dba-6d7c3691a328"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "559d8002-9dc5-4da7-ab54-18c8ad20f047"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "0cb9d334-99b3-4cab-9dba-6d7c3691a328"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/wet/vr_overrides_rat.brick",
+                    "assembly:/_pro/scenes/missions/wet/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/wet/vr_overrides_rat.brick"
+                ]
+            }
+        ],
+        "GameChangers": ["63055f1a-bcd2-4e0f-8caf-b446f01d02f3"],
+        "Entrances": ["f3944deb-0747-4d67-b26a-99af5f979705"],
+        "MandatoryLoadout": [
+            {
+                "Id": "TOKEN_OUTFIT_HERO_CHINESE_SUIT",
+                "Properties": {
+                    "LoadoutSlot": "Outfit",
+                    "RepositoryId": "628fc47d-db6d-4522-b50a-514f5dafb419"
+                }
+            }
+        ],
+        "GameChangerReferences": []
+    },
+    "Metadata": {
+        "Id": "322dde62-41ed-4877-a3b9-1b7855d4d4f4",
+        "IsPublished": true,
+        "CreationTimestamp": "2018-11-05T14:12:47.2836568Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_GINSENG_LEVEL_2_NAME",
+        "Description": "UI_CONTRACT_GINSENG_LEVEL_2_DESC",
+        "CodeName_Hint": "GINSENG - Level 2",
+        "Location": "LOCATION_WET_RAT",
+        "RequiredUnlockable": "ACCESS_HIT_RAT",
+        "ScenePath": "assembly:/_pro/scenes/missions/wet/scene_rat_ginseng.entity",
+        "Type": "escalation",
+        "InGroup": "84bf03cc-3055-4fd4-a691-d8b0ac61a51f",
+        "Release": "3.1.x escalation",
+        "Entitlements": ["H3_EXPANSION"],
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "78c109cc-8226-4cc4-8a59-88b0038639b6" },
+            { "Id": "e5b70095-8ef8-426e-906b-4e1c28a8d088" },
+            { "IsNew": true, "Id": "3bdc42dd-9780-47f0-9277-3c795b91b634" },
+            { "IsNew": true, "Id": "74280171-0f39-4273-bbe9-3359c9de11d8" },
+            { "IsNew": true, "Id": "7c360fb3-529e-43f3-9131-8c3534ad8739" }
+        ],
+        "LastUpdate": "2023-03-30T11:20:25.865786Z",
+        "PublicId": "030661565747",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Wet_Ginseng.jpg"
+    },
+    "UserData": {}
+}

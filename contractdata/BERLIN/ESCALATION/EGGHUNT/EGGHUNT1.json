@@ -1,0 +1,283 @@
+{
+    "Data": {
+        "Bricks": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/edgy/mission_fox/vr_overrides_fox.brick",
+                    "assembly:/_pro/scenes/missions/edgy/mission_fox/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/edgy/mission_fox/vr_overrides_fox.brick"
+                ]
+            }
+        ],
+        "DevOnlyBricks": [],
+        "MandatoryLoadout": [],
+        "GameChangers": ["3db72bb5-63d6-47fe-9332-d7ea3c195e06"],
+        "Entrances": ["f223f1f2-f009-4aeb-a6d5-cf0a38dc7262"],
+        "GameChangerReferences": [],
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "_comment": "--- Follow the white rabbit ---",
+                "Id": "67973502-4ded-464a-b07a-ea15deaf1e4f",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "Image": "images/contracts/escalation/ContractEscalation_Edgy_Grasssnake_FollowWhiteRabbit.jpg",
+                "BriefingName": "$loc UI_CONTRACT_GRASSSNAKE_FOLLOWWHITERABBIT_NAME",
+                "BriefingText": "$loc UI_CONTRACT_GRASSSNAKE_FOLLOWWHITERABBIT_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_GRASSSNAKE_FOLLOWWHITERABBIT_NAME",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": { "Targets": [] },
+                    "States": {
+                        "Start": {
+                            "GrasssnakeWhiteRabbitKilled": {
+                                "Transition": "Failure"
+                            },
+                            "GrasssnakeWhiteRabbitFollowed": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "--- HIDDEN OBJECTIVE Follow the white rabbit to Raver ---",
+                "Primary": true,
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                },
+                "Id": "499f6157-da3c-49d1-ab77-0ba272e2de1e",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": { "Targets": [] },
+                    "States": {
+                        "Start": {
+                            "GrasssnakeWhiteRabbitFailure": {
+                                "Transition": "Failure"
+                            },
+                            "GrasssnakeWhiteRabbitTakeDisguise": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Activation": {
+                    "$eq": [
+                        "$499f6157-da3c-49d1-ab77-0ba272e2de1e",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": { "IfCompleted": { "State": "Completed" } },
+                "_comment": "----- Pacify Target and take outfit -----",
+                "Id": "1832ee14-ec00-41bf-9ed7-03270d72bb2f",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "BriefingName": "$loc UI_CONTRACT_GRASSSNAKE_TAKEOUTFIT_NAME",
+                "Image": "images/contracts/escalation/ContractEscalation_Edgy_Grasssnake_TakeDisguise.jpg",
+                "TargetConditions": [],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_GRASSSNAKE_TAKEOUTFIT_NAME",
+                    "iconType": 17
+                },
+                "BriefingText": "$loc UI_CONTRACT_GRASSSNAKE_TAKEOUTFIT_DESC",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "GrasssnakeYellowRabbitDumped": {
+                                "Transition": "Failure"
+                            },
+                            "Disguise": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value",
+                                        "86e6b6df-7e4c-49de-bad4-bdb6d6de73be"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "--- HIDDEN OBJECTIVE Take out the final target ---",
+                "Primary": true,
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                },
+                "Id": "e084aab3-ea84-4163-b320-4d5bbf4065f5",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": { "Targets": [] },
+                    "States": {
+                        "Start": {
+                            "GrasssnakeWhiteRabbitFailure": {
+                                "Transition": "Failure"
+                            },
+                            "GrasssnakeWhiteRabbitTakeOutTarget1": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Invisible Secondary: Eliminate the Pink Rabbit  -----",
+                "Id": "9488fbf5-c3f2-4f67-8d04-d4214542f605",
+                "Category": "secondary",
+                "IsHidden": true,
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                },
+                "ObjectiveType": "custom",
+                "BriefingName": "$loc UI_CONTRACT_GRASSSNAKE_OBJ2_NAME",
+                "Image": "images/contracts/escalation/ContractEscalation_Edgy_Grasssnake_KillTarget1.jpg",
+                "TargetConditions": [],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_GRASSSNAKE_OBJ2_NAME"
+                },
+                "BriefingText": "$loc UI_CONTRACT_GRASSSNAKE_OBJ2_DESC",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["18f44cee-aa36-45e5-8bac-435b364b06d3"]
+                    },
+                    "States": {
+                        "Start": {
+                            "GrasssnakeWhiteRabbitTakeOutTarget1": {
+                                "Transition": "Success"
+                            },
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "18f44cee-aa36-45e5-8bac-435b364b06d3"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Activation": {
+                    "$or": [
+                        {
+                            "$eq": [
+                                "$e084aab3-ea84-4163-b320-4d5bbf4065f5",
+                                "Completed"
+                            ]
+                        },
+                        {
+                            "$eq": [
+                                "$9488fbf5-c3f2-4f67-8d04-d4214542f605",
+                                "Completed"
+                            ]
+                        }
+                    ]
+                },
+                "OnInactive": { "IfCompleted": { "State": "Completed" } },
+                "_comment": "----- Eliminate the Pink Rabbit  -----",
+                "Id": "afc3993b-b27b-4a7f-a534-4ca4b7cf98a0",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "BriefingName": "$loc UI_CONTRACT_GRASSSNAKE_OBJ2_NAME",
+                "BriefingText": "$loc UI_CONTRACT_GRASSSNAKE_OBJ2_DESC",
+                "Image": "images/contracts/escalation/ContractEscalation_Edgy_Grasssnake_KillTarget1.jpg",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_GRASSSNAKE_OBJ2_NAME"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "Targets": ["18f44cee-aa36-45e5-8bac-435b364b06d3"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "18f44cee-aa36-45e5-8bac-435b364b06d3"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "5452c904-e7e2-4cf4-939c-d3b41dd8dfb8",
+        "IsPublished": true,
+        "IsSeasonal": true,
+        "CreationTimestamp": "2021-03-30T13:03:20.10193Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_GRASSSNAKE_LEVEL_1_NAME",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Edgy_Grasssnake.jpg",
+        "Description": "",
+        "CodeName_Hint": "Grasssnake - Level 1",
+        "Location": "LOCATION_EDGY_FOX",
+        "RequiredUnlockable": "ACCESS_HIT_FOX",
+        "ScenePath": "assembly:/_pro/scenes/missions/edgy/mission_fox/scene_grasssnake.entity",
+        "Type": "escalation",
+        "Release": "3.1.0 Escalation",
+        "InGroup": "9d88605f-6871-46a8-bd46-9804ea04fca9",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "67973502-4ded-464a-b07a-ea15deaf1e4f" },
+            { "Id": "1832ee14-ec00-41bf-9ed7-03270d72bb2f" },
+            { "Id": "3db72bb5-63d6-47fe-9332-d7ea3c195e06" }
+        ],
+        "Entitlements": ["LOCATION_EDGY"],
+        "PublicId": "029613776147"
+    },
+    "UserData": {}
+}

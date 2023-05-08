@@ -1,0 +1,133 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "EnableExits": {
+            "$eq": [
+                "$6726232b-1926-4ed2-8b92-0e2c4bcd7384",
+                "$f2887157-faa3-4595-8005-1607df261c4b",
+                "Completed"
+            ]
+        },
+        "Objectives": [
+            {
+                "Id": "6726232b-1926-4ed2-8b92-0e2c4bcd7384",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_ASAGAO_OBJ_1" },
+                "BriefingText": "$loc UI_CONTRACT_ASAGAO_OBJ_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["5561ba7b-91a6-4403-a351-227015f67c2f"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "5561ba7b-91a6-4403-a351-227015f67c2f"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.OutfitRepositoryId"
+                                                        ]
+                                                    },
+                                                    "in": [
+                                                        "6a25f81d-cf2e-4e47-9b15-0f712a3f71d9",
+                                                        "b8deb948-a0a9-4dcb-9df4-1c2ecd29765f"
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "5561ba7b-91a6-4403-a351-227015f67c2f"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "f2887157-faa3-4595-8005-1607df261c4b",
+                "Category": "primary",
+                "TargetConditions": [],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_ASAGAO_OBJ_2" },
+                "BriefingText": "$loc UI_CONTRACT_ASAGAO_OBJ_2",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["2debbe58-179d-43d1-abd4-5c8430caa8c0"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "2debbe58-179d-43d1-abd4-5c8430caa8c0"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [
+            "5b368c64-ed49-4907-9075-d4a31953374a",
+            "8e54bad8-0e8c-4d4c-96f1-f0075b574479"
+        ],
+        "GameChangerReferences": []
+    },
+    "Metadata": {
+        "Id": "db8a396a-bd15-4d05-b1e3-ac767a5d60bb",
+        "IsPublished": true,
+        "CreationTimestamp": "2016-05-04T09:51:27.393Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "TileImage": "",
+        "Title": "UI_CONTRACT_ASAGAO_LEVEL_3_TITLE",
+        "Description": "",
+        "CodeName_Hint": "Asagao Level 3",
+        "RequiredUnlockable": "ACCESS_HIT_SNOW_CRANE",
+        "Location": "LOCATION_HOKKAIDO",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Hokkaido/_scene_snowcrane.entity",
+        "Release": "1.7.0 Escalation",
+        "Type": "escalation",
+        "InGroup": "a1e5f4f4-ea9c-4a42-b826-50a212026d50",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "f2887157-faa3-4595-8005-1607df261c4b" },
+            { "IsNew": true, "Id": "8e54bad8-0e8c-4d4c-96f1-f0075b574479" },
+            { "Id": "5b368c64-ed49-4907-9075-d4a31953374a" },
+            { "Id": "6726232b-1926-4ed2-8b92-0e2c4bcd7384" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:28.8042655Z",
+        "PublicId": "010354174947",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

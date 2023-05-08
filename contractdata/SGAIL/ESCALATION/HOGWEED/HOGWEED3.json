@@ -1,0 +1,86 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "ea10c2e3-1c75-4ecf-be55-0a5a0787c0f6",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_HOGWEED_OBJ_1" },
+                "DisplayAsKillObjective": true,
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["f58711ae-1c69-4e22-a71a-8c54044066af"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "f58711ae-1c69-4e22-a71a-8c54044066af"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "7be939d4-120e-427c-8dc3-d8493676558b",
+                "Category": "primary",
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "03ad9aec-d7aa-430b-9655-2516a80b7813"
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [
+            "abf09e23-299d-410c-a185-6188f687224b",
+            "8aa258f7-c283-446a-87b1-c87cb1e5a995",
+            "6330e979-5bd4-43d4-b1b8-102aa96e0e80",
+            "03ca23e8-7daf-4346-8719-29970bc50d17"
+        ],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "2ab943ef-ba1b-48bf-9391-5b7725b4d4c7",
+        "IsPublished": false,
+        "CreationTimestamp": "2018-10-04T15:21:50.3066392Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_HOGWEED_LEVEL_3_TITLE",
+        "Description": "",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Magpie_Hogweed.jpg",
+        "CodeName_Hint": "Hogweed Level 3",
+        "Location": "LOCATION_NORTHSEA",
+        "ScenePath": "assembly:/_pro/scenes/missions/theark/scene_magpie.entity",
+        "Type": "escalation",
+        "Release": "",
+        "GameModes": null,
+        "EngineModes": null,
+        "IsVersus": false,
+        "InGroup": "3721e543-b5e6-4af8-a4fc-c92e9a4453bd",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "03ca23e8-7daf-4346-8719-29970bc50d17" },
+            { "Id": "ea10c2e3-1c75-4ecf-be55-0a5a0787c0f6" },
+            { "Id": "7be939d4-120e-427c-8dc3-d8493676558b" },
+            { "Id": "8aa258f7-c283-446a-87b1-c87cb1e5a995" }
+        ],
+        "LastUpdate": "2021-05-06T09:25:04.1441006Z",
+        "PublicId": "021240174847",
+        "Entitlements": ["H2_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

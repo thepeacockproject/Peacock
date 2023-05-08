@@ -1,0 +1,112 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "Id": "5f1ddb3d-8606-479b-ae81-659a5b523f83",
+                "Primary": true,
+                "IsHidden": true,
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "DisplayAsKillObjective": true,
+                "Image": "images/actors/elusive_DirtyOctopus_face.jpg",
+                "BriefingName": "$loc UI_CONTRACT_DIRTY_OCTOPUS_OBJ_1_TITLE",
+                "BriefingText": "$loc UI_CONTRACT_DIRTY_OCTOPUS_OBJ_1_TITLE",
+                "LongBriefingText": "$loc UI_CONTRACT_DIRTY_OCTOPUS_OBJ_1_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_DIRTY_OCTOPUS_OBJ_1_TITLE"
+                },
+                "Type": "statemachine",
+                "Scope": "hit",
+                "Definition": {
+                    "Context": { "KilledActors": [], "Targets": [] },
+                    "States": {
+                        "Start": {
+                            "TargetPicked": [
+                                {
+                                    "Actions": {
+                                        "$pushunique": [
+                                            "Targets",
+                                            "$Value.RepositoryId"
+                                        ]
+                                    },
+                                    "Transition": "TargetPicked"
+                                }
+                            ]
+                        },
+                        "TargetPicked": {
+                            "Kill": [
+                                {
+                                    "Actions": {
+                                        "$pushunique": [
+                                            "KilledActors",
+                                            "$Value.RepositoryId"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$all": {
+                                            "in": "$.Targets",
+                                            "?": {
+                                                "$any": {
+                                                    "in": "$.KilledActors",
+                                                    "?": {
+                                                        "$eq": ["$.#", "$.##"]
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_PRO/Scenes/Missions/Hokkaido/_scene_dirtyoctopus.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/hokkaido/vr_overrides_snowcrane.brick",
+                    "assembly:/_PRO/scenes/missions/hokkaido/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/hokkaido/vr_overrides_snowcrane.brick"
+                ]
+            }
+        ],
+        "GameChangers": ["507daf18-e076-44a7-8e37-9cc8da784776"]
+    },
+    "Metadata": {
+        "Id": "79bcdf23-2e51-4766-a602-931490ff07f4",
+        "IsPublished": true,
+        "Title": "UI_CONTRACT_PLUM_LEVEL_4_NAME",
+        "Description": "UI_CONTRACT_DIRTY_OCTOPUS_DESC",
+        "BriefingVideo": "briefing_dirtyoctopus",
+        "DebriefingVideo": "debriefing_dirtyoctopus",
+        "CodeName_Hint": "Arcade Plum Dirty Octopus",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Hokkaido/_Scene_SnowCrane.entity",
+        "Entitlements": ["LOCATION_GOLDEN"],
+        "TileImage": "images/contracts/elusive/028_DirtyOctopus/Title.jpg",
+        "Location": "LOCATION_HOKKAIDO",
+        "LastUpdate": "2023-02-24T10:14:38.1278657Z",
+        "CreationTimestamp": "2012-12-12T12:12:12.743Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Type": "arcade",
+        "Release": "3.100.0 Arcade",
+        "InGroup": "9e469023-e0c4-42bf-8527-f9fcaf624421",
+        "PublicId": "010843620147"
+    },
+    "UserData": {}
+}

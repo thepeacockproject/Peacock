@@ -25,6 +25,8 @@ import { log, LogLevel } from "../loggingInterop"
 import { getConfig } from "../configSwizzleManager"
 import type { GameChanger, RequestWithJwt } from "../types/types"
 import { randomUUID } from "crypto"
+import { getFlag } from "../flags"
+import { getPlayEscalationInfo } from "../contracts/escalations/escalationService"
 
 const legacyContractRouter = Router()
 
@@ -52,6 +54,14 @@ legacyContractRouter.post(
             )
             res.status(400).send("no such contract")
             return
+        }
+
+        if (
+            contractData.Metadata.Type === "elusive" &&
+            getFlag("legacyElusivesEnableSaving")
+        ) {
+            log(LogLevel.DEBUG, "Changing elusive mission...")
+            contractData.Metadata.Type = "mission"
         }
 
         if (!contractData.Data.GameChangers) {
@@ -99,6 +109,18 @@ legacyContractRouter.post(
                     )
                 }
             }
+        }
+
+        // Add escalation data to Contract data HERE
+        contractData.Metadata = {
+            ...contractData.Metadata,
+            ...(contractData.Metadata.Type === "escalation"
+                ? getPlayEscalationInfo(
+                      req.jwt.unique_name,
+                      contractData.Metadata.InGroup,
+                      req.gameVersion,
+                  )
+                : {}),
         }
 
         res.json(contractData)

@@ -1,0 +1,96 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "_comment": "Calm staff",
+                "Type": "statemachine",
+                "Id": "26009bfe-b1d2-4533-9d8c-a2362b8ff4a5",
+                "BriefingName": "$loc UI_PEACOCK_PIRATESPROBLEM_CALM",
+                "BriefingText": "$loc UI_PEACOCK_PIRATESPROBLEM_CALM_DESC",
+                "Image": "images/objectives/contracts/pirates_problem_ventilation.jpg",
+                "ObjectiveType": "custom",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_PIRATESPROBLEM_CALM"
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Context": {
+                        "Targets": ["66a5fbbe-248d-4e75-961a-995940412867"]
+                    },
+                    "States": {
+                        "Start": {
+                            "setpieces": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "66a5fbbe-248d-4e75-961a-995940412867"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ],
+                            "Kill": [{ "Transition": "Failure" }]
+                        },
+                        "Success": { "Kill": [{ "Transition": "Failure" }] }
+                    }
+                }
+            },
+            {
+                "_comment": "Alarm",
+                "Type": "statemachine",
+                "Id": "843fa79f-6127-4911-b1c0-5edff6133b6f",
+                "BriefingName": "$loc UI_PEACOCK_PIRATESPROBLEM_ALARM",
+                "BriefingText": "$loc UI_PEACOCK_PIRATESPROBLEM_ALARM_DESC",
+                "Image": "images/objectives/contracts/pirates_problem_alarm.jpg",
+                "ObjectiveType": "custom",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_PIRATESPROBLEM_ALARM"
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Context": {
+                        "Targets": ["c2ffa6af-4ada-4b3d-b168-49ee555d27d7"]
+                    },
+                    "States": {
+                        "Start": {
+                            "setpieces": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "c2ffa6af-4ada-4b3d-b168-49ee555d27d7"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "GameChangers": ["f41f18fe-0fe5-416a-a793-50727e594655"],
+        "Bricks": []
+    },
+    "Metadata": {
+        "Title": "UI_PEACOCK_PIRATESPROBLEM1",
+        "Description": "",
+        "Entitlements": ["H2_LEGACY_EXPANSION"],
+        "ScenePath": "assembly:/_pro/scenes/missions/Opulent/mission_stingray/scene_stingray_basic.entity",
+        "Location": "LOCATION_OPULENT_STINGRAY",
+        "IsPublished": true,
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Type": "escalation",
+        "Id": "88725ca6-cf32-41e5-bd18-1c2c9aafd8aa",
+        "InGroup": "f19f7ac8-39ec-498b-aa23-44c8e75d8693",
+        "TileImage": "images/contracts/escalation/contractescalation_pirates_problem.jpg",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "26009bfe-b1d2-4533-9d8c-a2362b8ff4a5" },
+            { "Id": "843fa79f-6127-4911-b1c0-5edff6133b6f" },
+            { "Id": "8618ebaa-f42b-42ce-be20-00d2b0a04897" }
+        ]
+    },
+    "UserData": {}
+}

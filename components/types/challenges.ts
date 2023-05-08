@@ -16,6 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { Timer } from "@peacockproject/statemachine-parser"
 import {
     ContextScopedStorageLocation,
     GameVersion,
@@ -83,6 +84,16 @@ export interface ChallengePackage {
 export type ProfileChallengeData = {
     Ticked: boolean
     Completed: boolean
+    // The state is stored in "CurrentState".
+    CurrentState: string
+    // "State" actually means "Context" here.
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     State: any
+}
+
+export type ChallengeContext = {
+    context: unknown
+    state: string
+    timers: Timer[]
+    timesCompleted: number
 }

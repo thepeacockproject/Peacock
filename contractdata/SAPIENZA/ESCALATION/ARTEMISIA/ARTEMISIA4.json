@@ -1,0 +1,157 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "3a23a3b1-c871-45d5-936b-479cbc03dae0",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_ARTEMISIA_OBJ_1_2"
+                },
+                "BriefingText": "$loc UI_CONTRACT_ARTEMISIA_OBJ_1_2",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["af934116-44f4-47aa-9b78-933798137a32"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "af934116-44f4-47aa-9b78-933798137a32"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemCategory",
+                                                    "sniperrifle"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.IsHeadshot",
+                                                    true
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "af934116-44f4-47aa-9b78-933798137a32"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "4459f84f-901a-4ba3-a459-225a9d7d16da",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_ARTEMISIA_OBJ_2_2"
+                },
+                "BriefingText": "$loc UI_CONTRACT_ARTEMISIA_OBJ_2_2",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["8ceaba03-05dd-494e-9032-1936cffcdfd0"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "8ceaba03-05dd-494e-9032-1936cffcdfd0"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemCategory",
+                                                    "sniperrifle"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.IsHeadshot",
+                                                    true
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "8ceaba03-05dd-494e-9032-1936cffcdfd0"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [
+            "dd95efe2-2b38-41e7-958e-d99187118310",
+            "0cf5e693-35ec-457e-a004-da4672b90376"
+        ],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "837e5158-4d6a-4091-8dcf-4040d1e83750",
+        "IsPublished": true,
+        "CreationTimestamp": "2015-11-12T09:53:40.543Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_ARTEMISIA_LEVEL_4_TITLE",
+        "Description": "UI_CONTRACT_ARTEMISIA_LEVEL_4_DESC",
+        "CodeName_Hint": "Artemisia - Level 4",
+        "Location": "LOCATION_COASTALTOWN",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/CoastalTown/_scene_octopus.entity",
+        "Type": "escalation",
+        "InGroup": "994540ee-3900-4a41-9544-17b2196a4b1a",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "0cf5e693-35ec-457e-a004-da4672b90376" },
+            { "Id": "dd95efe2-2b38-41e7-958e-d99187118310" },
+            { "Id": "4459f84f-901a-4ba3-a459-225a9d7d16da" },
+            { "Id": "3a23a3b1-c871-45d5-936b-479cbc03dae0" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:28.366769Z",
+        "PublicId": "003450904747",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

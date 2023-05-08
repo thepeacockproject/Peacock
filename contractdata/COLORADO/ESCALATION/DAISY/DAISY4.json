@@ -1,0 +1,173 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "24ec148a-0a21-42bb-ad67-fb442bcaa8d2",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "aab7f28d-84d9-47d1-be52-d142f5970086",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_DAISY_OBJ_1" },
+                "BriefingText": "$loc UI_CONTRACT_DAISY_OBJ_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["254b0a18-2601-43b6-98ba-fbe77c69db4c"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "254b0a18-2601-43b6-98ba-fbe77c69db4c"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "aab7f28d-84d9-47d1-be52-d142f5970086"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "254b0a18-2601-43b6-98ba-fbe77c69db4c"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "7cc47fa2-a17c-48a6-839c-03606a2c7a42",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "aab7f28d-84d9-47d1-be52-d142f5970086",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_DAISY_OBJ_2" },
+                "BriefingText": "$loc UI_CONTRACT_DAISY_OBJ_2",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["73f1046e-7c74-42b6-b4a7-7e4dd34f25af"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "73f1046e-7c74-42b6-b4a7-7e4dd34f25af"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "aab7f28d-84d9-47d1-be52-d142f5970086"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "73f1046e-7c74-42b6-b4a7-7e4dd34f25af"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "96467e94-8537-4dae-9421-7fd10834f3d3",
+                "Category": "primary",
+                "ObjectiveType": "setpiece",
+                "Image": "images/contracts/gamechangers/Gamechanger_Colorado_Data_Extraction_Farmhouse.jpg",
+                "BriefingName": "$loc UI_GAMECHANGERS_PARIS_HACKABLE_LABTOP_FIRST_FLOOR_NAME",
+                "BriefingText": "$loc UI_CONTRACT_DAISY_OBJ_3",
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_DAISY_OBJ_3" },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {
+                        "Targets": ["1990a617-ca91-46b1-bc6e-5e1fc2482502"]
+                    },
+                    "States": {
+                        "Start": {
+                            "LaptopHacked": { "Transition": "Success" },
+                            "Laptop_Destroyed": { "Transition": "Failure" }
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/Colorado_2/gamechanger_wild_card_daisy.brick"
+        ],
+        "GameChangers": [
+            "0181eede-49fc-44fc-a2d3-f893d101e693",
+            "51c8a014-dcc6-4714-a843-0295f9718c7a",
+            "997eaae8-66d3-437a-8da8-96c66b3dbfee"
+        ],
+        "GameChangerReferences": [],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "36013ae0-4ff2-4142-8625-a35f138d32fb",
+        "IsPublished": true,
+        "CreationTimestamp": "2016-05-04T09:51:27.393Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_DAISY_LEVEL_4_TITLE",
+        "Description": "",
+        "CodeName_Hint": "Daisy Level 4",
+        "RequiredUnlockable": "ACCESS_HIT_BULL",
+        "Location": "LOCATION_COLORADO",
+        "ScenePath": "assembly:/_pro/scenes/missions/Colorado_2/_scene_bull.entity",
+        "Release": "1.6.0 Escalation",
+        "Type": "escalation",
+        "InGroup": "c5d88e8c-437b-476b-afe2-d94aa4293502",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "997eaae8-66d3-437a-8da8-96c66b3dbfee" },
+            { "Id": "51c8a014-dcc6-4714-a843-0295f9718c7a" },
+            { "Id": "96467e94-8537-4dae-9421-7fd10834f3d3" },
+            { "Id": "7cc47fa2-a17c-48a6-839c-03606a2c7a42" },
+            { "Id": "24ec148a-0a21-42bb-ad67-fb442bcaa8d2" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:36.1480461Z",
+        "PublicId": "009592007447",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

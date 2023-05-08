@@ -16,7 +16,11 @@ contractSessions
 userdata
 peacock_patcher.conf
 
-resources/rpkg-cli.exe
+resources/**/*.*
+!resources/locale.json
+!resources/dynamic_resources_*/*.meta
+!resources/dynamic_resources_*.rpkg
+!resources/rebuildLocale.cjs
 
 components/contracts.json
 DEBUG_PROFILE.json
@@ -46,3 +50,9 @@ plugins
 /resources/dynamic_resources_h1/REPO/006D6B8D26B0F442.REPO.meta
 
 logs
+
+THIRDPARTYNOTICES.txt
+
+overrides
+
+DEBUG_PROFILE.zip

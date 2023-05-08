@@ -1,0 +1,174 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "EnableExits": {
+            "$eq": [
+                "$5b9067b3-c76d-4f25-9199-e8c3b91c0b08",
+                "$a7b75b35-e6e7-438b-84d5-24d531aa30d0",
+                "Completed"
+            ]
+        },
+        "Objectives": [
+            {
+                "Id": "a7b75b35-e6e7-438b-84d5-24d531aa30d0",
+                "Category": "primary",
+                "BriefingName": "UI_CONTRACT_HOLLY_OBJ_3_NAME",
+                "Image": "images/actors/actor_57342129-03a9-47a4-a509-cc0656e0a76a.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "accident_suspended_object",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_HOLLY_OBJ_3" },
+                "BriefingText": "$loc UI_CONTRACT_HOLLY_OBJ_3",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["6c26bfaa-2f92-4fb5-9710-c58d6dcead34"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "6c26bfaa-2f92-4fb5-9710-c58d6dcead34"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "accident_suspended_object"
+                                                        ]
+                                                    },
+                                                    "in": [
+                                                        "$Value.KillMethodBroad",
+                                                        "$Value.KillMethodStrict"
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "6c26bfaa-2f92-4fb5-9710-c58d6dcead34"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ],
+                            "NoAccidentAvailable": { "Transition": "Failure" }
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "5b9067b3-c76d-4f25-9199-e8c3b91c0b08",
+                "Category": "primary",
+                "BriefingName": "UI_CONTRACT_HOLLY_OBJ_2",
+                "Image": "images/actors/actor_57342129-03a9-47a4-a509-cc0656e0a76a.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "accident_electric",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_HOLLY_OBJ_2" },
+                "BriefingText": "$loc UI_CONTRACT_HOLLY_OBJ_2",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["9ab9bb43-1378-42fd-9896-46f9c1166960"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "9ab9bb43-1378-42fd-9896-46f9c1166960"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "Electric"
+                                                        ]
+                                                    },
+                                                    "in": "$Value.DamageEvents"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "9ab9bb43-1378-42fd-9896-46f9c1166960"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_PRO/Scenes/Missions/Colombia/gamechanger_hippo_holly.brick"
+        ],
+        "GameChangers": ["015467e5-4e7f-435b-9efd-69aaa7b851e9"],
+        "GameChangerReferences": []
+    },
+    "Metadata": {
+        "Id": "42c11cac-309c-47ae-a293-ee8bde6918ab",
+        "InGroup": "390ba7b6-de27-464a-b8af-6d0ff54c2aec",
+        "IsPublished": true,
+        "CreationTimestamp": "2018-10-31T08:48:12.5043297Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_HOLLY_LEVEL_1_NAME",
+        "Description": "UI_CONTRACT_HOLLY_LEVEL_1_DESC",
+        "CodeName_Hint": "Holly - Level 1",
+        "Location": "LOCATION_COLOMBIA",
+        "ScenePath": "assembly:/_pro/scenes/missions/colombia/scene_hippo.entity",
+        "Type": "escalation",
+        "Release": "2.1.x escalation",
+        "TileImage": "images/contracts/escalation/contractescalation_colombia_holly.jpg",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "5b9067b3-c76d-4f25-9199-e8c3b91c0b08" },
+            { "Id": "a7b75b35-e6e7-438b-84d5-24d531aa30d0" }
+        ],
+        "Entitlements": ["H2_LEGACY_STANDARD"],
+        "LastUpdate": "2021-04-20T12:25:03.0844657Z",
+        "PublicId": "012251588947"
+    },
+    "UserData": {}
+}

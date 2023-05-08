@@ -1,0 +1,99 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "d12ae90e-c6a6-4295-8e7a-474ab0a50e6c",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "3a8207bb-84f5-438f-8f30-5c83aef2af80",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "7f6da010-1a96-4783-83e0-48c55a3e7103",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_DELPHINIUM_OBJ_1"
+                },
+                "BriefingText": "$loc UI_CONTRACT_DELPHINIUM_OBJ_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["ac9fa06a-a37f-4033-ac40-8fcf4e384f4a"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "ac9fa06a-a37f-4033-ac40-8fcf4e384f4a"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "3a8207bb-84f5-438f-8f30-5c83aef2af80"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "7f6da010-1a96-4783-83e0-48c55a3e7103"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "ac9fa06a-a37f-4033-ac40-8fcf4e384f4a"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [],
+        "GameChangerReferences": [],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "a3caa4a2-c53c-4704-a02f-cf7a5065d7ce",
+        "IsPublished": true,
+        "CreationTimestamp": "2016-04-18T09:51:27.393Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_DELPHINIUM_LEVEL_1_TITLE",
+        "Description": "",
+        "CodeName_Hint": "Delphinium Level 1",
+        "RequiredUnlockable": "ACCESS_HIT_TIGER",
+        "Location": "LOCATION_BANGKOK",
+        "ScenePath": "assembly:/_pro/scenes/missions/Bangkok/_scene_tiger.entity",
+        "Type": "escalation",
+        "InGroup": "f425e64f-99df-4ebf-9f7d-909a65a26aef",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "d12ae90e-c6a6-4295-8e7a-474ab0a50e6c" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:36.3355475Z",
+        "PublicId": "008358899247",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

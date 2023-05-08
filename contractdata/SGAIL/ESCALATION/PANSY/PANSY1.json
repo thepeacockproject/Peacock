@@ -1,0 +1,149 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "Id": "bef74a3d-b453-4952-ac35-2d415ccd1f9d",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "Image": "images/unlockables/item_perspective_4d0d6b2a-dd81-474c-a412-3bf19af8233d_0.jpg",
+                "BriefingName": "$loc UI_CONTRACT_PANSY_RETRIEVE_FISH_NAME",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_PANSY_OBJECTIVE_1"
+                },
+                "BriefingText": "$loc UI_CONTRACT_PANSY_OBJECTIVE_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {
+                        "Targets": ["edb24f5f-53f6-4d7b-bcc6-05cdacaa28e5"]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "4d0d6b2a-dd81-474c-a412-3bf19af8233d"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "77ad1380-a6c6-4ff5-9810-20d8e43ba47e",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "Image": "images/actors/actor_e4aeb186-bedd-41a1-b4c0-bb9c49bc7982_0_0_0.jpg",
+                "BriefingName": "$loc UI_CONTRACT_PANSY_OBJECTIVE_2_NAME",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_PANSY_OBJECTIVE_2"
+                },
+                "BriefingText": "$loc UI_CONTRACT_PANSY_OBJECTIVE_2",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "Targets": ["1c00525f-cd44-49fa-aff8-c70d2388f031"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Pacify": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "1c00525f-cd44-49fa-aff8-c70d2388f031"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "4d0d6b2a-dd81-474c-a412-3bf19af8233d"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "1c00525f-cd44-49fa-aff8-c70d2388f0314"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ],
+                            "Kill": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "1c00525f-cd44-49fa-aff8-c70d2388f031"
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [
+            "abf09e23-299d-410c-a185-6188f687224b",
+            "015fba46-d4d7-4523-a4bc-31e618895c9e",
+            "d8528681-3577-49c9-aad5-73aed977fd18",
+            "3db72bb5-63d6-47fe-9332-d7ea3c195e06"
+        ],
+        "GameChangerReferences": [],
+        "Entrances": ["c8cc6525-fc26-41af-99f2-fb5d2e7fae29"],
+        "Stashpoints": [],
+        "MandatoryLoadout": [
+            {
+                "Id": "CHAR_MAGPIE_HERO_STARTINGOUTFIT_M_PRO109202",
+                "Properties": {
+                    "LoadoutSlot": "outfit",
+                    "RepositoryId": "3ff21e5c-5ec2-4868-903b-e7564c587aa7"
+                }
+            },
+            {
+                "Id": "FIREARMS_HERO_PISTOL_TACTICAL_ICA_19_S2",
+                "Properties": {
+                    "LoadoutSlot": "concealedweapon",
+                    "RepositoryId": "4bbe3b64-8bce-416e-a3e9-00bcd1571980"
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "e476863f-2c3c-4447-8b15-8ffeddcc7923",
+        "IsPublished": true,
+        "CreationTimestamp": "2018-10-04T14:53:07.8195216Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_PANSY_LEVEL_1_TITLE",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Magpie_Pansy.jpg",
+        "RequiredUnlockable": "ACCESS_HIT_MAGPIE",
+        "Description": "",
+        "CodeName_Hint": "Pansy Level 1",
+        "Location": "LOCATION_NORTHSEA",
+        "ScenePath": "assembly:/_pro/scenes/missions/theark/_scene_magpie_pansy.entity",
+        "Type": "escalation",
+        "Release": "2.1.x Escalation",
+        "InGroup": "8c6daf5e-5974-4438-af20-71ff570c7ff3",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "d8528681-3577-49c9-aad5-73aed977fd18" },
+            { "Id": "bef74a3d-b453-4952-ac35-2d415ccd1f9d" },
+            { "Id": "77ad1380-a6c6-4ff5-9810-20d8e43ba47e" }
+        ],
+        "LastUpdate": "2021-05-06T09:25:04.8850644Z",
+        "PublicId": "021477501347",
+        "Entitlements": ["H2_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

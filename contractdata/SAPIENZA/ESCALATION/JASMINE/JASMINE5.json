@@ -1,0 +1,241 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "c0619e7d-03fd-4c70-ae7b-9c90b640f59b",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "hitmansuit",
+                        "RepositoryId": "75759271-e236-4b33-8dd5-7e502c958d05",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "accident",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_JASMINE_OBJ_1" },
+                "BriefingText": "$loc UI_CONTRACT_JASMINE_OBJ_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["739b0044-c2c1-4487-8222-675bf8eaf9cd"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "739b0044-c2c1-4487-8222-675bf8eaf9cd"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitIsHitmanSuit",
+                                                    true
+                                                ]
+                                            },
+                                            { "$eq": ["$Value.Accident", true] }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "739b0044-c2c1-4487-8222-675bf8eaf9cd"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "4c999e76-b4d4-44f4-9cd5-fa4bee6fa871",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "accident",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "bf9629e0-f25c-4e71-9561-4a99a93a43e8",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_JASMINE_OBJ_2_2"
+                },
+                "BriefingText": "$loc UI_CONTRACT_JASMINE_OBJ_2_2",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["e055c221-f048-4fd4-8af8-2ac1c2d977d7"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "e055c221-f048-4fd4-8af8-2ac1c2d977d7"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "bf9629e0-f25c-4e71-9561-4a99a93a43e8"
+                                                ]
+                                            },
+                                            { "$eq": ["$Value.Accident", true] }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "e055c221-f048-4fd4-8af8-2ac1c2d977d7"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "975a3f95-7316-4bfd-9b8d-38040e79102b",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "accident",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "bf9629e0-f25c-4e71-9561-4a99a93a43e8",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_JASMINE_OBJ_3_2"
+                },
+                "BriefingText": "$loc UI_CONTRACT_JASMINE_OBJ_3_2",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["841ee310-e45d-4f57-b5bf-c44f0e5d9040"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "841ee310-e45d-4f57-b5bf-c44f0e5d9040"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "bf9629e0-f25c-4e71-9561-4a99a93a43e8"
+                                                ]
+                                            },
+                                            { "$eq": ["$Value.Accident", true] }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "841ee310-e45d-4f57-b5bf-c44f0e5d9040"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_PRO/Scenes/Missions/CoastalTown/gamechanger_wild card_jasmine.brick"
+        ],
+        "GameChangers": [
+            "51c8a014-dcc6-4714-a843-0295f9718c7a",
+            "03ca23e8-7daf-4346-8719-29970bc50d17",
+            "4ae5f0ed-5665-4825-bfca-490dad91cc02",
+            "0cf5e693-35ec-457e-a004-da4672b90376"
+        ],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "0519bc57-8666-49c5-aaef-52423707c3a7",
+        "IsPublished": true,
+        "CreationTimestamp": "2015-11-27T13:33:30.36Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_JASMINE_LEVEL_5_TITLE",
+        "Description": "UI_CONTRACT_JASMINE_LEVEL_5_DESC",
+        "CodeName_Hint": "Jasmine - Level 5",
+        "Location": "LOCATION_COASTALTOWN",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/CoastalTown/_scene_octopus.entity",
+        "Type": "escalation",
+        "InGroup": "641656f8-ab16-49c5-a09b-952738154b64",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "0cf5e693-35ec-457e-a004-da4672b90376" },
+            { "Id": "975a3f95-7316-4bfd-9b8d-38040e79102b" },
+            { "Id": "4ae5f0ed-5665-4825-bfca-490dad91cc02" },
+            { "Id": "03ca23e8-7daf-4346-8719-29970bc50d17" },
+            { "Id": "51c8a014-dcc6-4714-a843-0295f9718c7a" },
+            { "Id": "4c999e76-b4d4-44f4-9cd5-fa4bee6fa871" },
+            { "Id": "c0619e7d-03fd-4c70-ae7b-9c90b640f59b" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:42.0856269Z",
+        "PublicId": "003760396147",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

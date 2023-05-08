@@ -1,0 +1,237 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "BriefingName": "$loc UI_PEACOCK_KHAKIASP_DOCUMENTATION_PICTURE_TITLE",
+                "BriefingText": "$loc UI_PEACOCK_KHAKIASP_DOCUMENTATION_PICTURE_TITLE",
+                "Category": "primary",
+                "Definition": {
+                    "Context": {
+                        "Targets": [
+                            "5066bc16-68f7-4f84-831e-bfb982d670de",
+                            "5e042967-19a9-45af-acfb-4ce879eb0483",
+                            "7366b55d-bfdd-40b7-a333-9e9468f846aa",
+                            "bf102062-f894-484f-9beb-8872a7295fb3"
+                        ]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$inarray": {
+                                        "in": "$.Targets",
+                                        "?": {
+                                            "$eq": [
+                                                "$.#",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                },
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_KHAKIASP_DOCUMENTATION_PICTURE_TITLE"
+                },
+                "Id": "5a842427-f14c-457e-8c19-f281afc721db",
+                "Image": "images/contracts/escalation/letter.png",
+                "IsHidden": false,
+                "ObjectiveType": "custom",
+                "Type": "statemachine"
+            },
+            {
+                "Type": "statemachine",
+                "Id": "634a5886-8979-470c-b6d7-0aac1da231c3",
+                "BriefingName": "$loc UI_PEACOCK_KHAKIASP_DOCUMENTATION_MANIFESTO_TITLE",
+                "BriefingText": "$loc UI_PEACOCK_KHAKIASP_DOCUMENTATION_MANIFESTO_DESC",
+                "Image": "images/contracts/escalation/maelstrom_manifesto.png",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_KHAKIASP_DOCUMENTATION_MANIFESTO_TITLE"
+                },
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": true,
+                "Definition": {
+                    "Context": {
+                        "Targets": [
+                            "e8e5a310-30c3-4351-bc62-586899d106e0",
+                            "eed632e8-95c4-4506-bf25-ba2b248c67b4",
+                            "34928844-2618-4782-98f5-53222f63e1ef",
+                            "170a4b53-04bc-4ede-a1aa-4bfdefd955a9",
+                            "544d4e8b-644f-43d4-9ad4-978407613018"
+                        ]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": [
+                                {
+                                    "Condition": {
+                                        "$inarray": {
+                                            "in": "$.Targets",
+                                            "?": {
+                                                "$eq": [
+                                                    "$.#",
+                                                    "$Value.RepositoryId"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "9e51ac13-88e1-45cd-9244-006d44ff715d",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository a7d50e82-514e-48b6-a8a9-ffa80b86c141).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository a7d50e82-514e-48b6-a8a9-ffa80b86c141).Name"
+                        }
+                    }
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["a7d50e82-514e-48b6-a8a9-ffa80b86c141"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "a7d50e82-514e-48b6-a8a9-ffa80b86c141"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "38402d75-5dba-4f9a-b22d-96876514e37d",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository 49246f55-ee3c-402d-acae-10936d4ec9cc).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 49246f55-ee3c-402d-acae-10936d4ec9cc).Name"
+                        }
+                    }
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["49246f55-ee3c-402d-acae-10936d4ec9cc"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "49246f55-ee3c-402d-acae-10936d4ec9cc"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "1052a8bf-55b9-4e06-aa2b-1bd0c69b6386",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository 5ce075c6-c78a-4a5f-ae5d-9a516404ac46).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 5ce075c6-c78a-4a5f-ae5d-9a516404ac46).Name"
+                        }
+                    }
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["5ce075c6-c78a-4a5f-ae5d-9a516404ac46"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "5ce075c6-c78a-4a5f-ae5d-9a516404ac46"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "GameChangers": [],
+        "Bricks": []
+    },
+    "Metadata": {
+        "Title": "UI_PEACOCK_KHAKIASP_DOCUMENTATION2",
+        "Description": "",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Mumbai/scene_mongoose.entity",
+        "Location": "LOCATION_MUMBAI",
+        "IsPublished": true,
+        "CreatorUserId": "4aaa03b1-2f36-497b-91f2-69af779a2d99",
+        "Type": "escalation",
+        "Id": "b4934ad7-ef15-44cd-9ba1-7752755788b4",
+        "PublicId": "113099701530",
+        "InGroup": "667f48a3-7f6b-486e-8f6b-2f782a5c4857",
+        "TileImage": "images/contracts/escalation/contractescalation_khakiasp_documentation.png",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "1052a8bf-55b9-4e06-aa2b-1bd0c69b6386", "IsNew": true },
+            { "Id": "9e51ac13-88e1-45cd-9244-006d44ff715d" },
+            { "Id": "38402d75-5dba-4f9a-b22d-96876514e37d" },
+            { "Id": "5a842427-f14c-457e-8c19-f281afc721db", "IsNew": true },
+            { "Id": "634a5886-8979-470c-b6d7-0aac1da231c3" }
+        ],
+        "CreationTimestamp": "2021-06-01T14:21:34.2848229Z",
+        "Entitlements": ["H2_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

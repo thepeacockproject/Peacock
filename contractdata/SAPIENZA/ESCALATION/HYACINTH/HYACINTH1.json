@@ -1,0 +1,90 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "9b837bb0-0e2a-4d01-a22a-7295342d8b13",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "94f52181-b9ec-4363-baef-d53b4e424b74",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_HYACINTH_OBJ_1" },
+                "BriefingText": "$loc UI_CONTRACT_HYACINTH_OBJ_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["d51c4cc7-ea7e-4672-8f5a-968f98a97fab"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "d51c4cc7-ea7e-4672-8f5a-968f98a97fab"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "94f52181-b9ec-4363-baef-d53b4e424b74"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "d51c4cc7-ea7e-4672-8f5a-968f98a97fab"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/coastaltown/hyacinth_escalation_level_addition.brick"
+        ],
+        "GameChangers": [],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "579942d4-5df2-4342-8c04-26840aa996e1",
+        "IsPublished": true,
+        "CreationTimestamp": "2015-11-27T13:33:30.36Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_HYACINTH_LEVEL_1_TITLE",
+        "Description": "UI_CONTRACT_HYACINTH_LEVEL_1_DESC",
+        "CodeName_Hint": "Hyacinth - Level 1",
+        "Location": "LOCATION_COASTALTOWN",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/CoastalTown/_scene_octopus.entity",
+        "Type": "escalation",
+        "InGroup": "ee7e831b-f7ea-4803-8eba-80b42d020a7c",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "9b837bb0-0e2a-4d01-a22a-7295342d8b13" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:40.7418683Z",
+        "PublicId": "003251569947",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

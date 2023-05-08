@@ -1,0 +1,202 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "f0476810-bdae-4642-8f8f-dc8ed20595da",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "96e32a7a-129a-4dd6-9b5b-3000a58f2a0f",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "6ecf1f15-453c-4783-9c70-8777c83934d7",
+                        "HardCondition": true
+                    }
+                ],
+                "BriefingText": "$loc UI_CONTRACT_ANEMONE_OBJ_1",
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_ANEMONE_OBJ_1" },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["ab22f88d-f567-43a2-b20f-0ecc17257ffe"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "ab22f88d-f567-43a2-b20f-0ecc17257ffe"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "6ecf1f15-453c-4783-9c70-8777c83934d7"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "96e32a7a-129a-4dd6-9b5b-3000a58f2a0f"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "ab22f88d-f567-43a2-b20f-0ecc17257ffe"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "6ee724f9-8138-460c-9c79-c360a955df89",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "BriefingText": "$loc UI_CONTRACT_ANEMONE_OBJ_2",
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_ANEMONE_OBJ_2" },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["35ad9343-5a50-4149-94f3-83fb0aa01e5b"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "35ad9343-5a50-4149-94f3-83fb0aa01e5b"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillClass",
+                                                    "melee"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "642c20f9-bf41-41b4-b0bb-2491b5be938a"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "35ad9343-5a50-4149-94f3-83fb0aa01e5b"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "18f03817-f679-4fb5-b861-743c2ee1cc0a",
+                "Category": "primary",
+                "IsHidden": true,
+                "ExcludeFromScoring": true,
+                "BriefingText": "$loc UI_CONTRACT_ANEMONE_KRUGER_DUMPED_W_DISGUISE",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "Disguise": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value",
+                                            "642c20f9-bf41-41b4-b0bb-2491b5be938a"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ],
+                            "DumpInOcean": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "ab22f88d-f567-43a2-b20f-0ecc17257ffe"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ],
+                            "KrugerDumpedInPond": { "Transition": "Failure" }
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [
+            "8343beae-2460-4a40-98f2-c782effa7db6",
+            "ba550fb7-47f0-488d-9c37-accbaaf44e36"
+        ],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "9f91d926-eed8-4c3c-928f-055de1822a2d",
+        "InGroup": "77c7b56f-2410-4919-a4bc-64435c6cff55",
+        "IsPublished": true,
+        "CreationTimestamp": "2015-09-28T15:33:32.387Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_ANEMONE_LEVEL_4_TITLE",
+        "Description": "UI_CONTRACT_ANEMONE_LEVEL_4_DESC",
+        "CodeName_Hint": "Anemone - Level 4",
+        "Location": "LOCATION_PARIS",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Paris/_scene_paris.entity",
+        "Type": "escalation",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "ba550fb7-47f0-488d-9c37-accbaaf44e36" },
+            { "Id": "8343beae-2460-4a40-98f2-c782effa7db6" },
+            { "Id": "6ee724f9-8138-460c-9c79-c360a955df89" },
+            { "Id": "f0476810-bdae-4642-8f8f-dc8ed20595da" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:27.6636345Z",
+        "PublicId": "002132530947",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

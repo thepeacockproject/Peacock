@@ -22,7 +22,7 @@ import { produce } from "immer"
 import { axiosClient } from "./utils"
 
 export interface EscalationLevelPickerProps {
-    codenames: readonly CodenameMeta[]
+    codenames: CodenameMeta
     user: string
     gv: number
 }
@@ -30,6 +30,41 @@ export interface EscalationLevelPickerProps {
 const emptyValue = { __isEmpty: 1 }
 
 type Empty = typeof emptyValue
+
+const locsInGv = [
+    // Hitman 2016 (GV 1)
+    [
+        "ICA Facility",
+        "Paris",
+        "Sapienza",
+        "Marrakesh",
+        "Bangkok",
+        "Colorado",
+        "Hokkaido",
+    ],
+    // Hitman 2 (GV 2)
+    [
+        "Hawkes Bay",
+        "Miami",
+        "Santa Fortuna",
+        "Mumbai",
+        "Whittleton Creek",
+        "Isle of Sgàil",
+        "New York",
+        "Haven Island",
+    ],
+    // Hitman 3 (GV 3)
+    [
+        "Dubai",
+        "Dartmoor",
+        "Berlin",
+        "Chongqing",
+        "Mendoza",
+        "Carpathian Mountains",
+        "Ambrose Island",
+        "Elusive Target Arcade",
+    ],
+]
 
 export function EscalationLevelPicker({
     codenames,
@@ -80,6 +115,7 @@ export function EscalationLevelPicker({
             })
             .then((value) => {
                 let message: string
+
                 if (value.data.success) {
                     message = "Changes made. "
                     setProgressWeb(fork)
@@ -87,73 +123,97 @@ export function EscalationLevelPicker({
                     message = "Error: " + value.data.error
                     alert(message)
                 }
+
                 return console.debug(message)
             })
             .catch(console.error)
     }
 
-    //#region Bootleg column paginator
-    const rows: React.ReactElement[][] = [[]]
-    let latestRow = 0
+    const final: Record<string, React.ReactElement[][]> = {}
+    const locsInGame = locsInGv.slice(0, gv).flat()
 
-    for (const codename of codenames) {
-        if (!codename.id) {
+    for (const location in codenames) {
+        if (!locsInGame.includes(location)) {
             continue
         }
 
-        const comp = (
-            <div className="col col--4" key={codename.codename}>
-                <div className="card">
-                    <div className="card__header">
-                        <h3>{codename.name}</h3>
-                    </div>
-                    <div className="card__body">
-                        <ul className="tabs">
-                            <li className="tabs__item elp-tab">
-                                <button
-                                    className="button button--sm button--danger"
-                                    onClick={() => onChange(codename.id!, "-")}
-                                >
-                                    -
-                                </button>
-                            </li>
-                            <li className="tabs__item elp-tab">
-                                <p className="elp-tab">
-                                    Current level: {progress[codename.id!] ?? 1}
-                                </p>
-                            </li>
-                            <li className="tabs__item elp-tab">
-                                <button
-                                    className="button button--sm button--success"
-                                    onClick={() => onChange(codename.id!, "+")}
-                                >
-                                    +
-                                </button>
-                            </li>
-                        </ul>
+        const rows: React.ReactElement[][] = [[]]
+        let latestRow = 0
+
+        for (const codename of codenames[location]) {
+            if (
+                !codename.id ||
+                codename.hidden ||
+                (gv === 1 && codename.isPeacock)
+            ) {
+                continue
+            }
+
+            const comp = (
+                <div className="col col--4" key={codename.codename}>
+                    <div className="card" style={{ padding: "5px" }}>
+                        <div className="card__header centered">
+                            <h3>{codename.name}</h3>
+                        </div>
+                        <div className="card__body">
+                            <ul className="tabs">
+                                <li className="tabs__item elp-tab">
+                                    <button
+                                        className="button button--sm button--danger"
+                                        onClick={() =>
+                                            onChange(codename.id!, "-")
+                                        }
+                                    >
+                                        -
+                                    </button>
+                                </li>
+                                <li className="tabs__item elp-tab">
+                                    <p className="elp-tab">
+                                        Current level:{" "}
+                                        {progress[codename.id!] ?? 1}
+                                    </p>
+                                </li>
+                                <li className="tabs__item elp-tab">
+                                    <button
+                                        className="button button--sm button--success"
+                                        onClick={() =>
+                                            onChange(codename.id!, "+")
+                                        }
+                                    >
+                                        +
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
-        )
+            )
 
-        if (rows[latestRow].length === 3) {
-            latestRow = latestRow + 1
-            rows.push([])
+            if (rows[latestRow].length === 3) {
+                latestRow = latestRow + 1
+                rows.push([])
+            }
+
+            rows[latestRow].push(comp)
         }
 
-        rows[latestRow].push(comp)
+        if (rows[0].length) final[location] = rows
     }
-    //#endregion
 
     return (
         <section className="app-grid">
-            <div className="container">
-                {rows.map((row, index) => (
-                    <div className="row" key={index}>
-                        {row}
+            {Object.keys(final).map((val) => {
+                return (
+                    <div className="container" style={{ padding: "15px" }}>
+                        <h1>{val}</h1>
+                        {final[val].map((row, index) => (
+                            <div className="row" key={index}>
+                                {row}
+                            </div>
+                        ))}
                     </div>
-                ))}
-            </div>
+                )
+            })}
         </section>
     )
 }

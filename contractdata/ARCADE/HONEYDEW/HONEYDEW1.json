@@ -1,0 +1,96 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "GameChangers": ["b43f84f7-6c26-4adf-b74a-6d598f03cbe3"],
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "b43f84f7-6c26-4adf-b74a-6d598f03cbe3", "IsNew": true }
+        ],
+        "Objectives": [
+            {
+                "Id": "a0dc6d26-1114-4e4f-8bef-096e3924c545",
+                "Primary": true,
+                "IsHidden": true,
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "3a26a487-5f3b-440a-a55d-13a136eb1bea"
+                    }
+                }
+            },
+            {
+                "Id": "e8da2281-192e-45b4-886e-36d713314145",
+                "IsHidden": true,
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": true,
+                "Image": "images/unlockables/item_perspective_55d34557-5b46-422f-84ce-7bb13cfcef96_0.jpg",
+                "BriefingName": "$loc UI_CONTRACT_BLOODYMARY_OBJ_2_TITLE",
+                "BriefingText": "$loc UI_CONTRACT_BLOODYMARY_OBJ_2_TITLE",
+                "LongBriefingText": "$loc UI_CONTRACT_BLOODYMARY_OBJ_2_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_BLOODYMARY_OBJ_2_TITLE"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {
+                        "Targets": ["6c05ffd3-a02b-45b6-9c05-ac3f6fcc0561"]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "6c05ffd3-a02b-45b6-9c05-ac3f6fcc0561"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/bangkok/mission_bangkok_bloodymary.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/Missions/bangkok/vr_overrides_bangkok.brick",
+                    "assembly:/_PRO/Scenes/Missions/bangkok/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/Missions/bangkok/vr_overrides_bangkok.brick"
+                ]
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "b0e6c3cd-e4b8-43c3-aad7-91311214698e",
+        "Title": "UI_CONTRACT_HONEYDEW_LEVEL1_TITLE",
+        "CodeName_Hint": "Arcade Honeydew BloodyMary",
+        "Description": "UI_CONTRACT_BLOODYMARY_DESC",
+        "BriefingVideo": "briefing_bloodymary",
+        "DebriefingVideo": "debriefing_bloodymary",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/bangkok/_Scene_Tiger.entity",
+        "Entitlements": ["LOCATION_GOLDEN"],
+        "TileImage": "images/contracts/elusive/009_BloodyMary/Title.jpg",
+        "Location": "LOCATION_BANGKOK",
+        "IsPublished": true,
+        "LastUpdate": "2023-02-24T10:14:37.1963568Z",
+        "CreationTimestamp": "2018-10-11T08:41:48.0124427Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Type": "arcade",
+        "Release": "3.130.0 Arcade",
+        "InGroup": "ff5b4e53-49ea-4d85-b94e-d3c8b3fc7ab3",
+        "PublicId": "008052544947"
+    },
+    "UserData": {}
+}

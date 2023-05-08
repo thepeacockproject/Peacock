@@ -1,0 +1,65 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "5025e3a3-b5aa-485f-aefa-cd76eff101b9",
+                "Category": "primary",
+                "TargetConditions": [],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_SUNFLOWER_OBJ_1_1"
+                },
+                "BriefingText": "$loc UI_CONTRACT_SUNFLOWER_OBJ_1_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["5e9fb80f-634c-4743-9ece-b189f826a5d9"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "5e9fb80f-634c-4743-9ece-b189f826a5d9"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "56684a64-70c1-4845-a2c4-b49ddd78a45e",
+        "IsPublished": true,
+        "CreationTimestamp": "2015-11-16T16:46:01.57Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_SUNFLOWER_LEVEL_1_TITLE",
+        "Description": "UI_CONTRACT_SUNFLOWER_LEVEL_1_DESC",
+        "CodeName_Hint": "Sunflower - Level 1",
+        "Location": "LOCATION_COASTALTOWN",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/CoastalTown/_scene_octopus.entity",
+        "Type": "escalation",
+        "InGroup": "4b6739eb-bcdb-48ad-8c45-a829794175e1",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "5025e3a3-b5aa-485f-aefa-cd76eff101b9" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:50.5075412Z",
+        "PublicId": "003051082747",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

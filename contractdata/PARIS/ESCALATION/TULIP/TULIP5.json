@@ -1,0 +1,102 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "4938115b-7708-4622-ae1f-5b72ded95baf",
+                "Category": "primary",
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "3ec5ac4d-77c0-4840-8c1a-3cec7441158f"
+                    }
+                }
+            },
+            {
+                "Id": "0561ef8f-602e-4166-bba6-7f100a76e415",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_TULIP_LEVEL_3_OBJ_1"
+                },
+                "BriefingText": "$loc UI_CONTRACT_TULIP_LEVEL_3_OBJ_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["65976c9c-75c7-4379-a2ab-e6ccf4df5b58"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "65976c9c-75c7-4379-a2ab-e6ccf4df5b58"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.Explosive",
+                                                    true
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "65976c9c-75c7-4379-a2ab-e6ccf4df5b58"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [
+            "174898dc-3f20-4dd8-8dd0-7709576360a3",
+            "ba550fb7-47f0-488d-9c37-accbaaf44e36",
+            "da07626c-0aa3-463a-92ff-8e7adbbf6230"
+        ],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "23ded45d-c08c-4077-bdc8-ec4118bc70ce",
+        "InGroup": "a1e7fdb4-88a4-4dbd-9ef2-d9bd1762cec2",
+        "IsPublished": true,
+        "CreationTimestamp": "2015-08-19T08:17:45.213Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_TULIP_LEVEL_5_TITLE",
+        "Description": "UI_CONTRACT_TULIP_LEVEL_5_DESC",
+        "CodeName_Hint": "Tulip - Level 5",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Paris/_scene_paris.entity",
+        "Location": "LOCATION_PARIS",
+        "Type": "escalation",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "da07626c-0aa3-463a-92ff-8e7adbbf6230" },
+            { "Id": "174898dc-3f20-4dd8-8dd0-7709576360a3" },
+            { "Id": "0561ef8f-602e-4166-bba6-7f100a76e415" },
+            { "Id": "ba550fb7-47f0-488d-9c37-accbaaf44e36" },
+            { "Id": "4938115b-7708-4622-ae1f-5b72ded95baf" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:52.2575399Z",
+        "PublicId": "002607895647",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

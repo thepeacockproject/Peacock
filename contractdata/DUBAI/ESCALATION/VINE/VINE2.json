@@ -1,0 +1,275 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "Id": "412ab61b-a6cc-480e-983e-707c541eaea8",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "pacify_shovel",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_VINE_OBJ_3" },
+                "BriefingText": "$loc UI_CONTRACT_VINE_FAIL_DESC_OBJ_3",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["ca37de76-1600-4e57-bcba-accf7aebb216"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Pacify": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "ca37de76-1600-4e57-bcba-accf7aebb216"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "1066917f-2e04-4c54-b8cb-55cb1dcc2f26"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "ca37de76-1600-4e57-bcba-accf7aebb216"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ],
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "ca37de76-1600-4e57-bcba-accf7aebb216"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Assassin Fail Dummy-----",
+                "Id": "19da5452-b6b0-4465-b32a-ca4988dad42c",
+                "Primary": true,
+                "ObjectiveType": "customkill",
+                "ForceShowOnLoadingScreen": false,
+                "ExcludeFromScoring": false,
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": true }
+                },
+                "Image": "images/contracts/escalation/ContractEscalation_Golden_Vine_Assassin.jpg",
+                "BriefingText": "$loc UI_CONTRACT_VINE_FAIL_DESC_OBJ_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["7d28ed81-2b13-4a8f-8276-0216c5e8058d"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Pacify": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "7d28ed81-2b13-4a8f-8276-0216c5e8058d"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ],
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "7d28ed81-2b13-4a8f-8276-0216c5e8058d"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        },
+                        "Success": { "ZanaAwake": { "Transition": "Start" } }
+                    }
+                }
+            },
+            {
+                "Id": "11f33514-9d0c-420b-b0db-bff0c70a73e8",
+                "ObjectiveType": "custom",
+                "Category": "primary",
+                "ForceShowOnLoadingScreen": true,
+                "OnActive": {
+                    "IfInProgress": { "Visible": true },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                },
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "pacifyany",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_VINE_OBJ_1_2" },
+                "Image": "images/contracts/escalation/ContractEscalation_Golden_Vine_Assassin.jpg",
+                "BriefingName": "$loc Golden_Unique_Zana_TheVulture_Kazem",
+                "BriefingText": "$loc UI_CONTRACT_VINE_OBJ_1_2",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["7d28ed81-2b13-4a8f-8276-0216c5e8058d"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Pacify": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "7d28ed81-2b13-4a8f-8276-0216c5e8058d"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        },
+                        "Success": { "ZanaAwake": { "Transition": "Start" } }
+                    }
+                }
+            },
+            {
+                "Id": "fd6259b3-9652-4363-a674-89f6926fa062",
+                "ObjectiveType": "custom",
+                "IgnoreIfInactive": true,
+                "Activation": {
+                    "$eq": [
+                        "$11f33514-9d0c-420b-b0db-bff0c70a73e8",
+                        "Completed"
+                    ]
+                },
+                "OnActive": { "IfCompleted": { "Visible": true } },
+                "OnInactive": {
+                    "IfCompleted": { "State": "InProgress", "Visible": false },
+                    "IfFailed": { "State": "InProgress", "Visible": false }
+                },
+                "Category": "primary",
+                "TargetConditions": [],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_VINE_OBJ_1" },
+                "Image": "images/contracts/escalation/ContractEscalation_Golden_Vine_Assassin.jpg",
+                "BriefingName": "$loc Golden_Unique_Zana_TheVulture_Kazem",
+                "BriefingText": "$loc UI_CONTRACT_VINE_OBJ_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["7d28ed81-2b13-4a8f-8276-0216c5e8058d"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "7d28ed81-2b13-4a8f-8276-0216c5e8058d"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        },
+                        "Success": { "ZanaAwake": { "Transition": "Start" } }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_PRO/scenes/missions/golden/mission_gecko/gamechanger_gecko_vine_base.brick"
+        ],
+        "GameChangers": ["22ccd30e-783e-4d6c-92bf-52c39ebd2ee7"],
+        "GameChangerReferences": [],
+        "Entrances": [],
+        "Stashpoints": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/scenes/missions/golden/mission_gecko/vr_overrides_golden_gecko.brick",
+                    "assembly:/_PRO/scenes/missions/golden/mission_gecko/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/scenes/missions/golden/mission_gecko/vr_overrides_golden_gecko.brick"
+                ]
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "ea2a49cd-ce0e-49ff-ab5a-e4167313df67",
+        "IsPublished": true,
+        "CreationTimestamp": "2016-05-04T09:51:27.3937089Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Vine.jpg",
+        "Title": "UI_CONTRACT_VINE_LEVEL_2_TITLE",
+        "Description": "UI_CONTRACT_VINE_GROUP_DESC",
+        "CodeName_Hint": "Vine Level 2",
+        "Location": "LOCATION_GOLDEN_GECKO",
+        "ScenePath": "assembly:/_pro/scenes/missions/golden/mission_gecko/scene_gecko_basic.entity",
+        "Release": { "Major": 3, "Minor": 0, "Build": 0, "Revision": -1 },
+        "Type": "escalation",
+        "InGroup": "a9dc4bf9-d277-4115-8dac-6c665cd68168",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "22ccd30e-783e-4d6c-92bf-52c39ebd2ee7" },
+            { "IsNew": true, "Id": "11f33514-9d0c-420b-b0db-bff0c70a73e8" },
+            { "Id": "412ab61b-a6cc-480e-983e-707c541eaea8" }
+        ],
+        "Entitlements": ["LOCATION_GOLDEN"],
+        "LastUpdate": "2023-03-30T11:20:28.0844979Z",
+        "PublicId": "027294544847"
+    },
+    "UserData": {}
+}

@@ -1,0 +1,100 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "05f08068-eadf-4710-a7bf-849ec9afd841",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "69aac6db-461e-43af-89bc-2c27e50d430f",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "e17172cc-bf70-4df6-9828-d9856b1a24fd",
+                        "HardCondition": true
+                    }
+                ],
+                "BriefingText": "$loc UI_CONTRACT_CLOVER_OBJ_1",
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_CLOVER_OBJ_1" },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["1aaf283d-e5b1-4b6b-8c56-d8ef5263152a"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "1aaf283d-e5b1-4b6b-8c56-d8ef5263152a"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "e17172cc-bf70-4df6-9828-d9856b1a24fd"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "69aac6db-461e-43af-89bc-2c27e50d430f"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "1aaf283d-e5b1-4b6b-8c56-d8ef5263152a"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": ["3a8d4421-096e-4a1b-853a-c12886a51d1f"],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "324cdd81-a870-494e-8ca1-b8a4ce251676",
+        "InGroup": "edeca4db-7394-4e93-9b6d-00581f16d6c1",
+        "IsPublished": true,
+        "CreationTimestamp": "2015-10-09T11:34:33.25Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_CLOVER_LEVEL_2_TITLE",
+        "Description": "UI_CONTRACT_CLOVER_LEVEL_2_DESC",
+        "CodeName_Hint": "Clover - Level 2",
+        "Location": "LOCATION_PARIS",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Paris/_scene_paris.entity",
+        "Type": "escalation",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "3a8d4421-096e-4a1b-853a-c12886a51d1f" },
+            { "Id": "05f08068-eadf-4710-a7bf-849ec9afd841" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:34.6324167Z",
+        "PublicId": "002657430647",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

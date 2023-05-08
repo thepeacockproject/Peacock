@@ -1,0 +1,121 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "Id": "412ab61b-a6cc-480e-983e-707c541eaea8",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "pacify_shovel",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_VINE_OBJ_3" },
+                "BriefingText": "$loc UI_CONTRACT_VINE_OBJ_3",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["ca37de76-1600-4e57-bcba-accf7aebb216"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Pacify": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "ca37de76-1600-4e57-bcba-accf7aebb216"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "1066917f-2e04-4c54-b8cb-55cb1dcc2f26"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "ca37de76-1600-4e57-bcba-accf7aebb216"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ],
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "ca37de76-1600-4e57-bcba-accf7aebb216"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_PRO/scenes/missions/golden/mission_gecko/gamechanger_gecko_vine_base.brick"
+        ],
+        "GameChangers": [],
+        "GameChangerReferences": [],
+        "Entrances": [],
+        "Stashpoints": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/scenes/missions/golden/mission_gecko/vr_overrides_golden_gecko.brick",
+                    "assembly:/_PRO/scenes/missions/golden/mission_gecko/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/scenes/missions/golden/mission_gecko/vr_overrides_golden_gecko.brick"
+                ]
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "60f7338c-9f68-4756-b44a-bb28d5b87c07",
+        "IsPublished": true,
+        "CreationTimestamp": "2016-05-04T09:51:27.3937089Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Vine.jpg",
+        "Title": "UI_CONTRACT_VINE_LEVEL_1_TITLE",
+        "Description": "UI_CONTRACT_VINE_GROUP_DESC",
+        "CodeName_Hint": "Vine Level 1",
+        "Location": "LOCATION_GOLDEN_GECKO",
+        "ScenePath": "assembly:/_pro/scenes/missions/golden/mission_gecko/scene_gecko_basic.entity",
+        "Release": { "Major": 3, "Minor": 0, "Build": 0, "Revision": -1 },
+        "Type": "escalation",
+        "InGroup": "a9dc4bf9-d277-4115-8dac-6c665cd68168",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "dbc52be2-38ba-4bdf-be97-ec2799c821ab" },
+            { "Id": "ad69a093-7021-4371-bec5-577963be4d3f" },
+            { "Id": "63055f1a-bcd2-4e0f-8caf-b446f01d02f3" }
+        ],
+        "Entitlements": ["LOCATION_GOLDEN"],
+        "LastUpdate": "2023-03-30T11:20:28.0707915Z",
+        "PublicId": "027597892447"
+    },
+    "UserData": {}
+}

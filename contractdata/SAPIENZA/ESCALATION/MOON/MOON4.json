@@ -1,0 +1,206 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "07ee7019-d361-4726-b5bf-678bae0aa003",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_MOON_FLOWER_OBJ_1_1"
+                },
+                "BriefingText": "$loc UI_CONTRACT_MOON_FLOWER_OBJ_1_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["c8bb50e4-c2ef-4178-abdd-33a0a13767a7"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "c8bb50e4-c2ef-4178-abdd-33a0a13767a7"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemCategory",
+                                                    "shotgun"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "c8bb50e4-c2ef-4178-abdd-33a0a13767a7"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillClass",
+                                                    "explosion"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "c8bb50e4-c2ef-4178-abdd-33a0a13767a7"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "17dc0dbf-a111-4582-b49e-1c8861dac2f4",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_MOON_FLOWER_OBJ_2_1"
+                },
+                "BriefingText": "$loc UI_CONTRACT_MOON_FLOWER_OBJ_2_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["46a95d7a-2f72-479b-82a9-93364fbc2d0b"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "46a95d7a-2f72-479b-82a9-93364fbc2d0b"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemCategory",
+                                                    "shotgun"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "46a95d7a-2f72-479b-82a9-93364fbc2d0b"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillClass",
+                                                    "explosion"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "46a95d7a-2f72-479b-82a9-93364fbc2d0b"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "442b594f-4ac0-4505-b064-106ffc7eac85",
+                "Category": "primary",
+                "ObjectiveType": "setpiece",
+                "Image": "images/contracts/gamechangers/Gamechanger_Sapienza_Copperhead_Laptop_Bosco_Trailer.jpg",
+                "BriefingName": "$loc UI_GAMECHANGERS_SAPIENZA_LAPTOP_BOSCO_TRAILER_NAME",
+                "BriefingText": "$loc UI_CONTRACT_MOON_FLOWER_OBJ_3",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_MOON_FLOWER_OBJ_3"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {
+                        "Targets": ["5194b8e2-568b-4160-9d28-6b3458709283"]
+                    },
+                    "States": {
+                        "Start": {
+                            "LaptopHacked": { "Transition": "Success" },
+                            "Laptop_Destroyed": { "Transition": "Failure" }
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/coastaltown/gamechanger_copperhead_wild_card_moon_flower.brick"
+        ],
+        "GameChangers": [
+            "51c8a014-dcc6-4714-a843-0295f9718c7a",
+            "1325523c-04b7-48a9-afe2-d9e2ec481265",
+            "5fef7df0-94ef-47ef-b91e-d67578f81d76",
+            "95b8fdcf-9879-4e16-978f-c220ee6adac1"
+        ],
+        "Stashpoints": ["ea156a43-2020-4fee-b726-a5d01c2b0cc2"],
+        "Entrances": ["da717656-934e-4783-8c36-65bf486cfdfa"],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "0434d0ac-5e74-4d1f-8aef-8abbadabd1aa",
+        "IsPublished": true,
+        "CreationTimestamp": "2015-11-16T15:44:01.2Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_MOON_FLOWER_LEVEL_4_TITLE",
+        "Description": "",
+        "CodeName_Hint": "Moon Flower - Level 4",
+        "Location": "LOCATION_COASTALTOWN_MOVIESET",
+        "ScenePath": "assembly:/_pro/scenes/missions/coastaltown/_scene_copperhead.entity",
+        "Type": "escalation",
+        "InGroup": "74739eda-6ed5-4318-a501-2fa0bd53ef5a",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "95b8fdcf-9879-4e16-978f-c220ee6adac1" },
+            { "IsNew": true, "Id": "5fef7df0-94ef-47ef-b91e-d67578f81d76" },
+            { "Id": "442b594f-4ac0-4505-b064-106ffc7eac85" },
+            { "Id": "17dc0dbf-a111-4582-b49e-1c8861dac2f4" },
+            { "Id": "51c8a014-dcc6-4714-a843-0295f9718c7a" },
+            { "Id": "07ee7019-d361-4726-b5bf-678bae0aa003" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:45.5231427Z",
+        "PublicId": "005442133247",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

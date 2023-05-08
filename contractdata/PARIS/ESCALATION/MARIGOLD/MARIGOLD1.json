@@ -1,0 +1,84 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "5a360f5c-989d-4359-b155-f5fa3d0e38dd",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "2018db77-aa8a-4bf9-9afb-56bdaa161156",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_MARIGOLD_OBJ_1" },
+                "BriefingText": "$loc UI_CONTRACT_MARIGOLD_OBJ_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["c3ef8f1c-9857-4196-acd3-fd9ea1b81d52"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "c3ef8f1c-9857-4196-acd3-fd9ea1b81d52"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "2018db77-aa8a-4bf9-9afb-56bdaa161156"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "c3ef8f1c-9857-4196-acd3-fd9ea1b81d52"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "871eb4fc-6572-4f2e-948c-377ee4339927",
+        "InGroup": "ced3ecb8-70ab-40b0-b033-6f6235c61900",
+        "IsPublished": true,
+        "CreationTimestamp": "2015-10-13T13:36:55.26Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_MARIGOLD_LEVEL_1_TITLE",
+        "Description": "UI_CONTRACT_MARIGOLD_LEVEL_1_DESC",
+        "CodeName_Hint": "Marigold - Level 1",
+        "Location": "LOCATION_PARIS",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Paris/_scene_paris.entity",
+        "Type": "escalation",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "5a360f5c-989d-4359-b155-f5fa3d0e38dd" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:44.679394Z",
+        "PublicId": "002005258847",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

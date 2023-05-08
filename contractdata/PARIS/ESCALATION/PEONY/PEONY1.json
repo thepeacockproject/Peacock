@@ -1,0 +1,84 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "218f73bc-c5a7-44cc-bb65-c181d3c04b14",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "weapontype",
+                        "RepositoryId": "901a3b51-51a0-4236-bdf2-23d20696b358",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_PEONY_OBJ_1" },
+                "BriefingText": "$loc UI_CONTRACT_PEONY_OBJ_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["ab6d4ee5-6252-4592-8ea6-76dd77ec708d"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "ab6d4ee5-6252-4592-8ea6-76dd77ec708d"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemCategory",
+                                                    "shotgun"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "ab6d4ee5-6252-4592-8ea6-76dd77ec708d"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "9f2af10d-1826-4fe5-bea6-de8c23f2c651",
+        "InGroup": "e75663c8-afca-45a1-af18-25fe3e663848",
+        "IsPublished": true,
+        "CreationTimestamp": "2015-10-16T13:25:16.86Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_PEONY_LEVEL_1_TITLE",
+        "Description": "UI_CONTRACT_PEONY_LEVEL_1_DESC",
+        "CodeName_Hint": "Peony - level 1",
+        "Location": "LOCATION_PARIS",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Paris/_scene_paris.entity",
+        "Type": "escalation",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "218f73bc-c5a7-44cc-bb65-c181d3c04b14" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:47.1637739Z",
+        "PublicId": "002491452447",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

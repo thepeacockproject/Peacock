@@ -1,0 +1,219 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "570ca6c4-2749-4a0f-b0b4-d75d4c7a1c2b",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "58dceb1c-d7db-41dc-9750-55e3ab87fdf0",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_IRIS_OBJECTIVE_1"
+                },
+                "BriefingText": "$loc UI_CONTRACT_IRIS_OBJECTIVE_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["45463b89-0bda-408c-99be-698e1028c24c"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "45463b89-0bda-408c-99be-698e1028c24c"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "58dceb1c-d7db-41dc-9750-55e3ab87fdf0"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "45463b89-0bda-408c-99be-698e1028c24c"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "c6e07b5b-b5c5-40e1-800e-f79d20346323",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "6136fa6a-3f1f-4606-9b87-fde9538966dc",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_IRIS_OBJECTIVE_2"
+                },
+                "BriefingText": "$loc UI_CONTRACT_IRIS_OBJECTIVE_2",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["212a9df2-c335-4418-93b2-9f43370d0876"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "212a9df2-c335-4418-93b2-9f43370d0876"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "6136fa6a-3f1f-4606-9b87-fde9538966dc"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "212a9df2-c335-4418-93b2-9f43370d0876"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "212e6140-22f8-4c18-b3b3-239edeb66c8a",
+                "Category": "primary",
+                "ObjectiveType": "setpiece",
+                "BriefingText": "$loc UI_CONTRACT_IRIS_OBJECTIVE_3",
+                "Image": "images/contracts/gamechangers/Gamechanger_Marrakesh_School_BreakAndEnter_01.jpg",
+                "BriefingName": "$loc UI_GAMECHANGERS_MARRAKESH_SAFE_SCHOOL_01_NAME",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_IRIS_OBJECTIVE_3"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {
+                        "Targets": ["b8cc729a-1a80-4e63-97c9-adfc26954afe"]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "195dcd6b-6663-4768-9e0a-c94e244cbea4"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            },
+                            "Gamechanger_Safe_Content_Destroyed": {
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "a76d2088-6373-4e40-bc57-f701a899b491",
+                "Category": "primary",
+                "IsHidden": true,
+                "ExcludeFromScoring": true,
+                "IgnoreIfInactive": true,
+                "BriefingText": "$loc UI_GAMECHANGERS_GLOBAL_ONE_DISGUISE_CHANGE_DISGUISE_NEEDED_FAIL",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "States": {
+                        "Start": { "-": { "Transition": "Success" } },
+                        "Success": {
+                            "Disguise": [
+                                {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "$Value",
+                                                "6136fa6a-3f1f-4606-9b87-fde9538966dc"
+                                            ]
+                                        }
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/marrakesh/gamechanger_level_wildcard_iris.brick"
+        ],
+        "GameChangers": [
+            "3d283993-092d-496e-92f7-5955867b4148",
+            "51c8a014-dcc6-4714-a843-0295f9718c7a",
+            "5fef7df0-94ef-47ef-b91e-d67578f81d76"
+        ],
+        "GameChangerReferences": [],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "e6ec6b2e-4f6b-44c7-bb3d-ace5482471bc",
+        "IsPublished": true,
+        "CreationTimestamp": "2016-04-18T11:09:44.703Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_IRIS_LEVEL_5_TITLE",
+        "Description": "UI_CONTRACT_IRIS_LEVEL_5_DESC",
+        "CodeName_Hint": "Iris - Level 5",
+        "ScenePath": "assembly:/_pro/scenes/missions/marrakesh/_scene_spider.entity",
+        "Location": "LOCATION_MARRAKECH",
+        "Type": "escalation",
+        "RequiredUnlockable": "ACCESS_HIT_SPIDER",
+        "InGroup": "19660896-fc1f-49f9-b56b-2059137530e4",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "5fef7df0-94ef-47ef-b91e-d67578f81d76" },
+            { "Id": "3d283993-092d-496e-92f7-5955867b4148" },
+            { "Id": "51c8a014-dcc6-4714-a843-0295f9718c7a" },
+            { "Id": "212e6140-22f8-4c18-b3b3-239edeb66c8a" },
+            { "Id": "c6e07b5b-b5c5-40e1-800e-f79d20346323" },
+            { "Id": "570ca6c4-2749-4a0f-b0b4-d75d4c7a1c2b" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:41.8200045Z",
+        "PublicId": "006719205547",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

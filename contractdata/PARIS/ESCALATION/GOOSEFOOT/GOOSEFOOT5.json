@@ -1,0 +1,165 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "6bf7031e-cfd6-4a6b-919b-d023609709ed",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "accident_push",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_GOOSEFOOT_OBJ_1"
+                },
+                "BriefingText": "$loc UI_CONTRACT_GOOSEFOOT_OBJ_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["63483b25-2a8b-40e4-846b-8f709228e0f3"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "63483b25-2a8b-40e4-846b-8f709228e0f3"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "PushOver"
+                                                        ]
+                                                    },
+                                                    "in": "$Value.DamageEvents"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "63483b25-2a8b-40e4-846b-8f709228e0f3"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "9d1c092d-91ca-4340-bc46-d356f4c87b0d",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "f1f89faf-a441-4492-b442-9a923b5ecfd1",
+                        "HardCondition": true
+                    }
+                ],
+                "BriefingText": "$loc UI_CONTRACT_GOOSEFOOT_OBJ_2",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_GOOSEFOOT_OBJ_2"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["4a69e8ca-96c9-4f6d-b977-65c10f3ca202"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "4a69e8ca-96c9-4f6d-b977-65c10f3ca202"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "f1f89faf-a441-4492-b442-9a923b5ecfd1"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "4a69e8ca-96c9-4f6d-b977-65c10f3ca202"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [
+            "ba550fb7-47f0-488d-9c37-accbaaf44e36",
+            "da07626c-0aa3-463a-92ff-8e7adbbf6230",
+            "07b1bc1d-f52b-4004-a760-846c4bc3f172"
+        ],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "3e5d074c-ec66-4b27-bacf-9e96a01cdd62",
+        "IsPublished": true,
+        "CreationTimestamp": "2016-01-21T11:51:05.833Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_GOOSEFOOT_LEVEL_5_TITLE",
+        "Description": "UI_CONTRACT_GOOSEFOOT_LEVEL_5_DESC",
+        "CodeName_Hint": "Goosefoot - Level 5",
+        "Location": "LOCATION_PARIS",
+        "ScenePath": "assembly:/_pro/scenes/missions/paris/_scene_paris.entity",
+        "TileImage": "",
+        "Type": "escalation",
+        "InGroup": "bfb0d544-b4c9-4533-bed4-4562a43a3f40",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "07b1bc1d-f52b-4004-a760-846c4bc3f172" },
+            { "Id": "da07626c-0aa3-463a-92ff-8e7adbbf6230" },
+            { "Id": "9d1c092d-91ca-4340-bc46-d356f4c87b0d" },
+            { "Id": "ba550fb7-47f0-488d-9c37-accbaaf44e36" },
+            { "Id": "6bf7031e-cfd6-4a6b-919b-d023609709ed" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:38.6481143Z",
+        "PublicId": "002485970347",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

@@ -1,0 +1,348 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "BriefingName": "$loc UI_PEACOCK_KHAKIASP_DOCUMENTATION_PICTURE_TITLE",
+                "BriefingText": "$loc UI_PEACOCK_KHAKIASP_DOCUMENTATION_PICTURE_TITLE",
+                "Category": "primary",
+                "Definition": {
+                    "Context": {
+                        "Targets": [
+                            "5066bc16-68f7-4f84-831e-bfb982d670de",
+                            "5e042967-19a9-45af-acfb-4ce879eb0483",
+                            "7366b55d-bfdd-40b7-a333-9e9468f846aa",
+                            "bf102062-f894-484f-9beb-8872a7295fb3"
+                        ]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$inarray": {
+                                        "in": "$.Targets",
+                                        "?": {
+                                            "$eq": [
+                                                "$.#",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                },
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_KHAKIASP_DOCUMENTATION_PICTURE_TITLE"
+                },
+                "Id": "5a842427-f14c-457e-8c19-f281afc721db",
+                "Image": "images/contracts/escalation/letter.png",
+                "IsHidden": false,
+                "ObjectiveType": "custom",
+                "Type": "statemachine"
+            },
+            {
+                "Type": "statemachine",
+                "Id": "634a5886-8979-470c-b6d7-0aac1da231c3",
+                "BriefingName": "$loc UI_PEACOCK_KHAKIASP_DOCUMENTATION_MANIFESTO_TITLE",
+                "BriefingText": "$loc UI_PEACOCK_KHAKIASP_DOCUMENTATION_MANIFESTO_DESC",
+                "Image": "images/contracts/escalation/maelstrom_manifesto.png",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_KHAKIASP_DOCUMENTATION_MANIFESTO_TITLE"
+                },
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": true,
+                "Definition": {
+                    "Context": {
+                        "Targets": [
+                            "e8e5a310-30c3-4351-bc62-586899d106e0",
+                            "eed632e8-95c4-4506-bf25-ba2b248c67b4",
+                            "34928844-2618-4782-98f5-53222f63e1ef",
+                            "170a4b53-04bc-4ede-a1aa-4bfdefd955a9",
+                            "544d4e8b-644f-43d4-9ad4-978407613018"
+                        ]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": [
+                                {
+                                    "Condition": {
+                                        "$inarray": {
+                                            "in": "$.Targets",
+                                            "?": {
+                                                "$eq": [
+                                                    "$.#",
+                                                    "$Value.RepositoryId"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "edf869f1-91bb-4d83-91f7-362e80d10f92",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository 49246f55-ee3c-402d-acae-10936d4ec9cc).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_KHAKIASP_DOCUMENTATION_OBJ1"
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["49246f55-ee3c-402d-acae-10936d4ec9cc"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "49246f55-ee3c-402d-acae-10936d4ec9cc"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "b153112f-9cd1-4a49-a9c6-ba1a34f443ab"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "49246f55-ee3c-402d-acae-10936d4ec9cc"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "b153112f-9cd1-4a49-a9c6-ba1a34f443ab",
+                        "HardCondition": true
+                    }
+                ]
+            },
+            {
+                "Type": "statemachine",
+                "Id": "b523eedc-9179-42d1-b950-32b7917ec4c4",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository a7d50e82-514e-48b6-a8a9-ffa80b86c141).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_KHAKIASP_DOCUMENTATION_OBJ2"
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["a7d50e82-514e-48b6-a8a9-ffa80b86c141"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "a7d50e82-514e-48b6-a8a9-ffa80b86c141"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "b153112f-9cd1-4a49-a9c6-ba1a34f443ab"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "a7d50e82-514e-48b6-a8a9-ffa80b86c141"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "b153112f-9cd1-4a49-a9c6-ba1a34f443ab",
+                        "HardCondition": true
+                    }
+                ]
+            },
+            {
+                "Type": "statemachine",
+                "Id": "6d71b002-36a6-4a0f-96e4-bcab723b2699",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository 5ce075c6-c78a-4a5f-ae5d-9a516404ac46).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_KHAKIASP_DOCUMENTATION_OBJ3"
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["5ce075c6-c78a-4a5f-ae5d-9a516404ac46"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "5ce075c6-c78a-4a5f-ae5d-9a516404ac46"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "b153112f-9cd1-4a49-a9c6-ba1a34f443ab"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "5ce075c6-c78a-4a5f-ae5d-9a516404ac46"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "b153112f-9cd1-4a49-a9c6-ba1a34f443ab",
+                        "HardCondition": true
+                    }
+                ]
+            },
+            {
+                "Type": "statemachine",
+                "Id": "1a596216-381e-4592-9798-26f156973942",
+                "ObjectiveType": "custom",
+                "Category": "secondary",
+                "BriefingName": "$loc UI_CONTRACT_UGC_TIME_LIMIT_NAME",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_UGC_TIME_LIMIT_SECONDARY_DESC",
+                        "data": "$formatstring 05:00"
+                    }
+                },
+                "LongBriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_UGC_TIME_LIMIT_SECONDARY_DESC",
+                        "data": "$formatstring 05:00"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_UGC_TIME_LIMIT_SECONDARY_DESC",
+                            "data": "$formatstring 05:00"
+                        }
+                    }
+                },
+                "Image": "images/contractconditions/condition_contrac_time_limit.jpg",
+                "OnActive": { "IfInProgress": { "State": "Completed" } },
+                "CombinedDisplayInHud": true,
+                "Definition": {
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "IntroCutEnd": [{ "Transition": "TimerRunning" }]
+                        },
+                        "TimerRunning": {
+                            "exit_gate": [{ "Transition": "Success" }],
+                            "$timer": [
+                                {
+                                    "Condition": { "$after": 300.38995 },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "GameChangers": [],
+        "Bricks": []
+    },
+    "Metadata": {
+        "Title": "UI_PEACOCK_KHAKIASP_DOCUMENTATION3",
+        "Description": "",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Mumbai/scene_mongoose.entity",
+        "Location": "LOCATION_MUMBAI",
+        "IsPublished": true,
+        "CreatorUserId": "4aaa03b1-2f36-497b-91f2-69af779a2d99",
+        "Type": "escalation",
+        "Id": "7153609a-d24a-4f44-905d-d33d0b0b9a73",
+        "PublicId": "113029124430",
+        "TileImage": "images/contracts/escalation/contractescalation_khakiasp_documentation.png",
+        "InGroup": "667f48a3-7f6b-486e-8f6b-2f782a5c4857",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "6d71b002-36a6-4a0f-96e4-bcab723b2699", "IsNew": true },
+            { "Id": "b523eedc-9179-42d1-b950-32b7917ec4c4", "IsNew": true },
+            { "Id": "edf869f1-91bb-4d83-91f7-362e80d10f92", "IsNew": true },
+            { "Id": "1a596216-381e-4592-9798-26f156973942", "IsNew": true },
+            { "Id": "5a842427-f14c-457e-8c19-f281afc721db" },
+            { "Id": "634a5886-8979-470c-b6d7-0aac1da231c3" }
+        ],
+        "CreationTimestamp": "2021-06-01T14:31:51.2376853Z",
+        "Entitlements": ["H2_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

@@ -1,0 +1,113 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "EnableExits": {
+            "$eq": [
+                "$06167b0d-24d1-4a8d-8f60-a9e3126c4500",
+                "$253fceaf-6893-44e9-9080-4e6f3cecae1d",
+                "Completed"
+            ]
+        },
+        "Objectives": [
+            {
+                "Id": "06167b0d-24d1-4a8d-8f60-a9e3126c4500",
+                "Category": "primary",
+                "BriefingName": "UI_CONTRACT_ZINNIA_OBJ_2",
+                "Image": "images/actors/actor_57342129-03a9-47a4-a509-cc0656e0a76a.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "explosion",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_ZINNIA_OBJ_2" },
+                "BriefingText": "$loc UI_CONTRACT_ZINNIA_OBJ_2",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["22f163e2-2abf-45ed-a40a-1782bf400811"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "22f163e2-2abf-45ed-a40a-1782bf400811"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillClass",
+                                                    "explosion"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "22f163e2-2abf-45ed-a40a-1782bf400811"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "253fceaf-6893-44e9-9080-4e6f3cecae1d",
+                "Category": "primary",
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "e5cbaaef-5ad0-4e8c-a23c-609fa6b35fc9"
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/colombia/gamechanger_hippo_zinnia.brick"
+        ],
+        "GameChangers": [],
+        "GameChangerReferences": []
+    },
+    "Metadata": {
+        "Id": "ede95e7f-36b1-4c1b-a4c5-fba9edee296d",
+        "InGroup": "a5e81878-0eae-4bcf-af9b-9a7e7833f85d",
+        "IsPublished": true,
+        "CreationTimestamp": "2018-10-16T16:12:30.0274594Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_ZINNIA_LEVEL_2_TITLE",
+        "Description": "",
+        "CodeName_Hint": "Zinnia level 2",
+        "Location": "LOCATION_COLOMBIA",
+        "RequiredUnlockable": "ACCESS_HIT_HIPPO",
+        "ScenePath": "assembly:/_pro/scenes/missions/colombia/scene_hippo.entity",
+        "Type": "escalation",
+        "TileImage": "images/contracts/escalation/contractescalation_colombia_zinnia.jpg",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "253fceaf-6893-44e9-9080-4e6f3cecae1d" },
+            { "Id": "06167b0d-24d1-4a8d-8f60-a9e3126c4500" }
+        ],
+        "Entitlements": ["H2_LEGACY_STANDARD"],
+        "LastUpdate": "2021-04-20T12:25:05.3055229Z",
+        "PublicId": "012156634447"
+    },
+    "UserData": {}
+}

@@ -1,0 +1,153 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "f2b757c5-429b-4269-9c3e-52d792e5dab0",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "ecf1b752-0cd6-4283-a1a5-743fc0249525",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_CLEMATIS_OBJECTIVE_1"
+                },
+                "BriefingText": "$loc UI_CONTRACT_CLEMATIS_OBJECTIVE_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["225d60db-0150-41b1-aec1-fceb1896d9c4"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "225d60db-0150-41b1-aec1-fceb1896d9c4"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "ecf1b752-0cd6-4283-a1a5-743fc0249525"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "225d60db-0150-41b1-aec1-fceb1896d9c4"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "45a4619c-c723-45ca-8a4d-1fc8061234ab",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "ecf1b752-0cd6-4283-a1a5-743fc0249525",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_CLEMATIS_OBJECTIVE_2"
+                },
+                "BriefingText": "$loc UI_CONTRACT_CLEMATIS_OBJECTIVE_2",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["e563313d-185a-459d-8e84-bff09495eb5a"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "e563313d-185a-459d-8e84-bff09495eb5a"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "ecf1b752-0cd6-4283-a1a5-743fc0249525"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "e563313d-185a-459d-8e84-bff09495eb5a"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [
+            "ce018c67-1a50-402a-aa9d-2133bd180a5e",
+            "51c8a014-dcc6-4714-a843-0295f9718c7a",
+            "b416fb00-8e59-4d44-8783-6632b33e5a9d"
+        ],
+        "GameChangerReferences": [],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "118e5233-9f79-4853-b432-5718fb16738f",
+        "IsPublished": true,
+        "CreationTimestamp": "2016-04-18T11:09:44.703Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_CLEMATIS_LEVEL_4_TITLE",
+        "Description": "UI_CONTRACT_CLEMATIS_LEVEL_4_DESC",
+        "CodeName_Hint": "Clematis - Level 4",
+        "ScenePath": "assembly:/_pro/scenes/missions/marrakesh/_scene_spider.entity",
+        "Location": "LOCATION_MARRAKECH",
+        "Type": "escalation",
+        "RequiredUnlockable": "ACCESS_HIT_SPIDER",
+        "InGroup": "896233eb-e7c5-4915-bf2b-5867799d8bb4",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "b416fb00-8e59-4d44-8783-6632b33e5a9d" },
+            { "Id": "ce018c67-1a50-402a-aa9d-2133bd180a5e" },
+            { "Id": "51c8a014-dcc6-4714-a843-0295f9718c7a" },
+            { "Id": "45a4619c-c723-45ca-8a4d-1fc8061234ab" },
+            { "Id": "f2b757c5-429b-4269-9c3e-52d792e5dab0" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:34.3199163Z",
+        "PublicId": "006245140447",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

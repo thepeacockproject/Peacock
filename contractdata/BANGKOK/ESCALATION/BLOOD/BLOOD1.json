@@ -1,0 +1,101 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "76b616b8-d848-4251-86bd-c2bf3127428f",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "weapontype",
+                        "RepositoryId": "901a3b51-51a0-4236-bdf2-23d20696b358",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "bf0bcc10-a335-4714-9dd2-69e7e96704b2",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_BLOOD_LILY_OBJ_1"
+                },
+                "BriefingText": "$loc UI_CONTRACT_BLOOD_LILY_OBJ_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["d467517d-9319-49d3-9f21-504294a7235b"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "d467517d-9319-49d3-9f21-504294a7235b"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemCategory",
+                                                    "shotgun"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "bf0bcc10-a335-4714-9dd2-69e7e96704b2"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "d467517d-9319-49d3-9f21-504294a7235b"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/bangkok/gamechanger_wild_card_geranium.brick"
+        ],
+        "GameChangers": [],
+        "GameChangerReferences": [],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "c0604552-7a5d-448c-9944-1c3fc7982162",
+        "IsPublished": true,
+        "CreationTimestamp": "2016-04-18T09:51:27.393Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_BLOOD_LILY_LEVEL_1_TITLE",
+        "Description": "UI_CONTRACT_BLOOD_LILY_LEVEL_1_DESC",
+        "CodeName_Hint": "Blood Lily Level 1",
+        "RequiredUnlockable": "ACCESS_HIT_TIGER",
+        "Location": "LOCATION_BANGKOK",
+        "ScenePath": "assembly:/_pro/scenes/missions/Bangkok/_scene_tiger.entity",
+        "Type": "escalation",
+        "InGroup": "45c831c4-b455-4d21-90f3-6f09b28ee01b",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "76b616b8-d848-4251-86bd-c2bf3127428f" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:31.4136538Z",
+        "PublicId": "008355304347",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

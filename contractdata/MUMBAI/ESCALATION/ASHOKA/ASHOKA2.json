@@ -1,0 +1,174 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Entrances": [
+            "37af536b-3f36-49ed-986a-9d55f4481ed4",
+            "46b5b571-cb26-46d8-a6cb-b14b4967ce5d",
+            "51145d77-882e-4be0-a471-73704497aa8b",
+            "5e6a6e2c-ee2c-40a7-9de5-d7fb8fbd8dcd",
+            "724b24ef-e87f-4060-b7ed-5c315fb0f29f",
+            "774b7dec-ce57-4318-9dbd-f6d7fa39ef1d",
+            "86a3857f-dad7-45ac-818b-d933e5c8dfd9",
+            "8b1c3ba0-9c91-4b3e-96f9-7d3c8632b7c2",
+            "a95703cb-091b-4d05-a2ee-3a70ade13590",
+            "c7596e36-43ae-4e03-aa66-84f6a88f0cd3",
+            "f1bb66b5-b446-4a00-a951-af7310e28566",
+            "f4659b56-65c3-4f4f-8f20-11d09af2f2d2"
+        ],
+        "EnableExits": {
+            "$eq": [
+                "$41d335ee-11b7-4e50-8522-6260e937c78d",
+                "$0242c51c-6663-4757-a5cf-935ac8ac0951",
+                "Completed"
+            ]
+        },
+        "Objectives": [
+            {
+                "Id": "41d335ee-11b7-4e50-8522-6260e937c78d",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "88adef78-2a19-45fb-9c95-988e82c056f1",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_ASHOKA_OBJECTIVE_1"
+                },
+                "BriefingText": "$loc UI_CONTRACT_ASHOKA_OBJECTIVE_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "Targets": ["8125ecef-49ed-4327-b8be-f2117dc59a32"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "8125ecef-49ed-4327-b8be-f2117dc59a32"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "88adef78-2a19-45fb-9c95-988e82c056f1"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "8125ecef-49ed-4327-b8be-f2117dc59a32"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "0242c51c-6663-4757-a5cf-935ac8ac0951",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "b36075a1-b352-4e0f-9d84-84f2bdac6a86",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_ASHOKA_OBJECTIVE_2"
+                },
+                "BriefingText": "$loc UI_CONTRACT_ASHOKA_OBJECTIVE_2",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "Targets": ["daa09380-806a-4008-b887-3c7abbbfe17c"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "daa09380-806a-4008-b887-3c7abbbfe17c"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "b36075a1-b352-4e0f-9d84-84f2bdac6a86"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "daa09380-806a-4008-b887-3c7abbbfe17c"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "DevOnlyBricks": [],
+        "GameModesBricks": null,
+        "EngineModesBricks": null,
+        "GameDifficulties": null,
+        "GameChangers": [
+            "196f7419-46c7-48bc-b8b8-b3bb1ec980b7",
+            "3ff7f4a5-3410-428e-a635-2dce2c0eedf5"
+        ],
+        "GameChangerReferences": []
+    },
+    "Metadata": {
+        "Id": "07787ef6-7f9a-4aa5-a5d8-2c385c708057",
+        "IsPublished": true,
+        "CreationTimestamp": "2018-10-04T14:53:07.8195216Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_ASHOKA_LEVEL_2_TITLE",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Ashoka.jpg",
+        "Description": "",
+        "CodeName_Hint": "Ashoka Level 2",
+        "Location": "LOCATION_MUMBAI",
+        "Type": "escalation",
+        "Release": "2.1.x Escalation",
+        "InGroup": "ae0bd6cd-7062-4336-8cb0-5fafad3d0f4f",
+        "ScenePath": "assembly:/_pro/scenes/missions/mumbai/scene_mongoose.entity",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "0242c51c-6663-4757-a5cf-935ac8ac0951" },
+            { "Id": "41d335ee-11b7-4e50-8522-6260e937c78d" },
+            { "Id": "3ff7f4a5-3410-428e-a635-2dce2c0eedf5" }
+        ],
+        "LastUpdate": "2021-05-06T09:25:02.7284548Z",
+        "PublicId": "013262956047",
+        "Entitlements": ["H2_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

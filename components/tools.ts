@@ -31,17 +31,10 @@ import { createWriteStream, existsSync, mkdirSync } from "fs"
 import ProgressBar from "progress"
 import { resolve as pathResolve } from "path"
 import picocolors from "picocolors"
-import { Filename, PortablePath, ppath, xfs } from "@yarnpkg/fslib"
-import { ZipFS } from "@yarnpkg/libzip"
+import { Filename, npath, PortablePath, ppath, xfs } from "@yarnpkg/fslib"
+import { makeEmptyArchive, ZipFS } from "@yarnpkg/libzip"
 
-// NOTE: make sure to update ALL 3 OF THESE VALUES, or things will break!!
-const IMAGE_PACK_BIN =
-    "https://codeload.github.com/thepeacockproject/ImagePack/zip/b8415da0be992d6a2e7d10cb5d3ccd9aea4f9296"
-/**
- * Size of the image pack zip in bytes.
- */
-const IMAGE_PACK_LEN = 117286836
-const IMAGE_PACK_BASE_DIR = "ImagePack-b8415da0be992d6a2e7d10cb5d3ccd9aea4f9296"
+const IMAGE_PACK_REPO = "thepeacockproject/ImagePack"
 
 export async function toolsMenu() {
     const init = await prompts({
@@ -83,14 +76,27 @@ export async function toolsMenu() {
     }
 }
 
+async function copyIntoZip(zip: ZipFS, path: string): Promise<void> {
+    await zip.copyPromise(zip.resolve(path as Filename), ppath.resolve(path), {
+        stableTime: true,
+        stableSort: true,
+        baseFs: xfs,
+    })
+}
+
 async function exportDebugInfo(): Promise<void> {
     const cpus = cpuList().map((cpu, index) => ({
         core: index + 1,
         ...cpu,
     }))
 
-    const files = await readdir(process.cwd())
-    const plugins = await Promise.allSettled(
+    const files = [
+        ...(await readdir(process.cwd())),
+        ...(await readdir(pathResolve(process.cwd(), "plugins"))).map(
+            (file) => `plugins/${file}`,
+        ),
+    ]
+    const plugins = await Promise.all(
         [
             ...files.filter((file) => isPlugin(file, "js")),
             ...files.filter((file) => isPlugin(file, "cjs")),
@@ -112,10 +118,27 @@ async function exportDebugInfo(): Promise<void> {
         flags: getAllFlags(),
     }
 
-    await writeFile("DEBUG_PROFILE.json", JSON.stringify(data, undefined, 4))
+    const debugJson = JSON.stringify(data, undefined, 4)
+
+    const zipFile = ppath.resolve(ppath.cwd(), "DEBUG_PROFILE.zip")
+
+    // we'll start by creating an empty zip file
+    await writeFile(npath.fromPortablePath(zipFile), makeEmptyArchive())
+
+    const zip = new ZipFS(zipFile, { create: true })
+
+    await zip.writeFilePromise(zip.resolve("meta.json" as Filename), debugJson)
+
+    await copyIntoZip(zip, "logs")
+    await copyIntoZip(zip, "userdata")
+    await copyIntoZip(zip, "contractSessions")
+    await copyIntoZip(zip, "contracts")
+
+    zip.saveAndClose()
+
     log(
         LogLevel.INFO,
-        "Successfully outputted debugging data to DEBUG_PROFILE.json!",
+        "Successfully outputted debugging data to DEBUG_PROFILE.zip!",
     )
 }
 
@@ -165,16 +188,29 @@ async function downloadImagePack(): Promise<void> {
         pathResolve(__dirname, "offlineassets.zip"),
     )
 
-    const totalLength = IMAGE_PACK_LEN
     log(LogLevel.INFO, "Starting asset download...")
 
-    let resp
+    let resp, totalLength
 
     try {
+        const releaseInfo = await axios.get(
+            `https://api.github.com/repos/${IMAGE_PACK_REPO}/releases/latest`,
+        )
+
+        if (releaseInfo.status !== 200) {
+            throw new Error("Failed to get release info!")
+        }
+
         // eslint-disable-next-line prefer-const
-        resp = await axios.get<Stream>(IMAGE_PACK_BIN, {
-            responseType: "stream",
-        })
+        totalLength = releaseInfo.data["assets"][0]["size"]
+
+        // eslint-disable-next-line prefer-const
+        resp = await axios.get<Stream>(
+            releaseInfo.data["assets"][0]["browser_download_url"],
+            {
+                responseType: "stream",
+            },
+        )
     } catch (e) {
         log(LogLevel.ERROR, "Unable to complete download due to an error!")
         throw e
@@ -211,7 +247,7 @@ async function downloadImagePack(): Promise<void> {
 
     await xfs.copyPromise(
         ppath.resolve("images" as PortablePath),
-        `/${IMAGE_PACK_BASE_DIR}/images` as PortablePath,
+        `/images` as PortablePath,
         {
             baseFs: zipFS,
             overwrite: true,

@@ -1,0 +1,183 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "c86a5e82-fdd1-4cb3-b58b-12445aba8c9c",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "98888ced-60f9-4f83-a93b-bf0ef2963341",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "explosive",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_BERGAMOT_OBJ_1_3"
+                },
+                "BriefingText": "$loc UI_CONTRACT_BERGAMOT_OBJ_1_3",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["13cff299-faf1-41da-a2a1-7d8112b82f88"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "13cff299-faf1-41da-a2a1-7d8112b82f88"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "98888ced-60f9-4f83-a93b-bf0ef2963341"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.Explosive",
+                                                    true
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.Accident",
+                                                    false
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "13cff299-faf1-41da-a2a1-7d8112b82f88"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "2fc0e609-766e-4f63-b7cf-eb32d9bcb54c",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "98888ced-60f9-4f83-a93b-bf0ef2963341",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "explosive",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_BERGAMOT_OBJ_2_3"
+                },
+                "BriefingText": "$loc UI_CONTRACT_BERGAMOT_OBJ_2_3",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["cc5dd93f-8c93-4112-983d-54756395166f"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "cc5dd93f-8c93-4112-983d-54756395166f"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "98888ced-60f9-4f83-a93b-bf0ef2963341"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.Explosive",
+                                                    true
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.Accident",
+                                                    false
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "cc5dd93f-8c93-4112-983d-54756395166f"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [
+            "0cf5e693-35ec-457e-a004-da4672b90376",
+            "3469ac72-76f5-4a18-9e11-e6c1c4799635"
+        ],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "6abced1a-41de-4bf8-8701-bfe1ed9d948b",
+        "IsPublished": true,
+        "CreationTimestamp": "2015-11-27T15:10:52.9Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_BERGAMOT_LEVEL_4_TITLE",
+        "Description": "UI_CONTRACT_BERGAMOT_LEVEL_4_DESC",
+        "CodeName_Hint": "Bergamot - Level 4",
+        "Location": "LOCATION_COASTALTOWN",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/CoastalTown/_scene_octopus.entity",
+        "Type": "escalation",
+        "InGroup": "5a8bdb42-b11e-47d1-bc57-b4bf7efa9eda",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "3469ac72-76f5-4a18-9e11-e6c1c4799635" },
+            { "IsNew": true, "Id": "0cf5e693-35ec-457e-a004-da4672b90376" },
+            { "Id": "2fc0e609-766e-4f63-b7cf-eb32d9bcb54c" },
+            { "Id": "c86a5e82-fdd1-4cb3-b58b-12445aba8c9c" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:30.5074032Z",
+        "PublicId": "003379106947",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

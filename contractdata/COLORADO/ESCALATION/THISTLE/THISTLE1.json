@@ -1,0 +1,110 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "a50652e6-eccb-4491-97ea-d03ca15b11a0",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_THISTLE_OBJ_1_1"
+                },
+                "BriefingText": "$loc UI_CONTRACT_THISTLE_OBJ_1_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["a0fc7404-0829-4a0c-985f-c4e3bc78c1e2"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "a0fc7404-0829-4a0c-985f-c4e3bc78c1e2"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "InCloset"
+                                                        ]
+                                                    },
+                                                    "in": "$Value.DamageEvents"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "a0fc7404-0829-4a0c-985f-c4e3bc78c1e2"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillClass",
+                                                    "explosion"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "a0fc7404-0829-4a0c-985f-c4e3bc78c1e2"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [],
+        "GameChangerReferences": [],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "237cdfdc-6877-4172-ba01-1eb694c88607",
+        "IsPublished": true,
+        "CreationTimestamp": "2016-05-04T09:51:27.393Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_THISTLE_LEVEL_1_TITLE",
+        "Description": "",
+        "CodeName_Hint": "Thistle Level 1",
+        "RequiredUnlockable": "ACCESS_HIT_BULL",
+        "Location": "LOCATION_COLORADO",
+        "ScenePath": "assembly:/_pro/scenes/missions/Colorado_2/_scene_bull.entity",
+        "Type": "escalation",
+        "InGroup": "4186dd23-1cfc-4ba0-9863-9f19f7cba249",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "a50652e6-eccb-4491-97ea-d03ca15b11a0" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:50.8981686Z",
+        "PublicId": "009227252147",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

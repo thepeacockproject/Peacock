@@ -1,0 +1,101 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "83e4c261-c0e0-4748-a215-a04424404bd2",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "2018db77-aa8a-4bf9-9afb-56bdaa161156",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "94f52181-b9ec-4363-baef-d53b4e424b74",
+                        "HardCondition": true
+                    }
+                ],
+                "BriefingText": "$loc UI_CONTRACT_BLUEBELL_LEVEL_1_OBJ_1",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_BLUEBELL_LEVEL_1_OBJ_1"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["c400e1cd-500f-4f20-a6d3-efe8d31eb288"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "c400e1cd-500f-4f20-a6d3-efe8d31eb288"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "94f52181-b9ec-4363-baef-d53b4e424b74"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "2018db77-aa8a-4bf9-9afb-56bdaa161156"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "c400e1cd-500f-4f20-a6d3-efe8d31eb288"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "b4870ab6-b2c8-45b1-a1f0-9cb617bb7433",
+        "InGroup": "5746f21e-efa1-4787-a9ca-99a5f233f507",
+        "IsPublished": true,
+        "CreationTimestamp": "2015-06-12T09:33:02.417Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_BLUEBELL_LEVEL_1_TITLE",
+        "CodeName_Hint": "Bluebell - Level 1",
+        "Description": "UI_CONTRACT_BLUEBELL_LEVEL_1_DESC",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Paris/_scene_paris.entity",
+        "Location": "LOCATION_PARIS",
+        "Type": "escalation",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "83e4c261-c0e0-4748-a215-a04424404bd2" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:31.7742857Z",
+        "PublicId": "002093299847",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

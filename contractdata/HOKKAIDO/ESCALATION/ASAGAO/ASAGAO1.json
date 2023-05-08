@@ -1,0 +1,88 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "Id": "6726232b-1926-4ed2-8b92-0e2c4bcd7384",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_ASAGAO_OBJ_1" },
+                "BriefingText": "$loc UI_CONTRACT_ASAGAO_OBJ_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["5561ba7b-91a6-4403-a351-227015f67c2f"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "5561ba7b-91a6-4403-a351-227015f67c2f"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.OutfitRepositoryId"
+                                                        ]
+                                                    },
+                                                    "in": [
+                                                        "6a25f81d-cf2e-4e47-9b15-0f712a3f71d9",
+                                                        "b8deb948-a0a9-4dcb-9df4-1c2ecd29765f"
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "5561ba7b-91a6-4403-a351-227015f67c2f"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [],
+        "GameChangerReferences": []
+    },
+    "Metadata": {
+        "Id": "278a7377-dc8f-4fa4-961a-8e96733dcd52",
+        "IsPublished": true,
+        "CreationTimestamp": "2016-05-04T09:51:27.393Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "TileImage": "",
+        "Title": "UI_CONTRACT_ASAGAO_LEVEL_1_TITLE",
+        "Description": "",
+        "CodeName_Hint": "Asagao Level 1",
+        "RequiredUnlockable": "ACCESS_HIT_SNOW_CRANE",
+        "Location": "LOCATION_HOKKAIDO",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Hokkaido/_scene_snowcrane.entity",
+        "Release": "1.7.0 Escalation",
+        "Type": "escalation",
+        "InGroup": "a1e5f4f4-ea9c-4a42-b826-50a212026d50",
+        "GroupObjectiveDisplayOrder": [{}],
+        "LastUpdate": "2020-11-09T13:35:28.5855345Z",
+        "PublicId": "010382102947",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

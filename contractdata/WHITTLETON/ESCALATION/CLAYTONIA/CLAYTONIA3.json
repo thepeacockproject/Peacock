@@ -1,0 +1,171 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "Id": "fb790042-63c4-452b-bc6b-4e428cb75f6e",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "BriefingName": "UI_CONTRACT_CLAYTONIA_OBJ_1",
+                "Image": "images/actors/actor_1042c8b3-ce04-4701-a14f-ac2f3718a6a7.jpg",
+                "TargetConditions": [{}],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_CLAYTONIA_OBJ_1"
+                },
+                "BriefingText": "$loc UI_CONTRACT_CLAYTONIA_OBJ_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["856b2aa2-e224-48c3-b890-01fdf4dba6de"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Level_Setup_Events": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "Cooked1"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "NotCooked1"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "27b40f34-a40a-42c2-aaf6-cce868aecf07",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "BriefingName": "UI_CONTRACT_CLAYTONIA_OBJ_2",
+                "Image": "images/actors/actor_1042c8b3-ce04-4701-a14f-ac2f3718a6a7.jpg",
+                "TargetConditions": [{}],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_CLAYTONIA_OBJ_2"
+                },
+                "BriefingText": "$loc UI_CONTRACT_CLAYTONIA_OBJ_2",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["a6aa8b8f-24d3-44b7-ba89-063c251d4881"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Level_Setup_Events": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "Cooked2"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "NotCooked2"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "8210868f-010e-465a-8ebb-0f6c29118623",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "BriefingName": "UI_CONTRACT_CLAYTONIA_OBJ_3",
+                "Image": "images/actors/actor_1042c8b3-ce04-4701-a14f-ac2f3718a6a7.jpg",
+                "TargetConditions": [{}],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_CLAYTONIA_OBJ_3"
+                },
+                "BriefingText": "$loc UI_CONTRACT_CLAYTONIA_OBJ_3",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["3880a7bb-7b59-4a0c-87f2-590e87ccb1ce"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Level_Setup_Events": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "Cooked3"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "NotCooked3"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [
+            "03ca23e8-7daf-4346-8719-29970bc50d17",
+            "2bfb641d-0c37-44ab-b78d-bd1645af9405"
+        ],
+        "GameChangerReferences": []
+    },
+    "Metadata": {
+        "Id": "abddddf9-3dbc-46cb-a8e4-087418d97435",
+        "IsPublished": true,
+        "CreationTimestamp": "2018-12-03T18:07:20.7267666Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_CLAYTONIA_LEVEL_3_NAME",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Skunk_Claytonia.jpg",
+        "Description": "UI_CONTRACT_CLAYTONIA_LEVEL_3_DESC",
+        "RequiredUnlockable": "ACCESS_HIT_SKUNK",
+        "CodeName_Hint": "Claytonia - Level 3",
+        "Location": "LOCATION_NORTHAMERICA",
+        "ScenePath": "assembly:/_pro/scenes/missions/skunk/scene_skunk.entity",
+        "Type": "escalation",
+        "InGroup": "15b7ad4e-565a-4fdb-b669-c9a68176e665",
+        "Release": "2.3.x escalation",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "8210868f-010e-465a-8ebb-0f6c29118623" },
+            { "Id": "27b40f34-a40a-42c2-aaf6-cce868aecf07" },
+            { "Id": "03ca23e8-7daf-4346-8719-29970bc50d17" },
+            { "Id": "fb790042-63c4-452b-bc6b-4e428cb75f6e" }
+        ],
+        "LastUpdate": "2021-05-06T09:25:03.2957894Z",
+        "PublicId": "022894970147",
+        "Entitlements": ["H2_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

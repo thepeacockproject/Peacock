@@ -1,0 +1,105 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "_comment": "target 1",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository 2ab07903-e958-4af6-b01c-b62058745ce1).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 2ab07903-e958-4af6-b01c-b62058745ce1).Name"
+                        }
+                    }
+                },
+                "Id": "6d9db050-8076-4be7-8ea6-2b6e1c545bb6",
+                "Type": "statemachine",
+                "Image": "images/actors/fox_lowenthal.png",
+                "ObjectiveType": "kill",
+                "Category": "primary",
+                "IsHidden": false,
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["2ab07903-e958-4af6-b01c-b62058745ce1"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "2ab07903-e958-4af6-b01c-b62058745ce1"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "f478ee46-c044-4be8-ad2d-8f95dfafef36",
+                "Type": "statemachine",
+                "ObjectiveType": "custom",
+                "Category": "primary",
+                "Image": "images/contracts/escalation/shangrila-bike.png",
+                "IsHidden": false,
+                "BriefingName": "$loc UI_PEACOCK_SHANGRILA_BIKES",
+                "BriefingText": "$loc UI_PEACOCK_SHANGRILA_BIKES_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_SHANGRILA_BIKES",
+                    "iconType": 17
+                },
+                "Definition": {
+                    "Context": {
+                        "RemainingBikesCount": 4,
+                        "Targets": ["f203d1bf-7fcc-4e32-be60-f5f71a6914d1"]
+                    },
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "setpieces": [
+                                {
+                                    "Actions": {
+                                        "$dec": "RemainingBikesCount"
+                                    },
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "f203d1bf-7fcc-4e32-be60-f5f71a6914d1"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.RemainingBikesCount", 0]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": []
+    },
+    "Metadata": {
+        "Id": "b7401d91-7705-40c9-84a3-bf8f236444de",
+        "Title": "UI_PEACOCK_SHANGRILA1",
+        "Type": "escalation",
+        "Location": "LOCATION_EDGY_FOX",
+        "ScenePath": "assembly:/_pro/scenes/missions/edgy/mission_fox/scene_fox_basic.entity",
+        "InGroup": "ccdc7043-62af-44e8-a5fc-38b008c2044e",
+        "TileImage": "images/contracts/escalation/contractescalation-shangrila.png",
+        "Entitlements": ["LOCATION_EDGY"]
+    }
+}

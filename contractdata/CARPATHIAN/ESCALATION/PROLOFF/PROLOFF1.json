@@ -1,0 +1,243 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Bricks": [
+            "assembly:/_PRO/Scenes/Missions/trapped/gamechanger_bellflower_level1.brick"
+        ],
+        "DevOnlyBricks": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/trapped/vr_overrides_wolverine.brick",
+                    "assembly:/_PRO/Scenes/Missions/trapped/vr_overrides_wolverine_2.brick",
+                    "assembly:/_PRO/Scenes/Missions/trapped/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/trapped/vr_overrides_wolverine.brick",
+                    "assembly:/_PRO/Scenes/Missions/trapped/vr_overrides_wolverine_2.brick"
+                ]
+            }
+        ],
+        "GameModesBricks": null,
+        "EngineModesBricks": null,
+        "GameChangers": ["3db72bb5-63d6-47fe-9332-d7ea3c195e06"],
+        "GameChangerReferences": [],
+        "Entrances": ["4fe8ecc9-7dae-4882-b596-bcccc53725e5"],
+        "MandatoryLoadout": [
+            {
+                "Id": "TOKEN_OUTFIT_TRAPPED_WOLVERINE_SUIT",
+                "Properties": {
+                    "LoadoutSlot": "Outfit",
+                    "RepositoryId": "790eabc0-f59e-4e63-a5a9-426ec9aa1027"
+                }
+            }
+        ],
+        "Objectives": [
+            {
+                "_comment": "---------- Pick up outfit ----------",
+                "Id": "e3347f4a-ed0c-42b8-9997-3dd25c8d76df",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "Image": "Images/Contracts/Escalation/ContractEscalation_Trapped_Bellflower_Outfit.jpg",
+                "BriefingName": "$loc UI_CONTRACT_BELLFLOWER_OBJ_OUTFIT_NAME",
+                "BriefingText": "$loc UI_CONTRACT_BELLFLOWER_OBJ_OUTFIT_TEXT",
+                "LongBriefingText": "$loc CHAR_Global_Hero_WhiteNinjaSuit_Reward_M_PRO208306_Desc_44540c7c-fcbb-4de2-8983-523997584ed0",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_BELLFLOWER_OBJ_OUTFIT_HUD",
+                    "iconType": 17
+                },
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {
+                        "Targets": ["44540c7c-fcbb-4de2-8983-523997584ed0"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Disguise": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value",
+                                        "44540c7c-fcbb-4de2-8983-523997584ed0"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "---------- Pick up katana ----------",
+                "Id": "b04e5e3b-cf1d-4931-a981-86e4b8eb40ff",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "Image": "Images/Contracts/Escalation/ContractEscalation_Trapped_Bellflower_Katana.jpg",
+                "BriefingName": "$loc UI_CONTRACT_BELLFLOWER_OBJ_KATANA_NAME",
+                "BriefingText": "$loc UI_CONTRACT_BELLFLOWER_OBJ_KATANA_TEXT",
+                "LongBriefingText": "$loc UI_PROP_MELEE_KATANA_WHITE_NINJA_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_BELLFLOWER_OBJ_KATANA_HUD",
+                    "iconType": 17
+                },
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {
+                        "Targets": ["cdab8f33-0491-497c-91c2-316c77d59e55"]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "cdab8f33-0491-497c-91c2-316c77d59e55"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            },
+                            "CrowbarLost": { "Transition": "Failure" }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "---------- Kill target ----------",
+                "Id": "23694146-7be4-4db9-9d5f-5e17b224af13",
+                "Category": "primary",
+                "ForceShowOnLoadingScreen": true,
+                "Activation": {
+                    "$and": [
+                        {
+                            "$eq": [
+                                "$e3347f4a-ed0c-42b8-9997-3dd25c8d76df",
+                                "Completed"
+                            ]
+                        },
+                        {
+                            "$eq": [
+                                "$b04e5e3b-cf1d-4931-a981-86e4b8eb40ff",
+                                "Completed"
+                            ]
+                        }
+                    ]
+                },
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "44540c7c-fcbb-4de2-8983-523997584ed0",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "cdab8f33-0491-497c-91c2-316c77d59e55",
+                        "HardCondition": true
+                    }
+                ],
+                "BriefingText": "$loc UI_CONTRACT_BELLFLOWER_OBJ_DOCTOR_TEXT",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_BELLFLOWER_OBJ_DOCTOR_HUD"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "Targets": ["dd15c513-0b43-4c3b-b7ce-f2c9aac08700"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$inarray": {
+                                                    "in": "$.Targets",
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.RepositoryId"
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "44540c7c-fcbb-4de2-8983-523997584ed0"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "cdab8f33-0491-497c-91c2-316c77d59e55"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$inarray": {
+                                            "in": "$.Targets",
+                                            "?": {
+                                                "$eq": [
+                                                    "$.#",
+                                                    "$Value.RepositoryId"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ],
+                            "KatanaLost": { "Transition": "Failure" }
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "645c9dd8-19e6-4cce-87ab-0e731fbaeab9",
+        "CodeName_Hint": "Belllflower - Level 1",
+        "Release": {
+            "Major": 3,
+            "Minor": 11,
+            "Build": 0,
+            "Revision": -1,
+            "MajorRevision": -1,
+            "MinorRevision": -1
+        },
+        "Type": "escalation",
+        "Title": "UI_CONTRACT_BELLFLOWER_LEVEL_1_TITLE",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Trapped_Bellflower.jpg",
+        "Description": "",
+        "InGroup": "078a50d1-6427-4fc3-9099-e46390e637a0",
+        "Location": "LOCATION_TRAPPED_WOLVERINE",
+        "RequiredUnlockable": "ACCESS_HIT_WOLVERINE",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/trapped/scene_bellflower.entity",
+        "CreationTimestamp": "2019-09-06T08:30:40.6504427Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "IsPublished": true,
+        "Entitlements": ["H3_EXPANSION"],
+        "NonTargetKillsAllowed": true,
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "23694146-7be4-4db9-9d5f-5e17b224af13", "IsNew": true },
+            { "Id": "b04e5e3b-cf1d-4931-a981-86e4b8eb40ff", "IsNew": true },
+            { "Id": "e3347f4a-ed0c-42b8-9997-3dd25c8d76df", "IsNew": true },
+            { "Id": "3db72bb5-63d6-47fe-9332-d7ea3c195e06", "IsNew": true }
+        ],
+        "LastUpdate": "2021-04-06T10:01:31.9721396Z",
+        "PublicId": "032014913647"
+    },
+    "UserData": {}
+}

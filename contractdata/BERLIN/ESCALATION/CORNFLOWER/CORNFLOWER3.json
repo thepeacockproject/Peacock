@@ -1,0 +1,292 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "_comment": "----- Eliminate Biker by snapping neck -----",
+                "Id": "808cc36d-71a6-4d91-af68-46a536b64d84",
+                "Category": "primary",
+                "BriefingName": "",
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "snap_neck",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "b262d4bb-6445-43cb-bb7c-fde6fe990aa7",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_CORNFLOWER_OBJ_BIKER_7"
+                },
+                "BriefingText": "$loc UI_CONTRACT_CORNFLOWER_OBJ_BIKER_7",
+                "Type": "statemachine",
+                "OnInactive": { "IfInProgress": { "Visible": false } },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["8213f8ef-858f-41cc-88ff-a4715ef4ccac"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "8213f8ef-858f-41cc-88ff-a4715ef4ccac"
+                                                ]
+                                            },
+                                            {
+                                                "$or": [
+                                                    {
+                                                        "$any": {
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "CoupDeGrace"
+                                                                ]
+                                                            },
+                                                            "in": "$Value.DamageEvents"
+                                                        }
+                                                    },
+                                                    {
+                                                        "$any": {
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "Subdue"
+                                                                ]
+                                                            },
+                                                            "in": "$Value.DamageEvents"
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "8213f8ef-858f-41cc-88ff-a4715ef4ccac"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Eliminate Biker with an explosion -----",
+                "Id": "3fea95f9-50f1-4830-abd9-3bd3d82b8905",
+                "Primary": true,
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "accident_explosion",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "b262d4bb-6445-43cb-bb7c-fde6fe990aa7",
+                        "HardCondition": true
+                    }
+                ],
+                "BriefingText": "$loc UI_CONTRACT_CORNFLOWER_OBJ_BIKER_8",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_CORNFLOWER_OBJ_BIKER_8"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["00e03272-acc1-47b0-bcd4-98faf7195bdc"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "00e03272-acc1-47b0-bcd4-98faf7195bdc"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillMethodBroad",
+                                                    "accident"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "00e03272-acc1-47b0-bcd4-98faf7195bdc"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Eliminate Biker with a knife -----",
+                "Id": "8907b780-e6f9-488e-ab0a-a85e55548e08",
+                "Primary": true,
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "2c037ef5-a01b-4532-8216-1d535193a837",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "b262d4bb-6445-43cb-bb7c-fde6fe990aa7",
+                        "HardCondition": true
+                    }
+                ],
+                "BriefingText": "$loc UI_CONTRACT_CORNFLOWER_OBJ_BIKER_9",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_CORNFLOWER_OBJ_BIKER_9"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["9e594f42-c1c7-481d-8490-1722615a44e4"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "9e594f42-c1c7-481d-8490-1722615a44e4"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "2c037ef5-a01b-4532-8216-1d535193a837"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "9e594f42-c1c7-481d-8490-1722615a44e4"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/edgy/mission_fox/vr_overrides_fox.brick",
+                    "assembly:/_pro/scenes/missions/edgy/mission_fox/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/edgy/mission_fox/vr_overrides_fox.brick"
+                ]
+            }
+        ],
+        "GameChangers": [
+            "9f409781-0a06-4748-b08d-784e78c6d481",
+            "07b1bc1d-f52b-4004-a760-846c4bc3f172",
+            "3db72bb5-63d6-47fe-9332-d7ea3c195e06"
+        ],
+        "Entrances": ["88f47eb3-d914-46d9-99aa-6fb848964c7c"],
+        "MandatoryLoadout": [
+            {
+                "Id": "TOKEN_OUTFIT_HERO_ASYLUM_SUIT",
+                "Properties": {
+                    "LoadoutSlot": "Outfit",
+                    "RepositoryId": "b262d4bb-6445-43cb-bb7c-fde6fe990aa7"
+                }
+            }
+        ],
+        "GameChangerReferences": []
+    },
+    "Metadata": {
+        "Id": "c151a573-7571-4f7b-b5a3-178dd2d58601",
+        "IsPublished": true,
+        "CreationTimestamp": "2018-11-05T14:12:47.2836568Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_CORNFLOWER_LEVEL_3_NAME",
+        "Description": "UI_CONTRACT_CORNFLOWER_LEVEL_3_DESC",
+        "CodeName_Hint": "Cornflower - Level 3",
+        "Location": "LOCATION_EDGY_FOX",
+        "RequiredUnlockable": "ACCESS_HIT_FOX",
+        "ScenePath": "assembly:/_pro/scenes/missions/edgy/mission_fox/scene_fox_cornflower.entity",
+        "Type": "escalation",
+        "InGroup": "079876de-ddd7-47aa-8719-abe97d82fc12",
+        "Release": "3.2.x escalation",
+        "Entitlements": ["H3_EXPANSION"],
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "808cc36d-71a6-4d91-af68-46a536b64d84" },
+            { "IsNew": true, "Id": "3fea95f9-50f1-4830-abd9-3bd3d82b8905" },
+            { "IsNew": true, "Id": "8907b780-e6f9-488e-ab0a-a85e55548e08" },
+            { "Id": "9f409781-0a06-4748-b08d-784e78c6d481" },
+            { "Id": "07b1bc1d-f52b-4004-a760-846c4bc3f172" },
+            { "Id": "3db72bb5-63d6-47fe-9332-d7ea3c195e06" }
+        ],
+        "LastUpdate": "2023-03-30T11:20:25.2917837Z",
+        "PublicId": "029771682747",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Edgy_Cornflower.jpg"
+    },
+    "UserData": {}
+}

@@ -1,0 +1,106 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "9d23eb0f-ba8e-4f9b-b9b5-35d050d5d43d",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "BriefingName": "$loc UI_CONTRACT_GALIUM_LEVEL_3_OBJ_1_NAME",
+                "Image": "images/actors/actor_e9a9b20d-93de-48b7-8840-73411bace252_0_0_0.jpg",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_GALIUM_LEVEL_3_OBJ_1"
+                },
+                "BriefingText": "$loc UI_CONTRACT_GALIUM_LEVEL_3_OBJ_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["7da7595f-0309-45ee-9f8e-48abffde613d"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Pacify": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "7da7595f-0309-45ee-9f8e-48abffde613d"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "7aeb740f-3d60-4e49-8d27-15a98067ce9f"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "7da7595f-0309-45ee-9f8e-48abffde613d"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ],
+                            "Kill": {
+                                "Condition": {
+                                    "$and": [
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "7da7595f-0309-45ee-9f8e-48abffde613d"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [
+            "abf09e23-299d-410c-a185-6188f687224b",
+            "f41f18fe-0fe5-416a-a793-50727e594655",
+            "63055f1a-bcd2-4e0f-8caf-b446f01d02f3"
+        ],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "e04758d6-fb6c-4854-a0bf-753b80e93e96",
+        "IsPublished": false,
+        "CreationTimestamp": "2018-10-04T15:21:50.3066392Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_GALIUM_LEVEL_3_TITLE",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Magpie_Galium.jpg",
+        "Description": "UI_CONTRACT_GALIUM_LEVEL_3_DESC",
+        "CodeName_Hint": "Galium Level 3",
+        "Location": "LOCATION_NORTHSEA",
+        "ScenePath": "assembly:/_pro/scenes/missions/theark/scene_magpie.entity",
+        "Type": "escalation",
+        "Release": "",
+        "GameModes": null,
+        "EngineModes": null,
+        "IsVersus": false,
+        "InGroup": "dbb0e22d-084b-4b57-8616-42290982fd90",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "9d23eb0f-ba8e-4f9b-b9b5-35d050d5d43d" },
+            { "IsNew": true, "Id": "f41f18fe-0fe5-416a-a793-50727e594655" },
+            { "Id": "63055f1a-bcd2-4e0f-8caf-b446f01d02f3" }
+        ],
+        "LastUpdate": "2021-05-06T09:25:03.6996223Z",
+        "PublicId": "021586495947",
+        "Entitlements": ["H2_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

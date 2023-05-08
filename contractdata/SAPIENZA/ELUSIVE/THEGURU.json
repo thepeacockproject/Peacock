@@ -1,0 +1,167 @@
+{
+    "Data": {
+        "EnableSaving": true,
+        "EnableExits": {
+            "$eq": ["$e93d1ce7-59be-4956-b724-5d077f707eb1", "Completed"]
+        },
+        "Objectives": [
+            {
+                "Id": "e93d1ce7-59be-4956-b724-5d077f707eb1",
+                "Primary": true,
+                "IsHidden": true,
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "d749b0f2-d1f0-47d5-bab9-10e3ff4dac8b"
+                    }
+                }
+            },
+            {
+                "Id": "dd898098-ca1d-4630-a12c-1a701cc2a3fa",
+                "Category": "primary",
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "IsHidden": true,
+                "BriefingText": "$loc UI_CONTRACT_HARVEY_WALLBANGER_FAIL_1",
+                "Type": "statemachine",
+                "ExcludeFromScoring": true,
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["8c2dbfaf-d9f5-4343-9bf5-f8092f22da6b"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Pacify": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "8c2dbfaf-d9f5-4343-9bf5-f8092f22da6b"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ],
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "8c2dbfaf-d9f5-4343-9bf5-f8092f22da6b"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "d36f8de6-1818-4237-a3b9-405d98391e95",
+                "Category": "primary",
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "IsHidden": true,
+                "BriefingText": "$loc UI_CONTRACT_HARVEY_WALLBANGER_FAIL_2",
+                "Type": "statemachine",
+                "ExcludeFromScoring": true,
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["d555c808-a97d-4094-ae90-d684dd68e936"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Pacify": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "d555c808-a97d-4094-ae90-d684dd68e936"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ],
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "d555c808-a97d-4094-ae90-d684dd68e936"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_PRO/Scenes/Missions/CoastalTown/Mission_HarveyWallbanger.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_octopus.brick",
+                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_octopus.brick"
+                ]
+            }
+        ],
+        "GameChangers": []
+    },
+    "Metadata": {
+        "Id": "0dc242ce-084e-4f6d-980f-e65885cd6955",
+        "Title": "UI_CONTRACT_HARVEY_WALLBANGER_TITLE",
+        "Description": "UI_CONTRACT_HARVEY_WALLBANGER_DESC",
+        "BriefingVideo": "briefing_harveywallbanger",
+        "DebriefingVideo": "debriefing_harveywallbanger",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/CoastalTown/_scene_octopus.entity",
+        "Location": "LOCATION_COASTALTOWN",
+        "TileImage": "images/contracts/elusive/022_HarveyWallbanger/Title.jpg",
+        "CodeName_Hint": "HarveyWallbanger",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Type": "elusive",
+        "PublicId": "003356960947",
+        "Entitlements": ["H1_LEGACY_STANDARD"],
+        "Season": 1
+    },
+    "UserData": {}
+}

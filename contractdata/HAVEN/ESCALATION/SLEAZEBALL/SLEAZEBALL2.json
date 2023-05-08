@@ -1,0 +1,213 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "_comment": "Target 1",
+                "Type": "statemachine",
+                "Id": "26009bfe-b1d2-4533-9d8c-a2362b8ff4a5",
+                "BriefingText": "$loc UI_PEACOCK_LONGBUSH_GYM_ACCIDENT1_DESC",
+                "ObjectiveType": "customkill",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_LONGBUSH_GYM_ACCIDENT1_HUD"
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Context": {
+                        "Targets": ["d73cdffa-ca48-4d81-934c-152b49eb0b92"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Pacify": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "d73cdffa-ca48-4d81-934c-152b49eb0b92"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "9c649932-7329-4cc3-a8cb-a32cae5dd7ca"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "AwaitingKill"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "d73cdffa-ca48-4d81-934c-152b49eb0b92"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ],
+                            "Kill": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "d73cdffa-ca48-4d81-934c-152b49eb0b92"
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            }
+                        },
+                        "AwaitingKill": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "d73cdffa-ca48-4d81-934c-152b49eb0b92"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "49e70108-2c8d-4418-8e42-8f63d6ed43af"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "d73cdffa-ca48-4d81-934c-152b49eb0b92"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Target 2",
+                "Type": "statemachine",
+                "Id": "74c86d8a-3a1d-4c76-a7a4-fa9805b0bae8",
+                "BriefingName": "$loc UI_PEACOCK_LONGBUSH_GYM_ACCIDENT",
+                "BriefingText": "$loc UI_PEACOCK_LONGBUSH_GYM_ACCIDENT2_DESC",
+                "ObjectiveType": "customkill",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_LONGBUSH_GYM_ACCIDENT2_HUD"
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Context": {
+                        "Targets": ["328df783-28d3-40ce-8f5a-3817a356d0ed"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Pacify": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "328df783-28d3-40ce-8f5a-3817a356d0ed"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "9c649932-7329-4cc3-a8cb-a32cae5dd7ca"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "AwaitingKill"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "328df783-28d3-40ce-8f5a-3817a356d0ed"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ],
+                            "Kill": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "328df783-28d3-40ce-8f5a-3817a356d0ed"
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            }
+                        },
+                        "AwaitingKill": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "328df783-28d3-40ce-8f5a-3817a356d0ed"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "49e70108-2c8d-4418-8e42-8f63d6ed43af"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "328df783-28d3-40ce-8f5a-3817a356d0ed"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "GameChangers": [
+            "1f1f3c9e-1490-4fcc-aee6-5fde7c6c48ca",
+            "f41f18fe-0fe5-416a-a793-50727e594655"
+        ],
+        "Bricks": []
+    },
+    "Metadata": {
+        "Title": "UI_PEACOCK_LONGBUSH2",
+        "Description": "",
+        "Entitlements": ["H2_LEGACY_EXPANSION"],
+        "ScenePath": "assembly:/_pro/scenes/missions/Opulent/mission_stingray/scene_stingray_basic.entity",
+        "Location": "LOCATION_OPULENT_STINGRAY",
+        "IsPublished": true,
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Type": "escalation",
+        "Id": "c59baa15-5946-4354-875e-1c98ef7f1bfe",
+        "InGroup": "35f1f534-ae2d-42be-8472-dd55e96625ea",
+        "TileImage": "images/contracts/escalation/contractescalation_longbush.jpg",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "74c86d8a-3a1d-4c76-a7a4-fa9805b0bae8", "IsNew": true },
+            { "Id": "26009bfe-b1d2-4533-9d8c-a2362b8ff4a5" }
+        ]
+    },
+    "UserData": {}
+}

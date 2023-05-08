@@ -1,0 +1,61 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "c86a5e82-fdd1-4cb3-b58b-12445aba8c9c",
+                "Category": "primary",
+                "TargetConditions": [],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_BERGAMOT_OBJ_1_1"
+                },
+                "BriefingText": "$loc UI_CONTRACT_BERGAMOT_OBJ_1_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["13cff299-faf1-41da-a2a1-7d8112b82f88"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "13cff299-faf1-41da-a2a1-7d8112b82f88"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "5d77ad4f-77e2-4cee-842f-5297add740f3",
+        "IsPublished": true,
+        "CreationTimestamp": "2015-11-27T15:10:52.9Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_BERGAMOT_LEVEL_1_TITLE",
+        "Description": "UI_CONTRACT_BERGAMOT_LEVEL_1_DESC",
+        "CodeName_Hint": "Bergamot - Level 1",
+        "Location": "LOCATION_COASTALTOWN",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/CoastalTown/_scene_octopus.entity",
+        "Type": "escalation",
+        "InGroup": "5a8bdb42-b11e-47d1-bc57-b4bf7efa9eda",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "c86a5e82-fdd1-4cb3-b58b-12445aba8c9c" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:30.1636488Z",
+        "PublicId": "003024967947",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

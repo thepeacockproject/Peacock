@@ -1,0 +1,184 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "029bd715-b178-4272-9d20-451ac53307b5",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "Image": "images/contracts/escalation/Escalation_Cyclamen_Objective_IAGO.jpg",
+                "BriefingName": "$loc UI_CONTRACT_OBJECTIVE_SABOTAGE_IAGO_BRIEFING_NAME",
+                "BriefingText": "$loc UI_CONTRACT_CYCLAMEN_OBJ_1",
+                "LongBriefingText": "$loc UI_CONTRACT_OBJECTIVE_SABOTAGE_IAGO_LONGBRIEFING",
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_CYCLAMEN_OBJ_1" },
+                "Type": "statemachine",
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "setpieces": {
+                                "Condition": {
+                                    "$and": [
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "e42cd800-eabe-45c9-b81e-acf1844a63af"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.setpieceType_metricvalue",
+                                                "DistractionTriggered"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "467fabca-8756-4ad3-b47e-c4d10909e90e",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "d2c76544-3a12-43a8-abc3-c7ce51830c1e",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_CYCLAMEN_OBJ_2" },
+                "BriefingText": "$loc UI_CONTRACT_CYCLAMEN_OBJ_2",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["51cfc04c-3fd1-41f9-b3f2-d9bf2e6b72d7"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "51cfc04c-3fd1-41f9-b3f2-d9bf2e6b72d7"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "d2c76544-3a12-43a8-abc3-c7ce51830c1e"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "51cfc04c-3fd1-41f9-b3f2-d9bf2e6b72d7"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "db0112af-1a96-4d79-ba0d-d0b82ecb1188",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "b5664bed-462a-417c-bc07-6d9d3f666e2d",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_CYCLAMEN_OBJ_3" },
+                "BriefingText": "$loc UI_CONTRACT_CYCLAMEN_OBJ_3",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["f7504015-a010-4828-813d-accb23edc287"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "f7504015-a010-4828-813d-accb23edc287"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "b5664bed-462a-417c-bc07-6d9d3f666e2d"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "f7504015-a010-4828-813d-accb23edc287"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/paris/cyclamen_level_addition.brick"
+        ],
+        "GameChangers": [
+            "174898dc-3f20-4dd8-8dd0-7709576360a3",
+            "da07626c-0aa3-463a-92ff-8e7adbbf6230"
+        ],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "49b24fc5-582b-4314-88a5-f282171b9a56",
+        "InGroup": "39f03892-a841-4775-91ac-f8c91b485505",
+        "IsPublished": true,
+        "CreationTimestamp": "2015-11-03T16:08:39.4Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_CYCLAMEN_LEVEL_5_TITLE",
+        "Description": "UI_CONTRACT_CYCLAMEN_LEVEL_5_DESC",
+        "CodeName_Hint": "Cyclamen - level 5",
+        "Location": "LOCATION_PARIS",
+        "ScenePath": "assembly:/_pro/scenes/missions/paris/_scene_paris.entity",
+        "Type": "escalation",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "da07626c-0aa3-463a-92ff-8e7adbbf6230" },
+            { "Id": "174898dc-3f20-4dd8-8dd0-7709576360a3" },
+            { "Id": "db0112af-1a96-4d79-ba0d-d0b82ecb1188" },
+            { "Id": "467fabca-8756-4ad3-b47e-c4d10909e90e" },
+            { "Id": "029bd715-b178-4272-9d20-451ac53307b5" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:35.4449174Z",
+        "PublicId": "002327211547",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

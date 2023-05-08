@@ -81,7 +81,7 @@ export enum LogCategory {
 
 const LOG_LEVEL_NONE = "none"
 
-//NOTE: Tests run in "strict mode", so only enable CALLER by default for debug-mode.
+// NOTE: Tests run in "strict mode", so only enable CALLER by default for debug-mode.
 const LOG_CATEGORY_DEFAULT =
     isDebug && !isTest ? LogCategory.CALLER : LogCategory.NONE
 

@@ -1,0 +1,146 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "570ca6c4-2749-4a0f-b0b4-d75d4c7a1c2b",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "58dceb1c-d7db-41dc-9750-55e3ab87fdf0",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_IRIS_OBJECTIVE_1"
+                },
+                "BriefingText": "$loc UI_CONTRACT_IRIS_OBJECTIVE_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["45463b89-0bda-408c-99be-698e1028c24c"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "45463b89-0bda-408c-99be-698e1028c24c"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "58dceb1c-d7db-41dc-9750-55e3ab87fdf0"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "45463b89-0bda-408c-99be-698e1028c24c"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "c6e07b5b-b5c5-40e1-800e-f79d20346323",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "6136fa6a-3f1f-4606-9b87-fde9538966dc",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_IRIS_OBJECTIVE_2"
+                },
+                "BriefingText": "$loc UI_CONTRACT_IRIS_OBJECTIVE_2",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["212a9df2-c335-4418-93b2-9f43370d0876"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "212a9df2-c335-4418-93b2-9f43370d0876"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "6136fa6a-3f1f-4606-9b87-fde9538966dc"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "212a9df2-c335-4418-93b2-9f43370d0876"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [],
+        "GameChangerReferences": [],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "34511e96-28b8-43a8-a575-bce4c778fd9f",
+        "IsPublished": true,
+        "CreationTimestamp": "2016-04-18T11:09:44.703Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_IRIS_LEVEL_2_TITLE",
+        "Description": "UI_CONTRACT_IRIS_LEVEL_2_DESC",
+        "CodeName_Hint": "Iris - Level 2",
+        "ScenePath": "assembly:/_pro/scenes/missions/marrakesh/_scene_spider.entity",
+        "Location": "LOCATION_MARRAKECH",
+        "Type": "escalation",
+        "RequiredUnlockable": "ACCESS_HIT_SPIDER",
+        "InGroup": "19660896-fc1f-49f9-b56b-2059137530e4",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "c6e07b5b-b5c5-40e1-800e-f79d20346323" },
+            { "Id": "570ca6c4-2749-4a0f-b0b4-d75d4c7a1c2b" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:41.5233506Z",
+        "PublicId": "006561777247",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

@@ -1,0 +1,365 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "_comment": "JW",
+                "Type": "statemachine",
+                "Id": "5a49ee9f-97e7-4e3b-90e6-0baa6d01b094",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository 233503c3-d3bd-4900-b501-90d4c95b03d4).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_THORNBUSH_OBJ1"
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["233503c3-d3bd-4900-b501-90d4c95b03d4"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "233503c3-d3bd-4900-b501-90d4c95b03d4"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "fiberwire"
+                                                        ]
+                                                    },
+                                                    "in": [
+                                                        "$Value.KillMethodBroad",
+                                                        "$Value.KillMethodStrict"
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "233503c3-d3bd-4900-b501-90d4c95b03d4"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "RepositoryId": "1a11a060-358c-4054-98ec-d3491af1d7c6",
+                        "HardCondition": true,
+                        "KillMethod": "fiberwire"
+                    }
+                ]
+            },
+            {
+                "_comment": "RW",
+                "Type": "statemachine",
+                "ObjectiveType": "customkill",
+                "Id": "77daefbe-1b3c-40ab-b0eb-502dfe10231e",
+                "BriefingText": "$loc UI_PEACOCK_THORNBUSH_OBJ2_EXT",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_THORNBUSH_OBJ2"
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["7af86858-df9d-478b-b5d8-803379cd165f"]
+                    },
+                    "States": {
+                        "Start": {
+                            "IntroCutEnd": { "Transition": "InFirstTimer" }
+                        },
+                        "InFirstTimer": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "acc9d7b8-80f1-4bb0-ba81-3a69b09e0543"
+                                    ]
+                                },
+                                "Transition": "InSecondTimer"
+                            },
+                            "Kill": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "7af86858-df9d-478b-b5d8-803379cd165f"
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            }
+                        },
+                        "InSecondTimer": {
+                            "$timer": {
+                                "Condition": { "$after": 35 },
+                                "Transition": "Failure"
+                            },
+                            "Kill": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "7af86858-df9d-478b-b5d8-803379cd165f"
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            },
+                            "Pacify": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "7af86858-df9d-478b-b5d8-803379cd165f"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "acc9d7b8-80f1-4bb0-ba81-3a69b09e0543"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "7af86858-df9d-478b-b5d8-803379cd165f"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "bone",
+                "Id": "bb3b562d-b08b-41e5-ac57-801dc80532b0",
+                "Type": "statemachine",
+                "ObjectiveType": "custom",
+                "Category": "primary",
+                "BriefingName": "$loc UI_PROP_MELEE_MEAT_JOINT_NAME",
+                "BriefingText": "$loc UI_PEACOCK_THORNBUSH_OBJ3_EXT",
+                "HUDTemplate": {
+                    "iconType": 17,
+                    "display": "$loc UI_PEACOCK_THORNBUSH_OBJ3"
+                },
+                "Image": "images/unlockables/item_perspective_acc9d7b8-80f1-4bb0-ba81-3a69b09e0543_0.jpg",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["acc9d7b8-80f1-4bb0-ba81-3a69b09e0543"]
+                    },
+                    "States": {
+                        "Start": {
+                            "IntroCutEnd": { "Transition": "InFirstTimer" }
+                        },
+                        "InFirstTimer": {
+                            "$timer": {
+                                "Condition": { "$after": 35 },
+                                "Transition": "Failure"
+                            },
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "acc9d7b8-80f1-4bb0-ba81-3a69b09e0543"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            },
+                            "Pacify": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "7af86858-df9d-478b-b5d8-803379cd165f"
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "exterminator",
+                "Type": "statemachine",
+                "Id": "431fda16-1b98-49e2-9dbc-7977317e7dc8",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository 53c1bee8-289a-498b-8b09-1167a981fd5c).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_THORNBUSH_OBJ4"
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["53c1bee8-289a-498b-8b09-1167a981fd5c"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "53c1bee8-289a-498b-8b09-1167a981fd5c"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "fiberwire"
+                                                        ]
+                                                    },
+                                                    "in": [
+                                                        "$Value.KillMethodBroad",
+                                                        "$Value.KillMethodStrict"
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "53c1bee8-289a-498b-8b09-1167a981fd5c"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "RepositoryId": "1a11a060-358c-4054-98ec-d3491af1d7c6",
+                        "HardCondition": true,
+                        "KillMethod": "fiberwire"
+                    }
+                ]
+            },
+            {
+                "_comment": "JB",
+                "Type": "statemachine",
+                "ObjectiveType": "customkill",
+                "Id": "905a76b2-07f6-4be9-b420-4b19124eaf9c",
+                "BriefingText": "$loc UI_PEACOCK_THORNBUSH_OBJ5",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_THORNBUSH_OBJ5"
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["5f307b57-55e8-4f56-97f3-397df9e3dd96"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "5f307b57-55e8-4f56-97f3-397df9e3dd96"
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            },
+                            "Pacify": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "5f307b57-55e8-4f56-97f3-397df9e3dd96"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "0f901c2c-3bcc-42f8-abc0-1f9b81fcd72f"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "5f307b57-55e8-4f56-97f3-397df9e3dd96"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Title": "UI_PEACOCK_THORNBUSH3",
+        "InGroup": "218302a3-f682-46f9-9ffd-bb3e82487b7c",
+        "Id": "45b1b927-5bf0-4dae-bc73-8ee1730652cc",
+        "Type": "escalation",
+        "Entitlements": ["H2_LEGACY_STANDARD"],
+        "TileImage": "images/contracts/escalation/contractescalation_thornbush.png",
+        "Location": "LOCATION_NORTHAMERICA",
+        "ScenePath": "assembly:/_pro/scenes/missions/skunk/scene_skunk.entity",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "431fda16-1b98-49e2-9dbc-7977317e7dc8", "IsNew": true },
+            { "Id": "905a76b2-07f6-4be9-b420-4b19124eaf9c", "IsNew": true },
+            { "Id": "77daefbe-1b3c-40ab-b0eb-502dfe10231e" },
+            { "Id": "5a49ee9f-97e7-4e3b-90e6-0baa6d01b094" },
+            { "Id": "bb3b562d-b08b-41e5-ac57-801dc80532b0" }
+        ]
+    },
+    "Peacock": { "noAgencyPickupsActive": true }
+}

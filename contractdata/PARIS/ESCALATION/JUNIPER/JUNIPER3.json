@@ -1,0 +1,182 @@
+{
+    "Data": {
+        "EnableExits": {
+            "$eq": [
+                "$a282b6d7-ecaa-4326-9f62-cc7bca77adb7",
+                "$a29b8b12-4bdc-4117-a183-fb48797f2e91",
+                "Completed"
+            ]
+        },
+        "Objectives": [
+            {
+                "Id": "a282b6d7-ecaa-4326-9f62-cc7bca77adb7",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "992cc7b6-4ccf-4ae8-a467-e9b2aabaeeb5",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_JUNIPER_OBJ_1_1"
+                },
+                "BriefingText": "$loc UI_CONTRACT_JUNIPER_OBJ_1_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["083610cc-17cd-4e78-9274-c5b00c8f1059"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "083610cc-17cd-4e78-9274-c5b00c8f1059"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "992cc7b6-4ccf-4ae8-a467-e9b2aabaeeb5"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "083610cc-17cd-4e78-9274-c5b00c8f1059"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "a29b8b12-4bdc-4117-a183-fb48797f2e91",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "992cc7b6-4ccf-4ae8-a467-e9b2aabaeeb5",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_JUNIPER_OBJ_2_1"
+                },
+                "BriefingText": "$loc UI_CONTRACT_JUNIPER_OBJ_2_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["6742f51d-2d6e-49c4-be2c-313625976540"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "6742f51d-2d6e-49c4-be2c-313625976540"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "992cc7b6-4ccf-4ae8-a467-e9b2aabaeeb5"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "6742f51d-2d6e-49c4-be2c-313625976540"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "50d31cd7-5fbe-4ed5-b847-88d0058fe0a8",
+                "Category": "primary",
+                "IsHidden": true,
+                "ExcludeFromScoring": true,
+                "BriefingText": "$loc UI_GAMECHANGERS_HOT_DISGUISE_TARGET_ALIVE_FAIL",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "States": {
+                        "Start": { "-": { "Transition": "Success" } },
+                        "Success": {
+                            "Target_Alive_Disguise_Used": {
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_PRO/Scenes/Missions/Paris/gamechanger_pistol_equipped.brick"
+        ],
+        "GameChangers": ["30b2d229-c3d7-44f7-98d6-bf88b057e354"],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "4e9c89d2-8acc-48af-b147-20aafb6df8dd",
+        "IsPublished": true,
+        "CreationTimestamp": "2015-08-19T12:08:33.08Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_JUNIPER_LEVEL_3_TITLE",
+        "Description": "",
+        "CodeName_Hint": "Juniper - Level 3",
+        "RequiredUnlockable": "ACCESS_HIT_PEACOCK",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Paris/_scene_paris.entity",
+        "Location": "LOCATION_PARIS",
+        "Type": "escalation",
+        "InGroup": "e01113e6-f27d-4ea1-a8ba-93062335bbf5",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "a29b8b12-4bdc-4117-a183-fb48797f2e91" },
+            { "Id": "30b2d229-c3d7-44f7-98d6-bf88b057e354" },
+            { "Id": "a282b6d7-ecaa-4326-9f62-cc7bca77adb7" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:42.2575036Z",
+        "PublicId": "002299045447",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

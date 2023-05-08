@@ -20,6 +20,7 @@ import { getUserData, writeUserData } from "./databaseHandler"
 import { getConfig } from "./configSwizzleManager"
 import { ContractProgressionData } from "./types/types"
 import { getFlag } from "./flags"
+import { EVERGREEN_LEVEL_INFO } from "./utils"
 
 export async function setCpd(
     data: ContractProgressionData,
@@ -48,20 +49,13 @@ export async function getCpd(
             false,
         ) as ContractProgressionData
 
-        //NOTE: Override the EvergreenLevel with the latest Mastery Level
-        if (getFlag("gameplayUnlockAllFreelancerMasteries")) {
-            //TODO: Get rid of hardcoded values
-            userData.Extensions.CPD[cpdID]["EvergreenLevel"] = 100
-        }
-
         await setCpd(defaultCPD, uID, cpdID)
-        return defaultCPD
     }
 
-    //NOTE: Override the EvergreenLevel with the latest Mastery Level
+    // NOTE: Override the EvergreenLevel with the latest Mastery Level
     if (getFlag("gameplayUnlockAllFreelancerMasteries")) {
-        //TODO: Get rid of hardcoded values
-        userData.Extensions.CPD[cpdID]["EvergreenLevel"] = 100
+        userData.Extensions.CPD[cpdID]["EvergreenLevel"] =
+            EVERGREEN_LEVEL_INFO.length
     }
 
     return userData.Extensions.CPD[cpdID]

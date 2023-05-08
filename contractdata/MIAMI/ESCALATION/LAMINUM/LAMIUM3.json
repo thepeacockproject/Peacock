@@ -1,0 +1,216 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "Id": "b905ee8f-177e-4ddb-9447-552df49fc962",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "Image": "Images/Contracts/Escalation/ContractEscalation_Flamingo_Lamium_Lvl1_1.jpg",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_LAMIUM_LVL1_OBJ_1"
+                },
+                "BriefingText": "$loc UI_CONTRACT_LAMIUM_LVL1_OBJ_1",
+                "BriefingName": "$loc UI_CONTRACT_LAMIUM_LVL1_NAME_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["5c309d9c-a738-4d83-898c-e427e6f67d9a"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Pacify": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "5c309d9c-a738-4d83-898c-e427e6f67d9a"
+                                                ]
+                                            },
+                                            {
+                                                "$or": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillItemRepositoryId",
+                                                            "004ecac9-6aee-4b30-a073-4399a94535d8"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillItemRepositoryId",
+                                                            "4fbe2d58-5088-4155-805f-fe4c5789b8bb"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillItemRepositoryId",
+                                                            "afd1f201-d2a5-4d40-80b1-d81b0d9d2541"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillItemRepositoryId",
+                                                            "c19f796e-e23f-4429-a046-47ed3d324359"
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "5c309d9c-a738-4d83-898c-e427e6f67d9a"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ],
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "5c309d9c-a738-4d83-898c-e427e6f67d9a"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "ae87013d-0215-4224-a3f5-be9894cacb37",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "Image": "Images/Contracts/Escalation/ContractEscalation_Flamingo_Lamium_Lvl1_2.jpg",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_LAMIUM_LVL1_OBJ_2"
+                },
+                "BriefingText": "$loc UI_CONTRACT_LAMIUM_LVL1_OBJ_2",
+                "BriefingName": "$loc UI_CONTRACT_LAMIUM_LVL1_NAME_2",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["bf2b0cf4-c1e5-4690-bce0-132066f8f478"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Pacify": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "bf2b0cf4-c1e5-4690-bce0-132066f8f478"
+                                                ]
+                                            },
+                                            {
+                                                "$or": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillItemRepositoryId",
+                                                            "004ecac9-6aee-4b30-a073-4399a94535d8"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillItemRepositoryId",
+                                                            "4fbe2d58-5088-4155-805f-fe4c5789b8bb"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillItemRepositoryId",
+                                                            "afd1f201-d2a5-4d40-80b1-d81b0d9d2541"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillItemRepositoryId",
+                                                            "c19f796e-e23f-4429-a046-47ed3d324359"
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "bf2b0cf4-c1e5-4690-bce0-132066f8f478"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ],
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "bf2b0cf4-c1e5-4690-bce0-132066f8f478"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/miami/lamium_remove_gardenshredder.brick"
+        ],
+        "DevOnlyBricks": [],
+        "GameModesBricks": null,
+        "EngineModesBricks": null,
+        "GameDifficulties": null,
+        "GameChangers": [
+            "2d5ee005-0a95-46a1-ab53-1f62dcf97bcf",
+            "6c6dd87b-9a94-4a87-8e31-9866dee33f9f"
+        ],
+        "GameChangerReferences": []
+    },
+    "Metadata": {
+        "Id": "dcc17268-84e5-4f49-badf-f0c631ab28cd",
+        "IsPublished": false,
+        "CreationTimestamp": "2018-10-18T08:36:34.5553097Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_LAMIUM_LEVEL_3_TITLE",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Miami_Lamium.jpg",
+        "Description": "UI_CONTRACT_LAMIUM_LEVEL_3_DESC",
+        "CodeName_Hint": "Lamium Level 3",
+        "Location": "LOCATION_MIAMI",
+        "ScenePath": "assembly:/_pro/scenes/missions/miami/scene_flamingo.entity",
+        "Type": "escalation",
+        "Release": "2.1.x Escalation",
+        "InGroup": "5284cb9f-9bdd-4b00-99c3-0b5939b01818",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "6c6dd87b-9a94-4a87-8e31-9866dee33f9f" },
+            { "Id": "2d5ee005-0a95-46a1-ab53-1f62dcf97bcf" },
+            { "Id": "b905ee8f-177e-4ddb-9447-552df49fc962" },
+            { "Id": "ae87013d-0215-4224-a3f5-be9894cacb37" }
+        ],
+        "LastUpdate": "2021-05-06T09:25:04.5111911Z",
+        "PublicId": "011562321747",
+        "Entitlements": ["H2_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

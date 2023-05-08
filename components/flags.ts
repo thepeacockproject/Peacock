@@ -117,6 +117,14 @@ const defaultFlags: Flags = {
         desc: "[Development] When set to true, will log the body of all requests the game makes. This can cause huge log files!",
         default: false,
     },
+    legacyElusivesEnableSaving: {
+        desc: '[Gameplay] When set to true, playing elusive target missions in Hitman 2016 will share the same restarting/replanning/saving rules with normal missions, but the "Elusive Target [Location]" challenges will not be completable. These challenges will only be completable when this option is set to false.',
+        default: false,
+    },
+    getDefaultSuits: {
+        desc: `[Gameplay] Set this to true to add all the default starting suits to your inventory. Note: If you set both this and "enableMasteryProgression" to "true" at the same time, a starting suit that is also the unlock for a challenge/mastery will be locked behind its challenge/mastery.`,
+        default: false,
+    },
 }
 
 const OLD_FLAGS_FILE = "flags.json5"

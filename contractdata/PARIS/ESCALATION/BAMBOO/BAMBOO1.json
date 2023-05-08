@@ -1,0 +1,95 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Type": "statemachine",
+                "Id": "327edfc6-1a47-437b-ac80-7bbe9a051356",
+                "Category": "primary",
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_BAMBOO_OBJ_1" },
+                "BriefingText": "$loc UI_CONTRACT_BAMBOO_OBJ_1",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "4fc9396e-2619-4e66-a51e-2bd366230da7",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "58dceb1c-d7db-41dc-9750-55e3ab87fdf0",
+                        "HardCondition": true
+                    }
+                ],
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["186fb427-3127-4609-8c25-3a51bea5d6d3"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "186fb427-3127-4609-8c25-3a51bea5d6d3"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "4fc9396e-2619-4e66-a51e-2bd366230da7"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "58dceb1c-d7db-41dc-9750-55e3ab87fdf0"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "186fb427-3127-4609-8c25-3a51bea5d6d3"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": ["da07626c-0aa3-463a-92ff-8e7adbbf6230"],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "8dbc9542-8eca-45ea-9471-36002e5eded7",
+        "IsPublished": true,
+        "CreationTimestamp": "2016-03-29T14:18:51.03Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_BAMBOO_LEVEL_1_TITLE",
+        "Description": "UI_CONTRACT_BAMBOO_LEVEL_1_DESC",
+        "CodeName_Hint": "Bamboo level 1",
+        "Location": "LOCATION_PARIS",
+        "ScenePath": "assembly:/_pro/scenes/missions/paris/_scene_paris.entity",
+        "Type": "escalation",
+        "InGroup": "162e9039-cb05-418c-ba8f-792fc6cc5165",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "327edfc6-1a47-437b-ac80-7bbe9a051356" },
+            { "Id": "da07626c-0aa3-463a-92ff-8e7adbbf6230" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:29.2573878Z",
+        "PublicId": "002197009647",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

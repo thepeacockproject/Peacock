@@ -33,6 +33,7 @@ import { orderedETs } from "./elusiveTargets"
 import { userAuths } from "../officialServerAuth"
 import { log, LogLevel } from "../loggingInterop"
 import { fastClone, getRemoteService } from "../utils"
+import { orderedETAs } from "./elusiveTargetArcades"
 
 /**
  * The filters supported for HitsCategories.
@@ -137,8 +138,23 @@ export class HitsCategoryService {
 
         this.hitsCategories
             .for("Elusive_Target_Hits")
-            .tap(tapName, (contracts) => {
-                contracts.push(...orderedETs)
+            .tap(tapName, (contracts, gameVersion) => {
+                for (const id of orderedETs) {
+                    const contract = controller.resolveContract(id)
+
+                    switch (gameVersion) {
+                        case "h1":
+                            if (contract.Metadata.Season === 1)
+                                contracts.push(id)
+                            break
+                        case "h2":
+                            if (contract.Metadata.Season <= 2)
+                                contracts.push(id)
+                            break
+                        default:
+                            contracts.push(id)
+                    }
+                }
             })
 
         this.hitsCategories
@@ -185,7 +201,15 @@ export class HitsCategoryService {
                 )
             })
 
-        // intentionally don't handle Arcade
+        // Arcade
+
+        this.hitsCategories
+            .for("Arcade")
+            .tap(tapName, (contracts, gameVersion) => {
+                // Just in case
+                if (gameVersion !== "h3") return
+                contracts.push(...orderedETAs)
+            })
     }
 
     private async fetchFromOfficial(
@@ -209,6 +233,7 @@ export class HitsCategoryService {
             true,
         )
         const hits = resp.data.data.Data.Hits
+
         if (categoryName !== "Featured") {
             preserveContracts(
                 hits.map(
@@ -304,12 +329,14 @@ export class HitsCategoryService {
     ): string | undefined {
         if (!this.filterSupported.includes(category)) return undefined
         const user = getUserData(userId, gameVersion)
+
         if (type === "default") {
             type = user.Extensions.gamepersistentdata.HitsFilterType[category]
         } else {
             user.Extensions.gamepersistentdata.HitsFilterType[category] = type
             writeUserData(userId, gameVersion)
         }
+
         return type
     }
 
@@ -350,14 +377,18 @@ export class HitsCategoryService {
     ): boolean {
         switch (type) {
             case "completed":
-                return played[contractId]?.Completed
+                return (
+                    played[contractId]?.Completed &&
+                    !played[contractId]?.IsEscalation
+                )
             case "failed":
                 return (
                     played[contractId] !== undefined &&
-                    played[contractId].Completed === undefined
+                    played[contractId].Completed === undefined &&
+                    !played[contractId]?.IsEscalation
                 )
             case "all":
-                return true
+                return !played[contractId]?.IsEscalation ?? true
         }
     }
 

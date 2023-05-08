@@ -1,0 +1,349 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "_comment": "----- Edward -----",
+                "Id": "4e5f0e71-f2aa-4dbf-a9a1-e6053707569f",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "accident",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_SNAKESHEAD_OBJ_EDWARD"
+                },
+                "BriefingText": "$loc UI_CONTRACT_SNAKESHEAD_OBJ_EDWARD",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "Targets": ["0fee1154-c66b-41e1-b504-897374cfdaff"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$inarray": {
+                                                    "in": "$.Targets",
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.RepositoryId"
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            { "$eq": ["$Value.Accident", true] }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$inarray": {
+                                            "in": "$.Targets",
+                                            "?": {
+                                                "$eq": [
+                                                    "$.#",
+                                                    "$Value.RepositoryId"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Emma -----",
+                "Id": "9c576b0e-cdf4-4b56-8ca4-4c13c70b86e5",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "accident",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_SNAKESHEAD_OBJ_EMMA"
+                },
+                "BriefingText": "$loc UI_CONTRACT_SNAKESHEAD_OBJ_EMMA",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "Targets": ["bce38660-1554-425b-8a00-749b70b61015"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$inarray": {
+                                                    "in": "$.Targets",
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.RepositoryId"
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            { "$eq": ["$Value.Accident", true] }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$inarray": {
+                                            "in": "$.Targets",
+                                            "?": {
+                                                "$eq": [
+                                                    "$.#",
+                                                    "$Value.RepositoryId"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Gregory -----",
+                "Id": "21adbc55-00c1-44f8-9bbc-fec5d917e4a9",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "accident",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_SNAKESHEAD_OBJ_GREGORY"
+                },
+                "BriefingText": "$loc UI_CONTRACT_SNAKESHEAD_OBJ_GREGORY",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "Targets": ["445ef39d-ba5c-4e62-a9ca-02a2f5ade4ce"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$inarray": {
+                                                    "in": "$.Targets",
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.RepositoryId"
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            { "$eq": ["$Value.Accident", true] }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$inarray": {
+                                            "in": "$.Targets",
+                                            "?": {
+                                                "$eq": [
+                                                    "$.#",
+                                                    "$Value.RepositoryId"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Patrick -----",
+                "Id": "09346d33-f103-4592-ad23-cc16bbceafd9",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "accident",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_SNAKESHEAD_OBJ_PATRICK"
+                },
+                "BriefingText": "$loc UI_CONTRACT_SNAKESHEAD_OBJ_PATRICK",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "Targets": ["02bdd2c2-4311-4d62-a699-fa4ee07fc55f"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$inarray": {
+                                                    "in": "$.Targets",
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.RepositoryId"
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            { "$eq": ["$Value.Accident", true] }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$inarray": {
+                                            "in": "$.Targets",
+                                            "?": {
+                                                "$eq": [
+                                                    "$.#",
+                                                    "$Value.RepositoryId"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Rebecca -----",
+                "Id": "e5b79076-dada-447a-9689-9bac8f5db2e2",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "accident",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_SNAKESHEAD_OBJ_REBECCA"
+                },
+                "BriefingText": "$loc UI_CONTRACT_SNAKESHEAD_OBJ_REBECCA",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "Targets": ["3ee70c86-8407-44bd-9927-3002d265a3a2"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$inarray": {
+                                                    "in": "$.Targets",
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.RepositoryId"
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            { "$eq": ["$Value.Accident", true] }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$inarray": {
+                                            "in": "$.Targets",
+                                            "?": {
+                                                "$eq": [
+                                                    "$.#",
+                                                    "$Value.RepositoryId"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": ["054a5ac6-59e1-42ed-885a-30c65f446e72"],
+        "Entrances": [
+            "0aec817c-738e-4381-bbd4-a13b5d1c6730",
+            "b38a7610-5f7f-4fcb-ad09-c554c3544367",
+            "3812ea57-e29c-42cb-b93a-ea2d3e6a6806",
+            "5a60147f-9c85-4998-b70f-1441ee7ba9b1"
+        ]
+    },
+    "Metadata": {
+        "Id": "19bf57ec-47c1-46b7-9e7f-ecc8309ae0c2",
+        "Type": "escalation",
+        "Title": "UI_CONTRACT_SNAKESHEAD_LEVEL_2_NAME",
+        "Description": "",
+        "InGroup": "b12d08ea-c842-498a-82ea-889653588592",
+        "Location": "LOCATION_ANCESTRAL_BULLDOG",
+        "RequiredUnlockable": "ACCESS_HIT_BULLDOG",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Ancestral/scene_bulldog.entity",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "IsPublished": true,
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "054a5ac6-59e1-42ed-885a-30c65f446e72", "IsNew": true },
+            { "Id": "e5b79076-dada-447a-9689-9bac8f5db2e2", "IsNew": true },
+            { "Id": "4e5f0e71-f2aa-4dbf-a9a1-e6053707569f", "IsNew": true },
+            { "Id": "9c576b0e-cdf4-4b56-8ca4-4c13c70b86e5" },
+            { "Id": "21adbc55-00c1-44f8-9bbc-fec5d917e4a9" },
+            { "Id": "09346d33-f103-4592-ad23-cc16bbceafd9" }
+        ],
+        "Entitlements": ["LOCATION_ANCESTRAL"],
+        "PublicId": "028126564647",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Ancestral_SnakesHead.jpg"
+    },
+    "UserData": {}
+}

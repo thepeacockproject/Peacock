@@ -1,0 +1,94 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "c0619e7d-03fd-4c70-ae7b-9c90b640f59b",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "hitmansuit",
+                        "RepositoryId": "75759271-e236-4b33-8dd5-7e502c958d05",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "accident",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_JASMINE_OBJ_1" },
+                "BriefingText": "$loc UI_CONTRACT_JASMINE_OBJ_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["739b0044-c2c1-4487-8222-675bf8eaf9cd"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "739b0044-c2c1-4487-8222-675bf8eaf9cd"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitIsHitmanSuit",
+                                                    true
+                                                ]
+                                            },
+                                            { "$eq": ["$Value.Accident", true] }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "739b0044-c2c1-4487-8222-675bf8eaf9cd"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "f00e7bc4-11bf-4413-a8d2-64db6afd7ad4",
+        "IsPublished": true,
+        "CreationTimestamp": "2015-11-27T13:33:30.36Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_JASMINE_LEVEL_1_TITLE",
+        "Description": "UI_CONTRACT_JASMINE_LEVEL_1_DESC",
+        "CodeName_Hint": "Jasmine - Level 1",
+        "Location": "LOCATION_COASTALTOWN",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/CoastalTown/_scene_octopus.entity",
+        "Type": "escalation",
+        "InGroup": "641656f8-ab16-49c5-a09b-952738154b64",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "c0619e7d-03fd-4c70-ae7b-9c90b640f59b" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:41.8825058Z",
+        "PublicId": "003629202547",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

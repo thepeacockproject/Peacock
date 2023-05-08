@@ -1,0 +1,111 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "76b616b8-d848-4251-86bd-c2bf3127428f",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "d01c8adc-735c-44f0-9105-b28d85062def",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_HIBISCUS_OBJ_1_1"
+                },
+                "BriefingText": "$loc UI_CONTRACT_HIBISCUS_OBJ_1_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["cb1cd30b-cdad-4b41-8036-568dad9ce1ba"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "cb1cd30b-cdad-4b41-8036-568dad9ce1ba"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "d01c8adc-735c-44f0-9105-b28d85062def"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "cb1cd30b-cdad-4b41-8036-568dad9ce1ba"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "60bcf81b-cd45-4807-8b15-18f914bf9af0",
+                "Category": "primary",
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "41b23543-f31c-490c-8d18-c9a5663e2565"
+                    }
+                }
+            },
+            {
+                "Id": "52912383-f877-4e0d-8228-d094c5660082",
+                "Category": "primary",
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "9a7e0704-a25b-4b69-8cda-c85194ef1af7"
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": ["ca9604ab-c712-45db-b1b4-e04ac60d2465"],
+        "GameChangerReferences": [],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "79511294-9054-409d-8062-c24d66fb1ff0",
+        "IsPublished": true,
+        "CreationTimestamp": "2016-04-18T09:51:27.393Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_HIBISCUS_LEVEL_4_TITLE",
+        "Description": "UI_CONTRACT_HIBISCUS_LEVEL_4_DESC",
+        "CodeName_Hint": "Hibiscus Level 4",
+        "RequiredUnlockable": "ACCESS_HIT_TIGER",
+        "Location": "LOCATION_BANGKOK",
+        "ScenePath": "assembly:/_pro/scenes/missions/Bangkok/_scene_tiger.entity",
+        "Type": "escalation",
+        "InGroup": "ccbde3e2-67e7-4534-95ec-e9bd7ef65273",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "52912383-f877-4e0d-8228-d094c5660082" },
+            { "Id": "ca9604ab-c712-45db-b1b4-e04ac60d2465" },
+            { "Id": "60bcf81b-cd45-4807-8b15-18f914bf9af0" },
+            { "Id": "76b616b8-d848-4251-86bd-c2bf3127428f" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:39.8043671Z",
+        "PublicId": "008229987147",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

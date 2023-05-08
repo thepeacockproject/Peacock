@@ -1,0 +1,100 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "3a1f8ec2-73ef-45ef-bd71-46f0d5e6013b",
+                "Category": "primary",
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "b914ec7f-041d-4779-b985-2fd79a03237b"
+                    }
+                }
+            },
+            {
+                "Id": "da3767f4-1751-4791-abf5-464d0f88b274",
+                "Category": "primary",
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "446b26c9-f218-4374-ad13-9780a60e0bb5"
+                    }
+                }
+            },
+            {
+                "Id": "42aad3a3-b0a6-4e51-bf4b-79dbbab21f6b",
+                "Category": "primary",
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "412a0063-cdee-42f9-9301-bedf253de39a"
+                    }
+                }
+            },
+            {
+                "Id": "45c1cada-798e-4094-b064-f9376206deab",
+                "Category": "primary",
+                "ObjectiveType": "setpiece",
+                "Image": "images/contracts/gamechangers/Gamechanger_Marrakesh_Break_And_Enter_Maintenence_Room.jpg",
+                "BriefingName": "$loc UI_GAMECHANGERS_MARRAKESH_PYTHON_SAFE_ANTIQUE_SHOP_NAME",
+                "BriefingText": "$loc UI_CONTRACT_HONEYSUCKLE_OBJ_4",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_HONEYSUCKLE_OBJ_4"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {
+                        "Targets": ["ab38355b-bc1a-45ff-bc5e-ede19868a574"]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "62c2ac2e-329e-4648-822a-e45a29a93cd0"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/marrakesh/gamechanger_spider_honeysuckle_wildcard.brick"
+        ],
+        "GameChangers": [
+            "069f6503-e4ad-41e5-a92d-7e91ce60993a",
+            "51c8a014-dcc6-4714-a843-0295f9718c7a"
+        ],
+        "GameChangerReferences": [],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "842f781a-ab23-4932-81d1-8e2ee66538cc",
+        "IsPublished": true,
+        "CreationTimestamp": "2016-04-18T11:09:44.703Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_HONEYSUCKLE_LEVEL_4_TITLE",
+        "Description": "UI_CONTRACT_HONEYSUCKLE_LEVEL_4_DESC",
+        "CodeName_Hint": "Honeysuckle - Level 4",
+        "ScenePath": "assembly:/_pro/scenes/missions/marrakesh/_scene_spider.entity",
+        "Location": "LOCATION_MARRAKECH",
+        "Type": "escalation",
+        "RequiredUnlockable": "ACCESS_HIT_SPIDER",
+        "InGroup": "c67a1ead-7489-4d88-bbd2-c68d735e5df0",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "51c8a014-dcc6-4714-a843-0295f9718c7a" },
+            { "IsNew": true, "Id": "45c1cada-798e-4094-b064-f9376206deab" },
+            { "Id": "42aad3a3-b0a6-4e51-bf4b-79dbbab21f6b" },
+            { "Id": "da3767f4-1751-4791-abf5-464d0f88b274" },
+            { "Id": "3a1f8ec2-73ef-45ef-bd71-46f0d5e6013b" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:40.4918733Z",
+        "PublicId": "006261482447",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

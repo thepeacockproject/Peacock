@@ -1,0 +1,90 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "f65469b5-1eb1-4e42-9f90-c4cf1dcf15fb",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "5edcef70-c4bb-4856-9124-de3d39fa814a",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_EDELWEISS_OBJ_1"
+                },
+                "BriefingText": "$loc UI_CONTRACT_EDELWEISS_OBJ_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["719b7083-58ed-498a-b5ab-824985d9ac5e"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "719b7083-58ed-498a-b5ab-824985d9ac5e"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "5edcef70-c4bb-4856-9124-de3d39fa814a"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "719b7083-58ed-498a-b5ab-824985d9ac5e"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "5cb0a941-6db4-4923-a7b3-dc7902a17b06",
+        "IsPublished": true,
+        "CreationTimestamp": "2015-11-26T16:07:52.987Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_EDELWEISS_LEVEL_1_TITLE",
+        "Description": "UI_CONTRACT_EDELWEISS_LEVEL_1_DESC",
+        "CodeName_Hint": "Edelweiss - Level 1",
+        "Location": "LOCATION_COASTALTOWN",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/CoastalTown/_scene_octopus.entity",
+        "Type": "escalation",
+        "InGroup": "0c4c6ce2-09d5-4fff-a946-099ced0558ea",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "f65469b5-1eb1-4e42-9f90-c4cf1dcf15fb" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:36.9136768Z",
+        "PublicId": "003255287747",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

@@ -1,0 +1,216 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "_comment": "briefing1",
+                "Id": "a12ccd08-ee68-4e92-860e-fc63fba72d7f",
+                "Type": "statemachine",
+                "ObjectiveType": "custom",
+                "Category": "primary",
+                "Image": "images/contracts/escalation/rosebush_2_1.png",
+                "IsHidden": false,
+                "BriefingName": "$loc UI_PEACOCK_ROSEBUSH_MANSION_STAFF",
+                "BriefingText": "$loc UI_PEACOCK_ROSEBUSH_MANSION_STAFF_DESC",
+                "UpdateActivationWhileCompleted": true,
+                "OnActive": { "IfCompleted": { "Visible": false } },
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_ROSEBUSH_MANSION_STAFF_HUD"
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "AmbientChanged": { "Transition": "Success" }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "briefing2",
+                "Id": "118041f6-34e5-4f33-9d6f-19b70d555189",
+                "Type": "statemachine",
+                "ObjectiveType": "custom",
+                "Category": "primary",
+                "Image": "images/contracts/escalation/rosebush_2_2.png",
+                "IsHidden": false,
+                "BriefingName": "$loc UI_GAMECHANGERS_GLOBAL_NO_DISGUISE_CHANGE_NAME",
+                "BriefingText": "$loc UI_PEACOCK_ROSEBUSH_DISGUISE2",
+                "OnActive": { "IfCompleted": { "Visible": false } },
+                "UpdateActivationWhileCompleted": true,
+                "HUDTemplate": {
+                    "display": "UI_GAMECHANGERS_GLOBAL_NO_DISGUISE_CHANGE_NAME"
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "AmbientChanged": { "Transition": "Success" }
+                        },
+                        "Success": {
+                            "Disguise": { "Transition": "PleaseDoFail" }
+                        },
+                        "PleaseDoFail": {
+                            "$timer": {
+                                "Condition": { "$after": 2 },
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "staff1",
+                "Type": "statemachine",
+                "Id": "a2125ded-5ed2-4bb1-a7e1-fb5c2446d9c8",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository 9f6b010a-b4cc-4bda-8200-f132aaad03a4).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 9f6b010a-b4cc-4bda-8200-f132aaad03a4).Name"
+                        }
+                    }
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["9f6b010a-b4cc-4bda-8200-f132aaad03a4"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "c3349736-91d1-48e3-bc62-fc16a7d8d6f1"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "9f6b010a-b4cc-4bda-8200-f132aaad03a4"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "9f6b010a-b4cc-4bda-8200-f132aaad03a4"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "c3349736-91d1-48e3-bc62-fc16a7d8d6f1",
+                        "HardCondition": true
+                    }
+                ]
+            },
+            {
+                "_comment": "staff2",
+                "Type": "statemachine",
+                "Id": "f80cd9dd-0908-4e91-8e78-7345d90f506c",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository 3036afda-a6ab-4830-9f9a-192bcd5d958d).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 3036afda-a6ab-4830-9f9a-192bcd5d958d).Name"
+                        }
+                    }
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["3036afda-a6ab-4830-9f9a-192bcd5d958d"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "c3349736-91d1-48e3-bc62-fc16a7d8d6f1"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "3036afda-a6ab-4830-9f9a-192bcd5d958d"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "3036afda-a6ab-4830-9f9a-192bcd5d958d"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "c3349736-91d1-48e3-bc62-fc16a7d8d6f1",
+                        "HardCondition": true
+                    }
+                ]
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": []
+    },
+    "Metadata": {
+        "Id": "1a9978ae-0cfa-44ff-bd16-ca3ffab226fe",
+        "Title": "UI_PEACOCK_ROSEBUSH2",
+        "Type": "escalation",
+        "Location": "LOCATION_ANCESTRAL_BULLDOG",
+        "ScenePath": "assembly:/_pro/scenes/missions/Ancestral/scene_bulldog.entity",
+        "InGroup": "78628e05-93ce-4f87-8a17-b910d32df51f",
+        "TileImage": "images/contracts/escalation/contractescalation_rosebush.png",
+        "Entitlements": ["LOCATION_ANCESTRAL"],
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "a12ccd08-ee68-4e92-860e-fc63fba72d7f", "IsNew": true },
+            { "Id": "118041f6-34e5-4f33-9d6f-19b70d555189", "IsNew": true },
+            { "Id": "a2125ded-5ed2-4bb1-a7e1-fb5c2446d9c8", "IsNew": true },
+            { "Id": "f80cd9dd-0908-4e91-8e78-7345d90f506c", "IsNew": true }
+        ]
+    }
+}

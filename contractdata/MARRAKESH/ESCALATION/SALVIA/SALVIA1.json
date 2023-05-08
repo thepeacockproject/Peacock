@@ -1,0 +1,90 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "ef5772fc-4c30-49cc-8dee-ab9824af51c6",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "accident_burn",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_SALVIA_OBJ_1" },
+                "BriefingText": "$loc UI_CONTRACT_SALVIA_OBJ_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["6b361407-9f8c-48d5-8169-2e9cabd9e3a5"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "6b361407-9f8c-48d5-8169-2e9cabd9e3a5"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": ["$.#", "Burn"]
+                                                    },
+                                                    "in": "$Value.DamageEvents"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "6b361407-9f8c-48d5-8169-2e9cabd9e3a5"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "46420edc-2eae-4399-b4c2-f1355e818744",
+        "IsPublished": true,
+        "CreationTimestamp": "2016-02-18T14:06:33.347Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_SALVIA_LEVEL_1_TITLE",
+        "Description": "UI_CONTRACT_SALVIA_LEVEL_1_DESC",
+        "CodeName_Hint": "Salvia - Level 1",
+        "Location": "LOCATION_MARRAKECH",
+        "ScenePath": "assembly:/_pro/scenes/missions/marrakesh/_scene_spider.entity",
+        "Type": "escalation",
+        "InGroup": "e359075e-a510-4b7c-a461-477b789ca7e4",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "ef5772fc-4c30-49cc-8dee-ab9824af51c6" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:49.3200306Z",
+        "PublicId": "006449423747",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

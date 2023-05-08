@@ -1,0 +1,124 @@
+{
+    "Data": {
+        "EnableExits": {
+            "$eq": [
+                "$c5b8dbe0-0ada-4069-87dc-fc6f6edb5db5",
+                "$141adac9-7194-4880-8a7d-0dd4c37f1d72",
+                "Completed"
+            ]
+        },
+        "Objectives": [
+            {
+                "Id": "c5b8dbe0-0ada-4069-87dc-fc6f6edb5db5",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "accident",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_NIGHTSHADE_OBJ_1"
+                },
+                "BriefingText": "$loc UI_CONTRACT_NIGHTSHADE_OBJ_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["8b4299ee-b72d-444c-b990-2eb909aff59f"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "8b4299ee-b72d-444c-b990-2eb909aff59f"
+                                                ]
+                                            },
+                                            { "$eq": ["$Value.Accident", true] }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "8b4299ee-b72d-444c-b990-2eb909aff59f"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "141adac9-7194-4880-8a7d-0dd4c37f1d72",
+                "Category": "primary",
+                "ObjectiveType": "setpiece",
+                "Image": "images/contracts/gamechangers/Gamechanger_Paris_DataExtraction_Basement.jpg",
+                "BriefingName": "$loc UI_GAMECHANGERS_MARRAKESH_DATA_EXTRACTION_CONSULATE_NAME",
+                "BriefingText": "$loc UI_CONTRACT_NIGHTSHADE_OBJ_2",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_NIGHTSHADE_OBJ_2"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {
+                        "Targets": ["3479f135-81b6-4aeb-9e5f-c90269c527a2"]
+                    },
+                    "States": {
+                        "Start": {
+                            "LaptopHacked": { "Transition": "Success" },
+                            "Laptop_Destroyed": { "Transition": "Failure" }
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_PRO/Scenes/Missions/paris/gamechanger_nightshade_overrides.brick"
+        ],
+        "GameChangers": [
+            "9de28185-8e9b-4e92-901c-e661055205db",
+            "174898dc-3f20-4dd8-8dd0-7709576360a3",
+            "6e9c16bf-dee1-412c-a02d-5df5655ea2c3",
+            "2073a821-d75d-4dc6-a83d-8ffd28ea6b70"
+        ],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "79db896f-2141-470b-b25b-fd603a7e347d",
+        "IsPublished": true,
+        "CreationTimestamp": "2015-08-19T12:08:33.08Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_NIGHTSHADE_LEVEL_4_TITLE",
+        "Description": "UI_CONTRACT_NIGHTSHADE_LEVEL_4_DESC",
+        "CodeName_Hint": "Nightshade - Level 4",
+        "RequiredUnlockable": "ACCESS_HIT_PEACOCK",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Paris/_scene_paris.entity",
+        "Location": "LOCATION_PARIS",
+        "Type": "escalation",
+        "InGroup": "0e5c23b1-4678-458b-ad98-8b55c268e90a",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "141adac9-7194-4880-8a7d-0dd4c37f1d72" },
+            { "IsNew": true, "Id": "2073a821-d75d-4dc6-a83d-8ffd28ea6b70" },
+            { "Id": "174898dc-3f20-4dd8-8dd0-7709576360a3" },
+            { "Id": "6e9c16bf-dee1-412c-a02d-5df5655ea2c3" },
+            { "Id": "9de28185-8e9b-4e92-901c-e661055205db" },
+            { "Id": "c5b8dbe0-0ada-4069-87dc-fc6f6edb5db5" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:46.4293958Z",
+        "PublicId": "002144970447",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

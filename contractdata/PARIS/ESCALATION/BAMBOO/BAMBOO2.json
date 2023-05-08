@@ -1,0 +1,165 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Type": "statemachine",
+                "Id": "327edfc6-1a47-437b-ac80-7bbe9a051356",
+                "Category": "primary",
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_BAMBOO_OBJ_1" },
+                "BriefingText": "$loc UI_CONTRACT_BAMBOO_OBJ_1",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "4fc9396e-2619-4e66-a51e-2bd366230da7",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "58dceb1c-d7db-41dc-9750-55e3ab87fdf0",
+                        "HardCondition": true
+                    }
+                ],
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["186fb427-3127-4609-8c25-3a51bea5d6d3"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "186fb427-3127-4609-8c25-3a51bea5d6d3"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "4fc9396e-2619-4e66-a51e-2bd366230da7"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "58dceb1c-d7db-41dc-9750-55e3ab87fdf0"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "186fb427-3127-4609-8c25-3a51bea5d6d3"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "0adef64b-fae9-4d19-824b-b82a6ab50216",
+                "Category": "primary",
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_BAMBOO_OBJ_2" },
+                "BriefingText": "$loc UI_CONTRACT_BAMBOO_OBJ_2",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "4fc9396e-2619-4e66-a51e-2bd366230da7",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "58dceb1c-d7db-41dc-9750-55e3ab87fdf0",
+                        "HardCondition": true
+                    }
+                ],
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["335ce4e7-36bb-45cd-aa24-18564d48ed4e"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "335ce4e7-36bb-45cd-aa24-18564d48ed4e"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "4fc9396e-2619-4e66-a51e-2bd366230da7"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "58dceb1c-d7db-41dc-9750-55e3ab87fdf0"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "335ce4e7-36bb-45cd-aa24-18564d48ed4e"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [
+            "da07626c-0aa3-463a-92ff-8e7adbbf6230",
+            "113ba9e8-4fa5-4ab0-b613-05b97e39e600"
+        ],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "dc3a4e81-c13f-497c-8e31-05d90d29e837",
+        "IsPublished": true,
+        "CreationTimestamp": "2016-03-29T14:18:51.03Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_BAMBOO_LEVEL_2_TITLE",
+        "Description": "UI_CONTRACT_BAMBOO_LEVEL_2_DESC",
+        "CodeName_Hint": "Bamboo level 2",
+        "Location": "LOCATION_PARIS",
+        "ScenePath": "assembly:/_pro/scenes/missions/paris/_scene_paris.entity",
+        "Type": "escalation",
+        "InGroup": "162e9039-cb05-418c-ba8f-792fc6cc5165",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "0adef64b-fae9-4d19-824b-b82a6ab50216" },
+            { "IsNew": true, "Id": "113ba9e8-4fa5-4ab0-b613-05b97e39e600" },
+            { "Id": "327edfc6-1a47-437b-ac80-7bbe9a051356" },
+            { "Id": "da07626c-0aa3-463a-92ff-8e7adbbf6230" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:29.4761399Z",
+        "PublicId": "002464148747",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

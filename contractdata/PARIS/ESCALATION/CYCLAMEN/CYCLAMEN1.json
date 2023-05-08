@@ -1,0 +1,67 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "029bd715-b178-4272-9d20-451ac53307b5",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "Image": "images/contracts/escalation/Escalation_Cyclamen_Objective_IAGO.jpg",
+                "BriefingName": "$loc UI_CONTRACT_OBJECTIVE_SABOTAGE_IAGO_BRIEFING_NAME",
+                "BriefingText": "$loc UI_CONTRACT_CYCLAMEN_OBJ_1",
+                "LongBriefingText": "$loc UI_CONTRACT_OBJECTIVE_SABOTAGE_IAGO_LONGBRIEFING",
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_CYCLAMEN_OBJ_1" },
+                "Type": "statemachine",
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "setpieces": {
+                                "Condition": {
+                                    "$and": [
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "e42cd800-eabe-45c9-b81e-acf1844a63af"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.setpieceType_metricvalue",
+                                                "DistractionTriggered"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/paris/cyclamen_level_addition.brick"
+        ],
+        "GameChangers": [],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "c6440643-0e2f-4321-8de4-6b877f015147",
+        "InGroup": "39f03892-a841-4775-91ac-f8c91b485505",
+        "IsPublished": true,
+        "CreationTimestamp": "2015-11-03T10:49:03.667Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_CYCLAMEN_LEVEL_1_TITLE",
+        "Description": "UI_CONTRACT_CYCLAMEN_LEVEL_1_DESC",
+        "CodeName_Hint": "Cyclamen - Level 1",
+        "Location": "LOCATION_PARIS",
+        "ScenePath": "assembly:/_pro/scenes/missions/paris/_scene_paris.entity",
+        "Type": "escalation",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "029bd715-b178-4272-9d20-451ac53307b5" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:35.0230434Z",
+        "PublicId": "002469624847",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

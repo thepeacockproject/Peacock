@@ -1,0 +1,112 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "fe4be56b-82e6-444a-ae9e-408e92b65380",
+                "Type": "statemachine",
+                "Primary": true,
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository db85e020-98d2-485e-ba21-ebfc53b91daa).Name"
+                        }
+                    }
+                },
+                "Definition": {
+                    "Context": {
+                        "Targets": ["db85e020-98d2-485e-ba21-ebfc53b91daa"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "db85e020-98d2-485e-ba21-ebfc53b91daa"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "122428ab-7075-4842-b54c-757c221723ef",
+                "Type": "statemachine",
+                "Primary": true,
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 5497400e-8806-49b9-bca0-76f58266b959).Name"
+                        }
+                    }
+                },
+                "Definition": {
+                    "Context": {
+                        "Targets": ["5497400e-8806-49b9-bca0-76f58266b959"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "5497400e-8806-49b9-bca0-76f58266b959"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "8d606509-7d54-4dac-8142-a4349fd6279d",
+                "Type": "statemachine",
+                "BriefingName": "$loc LLAMA_QUESTITEMS_YATESFILES_NAME",
+                "BriefingText": "$loc UI_PEACOCK_GRAPEBUSH_FILES_DESC",
+                "Image": "images/unlockables/item_perspective_773e7624-307e-418e-b6cf-f9bc6dc6b295_0.jpg",
+                "Primary": true,
+                "ObjectiveType": "custom",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_GRAPEBUSH_FILES",
+                    "iconType": 17
+                },
+                "Definition": {
+                    "Context": {
+                        "Targets": ["773e7624-307e-418e-b6cf-f9bc6dc6b295"]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "773e7624-307e-418e-b6cf-f9bc6dc6b295"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Title": "UI_PEACOCK_GRAPEBUSH1",
+        "Type": "escalation",
+        "Id": "4bab4282-ad93-45e3-ace7-c9daf78dec94",
+        "InGroup": "edbacf4b-e402-4548-b723-cd4351571537",
+        "TileImage": "images/contracts/escalation/contractescalation_grapebush.png",
+        "PublicID": 123435430528,
+        "ScenePath": "assembly:/_pro/scenes/missions/elegant/scene_llama.entity",
+        "Entitlements": ["LOCATION_ELEGANT"],
+        "Location": "LOCATION_ELEGANT_LLAMA"
+    }
+}

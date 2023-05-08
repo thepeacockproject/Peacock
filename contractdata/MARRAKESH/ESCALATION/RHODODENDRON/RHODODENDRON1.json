@@ -1,0 +1,90 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "abaac998-ed8b-458d-ba64-206e23612c63",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "eb48ed16-195a-4de1-bae6-d7e7ec92046c",
+                        "HardCondition": true
+                    }
+                ],
+                "BriefingText": "$loc UI_CONTRACT_RHODODENDRON_OBJ_1_1",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_RHODODENDRON_OBJ_1_1"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["ca967a22-8b3a-406a-b7d9-788fb9f56d01"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "ca967a22-8b3a-406a-b7d9-788fb9f56d01"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "eb48ed16-195a-4de1-bae6-d7e7ec92046c"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "ca967a22-8b3a-406a-b7d9-788fb9f56d01"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "6e739ee1-561c-4b94-a46d-054225481354",
+        "IsPublished": true,
+        "CreationTimestamp": "2016-03-31T09:11:23.05Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_RHODODENDRON_LEVEL_1_TITLE",
+        "Description": "UI_CONTRACT_RHODODENDRON_LEVEL_1_DESC",
+        "CodeName_Hint": "Rhododendron - Level 1",
+        "Location": "LOCATION_MARRAKECH",
+        "ScenePath": "assembly:/_pro/scenes/missions/marrakesh/_scene_spider.entity",
+        "Type": "escalation",
+        "InGroup": "45e6d255-f8e4-4170-ad7e-3416ab8a881d",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "abaac998-ed8b-458d-ba64-206e23612c63" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:48.0544049Z",
+        "PublicId": "006877023047",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

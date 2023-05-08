@@ -1,0 +1,195 @@
+{
+    "Data": {
+        "Bricks": [
+            "Assembly:/_PRO/Scenes/missions/elegant/gamechanger_whitedryas.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/scenes/missions/elegant/vr_overrides_llama.brick",
+                    "assembly:/_PRO/scenes/missions/elegant/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/scenes/missions/elegant/vr_overrides_llama.brick"
+                ]
+            }
+        ],
+        "DevOnlyBricks": [],
+        "GameChangers": ["3db72bb5-63d6-47fe-9332-d7ea3c195e06"],
+        "Entrances": ["88bd6f8f-a8db-437e-9f68-b1373677d03e"],
+        "MandatoryLoadout": [],
+        "GameChangerReferences": [],
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "_comment": "--- Syringe ---",
+                "Id": "67f4e47f-18b3-443c-832f-d0a64986c618",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "Image": "images/unlockables/item_perspective_83930544-d8db-4020-901f-ea6017764aaa_0.jpg",
+                "BriefingName": "$loc UI_CONTRACT_WHITEDRYAS_OBJ_1",
+                "BriefingText": "$loc UI_CONTRACT_WHITEDRYAS_OBJ_1",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_WHITEDRYAS_OBJ_1",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {
+                        "Targets": ["4110e5db-4ced-437c-ac1c-7191a9328ff8"]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "83930544-d8db-4020-901f-ea6017764aaa"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "--- Emetic grenade ---",
+                "Id": "6e61ac75-c077-4542-8d35-1c79901a6f69",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "Image": "Images/Unlockables_Override/item_perspective_guru_grenade.jpg",
+                "BriefingName": "$loc UI_CONTRACT_WHITEDRYAS_OBJ_2",
+                "BriefingText": "$loc UI_CONTRACT_WHITEDRYAS_OBJ_2",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_WHITEDRYAS_OBJ_2",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {
+                        "Targets": ["60d778e8-9b44-4f61-a62d-f3ddfae9bcea"]
+                    },
+                    "States": {
+                        "Start": {
+                            "WhiteDryasGrenadeDestroyed": {
+                                "Transition": "Failure"
+                            },
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "a49fe9f6-aa5a-4000-8aec-2902ab57b4b7"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "--- Outfit ---",
+                "Id": "4f0f5021-62ee-42aa-a415-4d318757b043",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "Image": "Images/Unlockables_Override/47_Outfits_Guru.jpg",
+                "BriefingName": "$loc UI_CONTRACT_WHITEDRYAS_OBJ_3",
+                "BriefingText": "$loc UI_CONTRACT_WHITEDRYAS_OBJ_3",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_WHITEDRYAS_OBJ_3",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {
+                        "Targets": ["c2b74ac7-fb9a-4a75-a520-ffbded0e3597"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Disguise": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value",
+                                        "a4ef8071-8931-4179-abec-11a2b9ceba36"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Activation": {
+                    "$eq": [
+                        "$67f4e47f-18b3-443c-832f-d0a64986c618",
+                        "$6e61ac75-c077-4542-8d35-1c79901a6f69",
+                        "$4f0f5021-62ee-42aa-a415-4d318757b043",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": { "IfCompleted": { "State": "Completed" } },
+                "_comment": "--- Killed Actor 1 while poisoned ---",
+                "Id": "91603178-7b3b-4c99-8f06-87135afa4f6f",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "Image": "images/contracts/Escalation/ContractEscalation_Elegant_WhiteDryas_1target.jpg",
+                "BriefingName": "$loc UI_CONTRACT_WHITEDRYAS_OBJ_4",
+                "BriefingText": "$loc UI_CONTRACT_WHITEDRYAS_OBJ_4",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_WHITEDRYAS_OBJ_4"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["b2cdf231-2bd5-40bb-aa22-789884c16cae"]
+                    },
+                    "States": {
+                        "Start": {
+                            "WhiteDryasFailed": { "Transition": "Failure" },
+                            "WhiteDryasActorKilledPoisoned": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "e14bbb5d-bd8a-4b6b-9749-4f147db0ebe0",
+        "IsPublished": true,
+        "CreationTimestamp": "2021-01-05T12:54:16.194497Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_WHITEDRYAS_LEVEL_1_NAME",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Elegant_WhiteDryas.jpg",
+        "Description": "",
+        "CodeName_Hint": "WhiteDryas - Level 1",
+        "Location": "LOCATION_ELEGANT_LLAMA",
+        "RequiredUnlockable": "ACCESS_HIT_LLAMA",
+        "ScenePath": "assembly:/_pro/scenes/missions/elegant/scene_whitedryas.entity",
+        "Type": "escalation",
+        "Release": "3.1.1 Escalation",
+        "InGroup": "72aaaa7b-4386-4ee7-9e9e-73fb8ff8e416",
+        "Entitlements": ["H3_EXPANSION"],
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "67f4e47f-18b3-443c-832f-d0a64986c618" },
+            { "IsNew": true, "Id": "6e61ac75-c077-4542-8d35-1c79901a6f69" },
+            { "IsNew": true, "Id": "4f0f5021-62ee-42aa-a415-4d318757b043" },
+            { "IsNew": true, "Id": "3db72bb5-63d6-47fe-9332-d7ea3c195e06" },
+            { "IsNew": true, "Id": "91603178-7b3b-4c99-8f06-87135afa4f6f" }
+        ],
+        "LastUpdate": "2021-04-20T12:25:05.0132432Z",
+        "PublicId": "031148635547"
+    },
+    "UserData": {}
+}

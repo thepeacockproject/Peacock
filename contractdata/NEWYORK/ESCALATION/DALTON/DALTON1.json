@@ -1,0 +1,127 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "Id": "fec9b2b8-19b8-450c-915b-f4b2c52b92d9",
+                "Category": "primary",
+                "BriefingName": "",
+                "Image": "images/actors/actor_987fe2c3-1de8-4cd1-85e8-8252eb9b8dcb.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "accident_electric",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "6b22a1db-861c-42fd-ae2d-a4a7bcda72ab",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_DANDELION_OBJ_0"
+                },
+                "BriefingText": "$loc UI_CONTRACT_DANDELION_OBJ_0",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["987fe2c3-1de8-4cd1-85e8-8252eb9b8dcb"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "987fe2c3-1de8-4cd1-85e8-8252eb9b8dcb"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "6b22a1db-861c-42fd-ae2d-a4a7bcda72ab"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "Electric"
+                                                        ]
+                                                    },
+                                                    "in": "$Value.DamageEvents"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "987fe2c3-1de8-4cd1-85e8-8252eb9b8dcb"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "DevOnlyBricks": [],
+        "GameChangers": [
+            "63055f1a-bcd2-4e0f-8caf-b446f01d02f3",
+            "3db72bb5-63d6-47fe-9332-d7ea3c195e06"
+        ],
+        "Entrances": ["bc264812-2baf-46dc-91a6-4153b73336f6"],
+        "MandatoryLoadout": [
+            {
+                "Id": "Greedy_Unique_BankRobber_M",
+                "Properties": {
+                    "LoadoutSlot": "Outfit",
+                    "RepositoryId": "6b22a1db-861c-42fd-ae2d-a4a7bcda72ab"
+                }
+            }
+        ],
+        "GameChangerReferences": []
+    },
+    "Metadata": {
+        "Id": "44ac6a37-0ef8-42ea-bf39-1d5f9afd235d",
+        "IsPublished": true,
+        "CreationTimestamp": "2018-10-17T14:35:18.194497Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_DANDELION_LEVEL_1_NAME",
+        "Description": "",
+        "CodeName_Hint": "Dandelion - Level 1",
+        "Location": "LOCATION_GREEDY_RACCOON",
+        "ScenePath": "assembly:/_pro/scenes/missions/Greedy/mission_raccoon/scene_raccoon_basic_Dandelion.entity",
+        "Type": "escalation",
+        "Release": "2.1.x Escalation",
+        "InGroup": "55063d85-e84a-4c76-8bf7-e70fe2cab651",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Greedy_Dandelion.jpg",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "fec9b2b8-19b8-450c-915b-f4b2c52b92d9" },
+            { "IsNew": true, "Id": "63055f1a-bcd2-4e0f-8caf-b446f01d02f3" },
+            { "IsNew": true, "Id": "3db72bb5-63d6-47fe-9332-d7ea3c195e06" }
+        ],
+        "Entitlements": ["H2_LEGACY_EXPANSION"],
+        "LastUpdate": "2021-05-14T09:10:31.9057669Z",
+        "PublicId": "024842939147"
+    },
+    "UserData": {}
+}

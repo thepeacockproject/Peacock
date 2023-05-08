@@ -1,0 +1,88 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "dd6e81ad-1768-4370-8238-ef94f8d3e8da",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "992cc7b6-4ccf-4ae8-a467-e9b2aabaeeb5",
+                        "HardCondition": true
+                    }
+                ],
+                "BriefingText": "$loc UI_CONTRACT_FOXGLOVE_OBJ_1",
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_FOXGLOVE_OBJ_1" },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["d57142b8-4b19-4725-8651-fb179cf461ba"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "d57142b8-4b19-4725-8651-fb179cf461ba"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "992cc7b6-4ccf-4ae8-a467-e9b2aabaeeb5"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "d57142b8-4b19-4725-8651-fb179cf461ba"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "c6ccb4ef-0feb-40d9-8f1b-80fd6ad06e08",
+        "InGroup": "ebf8e5b5-3bf0-487e-8d1b-9473aee61291",
+        "IsPublished": true,
+        "CreationTimestamp": "2015-10-01T14:08:42.83Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_FOXGLOVE_LEVEL_1_TITLE",
+        "Description": "UI_CONTRACT_FOXGLOVE_LEVEL_1_DESC",
+        "CodeName_Hint": "Foxglove - Level 1",
+        "Location": "LOCATION_PARIS",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Paris/_scene_paris.entity",
+        "Type": "escalation",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "dd6e81ad-1768-4370-8238-ef94f8d3e8da" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:37.2418076Z",
+        "PublicId": "002811332247",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

@@ -43,6 +43,7 @@ import { getUserData } from "./databaseHandler"
 import { log, LogLevel } from "./loggingInterop"
 import { getFlag } from "./flags"
 import { UnlockableMasteryData } from "./types/mastery"
+import { attainableDefaults, defaultSuits, getDefaultSuitFor } from "./utils"
 
 const DELUXE_DATA = [
     ...CONCRETEART_UNLOCKABLES,
@@ -384,13 +385,73 @@ function filterAllowedContent(gameVersion: GameVersion, entP: string[]) {
     }
 }
 
+/**
+ * Given an inventory and a sublocation, returns a new inventory with
+ * the default suit for the sublocation added if it is not already present.
+ * If the sublocation is undefined, the inputted inventory is returned.
+ * Otherwise, a new inventory is cloned, appended with the default suit, and returned.
+ * Either way, the inputted inventory is not modified.
+ * @param profileId The profileId of the player
+ * @param gameVersion  The game version
+ * @param inv  The inventory to update
+ * @param sublocation  The sublocation to check for a default suit
+ * @returns  The updated inventory
+ */
+function updateWithDefaultSuit(
+    profileId: string,
+    gameVersion: GameVersion,
+    inv: InventoryItem[],
+    sublocation: Unlockable,
+): InventoryItem[] {
+    if (sublocation === undefined) {
+        return inv
+    }
+
+    // We need to add a suit, so need to copy the cache to prevent modifying it.
+    const newInv = [...inv]
+
+    // Yes this is slow. We should organize the unlockables into a { [Id: string]: Unlockable } map.
+    const locationSuit = getVersionedConfig<Unlockable[]>(
+        "allunlockables",
+        gameVersion,
+        true,
+    ).find((u) => u.Id === getDefaultSuitFor(sublocation))
+
+    // check if any inventoryItem's unlockable is the default suit for the sublocation
+    if (newInv.every((i) => i.Unlockable.Id !== locationSuit.Id)) {
+        // if not, add it
+        newInv.push({
+            InstanceId: locationSuit.Guid,
+            ProfileId: profileId,
+            Unlockable: locationSuit,
+            Properties: {},
+        })
+    }
+
+    return newInv
+}
+
+/**
+ * Generate a player's inventory with unlockables.
+ * @param profileId  The profile ID of the player
+ * @param gameVersion  The game version
+ * @param entP  The player's entitlements
+ * @param sublocation  The sublocation to generate the inventory for. Used to award default suits for the sublocation. Defaulted to undefined.
+ * @returns The player's inventory
+ */
 export function createInventory(
     profileId: string,
     gameVersion: GameVersion,
     entP: string[],
+    sublocation = undefined,
 ): InventoryItem[] {
     if (inventoryUserCache.has(profileId)) {
-        return inventoryUserCache.get(profileId)!
+        return updateWithDefaultSuit(
+            profileId,
+            gameVersion,
+            inventoryUserCache.get(profileId)!,
+            sublocation,
+        )
     }
 
     // Get user data to check on location progression
@@ -436,6 +497,19 @@ export function createInventory(
         unlockables = [...unlockedItems, ...otherItems]
     }
 
+    // If getDefaultSuits is turned off, then only give attainable suits and lock everything else.
+    // The mastery check has already locked any unattained attainable suits,
+    // and location-wide default suits will be given afterwards.
+    const defaults = Object.values(defaultSuits)
+
+    if ((getFlag("getDefaultSuits") as boolean) === false) {
+        unlockables = unlockables.filter(
+            (u) =>
+                !defaults.includes(u.Id) ||
+                attainableDefaults(gameVersion).includes(u.Id),
+        )
+    }
+
     // ts-expect-error It cannot be undefined.
     const filtered: InventoryItem[] = unlockables
         .map((unlockable) => {
@@ -467,7 +541,9 @@ export function createInventory(
     }
 
     inventoryUserCache.set(profileId, filtered)
-    return filtered
+
+    // It is highly unlikely that we need to add a suit but we don't have the inventory in cache, but just in case
+    return updateWithDefaultSuit(profileId, gameVersion, filtered, sublocation)
 }
 
 export function grantDrops(profileId: string, drops: Unlockable[]): void {

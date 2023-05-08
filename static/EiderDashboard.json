@@ -44,11 +44,11 @@
                             },
                             "$then": [
                                 {
-                                    "view": "menu3.basic.MenuTileTall",
+                                    "view": "menu3.basic.MenuTileLarge",
                                     "row": 0,
                                     "col": 0,
                                     "nrows": 3,
-                                    "ncols": 2,
+                                    "ncols": 4,
                                     "data": {
                                         "header": "$loc UI_MENU_PAGE_HUB_CAMPAIGN",
                                         "title": "$loc UI_MENU_PAGE_HUB_STORY",
@@ -90,9 +90,9 @@
                                 },
                                 {
                                     "$databinding menusystem/pages/hub/dashboard/data/data_dashboardtile_vr.json": {
-                                        "view": "menu3.basic.MenuTileTall",
-                                        "row": 0,
-                                        "col": 2,
+                                        "view": "menu3.basic.ButtonTileXXSmall",
+                                        "row": 3,
+                                        "col": 8,
                                         "nrows": 3,
                                         "ncols": 2,
                                         "data": {
@@ -161,7 +161,7 @@
                         "nrows": 1.5,
                         "ncols": 2,
                         "data": {
-                            "title": "Go Offline",
+                            "title": "$loc UI_PEACOCK_GO_OFFLINE",
                             "icon": "goonline",
                             "image": "$res images/ui/tiles/button_goonline.jpg"
                         },
@@ -179,7 +179,7 @@
                                             "pressable": false,
                                             "data": {
                                                 "header": "",
-                                                "title": "Go Offline",
+                                                "title": "$loc UI_PEACOCK_GO_OFFLINE",
                                                 "typeicon": "goonline"
                                             }
                                         }
@@ -201,8 +201,8 @@
                         "nrows": 1.5,
                         "ncols": 2,
                         "data": {
-                            "header": "Powered by",
-                            "title": "The Peacock Project",
+                            "header": "$loc UI_PEACOCK_POWERED_BY",
+                            "title": "$loc UI_PEACOCK_BRANDING",
                             "icon": "story",
                             "image": "$res images/contracts/novikov_and_magolis/tile.jpg"
                         },
@@ -226,8 +226,8 @@
                                             "selectable": false,
                                             "pressable": false,
                                             "data": {
-                                                "header": "Powered by",
-                                                "title": "The Peacock Project",
+                                                "header": "$loc UI_PEACOCK_POWERED_BY",
+                                                "title": "$loc UI_PEACOCK_BRANDING",
                                                 "typeicon": "story"
                                             }
                                         }
@@ -271,16 +271,18 @@
                             "select": {
                                 "replace-children": {
                                     "target": "headline_container",
-                                    "children": {
-                                        "view": "menu3.basic.HeadlineElement",
-                                        "selectable": false,
-                                        "pressable": false,
-                                        "data": {
-                                            "header": "",
-                                            "title": "$loc UI_DIALOG_LOAD_GAME",
-                                            "typeicon": "load"
+                                    "children": [
+                                        {
+                                            "view": "menu3.basic.HeadlineElement",
+                                            "selectable": false,
+                                            "pressable": false,
+                                            "data": {
+                                                "header": "",
+                                                "title": "$loc UI_DIALOG_LOAD_GAME",
+                                                "typeicon": "load"
+                                            }
                                         }
-                                    }
+                                    ]
                                 }
                             },
                             "deselect": {
@@ -323,8 +325,30 @@
                         "actions": {
                             "accept": [
                                 {
-                                    "start-contract": {
-                                        "contractid": "f8ec92c2-4fa2-471e-ae08-545480c746ee"
+                                    "set-menu-context": {
+                                        "value": {
+                                            "onpageopened": {
+                                                "set-selected": {
+                                                    "target": "PLANNING_BUTTON_PLAY"
+                                                },
+                                                "trigger-input": {
+                                                    "action": "accept"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "link": {
+                                        "page": "planning",
+                                        "args": {
+                                            "url": "planning",
+                                            "args": {
+                                                "contractid": "f8ec92c2-4fa2-471e-ae08-545480c746ee",
+                                                "resetescalation": false
+                                            },
+                                            "contractid": "f8ec92c2-4fa2-471e-ae08-545480c746ee"
+                                        }
                                     }
                                 }
                             ],
@@ -349,6 +373,15 @@
                                 "replace-children": {
                                     "target": "headline_container",
                                     "children": []
+                                }
+                            },
+                            "actiony": {
+                                "prompt_label": "$loc UI_PEACOCK_GO_TO_DESTINATION",
+                                "link": {
+                                    "page": "gamemode_evergreen",
+                                    "args": {
+                                        "locationId": "LOCATION_PARENT_SNUG"
+                                    }
                                 }
                             }
                         }

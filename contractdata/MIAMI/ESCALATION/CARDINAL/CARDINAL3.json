@@ -1,0 +1,342 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "EnableExits": {
+            "$eq": [
+                "$80162522-85a1-42fa-b6b3-a6942edc590f",
+                "$4ac152fe-2b62-42a5-8aa0-fa8b98d0e79f",
+                "$1aebf37d-575f-430d-bc0c-6f4f7e22691e",
+                "$abb6d8bf-ae1f-4c96-a35b-0c9b7edbcbeb",
+                "Completed"
+            ]
+        },
+        "Objectives": [
+            {
+                "Id": "80162522-85a1-42fa-b6b3-a6942edc590f",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "weapontype",
+                        "RepositoryId": "901a3b51-51a0-4236-bdf2-23d20696b358",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "e9ed2969-146a-472d-8e87-39c77bd1757d",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_CARDINAL_OBJ_1" },
+                "BriefingText": "$loc UI_CONTRACT_CARDINAL_OBJ_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["8c2c1042-3bdd-4197-9dd2-85c605776cd6"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "8c2c1042-3bdd-4197-9dd2-85c605776cd6"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "e9ed2969-146a-472d-8e87-39c77bd1757d"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemCategory",
+                                                    "shotgun"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.WeaponSilenced",
+                                                    false
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "8c2c1042-3bdd-4197-9dd2-85c605776cd6"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "4ac152fe-2b62-42a5-8aa0-fa8b98d0e79f",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "weapontype",
+                        "RepositoryId": "901a3b51-51a0-4236-bdf2-23d20696b358",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "e9ed2969-146a-472d-8e87-39c77bd1757d",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_CARDINAL_OBJ_2" },
+                "BriefingText": "$loc UI_CONTRACT_CARDINAL_OBJ_2",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["c7fe7fa4-8122-4975-9390-5d154a526528"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "c7fe7fa4-8122-4975-9390-5d154a526528"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "e9ed2969-146a-472d-8e87-39c77bd1757d"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemCategory",
+                                                    "shotgun"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.WeaponSilenced",
+                                                    false
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "c7fe7fa4-8122-4975-9390-5d154a526528"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "1aebf37d-575f-430d-bc0c-6f4f7e22691e",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "weapontype",
+                        "RepositoryId": "901a3b51-51a0-4236-bdf2-23d20696b358",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "e9ed2969-146a-472d-8e87-39c77bd1757d",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_CARDINAL_OBJ_3" },
+                "BriefingText": "$loc UI_CONTRACT_CARDINAL_OBJ_3",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["32a178ff-7271-42bb-b266-4447614e229a"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "32a178ff-7271-42bb-b266-4447614e229a"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "e9ed2969-146a-472d-8e87-39c77bd1757d"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemCategory",
+                                                    "shotgun"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.WeaponSilenced",
+                                                    false
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "32a178ff-7271-42bb-b266-4447614e229a"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "abb6d8bf-ae1f-4c96-a35b-0c9b7edbcbeb",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "weapontype",
+                        "RepositoryId": "901a3b51-51a0-4236-bdf2-23d20696b358",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "e9ed2969-146a-472d-8e87-39c77bd1757d",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_CARDINAL_OBJ_4" },
+                "BriefingText": "$loc UI_CONTRACT_CARDINAL_OBJ_4",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["91d89e91-4ccd-4f8d-9297-e00832a256fc"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "91d89e91-4ccd-4f8d-9297-e00832a256fc"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "e9ed2969-146a-472d-8e87-39c77bd1757d"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemCategory",
+                                                    "shotgun"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.WeaponSilenced",
+                                                    false
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "91d89e91-4ccd-4f8d-9297-e00832a256fc"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [
+            "fd37b209-4e11-461e-a11f-394c92fbbe80",
+            "c8e2616d-720a-4a58-bfaa-13c034a4fb6b",
+            "ce154566-a4ba-43c5-be4e-79240ce0f3f9",
+            "572cd180-99db-40a8-9090-7736ef36aa23"
+        ],
+        "GameChangerReferences": [],
+        "Entrances": []
+    },
+    "Metadata": {
+        "Id": "f88cda79-c07c-4487-ac23-1b8b824b3497",
+        "IsPublished": true,
+        "CreationTimestamp": "2018-12-05T14:48:46.8773842Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_CARDINAL_LEVEL_3_NAME",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Cardinal.jpg",
+        "Description": "",
+        "CodeName_Hint": "Cardinal - Level 3",
+        "Location": "LOCATION_MIAMI",
+        "ScenePath": "assembly:/_pro/scenes/missions/miami/scene_flamingo.entity",
+        "Type": "escalation",
+        "Release": "2.1.x Escalation",
+        "InGroup": "fca539ff-1b1a-4c04-93e0-03b9b902f86c",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "ce154566-a4ba-43c5-be4e-79240ce0f3f9" },
+            { "IsNew": true, "Id": "abb6d8bf-ae1f-4c96-a35b-0c9b7edbcbeb" },
+            { "Id": "fd37b209-4e11-461e-a11f-394c92fbbe80" },
+            { "Id": "c8e2616d-720a-4a58-bfaa-13c034a4fb6b" },
+            { "Id": "1aebf37d-575f-430d-bc0c-6f4f7e22691e" },
+            { "Id": "80162522-85a1-42fa-b6b3-a6942edc590f" },
+            { "Id": "4ac152fe-2b62-42a5-8aa0-fa8b98d0e79f" },
+            { "Id": "572cd180-99db-40a8-9090-7736ef36aa23" }
+        ],
+        "LastUpdate": "2021-05-06T09:25:03.1091485Z",
+        "PublicId": "011774265647",
+        "Entitlements": ["H2_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

@@ -20,7 +20,7 @@ import type { MissionStory, RequestWithJwt, SceneConfig } from "../types/types"
 import { log, LogLevel } from "../loggingInterop"
 import { _legacyBull, _theLastYardbirdScpc, controller } from "../controller"
 import {
-    contractIdToEscalationGroupId,
+    escalationTypes,
     getLevelCount,
     getUserEscalationProgress,
     resetUserEscalationProgress,
@@ -74,20 +74,6 @@ export async function planningView(
         }
     }
 
-    if (isForReset) {
-        const escalationGroupId = contractIdToEscalationGroupId(
-            req.query.contractid,
-        )
-
-        resetUserEscalationProgress(userData, escalationGroupId)
-
-        writeUserData(req.jwt.unique_name, req.gameVersion)
-
-        // now reassign properties and continue
-        req.query.contractid =
-            controller.escalationMappings[escalationGroupId]["1"]
-    }
-
     let contractData =
         req.gameVersion === "h1" &&
         req.query.contractid === "42bac555-bbb9-429d-a8ce-f1ffdf94211c"
@@ -95,6 +81,19 @@ export async function planningView(
             : req.query.contractid === "ff9f46cf-00bd-4c12-b887-eac491c3a96d"
             ? _theLastYardbirdScpc
             : controller.resolveContract(req.query.contractid)
+
+    if (isForReset) {
+        const escalationGroupId =
+            contractData.Metadata.InGroup ?? contractData.Metadata.Id
+
+        resetUserEscalationProgress(userData, escalationGroupId)
+
+        writeUserData(req.jwt.unique_name, req.gameVersion)
+
+        // now reassign properties and continue
+        req.query.contractid =
+            controller.escalationMappings.get(escalationGroupId)["1"]
+    }
 
     if (!contractData) {
         // This will only happen for **contracts** that are meant to be fetched from the official servers.
@@ -136,27 +135,37 @@ export async function planningView(
         BestLevel: undefined as number | undefined,
     }
 
-    const escalationGroupId = contractIdToEscalationGroupId(
-        req.query.contractid,
-    )
+    const escalation = escalationTypes.includes(contractData.Metadata.Type)
 
-    if (escalationGroupId) {
+    // It is possible for req.query.contractid to be the id of a group OR a level in that group.
+    let escalationGroupId =
+        contractData.Metadata.InGroup ?? contractData.Metadata.Id
+
+    if (escalation) {
+        const groupContractData = controller.resolveContract(escalationGroupId)
+
         const p = getUserEscalationProgress(userData, escalationGroupId)
+
         const done =
             userData.Extensions.PeacockCompletedEscalations.includes(
                 escalationGroupId,
             )
 
         groupData.GroupId = escalationGroupId
-        groupData.GroupTitle = contractData.Metadata.Title
+        groupData.GroupTitle = groupContractData.Metadata.Title
         groupData.CompletedLevels = done ? p : p - 1
         groupData.Completed = done
-        groupData.TotalLevels = getLevelCount(
-            controller.escalationMappings[escalationGroupId],
-        )
+        groupData.TotalLevels = getLevelCount(groupContractData)
         groupData.BestScore = 0
         groupData.BestPlayer = nilUuid
         groupData.BestLevel = 0
+
+        // Fix contractData to the data of the level in the group.
+        if (!contractData.Metadata.InGroup) {
+            contractData = controller.resolveContract(
+                contractData.Metadata.GroupDefinition.Order[p - 1],
+            )
+        }
     }
 
     if (!contractData) {
@@ -200,6 +209,7 @@ export async function planningView(
         req.jwt.unique_name,
         req.gameVersion,
         userData.Extensions.entP,
+        sublocation,
     )
 
     const unlockedEntrances = typedInv
@@ -225,10 +235,7 @@ export async function planningView(
     }
 
     let pistol = "FIREARMS_HERO_PISTOL_TACTICAL_ICA_19"
-    let suit =
-        sublocation.Id === "LOCATION_ANCESTRAL_SMOOTHSNAKE"
-            ? "TOKEN_OUTFIT_ANCESTRAL_HERO_SMOOTHSNAKESUIT"
-            : getDefaultSuitFor(sublocation?.Properties?.ParentLocation)
+    let suit = getDefaultSuitFor(sublocation)
     let tool1 = "TOKEN_FIBERWIRE"
     let tool2 = "PROP_TOOL_COIN"
     let briefcaseProp: string | undefined = undefined
@@ -251,6 +258,7 @@ export async function planningView(
         suit = dlForLocation["3"]
         tool1 = dlForLocation["4"]
         tool2 = dlForLocation["5"]
+
         for (const key of Object.keys(dlForLocation)) {
             if (["2", "3", "4", "5"].includes(key)) {
                 // we're looking for keys that aren't taken up by other things
@@ -264,18 +272,11 @@ export async function planningView(
 
     const i = typedInv.find((item) => item.Unlockable.Id === briefcaseProp)
 
-    const escalation = contractData.Metadata.Type === "escalation"
-
     const userCentric = generateUserCentric(
         contractData,
         req.jwt.unique_name,
         req.gameVersion,
     )
-
-    if (userCentric.Contract.Metadata.Type === "elusive") {
-        // change the type until we figure out why they become unplayable
-        userCentric.Contract.Metadata.Type = "mission"
-    }
 
     const sniperLoadouts = createSniperLoadouts(
         req.jwt.unique_name,
@@ -373,7 +374,10 @@ export async function planningView(
         LOCATION_HOKKAIDO_SHIM_MAMUSHI: 20,
     }
 
-    if (sublocation?.Properties?.LimitedLoadout) {
+    if (
+        sublocation?.Properties?.LimitedLoadout &&
+        getFlag("enableMasteryProgression")
+    ) {
         const loadoutUnlockable = getUnlockableById(
             req.gameVersion,
             req.gameVersion === "h1"
@@ -413,12 +417,9 @@ export async function planningView(
                 : null,
         data: {
             Contract: contractData,
-            ElusiveContractState: "",
+            ElusiveContractState: "not_completed",
             UserCentric: userCentric,
-            IsFirstInGroup: escalation
-                ? controller.escalationMappings[escalationGroupId]["1"] ===
-                  req.query.contractid
-                : true,
+            IsFirstInGroup: escalation ? groupData.CompletedLevels === 0 : true,
             Creator: creatorProfile,
             UserContract: creatorProfile.DevId !== "IOI",
             UnlockedEntrances:

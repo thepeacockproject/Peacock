@@ -1,0 +1,89 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "Id": "ed6a30fe-7dca-4bf3-89e4-ff75df3804b4",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "Image": "Images/Contracts/Escalation/ContractEscalation_Magpie_Heather_Lvl1.jpg",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_HEATHER_LVL3_OBJ_1"
+                },
+                "BriefingText": "$loc UI_CONTRACT_HEATHER_LVL3_OBJ_1",
+                "BriefingName": "$loc UI_CONTRACT_HEATHER_LVL3_NAME",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["f7e68044-9d27-4e98-a70d-e654432ee6d0"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "f7e68044-9d27-4e98-a70d-e654432ee6d0"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceType",
+                                                    "d756bbae-26cf-4b8d-9792-86b37629403f"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "f7e68044-9d27-4e98-a70d-e654432ee6d0"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "DevOnlyBricks": [],
+        "GameModesBricks": null,
+        "EngineModesBricks": null,
+        "GameDifficulties": null,
+        "GameChangers": ["abf09e23-299d-410c-a185-6188f687224b"],
+        "GameChangerReferences": []
+    },
+    "Metadata": {
+        "Id": "dfc9ddf7-a0e9-4b4f-af8d-5076c0d6bf0b",
+        "IsPublished": false,
+        "CreationTimestamp": "2018-10-18T08:36:34.5553097Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_HEATHER_LEVEL_1_TITLE",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Magpie_Heather.jpg",
+        "Description": "UI_CONTRACT_HEATHER_LEVEL_1_DESC",
+        "CodeName_Hint": "Heather Level 1",
+        "Location": "LOCATION_NORTHSEA",
+        "ScenePath": "assembly:/_pro/scenes/missions/theark/scene_magpie.entity",
+        "Type": "escalation",
+        "Release": "2.1.x Escalation",
+        "InGroup": "e63eeb62-29ef-428d-b003-ea043b1f11f9",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "ed6a30fe-7dca-4bf3-89e4-ff75df3804b4" }
+        ],
+        "LastUpdate": "2021-05-06T09:25:03.9962617Z",
+        "PublicId": "021157758847",
+        "Entitlements": ["H2_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

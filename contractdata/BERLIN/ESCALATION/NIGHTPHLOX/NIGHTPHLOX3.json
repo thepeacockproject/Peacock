@@ -1,0 +1,166 @@
+{
+    "Data": {
+        "Bricks": [
+            "Assembly:/_PRO/Scenes/missions/edgy/mission_fox/edgy_nightphlox.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/edgy/mission_fox/vr_overrides_fox.brick",
+                    "assembly:/_pro/scenes/missions/edgy/mission_fox/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/edgy/mission_fox/vr_overrides_fox.brick"
+                ]
+            }
+        ],
+        "DevOnlyBricks": [],
+        "GameChangers": [
+            "63055f1a-bcd2-4e0f-8caf-b446f01d02f3",
+            "c2da52c5-ff3e-41cd-a175-4ed9267f6c95",
+            "b50b19c2-dacb-4baa-8498-048baa5ee2ec"
+        ],
+        "Entrances": [
+            "b37a535e-ae99-4266-998e-609eee4c9626",
+            "c704455f-f065-4665-b1b5-b66dfcfd4f00",
+            "1edf1fe3-687f-4588-a3b2-06586b948146",
+            "e7ddcb47-1c3f-444c-8300-40baaf0c463c"
+        ],
+        "GameChangerReferences": [],
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "_comment": "Eliminate Florida Man",
+                "Id": "bd398dfc-1ef2-411f-8416-a6ec6859e271",
+                "Category": "primary",
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "3926e7ce-cb06-412a-a206-a864188d9987"
+                    }
+                }
+            },
+            {
+                "_comment": "Eliminate Corridor Raver",
+                "Id": "8620c60f-0ac2-492b-af0c-7c4830a874e2",
+                "Category": "primary",
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "ae75fad9-e5a9-47e3-98c2-e297bb792276"
+                    }
+                }
+            },
+            {
+                "_comment": "Eliminate The DJ",
+                "Id": "c36601de-677d-4297-a913-3ac1495ed248",
+                "Category": "primary",
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "047bef31-022a-47c6-958b-f2a20e0a3576"
+                    }
+                }
+            },
+            {
+                "_comment": "Eliminate B1 guard by sleeping techie with box cutter",
+                "Id": "058057d2-9744-4e27-b933-760b16c34b12",
+                "Category": "primary",
+                "BriefingName": "",
+                "Image": "images/actors/actor_43d13b72-f87a-48df-a287-300a972a3859.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "9e728dc1-3344-4615-be7a-1bcbdd7ad4aa",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_NIGHTPHLOX_TECHGUARDHOBBYKNIFE"
+                },
+                "BriefingText": "$loc UI_CONTRACT_NIGHTPHLOX_TECHGUARDHOBBYKNIFE",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["43d13b72-f87a-48df-a287-300a972a3859"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "43d13b72-f87a-48df-a287-300a972a3859"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "9e728dc1-3344-4615-be7a-1bcbdd7ad4aa"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "43d13b72-f87a-48df-a287-300a972a3859"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "f7a322dc-630d-4391-a367-f59168e64847",
+        "IsPublished": true,
+        "CreationTimestamp": "2018-10-17T14:35:18.194497Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_NIGHTPHLOX_LEVEL_3_NAME",
+        "Description": "UI_CONTRACT_NIGHTPHLOX_GROUP_DESC",
+        "CodeName_Hint": "Night Phlox - Level 3",
+        "Location": "LOCATION_EDGY_FOX",
+        "RequiredUnlockable": "ACCESS_HIT_FOX",
+        "ScenePath": "assembly:/_pro/scenes/missions/edgy/mission_fox/scene_fox_NightPhlox.entity",
+        "Type": "escalation",
+        "Release": "3.1.0 Escalation",
+        "InGroup": "5bb29a6b-7384-4641-944c-3540fa5cd8aa",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "b50b19c2-dacb-4baa-8498-048baa5ee2ec" },
+            { "IsNew": true, "Id": "bd398dfc-1ef2-411f-8416-a6ec6859e271" },
+            { "IsNew": true, "Id": "058057d2-9744-4e27-b933-760b16c34b12" },
+            { "IsNew": true, "Id": "c2da52c5-ff3e-41cd-a175-4ed9267f6c95" },
+            { "Id": "c36601de-677d-4297-a913-3ac1495ed248" },
+            { "Id": "8620c60f-0ac2-492b-af0c-7c4830a874e2" },
+            { "Id": "63055f1a-bcd2-4e0f-8caf-b446f01d02f3" }
+        ],
+        "Entitlements": ["LOCATION_EDGY"],
+        "LastUpdate": "2023-03-30T11:20:27.1205497Z",
+        "PublicId": "029454648647",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Edgy_Night-Phlox.jpg"
+    },
+    "UserData": {}
+}

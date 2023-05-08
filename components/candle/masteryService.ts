@@ -16,7 +16,10 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { getSubLocationByName } from "../contracts/dataGen"
+import {
+    getParentLocationByName,
+    getSubLocationByName,
+} from "../contracts/dataGen"
 import { log, LogLevel } from "../loggingInterop"
 import { getConfig, getVersionedConfig } from "../configSwizzleManager"
 import { getUserData } from "../databaseHandler"
@@ -80,10 +83,9 @@ export class MasteryService {
         gameVersion: GameVersion,
         userId: string,
     ): MasteryDataTemplate {
-        const subLocation: Unlockable = getSubLocationByName(
-            locationId,
-            gameVersion,
-        )
+        const location: Unlockable =
+            getSubLocationByName(locationId, gameVersion) ??
+            getParentLocationByName(locationId, gameVersion)
 
         const masteryDataTemplate: MasteryDataTemplate =
             getConfig<MasteryDataTemplate>(
@@ -92,7 +94,7 @@ export class MasteryService {
             )
 
         const masteryData = this.getMasteryData(
-            subLocation.Properties.ParentLocation,
+            location.Properties.ParentLocation ?? location.Id,
             gameVersion,
             userId,
         )
@@ -100,7 +102,7 @@ export class MasteryService {
         return {
             template: masteryDataTemplate,
             data: {
-                Location: subLocation,
+                Location: location,
                 MasteryData: masteryData,
             },
         }
@@ -112,6 +114,7 @@ export class MasteryService {
      * @param gameVersion The game version.
      * @param completionId An Id used to look up completion data in the user's profile. Can be `parentLocationId` or `progressionKey`.
      * @param maxLevel The max level for this progression.
+     * @param levelToXpRequired A function to get the XP required for a level.
      */
     private getCompletionData(
         userId: string,
@@ -120,13 +123,14 @@ export class MasteryService {
         maxLevel: number,
         levelToXpRequired: (level: number) => number,
     ) {
-        //Get the user profile
+        // Get the user profile
         const userProfile = getUserData(userId, gameVersion)
 
         // Generate default completion before trying to acquire it
         userProfile.Extensions.progression.Locations[completionId] ??= {
             Xp: 0,
             Level: 1,
+            PreviouslySeenXp: 0,
         }
 
         const completionData =
@@ -146,6 +150,7 @@ export class MasteryService {
             Level: completionData.Level,
             MaxLevel: maxLevel,
             XP: completionData.Xp,
+            PreviouslySeenXp: completionData.PreviouslySeenXp,
             Completion:
                 (completionData.Xp - thisLevelXp) / (nextLevelXp - thisLevelXp),
             XpLeft: nextLevelXp - completionData.Xp,
@@ -168,7 +173,7 @@ export class MasteryService {
         userId: string,
         contractType = "mission",
     ): CompletionData {
-        //Get the mastery data
+        // Get the mastery data
         const masteryData: MasteryPackage =
             this.getMasteryPackage(locationParentId)
 
@@ -237,7 +242,7 @@ export class MasteryService {
         gameVersion: GameVersion,
         userId: string,
     ): MasteryData[] {
-        //Get the mastery data
+        // Get the mastery data
         const masteryData: MasteryPackage =
             this.getMasteryPackage(locationParentId)
 
@@ -245,27 +250,28 @@ export class MasteryService {
             return []
         }
 
-        //Put all Ids into a set for quick lookup
+        // Put all Ids into a set for quick lookup
         const dropIdSet = new Set(masteryData.Drops.map((drop) => drop.Id))
 
-        //Get all unlockables with matching Ids
+        // Get all unlockables with matching Ids
         const unlockableData: Unlockable[] = getVersionedConfig<Unlockable[]>(
             "allunlockables",
             gameVersion,
             true,
         ).filter((unlockable) => dropIdSet.has(unlockable.Id))
 
-        //Put all unlockabkes in a map for quick lookup
+        // Put all unlockabkes in a map for quick lookup
         const unlockableMap = new Map(
             unlockableData.map((unlockable) => [unlockable.Id, unlockable]),
         )
 
-        //Map all the data into a new structure
+        // Map all the data into a new structure
         const completionData = this.getLocationCompletion(
             locationParentId,
             locationParentId,
             gameVersion,
             userId,
+            locationParentId.includes("SNUG") ? "evergreen" : "mission",
         )
 
         const drops: MasteryDrop[] = masteryData.Drops.filter((drop) => {

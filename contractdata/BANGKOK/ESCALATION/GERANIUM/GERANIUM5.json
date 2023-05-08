@@ -1,0 +1,160 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "cc71e486-ebce-4feb-bf47-20cc7bca81d5",
+                "Category": "primary",
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "ea65261d-d657-4e7f-8e3b-7027e637e673"
+                    }
+                }
+            },
+            {
+                "Id": "16a4dd64-fd3e-4a93-85ab-4f9683e34f3b",
+                "Category": "primary",
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "2ea8ef96-7380-447d-a6bf-19a3fa01bc19"
+                    }
+                }
+            },
+            {
+                "Id": "9cae9779-d60c-4e94-9885-19ca13e11747",
+                "Category": "primary",
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "1f2fff64-d0a6-4fb6-a89d-c320215b9730"
+                    }
+                }
+            },
+            {
+                "Id": "6a1a5961-9a49-43ea-b105-d3f166e8f78e",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "BriefingName": "$loc UI_CONTRACT_GERANIUM_FREEZER_BRIEFING_NAME",
+                "Image": "images/contracts/gamechangers/Gamechanger_Bangkok_Freezer.jpg",
+                "LongBriefingText": "$loc UI_CONTRACT_GERANIUM_FREEZER_BRIEFING_DESC",
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_GERANIUM_OBJ_3" },
+                "BriefingText": "$loc UI_CONTRACT_GERANIUM_OBJ_3",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "AmountToDump": 3,
+                        "Targets": ["e5108884-fed4-43b8-b932-6f697bd9c358"]
+                    },
+                    "States": {
+                        "Start": {
+                            "TargetInFreezer": {
+                                "Actions": { "$dec": "AmountToDump" },
+                                "Transition": "CheckCount"
+                            },
+                            "BodyBagged": {
+                                "Condition": {
+                                    "$or": [
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "1f2fff64-d0a6-4fb6-a89d-c320215b9730"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "2ea8ef96-7380-447d-a6bf-19a3fa01bc19"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "ea65261d-d657-4e7f-8e3b-7027e637e673"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            },
+                            "Body_OutofMap": { "Transition": "Failure" },
+                            "BodyHidden": {
+                                "Condition": {
+                                    "$or": [
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "1f2fff64-d0a6-4fb6-a89d-c320215b9730"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "2ea8ef96-7380-447d-a6bf-19a3fa01bc19"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "ea65261d-d657-4e7f-8e3b-7027e637e673"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            }
+                        },
+                        "CheckCount": {
+                            "-": [
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.AmountToDump", 0]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                { "Transition": "Start" }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/bangkok/gamechanger_wild_card_geranium.brick"
+        ],
+        "GameChangers": [
+            "51c8a014-dcc6-4714-a843-0295f9718c7a",
+            "62942ece-3b7e-4fa6-9595-eb1ae92145fd",
+            "07b1bc1d-f52b-4004-a760-846c4bc3f172"
+        ],
+        "GameChangerReferences": [],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "8039ecb0-d903-4b7c-bfed-63c70f895e6f",
+        "IsPublished": true,
+        "CreationTimestamp": "2016-04-18T09:51:27.393Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_GERANIUM_LEVEL_5_TITLE",
+        "Description": "UI_CONTRACT_GERANIUM_LEVEL_5_DESC",
+        "CodeName_Hint": "Geranium Level 5",
+        "RequiredUnlockable": "ACCESS_HIT_TIGER",
+        "Location": "LOCATION_BANGKOK",
+        "ScenePath": "assembly:/_pro/scenes/missions/Bangkok/_scene_tiger.entity",
+        "Type": "escalation",
+        "InGroup": "1f785def-03b7-4340-af7e-2f5831e77eb5",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "07b1bc1d-f52b-4004-a760-846c4bc3f172" },
+            { "Id": "6a1a5961-9a49-43ea-b105-d3f166e8f78e" },
+            { "Id": "9cae9779-d60c-4e94-9885-19ca13e11747" },
+            { "Id": "16a4dd64-fd3e-4a93-85ab-4f9683e34f3b" },
+            { "Id": "51c8a014-dcc6-4714-a843-0295f9718c7a" },
+            { "Id": "cc71e486-ebce-4feb-bf47-20cc7bca81d5" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:38.1168587Z",
+        "PublicId": "008058614047",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

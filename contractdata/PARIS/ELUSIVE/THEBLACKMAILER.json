@@ -1,0 +1,88 @@
+{
+    "Data": {
+        "EnableSaving": true,
+        "Objectives": [
+            {
+                "Id": "1cccf663-a835-43ec-9515-5db94b52699f",
+                "Primary": true,
+                "IsHidden": true,
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "2c11757e-905e-44e7-8115-81e6a5a72ee2"
+                    }
+                }
+            },
+            {
+                "Id": "c6c864fe-287c-4345-8a04-03682a65498f",
+                "IsHidden": true,
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "Image": "images/unlockables/item_perspective_55d34557-5b46-422f-84ce-7bb13cfcef96_0.jpg",
+                "BriefingName": "$loc UI_CONTRACT_LUMUMBA_OBJ_2_TITLE",
+                "BriefingText": "$loc UI_CONTRACT_LUMUMBA_OBJ_2_DESC",
+                "LongBriefingText": "$loc UI_CONTRACT_LUMUMBA_OBJ_2_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_LUMUMBA_OBJ_2_TITLE"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {
+                        "Targets": ["6c05ffd3-a02b-45b6-9c05-ac3f6fcc0561"]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "6c05ffd3-a02b-45b6-9c05-ac3f6fcc0561"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": ["assembly:/_PRO/Scenes/Missions/Paris/_scene_Lumumba.brick"],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_agility_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_agility_overrides_peacock.brick"
+                ]
+            }
+        ],
+        "GameChangers": []
+    },
+    "Metadata": {
+        "Id": "5dc115d3-e5d4-4023-a11a-27c6f7194bea",
+        "Title": "UI_CONTRACT_LUMUMBA_TITLE",
+        "CodeName_Hint": "Lumumba",
+        "Description": "UI_CONTRACT_LUMUMBA_DESC",
+        "BriefingVideo": "briefing_lumumba",
+        "DebriefingVideo": "debriefing_lumumba",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Paris/_scene_paris.entity",
+        "TileImage": "images/contracts/elusive/031_Lumumba/Title.jpg",
+        "Location": "LOCATION_PARIS",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Type": "elusive",
+        "PublicId": "002872008847",
+        "Entitlements": ["H1_LEGACY_STANDARD"],
+        "Season": 1
+    },
+    "UserData": {}
+}

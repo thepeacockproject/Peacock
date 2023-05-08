@@ -1,0 +1,102 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "0a4a67d0-2734-41d1-b487-51beb4da68f3",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "138eda40-501a-48b8-affc-928321566a4e",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "e17172cc-bf70-4df6-9828-d9856b1a24fd",
+                        "HardCondition": true
+                    }
+                ],
+                "BriefingText": "$loc UI_CONTRACT_AMARANTH_OBJ_1",
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_AMARANTH_OBJ_1" },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["b48eccf9-2e00-417a-8478-63c37f4a9a74"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "b48eccf9-2e00-417a-8478-63c37f4a9a74"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "138eda40-501a-48b8-affc-928321566a4e"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "e17172cc-bf70-4df6-9828-d9856b1a24fd"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "b48eccf9-2e00-417a-8478-63c37f4a9a74"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/marrakesh/gamechanger_amaranth_level_overrides.brick"
+        ],
+        "GameChangers": [],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "11e67595-2500-4c55-a1dd-60714763d9cc",
+        "IsPublished": true,
+        "CreationTimestamp": "2016-02-29T09:29:08.867Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_AMARANTH_LEVEL_1_TITLE",
+        "Description": "UI_CONTRACT_AMARANTH_LEVEL_1_DESC",
+        "CodeName_Hint": "Amaranth - Level 1",
+        "Location": "LOCATION_MARRAKECH",
+        "ScenePath": "assembly:/_pro/scenes/missions/marrakesh/_scene_spider.entity",
+        "Type": "escalation",
+        "RequiredUnlockable": "ACCESS_HIT_SPIDER",
+        "InGroup": "c949817b-5212-42e8-9b06-9a2eb83de167",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "0a4a67d0-2734-41d1-b487-51beb4da68f3" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:26.6948827Z",
+        "PublicId": "006505768647",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

@@ -1,0 +1,87 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "24ec148a-0a21-42bb-ad67-fb442bcaa8d2",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "aab7f28d-84d9-47d1-be52-d142f5970086",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_DAISY_OBJ_1" },
+                "BriefingText": "$loc UI_CONTRACT_DAISY_OBJ_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["254b0a18-2601-43b6-98ba-fbe77c69db4c"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "254b0a18-2601-43b6-98ba-fbe77c69db4c"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "aab7f28d-84d9-47d1-be52-d142f5970086"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "254b0a18-2601-43b6-98ba-fbe77c69db4c"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [],
+        "GameChangerReferences": [],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "7dcb6609-73ee-4501-ae42-4cad1efd4d35",
+        "IsPublished": true,
+        "CreationTimestamp": "2016-05-04T09:51:27.393Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_DAISY_LEVEL_1_TITLE",
+        "Description": "",
+        "CodeName_Hint": "Daisy Level 1",
+        "RequiredUnlockable": "ACCESS_HIT_BULL",
+        "Location": "LOCATION_COLORADO",
+        "ScenePath": "assembly:/_pro/scenes/missions/Colorado_2/_scene_bull.entity",
+        "Release": "1.6.0 Escalation",
+        "Type": "escalation",
+        "InGroup": "c5d88e8c-437b-476b-afe2-d94aa4293502",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "24ec148a-0a21-42bb-ad67-fb442bcaa8d2" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:35.8667975Z",
+        "PublicId": "009144692747",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

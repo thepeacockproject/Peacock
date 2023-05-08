@@ -1,0 +1,141 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "6a1198c6-5324-4ec0-ad86-19937eab40a1",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_LILAC_OBJ_1" },
+                "BriefingText": "$loc UI_CONTRACT_LILAC_OBJ_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["77154a7c-89d0-49df-82ae-6810e27ec9ca"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "77154a7c-89d0-49df-82ae-6810e27ec9ca"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillClass",
+                                                    "explosion"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "77154a7c-89d0-49df-82ae-6810e27ec9ca"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "f347123b-6d45-4bb1-9fdb-f4966610ba41",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_LILAC_OBJ_2" },
+                "BriefingText": "$loc UI_CONTRACT_LILAC_OBJ_2",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["a023e9ed-fdd5-4e0b-ac00-b010c876f29b"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "a023e9ed-fdd5-4e0b-ac00-b010c876f29b"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillClass",
+                                                    "explosion"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "a023e9ed-fdd5-4e0b-ac00-b010c876f29b"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [
+            "fdc7a60b-aa7f-4628-bd03-00c93393967f",
+            "07b1bc1d-f52b-4004-a760-846c4bc3f172"
+        ],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "aec8fc1e-ca62-4acd-8be2-488935853f85",
+        "IsPublished": true,
+        "CreationTimestamp": "2015-11-27T16:19:15.207Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_LILAC_LEVEL_4_TITLE",
+        "Description": "UI_CONTRACT_LILAC_LEVEL_4_DESC",
+        "CodeName_Hint": "Lilac - Level 4",
+        "Location": "LOCATION_COASTALTOWN",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/CoastalTown/_scene_octopus.entity",
+        "Type": "escalation",
+        "InGroup": "fab808f9-e88b-4775-aadb-a462c86bf2d9",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "07b1bc1d-f52b-4004-a760-846c4bc3f172" },
+            { "Id": "f347123b-6d45-4bb1-9fdb-f4966610ba41" },
+            { "Id": "fdc7a60b-aa7f-4628-bd03-00c93393967f" },
+            { "Id": "6a1198c6-5324-4ec0-ad86-19937eab40a1" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:44.0075206Z",
+        "PublicId": "003551087447",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

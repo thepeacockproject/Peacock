@@ -1,0 +1,90 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "3a23a3b1-c871-45d5-936b-479cbc03dae0",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "weapontype",
+                        "RepositoryId": "f301f605-007c-4fe1-aa99-a8cd2cae033f",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_ARTEMISIA_OBJ_1_1"
+                },
+                "BriefingText": "$loc UI_CONTRACT_ARTEMISIA_OBJ_1_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["af934116-44f4-47aa-9b78-933798137a32"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "af934116-44f4-47aa-9b78-933798137a32"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemCategory",
+                                                    "sniperrifle"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "af934116-44f4-47aa-9b78-933798137a32"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "e4030267-53db-4776-ad58-21332ab39835",
+        "IsPublished": true,
+        "CreationTimestamp": "2015-11-12T09:19:18.047Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_ARTEMISIA_LEVEL_1_TITLE",
+        "Description": "UI_CONTRACT_ARTEMISIA_LEVEL_1_DESC",
+        "CodeName_Hint": "Artemisia - Level 1",
+        "Location": "LOCATION_COASTALTOWN",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/CoastalTown/_scene_octopus.entity",
+        "Type": "escalation",
+        "InGroup": "994540ee-3900-4a41-9544-17b2196a4b1a",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "3a23a3b1-c871-45d5-936b-479cbc03dae0" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:27.9764622Z",
+        "PublicId": "003723448347",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

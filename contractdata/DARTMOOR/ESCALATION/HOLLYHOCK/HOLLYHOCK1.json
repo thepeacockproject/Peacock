@@ -1,0 +1,556 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/ancestral/ancestral_hollyhock.brick",
+            "assembly:/_pro/scenes/missions/ancestral/ancestral_hollyhock_level1.brick"
+        ],
+        "GameChangers": [
+            "3db72bb5-63d6-47fe-9332-d7ea3c195e06",
+            "07b1bc1d-f52b-4004-a760-846c4bc3f172",
+            "79ace974-8886-4669-927e-84f4ee6256a6",
+            "fa97a991-499b-4ca3-a790-dc1bf4dccac6"
+        ],
+        "GameChangerReferences": [],
+        "Entrances": ["ddc2d081-0a07-498f-babf-3016aabf5118"],
+        "MandatoryLoadout": [
+            {
+                "Id": "TOKEN_OUTFIT_HERO_WRATH_SUIT",
+                "Properties": {
+                    "LoadoutSlot": "disguise",
+                    "RepositoryId": "e57564ba-d3e4-455b-bc1b-d0b64352c0d3"
+                }
+            }
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ancestral_bulldog.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ancestral_bulldog.brick"
+                ]
+            }
+        ],
+        "Objectives": [
+            {
+                "_comment": "---------- Protect body ----------",
+                "Id": "6ac97dbb-fcfd-4e9c-826b-e87207662429",
+                "Primary": true,
+                "Image": "images/contracts/escalation/ContractEscalation_Ancestral_Hollyhock_MainObjective.jpg",
+                "BriefingName": "$loc UI_CONTRACT_HOLLYHOCK_MAINOBJECTIVE",
+                "BriefingText": "$loc UI_CONTRACT_HOLLYHOCK_MAINOBJECTIVE_SHORT",
+                "LongBriefingText": "$loc UI_CONTRACT_HOLLYHOCK_MAINOBJECTIVE_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_HOLLYHOCK_MAINOBJECTIVE",
+                    "iconType": 17
+                },
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "Scope": "hit",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "ObjectiveCompleted": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.Id",
+                                        "86a47ed2-ad3c-45e1-b795-4cfc61f81414"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            },
+                            "EXTRACTORSUCCES": { "Transition": "Failure" }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "---------- Prepare wave 1 ----------",
+                "Id": "208e32fc-0235-47a9-8ed2-986b4959aedc",
+                "Primary": true,
+                "ExcludeFromScoring": true,
+                "Image": "",
+                "BriefingName": "$loc UI_CONTRACT_HOLLYHOCK_PREPARE_WAVE1_TITLE",
+                "BriefingText": "$loc UI_CONTRACT_HOLLYHOCK_PREPARE_WAVE1_TITLE",
+                "LongBriefingText": "$loc UI_CONTRACT_HOLLYHOCK_PREPARE_WAVE1_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_HOLLYHOCK_PREPARE_WAVE1_TITLE",
+                    "iconType": 3
+                },
+                "OnActive": { "IfCompleted": { "Visible": false } },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {},
+                    "States": {
+                        "Start": { "STARTTIMER": { "Transition": "Active" } },
+                        "Active": {
+                            "$timer": {
+                                "Condition": { "$after": 120 },
+                                "Transition": "Success"
+                            },
+                            "StartWave": { "Transition": "Success" }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "---------- Wave 1 ----------",
+                "Id": "11bf93e1-ba08-43cd-9fff-26b3a380e122",
+                "Primary": true,
+                "ExcludeFromScoring": true,
+                "Image": "images/contracts/escalation/ContractEscalation_Ancestral_Hollyhock_Obj_L1W1.jpg",
+                "BriefingName": "$loc UI_CONTRACT_HOLLYHOCK_WAVE_WAVE1_TITLE",
+                "BriefingText": "$loc UI_CONTRACT_HOLLYHOCK_WAVE_WAVE1_TITLE",
+                "LongBriefingText": "$loc UI_CONTRACT_HOLLYHOCK_WAVE_WAVE1_TITLE",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_HOLLYHOCK_WAVE_WAVE1_TITLE",
+                    "iconType": 0
+                },
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "Activation": {
+                    "$eq": [
+                        "$208e32fc-0235-47a9-8ed2-986b4959aedc",
+                        "Completed"
+                    ]
+                },
+                "OnActive": { "IfCompleted": { "Visible": false } },
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "Targets": [
+                            "9237b1cc-af88-46e9-8e2d-6f6b5402667e",
+                            "d3b779a9-7b90-4b09-936d-9d6d403ef291"
+                        ],
+                        "TargetsCounter": 3,
+                        "Goal": 0
+                    },
+                    "ContextListeners": {
+                        "TargetsCounter": {
+                            "type": "objective-counter",
+                            "header": "UI_CONTRACT_HOLLYHOCK_OBJ_EXTRACTORCOUNT"
+                        }
+                    },
+                    "States": {
+                        "Start": {
+                            "ObjectiveCompleted": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Id",
+                                            "208e32fc-0235-47a9-8ed2-986b4959aedc"
+                                        ]
+                                    },
+                                    "Actions": { "$dec": "TargetsCounter" }
+                                }
+                            ],
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$inarray": {
+                                            "in": "$.Targets",
+                                            "?": {
+                                                "$eq": [
+                                                    "$.#",
+                                                    "$Value.RepositoryId"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "Actions": { "$dec": "TargetsCounter" }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.TargetsCounter", "$.Goal"]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "---------- Prepare wave 2 ----------",
+                "Id": "58935f28-1afa-4cce-86c8-b8918e13c45f",
+                "Primary": true,
+                "ExcludeFromScoring": true,
+                "Image": "",
+                "BriefingName": "$loc UI_CONTRACT_HOLLYHOCK_PREPARE_WAVE2_TITLE",
+                "BriefingText": "$loc UI_CONTRACT_HOLLYHOCK_PREPARE_WAVE2_TITLE",
+                "LongBriefingText": "$loc UI_CONTRACT_HOLLYHOCK_PREPARE_WAVE1_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_HOLLYHOCK_PREPARE_WAVE2_TITLE",
+                    "iconType": 3
+                },
+                "OnActive": { "IfCompleted": { "Visible": false } },
+                "Activation": {
+                    "$eq": [
+                        "$11bf93e1-ba08-43cd-9fff-26b3a380e122",
+                        "Completed"
+                    ]
+                },
+                "Type": "statemachine",
+                "Scope": "hit",
+                "Definition": {
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "ObjectiveCompleted": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Id",
+                                            "11bf93e1-ba08-43cd-9fff-26b3a380e122"
+                                        ]
+                                    },
+                                    "Transition": "Active"
+                                }
+                            ]
+                        },
+                        "Active": {
+                            "$timer": {
+                                "Condition": { "$after": 60 },
+                                "Transition": "Success"
+                            },
+                            "StartWave": { "Transition": "Success" }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "---------- Wave 2 ----------",
+                "Id": "e454e524-8cd1-48ce-a1c5-66aa33730d57",
+                "Primary": true,
+                "ExcludeFromScoring": true,
+                "Image": "images/contracts/escalation/ContractEscalation_Ancestral_Hollyhock_Obj_L1W2.jpg",
+                "BriefingName": "$loc UI_CONTRACT_HOLLYHOCK_WAVE_WAVE2_TITLE",
+                "BriefingText": "$loc UI_CONTRACT_HOLLYHOCK_WAVE_WAVE2_TITLE",
+                "LongBriefingText": "$loc UI_CONTRACT_HOLLYHOCK_WAVE_WAVE2_TITLE",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_HOLLYHOCK_WAVE_WAVE2_TITLE",
+                    "iconType": 0
+                },
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "Activation": {
+                    "$eq": [
+                        "$58935f28-1afa-4cce-86c8-b8918e13c45f",
+                        "Completed"
+                    ]
+                },
+                "OnActive": { "IfCompleted": { "Visible": false } },
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "Targets": [
+                            "9a2324e5-b192-43e1-99a6-a67b4b8cd31a",
+                            "3168695d-aa5c-416b-9d0f-84388baee2ad",
+                            "b4a6ad1b-b303-4b00-ba90-ec8b6b0c8d92"
+                        ],
+                        "TargetsCounter": 4,
+                        "Goal": 0
+                    },
+                    "ContextListeners": {
+                        "TargetsCounter": {
+                            "type": "objective-counter",
+                            "header": "UI_CONTRACT_HOLLYHOCK_OBJ_EXTRACTORCOUNT"
+                        }
+                    },
+                    "States": {
+                        "Start": {
+                            "ObjectiveCompleted": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Id",
+                                            "58935f28-1afa-4cce-86c8-b8918e13c45f"
+                                        ]
+                                    },
+                                    "Actions": { "$dec": "TargetsCounter" }
+                                }
+                            ],
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$inarray": {
+                                            "in": "$.Targets",
+                                            "?": {
+                                                "$eq": [
+                                                    "$.#",
+                                                    "$Value.RepositoryId"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "Actions": { "$dec": "TargetsCounter" }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.TargetsCounter", "$.Goal"]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "---------- Prepare wave 3 ----------",
+                "Id": "426b9261-2856-439e-b7af-56c51b9a4b91",
+                "Primary": true,
+                "ExcludeFromScoring": true,
+                "Image": "",
+                "BriefingName": "$loc UI_CONTRACT_HOLLYHOCK_PREPARE_WAVE3_TITLE",
+                "BriefingText": "$loc UI_CONTRACT_HOLLYHOCK_PREPARE_WAVE3_TITLE",
+                "LongBriefingText": "$loc UI_CONTRACT_HOLLYHOCK_PREPARE_WAVE1_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_HOLLYHOCK_PREPARE_WAVE3_TITLE",
+                    "iconType": 3
+                },
+                "OnActive": { "IfCompleted": { "Visible": false } },
+                "Activation": {
+                    "$eq": [
+                        "$e454e524-8cd1-48ce-a1c5-66aa33730d57",
+                        "Completed"
+                    ]
+                },
+                "Type": "statemachine",
+                "Scope": "hit",
+                "Definition": {
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "ObjectiveCompleted": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Id",
+                                            "e454e524-8cd1-48ce-a1c5-66aa33730d57"
+                                        ]
+                                    },
+                                    "Transition": "Active"
+                                }
+                            ]
+                        },
+                        "Active": {
+                            "$timer": {
+                                "Condition": { "$after": 60 },
+                                "Transition": "Success"
+                            },
+                            "StartWave": { "Transition": "Success" }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "---------- Wave 3 ----------",
+                "Id": "86a47ed2-ad3c-45e1-b795-4cfc61f81414",
+                "Primary": true,
+                "ExcludeFromScoring": true,
+                "Image": "images/contracts/escalation/ContractEscalation_Ancestral_Hollyhock_Obj_L1W3.jpg",
+                "BriefingName": "$loc UI_CONTRACT_HOLLYHOCK_WAVE_WAVE3_TITLE",
+                "BriefingText": "$loc UI_CONTRACT_HOLLYHOCK_WAVE_WAVE3_TITLE",
+                "LongBriefingText": "$loc UI_CONTRACT_HOLLYHOCK_WAVE_WAVE3_TITLE",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_HOLLYHOCK_WAVE_WAVE3_TITLE",
+                    "iconType": 0
+                },
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "Activation": {
+                    "$eq": [
+                        "$426b9261-2856-439e-b7af-56c51b9a4b91",
+                        "Completed"
+                    ]
+                },
+                "OnActive": { "IfCompleted": { "Visible": false } },
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "Targets": [
+                            "dc643981-c66e-4218-821e-0693e3c70277",
+                            "db6753d6-8676-4eeb-a0dd-a58a3b871b91",
+                            "4c431f5d-dcb1-4d99-81d1-888c984b6206",
+                            "b1bec1c2-c5f7-4822-bff9-42157f77c461"
+                        ],
+                        "TargetsCounter": 5,
+                        "Goal": 0
+                    },
+                    "ContextListeners": {
+                        "TargetsCounter": {
+                            "type": "objective-counter",
+                            "header": "UI_CONTRACT_HOLLYHOCK_OBJ_EXTRACTORCOUNT"
+                        }
+                    },
+                    "States": {
+                        "Start": {
+                            "ObjectiveCompleted": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Id",
+                                            "426b9261-2856-439e-b7af-56c51b9a4b91"
+                                        ]
+                                    },
+                                    "Actions": { "$dec": "TargetsCounter" }
+                                }
+                            ],
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$inarray": {
+                                            "in": "$.Targets",
+                                            "?": {
+                                                "$eq": [
+                                                    "$.#",
+                                                    "$Value.RepositoryId"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "Actions": { "$dec": "TargetsCounter" }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.TargetsCounter", "$.Goal"]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "---------- Optional targets ----------",
+                "Id": "0a29cbba-8164-4d7b-9645-3b2cabbb162d",
+                "Category": "secondary",
+                "ExcludeFromScoring": true,
+                "IsHidden": true,
+                "Image": "",
+                "BriefingName": "",
+                "BriefingText": "",
+                "LongBriefingText": "",
+                "HUDTemplate": { "display": "" },
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "Scope": "hit",
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                },
+                "Definition": {
+                    "Context": {
+                        "Targets": [
+                            "b8cfeaac-2892-4e72-be35-7df0ab85b602",
+                            "9076e579-c6ef-4d8f-a7b6-9976cd4f2762",
+                            "72c0f226-97df-4221-8d7d-c549e07d218e",
+                            "27d0d5a9-30d2-477a-9800-472014f4298b",
+                            "dc09998a-fba2-4bb1-8f3b-60e8ce836d7e",
+                            "71df158d-7a36-49b5-9e6a-490b27f3edf6",
+                            "4d94c763-27d6-4fee-80d9-e7666bf24afa",
+                            "7ed4a9eb-5aeb-40cb-9d58-8098d5fa87ff",
+                            "bedf384d-67ab-4c53-a237-afdbec89b137",
+                            "bf54af5f-d60d-4d23-a20c-30ca0e262522",
+                            "32a2386e-e17f-4bb6-8dda-c371894c71b7",
+                            "8690c540-da81-4304-958a-afdc8f37da2e",
+                            "cc216c44-f02f-42e8-bc69-6a7bdbee8246",
+                            "c46d6730-0d70-448a-8deb-bd5e05729250",
+                            "645eda43-53fd-4c5a-b871-448f685acb11",
+                            "f03fd14c-49e3-4535-9708-c304b8419381",
+                            "890eb62d-1581-45ce-b6c1-f2653385f462",
+                            "9e063e9c-c1b7-455a-9d1a-e7f07624c509",
+                            "9fa6476c-a585-4630-ab63-669c13fad369",
+                            "9128dbf4-9285-4f9f-b860-147343196bad"
+                        ]
+                    },
+                    "States": {
+                        "Start": { "ContractEnd": { "Transition": "Success" } }
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "2b6f918f-079e-46b4-9ee0-bcceee3a7362",
+        "CodeName_Hint": "Hollyhock - Level 1",
+        "Release": "3.70.0 Escalation",
+        "Type": "escalation",
+        "Title": "UI_CONTRACT_HOLLYHOCK_LEVEL_1_NAME",
+        "Description": "UI_CONTRACT_HOLLYHOCK_GROUP_DESC",
+        "InGroup": "8e95dcd0-704f-4121-8be6-088a3812f838",
+        "Location": "LOCATION_ANCESTRAL_BULLDOG",
+        "ScenePath": "assembly:/_pro/scenes/missions/ancestral/scene_hollyhock.entity",
+        "CreationTimestamp": "2018-10-17T14:35:18.194497Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "IsPublished": true,
+        "Entitlements": ["H3_DEADLYSINS_WRATH"],
+        "GroupObjectiveDisplayOrder": [
+            {
+                "_comment": "Wave 3",
+                "Id": "86a47ed2-ad3c-45e1-b795-4cfc61f81414"
+            },
+            {
+                "_comment": "Prepare wave 3",
+                "Id": "426b9261-2856-439e-b7af-56c51b9a4b91"
+            },
+            {
+                "_comment": "Wave 2",
+                "Id": "e454e524-8cd1-48ce-a1c5-66aa33730d57"
+            },
+            {
+                "_comment": "Prepare wave 2",
+                "Id": "58935f28-1afa-4cce-86c8-b8918e13c45f"
+            },
+            {
+                "_comment": "Wave 1",
+                "Id": "11bf93e1-ba08-43cd-9fff-26b3a380e122"
+            },
+            {
+                "_comment": "Prepare wave 1",
+                "Id": "208e32fc-0235-47a9-8ed2-986b4959aedc"
+            },
+            {
+                "_comment": "Protect body",
+                "Id": "6ac97dbb-fcfd-4e9c-826b-e87207662429"
+            },
+            {
+                "_comment": "Optional targets",
+                "Id": "0a29cbba-8164-4d7b-9645-3b2cabbb162d"
+            },
+            {
+                "_comment": "Shadowy Enemies",
+                "Id": "fa97a991-499b-4ca3-a790-dc1bf4dccac6"
+            },
+            {
+                "_comment": "No Non-Target Kill Penalty",
+                "Id": "79ace974-8886-4669-927e-84f4ee6256a6"
+            },
+            {
+                "_comment": "No Disguise Change",
+                "Id": "07b1bc1d-f52b-4004-a760-846c4bc3f172"
+            },
+            {
+                "_comment": "Restricted Loadout",
+                "Id": "3db72bb5-63d6-47fe-9332-d7ea3c195e06"
+            }
+        ],
+        "LastUpdate": "2023-03-30T11:20:26.3327522Z",
+        "PublicId": "028251766747",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Ancestral_Hollyhock.jpg"
+    },
+    "UserData": {}
+}

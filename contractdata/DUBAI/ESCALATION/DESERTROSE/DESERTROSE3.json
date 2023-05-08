@@ -1,0 +1,439 @@
+{
+    "Data": {
+        "Bricks": [
+            "Assembly:/_PRO/Scenes/missions/golden/mission_gecko/golden_desertrose.brick",
+            "Assembly:/_PRO/Scenes/missions/golden/mission_gecko/golden_desertrose_level3.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/scenes/missions/golden/mission_gecko/vr_overrides_golden_gecko.brick",
+                    "assembly:/_PRO/scenes/missions/golden/mission_gecko/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/scenes/missions/golden/mission_gecko/vr_overrides_golden_gecko.brick"
+                ]
+            }
+        ],
+        "DevOnlyBricks": [],
+        "GameChangers": [
+            "3db72bb5-63d6-47fe-9332-d7ea3c195e06",
+            "63055f1a-bcd2-4e0f-8caf-b446f01d02f3"
+        ],
+        "Entrances": ["a4e53696-94ca-4eeb-8e82-e235c212897f"],
+        "MandatoryLoadout": [],
+        "GameChangerReferences": [],
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "_comment": "Eliminate janitor in sniper corridor",
+                "Id": "ad322f2c-dbcc-4e5d-b37d-44e88a143968",
+                "Category": "primary",
+                "BriefingName": "",
+                "Image": "images/actors/actor_7f1b07a9-c640-4c1a-bd1b-a944093c5646.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "da1ce1bf-1d1b-4f49-9d0f-73d57f955606",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "10f0653c-fe9c-4a43-98f1-18d20d18d9ab",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_DESERTROSE_OBJ_9"
+                },
+                "BriefingText": "$loc UI_CONTRACT_DESERTROSE_OBJ_9",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["7f1b07a9-c640-4c1a-bd1b-a944093c5646"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "7f1b07a9-c640-4c1a-bd1b-a944093c5646"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "da1ce1bf-1d1b-4f49-9d0f-73d57f955606"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "10f0653c-fe9c-4a43-98f1-18d20d18d9ab"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "7f1b07a9-c640-4c1a-bd1b-a944093c5646"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Eliminate Guard above entrance to the right",
+                "Id": "a6e3b020-f4a2-4b2e-a1a2-6a11b0c8d88c",
+                "Category": "primary",
+                "BriefingName": "",
+                "Image": "images/actors/actor_64102a8d-0f3c-40cb-8ad1-3b2943be98bd.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "da1ce1bf-1d1b-4f49-9d0f-73d57f955606",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "10f0653c-fe9c-4a43-98f1-18d20d18d9ab",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_DESERTROSE_OBJ_10"
+                },
+                "BriefingText": "$loc UI_CONTRACT_DESERTROSE_OBJ_10",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["64102a8d-0f3c-40cb-8ad1-3b2943be98bd"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "64102a8d-0f3c-40cb-8ad1-3b2943be98bd"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "da1ce1bf-1d1b-4f49-9d0f-73d57f955606"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "10f0653c-fe9c-4a43-98f1-18d20d18d9ab"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "64102a8d-0f3c-40cb-8ad1-3b2943be98bd"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Eliminate toilet servant near black gold bar",
+                "Id": "e1a6f321-ef32-44a0-8a31-c1b2c050f18e",
+                "Category": "primary",
+                "BriefingName": "",
+                "Image": "images/actors/actor_731da6de-0f6c-48ab-b0db-4d76e1f87d5b.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "da1ce1bf-1d1b-4f49-9d0f-73d57f955606",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "10f0653c-fe9c-4a43-98f1-18d20d18d9ab",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_DESERTROSE_OBJ_11"
+                },
+                "BriefingText": "$loc UI_CONTRACT_DESERTROSE_OBJ_11",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["731da6de-0f6c-48ab-b0db-4d76e1f87d5b"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "731da6de-0f6c-48ab-b0db-4d76e1f87d5b"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "da1ce1bf-1d1b-4f49-9d0f-73d57f955606"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "10f0653c-fe9c-4a43-98f1-18d20d18d9ab"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "731da6de-0f6c-48ab-b0db-4d76e1f87d5b"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Eliminate art techie at back of installation",
+                "Id": "bc9a23f3-18e2-4bd3-a58d-72a2528c978a",
+                "Category": "primary",
+                "BriefingName": "",
+                "Image": "images/actors/actor_276bb5b4-9939-4581-8f6c-aee923c217d9.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "da1ce1bf-1d1b-4f49-9d0f-73d57f955606",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "10f0653c-fe9c-4a43-98f1-18d20d18d9ab",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_DESERTROSE_OBJ_12"
+                },
+                "BriefingText": "$loc UI_CONTRACT_DESERTROSE_OBJ_12",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["276bb5b4-9939-4581-8f6c-aee923c217d9"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "276bb5b4-9939-4581-8f6c-aee923c217d9"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "da1ce1bf-1d1b-4f49-9d0f-73d57f955606"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "10f0653c-fe9c-4a43-98f1-18d20d18d9ab"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "276bb5b4-9939-4581-8f6c-aee923c217d9"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Eliminate Penthouse chef",
+                "Id": "0535d014-e91a-4e91-86ce-bc6e649f4820",
+                "Category": "primary",
+                "BriefingName": "",
+                "Image": "images/actors/actor_1e6d10fb-fdf7-4013-bf57-db2290b911b5.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "da1ce1bf-1d1b-4f49-9d0f-73d57f955606",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "10f0653c-fe9c-4a43-98f1-18d20d18d9ab",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_DESERTROSE_OBJ_13"
+                },
+                "BriefingText": "$loc UI_CONTRACT_DESERTROSE_OBJ_13",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["1e6d10fb-fdf7-4013-bf57-db2290b911b5"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "1e6d10fb-fdf7-4013-bf57-db2290b911b5"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "da1ce1bf-1d1b-4f49-9d0f-73d57f955606"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "10f0653c-fe9c-4a43-98f1-18d20d18d9ab"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "1e6d10fb-fdf7-4013-bf57-db2290b911b5"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "0e05bd68-3c83-449a-9e71-542445bd46ec",
+        "IsPublished": true,
+        "CreationTimestamp": "2018-10-17T14:35:18.194497Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_DESERTROSE_LEVEL_3_NAME",
+        "Description": "UI_CONTRACT_DESERTROSE_GROUP_DESC",
+        "CodeName_Hint": "Desert Rose - Level 3",
+        "Location": "LOCATION_GOLDEN_GECKO",
+        "ScenePath": "assembly:/_pro/scenes/missions/golden/mission_gecko/scene_gecko_desertrose.entity",
+        "Type": "escalation",
+        "Release": "3.1.0 Escalation",
+        "InGroup": "89305766-199e-43eb-9fcb-29e6f2b6e9ab",
+        "Entitlements": ["H3_EXPANSION"],
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "ad322f2c-dbcc-4e5d-b37d-44e88a143968" },
+            { "IsNew": true, "Id": "a6e3b020-f4a2-4b2e-a1a2-6a11b0c8d88c" },
+            { "IsNew": true, "Id": "e1a6f321-ef32-44a0-8a31-c1b2c050f18e" },
+            { "IsNew": true, "Id": "bc9a23f3-18e2-4bd3-a58d-72a2528c978a" },
+            { "IsNew": true, "Id": "0535d014-e91a-4e91-86ce-bc6e649f4820" },
+            { "IsNew": true, "Id": "63055f1a-bcd2-4e0f-8caf-b446f01d02f3" },
+            { "Id": "3db72bb5-63d6-47fe-9332-d7ea3c195e06" }
+        ],
+        "LastUpdate": "2023-03-30T11:20:25.637918Z",
+        "PublicId": "027872397347",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Golden_Desert_Rose.jpg"
+    },
+    "UserData": {}
+}

@@ -1,0 +1,82 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "6a1198c6-5324-4ec0-ad86-19937eab40a1",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_LILAC_OBJ_1" },
+                "BriefingText": "$loc UI_CONTRACT_LILAC_OBJ_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["77154a7c-89d0-49df-82ae-6810e27ec9ca"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "77154a7c-89d0-49df-82ae-6810e27ec9ca"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillClass",
+                                                    "explosion"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "77154a7c-89d0-49df-82ae-6810e27ec9ca"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "15c0cc5b-5873-4a8c-9447-f576abda8b96",
+        "IsPublished": true,
+        "CreationTimestamp": "2015-11-27T16:19:15.207Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_LILAC_LEVEL_1_TITLE",
+        "Description": "UI_CONTRACT_LILAC_LEVEL_1_DESC",
+        "CodeName_Hint": "Lilac - Level 1",
+        "Location": "LOCATION_COASTALTOWN",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/CoastalTown/_scene_octopus.entity",
+        "Type": "escalation",
+        "InGroup": "fab808f9-e88b-4775-aadb-a462c86bf2d9",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "6a1198c6-5324-4ec0-ad86-19937eab40a1" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:43.7887628Z",
+        "PublicId": "003830167847",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

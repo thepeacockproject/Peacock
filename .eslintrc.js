@@ -25,14 +25,9 @@ module.exports = {
         "@typescript-eslint",
         "promise",
         "react-hooks",
-        "prettier",
-        "custom-rules",
+        "@peacockproject",
     ],
-    extends: [
-        "eslint:recommended",
-        "plugin:@typescript-eslint/recommended",
-        "plugin:prettier/recommended",
-    ],
+    extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
     parser: "@typescript-eslint/parser",
     parserOptions: {
         ecmaVersion: "es2022",
@@ -40,6 +35,8 @@ module.exports = {
         project: [
             // server full
             "./tsconfig.json",
+            // plugins
+            "./plugins/tsconfig.json",
             // web UI
             "./webui/tsconfig.json",
             // tests
@@ -68,6 +65,35 @@ module.exports = {
         "promise/valid-params": "warn",
         "react-hooks/rules-of-hooks": "error",
         "react-hooks/exhaustive-deps": "warn",
-        "custom-rules/import-components": "error",
+        "@peacockproject/import-components": "error",
+        "padding-line-between-statements": [
+            "error",
+            {
+                blankLine: "always",
+                prev: "block-like",
+                next: "*",
+            },
+            {
+                blankLine: "always",
+                prev: "*",
+                next: "block-like",
+            },
+            {
+                blankLine: "never",
+                prev: "block-like",
+                next: "case",
+            },
+            {
+                blankLine: "never",
+                prev: "case",
+                next: "block-like",
+            },
+        ],
+        "spaced-comment": [
+            "error",
+            "always",
+            { markers: ["*", "@__NOINLINE__"] },
+        ],
     },
+    reportUnusedDisableDirectives: true,
 }

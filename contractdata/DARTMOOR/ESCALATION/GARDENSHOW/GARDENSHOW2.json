@@ -1,0 +1,895 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/ancestral/mission_smoothsnake.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ancestral_bulldog.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ps4perf.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ancestral_smoothsnake.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ancestral_bulldog.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ancestral_smoothsnake.brick"
+                ]
+            }
+        ],
+        "GameChangers": [],
+        "Entrances": ["f1ea381e-d998-4c7b-9ef0-34e365624cfc"],
+        "Stashpoints": [
+            "f26550e7-bb18-4faf-90eb-2d70cdf2eda3",
+            "f82ca3c6-83dd-4ad7-9aba-c2a7f69e8f23"
+        ],
+        "Objectives": [
+            {
+                "_comment": "----- Eliminate competitors -----",
+                "Id": "61e7269c-1829-45a3-a485-7f7409624fc5",
+                "Category": "primary",
+                "OnActive": { "IfCompleted": { "Visible": false } },
+                "ExcludeFromScoring": true,
+                "ForceShowOnLoadingScreen": true,
+                "Image": "Images/Contracts/Escalation/ContractEscalation_Ancestral_SmoothSnake_Obj_Contestants.jpg",
+                "BriefingName": "$loc UI_CONTRACT_SMOOTHSNAKE_OBJ_COMPETITORS_NAME",
+                "BriefingText": "$loc UI_CONTRACT_SMOOTHSNAKE_OBJ_COMPETITORS_TEXT",
+                "LongBriefingText": "$loc UI_CONTRACT_SMOOTHSNAKE_OBJ_COMPETITORS_LONG",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_SMOOTHSNAKE_OBJ_COMPETITORS_HUD"
+                },
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "Definition": {
+                    "States": {
+                        "Start": { "GameStarted": { "Transition": "Success" } }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Do not eliminate client -----",
+                "Id": "d9fd8184-8b4b-419c-91f7-367db1701101",
+                "Category": "primary",
+                "OnActive": { "IfCompleted": { "Visible": false } },
+                "ExcludeFromScoring": true,
+                "ForceShowOnLoadingScreen": true,
+                "Image": "Images/Contracts/Escalation/ContractEscalation_Ancestral_SmoothSnake_Obj_Allies.jpg",
+                "BriefingName": "$loc UI_CONTRACT_SMOOTHSNAKE_OBJ_CLIENT_NAME",
+                "BriefingText": "$loc UI_CONTRACT_SMOOTHSNAKE_OBJ_CLIENT_TEXT",
+                "LongBriefingText": "$loc UI_CONTRACT_SMOOTHSNAKE_OBJ_CLIENT_LONG",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_SMOOTHSNAKE_OBJ_CLIENT_HUD",
+                    "iconType": 17
+                },
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "Definition": {
+                    "States": {
+                        "Start": { "GameStarted": { "Transition": "Success" } }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Eliminate Arabian contestant -----",
+                "Id": "ffd0b576-5c6d-4842-b36f-6b9250ba7041",
+                "Primary": true,
+                "IgnoreIfInactive": true,
+                "OnInactive": { "IfCompleted": { "State": "Completed" } },
+                "Activation": {
+                    "$eq": [
+                        "$a309b797-f88e-44e1-935b-86fac32d91ae",
+                        "Completed"
+                    ]
+                },
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "20bed705-9f0f-4a3e-ad07-2a7ef3938868"
+                    }
+                }
+            },
+            {
+                "_comment": "----- Hide objective to eliminate Arabian contestant -----",
+                "Id": "a309b797-f88e-44e1-935b-86fac32d91ae",
+                "Category": "Condition",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                },
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": { "Targets": [] },
+                    "States": {
+                        "Start": {
+                            "TargetPicked": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "20bed705-9f0f-4a3e-ad07-2a7ef3938868"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Eliminate British contestant -----",
+                "Id": "ab90827f-98c0-4af9-8886-aa7b8f9d06a3",
+                "Primary": true,
+                "IgnoreIfInactive": true,
+                "OnInactive": { "IfCompleted": { "State": "Completed" } },
+                "Activation": {
+                    "$eq": [
+                        "$f36a331f-ff8c-4e1c-82bb-70abaa87decc",
+                        "Completed"
+                    ]
+                },
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "defc9d36-a84d-46b9-be2c-f3a435287e96"
+                    }
+                }
+            },
+            {
+                "_comment": "----- Hide objective to eliminate British contestant -----",
+                "Id": "f36a331f-ff8c-4e1c-82bb-70abaa87decc",
+                "Category": "Condition",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                },
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": { "Targets": [] },
+                    "States": {
+                        "Start": {
+                            "TargetPicked": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "defc9d36-a84d-46b9-be2c-f3a435287e96"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Eliminate French contestant -----",
+                "Id": "3def1624-7d9c-4f9e-bf78-eadaf3a1ef63",
+                "Primary": true,
+                "IgnoreIfInactive": true,
+                "OnInactive": { "IfCompleted": { "State": "Completed" } },
+                "Activation": {
+                    "$eq": [
+                        "$d07064c2-6b2c-4212-8c3f-34817fc0e1ba",
+                        "Completed"
+                    ]
+                },
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "0dd81be5-208f-48d9-81fa-8439b9dfa095"
+                    }
+                }
+            },
+            {
+                "_comment": "----- Hide objective to eliminate French contestant -----",
+                "Id": "d07064c2-6b2c-4212-8c3f-34817fc0e1ba",
+                "Category": "Condition",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                },
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": { "Targets": [] },
+                    "States": {
+                        "Start": {
+                            "TargetPicked": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "0dd81be5-208f-48d9-81fa-8439b9dfa095"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Eliminate Japanese contestant -----",
+                "Id": "a919a4e6-d5ce-468f-82f0-0bec501ca4c4",
+                "Primary": true,
+                "IgnoreIfInactive": true,
+                "OnInactive": { "IfCompleted": { "State": "Completed" } },
+                "Activation": {
+                    "$eq": [
+                        "$ac27c760-7d51-4fca-97bd-73817c0e57ee",
+                        "Completed"
+                    ]
+                },
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "7b02fa28-081e-420a-91ae-45726306573c"
+                    }
+                }
+            },
+            {
+                "_comment": "----- Hide objective to eliminate Japanese contestant -----",
+                "Id": "ac27c760-7d51-4fca-97bd-73817c0e57ee",
+                "Category": "Condition",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                },
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": { "Targets": [] },
+                    "States": {
+                        "Start": {
+                            "TargetPicked": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "7b02fa28-081e-420a-91ae-45726306573c"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Do not eliminate Arabian contestant (secondary) -----",
+                "Id": "a243664c-79b9-4181-b814-82e7e82dd77c",
+                "Category": "secondary",
+                "IgnoreIfInactive": true,
+                "OnInactive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                },
+                "Activation": {
+                    "$eq": [
+                        "$192a25e6-3f5b-4142-9cd4-6b9d26b19de6",
+                        "Completed"
+                    ]
+                },
+                "Image": "Images/Contracts/Escalation/ContractEscalation_Ancestral_SmoothSnake_Obj_Contestant1.jpg",
+                "BriefingName": "$loc UI_CONTRACT_SMOOTHSNAKE_OBJ_CLIENT_ARABIAN_NAME",
+                "BriefingText": "$loc UI_CONTRACT_SMOOTHSNAKE_OBJ_CLIENT_ARABIAN_TEXT",
+                "LongBriefingText": "$loc UI_CONTRACT_SMOOTHSNAKE_OBJ_CLIENT_ARABIAN_LONG",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_SMOOTHSNAKE_OBJ_CLIENT_ARABIAN_HUD",
+                    "iconType": 17
+                },
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "Definition": {
+                    "display": { "iconType": 17 },
+                    "Context": {
+                        "Allies": ["20bed705-9f0f-4a3e-ad07-2a7ef3938868"]
+                    },
+                    "States": {
+                        "Start": { "ContractEnd": { "Transition": "Success" } }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Do not eliminate Arabian contestant (primary) -----",
+                "Id": "f830cd78-6aed-49a5-8b2f-8de4ca53c78b",
+                "Primary": true,
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfFailed": { "Visible": false },
+                    "IfCompleted": { "Visible": false }
+                },
+                "Activation": {
+                    "$eq": [
+                        "$192a25e6-3f5b-4142-9cd4-6b9d26b19de6",
+                        "Completed"
+                    ]
+                },
+                "Image": "Images/Contracts/Escalation/ContractEscalation_Ancestral_SmoothSnake_Obj_Contestant1.jpg",
+                "BriefingName": "$loc UI_CONTRACT_SMOOTHSNAKE_OBJ_CLIENT_ARABIAN_NAME",
+                "BriefingText": "$loc UI_CONTRACT_SMOOTHSNAKE_OBJ_CLIENT_ARABIAN_TEXT",
+                "LongBriefingText": "$loc UI_CONTRACT_SMOOTHSNAKE_OBJ_CLIENT_ARABIAN_LONG",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_SMOOTHSNAKE_OBJ_CLIENT_ARABIAN_HUD"
+                },
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": { "Active": false },
+                    "States": {
+                        "Start": { "-": { "Transition": "Success" } },
+                        "Success": {
+                            "ClientPicked": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "20bed705-9f0f-4a3e-ad07-2a7ef3938868"
+                                    ]
+                                },
+                                "Actions": { "$set": ["Active", true] }
+                            },
+                            "Kill": {
+                                "Condition": {
+                                    "$and": [
+                                        { "$eq": ["$.Active", true] },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "20bed705-9f0f-4a3e-ad07-2a7ef3938868"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Hide objective to not eliminate Arabian contestant -----",
+                "Id": "192a25e6-3f5b-4142-9cd4-6b9d26b19de6",
+                "Category": "Condition",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                },
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": { "Targets": [] },
+                    "States": {
+                        "Start": {
+                            "ClientPicked": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "20bed705-9f0f-4a3e-ad07-2a7ef3938868"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Do not eliminate British contestant (secondary) -----",
+                "Id": "799181b6-b85e-4d60-bd76-d746b43ae817",
+                "Category": "secondary",
+                "IgnoreIfInactive": true,
+                "OnInactive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                },
+                "Activation": {
+                    "$eq": [
+                        "$956f3d82-a093-4e13-8f67-57516ff4ceeb",
+                        "Completed"
+                    ]
+                },
+                "Image": "Images/Contracts/Escalation/ContractEscalation_Ancestral_SmoothSnake_Obj_Contestant2.jpg",
+                "BriefingName": "$loc UI_CONTRACT_SMOOTHSNAKE_OBJ_CLIENT_BRITISH_NAME",
+                "BriefingText": "$loc UI_CONTRACT_SMOOTHSNAKE_OBJ_CLIENT_BRITISH_TEXT",
+                "LongBriefingText": "$loc UI_CONTRACT_SMOOTHSNAKE_OBJ_CLIENT_BRITISH_LONG",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_SMOOTHSNAKE_OBJ_CLIENT_BRITISH_HUD",
+                    "iconType": 17
+                },
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "Definition": {
+                    "display": { "iconType": 17 },
+                    "Context": {
+                        "Allies": ["defc9d36-a84d-46b9-be2c-f3a435287e96"]
+                    },
+                    "States": {
+                        "Start": { "ContractEnd": { "Transition": "Success" } }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Do not eliminate British contestant (primary) -----",
+                "Id": "6b1cf0a9-4301-4cce-8d55-03e9281d78a5",
+                "Primary": true,
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfFailed": { "Visible": false },
+                    "IfCompleted": { "Visible": false }
+                },
+                "Activation": {
+                    "$eq": [
+                        "$956f3d82-a093-4e13-8f67-57516ff4ceeb",
+                        "Completed"
+                    ]
+                },
+                "Image": "Images/Contracts/Escalation/ContractEscalation_Ancestral_SmoothSnake_Obj_Contestant2.jpg",
+                "BriefingName": "$loc UI_CONTRACT_SMOOTHSNAKE_OBJ_CLIENT_BRITISH_NAME",
+                "BriefingText": "$loc UI_CONTRACT_SMOOTHSNAKE_OBJ_CLIENT_BRITISH_TEXT",
+                "LongBriefingText": "$loc UI_CONTRACT_SMOOTHSNAKE_OBJ_CLIENT_BRITISH_LONG",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_SMOOTHSNAKE_OBJ_CLIENT_BRITISH_HUD"
+                },
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": { "Active": false },
+                    "States": {
+                        "Start": { "-": { "Transition": "Success" } },
+                        "Success": {
+                            "ClientPicked": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "defc9d36-a84d-46b9-be2c-f3a435287e96"
+                                    ]
+                                },
+                                "Actions": { "$set": ["Active", true] }
+                            },
+                            "Kill": {
+                                "Condition": {
+                                    "$and": [
+                                        { "$eq": ["$.Active", true] },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "defc9d36-a84d-46b9-be2c-f3a435287e96"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Hide objective to not eliminate British contestant -----",
+                "Id": "956f3d82-a093-4e13-8f67-57516ff4ceeb",
+                "Category": "Condition",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                },
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": { "Targets": [] },
+                    "States": {
+                        "Start": {
+                            "ClientPicked": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "defc9d36-a84d-46b9-be2c-f3a435287e96"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Do not eliminate French contestant (secondary) -----",
+                "Id": "8a2616e7-e148-4212-9b4d-5131e94a7fac",
+                "Category": "secondary",
+                "IgnoreIfInactive": true,
+                "OnInactive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                },
+                "Activation": {
+                    "$eq": [
+                        "$6259d6ad-cdbc-4909-b1e8-6c6f0c52b2e1",
+                        "Completed"
+                    ]
+                },
+                "Image": "Images/Contracts/Escalation/ContractEscalation_Ancestral_SmoothSnake_Obj_Contestant3.jpg",
+                "BriefingName": "$loc UI_CONTRACT_SMOOTHSNAKE_OBJ_CLIENT_FRENCH_NAME",
+                "BriefingText": "$loc UI_CONTRACT_SMOOTHSNAKE_OBJ_CLIENT_FRENCH_TEXT",
+                "LongBriefingText": "$loc UI_CONTRACT_SMOOTHSNAKE_OBJ_CLIENT_FRENCH_LONG",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_SMOOTHSNAKE_OBJ_CLIENT_FRENCH_HUD",
+                    "iconType": 17
+                },
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "Definition": {
+                    "display": { "iconType": 17 },
+                    "Context": {
+                        "Allies": ["0dd81be5-208f-48d9-81fa-8439b9dfa095"]
+                    },
+                    "States": {
+                        "Start": { "ContractEnd": { "Transition": "Success" } }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Do not eliminate French contestant (primary) -----",
+                "Id": "32d5961c-49f4-47ce-be1e-425be12271c2",
+                "Primary": true,
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfFailed": { "Visible": false },
+                    "IfCompleted": { "Visible": false }
+                },
+                "Activation": {
+                    "$eq": [
+                        "$6259d6ad-cdbc-4909-b1e8-6c6f0c52b2e1",
+                        "Completed"
+                    ]
+                },
+                "Image": "Images/Contracts/Escalation/ContractEscalation_Ancestral_SmoothSnake_Obj_Contestant3.jpg",
+                "BriefingName": "$loc UI_CONTRACT_SMOOTHSNAKE_OBJ_CLIENT_FRENCH_NAME",
+                "BriefingText": "$loc UI_CONTRACT_SMOOTHSNAKE_OBJ_CLIENT_FRENCH_TEXT",
+                "LongBriefingText": "$loc UI_CONTRACT_SMOOTHSNAKE_OBJ_CLIENT_FRENCH_LONG",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_SMOOTHSNAKE_OBJ_CLIENT_FRENCH_HUD"
+                },
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": { "Active": false },
+                    "States": {
+                        "Start": { "-": { "Transition": "Success" } },
+                        "Success": {
+                            "ClientPicked": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "0dd81be5-208f-48d9-81fa-8439b9dfa095"
+                                    ]
+                                },
+                                "Actions": { "$set": ["Active", true] }
+                            },
+                            "Kill": {
+                                "Condition": {
+                                    "$and": [
+                                        { "$eq": ["$.Active", true] },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "0dd81be5-208f-48d9-81fa-8439b9dfa095"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Hide objective to not eliminate French contestant -----",
+                "Id": "6259d6ad-cdbc-4909-b1e8-6c6f0c52b2e1",
+                "Category": "Condition",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                },
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": { "Targets": [] },
+                    "States": {
+                        "Start": {
+                            "ClientPicked": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "0dd81be5-208f-48d9-81fa-8439b9dfa095"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Do not eliminate Japanese contestant (secondary) -----",
+                "Id": "887fe606-64e5-499b-a953-ba78096c6c19",
+                "Category": "secondary",
+                "IgnoreIfInactive": true,
+                "OnInactive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                },
+                "Activation": {
+                    "$eq": [
+                        "$a7a70d0a-0080-4a94-85b7-59449a584843",
+                        "Completed"
+                    ]
+                },
+                "Image": "Images/Contracts/Escalation/ContractEscalation_Ancestral_SmoothSnake_Obj_Contestant4.jpg",
+                "BriefingName": "$loc UI_CONTRACT_SMOOTHSNAKE_OBJ_CLIENT_JAPANESE_NAME",
+                "BriefingText": "$loc UI_CONTRACT_SMOOTHSNAKE_OBJ_CLIENT_JAPANESE_TEXT",
+                "LongBriefingText": "$loc UI_CONTRACT_SMOOTHSNAKE_OBJ_CLIENT_JAPANESE_LONG",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_SMOOTHSNAKE_OBJ_CLIENT_JAPANESE_HUD",
+                    "iconType": 17
+                },
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "Definition": {
+                    "display": { "iconType": 17 },
+                    "Context": {
+                        "Allies": ["7b02fa28-081e-420a-91ae-45726306573c"]
+                    },
+                    "States": {
+                        "Start": { "ContractEnd": { "Transition": "Success" } }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Do not eliminate Japanese contestant (primary) -----",
+                "Id": "84aaf669-be7c-4919-9353-f82c56086b06",
+                "Primary": true,
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfFailed": { "Visible": false },
+                    "IfCompleted": { "Visible": false }
+                },
+                "OnInactive": { "IfFailed": { "State": "Completed" } },
+                "Activation": {
+                    "$eq": [
+                        "$a7a70d0a-0080-4a94-85b7-59449a584843",
+                        "Completed"
+                    ]
+                },
+                "Image": "Images/Contracts/Escalation/ContractEscalation_Ancestral_SmoothSnake_Obj_Contestant4.jpg",
+                "BriefingName": "$loc UI_CONTRACT_SMOOTHSNAKE_OBJ_CLIENT_JAPANESE_NAME",
+                "BriefingText": "$loc UI_CONTRACT_SMOOTHSNAKE_OBJ_CLIENT_JAPANESE_TEXT",
+                "LongBriefingText": "$loc UI_CONTRACT_SMOOTHSNAKE_OBJ_CLIENT_JAPANESE_LONG",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_SMOOTHSNAKE_OBJ_CLIENT_JAPANESE_HUD"
+                },
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": { "Active": false },
+                    "States": {
+                        "Start": { "-": { "Transition": "Success" } },
+                        "Success": {
+                            "ClientPicked": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "7b02fa28-081e-420a-91ae-45726306573c"
+                                    ]
+                                },
+                                "Actions": { "$set": ["Active", true] }
+                            },
+                            "Kill": {
+                                "Condition": {
+                                    "$and": [
+                                        { "$eq": ["$.Active", true] },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "7b02fa28-081e-420a-91ae-45726306573c"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Hide objective to not eliminate Japanese contestant -----",
+                "Id": "a7a70d0a-0080-4a94-85b7-59449a584843",
+                "Category": "Condition",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                },
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": { "Targets": [] },
+                    "States": {
+                        "Start": {
+                            "ClientPicked": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "7b02fa28-081e-420a-91ae-45726306573c"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Eliminate two contestants -----",
+                "Id": "62982ae4-4779-4302-9736-343d405c3baf",
+                "Primary": true,
+                "IgnoreIfInactive": true,
+                "OnInactive": { "IfCompleted": { "State": "Completed" } },
+                "Activation": {
+                    "$eq": [
+                        "$1e585599-bb5d-4059-93db-ef9a3900fe5f",
+                        "Completed"
+                    ]
+                },
+                "Image": "Images/Contracts/Escalation/ContractEscalation_Ancestral_SmoothSnake_Obj_Contestants.jpg",
+                "BriefingName": "$loc UI_CONTRACT_SMOOTHSNAKE_OBJ_ANYCONTESTANTS_NAME",
+                "BriefingText": "$loc UI_CONTRACT_SMOOTHSNAKE_OBJ_ANYCONTESTANTS_TEXT",
+                "LongBriefingText": "$loc UI_CONTRACT_SMOOTHSNAKE_OBJ_ANYCONTESTANTS_LONG",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_SMOOTHSNAKE_OBJ_ANYCONTESTANTS_HUD"
+                },
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "Scope": "hit",
+                "Definition": {
+                    "Context": {
+                        "Targets": [
+                            "20bed705-9f0f-4a3e-ad07-2a7ef3938868",
+                            "defc9d36-a84d-46b9-be2c-f3a435287e96",
+                            "0dd81be5-208f-48d9-81fa-8439b9dfa095",
+                            "7b02fa28-081e-420a-91ae-45726306573c"
+                        ],
+                        "Count": -1,
+                        "Goal": 2
+                    },
+                    "ContextListeners": {
+                        "Count": {
+                            "type": "custom",
+                            "HUDTemplate": {
+                                "display": {
+                                    "$loc": {
+                                        "key": "UI_CONTRACT_SMOOTHSNAKE_OBJ_ANYCONTESTANTS_HUD",
+                                        "data": ["$.Count", "$.Goal"]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "States": {
+                        "Start": {
+                            "-": {
+                                "Transition": "Active",
+                                "Actions": { "$inc": "Count" }
+                            }
+                        },
+                        "Active": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$inarray": {
+                                            "in": "$.Targets",
+                                            "?": {
+                                                "$eq": [
+                                                    "$.#",
+                                                    "$Value.RepositoryId"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "Actions": { "$inc": "Count" }
+                                },
+                                {
+                                    "Condition": {
+                                        "$ge": ["$.Count", "$.Goal"]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Hide objective to eliminate two contestants -----",
+                "Id": "1e585599-bb5d-4059-93db-ef9a3900fe5f",
+                "Category": "Condition",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                },
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "AnyContestantTargets": { "Transition": "Success" }
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "cef8d7c3-35e5-44b4-8c41-3b0f074bf8cd",
+        "CodeName_Hint": "SmoothSnake - Level 2",
+        "Release": "3.0.0 Escalation",
+        "IsSeasonal": true,
+        "Type": "escalation",
+        "Title": "UI_CONTRACT_SMOOTHSNAKE_LEVEL_2_NAME",
+        "Description": "",
+        "InGroup": "5680108a-19dc-4448-9344-3d0290217162",
+        "Location": "LOCATION_ANCESTRAL_SMOOTHSNAKE",
+        "RequiredUnlockable": "ACCESS_HIT_BULLDOG",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Ancestral/scene_smoothsnake.entity",
+        "CreationTimestamp": "2021-08-05T12:13:37.5347425Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "IsPublished": true,
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "61e7269c-1829-45a3-a485-7f7409624fc5", "IsNew": true },
+            { "Id": "d9fd8184-8b4b-419c-91f7-367db1701101" },
+            { "Id": "ffd0b576-5c6d-4842-b36f-6b9250ba7041", "IsNew": true },
+            { "Id": "ab90827f-98c0-4af9-8886-aa7b8f9d06a3", "IsNew": true },
+            { "Id": "3def1624-7d9c-4f9e-bf78-eadaf3a1ef63", "IsNew": true },
+            { "Id": "a919a4e6-d5ce-468f-82f0-0bec501ca4c4", "IsNew": true },
+            { "Id": "a243664c-79b9-4181-b814-82e7e82dd77c" },
+            { "Id": "799181b6-b85e-4d60-bd76-d746b43ae817" },
+            { "Id": "8a2616e7-e148-4212-9b4d-5131e94a7fac" },
+            { "Id": "887fe606-64e5-499b-a953-ba78096c6c19" }
+        ],
+        "Entitlements": [],
+        "PublicId": "033435740747",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Ancestral_SmoothSnake.jpg",
+        "IsFeatured": false,
+        "OpportunityData": []
+    },
+    "UserData": {}
+}

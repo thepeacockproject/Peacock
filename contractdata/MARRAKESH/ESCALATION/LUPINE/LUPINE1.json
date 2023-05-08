@@ -1,0 +1,89 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "f0476810-bdae-4642-8f8f-dc8ed20595da",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "ecf1b752-0cd6-4283-a1a5-743fc0249525",
+                        "HardCondition": true
+                    }
+                ],
+                "BriefingText": "$loc UI_CONTRACT_LUPINE_OBJ_1",
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_LUPINE_OBJ_1" },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["33eb89b8-5f61-426d-b660-69b54b33a93b"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "33eb89b8-5f61-426d-b660-69b54b33a93b"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "ecf1b752-0cd6-4283-a1a5-743fc0249525"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "33eb89b8-5f61-426d-b660-69b54b33a93b"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "68d2a689-1129-468a-bd51-7e1e96a51883",
+        "IsPublished": true,
+        "CreationTimestamp": "2016-02-23T16:18:20.273Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_LUPINE_LEVEL_1_TITLE",
+        "Description": "UI_CONTRACT_LUPINE_LEVEL_1_DESC",
+        "CodeName_Hint": "Lupine - Level 1",
+        "Location": "LOCATION_MARRAKECH",
+        "ScenePath": "assembly:/_pro/scenes/missions/marrakesh/_scene_spider.entity",
+        "Type": "escalation",
+        "RequiredUnlockable": "ACCESS_HIT_SPIDER",
+        "InGroup": "11c93649-6b00-46ac-bf2d-a3599a6ab3a9",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "f0476810-bdae-4642-8f8f-dc8ed20595da" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:44.1950115Z",
+        "PublicId": "006039057247",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

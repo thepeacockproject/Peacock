@@ -1,0 +1,261 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "66f7e8e5-fa15-4212-8f75-5ba9e4b7e5f4",
+                "Type": "statemachine",
+                "ObjectiveType": "customkill",
+                "BriefingText": "$loc UI_PEACOCK_GRAPEBUSH_OBJ2_DESC",
+                "Primary": true,
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_GRAPEBUSH_OBJ2"
+                },
+                "Definition": {
+                    "Context": {
+                        "Targets": ["c99fc710-0253-4125-83a8-89b4792c9091"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "c99fc710-0253-4125-83a8-89b4792c9091"
+                                                ]
+                                            },
+                                            {
+                                                "$or": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillClass",
+                                                            "unknown"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillClass",
+                                                            "explosion"
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "c99fc710-0253-4125-83a8-89b4792c9091"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "2dd4d703-4c56-417b-b882-ce557513aa79",
+                "Type": "statemachine",
+                "ObjectiveType": "customkill",
+                "Primary": false,
+                "BriefingText": "$loc UI_PEACOCK_GRAPEBUSH_OBJ3_DESC",
+                "HUDTemplate": { "display": "$loc UI_PEACOCK_GRAPEBUSH_OBJ3" },
+                "Definition": {
+                    "Context": {
+                        "Targets": ["ec3f1168-e010-4696-8e67-6aa9cf2a20af"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "ec3f1168-e010-4696-8e67-6aa9cf2a20af"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "8d606509-7d54-4dac-8142-a4349fd6279d",
+                "Type": "statemachine",
+                "BriefingName": "$loc LLAMA_QUESTITEMS_YATESFILES_NAME",
+                "BriefingText": "$loc UI_PEACOCK_GRAPEBUSH_FILES_DESC",
+                "Image": "images/unlockables/item_perspective_773e7624-307e-418e-b6cf-f9bc6dc6b295_0.jpg",
+                "Primary": true,
+                "ObjectiveType": "custom",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_GRAPEBUSH_FILES",
+                    "iconType": 17
+                },
+                "Definition": {
+                    "Context": {
+                        "Targets": ["773e7624-307e-418e-b6cf-f9bc6dc6b295"]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "773e7624-307e-418e-b6cf-f9bc6dc6b295"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "fe4be56b-82e6-444a-ae9e-408e92b65380",
+                "Type": "statemachine",
+                "Primary": true,
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository db85e020-98d2-485e-ba21-ebfc53b91daa).Name"
+                        }
+                    }
+                },
+                "Definition": {
+                    "Context": {
+                        "Targets": ["db85e020-98d2-485e-ba21-ebfc53b91daa"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "db85e020-98d2-485e-ba21-ebfc53b91daa"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "122428ab-7075-4842-b54c-757c221723ef",
+                "Type": "statemachine",
+                "Primary": true,
+                "HUDTemplate": {
+                    "display": {
+                        "$loc": {
+                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                            "data": "$($repository 5497400e-8806-49b9-bca0-76f58266b959).Name"
+                        }
+                    }
+                },
+                "Definition": {
+                    "Context": {
+                        "Targets": ["5497400e-8806-49b9-bca0-76f58266b959"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "5497400e-8806-49b9-bca0-76f58266b959"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "acbe897b-5957-4ae7-ae68-a9ae9a0c6779",
+                "Type": "statemachine",
+                "Primary": true,
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_GRAPEBUSH_OBJ1"
+                },
+                "Definition": {
+                    "Context": {
+                        "Targets": ["ffb17930-6906-429f-840b-56fc69167765"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "ffb17930-6906-429f-840b-56fc69167765"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillMethodBroad",
+                                                    "accident"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "ffb17930-6906-429f-840b-56fc69167765"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "accident",
+                        "HardCondition": true
+                    }
+                ]
+            }
+        ],
+        "Bricks": [],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Title": "UI_PEACOCK_GRAPEBUSH3",
+        "Type": "escalation",
+        "InGroup": "edbacf4b-e402-4548-b723-cd4351571537",
+        "Id": "a7ddf3f3-7fd9-4749-b63b-f2579bbd0f6c",
+        "PublicID": 123435345600,
+        "ScenePath": "assembly:/_pro/scenes/missions/elegant/scene_llama.entity",
+        "Entitlements": ["LOCATION_ELEGANT"],
+        "Location": "LOCATION_ELEGANT_LLAMA",
+        "TileImage": "images/contracts/escalation/contractescalation_grapebush.png",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "66f7e8e5-fa15-4212-8f75-5ba9e4b7e5f4", "IsNew": true },
+            { "Id": "2dd4d703-4c56-417b-b882-ce557513aa79", "IsNew": true },
+            { "Id": "acbe897b-5957-4ae7-ae68-a9ae9a0c6779" },
+            { "Id": "fe4be56b-82e6-444a-ae9e-408e92b65380" },
+            { "Id": "122428ab-7075-4842-b54c-757c221723ef" },
+            { "Id": "8d606509-7d54-4dac-8142-a4349fd6279d" }
+        ]
+    }
+}

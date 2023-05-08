@@ -1,0 +1,87 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "EnableExits": {
+            "$eq": [
+                "$007be96e-c84a-4a9d-b91a-869560fea2b7",
+                "$253fceaf-6893-44e9-9080-4e6f3cecae1d",
+                "$c7f62ad6-16ec-47c7-8bc3-b6313c9b236a",
+                "Completed"
+            ]
+        },
+        "Objectives": [
+            {
+                "Id": "253fceaf-6893-44e9-9080-4e6f3cecae1d",
+                "Category": "primary",
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "10ddfe2c-cf1b-4641-9b32-4b54f996a1bb"
+                    }
+                }
+            },
+            {
+                "Id": "c7f62ad6-16ec-47c7-8bc3-b6313c9b236a",
+                "Category": "primary",
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "957a8b5a-8f3c-483d-926d-9536fae1ac7d"
+                    }
+                }
+            },
+            {
+                "Id": "007be96e-c84a-4a9d-b91a-869560fea2b7",
+                "Category": "primary",
+                "ObjectiveType": "setpiece",
+                "Image": "images/contracts/gamechangers/Gamechanger_Colombia_DataExtraction_Caves.jpg",
+                "BriefingName": "$loc UI_GAMECHANGERS_COLOMBIA_DATA_EXTRACTION_CAVES_NAME",
+                "BriefingText": "$loc UI_CONTRACT_SNAPDRAGON_OBJ_1",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_SNAPDRAGON_OBJ_1"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {
+                        "Targets": ["a77f3af3-c85a-43f5-9a09-f1db7b201483"]
+                    },
+                    "States": {
+                        "Start": {
+                            "LaptopHacked": { "Transition": "Success" },
+                            "Laptop_Destroyed": { "Transition": "Failure" }
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_PRO/Scenes/Missions/Colombia/gamechanger_hippo_laptop_cave.brick"
+        ],
+        "GameChangers": ["99030f9a-c842-48dc-a38a-c6174382bec1"],
+        "GameChangerReferences": []
+    },
+    "Metadata": {
+        "Id": "69b8a95b-03ff-4d4c-89b1-eb0ca4dbe6c0",
+        "InGroup": "70150cd2-ef76-4ba8-80cc-b1e63871b030",
+        "IsPublished": true,
+        "CreationTimestamp": "2018-10-16T16:12:30.0274594Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_SNAPDRAGON_LEVEL_2_TITLE",
+        "Description": "",
+        "CodeName_Hint": "Snapdragon level 2",
+        "Location": "LOCATION_COLOMBIA",
+        "RequiredUnlockable": "ACCESS_HIT_HIPPO",
+        "ScenePath": "assembly:/_pro/scenes/missions/colombia/scene_hippo.entity",
+        "Type": "escalation",
+        "TileImage": "images/contracts/escalation/contractescalation_colombia_snapdragon.jpg",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "007be96e-c84a-4a9d-b91a-869560fea2b7" },
+            { "Id": "253fceaf-6893-44e9-9080-4e6f3cecae1d" },
+            { "Id": "c7f62ad6-16ec-47c7-8bc3-b6313c9b236a" }
+        ],
+        "Entitlements": ["H2_LEGACY_STANDARD"],
+        "LastUpdate": "2021-04-20T12:25:04.6018646Z",
+        "PublicId": "012619040547"
+    },
+    "UserData": {}
+}

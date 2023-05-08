@@ -1,0 +1,199 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "2bc975e7-e3e7-4096-a9e0-1dd735f00f58",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_BLACKTHORN_OBJ_1"
+                },
+                "BriefingText": "$loc UI_CONTRACT_BLACKTHORN_OBJ_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["b3d3d11c-989d-414c-86a6-700fff65b536"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "b3d3d11c-989d-414c-86a6-700fff65b536"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "1fdc259e-b96a-47f2-bbd8-e86e78d6df70"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillClass",
+                                                    "ballistic"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "b3d3d11c-989d-414c-86a6-700fff65b536"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "1fdc259e-b96a-47f2-bbd8-e86e78d6df70"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemCategory",
+                                                    "pistol"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "b3d3d11c-989d-414c-86a6-700fff65b536"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "04244e99-3006-4688-9ba5-64f0df5002f2",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_BLACKTHORN_OBJ_2"
+                },
+                "BriefingText": "$loc UI_CONTRACT_BLACKTHORN_OBJ_2",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["238926bb-371d-4a65-a364-0606e9166f05"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "238926bb-371d-4a65-a364-0606e9166f05"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "1fdc259e-b96a-47f2-bbd8-e86e78d6df70"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillClass",
+                                                    "ballistic"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "238926bb-371d-4a65-a364-0606e9166f05"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "1fdc259e-b96a-47f2-bbd8-e86e78d6df70"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemCategory",
+                                                    "pistol"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "238926bb-371d-4a65-a364-0606e9166f05"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [
+            "da07626c-0aa3-463a-92ff-8e7adbbf6230",
+            "17e62a50-ff2d-4c6a-9a9e-a0de084b4ada"
+        ],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "dbd36aab-ed98-47e2-823a-867ba6e070d1",
+        "IsPublished": true,
+        "CreationTimestamp": "2015-10-08T12:57:39.153Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_BLACKTHORN_LEVEL_4_TITLE",
+        "Description": "UI_CONTRACT_BLACKTHORN_LEVEL_4_DESC",
+        "CodeName_Hint": "Blackthorn - Level 4",
+        "Location": "LOCATION_PARIS",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Paris/_scene_paris.entity",
+        "Type": "escalation",
+        "InGroup": "d6961637-effe-4c39-b99a-f2df4402657d",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "17e62a50-ff2d-4c6a-9a9e-a0de084b4ada" },
+            { "Id": "da07626c-0aa3-463a-92ff-8e7adbbf6230" },
+            { "Id": "04244e99-3006-4688-9ba5-64f0df5002f2" },
+            { "Id": "2bc975e7-e3e7-4096-a9e0-1dd735f00f58" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:30.9917744Z",
+        "PublicId": "002656398447",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

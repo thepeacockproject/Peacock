@@ -1,0 +1,101 @@
+{
+    "Data": {
+        "EnableSaving": true,
+        "Entrances": [
+            "000fc136-f098-43a2-b204-26c038a55490",
+            "8ec50af5-e6b4-47d0-873b-0361cee52a05",
+            "700603be-2925-4ec4-ae47-572068b801af"
+        ],
+        "Objectives": [
+            {
+                "Id": "b7f349f0-f4fe-4755-ba1c-124fb4abadbe",
+                "Primary": true,
+                "IsHidden": true,
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "9d1c5d01-a793-4c0a-875b-3b48ad584537"
+                    }
+                }
+            },
+            {
+                "_comment": "----- Do not eliminate the guide -----",
+                "Id": "d5331a6d-4d91-4949-884f-eb981048a137",
+                "Category": "secondary",
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": true,
+                "Image": "images/contracts/elusive/s3_radler/objective2.jpg",
+                "BriefingName": "$loc UI_CONTRACT_RADLER_OBJ_2_TITLE",
+                "BriefingText": "$loc UI_CONTRACT_RADLER_OBJ_2_DESC",
+                "LongBriefingText": "$loc UI_CONTRACT_RADLER_OBJ_2_DESC_LONG",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_RADLER_OBJ_2_TITLE",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "ExcludeFromScoring": false,
+                "Definition": {
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "ContractEnd": { "Transition": "Success" },
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "a66118e9-9c3e-4251-849c-d3146d218bd5"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/edgy/mission_fox/elusive_radler.brick"
+        ],
+        "GameChangers": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/edgy/mission_fox/vr_overrides_fox.brick",
+                    "assembly:/_pro/scenes/missions/edgy/mission_fox/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/edgy/mission_fox/vr_overrides_fox.brick"
+                ]
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "3f0b8f19-d5d4-4611-ac8f-480f81c18f54",
+        "CodeName_Hint": "Radler",
+        "Type": "elusive",
+        "Title": "UI_CONTRACT_RADLER_TITLE",
+        "Description": "UI_CONTRACT_RADLER_DESC",
+        "BriefingVideo": "briefing_radler",
+        "DebriefingVideo": "debriefing_radler",
+        "ScenePath": "assembly:/_pro/scenes/missions/edgy/mission_fox/scene_radler.entity",
+        "TileImage": "images/contracts/elusive/S3_Radler/Title.jpg",
+        "Location": "LOCATION_EDGY_FOX",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "PublicId": "029137535847",
+        "Entitlements": ["LOCATION_EDGY"],
+        "Season": 3
+    },
+    "UserData": {}
+}

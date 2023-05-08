@@ -1,0 +1,85 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "1e6d3695-6664-4fa8-acfc-a8e0fdd62fdf",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "weapontype",
+                        "RepositoryId": "55ed7196-2303-4af6-9fa3-45b691134561",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_HAWTHORN_OBJ_1" },
+                "BriefingText": "$loc UI_CONTRACT_HAWTHORN_OBJ_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["b3d1ba44-e74b-4586-abf1-ec5e8c01f2fa"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "b3d1ba44-e74b-4586-abf1-ec5e8c01f2fa"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemCategory",
+                                                    "pistol"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "b3d1ba44-e74b-4586-abf1-ec5e8c01f2fa"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "3554ebd7-b190-4cb5-a267-46f3bda8cdde",
+        "IsPublished": true,
+        "CreationTimestamp": "2015-08-19T12:08:33.08Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_HAWTHORN_LEVEL_1_TITLE",
+        "Description": "UI_CONTRACT_HAWTHORN_LEVEL_1_DESC",
+        "CodeName_Hint": "Hawthorn - Level 1",
+        "RequiredUnlockable": "ACCESS_HIT_PEACOCK",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Paris/_scene_paris.entity",
+        "Location": "LOCATION_PARIS",
+        "Type": "escalation",
+        "InGroup": "e6be23e8-8602-42c8-a014-17ffbfa053f5",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "1e6d3695-6664-4fa8-acfc-a8e0fdd62fdf" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:38.7418612Z",
+        "PublicId": "002624580847",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

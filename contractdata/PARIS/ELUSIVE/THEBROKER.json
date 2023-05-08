@@ -1,0 +1,90 @@
+{
+    "Data": {
+        "EnableSaving": true,
+        "Objectives": [
+            {
+                "Id": "98ddb955-0ce2-4f37-9c5a-32eb986b9e0b",
+                "Primary": true,
+                "IsHidden": true,
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "b1db6854-b82b-4bb4-8e73-a9c138a283d2"
+                    }
+                }
+            },
+            {
+                "Id": "1495cf66-c9a8-481e-92da-9990c4e2630f",
+                "IsHidden": true,
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "Image": "images/unlockables/item_perspective_d12fc231-020b-4673-a7b8-3789ed9fee93_0.jpg",
+                "BriefingName": "$loc UI_CONTRACT_MARGARITA_OBJ_2_TITLE",
+                "BriefingText": "$loc UI_CONTRACT_MARGARITA_OBJ_2_DESC",
+                "LongBriefingText": "$loc UI_CONTRACT_MARGARITA_OBJ_2_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_MARGARITA_OBJ_2_TITLE"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {
+                        "Targets": ["d12fc231-020b-4673-a7b8-3789ed9fee93"]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "d12fc231-020b-4673-a7b8-3789ed9fee93"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_PRO/Scenes/Missions/Paris/_Scene_Margarita_01.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_agility_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_overrides_peacock.brick",
+                    "assembly:/_pro/scenes/missions/paris/vr_agility_overrides_peacock.brick"
+                ]
+            }
+        ],
+        "GameChangers": []
+    },
+    "Metadata": {
+        "Id": "158b600a-6448-45d3-907f-77351b9656ee",
+        "Title": "UI_CONTRACT_MARGARITA_TITLE",
+        "CodeName_Hint": "Margarita",
+        "Description": "UI_CONTRACT_MARGARITA_DESC",
+        "BriefingVideo": "briefing_margarita",
+        "DebriefingVideo": "debriefing_margarita",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Paris/_scene_paris.entity",
+        "TileImage": "images/contracts/elusive/008_Margarita/Title.jpg",
+        "Location": "LOCATION_PARIS",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Type": "elusive",
+        "PublicId": "002469618747",
+        "Entitlements": ["H1_LEGACY_STANDARD"],
+        "Season": 1
+    },
+    "UserData": {}
+}

@@ -1,0 +1,174 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "Id": "3f8806e3-a5a2-4513-b9a8-f2ef5c5fce5d",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "BriefingName": "$loc UI_CONTRACT_MYRTLE_OBJ_1_NAME",
+                "Image": "images/actors/actor_13cbccd1-8a96-435b-84e8-107c0a29349d_0_0_0.jpg",
+                "TargetConditions": [],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_MYRTLE_OBJ_1" },
+                "BriefingText": "$loc UI_CONTRACT_MYRTLE_OBJ_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["5f307b57-55e8-4f56-97f3-397df9e3dd96"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Pacify": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "5f307b57-55e8-4f56-97f3-397df9e3dd96"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "bad168bb-3629-42b3-bc57-604b03a81d30"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "89f20c16-4e13-4f89-a85b-44dd17698bc7"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "5f307b57-55e8-4f56-97f3-397df9e3dd96"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ],
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "5f307b57-55e8-4f56-97f3-397df9e3dd96"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ],
+                            "BattyDead": { "Transition": "Failure" },
+                            "MailmanOutfitLost": { "Transition": "Failure" }
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "3486e69b-63f8-45a5-9e66-be54984be248",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "BriefingName": "$loc UI_CONTRACT_MYRTLE_OBJ_3_NAME",
+                "Image": "images/actors/actor_59d52e11-75a0-4185-8632-20009afdc6bb_4_0_0.jpg",
+                "TargetConditions": [],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_MYRTLE_OBJ_3" },
+                "BriefingText": "$loc UI_CONTRACT_MYRTLE_OBJ_3",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["cafb2bda-485c-4c11-9df0-c1e6971dbbbb"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Pacify": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "cafb2bda-485c-4c11-9df0-c1e6971dbbbb"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "81654161-7711-4985-8056-8651a381d3ca"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "89f20c16-4e13-4f89-a85b-44dd17698bc7"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "cafb2bda-485c-4c11-9df0-c1e6971dbbbb"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ],
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "cafb2bda-485c-4c11-9df0-c1e6971dbbbb"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ],
+                            "JoggerDead": { "Transition": "Failure" }
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": ["f603a400-d271-49c7-8287-ed70fb8f77f6"],
+        "GameChangerReferences": []
+    },
+    "Metadata": {
+        "Id": "a3d5cd5e-a47f-40ac-8ba9-77fea52ee995",
+        "IsPublished": true,
+        "CreationTimestamp": "2018-11-05T14:12:42.5238682Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_MYRTLE_LEVEL_2_NAME",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Skunk_Myrtle.jpg",
+        "Description": "UI_CONTRACT_MYRTLE_LEVEL_2_DESC",
+        "CodeName_Hint": "Myrtle - Level 2",
+        "Location": "LOCATION_NORTHAMERICA",
+        "ScenePath": "assembly:/_pro/scenes/missions/skunk/scene_skunk.entity",
+        "Type": "escalation",
+        "InGroup": "74e6b561-ff1a-4742-9a7b-890b7818c796",
+        "Release": "2.3.x. escalation",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "3486e69b-63f8-45a5-9e66-be54984be248" },
+            { "Id": "3f8806e3-a5a2-4513-b9a8-f2ef5c5fce5d" }
+        ],
+        "LastUpdate": "2021-05-06T09:25:04.7056933Z",
+        "PublicId": "022051482347",
+        "Entitlements": ["H2_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

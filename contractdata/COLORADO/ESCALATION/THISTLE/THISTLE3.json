@@ -1,0 +1,192 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "a50652e6-eccb-4491-97ea-d03ca15b11a0",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_THISTLE_OBJ_1_1"
+                },
+                "BriefingText": "$loc UI_CONTRACT_THISTLE_OBJ_1_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["a0fc7404-0829-4a0c-985f-c4e3bc78c1e2"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "a0fc7404-0829-4a0c-985f-c4e3bc78c1e2"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "InCloset"
+                                                        ]
+                                                    },
+                                                    "in": "$Value.DamageEvents"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "a0fc7404-0829-4a0c-985f-c4e3bc78c1e2"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillClass",
+                                                    "explosion"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "a0fc7404-0829-4a0c-985f-c4e3bc78c1e2"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "b625df3e-ee7a-4219-b9b1-af907b57f4e7",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_THISTLE_OBJ_2_1"
+                },
+                "BriefingText": "$loc UI_CONTRACT_THISTLE_OBJ_2_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["4987ad7a-4abe-49e4-bc9b-80d73974ca14"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "4987ad7a-4abe-49e4-bc9b-80d73974ca14"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": ["$.#", "Burn"]
+                                                    },
+                                                    "in": "$Value.DamageEvents"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "4987ad7a-4abe-49e4-bc9b-80d73974ca14"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceId",
+                                                    "ed4ef3fe-4cd2-414d-993a-8c98e47cfc7a"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "4987ad7a-4abe-49e4-bc9b-80d73974ca14"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [
+            "188a4cf2-2cab-4c11-a7d0-bcd08209f05a",
+            "51c8a014-dcc6-4714-a843-0295f9718c7a"
+        ],
+        "GameChangerReferences": [],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "dddcac6e-49d1-4634-bf81-e6976a5225d3",
+        "IsPublished": true,
+        "CreationTimestamp": "2016-05-04T09:51:27.393Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_THISTLE_LEVEL_3_TITLE",
+        "Description": "",
+        "CodeName_Hint": "Thistle Level 3",
+        "RequiredUnlockable": "ACCESS_HIT_BULL",
+        "Location": "LOCATION_COLORADO",
+        "ScenePath": "assembly:/_pro/scenes/missions/Colorado_2/_scene_bull.entity",
+        "Type": "escalation",
+        "InGroup": "4186dd23-1cfc-4ba0-9863-9f19f7cba249",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "188a4cf2-2cab-4c11-a7d0-bcd08209f05a" },
+            { "IsNew": true, "Id": "51c8a014-dcc6-4714-a843-0295f9718c7a" },
+            { "Id": "b625df3e-ee7a-4219-b9b1-af907b57f4e7" },
+            { "Id": "a50652e6-eccb-4491-97ea-d03ca15b11a0" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:51.0387933Z",
+        "PublicId": "009098875947",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

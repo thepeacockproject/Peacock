@@ -1,0 +1,109 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "f5b55003-1f38-4ba1-8ef9-a45df3aa2847",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "94f52181-b9ec-4363-baef-d53b4e424b74",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_NICOTIANA_OBJ_1"
+                },
+                "BriefingText": "$loc UI_CONTRACT_NICOTIANA_OBJ_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["c9ba330a-9c8d-40e1-9fbc-551fd46bae2d"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "c9ba330a-9c8d-40e1-9fbc-551fd46bae2d"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "94f52181-b9ec-4363-baef-d53b4e424b74"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "c9ba330a-9c8d-40e1-9fbc-551fd46bae2d"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "eb765ce5-61ac-4c1c-b1d4-c0636710d107",
+                "Category": "primary",
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "6e755959-86cd-403a-89a8-bfc656771b19"
+                    }
+                }
+            },
+            {
+                "Id": "57e91166-f3c3-4172-aace-5423c6c50c32",
+                "Category": "primary",
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "3a58746c-3602-43bf-9d6c-8ce6d6befb09"
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": ["ca9604ab-c712-45db-b1b4-e04ac60d2465"],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "4d5950b9-5baa-4d29-a627-b4ecd7930744",
+        "IsPublished": true,
+        "CreationTimestamp": "2015-11-04T16:21:51.46Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_NICOTIANA_LEVEL_4_TITLE",
+        "Description": "UI_CONTRACT_NICOTIANA_LEVEL_4_DESC",
+        "CodeName_Hint": "Nicotiana - level 4",
+        "Location": "LOCATION_PARIS",
+        "ScenePath": "assembly:/_pro/scenes/missions/paris/_scene_paris.entity",
+        "Type": "escalation",
+        "InGroup": "c1db299f-3037-4726-b9fc-5cd951c45812",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "ca9604ab-c712-45db-b1b4-e04ac60d2465" },
+            { "Id": "57e91166-f3c3-4172-aace-5423c6c50c32" },
+            { "Id": "eb765ce5-61ac-4c1c-b1d4-c0636710d107" },
+            { "Id": "f5b55003-1f38-4ba1-8ef9-a45df3aa2847" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:46.03877Z",
+        "PublicId": "002354695347",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

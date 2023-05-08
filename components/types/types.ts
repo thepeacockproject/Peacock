@@ -20,10 +20,13 @@ import type * as core from "express-serve-static-core"
 
 import type { IContractCreationPayload } from "../statemachines/contractCreation"
 import type { Request } from "express"
-import { ProfileChallengeData, SavedChallenge } from "./challenges"
+import {
+    ChallengeContext,
+    ProfileChallengeData,
+    SavedChallenge,
+} from "./challenges"
 import { SessionGhostModeDetails } from "../multiplayer/multiplayerService"
 import { IContextListener } from "../statemachines/contextListeners"
-import { Timer } from "@peacockproject/statemachine-parser"
 
 /**
  * A duration or relative point in time expressed in seconds.
@@ -181,6 +184,7 @@ export type MissionType =
     | "arcade"
     | "vsrace"
     | "evergreen"
+    | "flashback"
 
 /**
  * The data acquired when using the "contract search" functionality.
@@ -213,6 +217,7 @@ export interface ContractSessionLastKill {
  * Primarily used for scoring, saving, and loading.
  */
 export interface ContractSession {
+    Id: string
     gameVersion: GameVersion
     sessionStart: Date | number
     lastUpdate: Date | number
@@ -258,12 +263,7 @@ export interface ContractSession {
      * @since v5.6.0-dev.1
      */
     challengeContexts?: {
-        [challengeId: string]: {
-            context: unknown
-            state: string
-            timers: Timer[]
-            timesCompleted: number
-        }
+        [challengeId: string]: ChallengeContext
     }
     /**
      * Session Evergreen details.
@@ -371,12 +371,22 @@ export interface MissionStory {
     Summary: string
     Briefing: string
     Location: string
+    SubLocation: string
     Image: string
 }
 
 export interface PlayerProfileView {
     template: unknown
     data: {
+        SubLocationData: {
+            ParentLocation: Unlockable
+            Location: Unlockable
+            CompletionData: CompletionData
+            ChallengeCategoryCompletion: ChallengeCategoryCompletion[]
+            ChallengeCompletion: ChallengeCompletion
+            OpportunityStatistics: OpportunityStatistics
+            LocationCompletionPercent: number
+        }[]
         PlayerProfileXp: {
             Total: number
             Level: number
@@ -396,9 +406,25 @@ export interface PlayerProfileView {
     }
 }
 
+export interface ChallengeCompletion {
+    ChallengesCount: number
+    CompletedChallengesCount: number
+    CompletionPercent?: number
+}
+
+export interface ChallengeCategoryCompletion extends ChallengeCompletion {
+    Name: string
+}
+
+export interface OpportunityStatistics {
+    Count: number
+    Completed: number
+}
+
 export interface ContractHistory {
     LastPlayedAt?: number
     Completed?: boolean
+    IsEscalation?: boolean
 }
 
 export interface UserProfile {
@@ -456,6 +482,7 @@ export interface UserProfile {
                 [location: string]: {
                     Xp: number
                     Level: number
+                    PreviouslySeenXp: number
                 }
             }
         }
@@ -523,7 +550,6 @@ export interface NamespaceEntitlementEpic {
  */
 export interface Unlockable {
     Id: string
-    Opportunities?: number
     DisplayNameLocKey: string
     GameAsset: string | null
     Guid: string
@@ -637,6 +663,7 @@ export interface CompletionData {
     Level: number
     MaxLevel: number
     XP: number
+    PreviouslySeenXp: number
     Completion: number
     XpLeft: number
     Id: string
@@ -671,6 +698,7 @@ export interface UserCentricContract {
         CompletionData?: CompletionData
         DlcName: string
         DlcImage: string
+        EscalationCompleted?: boolean
         EscalationCompletedLevels?: number
         EscalationTotalLevels?: number
         InGroup?: string
@@ -849,13 +877,11 @@ export interface MissionManifestMetadata {
     Difficulty?: "pro1" | string
     CharacterSetup?: {
         Mode: "singleplayer" | "multiplayer" | string
-        Characters: [
-            {
-                Name: string
-                Id: string
-                MandatoryLoadout?: string[]
-            },
-        ]
+        Characters: {
+            Name: string
+            Id: string
+            MandatoryLoadout?: string[]
+        }[]
     }[]
     CharacterLoadoutData?: {
         Id: string
@@ -879,6 +905,7 @@ export interface MissionManifestMetadata {
     // Begin escalation-exclusive properties
     InGroup?: string
     NextContractId?: string
+    GroupDefinition?: ContractGroupDefinition
     GroupData?: {
         Level: number
         TotalLevels: number
@@ -896,7 +923,8 @@ export interface MissionManifestMetadata {
     IsEvergreenSafehouse?: boolean
     UseContractProgressionData?: boolean
     CpdId?: string
-    GroupDefinition?: ContractGroupDefinition
+    // Elusive custom property (like official's year)
+    Season?: number
 }
 
 export interface GroupObjectiveDisplayOrderItem {
@@ -1382,6 +1410,13 @@ export interface PlayNextGetCampaignsHookReturn {
      * An object containing the campaign's details.
      */
     campaignDetails: PlayNextCampaignDetails
+    /**
+     * An array index for plugins to override play next tiles that Peacock
+     * internally added
+     *
+     * @since v6.3.0
+     */
+    overrideIndex?: number
 }
 
 export type SafehouseCategory = {

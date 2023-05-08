@@ -1,0 +1,322 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "f4e3bb5e-2eaf-4b69-a48b-ac762d2d6ff9",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "98888ced-60f9-4f83-a93b-bf0ef2963341",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_ROSE_OBJ_1_2" },
+                "BriefingText": "$loc UI_CONTRACT_ROSE_OBJ_1_2",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["9862b8b0-c2b7-4e4c-a577-73de1eaf1d66"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "9862b8b0-c2b7-4e4c-a577-73de1eaf1d66"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "98888ced-60f9-4f83-a93b-bf0ef2963341"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "9862b8b0-c2b7-4e4c-a577-73de1eaf1d66"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "c93a2349-e707-411a-ae2f-cc8db492f61f",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "98888ced-60f9-4f83-a93b-bf0ef2963341",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_ROSE_OBJ_2_2" },
+                "BriefingText": "$loc UI_CONTRACT_ROSE_OBJ_2_2",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["904465b6-e7d3-4692-a12a-a93dfc1fb7c4"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "904465b6-e7d3-4692-a12a-a93dfc1fb7c4"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "98888ced-60f9-4f83-a93b-bf0ef2963341"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "904465b6-e7d3-4692-a12a-a93dfc1fb7c4"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "42230d2c-81a5-4a1e-bfc1-91b314dc003c",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "98888ced-60f9-4f83-a93b-bf0ef2963341",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_ROSE_OBJ_3_1" },
+                "BriefingText": "$loc UI_CONTRACT_ROSE_OBJ_3_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["272c47a8-f6f4-46b8-9090-c20c0f5e3bd8"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "272c47a8-f6f4-46b8-9090-c20c0f5e3bd8"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "98888ced-60f9-4f83-a93b-bf0ef2963341"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "272c47a8-f6f4-46b8-9090-c20c0f5e3bd8"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Activation": {
+                    "$eq": [
+                        "$42230d2c-81a5-4a1e-bfc1-91b314dc003c",
+                        "Completed"
+                    ]
+                },
+                "Id": "042c361b-7544-4068-b389-a6fb2b5bace2",
+                "OnInactive": { "IfCompleted": { "State": "Completed" } },
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "BriefingName": "$loc UI_CONTRACT_ROSE_SHRED_BODY_BRIEFINGNAME",
+                "Image": "images/contracts/escalation/ContractEscalation_Sapienza_Rose_Objective_ShredBody.jpg",
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_ROSE_OBJ_4" },
+                "BriefingText": "$loc UI_CONTRACT_ROSE_OBJ_4",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [
+                            "272c47a8-f6f4-46b8-9090-c20c0f5e3bd8"
+                        ],
+                        "Targets": ["272c47a8-f6f4-46b8-9090-c20c0f5e3bd8"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": {
+                                "Condition": {
+                                    "$and": [
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "272c47a8-f6f4-46b8-9090-c20c0f5e3bd8"
+                                            ]
+                                        },
+                                        {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": ["$.#", "InCloset"]
+                                                },
+                                                "in": "$Value.DamageEvents"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "Transition": "Success"
+                            },
+                            "BodyBagged": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "272c47a8-f6f4-46b8-9090-c20c0f5e3bd8"
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            },
+                            "Giordano_DumpedOutOfReach": {
+                                "Transition": "Failure"
+                            },
+                            "DumpInOcean": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "272c47a8-f6f4-46b8-9090-c20c0f5e3bd8"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ],
+                            "BodyHidden": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "272c47a8-f6f4-46b8-9090-c20c0f5e3bd8"
+                                    ]
+                                },
+                                "Transition": "CheckContainer"
+                            }
+                        },
+                        "CheckContainer": {
+                            "setpieces": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "58c3b7bc-8d89-48f8-927a-d9b4b7fdd8e4"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "CheckKill"
+                                },
+                                {
+                                    "Condition": {
+                                        "$not": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "58c3b7bc-8d89-48f8-927a-d9b4b7fdd8e4"
+                                            ]
+                                        }
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        },
+                        "CheckKill": {
+                            "Giordano_Flushed": { "Transition": "Success" }
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/coastaltown/gamechanger_mamba_rose_wild_card.brick"
+        ],
+        "GameChangers": [
+            "51c8a014-dcc6-4714-a843-0295f9718c7a",
+            "0cf5e693-35ec-457e-a004-da4672b90376"
+        ],
+        "GameChangerReferences": [],
+        "Stashpoints": ["ad047285-a0c9-438d-b1e0-211ecbe47bda"],
+        "Entrances": ["594366fe-ccfd-4da5-8374-9501c3616e99"],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "0844669e-4e9f-4696-9c3b-99e574f59496",
+        "IsPublished": true,
+        "CreationTimestamp": "2016-05-04T09:51:27.393Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_ROSE_LEVEL_4_TITLE",
+        "Description": "",
+        "CodeName_Hint": "Rose Level 4",
+        "RequiredUnlockable": "",
+        "Location": "LOCATION_COASTALTOWN_NIGHT",
+        "ScenePath": "assembly:/_pro/scenes/missions/CoastalTown/_scene_mamba.entity",
+        "Type": "escalation",
+        "InGroup": "8dec1e62-bbf9-438c-8495-24559c884466",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "042c361b-7544-4068-b389-a6fb2b5bace2" },
+            { "IsNew": true, "Id": "42230d2c-81a5-4a1e-bfc1-91b314dc003c" },
+            { "Id": "0cf5e693-35ec-457e-a004-da4672b90376" },
+            { "Id": "51c8a014-dcc6-4714-a843-0295f9718c7a" },
+            { "Id": "c93a2349-e707-411a-ae2f-cc8db492f61f" },
+            { "Id": "f4e3bb5e-2eaf-4b69-a48b-ac762d2d6ff9" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:48.6794075Z",
+        "PublicId": "004515657447",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

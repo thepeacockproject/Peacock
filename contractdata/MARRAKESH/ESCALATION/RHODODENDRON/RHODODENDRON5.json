@@ -1,0 +1,230 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "abaac998-ed8b-458d-ba64-206e23612c63",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "6348cc33-665f-4470-80b4-a0ad836df702",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "58dceb1c-d7db-41dc-9750-55e3ab87fdf0",
+                        "HardCondition": true
+                    }
+                ],
+                "BriefingText": "$loc UI_CONTRACT_RHODODENDRON_OBJ_1_2",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_RHODODENDRON_OBJ_1_2"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["ca967a22-8b3a-406a-b7d9-788fb9f56d01"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "ca967a22-8b3a-406a-b7d9-788fb9f56d01"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "6348cc33-665f-4470-80b4-a0ad836df702"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "58dceb1c-d7db-41dc-9750-55e3ab87fdf0"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "ca967a22-8b3a-406a-b7d9-788fb9f56d01"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "9718cf7c-200b-402a-bc24-49fafd3f6c3d",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "6348cc33-665f-4470-80b4-a0ad836df702",
+                        "HardCondition": true
+                    }
+                ],
+                "BriefingText": "$loc UI_CONTRACT_RHODODENDRON_OBJ_2_2",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_RHODODENDRON_OBJ_2_2"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["82a9265a-0311-45fe-803f-89f25de6ea4e"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "82a9265a-0311-45fe-803f-89f25de6ea4e"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "6348cc33-665f-4470-80b4-a0ad836df702"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "82a9265a-0311-45fe-803f-89f25de6ea4e"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "05e7b712-c50e-4973-9298-412f75401b0c",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "BriefingText": "$loc UI_CONTRACT_RHODODENDRON_OBJ_3",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_RHODODENDRON_OBJ_3"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["c0ae62a4-21f7-4798-9ce4-fb0141791be0"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "c0ae62a4-21f7-4798-9ce4-fb0141791be0"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "6348cc33-665f-4470-80b4-a0ad836df702"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.Explosive",
+                                                    true
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "c0ae62a4-21f7-4798-9ce4-fb0141791be0"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [
+            "7fbe55a8-2d9f-4323-972e-59146420e99d",
+            "0cf5e693-35ec-457e-a004-da4672b90376"
+        ],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "911476b2-fd26-4e4e-a8c3-3201a27a6cc2",
+        "IsPublished": true,
+        "CreationTimestamp": "2016-03-31T09:11:23.05Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_RHODODENDRON_LEVEL_5_TITLE",
+        "Description": "UI_CONTRACT_RHODODENDRON_LEVEL_5_DESC",
+        "CodeName_Hint": "Rhododendron - Level 5",
+        "Location": "LOCATION_MARRAKECH",
+        "ScenePath": "assembly:/_pro/scenes/missions/marrakesh/_scene_spider.entity",
+        "Type": "escalation",
+        "InGroup": "45e6d255-f8e4-4170-ad7e-3416ab8a881d",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "05e7b712-c50e-4973-9298-412f75401b0c" },
+            { "Id": "0cf5e693-35ec-457e-a004-da4672b90376" },
+            { "Id": "7fbe55a8-2d9f-4323-972e-59146420e99d" },
+            { "Id": "9718cf7c-200b-402a-bc24-49fafd3f6c3d" },
+            { "Id": "abaac998-ed8b-458d-ba64-206e23612c63" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:48.3825286Z",
+        "PublicId": "006953058547",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

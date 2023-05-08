@@ -1,0 +1,187 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "0a4a67d0-2734-41d1-b487-51beb4da68f3",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "138eda40-501a-48b8-affc-928321566a4e",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "e17172cc-bf70-4df6-9828-d9856b1a24fd",
+                        "HardCondition": true
+                    }
+                ],
+                "BriefingText": "$loc UI_CONTRACT_AMARANTH_OBJ_1",
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_AMARANTH_OBJ_1" },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["b48eccf9-2e00-417a-8478-63c37f4a9a74"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "b48eccf9-2e00-417a-8478-63c37f4a9a74"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "138eda40-501a-48b8-affc-928321566a4e"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "e17172cc-bf70-4df6-9828-d9856b1a24fd"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "b48eccf9-2e00-417a-8478-63c37f4a9a74"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "687dc054-0f20-43a6-8db0-2ea1af7e7c98",
+                "Category": "primary",
+                "ObjectiveType": "setpiece",
+                "Image": "images/contracts/gamechangers/Gamechanger_Marrakesh_DataExtraction_Consulate_02.jpg",
+                "BriefingName": "$loc UI_GAMECHANGERS_MARRAKESH_DATA_EXTRACTION_CONSULATE_NAME",
+                "BriefingText": "$loc UI_CONTRACT_AMARANTH_OBJ_2",
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_AMARANTH_OBJ_2" },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {
+                        "Targets": ["9b83081d-1d1e-4191-99da-3c5c5d005a4b"]
+                    },
+                    "States": {
+                        "Start": {
+                            "LaptopHacked": { "Transition": "Success" },
+                            "Laptop_Destroyed": { "Transition": "Failure" }
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "ce38126d-cf66-4a99-bb3d-84280c9c4f67",
+                "IsHidden": true,
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "BriefingText": "$loc UI_CONTRACT_AMARANTH_OBJ_3_BRIEF",
+                "LongBriefing": "$loc UI_CONTRACT_AMARANTH_OBJ_3_LONGBRIEF",
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_AMARANTH_OBJ_3" },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["c2c93fe4-3ae8-4598-b4e5-838c44ae86da"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "c2c93fe4-3ae8-4598-b4e5-838c44ae86da"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "138eda40-501a-48b8-affc-928321566a4e"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "c2c93fe4-3ae8-4598-b4e5-838c44ae86da"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/marrakesh/gamechanger_amaranth_level_overrides.brick"
+        ],
+        "GameChangers": [
+            "881676bf-4560-4b2e-9e41-f4d66c66aae4",
+            "98cff1e9-af18-421a-adc1-0b040d136250",
+            "da07626c-0aa3-463a-92ff-8e7adbbf6230"
+        ],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "56aac990-940c-4cd4-b828-0a74000d54a6",
+        "IsPublished": true,
+        "CreationTimestamp": "2016-02-29T09:29:08.867Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_AMARANTH_LEVEL_4_TITLE",
+        "Description": "UI_CONTRACT_AMARANTH_LEVEL_4_DESC",
+        "CodeName_Hint": "Amaranth - Level 4",
+        "Location": "LOCATION_MARRAKECH",
+        "ScenePath": "assembly:/_pro/scenes/missions/marrakesh/_scene_spider.entity",
+        "Type": "escalation",
+        "RequiredUnlockable": "ACCESS_HIT_SPIDER",
+        "InGroup": "c949817b-5212-42e8-9b06-9a2eb83de167",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "ce38126d-cf66-4a99-bb3d-84280c9c4f67" },
+            { "Id": "98cff1e9-af18-421a-adc1-0b040d136250" },
+            { "Id": "da07626c-0aa3-463a-92ff-8e7adbbf6230" },
+            { "Id": "687dc054-0f20-43a6-8db0-2ea1af7e7c98" },
+            { "Id": "881676bf-4560-4b2e-9e41-f4d66c66aae4" },
+            { "Id": "0a4a67d0-2734-41d1-b487-51beb4da68f3" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:27.1481827Z",
+        "PublicId": "006559544147",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

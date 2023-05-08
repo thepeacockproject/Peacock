@@ -1,0 +1,21 @@
+{
+    "controller": "group",
+    "id": "mission_rewards",
+    "selectable": false,
+    "pressable": false,
+    "children": [
+        {
+            "view": "menu3.MissionRewardPage",
+            "selectable": false,
+            "pressable": false,
+            "data": {
+                "$setup": {
+                    "$set Drops": {
+                        "$each $.Drops": "$item $.Unlockable"
+                    },
+                    "$in": "$"
+                }
+            }
+        }
+    ]
+}

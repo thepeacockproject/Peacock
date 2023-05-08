@@ -1,0 +1,231 @@
+{
+    "Data": {
+        "Bricks": [
+            "Assembly:/_PRO/Scenes/missions/edgy/mission_fox/edgy_smilax.brick",
+            "Assembly:/_PRO/Scenes/missions/edgy/mission_fox/edgy_smilax_level1.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/edgy/mission_fox/vr_overrides_fox.brick",
+                    "assembly:/_pro/scenes/missions/edgy/mission_fox/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/edgy/mission_fox/vr_overrides_fox.brick"
+                ]
+            }
+        ],
+        "DevOnlyBricks": [],
+        "GameChangers": [
+            "63055f1a-bcd2-4e0f-8caf-b446f01d02f3",
+            "3db72bb5-63d6-47fe-9332-d7ea3c195e06"
+        ],
+        "Entrances": [],
+        "MandatoryLoadout": [
+            {
+                "Id": "TOKEN_OUTFIT_HERO_BBW_SUIT",
+                "Properties": {
+                    "LoadoutSlot": "Outfit",
+                    "RepositoryId": "a0f26534-0fb5-4762-83e6-f7dcd674614c"
+                }
+            }
+        ],
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "_comment": "Hidden objective: kill 3 pigs",
+                "Id": "66fad7cc-a95d-47a5-b9fa-f73e75603e88",
+                "IgnoreIfInactive": true,
+                "UpdateActivationWhileCompleted": true,
+                "IsHidden": true,
+                "ExcludeFromScoring": false,
+                "Category": "primary",
+                "OnInactive": {
+                    "IfCompleted": { "State": "Completed", "Visible": false },
+                    "IfInProgress": { "Visible": false }
+                },
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false }
+                },
+                "ObjectiveType": "custom",
+                "Image": "images/contracts/Escalation/ContractEscalation_Edgy_Smilax_Level1_Forest.jpg",
+                "BriefingName": "$loc UI_CONTRACT_SMILAX_KILL3PIGS",
+                "BriefingText": "$loc UI_CONTRACT_SMILAX_KILL3PIGS",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_SMILAX_KILL3PIGS"
+                },
+                "Type": "statemachine",
+                "Scope": "session",
+                "Definition": {
+                    "ContextListeners": {
+                        "update_counter": {
+                            "type": "custom",
+                            "HUDTemplate": {
+                                "display": {
+                                    "$loc": {
+                                        "key": "UI_CONTRACT_SMILAX_KILL3PIGS_HUD",
+                                        "data": [
+                                            "$.PigsKilledCounter",
+                                            "$.PigsKilledGoal"
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "Context": {
+                        "Targets": [
+                            "24eb4d45-53f2-43fd-95b4-e1b878a0cd0e",
+                            "f64a29c9-e251-4f4e-88fb-65eaec2d4a1d",
+                            "813721a9-ec4d-4caa-a409-600a054b2c12"
+                        ],
+                        "PigsKilledCounter": 0,
+                        "PigsKilledGoal": 3,
+                        "update_counter": 1
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$inarray": {
+                                                    "in": "$.Targets",
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.RepositoryId"
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Actions": {
+                                        "$inc": "PigsKilledCounter",
+                                        "$dec": "update_counter"
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.PigsKilledCounter", 3]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Visible objective: Count the kills",
+                "Id": "816aa22b-832f-47f2-9e16-304e60544757",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "Image": "images/contracts/Escalation/ContractEscalation_Edgy_Smilax_Level1_Forest.jpg",
+                "BriefingName": "$loc UI_CONTRACT_SMILAX_KILL3PIGS",
+                "BriefingText": "$loc UI_CONTRACT_SMILAX_KILL3PIGS",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_SMILAX_KILL3PIGS"
+                },
+                "Type": "statemachine",
+                "Scope": "session",
+                "Definition": {
+                    "ContextListeners": {
+                        "update_counter": {
+                            "type": "custom",
+                            "HUDTemplate": {
+                                "display": {
+                                    "$loc": {
+                                        "key": "UI_CONTRACT_SMILAX_KILL3PIGS_HUD",
+                                        "data": [
+                                            "$.PigsKilledCounter",
+                                            "$.PigsKilledGoal"
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "Context": {
+                        "Piggies": [
+                            "24eb4d45-53f2-43fd-95b4-e1b878a0cd0e",
+                            "f64a29c9-e251-4f4e-88fb-65eaec2d4a1d",
+                            "813721a9-ec4d-4caa-a409-600a054b2c12"
+                        ],
+                        "PigsKilledCounter": 0,
+                        "PigsKilledGoal": 3,
+                        "update_counter": 1
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$inarray": {
+                                                    "in": "$.Piggies",
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.RepositoryId"
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Actions": {
+                                        "$inc": "PigsKilledCounter",
+                                        "$dec": "update_counter"
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.PigsKilledCounter", 3]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "dbe47a10-4181-4238-a817-c2f56cdacba1",
+        "IsPublished": true,
+        "CreationTimestamp": "2018-10-17T14:35:18.194497Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_SMILAX_LEVEL_1_NAME",
+        "Description": "",
+        "CodeName_Hint": "Smilax - Level 1",
+        "Location": "LOCATION_EDGY_FOX",
+        "RequiredUnlockable": "ACCESS_HIT_FOX",
+        "ScenePath": "assembly:/_pro/scenes/missions/edgy/mission_fox/scene_fox_smilax.entity",
+        "Type": "escalation",
+        "Release": "3.1.1 Escalation",
+        "InGroup": "12d83cb0-a2d6-4c01-b9d8-675ac635ee61",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "816aa22b-832f-47f2-9e16-304e60544757" },
+            { "IsNew": true, "Id": "63055f1a-bcd2-4e0f-8caf-b446f01d02f3" },
+            { "IsNew": true, "Id": "3db72bb5-63d6-47fe-9332-d7ea3c195e06" }
+        ],
+        "Entitlements": ["LOCATION_EDGY"],
+        "LastUpdate": "2023-03-30T11:20:27.6433819Z",
+        "PublicId": "029609716047",
+        "IsFeatured": false,
+        "OpportunityData": []
+    },
+    "UserData": {}
+}

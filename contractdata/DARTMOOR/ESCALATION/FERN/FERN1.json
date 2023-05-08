@@ -1,0 +1,197 @@
+{
+    "Data": {
+        "Bricks": [
+            "Assembly:/_PRO/Scenes/missions/Ancestral/ancestral_fern.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ancestral_bulldog.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ancestral_bulldog.brick"
+                ]
+            }
+        ],
+        "DevOnlyBricks": [],
+        "GameChangers": [
+            "63055f1a-bcd2-4e0f-8caf-b446f01d02f3",
+            "3db72bb5-63d6-47fe-9332-d7ea3c195e06"
+        ],
+        "Entrances": ["8cb4bebf-6a89-46b4-a1c7-0e0ee040e16d"],
+        "MandatoryLoadout": [
+            {
+                "Id": "TOKEN_OUTFIT_HERO_HUNTING_SUIT",
+                "Properties": {
+                    "LoadoutSlot": "Outfit",
+                    "RepositoryId": "ae7358ae-ac6d-4217-b86e-efffde5b90dd"
+                }
+            }
+        ],
+        "GameChangerReferences": [],
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "_comment": "Zacharys balcony guard",
+                "Id": "3c8045ae-382d-4bde-a26f-cfa49bd9fc71",
+                "Category": "primary",
+                "BriefingName": "",
+                "Image": "images/actors/actor_5cfc8323-1053-4138-b2a4-2448b5003d1e.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "ae7358ae-ac6d-4217-b86e-efffde5b90dd",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_FERN_LUCIANBARKER_ANY"
+                },
+                "BriefingText": "$loc UI_CONTRACT_FERN_LUCIANBARKER_ANY",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["5cfc8323-1053-4138-b2a4-2448b5003d1e"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "5cfc8323-1053-4138-b2a4-2448b5003d1e"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "ae7358ae-ac6d-4217-b86e-efffde5b90dd"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "5cfc8323-1053-4138-b2a4-2448b5003d1e"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Lawyer room guard",
+                "Id": "e424c76e-2094-47c1-b557-d49af17050b8",
+                "Category": "primary",
+                "BriefingName": "",
+                "Image": "images/actors/actor_604dfbdb-1cdd-4d96-ba13-7a7dacbc973c.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "ae7358ae-ac6d-4217-b86e-efffde5b90dd",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_FERN_BENMOORE_ANY"
+                },
+                "BriefingText": "$loc UI_CONTRACT_FERN_BENMOORE_ANY",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["604dfbdb-1cdd-4d96-ba13-7a7dacbc973c"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "604dfbdb-1cdd-4d96-ba13-7a7dacbc973c"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "ae7358ae-ac6d-4217-b86e-efffde5b90dd"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "604dfbdb-1cdd-4d96-ba13-7a7dacbc973c"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "a4f91816-096f-40c1-9e4e-8de8ad950b41",
+        "IsPublished": true,
+        "CreationTimestamp": "2018-10-17T14:35:18.194497Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_FERN_LEVEL_1_NAME",
+        "Description": "UI_CONTRACT_FERN_GROUP_DESC",
+        "CodeName_Hint": "Fern - Level 1",
+        "Location": "LOCATION_ANCESTRAL_BULLDOG",
+        "RequiredUnlockable": "ACCESS_HIT_BULLDOG",
+        "ScenePath": "assembly:/_pro/scenes/missions/ancestral/scene_bulldog_fern.entity",
+        "Type": "escalation",
+        "Release": "3.1.0 Escalation",
+        "InGroup": "4689ef5e-0ddd-44b3-adca-aebf3293d9e1",
+        "Entitlements": ["H3_EXPANSION"],
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "3c8045ae-382d-4bde-a26f-cfa49bd9fc71" },
+            { "IsNew": true, "Id": "e424c76e-2094-47c1-b557-d49af17050b8" },
+            { "IsNew": true, "Id": "63055f1a-bcd2-4e0f-8caf-b446f01d02f3" },
+            { "IsNew": true, "Id": "3db72bb5-63d6-47fe-9332-d7ea3c195e06" }
+        ],
+        "LastUpdate": "2023-03-30T11:20:25.6523427Z",
+        "PublicId": "028896468847",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Ancestral_Fern.jpg"
+    },
+    "UserData": {}
+}

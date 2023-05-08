@@ -1,0 +1,96 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "6bf7031e-cfd6-4a6b-919b-d023609709ed",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "accident_push",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_GOOSEFOOT_OBJ_1"
+                },
+                "BriefingText": "$loc UI_CONTRACT_GOOSEFOOT_OBJ_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["63483b25-2a8b-40e4-846b-8f709228e0f3"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "63483b25-2a8b-40e4-846b-8f709228e0f3"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "PushOver"
+                                                        ]
+                                                    },
+                                                    "in": "$Value.DamageEvents"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "63483b25-2a8b-40e4-846b-8f709228e0f3"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "e22b9844-8b4b-47e9-8401-4938bc1e038d",
+        "IsPublished": true,
+        "CreationTimestamp": "2016-01-21T11:51:05.833Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_GOOSEFOOT_LEVEL_1_TITLE",
+        "Description": "UI_CONTRACT_GOOSEFOOT_LEVEL_1_DESC",
+        "CodeName_Hint": "Goosefoot - Level 1",
+        "Location": "LOCATION_PARIS",
+        "ScenePath": "assembly:/_pro/scenes/missions/paris/_scene_paris.entity",
+        "TileImage": "",
+        "Type": "escalation",
+        "InGroup": "bfb0d544-b4c9-4533-bed4-4562a43a3f40",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "6bf7031e-cfd6-4a6b-919b-d023609709ed" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:38.3043616Z",
+        "PublicId": "002120674247",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

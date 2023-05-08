@@ -1,0 +1,533 @@
+{
+    "Data": {
+        "EnableExits": {
+            "$eq": ["$1ee38857-52f5-4cd2-ab0b-a9ff3eb6b363", "Completed"]
+        },
+        "Bricks": [
+            "Assembly:/_PRO/Scenes/missions/golden/mission_gecko/golden_lunaria.brick",
+            "Assembly:/_PRO/Scenes/missions/golden/mission_gecko/golden_lunaria_level3.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/scenes/missions/golden/mission_gecko/vr_overrides_golden_gecko.brick",
+                    "assembly:/_PRO/scenes/missions/golden/mission_gecko/vr_overrides_ps4perf.brick",
+                    "assembly:/_PRO/scenes/missions/golden/mission_gecko/vr_overrides_lunaria.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/scenes/missions/golden/mission_gecko/vr_overrides_golden_gecko.brick",
+                    "assembly:/_PRO/scenes/missions/golden/mission_gecko/vr_overrides_lunaria.brick"
+                ]
+            }
+        ],
+        "DevOnlyBricks": [],
+        "GameChangers": [
+            "3db72bb5-63d6-47fe-9332-d7ea3c195e06",
+            "9f409781-0a06-4748-b08d-784e78c6d481",
+            "63055f1a-bcd2-4e0f-8caf-b446f01d02f3",
+            "b25d2017-f68e-4914-8c3c-19b21dfb18dd",
+            "4fd079b5-4238-453a-84c9-2183f3dc0b7e"
+        ],
+        "Entrances": [],
+        "MandatoryLoadout": [],
+        "GameChangerReferences": [],
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "_comment": "----- Silent objective to start everything -----",
+                "Id": "06264d54-1e76-4e8c-a4e4-9316b380f23e",
+                "Type": "statemachine",
+                "Category": "condition",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                },
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "ContractStart": [{ "Transition": "Success" }]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Eliminate art installation backstage guard",
+                "Id": "50f852d6-d7e0-4e00-9d87-c8a9cf33df22",
+                "Category": "primary",
+                "BriefingName": "",
+                "Image": "images/actors/actor_4ae1d783-a5b3-42fe-876f-6b694c420f2b.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "39aea78e-02f7-4bd7-9dab-eb51691c7a7b",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_LUNARIA_TECHGUARD"
+                },
+                "BriefingText": "$loc UI_CONTRACT_LUNARIA_TECHGUARD",
+                "Type": "statemachine",
+                "Activation": {
+                    "$eq": [
+                        "$06264d54-1e76-4e8c-a4e4-9316b380f23e",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": { "IfInProgress": { "Visible": false } },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["4ae1d783-a5b3-42fe-876f-6b694c420f2b"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "4ae1d783-a5b3-42fe-876f-6b694c420f2b"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Eliminate Server room janitor. Pistol",
+                "Id": "3e8ea207-6a66-4596-9e8c-c83079e47480",
+                "Category": "primary",
+                "BriefingName": "",
+                "ExcludeFromScoring": true,
+                "Image": "images/actors/actor_a27e6558-7805-48af-8ef9-42836798938c.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "weapontype",
+                        "RepositoryId": "1cae7d71-55c8-401a-9dfb-cd0909c4f6ee",
+                        "HardCondition": true,
+                        "KillMethod": "pistol"
+                    },
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "39aea78e-02f7-4bd7-9dab-eb51691c7a7b",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_LUNARIA_PISTOL_01"
+                },
+                "BriefingText": "$loc UI_CONTRACT_LUNARIA_PISTOL_01",
+                "Type": "statemachine",
+                "Activation": {
+                    "$eq": [
+                        "$50f852d6-d7e0-4e00-9d87-c8a9cf33df22",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": { "IfInProgress": { "Visible": false } },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["a27e6558-7805-48af-8ef9-42836798938c"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "a27e6558-7805-48af-8ef9-42836798938c"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemCategory",
+                                                    "pistol"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "a27e6558-7805-48af-8ef9-42836798938c"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Eliminate Art installation technician. Pistol",
+                "Id": "eae219e3-96f5-46e0-9b95-bdda43e2052c",
+                "Category": "primary",
+                "BriefingName": "",
+                "ExcludeFromScoring": true,
+                "Image": "images/actors/actor_e5f20981-a935-4bb5-a598-0951d052a6e9.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "weapontype",
+                        "RepositoryId": "1cae7d71-55c8-401a-9dfb-cd0909c4f6ee",
+                        "HardCondition": true,
+                        "KillMethod": "pistol"
+                    },
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "39aea78e-02f7-4bd7-9dab-eb51691c7a7b",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_LUNARIA_PISTOL_04"
+                },
+                "BriefingText": "$loc UI_CONTRACT_LUNARIA_PISTOL_04",
+                "Type": "statemachine",
+                "Activation": {
+                    "$eq": [
+                        "$50f852d6-d7e0-4e00-9d87-c8a9cf33df22",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": { "IfInProgress": { "Visible": false } },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["e5f20981-a935-4bb5-a598-0951d052a6e9"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "e5f20981-a935-4bb5-a598-0951d052a6e9"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemCategory",
+                                                    "pistol"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "e5f20981-a935-4bb5-a598-0951d052a6e9"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Eliminate helicopter pilot. Pistol",
+                "Id": "bb68e777-5757-4a49-b593-431267849871",
+                "Category": "primary",
+                "BriefingName": "",
+                "ExcludeFromScoring": true,
+                "Image": "images/actors/actor_1e0f5eed-8cfd-4b85-9593-38df4c7ce490.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "weapontype",
+                        "RepositoryId": "1cae7d71-55c8-401a-9dfb-cd0909c4f6ee",
+                        "HardCondition": true,
+                        "KillMethod": "pistol"
+                    },
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "39aea78e-02f7-4bd7-9dab-eb51691c7a7b",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_LUNARIA_PISTOL_02"
+                },
+                "BriefingText": "$loc UI_CONTRACT_LUNARIA_PISTOL_02",
+                "Type": "statemachine",
+                "Activation": {
+                    "$and": [
+                        {
+                            "$eq": [
+                                "$3e8ea207-6a66-4596-9e8c-c83079e47480",
+                                "Completed"
+                            ]
+                        },
+                        {
+                            "$eq": [
+                                "$eae219e3-96f5-46e0-9b95-bdda43e2052c",
+                                "Completed"
+                            ]
+                        }
+                    ]
+                },
+                "OnInactive": { "IfInProgress": { "Visible": false } },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["1e0f5eed-8cfd-4b85-9593-38df4c7ce490"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "1e0f5eed-8cfd-4b85-9593-38df4c7ce490"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemCategory",
+                                                    "pistol"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "1e0f5eed-8cfd-4b85-9593-38df4c7ce490"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "Eliminate Penthouse Janitor_Outside. Pistol",
+                "Id": "ec676cd5-20a7-4b23-a340-7579f302f699",
+                "Category": "primary",
+                "BriefingName": "",
+                "ExcludeFromScoring": true,
+                "Image": "images/actors/actor_cb1aa4f5-b6be-4508-a333-f6a678e2d995.jpg",
+                "TargetConditions": [
+                    {
+                        "Type": "weapontype",
+                        "RepositoryId": "1cae7d71-55c8-401a-9dfb-cd0909c4f6ee",
+                        "HardCondition": true,
+                        "KillMethod": "pistol"
+                    },
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "39aea78e-02f7-4bd7-9dab-eb51691c7a7b",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_LUNARIA_PISTOL_03"
+                },
+                "BriefingText": "$loc UI_CONTRACT_LUNARIA_PISTOL_03",
+                "Type": "statemachine",
+                "Activation": {
+                    "$and": [
+                        {
+                            "$eq": [
+                                "$3e8ea207-6a66-4596-9e8c-c83079e47480",
+                                "Completed"
+                            ]
+                        },
+                        {
+                            "$eq": [
+                                "$eae219e3-96f5-46e0-9b95-bdda43e2052c",
+                                "Completed"
+                            ]
+                        }
+                    ]
+                },
+                "OnInactive": { "IfInProgress": { "Visible": false } },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["cb1aa4f5-b6be-4508-a333-f6a678e2d995"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "cb1aa4f5-b6be-4508-a333-f6a678e2d995"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemCategory",
+                                                    "pistol"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "cb1aa4f5-b6be-4508-a333-f6a678e2d995"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Silent objective to unlock exits -----",
+                "Id": "1ee38857-52f5-4cd2-ab0b-a9ff3eb6b363",
+                "Type": "statemachine",
+                "Category": "condition",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
+                },
+                "Definition": {
+                    "Context": {
+                        "Greedies": [
+                            "a27e6558-7805-48af-8ef9-42836798938c",
+                            "1e0f5eed-8cfd-4b85-9593-38df4c7ce490",
+                            "cb1aa4f5-b6be-4508-a333-f6a678e2d995",
+                            "e5f20981-a935-4bb5-a598-0951d052a6e9",
+                            "4ae1d783-a5b3-42fe-876f-6b694c420f2b"
+                        ],
+                        "GreedKilledCounter": 0,
+                        "GreedKilledGoal": 1,
+                        "update_counter": 1
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$inarray": {
+                                            "in": "$.Greedies",
+                                            "?": {
+                                                "$eq": [
+                                                    "$.#",
+                                                    "$Value.RepositoryId"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "Actions": {
+                                        "$inc": "GreedKilledCounter",
+                                        "$dec": "update_counter"
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.GreedKilledCounter", 1]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "fecb5488-a31e-4eff-a08d-63d966ea96a2",
+        "IsPublished": true,
+        "CreationTimestamp": "2018-10-17T14:35:18.194497Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_LUNARIA_LEVEL_3_NAME",
+        "Description": "UI_CONTRACT_LUNARIA_GROUP_DESC",
+        "CodeName_Hint": "Lunaria - Level 3",
+        "Location": "LOCATION_GOLDEN_GECKO",
+        "ScenePath": "assembly:/_pro/scenes/missions/golden/mission_gecko/scene_gecko_lunaria.entity",
+        "Type": "escalation",
+        "Release": "3.2.0 Escalation",
+        "InGroup": "ae04c7a0-4028-4524-b27f-6a62f020fdca",
+        "Entitlements": ["H3_DEADLYSINS_GREED"],
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "3e8ea207-6a66-4596-9e8c-c83079e47480" },
+            { "IsNew": true, "Id": "bb68e777-5757-4a49-b593-431267849871" },
+            { "IsNew": true, "Id": "ec676cd5-20a7-4b23-a340-7579f302f699" },
+            { "IsNew": true, "Id": "eae219e3-96f5-46e0-9b95-bdda43e2052c" },
+            { "IsNew": true, "Id": "50f852d6-d7e0-4e00-9d87-c8a9cf33df22" },
+            { "IsNew": true, "Id": "9f409781-0a06-4748-b08d-784e78c6d481" },
+            { "Id": "3db72bb5-63d6-47fe-9332-d7ea3c195e06" },
+            { "Id": "4fd079b5-4238-453a-84c9-2183f3dc0b7e" },
+            { "Id": "63055f1a-bcd2-4e0f-8caf-b446f01d02f3" },
+            { "Id": "b25d2017-f68e-4914-8c3c-19b21dfb18dd" }
+        ],
+        "LastUpdate": "2023-03-30T11:20:26.7892761Z",
+        "PublicId": "027636306547",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Golden_Lunaria.jpg"
+    },
+    "UserData": {}
+}

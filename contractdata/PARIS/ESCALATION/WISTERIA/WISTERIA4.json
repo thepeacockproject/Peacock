@@ -1,0 +1,145 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "65898e62-dd29-4bb4-95f9-83d8e4678955",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_WISTERIA_OBJ_1" },
+                "BriefingText": "$loc UI_CONTRACT_WISTERIA_OBJ_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["d85b4a79-6efe-40e0-96ca-284304d92378"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "d85b4a79-6efe-40e0-96ca-284304d92378"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "992cc7b6-4ccf-4ae8-a467-e9b2aabaeeb5"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillClass",
+                                                    "melee"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "d85b4a79-6efe-40e0-96ca-284304d92378"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "b2fcac60-8cb9-433d-9072-341a608fdd72",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "accident_drown",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_WISTERIA_OBJ_2" },
+                "BriefingText": "$loc UI_CONTRACT_WISTERIA_OBJ_2",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["e5b4a8e0-c01d-4bd9-9a8c-2eabb0c785d8"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "e5b4a8e0-c01d-4bd9-9a8c-2eabb0c785d8"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceType",
+                                                    "7b28519a-3c66-4498-a61b-ae6926a85594"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "e5b4a8e0-c01d-4bd9-9a8c-2eabb0c785d8"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [
+            "3a22b9d5-18d7-4051-adae-87bc6769b36f",
+            "576b385f-2213-4f72-a17c-c346338d3d9f"
+        ],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "15e2b1e0-2929-4f89-b166-cf44e1736a80",
+        "IsPublished": true,
+        "CreationTimestamp": "2015-11-04T12:31:18.167Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_WISTERIA_LEVEL_4_TITLE",
+        "Description": "UI_CONTRACT_WISTERIA_LEVEL_4_DESC",
+        "CodeName_Hint": "Wisteria - level 4",
+        "Location": "LOCATION_PARIS",
+        "ScenePath": "assembly:/_pro/scenes/missions/paris/_scene_paris.entity",
+        "Type": "escalation",
+        "InGroup": "54e6c794-2855-4ecf-acc2-d7710d5d96d1",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "576b385f-2213-4f72-a17c-c346338d3d9f" },
+            { "Id": "b2fcac60-8cb9-433d-9072-341a608fdd72" },
+            { "Id": "3a22b9d5-18d7-4051-adae-87bc6769b36f" },
+            { "Id": "65898e62-dd29-4bb4-95f9-83d8e4678955" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:52.9919215Z",
+        "PublicId": "002511888747",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

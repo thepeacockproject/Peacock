@@ -1,0 +1,86 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "1601318b-d390-481b-b22d-c9cce3971f9e",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "143c62fc-4bf6-474a-9542-1e81bf93a044",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_SKULLCAP_OBJ_1" },
+                "BriefingText": "$loc UI_CONTRACT_SKULLCAP_OBJ_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["b01d3958-47d7-45cd-944b-d5107c8724b1"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "b01d3958-47d7-45cd-944b-d5107c8724b1"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "143c62fc-4bf6-474a-9542-1e81bf93a044"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "b01d3958-47d7-45cd-944b-d5107c8724b1"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [],
+        "GameChangerReferences": [],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "c3c4a67d-891f-4de2-b47c-0a614369189c",
+        "IsPublished": true,
+        "CreationTimestamp": "2016-05-04T09:51:27.393Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_SKULLCAP_LEVEL_1_TITLE",
+        "Description": "",
+        "CodeName_Hint": "Scullcap Level 1",
+        "RequiredUnlockable": "ACCESS_HIT_BULL",
+        "Location": "LOCATION_COLORADO",
+        "ScenePath": "assembly:/_pro/scenes/missions/Colorado_2/_scene_bull.entity",
+        "Type": "escalation",
+        "InGroup": "e6f4d3a4-9a33-4bd9-b761-da297069cf8c",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "1601318b-d390-481b-b22d-c9cce3971f9e" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:49.7262861Z",
+        "PublicId": "009782638747",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

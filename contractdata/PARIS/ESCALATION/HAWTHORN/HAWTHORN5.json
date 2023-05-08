@@ -1,0 +1,177 @@
+{
+    "Data": {
+        "EnableExits": {
+            "$eq": [
+                "$1e6d3695-6664-4fa8-acfc-a8e0fdd62fdf",
+                "$cf693f1a-ec1d-4a24-af91-cbbbfa3db1bc",
+                "Completed"
+            ]
+        },
+        "Objectives": [
+            {
+                "Id": "1e6d3695-6664-4fa8-acfc-a8e0fdd62fdf",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "accident_suspended_object",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_HAWTHORN_OBJ_1_2"
+                },
+                "BriefingText": "$loc UI_CONTRACT_HAWTHORN_OBJ_1_2",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["b3d1ba44-e74b-4586-abf1-ec5e8c01f2fa"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "b3d1ba44-e74b-4586-abf1-ec5e8c01f2fa"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "accident_suspended_object"
+                                                        ]
+                                                    },
+                                                    "in": [
+                                                        "$Value.KillMethodBroad",
+                                                        "$Value.KillMethodStrict"
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "b3d1ba44-e74b-4586-abf1-ec5e8c01f2fa"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "cf693f1a-ec1d-4a24-af91-cbbbfa3db1bc",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "accident_explosion",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_HAWTHORN_OBJ_2_2"
+                },
+                "BriefingText": "$loc UI_CONTRACT_HAWTHORN_OBJ_2_2",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["7809503d-5324-4e73-8915-db8b1e029151"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "7809503d-5324-4e73-8915-db8b1e029151"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "accident_explosion"
+                                                        ]
+                                                    },
+                                                    "in": [
+                                                        "$Value.KillMethodBroad",
+                                                        "$Value.KillMethodStrict"
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "7809503d-5324-4e73-8915-db8b1e029151"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [
+            "3ad028ef-f014-4b7e-848a-c6698e582e65",
+            "390fa2b6-d327-4f1f-b824-1987b8e0a778",
+            "91cf5610-e7ea-4665-9c7b-4b3d5a18a37d",
+            "0cf5e693-35ec-457e-a004-da4672b90376"
+        ],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "541bcd99-44dc-4e0a-8520-15a528223cac",
+        "IsPublished": true,
+        "CreationTimestamp": "2015-08-19T12:08:33.08Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_HAWTHORN_LEVEL_5_TITLE",
+        "Description": "UI_CONTRACT_HAWTHORN_LEVEL_5_DESC",
+        "CodeName_Hint": "Hawthorn - Level 5",
+        "RequiredUnlockable": "ACCESS_HIT_PEACOCK",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Paris/_scene_paris.entity",
+        "Location": "LOCATION_PARIS",
+        "Type": "escalation",
+        "InGroup": "e6be23e8-8602-42c8-a014-17ffbfa053f5",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "0cf5e693-35ec-457e-a004-da4672b90376" },
+            { "Id": "91cf5610-e7ea-4665-9c7b-4b3d5a18a37d" },
+            { "Id": "390fa2b6-d327-4f1f-b824-1987b8e0a778" },
+            { "Id": "3ad028ef-f014-4b7e-848a-c6698e582e65" },
+            { "Id": "cf693f1a-ec1d-4a24-af91-cbbbfa3db1bc" },
+            { "Id": "1e6d3695-6664-4fa8-acfc-a8e0fdd62fdf" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:39.0699944Z",
+        "PublicId": "002970416947",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

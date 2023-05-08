@@ -22,7 +22,11 @@ import { getConfig } from "../configSwizzleManager"
 import { getDefaultSuitFor, uuidRegex } from "../utils"
 import { json as jsonMiddleware } from "body-parser"
 import { controller } from "../controller"
-import { generateUserCentric, getSubLocationByName } from "../contracts/dataGen"
+import {
+    generateUserCentric,
+    getParentLocationByName,
+    getSubLocationByName,
+} from "../contracts/dataGen"
 import { getUserData } from "../databaseHandler"
 import { log, LogLevel } from "../loggingInterop"
 import { createInventory } from "../inventory"
@@ -74,10 +78,16 @@ legacyMenuDataRouter.get(
 
         const userProfile = getUserData(req.jwt.unique_name, req.gameVersion)
 
+        const sublocation = getSubLocationByName(
+            contractData.Metadata.Location,
+            req.gameVersion,
+        )
+
         const inventory = createInventory(
             req.jwt.unique_name,
             req.gameVersion,
             userProfile.Extensions.entP,
+            sublocation,
         )
 
         const userCentricContract = generateUserCentric(
@@ -86,14 +96,9 @@ legacyMenuDataRouter.get(
             "h1",
         )
 
-        const sublocation = getSubLocationByName(
-            contractData.Metadata.Location,
-            req.gameVersion,
-        )
-
         const defaultLoadout = {
             2: "FIREARMS_HERO_PISTOL_TACTICAL_001_SU_SKIN01",
-            3: getDefaultSuitFor(sublocation?.Properties?.ParentLocation),
+            3: getDefaultSuitFor(sublocation),
             4: "TOKEN_FIBERWIRE",
             5: "PROP_TOOL_COIN",
         }
@@ -214,6 +219,7 @@ legacyMenuDataRouter.get("/Safehouse", (req: RequestWithJwt, res, next) => {
     // call /SafehouseCategory but rewrite the result a bit
     req.url = `/SafehouseCategory?page=0&type=${req.query.type}&subtype=`
     const originalJsonFunc = res.json
+
     res.json = function (originalData) {
         return originalJsonFunc.call(this, {
             template,
@@ -222,6 +228,7 @@ legacyMenuDataRouter.get("/Safehouse", (req: RequestWithJwt, res, next) => {
             },
         })
     }
+
     next()
 })
 
@@ -250,6 +257,51 @@ legacyMenuDataRouter.get(
                             req.jwt.unique_name,
                         ),
                 },
+            },
+        })
+    },
+)
+
+legacyMenuDataRouter.get(
+    "/MasteryLocation",
+    jsonMiddleware(),
+    (req: RequestWithJwt<{ locationId: string; difficulty: string }>, res) => {
+        const masteryData =
+            controller.masteryService.getMasteryDataForDestination(
+                req.query.locationId,
+                req.gameVersion,
+                req.jwt.unique_name,
+            )
+
+        const location = getParentLocationByName(
+            req.query.locationId,
+            req.gameVersion,
+        )
+
+        res.json({
+            template: getConfig("LegacyMasteryLocationTemplate", false),
+            data: {
+                DifficultyLevelData: [
+                    {
+                        Name: "normal",
+                        Data: {
+                            LocationId: req.query.locationId,
+                            ...masteryData[0],
+                        },
+                        Available: true,
+                    },
+                    // This is currently a copy of "normal" as pro1 is not implemented
+                    {
+                        Name: "pro1",
+                        Data: {
+                            LocationId: req.query.locationId,
+                            ...masteryData[0],
+                        },
+                        Available: true,
+                    },
+                ],
+                LocationId: req.query.locationId,
+                Location: location,
             },
         })
     },

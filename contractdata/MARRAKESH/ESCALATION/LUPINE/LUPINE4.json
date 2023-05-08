@@ -1,0 +1,195 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "f0476810-bdae-4642-8f8f-dc8ed20595da",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "TargetConditions": [],
+                "BriefingText": "$loc UI_CONTRACT_LUPINE_OBJ_1_2",
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_LUPINE_OBJ_1_2" },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["33eb89b8-5f61-426d-b660-69b54b33a93b"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "33eb89b8-5f61-426d-b660-69b54b33a93b"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillClass",
+                                                    "explosion"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "33eb89b8-5f61-426d-b660-69b54b33a93b"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "ae817ab7-fdfe-4902-9f0c-30518a39207d",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "TargetConditions": [],
+                "BriefingText": "$loc UI_CONTRACT_LUPINE_OBJ_2_2",
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_LUPINE_OBJ_2_2" },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["a35845bf-5004-47c0-a78f-cf0885c95f0b"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "a35845bf-5004-47c0-a78f-cf0885c95f0b"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillClass",
+                                                    "explosion"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "a35845bf-5004-47c0-a78f-cf0885c95f0b"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "5c848109-1dd8-4c16-a639-53aac450cb77",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "TargetConditions": [],
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_LUPINE_OBJ_3_2" },
+                "BriefingText": "$loc UI_CONTRACT_LUPINE_OBJ_3_2",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["20fe3a6e-2274-4098-9247-91a74c8fe03f"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "20fe3a6e-2274-4098-9247-91a74c8fe03f"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillClass",
+                                                    "explosion"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "20fe3a6e-2274-4098-9247-91a74c8fe03f"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": ["0cf5e693-35ec-457e-a004-da4672b90376"],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "f16304ac-8953-4849-9bf2-afc51ca36729",
+        "IsPublished": true,
+        "CreationTimestamp": "2016-02-23T16:18:20.273Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_LUPINE_LEVEL_4_TITLE",
+        "Description": "UI_CONTRACT_LUPINE_LEVEL_4_DESC",
+        "CodeName_Hint": "Lupine - Level 4",
+        "Location": "LOCATION_MARRAKECH",
+        "ScenePath": "assembly:/_pro/scenes/missions/marrakesh/_scene_spider.entity",
+        "Type": "escalation",
+        "RequiredUnlockable": "ACCESS_HIT_SPIDER",
+        "InGroup": "11c93649-6b00-46ac-bf2d-a3599a6ab3a9",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "0cf5e693-35ec-457e-a004-da4672b90376" },
+            { "Id": "5c848109-1dd8-4c16-a639-53aac450cb77" },
+            { "Id": "ae817ab7-fdfe-4902-9f0c-30518a39207d" },
+            { "Id": "f0476810-bdae-4642-8f8f-dc8ed20595da" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:44.4762633Z",
+        "PublicId": "006821496847",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

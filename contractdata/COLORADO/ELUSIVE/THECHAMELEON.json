@@ -1,0 +1,158 @@
+{
+    "Data": {
+        "EnableSaving": true,
+        "Objectives": [
+            {
+                "Id": "3c074d6f-3c97-4891-9baa-4e44567693d7",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "IsHidden": true,
+                "BriefingName": "$loc UI_CONTRACT_BUSHWHACKER_OBJ_1_TITLE",
+                "BriefingText": "$loc UI_CONTRACT_BUSHWHACKER_OBJ_1_TITLE",
+                "LongBriefingText": "$loc UI_CONTRACT_BUSHWHACKER_OBJ_1_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_BUSHWHACKER_OBJ_1_TITLE"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": ["441209db-35ca-46e8-bb99-b9c3f8e8783c"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "441209db-35ca-46e8-bb99-b9c3f8e8783c"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": ["$Value.Accident", true]
+                                            },
+                                            {
+                                                "$not": {
+                                                    "$eq": [
+                                                        "$Value.KillClass",
+                                                        "explosion"
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "441209db-35ca-46e8-bb99-b9c3f8e8783c"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillClass",
+                                                    "poison"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "441209db-35ca-46e8-bb99-b9c3f8e8783c"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "f94dcce7-2d6e-4f1f-a095-7b93b5e3a5ea",
+                "IsHidden": true,
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": true,
+                "Image": "images/contracts/elusive/027_Bushwacker/Objective1.jpg",
+                "BriefingName": "$loc UI_CONTRACT_BUSHWHACKER_OBJ_2_TITLE",
+                "BriefingText": "$loc UI_CONTRACT_BUSHWHACKER_OBJ_2_DESC",
+                "LongBriefingText": "$loc UI_CONTRACT_BUSHWHACKER_OBJ_2_DESC",
+                "Category": "primary",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_BUSHWHACKER_OBJ_2_TITLE"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "UncoveredEvidence": { "Transition": "Success" },
+                            "LaptopDestroyed": { "Transition": "Failure" }
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_PRO/Scenes/Missions/Colorado_2/_scene_bushwacker.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/missions/colorado_2/vr_overrides_bull.brick",
+                    "assembly:/_PRO/scenes/missions/colorado_2/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/Scenes/missions/colorado_2/vr_overrides_bull.brick"
+                ]
+            }
+        ],
+        "Entrances": [
+            "e5c0d1a4-72b0-4cc0-857d-8bb155ea09f4",
+            "6c943798-8ca7-42cc-861a-becdb32017da",
+            "bd0cc571-e4a3-41f1-9b9b-608cdecc09c1",
+            "f8ff0b17-b9f5-41ce-b7b1-db8bf6c47f4a",
+            "370b4106-96f2-4a04-9bc6-029b86b301aa",
+            "53ce9bb6-ef1c-4f17-8951-5b501fb941d4",
+            "1d3a5b4a-5573-4e2d-8a98-d1c881cbd13e"
+        ],
+        "GameChangers": []
+    },
+    "Metadata": {
+        "Id": "550c4d75-ca87-4be7-a18e-caf30e6c8136",
+        "Title": "UI_CONTRACT_BUSHWHACKER_TITLE",
+        "Description": "UI_CONTRACT_BUSHWHACKER_DESC",
+        "BriefingVideo": "briefing_bushwacker",
+        "DebriefingVideo": "debriefing_bushwacker",
+        "CodeName_Hint": "Bushwacker",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Colorado_2/_scene_bull.entity",
+        "TileImage": "images/contracts/elusive/027_Bushwacker/Title.jpg",
+        "Location": "LOCATION_COLORADO",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Type": "elusive",
+        "PublicId": "009556361447",
+        "Entitlements": ["H1_LEGACY_STANDARD"],
+        "Season": 1
+    },
+    "UserData": {}
+}

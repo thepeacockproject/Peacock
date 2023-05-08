@@ -1,0 +1,94 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Id": "659b6295-c1c9-42d7-89e0-e059310ec887",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "10601c6b-1f65-44ed-92a1-bf843f023d3f",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": { "display": "$loc $.ObjectiveText" },
+                "BriefingText": "$loc UI_CONTRACT_DAFFODIL_LEVEL_1_OBJ_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "ObjectiveText": "UI_CONTRACT_DAFFODIL_LEVEL_1_OBJ_1",
+                        "KilledActors": [],
+                        "Targets": ["4b83cf74-a44e-4923-ac31-a1fccb92342f"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "4b83cf74-a44e-4923-ac31-a1fccb92342f"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "10601c6b-1f65-44ed-92a1-bf843f023d3f"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "4b83cf74-a44e-4923-ac31-a1fccb92342f"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [
+            "3a8d4421-096e-4a1b-853a-c12886a51d1f",
+            "da07626c-0aa3-463a-92ff-8e7adbbf6230"
+        ],
+        "EnableSaving": false
+    },
+    "Metadata": {
+        "Id": "e87ecf0e-e918-4521-927b-1a97ae4583aa",
+        "IsPublished": true,
+        "CreationTimestamp": "2015-08-31T12:09:04.723Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_DAFFODIL_LEVEL_3_TITLE",
+        "Description": "UI_CONTRACT_DAFFODIL_LEVEL_3_DESC",
+        "CodeName_Hint": "Daffodil - Level 3",
+        "Location": "LOCATION_COASTALTOWN",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/CoastalTown/_scene_octopus.entity",
+        "InGroup": "3d9dcf91-1708-4e22-88b3-41d184bcc8c3",
+        "Type": "escalation",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "da07626c-0aa3-463a-92ff-8e7adbbf6230" },
+            { "Id": "3a8d4421-096e-4a1b-853a-c12886a51d1f" },
+            { "Id": "659b6295-c1c9-42d7-89e0-e059310ec887" }
+        ],
+        "LastUpdate": "2020-11-09T13:35:35.6949187Z",
+        "PublicId": "003251161347",
+        "Entitlements": ["H1_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}

@@ -1,0 +1,139 @@
+{
+    "Data": {
+        "Bricks": [
+            "Assembly:/_PRO/Scenes/missions/elegant/gamechanger_whitedryas_level3.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/scenes/missions/elegant/vr_overrides_llama.brick",
+                    "assembly:/_PRO/scenes/missions/elegant/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/scenes/missions/elegant/vr_overrides_llama.brick"
+                ]
+            }
+        ],
+        "DevOnlyBricks": [],
+        "GameChangers": [
+            "3db72bb5-63d6-47fe-9332-d7ea3c195e06",
+            "63055f1a-bcd2-4e0f-8caf-b446f01d02f3"
+        ],
+        "Entrances": ["a6a6be09-5827-4d23-b824-709d14c0099c"],
+        "MandatoryLoadout": [
+            {
+                "Id": "TOKEN_OUTFIT_HERO_GURU_SUIT",
+                "Properties": {
+                    "LoadoutSlot": "Outfit",
+                    "RepositoryId": "a4ef8071-8931-4179-abec-11a2b9ceba36"
+                }
+            },
+            {
+                "Id": "PROP_EMETIC_POISON_PEN_SYRINGE_GURU",
+                "Properties": {
+                    "LoadoutSlot": "gear",
+                    "RepositoryId": "83930544-d8db-4020-901f-ea6017764aaa"
+                }
+            },
+            {
+                "Id": "PROP_GAS_GRENADE_EMETIC_GURU",
+                "Properties": {
+                    "LoadoutSlot": "gear",
+                    "RepositoryId": "a49fe9f6-aa5a-4000-8aec-2902ab57b4b7"
+                }
+            }
+        ],
+        "GameChangerReferences": [],
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "_comment": "--- Kill five targets while poisoned  (counting remaining) ---",
+                "Id": "0a6e3346-c210-4ef0-b03a-1225ff974f19",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "Image": "images/contracts/Escalation/ContractEscalation_Elegant_WhiteDryas_5targets.jpg",
+                "BriefingName": "$loc UI_CONTRACT_WHITEDRYAS_OBJ_6_NAME",
+                "BriefingText": "$loc UI_CONTRACT_WHITEDRYAS_OBJ_6",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_WHITEDRYAS_OBJ_6"
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "AmountToHit": 0,
+                        "TargetsCounter": 5,
+                        "Targets": [
+                            "2b573293-0146-4d78-816b-c196173d2847",
+                            "6be3eeff-d038-4798-b61b-e81bfa3243f0",
+                            "94874e30-b4a8-4336-afaf-686bdd559b5b",
+                            "084f41be-843f-44dc-bdc6-f1d85debf865",
+                            "93221913-4b54-4885-8479-2d90814c413d"
+                        ]
+                    },
+                    "ContextListeners": {
+                        "TargetsCounter": {
+                            "type": "objective-counter",
+                            "header": "UI_CONTRACT_WHITEDRYAS_OBJ_COUNTER"
+                        }
+                    },
+                    "States": {
+                        "Start": {
+                            "WhiteDryasFailed": { "Transition": "Failure" },
+                            "WhiteDryasActorKilledPoisoned": {
+                                "Actions": {
+                                    "$inc": "AmountToHit",
+                                    "$dec": "TargetsCounter"
+                                },
+                                "Transition": "CheckCount"
+                            }
+                        },
+                        "CheckCount": {
+                            "-": [
+                                {
+                                    "Actions": {
+                                        "$set": ["TargetsCounter", 0]
+                                    },
+                                    "Condition": {
+                                        "$eq": ["$.AmountToHit", 5]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                { "Transition": "Start" }
+                            ]
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "3849e8d5-3876-48ef-b4e1-9b3a4489589a",
+        "IsPublished": true,
+        "CreationTimestamp": "2021-01-05T12:54:16.194497Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_WHITEDRYAS_LEVEL_3_NAME",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Elegant_WhiteDryas.jpg",
+        "Description": "",
+        "CodeName_Hint": "WhiteDryas - Level 3",
+        "Location": "LOCATION_ELEGANT_LLAMA",
+        "RequiredUnlockable": "ACCESS_HIT_LLAMA",
+        "ScenePath": "assembly:/_pro/scenes/missions/elegant/scene_whitedryas_level3.entity",
+        "Type": "escalation",
+        "Release": "3.1.1 Escalation",
+        "InGroup": "72aaaa7b-4386-4ee7-9e9e-73fb8ff8e416",
+        "Entitlements": ["H3_EXPANSION"],
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "0a6e3346-c210-4ef0-b03a-1225ff974f19" }
+        ],
+        "LastUpdate": "2021-04-20T12:25:05.0529719Z",
+        "PublicId": "031374732347"
+    },
+    "UserData": {}
+}

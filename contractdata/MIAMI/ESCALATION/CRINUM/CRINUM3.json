@@ -1,0 +1,218 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "EnableExits": {
+            "$eq": [
+                "$7d9d1785-16ae-49df-a7cc-5b6fe8e9e9b4",
+                "$ba649584-0b11-42aa-9ce0-ee95e4907133",
+                "$d0a88e2d-7d3e-45b6-9013-b424e6c74ea6",
+                "Completed"
+            ]
+        },
+        "Objectives": [
+            {
+                "Id": "7d9d1785-16ae-49df-a7cc-5b6fe8e9e9b4",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "b838226d-5fbf-4b5d-8e5f-98e5c8ddc1f2",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_CRINUM_OBJECTIVE_1"
+                },
+                "BriefingText": "$loc UI_CONTRACT_CRINUM_OBJECTIVE_1",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "Targets": ["54497c8e-b6c4-4902-a41c-1b5ee8012d0b"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "54497c8e-b6c4-4902-a41c-1b5ee8012d0b"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "b838226d-5fbf-4b5d-8e5f-98e5c8ddc1f2"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "54497c8e-b6c4-4902-a41c-1b5ee8012d0b"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "ba649584-0b11-42aa-9ce0-ee95e4907133",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "b838226d-5fbf-4b5d-8e5f-98e5c8ddc1f2",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_CRINUM_OBJECTIVE_3"
+                },
+                "BriefingText": "$loc UI_CONTRACT_CRINUM_OBJECTIVE_3",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "Targets": ["8e31f743-d10d-4e62-9e02-84b49c6e15ce"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "8e31f743-d10d-4e62-9e02-84b49c6e15ce"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "b838226d-5fbf-4b5d-8e5f-98e5c8ddc1f2"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "8e31f743-d10d-4e62-9e02-84b49c6e15ce"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "d0a88e2d-7d3e-45b6-9013-b424e6c74ea6",
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "b838226d-5fbf-4b5d-8e5f-98e5c8ddc1f2",
+                        "HardCondition": true
+                    }
+                ],
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_CRINUM_OBJECTIVE_2"
+                },
+                "BriefingText": "$loc UI_CONTRACT_CRINUM_OBJECTIVE_2",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "Targets": ["14ef9606-229b-4ee5-9f79-bd8fa7893e1e"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "14ef9606-229b-4ee5-9f79-bd8fa7893e1e"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "b838226d-5fbf-4b5d-8e5f-98e5c8ddc1f2"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "14ef9606-229b-4ee5-9f79-bd8fa7893e1e"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [
+            "6ad9a627-4196-48bf-b058-40639cfb4c99",
+            "9e866396-be8a-47cd-ae4f-1183d34728d9",
+            "83a2f372-a66e-4173-9387-8f210ec27ecd"
+        ],
+        "GameChangerReferences": [],
+        "Entrances": [],
+        "Stashpoints": []
+    },
+    "Metadata": {
+        "Id": "e5b6ccf4-1f29-4ec6-bfb8-2e9b78882c85",
+        "IsPublished": true,
+        "CreationTimestamp": "2018-10-04T14:53:07.8195216Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Title": "UI_CONTRACT_CRINUM_LEVEL_3_TITLE",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Crinum.jpg",
+        "Description": "",
+        "CodeName_Hint": "Crinum Level 3",
+        "Location": "LOCATION_MIAMI",
+        "ScenePath": "assembly:/_pro/scenes/missions/miami/scene_flamingo.entity",
+        "Type": "escalation",
+        "Release": "2.1.x Escalation",
+        "InGroup": "719ee044-4b05-4bd9-b2bb-75029f6d2a35",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "d0a88e2d-7d3e-45b6-9013-b424e6c74ea6" },
+            { "IsNew": true, "Id": "83a2f372-a66e-4173-9387-8f210ec27ecd" },
+            { "Id": "ba649584-0b11-42aa-9ce0-ee95e4907133" },
+            { "Id": "7d9d1785-16ae-49df-a7cc-5b6fe8e9e9b4" },
+            { "Id": "9e866396-be8a-47cd-ae4f-1183d34728d9" }
+        ],
+        "LastUpdate": "2021-05-06T09:25:03.3482037Z",
+        "PublicId": "011760473547",
+        "Entitlements": ["H2_LEGACY_STANDARD"]
+    },
+    "UserData": {}
+}
