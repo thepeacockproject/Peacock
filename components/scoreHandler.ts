@@ -925,7 +925,6 @@ export async function missionEnd(
         const userInventory = createInventory(
             req.jwt.unique_name,
             req.gameVersion,
-            userData.Extensions.entP,
         )
 
         const [sniperScore, headlines] = calculateSniperScore(
