@@ -88,10 +88,6 @@ export class MenuSystemDatabase {
                     configs.push(
                         "images/unlockables/outfit_ef223b60-b53a-4c7b-b914-13c3310fc61a_0.jpg",
                     )
-
-                    configs.push(
-                        "menusystem/pages/gamemodes/gamemodesniper_page.json",
-                    )
                 }
 
                 if (["h3", "h1"].includes(gameVersion)) {
@@ -240,8 +236,6 @@ export class MenuSystemDatabase {
                     }
                 case "/pages/multiplayer/content/lobbyslim.json":
                     return getConfig("LobbySlimTemplate", false)
-                case "/pages/gamemodes/gamemodesniper_page.json":
-                    return getConfig("SniperGamemodesTemplate", false)
                 case "/pages/pause/pausemenu/restart.json":
                     return {
                         $if: {
