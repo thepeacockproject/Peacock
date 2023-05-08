@@ -101,7 +101,6 @@ import ContractSearchResponseTemplate from "../static/ContractSearchResponseTemp
 import LegacyDebriefingChallengesTemplate from "../static/LegacyDebriefingChallengesTemplate.json"
 import DebriefingChallengesTemplate from "../static/DebriefingChallengesTemplate.json"
 import MasteryUnlockablesTemplate from "../static/MasteryUnlockablesTemplate.json"
-import SniperLoadouts from "../static/SniperLoadouts.json"
 import Scpcallunlockables from "../static/Scpcallunlockables.json"
 import DiscordRichAssetsForBricks from "../static/DiscordRichAssetsForBricks.json"
 import EscalationCodenames from "../static/EscalationCodenames.json"
@@ -116,6 +115,9 @@ import EvergreenGameChangerProperties from "../static/EvergreenGameChangerProper
 import AreaMap from "../static/AreaMap.json"
 import HitsCategoryElusiveTemplate from "../static/HitsCategoryElusiveTemplate.json"
 import MissionRewardsTemplate from "../static/MissionRewardsTemplate.json"
+import SniperUnlockables from "../static/SniperUnlockables.json"
+import ScpcLocationsData from "../static/ScpcLocationsData.json"
+import SniperGamemodesTemplate from "../static/SniperGamemodesTemplate.json"
 import type { GameVersion } from "./types/types"
 import { fastClone } from "./utils"
 
@@ -204,8 +206,8 @@ const configs = {
     ContractSearchPaginateTemplate,
     ContractSearchResponseTemplate,
     MasteryUnlockablesTemplate,
-    SniperLoadouts,
     Scpcallunlockables,
+    ScpcLocationsData,
     DiscordRichAssetsForBricks,
     EscalationCodenames,
     ScoreOverviewTemplate,
@@ -219,6 +221,8 @@ const configs = {
     AreaMap,
     HitsCategoryElusiveTemplate,
     MissionRewardsTemplate,
+    SniperUnlockables,
+    SniperGamemodesTemplate,
 }
 
 Object.keys(configs).forEach((cfg) => {

@@ -58,7 +58,7 @@ import {
     mergeSavedChallengeGroups,
 } from "./challengeHelpers"
 import assert from "assert"
-import { getVersionedConfig } from "../configSwizzleManager"
+import { getConfig, getVersionedConfig } from "../configSwizzleManager"
 import { SyncHook } from "../hooksImpl"
 import { getUserEscalationProgress } from "../contracts/escalations/escalationService"
 
@@ -216,6 +216,7 @@ export abstract class ChallengeRegistry {
      * Gets a challenge group by its parent location and group ID.
      * @param groupId The group ID of the challenge group.
      * @param location The parent location for this challenge group.
+     * @param gameVersion The game version.
      * @returns A `SavedChallengeGroup` if such a group exists, or `undefined` if not.
      */
     getGroupByIdLoc(
@@ -349,6 +350,7 @@ export abstract class ChallengeRegistry {
      * Parse a challenge's context listeners into the format used internally.
      *
      * @param challenge The challenge.
+     * @param Context? the current context of the challenge.
      * @returns The context listener details.
      */
     protected static _parseContextListeners(
@@ -455,12 +457,14 @@ export class ChallengeService extends ChallengeRegistry {
             data[challengeId].State = {
                 CurrentState: "Success",
             }
+            data[challengeId].CurrentState = "Success"
         }
 
         // apply default context if no progression exists
         data[challengeId] ??= {
             Ticked: false,
             Completed: false,
+            CurrentState: "Start",
             State:
                 (<ChallengeDefinitionLike>challenge?.Definition)?.Context || {},
         }
@@ -552,6 +556,7 @@ export class ChallengeService extends ChallengeRegistry {
      *
      * @param filter The filter to use.
      * @param location The parent location whose challenges to get.
+     * @param gameVersion The game version.
      * @returns A GroupIndexedChallengeLists containing the resulting challenge groups.
      */
     getGroupedChallengeLists(
@@ -724,31 +729,40 @@ export class ChallengeService extends ChallengeRegistry {
 
         for (const group of Object.keys(challengeGroups)) {
             for (const challenge of challengeGroups[group]) {
-                const isDone = this.fastGetIsCompleted(profile, challenge.Id)
+                challengeContexts[challenge.Id] = {
+                    context: undefined,
+                    state: this.fastGetIsCompleted(profile, challenge.Id)
+                        ? "Success"
+                        : undefined,
+                    timers: [],
+                    timesCompleted: 0,
+                }
 
                 if (this.needSaveProgression(challenge)) {
                     profile.Extensions.ChallengeProgression[challenge.Id] ??= {
                         Ticked: false,
                         Completed: false,
+                        CurrentState: "Start",
                         State:
                             (<ChallengeDefinitionLike>challenge?.Definition)
                                 ?.Context || {},
                     }
-                }
 
-                const ctx = this.needSaveProgression(challenge)
-                    ? profile.Extensions.ChallengeProgression[challenge.Id]
-                          .State
-                    : fastClone(
-                          (<ChallengeDefinitionLike>challenge.Definition)
-                              ?.Context || {},
-                      ) || {}
-
-                challengeContexts[challenge.Id] = {
-                    context: ctx,
-                    state: isDone ? "Success" : "Start",
-                    timers: [],
-                    timesCompleted: 0,
+                    challengeContexts[challenge.Id].context =
+                        profile.Extensions.ChallengeProgression[
+                            challenge.Id
+                        ].State
+                    challengeContexts[challenge.Id].state ??=
+                        profile.Extensions.ChallengeProgression[
+                            challenge.Id
+                        ].CurrentState
+                } else {
+                    challengeContexts[challenge.Id].context =
+                        fastClone(
+                            (<ChallengeDefinitionLike>challenge.Definition)
+                                ?.Context || {},
+                        ) || {}
+                    challengeContexts[challenge.Id].state ??= "Start"
                 }
             }
         }
@@ -808,6 +822,10 @@ export class ChallengeService extends ChallengeRegistry {
                 userData.Extensions.ChallengeProgression[challengeId].State =
                     result.context
 
+                userData.Extensions.ChallengeProgression[
+                    challengeId
+                ].CurrentState = result.state
+
                 writeUserData(session.userId, session.gameVersion)
             }
 
@@ -832,8 +850,7 @@ export class ChallengeService extends ChallengeRegistry {
     /**
      * Upon an event, updates the context for all challenges in a contract session. Challenges not in the session are ignored.
      * @param event  The event to handle.
-     * @param sessionId  The ID of the session. Unused as of v6.0.0.
-     * @param session  The session.
+     * @param session  The contract session the event is for.
      */
     onContractEvent(
         event: ClientToServerEvent,
@@ -1177,11 +1194,14 @@ export class ChallengeService extends ChallengeRegistry {
         userId: string,
         isDestination = false,
     ): CompiledChallengeTreeData {
-        const allUnlockables = getVersionedConfig<Unlockable[]>(
-            "allunlockables",
-            gameVersion,
-            false,
-        )
+        const allUnlockables = [
+            ...getVersionedConfig<Unlockable[]>(
+                "allunlockables",
+                gameVersion,
+                false,
+            ),
+            ...getConfig<Unlockable[]>("SniperUnlockables", false),
+        ]
 
         const drops = challenge.Drops.map((e) =>
             allUnlockables.find((f) => f.Id === e),
@@ -1339,6 +1359,7 @@ export class ChallengeService extends ChallengeRegistry {
 
     /**
      * Checks if the conditions to complete a challenge are met. If so, calls `onChallengeCompleted` for it.
+     * @param session The contract session where the challenge was completed.
      * @param challengeId The id of the challenge.
      * @param userData The profile of the user.
      * @param parentId A parent challenge of this challenge, the completion of which might cause this challenge to complete. Pass `undefined` if such a parent is unknown or doesn't exist.
@@ -1437,6 +1458,7 @@ export class ChallengeService extends ChallengeRegistry {
             userData.Extensions.ChallengeProgression ??= {}
 
             userData.Extensions.ChallengeProgression[challenge.Id] ??= {
+                CurrentState: "Start",
                 State: {},
                 Completed: false,
                 Ticked: false,
@@ -1466,6 +1488,7 @@ export class ChallengeService extends ChallengeRegistry {
             challenge?.Drops ?? [],
             session,
             userData,
+            gameVersion,
             challenge.LocationId,
         )
 

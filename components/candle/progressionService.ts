@@ -39,9 +39,10 @@ export class ProgressionService {
         dropIds: string[],
         contractSession: ContractSession,
         userProfile: UserProfile,
+        gameVersion: GameVersion,
         location: string,
     ) {
-        // Total XP for profile XP is the total sum of the action and mastery XP's
+        // Total XP for profile XP is the total sum of the action and mastery XP
         const xp = actionXp + masteryXp
 
         // Grants profile XP
@@ -53,6 +54,7 @@ export class ProgressionService {
             actionXp,
             contractSession,
             userProfile,
+            gameVersion,
             location,
         )
 
@@ -70,14 +72,11 @@ export class ProgressionService {
     getMasteryProgressionForLocation(
         userProfile: UserProfile,
         location: string,
+        subPkgId?: string,
     ) {
-        return (userProfile.Extensions.progression.Locations[
-            location.toLocaleLowerCase()
-        ] ??= {
-            Xp: 0,
-            Level: 1,
-            PreviouslySeenXp: 0,
-        })
+        return subPkgId
+            ? userProfile.Extensions.progression.Locations[location][subPkgId]
+            : userProfile.Extensions.progression.Locations[location]
     }
 
     // Return mastery drops from location from a level range
@@ -125,6 +124,7 @@ export class ProgressionService {
         actionXp: number,
         contractSession: ContractSession,
         userProfile: UserProfile,
+        gameVersion: GameVersion,
         location: string,
     ): boolean {
         const contract = controller.resolveContract(contractSession.contractId)
@@ -146,12 +146,18 @@ export class ProgressionService {
             return false
         }
 
-        const masteryData =
-            controller.masteryService.getMasteryPackage(parentLocationId)
+        const masteryData = controller.masteryService.getMasteryPackage(
+            parentLocationId,
+            gameVersion,
+        )
 
+        // TODO: Grant sniper XP here too
         const locationData = this.getMasteryProgressionForLocation(
             userProfile,
-            parentLocationId.toLocaleLowerCase(),
+            parentLocationId,
+            gameVersion === "h1"
+                ? contract.Metadata.Difficulty ?? "normal"
+                : undefined,
         )
 
         const maxLevel = masteryData?.MaxLevel || DEFAULT_MASTERY_MAXLEVEL

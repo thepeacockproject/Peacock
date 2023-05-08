@@ -454,6 +454,12 @@ export interface ContractHistory {
     IsEscalation?: boolean
 }
 
+export interface ProgressionData {
+    Xp: number
+    Level: number
+    PreviouslySeenXp: number
+}
+
 export interface UserProfile {
     Id: string
     LinkedAccounts: {
@@ -505,12 +511,16 @@ export interface UserProfile {
                     ActionXp: number
                 }[]
             }
+            /**
+             * If the mastery location has subpackages and not drops, it will
+             * be an object.
+             */
             Locations: {
-                [location: string]: {
-                    Xp: number
-                    Level: number
-                    PreviouslySeenXp: number
-                }
+                [location: string]:
+                    | ProgressionData
+                    | {
+                          [subPackageId: string]: ProgressionData
+                      }
             }
         }
         defaultloadout?: {
@@ -532,6 +542,14 @@ export interface UserProfile {
                 MyContracts: string
                 MyPlaylist: string
             }
+            menudata: {
+                difficulty: {
+                    destinations: {
+                        [locationId: string]: "normal" | "pro1"
+                    }
+                }
+                newunlockables: string[]
+            }
         }
         opportunityprogression: {
             [opportunityId: RepositoryId]: boolean
@@ -548,6 +566,9 @@ export interface UserProfile {
     XboxLiveId: string | null
     PSNAccountId: string | null
     PSNOnlineId: string | null
+    /**
+     * @since v6.4.0 user profiles are now versioned.
+     */
     Version: number
 }
 

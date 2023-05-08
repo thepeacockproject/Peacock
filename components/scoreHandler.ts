@@ -749,12 +749,14 @@ export async function missionEnd(
     const newLocationXp = completionData.XP
     let newLocationLevel = levelForXp(newLocationXp)
     userData.Extensions.progression.Locations[
-        locationParentId.toLowerCase()
+        locationParentId
     ].PreviouslySeenXp = newLocationXp
     writeUserData(req.jwt.unique_name, req.gameVersion)
 
-    const masteryData =
-        controller.masteryService.getMasteryPackage(locationParentId)
+    const masteryData = controller.masteryService.getMasteryPackage(
+        locationParentId,
+        req.gameVersion,
+    )
 
     let maxLevel = 1
     let locationLevelInfo = [0]
@@ -910,20 +912,14 @@ export async function missionEnd(
     // TODO: Calculate proper Sniper XP and Score
     // TODO: Move most of this to its own calculateSniperScore function
     if (contractData.Metadata.Type === "sniper") {
-        const sniperLoadouts = getConfig("SniperLoadouts", true)
-
-        const mainUnlockableProperties =
-            sniperLoadouts[contractData.Metadata.Location][
-                req.query.masteryUnlockableId
-            ].MainUnlockable.Properties
-
+        // Using req.query.masteryUnlockableId below should be okay.
         unlockableProgression = {
             LevelInfo: SNIPER_LEVEL_INFO,
             XP: SNIPER_LEVEL_INFO[SNIPER_LEVEL_INFO.length - 1],
             Level: SNIPER_LEVEL_INFO.length,
             XPGain: 0,
-            Id: mainUnlockableProperties.ProgressionKey,
-            Name: mainUnlockableProperties.Name,
+            Id: req.query.masteryUnlockableId,
+            Name: req.query.masteryUnlockableId,
         }
 
         const userInventory = createInventory(

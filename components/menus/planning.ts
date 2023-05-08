@@ -206,7 +206,6 @@ export async function planningView(
     const typedInv = createInventory(
         req.jwt.unique_name,
         req.gameVersion,
-        userData.Extensions.entP,
         sublocation,
     )
 
@@ -391,13 +390,15 @@ export async function planningView(
                     loadoutUnlockable,
                 )
 
-            const locationProgression = (loadoutMasteryData &&
-                userData.Extensions.progression.Locations[
-                    loadoutMasteryData.Location
-                ]) ?? {
-                Xp: 0,
-                Level: 1,
-            }
+            const locationProgression =
+                loadoutMasteryData &&
+                (loadoutMasteryData.SubPackageId
+                    ? userData.Extensions.progression.Locations[
+                          loadoutMasteryData.Location
+                      ][loadoutMasteryData.SubPackageId]
+                    : userData.Extensions.progression.Locations[
+                          loadoutMasteryData.Location
+                      ])
 
             if (locationProgression.Level < loadoutMasteryData.Level)
                 loadoutSlots = loadoutSlots.filter(

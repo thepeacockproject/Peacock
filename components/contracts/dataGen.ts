@@ -109,6 +109,7 @@ export function getParentLocationByName(
  * @param userId The ID of the user.
  * @param gameVersion The game's version.
  * @param contractType The type of the contract, only used to distinguish evergreen from other types (default).
+ * @param subPackageId The sub package id you want (think of mastery, only needed for difficulty really).
  * @returns The completion data object.
  */
 export function generateCompletionData(
@@ -116,8 +117,17 @@ export function generateCompletionData(
     userId: string,
     gameVersion: GameVersion,
     contractType = "mission",
+    subPackageId?: string,
 ): CompletionData {
     const subLocation = getSubLocationByName(subLocationId, gameVersion)
+    let difficulty = undefined
+
+    if (gameVersion === "h1") {
+        difficulty = getUserData(userId, gameVersion).Extensions
+            .gamepersistentdata.menudata.difficulty.destinations[
+            subLocation ? subLocation.Properties?.ParentLocation : subLocationId
+        ]
+    }
 
     const locationId = subLocation
         ? subLocation.Properties?.ParentLocation
@@ -129,10 +139,11 @@ export function generateCompletionData(
         gameVersion,
         userId,
         contractType,
+        subPackageId ? subPackageId : difficulty,
     )
 
     if (!completionData) {
-        // Should only reach here for sniper locations.
+        // Should only reach here for sniper locations or the ICA Facility in H2016.
         return {
             Level: 1,
             MaxLevel: 1,

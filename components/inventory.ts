@@ -147,6 +147,7 @@ function filterUnlockedContent(
                 controller.progressionService.getMasteryProgressionForLocation(
                     userProfile,
                     unlockableMasteryData.Location,
+                    unlockableMasteryData.SubPackageId,
                 )
 
             const canUnlock = locationData.Level >= unlockableMasteryData.Level
@@ -435,14 +436,12 @@ function updateWithDefaultSuit(
  * Generate a player's inventory with unlockables.
  * @param profileId  The profile ID of the player
  * @param gameVersion  The game version
- * @param entP  The player's entitlements
  * @param sublocation  The sublocation to generate the inventory for. Used to award default suits for the sublocation. Defaulted to undefined.
  * @returns The player's inventory
  */
 export function createInventory(
     profileId: string,
     gameVersion: GameVersion,
-    entP: string[],
     sublocation = undefined,
 ): InventoryItem[] {
     if (inventoryUserCache.has(profileId)) {
@@ -534,7 +533,7 @@ export function createInventory(
             }
         })
         // filter again, this time removing legacy unlockables
-        .filter(filterAllowedContent(gameVersion, entP))
+        .filter(filterAllowedContent(gameVersion, userProfile.Extensions.entP))
 
     for (const unlockable of filtered) {
         unlockable!.ProfileId = profileId

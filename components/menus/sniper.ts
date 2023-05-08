@@ -17,19 +17,8 @@
  */
 
 import { controller } from "../controller"
-import { nilUuid } from "../utils"
-import { getConfig } from "../configSwizzleManager"
-import type {
-    GameVersion,
-    MissionManifest,
-    SniperLoadout,
-} from "../types/types"
-
-export type SniperLoadoutConfig = {
-    [locationId: string]: {
-        [firearmCharacter: string]: SniperLoadout
-    }
-}
+import type { GameVersion, MissionManifest } from "../types/types"
+import { getSubLocationByName } from "../contracts/dataGen"
 
 /**
  * Creates the sniper loadouts data for a contract. Returns loadouts for all three
@@ -51,87 +40,99 @@ export function createSniperLoadouts(
     loadoutData = false,
 ) {
     const sniperLoadouts = []
+    const parentLocation = getSubLocationByName(
+        contractData.Metadata.Location,
+        gameVersion,
+    ).Properties.ParentLocation
+
+    // This function call is used as it gets all mastery data for the current location
+    // which includes all the characters we'll need.
+    // We map it by Id for quick lookup.
+    const masteryMap = new Map(
+        controller.masteryService
+            .getMasteryDataForDestination(parentLocation, gameVersion, userId)
+            .map((data) => [data.CompletionData.Id, data]),
+    )
 
     if (contractData.Metadata.Type === "sniper") {
-        const sLoadouts = getConfig<SniperLoadoutConfig>("SniperLoadouts", true)
+        for (const charSetup of contractData.Metadata.CharacterSetup) {
+            for (const character of charSetup.Characters) {
+                // Get the mastery data for this character
+                const masteryData = masteryMap.get(
+                    character.MandatoryLoadout[0],
+                )
 
-        for (const index in sLoadouts[contractData.Metadata.Location]) {
-            const character = sLoadouts[contractData.Metadata.Location][index]
-            const data = {
-                Id: character.ID,
-                Loadout: {
-                    LoadoutData: [
-                        {
-                            SlotId: "0",
-                            SlotName: "carriedweapon",
-                            Items: [
-                                {
-                                    Item: {
-                                        InstanceId: character.InstanceID,
-                                        ProfileId: nilUuid,
-                                        // TODO: All mastery upgrades are unlocked. Change this when adding sniper progression.
-                                        Unlockable: character.Unlockable[18],
+                // Get the unlockable that is currently unlocked
+                const curUnlockable =
+                    masteryData.CompletionData.Level === 1
+                        ? masteryData.Unlockable
+                        : masteryData.Drops[
+                              masteryData.CompletionData.Level - 2
+                          ].Unlockable
+
+                const data = {
+                    Id: character.Id,
+                    Loadout: {
+                        LoadoutData: [
+                            {
+                                SlotId: "0",
+                                SlotName: "carriedweapon",
+                                Items: [
+                                    {
+                                        Item: {
+                                            InstanceId: character.Id,
+                                            ProfileId: userId,
+                                            Unlockable: curUnlockable,
+                                            Properties: {},
+                                        },
+                                        ItemDetails: {
+                                            Capabilities: [],
+                                            StatList: Object.keys(
+                                                curUnlockable.Properties
+                                                    .Gameplay,
+                                            ).map((key) => {
+                                                return {
+                                                    Name: key,
+                                                    Ratio: curUnlockable
+                                                        .Properties.Gameplay[
+                                                        key
+                                                    ],
+                                                }
+                                            }),
+                                            PropertyTexts: [],
+                                        },
+                                    },
+                                ],
+                                Page: 0,
+                                Recommended: {
+                                    item: {
+                                        InstanceId: character.Id,
+                                        ProfileId: userId,
+                                        Unlockable: curUnlockable,
                                         Properties: {},
                                     },
-                                    ItemDetails: {
-                                        Capabilities: [],
-                                        StatList: [
-                                            {
-                                                Name: "clipsize",
-                                                Ratio: 0.2,
-                                            },
-                                            {
-                                                Name: "damage",
-                                                Ratio: 1.0,
-                                            },
-                                            {
-                                                Name: "range",
-                                                Ratio: 1.0,
-                                            },
-                                            {
-                                                Name: "rateoffire",
-                                                Ratio: 0.3,
-                                            },
-                                        ],
-                                        PropertyTexts: [],
-                                    },
+                                    type: "carriedweapon",
+                                    owned: true,
                                 },
-                            ],
-                            Page: 0,
-                            Recommended: {
-                                item: {
-                                    InstanceId: nilUuid,
-                                    ProfileId: nilUuid,
-                                    // TODO: All mastery upgrades are unlocked. Change this when adding sniper progression.
-                                    Unlockable: character.Unlockable[18],
-                                    Properties: {},
-                                },
-                                type: "carriedweapon",
-                                owned: true,
+                                HasMore: false,
+                                HasMoreLeft: false,
+                                HasMoreRight: false,
+                                OptionalData: {},
                             },
-                            HasMore: false,
-                            HasMoreLeft: false,
-                            HasMoreRight: false,
-                            OptionalData: {},
-                        },
-                    ],
-                    LimitedLoadoutUnlockLevel: 0 as number | undefined,
-                },
-                CompletionData: controller.masteryService.getFirearmCompletion(
-                    index,
-                    character.MainUnlockable.Properties.Name,
-                    userId,
-                    gameVersion,
-                ),
-            }
+                        ],
+                        LimitedLoadoutUnlockLevel: 0 as number | undefined,
+                    },
+                    CompletionData: masteryData.CompletionData,
+                }
 
-            if (loadoutData) {
-                delete data.Loadout.LimitedLoadoutUnlockLevel
-                sniperLoadouts.push(data.Loadout)
-                continue
-            }
+                if (loadoutData) {
+                    delete data.Loadout.LimitedLoadoutUnlockLevel
+                    sniperLoadouts.push(data.Loadout)
+                    continue
+                }
 
-            sniperLoadouts.push(data)
+                sniperLoadouts.push(data)
+            }
         }
     }
 
