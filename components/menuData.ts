@@ -968,7 +968,11 @@ menuDataRouter.get(
                         ),
                 },
                 MasteryData:
-                    req.gameVersion === "h1" ? masteryData[0] : masteryData,
+                    LOCATION !== "LOCATION_PARENT_ICA_FACILITY"
+                        ? req.gameVersion === "h1"
+                            ? masteryData[0]
+                            : masteryData
+                        : {},
                 DifficultyData: undefined,
             },
         }
