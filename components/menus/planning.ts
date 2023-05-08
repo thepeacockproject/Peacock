@@ -388,6 +388,7 @@ export async function planningView(
             const loadoutMasteryData =
                 controller.masteryService.getMasteryForUnlockable(
                     loadoutUnlockable,
+                    req.gameVersion,
                 )
 
             const locationProgression =
