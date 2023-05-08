@@ -74,10 +74,12 @@ import random from "random"
 import { getUserData } from "./databaseHandler"
 import {
     createMainOpportunityTile,
+    createMenuPageTile,
     createPlayNextTile,
     getSeasonId,
     orderedMissions,
     orderedPZMissions,
+    sniperMissionIds,
 } from "./menus/playnext"
 import { randomUUID } from "crypto"
 import { planningView } from "./menus/planning"
@@ -1348,6 +1350,10 @@ menuDataRouter.get(
                     },
                 ),
             )
+        }
+
+        if (sniperMissionIds.includes(req.query.contractId)) {
+            cats.push(createMenuPageTile("sniper"))
         }
 
         const pluginData = controller.hooks.getNextCampaignMission.call(
