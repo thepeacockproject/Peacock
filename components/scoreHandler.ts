@@ -42,6 +42,7 @@ import type {
     MissionManifestObjective,
     RequestWithJwt,
     Seconds,
+    Unlockable,
 } from "./types/types"
 import {
     escalationTypes,
@@ -76,7 +77,6 @@ import {
     createInventory,
 } from "./inventory"
 import { calculatePlaystyle } from "./playStyles"
-import { Unlockable } from "./types/types"
 
 export function calculateGlobalXp(
     contractSession: ContractSession,
