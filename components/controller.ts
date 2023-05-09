@@ -387,6 +387,10 @@ export class Controller {
      * Note: if you are adding a contract, please use {@link addMission}!
      */
     public contracts: Map<string, MissionManifest> = new Map()
+    /**
+     * Contracts fetched from official.
+     */
+    public fetchedContracts: Map<string, MissionManifest> = new Map()
 
     public challengeService: ChallengeService
     public masteryService: MasteryService
@@ -704,6 +708,16 @@ export class Controller {
         if (openCtJson) {
             return fastClone(
                 getGroup ? this.getGroupContract(openCtJson) : openCtJson,
+            )
+        }
+
+        const officialJson = this.fetchedContracts.has(id)
+            ? this.fetchedContracts.get(id)
+            : undefined
+
+        if (officialJson) {
+            return fastClone(
+                getGroup ? this.getGroupContract(officialJson) : officialJson,
             )
         }
 

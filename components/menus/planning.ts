@@ -115,7 +115,7 @@ export async function planningView(
         )
 
         contractData = resp.data.data.Contract
-        controller.commitNewContract(contractData)
+        controller.fetchedContracts.set(contractData.Metadata.Id, contractData)
     }
 
     if (!contractData) {
