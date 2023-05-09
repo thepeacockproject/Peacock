@@ -418,9 +418,13 @@ menuDataRouter.get("/SafehouseCategory", (req: RequestWithJwt, res) => {
             item.Unlockable.Type === "package" ||
             item.Unlockable.Type === "loadoutunlock" ||
             item.Unlockable.Type === "difficultyunlock" ||
-            item.Unlockable.Type === "agencypickup"
+            item.Unlockable.Type === "agencypickup" ||
+            item.Unlockable.Type === "challengemultiplier"
         ) {
             continue // these types should not be displayed when not asked for
+        } else if (item.Unlockable.Properties.InclusionData) {
+            // Only sniper unlockables have inclusion data, don't show them
+            continue
         }
 
         if (

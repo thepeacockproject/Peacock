@@ -18,11 +18,11 @@
 
 import type { Response } from "express"
 import {
-    DEFAULT_MASTERY_MAXLEVEL,
     contractTypes,
+    DEFAULT_MASTERY_MAXLEVEL,
     difficultyToString,
-    evergreenLevelForXp,
     EVERGREEN_LEVEL_INFO,
+    evergreenLevelForXp,
     handleAxiosError,
     isObjectiveActive,
     levelForXp,
@@ -62,19 +62,19 @@ import { MissionEndRequestQuery } from "./types/gameSchemas"
 import { ChallengeFilterType } from "./candle/challengeHelpers"
 import { getCompletionPercent } from "./menus/destinations"
 import {
-    CalculateXpResult,
     CalculateScoreResult,
     CalculateSniperScoreResult,
-    MissionEndResponse,
+    CalculateXpResult,
+    MissionEndChallenge,
     MissionEndDrop,
     MissionEndEvergreen,
-    MissionEndChallenge,
+    MissionEndResponse,
 } from "./types/score"
 import { MasteryData } from "./types/mastery"
 import {
+    createInventory,
     getDataForUnlockables,
     InventoryItem,
-    createInventory,
 } from "./inventory"
 import { calculatePlaystyle } from "./playStyles"
 
@@ -932,7 +932,6 @@ export async function missionEnd(
             req.jwt.unique_name,
             req.gameVersion,
             undefined,
-            true,
         )
 
         const [sniperScore, headlines] = calculateSniperScore(
@@ -1076,10 +1075,9 @@ export async function missionEnd(
 
     if (
         getFlag("leaderboards") === true &&
-        req.gameVersion !== "scpc" &&
-        req.gameVersion !== "h1" &&
         sessionDetails.compat === true &&
-        contractData.Metadata.Type !== "vsrace"
+        contractData.Metadata.Type !== "vsrace" &&
+        contractData.Metadata.Type !== "evergreen"
     ) {
         try {
             // update leaderboards
