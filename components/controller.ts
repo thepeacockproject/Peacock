@@ -1276,9 +1276,7 @@ export function contractIdToHitObject(
     const contract = controller.resolveContract(contractId)
 
     if (!contract) {
-        throw new Error(
-            "Something went terribly wrong. Please investigate this or inform rdil.",
-        )
+        return undefined
     }
 
     if (
