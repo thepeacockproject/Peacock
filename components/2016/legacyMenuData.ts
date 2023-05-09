@@ -156,7 +156,10 @@ legacyMenuDataRouter.get(
                                                 .LoadoutSlot !== "disguise")) && // => display all non-disguise items
                                     (req.query.allowlargeitems === "true" ||
                                         item.Unlockable.Properties
-                                            .LoadoutSlot !== "carriedweapon")
+                                            .LoadoutSlot !== "carriedweapon") &&
+                                    item.Unlockable.Type !==
+                                        "challengemultipler" &&
+                                    !item.Unlockable.Properties.InclusionData
                                 ) // not sure about this one
                             })
                             .map((item) => ({

@@ -610,7 +610,9 @@ menuDataRouter.get(
                                 !item.Unlockable.Properties.IsContainer) &&
                             (req.query.allowlargeitems === "true" ||
                                 item.Unlockable.Properties.LoadoutSlot !==
-                                    "carriedweapon")
+                                    "carriedweapon") &&
+                            item.Unlockable.Type !== "challengemultiplier" &&
+                            !item.Unlockable.Properties.InclusionData
                         ) // not sure about this one
                     })
                     .map((item) => ({
@@ -983,11 +985,15 @@ menuDataRouter.get(
             },
         }
 
-        if (req.gameVersion === "h1") {
+        availableDiff: if (req.gameVersion === "h1") {
             const inventory = createInventory(
                 req.jwt.unique_name,
                 req.gameVersion,
             )
+
+            if (LOCATION === "LOCATION_PARENT_ICA_FACILITY") {
+                break availableDiff
+            }
 
             response.data.DifficultyData = {
                 AvailableDifficultyModes: [
