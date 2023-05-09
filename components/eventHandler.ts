@@ -665,11 +665,6 @@ function saveEvents(
         }
 
         if (session.scoring) {
-            log(
-                LogLevel.DEBUG,
-                `Current: ${session.scoring.Context["TotalScore"]} // ${session.scoring.State}`,
-            )
-
             const scoringContext = session.scoring.Context
             const scoringState = session.scoring.State
 
@@ -688,11 +683,6 @@ function saveEvents(
             if (val.context) {
                 session.scoring.Context = val.context
                 session.scoring.State = val.state
-
-                log(
-                    LogLevel.DEBUG,
-                    `Current: ${session.scoring.Context["TotalScore"]} // ${session.scoring.State}`,
-                )
             }
         }
 
