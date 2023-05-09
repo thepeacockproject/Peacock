@@ -683,42 +683,23 @@ export class Controller {
             return undefined
         }
 
-        const optionalPluginJson = this.hooks.getContractManifest.call(id)
+        const sources: ((id: string) => MissionManifest | undefined)[] = [
+            // Plugins
+            this.hooks.getContractManifest.call,
+            // Peacock internal contracts storage
+            (id) => internalContracts[id],
+            // Files in the `contracts` folder
+            this.contracts.get,
+            // Contracts fetched from official
+            this.fetchedContracts.get,
+        ]
 
-        if (optionalPluginJson) {
-            return fastClone(
-                getGroup
-                    ? this.getGroupContract(optionalPluginJson)
-                    : optionalPluginJson,
-            )
-        }
+        for (const source of sources) {
+            const json = source(id)
 
-        const registryJson: MissionManifest | undefined = internalContracts[id]
-
-        if (registryJson) {
-            return fastClone(
-                getGroup ? this.getGroupContract(registryJson) : registryJson,
-            )
-        }
-
-        const openCtJson = this.contracts.has(id)
-            ? this.contracts.get(id)
-            : undefined
-
-        if (openCtJson) {
-            return fastClone(
-                getGroup ? this.getGroupContract(openCtJson) : openCtJson,
-            )
-        }
-
-        const officialJson = this.fetchedContracts.has(id)
-            ? this.fetchedContracts.get(id)
-            : undefined
-
-        if (officialJson) {
-            return fastClone(
-                getGroup ? this.getGroupContract(officialJson) : officialJson,
-            )
+            if (json) {
+                return fastClone(getGroup ? this.getGroupContract(json) : json)
+            }
         }
 
         return undefined
