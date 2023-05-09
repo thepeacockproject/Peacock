@@ -515,6 +515,7 @@ export async function missionEnd(
     req: RequestWithJwt<MissionEndRequestQuery>,
     res: Response,
 ): Promise<void> {
+    // TODO: For this entire function, add support for 2016 difficulties
     // Resolve the contract session
     if (!req.query.contractSessionId) {
         res.status(400).end()
@@ -739,6 +740,7 @@ export async function missionEnd(
         req.jwt.unique_name,
         req.gameVersion,
         contractData.Metadata.Type,
+        req.query.masteryUnlockableId,
     )
 
     // Calculate the old location progression based on the current one and process it
@@ -749,9 +751,13 @@ export async function missionEnd(
 
     const newLocationXp = completionData.XP
     let newLocationLevel = levelForXp(newLocationXp)
-    userData.Extensions.progression.Locations[
-        locationParentId
-    ].PreviouslySeenXp = newLocationXp
+
+    if (!req.query.masteryUnlockableId) {
+        userData.Extensions.progression.Locations[
+            locationParentId
+        ].PreviouslySeenXp = newLocationXp
+    }
+
     writeUserData(req.jwt.unique_name, req.gameVersion)
 
     const masteryData = controller.masteryService.getMasteryPackage(
@@ -763,7 +769,12 @@ export async function missionEnd(
     let locationLevelInfo = [0]
 
     if (masteryData) {
-        maxLevel = masteryData.MaxLevel || DEFAULT_MASTERY_MAXLEVEL
+        maxLevel =
+            (req.query.masteryUnlockableId
+                ? masteryData.SubPackages.find(
+                      (subPkg) => subPkg.Id === req.query.masteryUnlockableId,
+                  ).MaxLevel
+                : masteryData.MaxLevel) || DEFAULT_MASTERY_MAXLEVEL
 
         locationLevelInfo = Array.from({ length: maxLevel }, (_, i) => {
             return xpRequiredForLevel(i + 1)
