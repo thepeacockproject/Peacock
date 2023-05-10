@@ -387,9 +387,10 @@ export class Controller {
      * Note: if you are adding a contract, please use {@link addMission}!
      */
     public contracts: Map<string, MissionManifest> = new Map()
-
-    // Converts a contract's ID to public ID.
-    public contractIdToPublicId: Map<string, string> = new Map()
+    /**
+     * Contracts fetched from official.
+     */
+    public fetchedContracts: Map<string, MissionManifest> = new Map()
 
     public challengeService: ChallengeService
     public masteryService: MasteryService
@@ -707,6 +708,16 @@ export class Controller {
         if (openCtJson) {
             return fastClone(
                 getGroup ? this.getGroupContract(openCtJson) : openCtJson,
+            )
+        }
+
+        const officialJson = this.fetchedContracts.has(id)
+            ? this.fetchedContracts.get(id)
+            : undefined
+
+        if (officialJson) {
+            return fastClone(
+                getGroup ? this.getGroupContract(officialJson) : officialJson,
             )
         }
 
@@ -1222,15 +1233,6 @@ export class Controller {
 
         log(LogLevel.DEBUG, `Discovered ${groupCount} escalation groups.`)
     }
-
-    public storeIdToPublicId(contracts: UserCentricContract[]): void {
-        contracts.forEach((c) =>
-            controller.contractIdToPublicId.set(
-                c.Contract.Metadata.Id,
-                c.Contract.Metadata.PublicId,
-            ),
-        )
-    }
 }
 
 /**
@@ -1274,9 +1276,7 @@ export function contractIdToHitObject(
     const contract = controller.resolveContract(contractId)
 
     if (!contract) {
-        throw new Error(
-            "Something went terribly wrong. Please investigate this or inform rdil.",
-        )
+        return undefined
     }
 
     if (

@@ -193,9 +193,7 @@ export async function handleOauthToken(
     }
 
     /* 
-       Never store user auth for scpc
-       Always store user auth for H1 & H2
-       If on steam or using legacy contract downloader, then store user auth for H3 
+       Store user auth for all games except scpc
     */
     if (!isFrankenstein) {
         const authContainer = new OfficialServerAuth(

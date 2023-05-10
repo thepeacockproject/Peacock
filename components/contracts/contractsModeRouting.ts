@@ -98,8 +98,5 @@ export async function officialSearchContract(
         ),
     )
 
-    controller.storeIdToPublicId(
-        resp.data.data.Data.Contracts.map((c) => c.UserCentricContract),
-    )
     return resp.data.data
 }
