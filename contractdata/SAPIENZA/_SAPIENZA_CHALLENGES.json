@@ -98,6 +98,72 @@
                     }
                 },
                 {
+                    "Id": "996e1023-0355-4049-a8a7-e8d8b5427253",
+                    "Name": "UI_CHALLENGES_EBOLA_EXPLOSIVE_READING_NAME",
+                    "ImageName": "images/challenges/sapienza/ebola_assasination_boom_blah.jpg",
+                    "Description": "UI_CHALLENGES_EBOLA_EXPLOSIVE_READING_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": ["PROP_DEVICE_EXPLODING_FOUNTAIN_PEN"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_COASTALTOWN",
+                    "ParentLocationId": "LOCATION_PARENT_COASTALTOWN",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Craig_Reading": {
+                                    "Transition": "CheckExplosionKill"
+                                }
+                            },
+                            "CheckExplosionKill": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "ab48a89d-e8a7-4df4-ae72-f0fccaa65e7f"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillClass",
+                                                    "explosion"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "CheckCompletion"
+                                },
+                                "Craig_NotReading": {
+                                    "Transition": "Start"
+                                }
+                            },
+                            "CheckCompletion": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["7e3f758a-2435-42de-93bd-d8f0b72c63a4"]
+                    }
+                },
+                {
                     "Id": "a471f8f0-4d80-46a1-ae20-15eed4f5ab01",
                     "Name": "UI_CHALLENGES_EBOLA_SIGN_CRAIG_PENCIL_NAME",
                     "ImageName": "Images/challenges/sapienza/ebola_assasination_pencil_kill.jpg",

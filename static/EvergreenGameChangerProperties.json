@@ -5374,14 +5374,37 @@
                             "Kill": [
                                 {
                                     "Condition": {
-                                        "$and": [
+                                        "$or": [
                                             {
-                                                "$eq": ["$Value.ActorType", 1]
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.ActorType",
+                                                            1
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillItemCategory",
+                                                            "poison"
+                                                        ]
+                                                    }
+                                                ]
                                             },
                                             {
-                                                "$eq": [
-                                                    "$Value.KillItemCategory",
-                                                    "poison"
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.ActorType",
+                                                            1
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillClass",
+                                                            "poison"
+                                                        ]
+                                                    }
                                                 ]
                                             }
                                         ]
@@ -8939,7 +8962,8 @@
                             "e312a416-5b56-4cb5-8994-1d4bc82fbb84",
                             "e82b61a6-c534-495a-bbe2-b45e9ae9a030",
                             "f1f89faf-a441-4492-b442-9a923b5ecfd1",
-                            "f2a74ebc-8f07-4845-b421-2339988e1994"
+                            "f2a74ebc-8f07-4845-b421-2339988e1994",
+                            "1bbf0ed5-0515-4599-a4c9-454ce59cff44"
                         ]
                     },
                     "States": {
@@ -9108,6 +9132,9 @@
                                         }
                                     ]
                                 },
+                                "Transition": "Success"
+                            },
+                            "Evergreen_TargetSlipped": {
                                 "Transition": "Success"
                             },
                             "NoTargetsLeft": {
@@ -9344,10 +9371,7 @@
                                     "Transition": "SafehouseDummy"
                                 }
                             ],
-                            "FirstMissedShot": {
-                                "Transition": "Failure"
-                            },
-                            "FirstNonHeadshot": {
+                            "Evergreen_ShotFired": {
                                 "Transition": "Failure"
                             },
                             "Kill": {
@@ -9932,7 +9956,16 @@
                     },
                     "Scope": "session",
                     "States": {
-                        "SafehouseDummy": {},
+                        "SafehouseDummy": {
+                            "Activate_SA": [
+                                {
+                                    "Actions": {
+                                        "$set": ["MyPayout", "$Value.Payout"],
+                                        "$dec": "update_counter"
+                                    }
+                                }
+                            ]
+                        },
                         "Start": {
                             "Activate_SA": [
                                 {
@@ -10250,7 +10283,16 @@
                         "MyPayout": "1"
                     },
                     "States": {
-                        "SafehouseDummy": {},
+                        "SafehouseDummy": {
+                            "Activate_EpicKill_Melee": [
+                                {
+                                    "Actions": {
+                                        "$set": ["MyPayout", "$Value.Payout"],
+                                        "$dec": "update_counter"
+                                    }
+                                }
+                            ]
+                        },
                         "Start": {
                             "Activate_EpicKill_Melee": [
                                 {
@@ -10383,7 +10425,16 @@
                         "MyPayout": "1"
                     },
                     "States": {
-                        "SafehouseDummy": {},
+                        "SafehouseDummy": {
+                            "Activate_EpicKill_Sniper": [
+                                {
+                                    "Actions": {
+                                        "$set": ["MyPayout", "$Value.Payout"],
+                                        "$dec": "update_counter"
+                                    }
+                                }
+                            ]
+                        },
                         "Start": {
                             "Activate_EpicKill_Sniper": [
                                 {
@@ -10506,7 +10557,16 @@
                         "MyPayout": "1"
                     },
                     "States": {
-                        "SafehouseDummy": {},
+                        "SafehouseDummy": {
+                            "Activate_EpicKill_Shotgun": [
+                                {
+                                    "Actions": {
+                                        "$set": ["MyPayout", "$Value.Payout"],
+                                        "$dec": "update_counter"
+                                    }
+                                }
+                            ]
+                        },
                         "Start": {
                             "Activate_EpicKill_Shotgun": [
                                 {
@@ -10629,7 +10689,16 @@
                         "MyPayout": "1"
                     },
                     "States": {
-                        "SafehouseDummy": {},
+                        "SafehouseDummy": {
+                            "Activate_EpicKill_SMG": [
+                                {
+                                    "Actions": {
+                                        "$set": ["MyPayout", "$Value.Payout"],
+                                        "$dec": "update_counter"
+                                    }
+                                }
+                            ]
+                        },
                         "Start": {
                             "Activate_EpicKill_SMG": [
                                 {
@@ -10752,7 +10821,16 @@
                         "MyPayout": "1"
                     },
                     "States": {
-                        "SafehouseDummy": {},
+                        "SafehouseDummy": {
+                            "Activate_EpicKill_SilencedPistol": [
+                                {
+                                    "Actions": {
+                                        "$set": ["MyPayout", "$Value.Payout"],
+                                        "$dec": "update_counter"
+                                    }
+                                }
+                            ]
+                        },
                         "Start": {
                             "Activate_EpicKill_SilencedPistol": [
                                 {
@@ -10881,7 +10959,16 @@
                         "MyPayout": "1"
                     },
                     "States": {
-                        "SafehouseDummy": {},
+                        "SafehouseDummy": {
+                            "Activate_EpicKill_UnSilencedPistol": [
+                                {
+                                    "Actions": {
+                                        "$set": ["MyPayout", "$Value.Payout"],
+                                        "$dec": "update_counter"
+                                    }
+                                }
+                            ]
+                        },
                         "Start": {
                             "Activate_EpicKill_UnSilencedPistol": [
                                 {
@@ -11010,7 +11097,16 @@
                         "MyPayout": "1"
                     },
                     "States": {
-                        "SafehouseDummy": {},
+                        "SafehouseDummy": {
+                            "Activate_EpicKill_AssaultRifle": [
+                                {
+                                    "Actions": {
+                                        "$set": ["MyPayout", "$Value.Payout"],
+                                        "$dec": "update_counter"
+                                    }
+                                }
+                            ]
+                        },
                         "Start": {
                             "Activate_EpicKill_AssaultRifle": [
                                 {
@@ -11133,7 +11229,16 @@
                         "MyPayout": "1"
                     },
                     "States": {
-                        "SafehouseDummy": {},
+                        "SafehouseDummy": {
+                            "Activate_Killmethod_Headshot_Legenday": [
+                                {
+                                    "Actions": {
+                                        "$set": ["MyPayout", "$Value.Payout"],
+                                        "$dec": "update_counter"
+                                    }
+                                }
+                            ]
+                        },
                         "Start": {
                             "Activate_Killmethod_Headshot_Legenday": [
                                 {
@@ -11253,7 +11358,16 @@
                         "MyPayout": "1"
                     },
                     "States": {
-                        "SafehouseDummy": {},
+                        "SafehouseDummy": {
+                            "Activate_Killmethod_icepick": [
+                                {
+                                    "Actions": {
+                                        "$set": ["MyPayout", "$Value.Payout"],
+                                        "$dec": "update_counter"
+                                    }
+                                }
+                            ]
+                        },
                         "Start": {
                             "Activate_Killmethod_icepick": [
                                 {
@@ -11380,7 +11494,16 @@
                         ]
                     },
                     "States": {
-                        "SafehouseDummy": {},
+                        "SafehouseDummy": {
+                            "Activate_Killmethod_Katana": [
+                                {
+                                    "Actions": {
+                                        "$set": ["MyPayout", "$Value.Payout"],
+                                        "$dec": "update_counter"
+                                    }
+                                }
+                            ]
+                        },
                         "Start": {
                             "Activate_Killmethod_Katana": [
                                 {
@@ -11505,11 +11628,21 @@
                         "MyPayout": "1",
                         "KillItems": [
                             "e55eb9a4-e79c-43c7-970b-79e94e7683b7",
-                            "92330cd4-1bb1-419e-98d3-ef26631504bf"
+                            "92330cd4-1bb1-419e-98d3-ef26631504bf",
+                            "cad726d7-331d-4601-9723-6b8a17e5f91b"
                         ]
                     },
                     "States": {
-                        "SafehouseDummy": {},
+                        "SafehouseDummy": {
+                            "Activate_Killmethod_Shuriken": [
+                                {
+                                    "Actions": {
+                                        "$set": ["MyPayout", "$Value.Payout"],
+                                        "$dec": "update_counter"
+                                    }
+                                }
+                            ]
+                        },
                         "Start": {
                             "Activate_Killmethod_Shuriken": [
                                 {
@@ -11645,7 +11778,16 @@
                     },
                     "Scope": "session",
                     "States": {
-                        "SafehouseDummy": {},
+                        "SafehouseDummy": {
+                            "Activate_SASO": [
+                                {
+                                    "Actions": {
+                                        "$set": ["MyPayout", "$Value.Payout"],
+                                        "$dec": "update_counter"
+                                    }
+                                }
+                            ]
+                        },
                         "Start": {
                             "Activate_SASO": [
                                 {
@@ -11979,7 +12121,16 @@
                     },
                     "Scope": "session",
                     "States": {
-                        "SafehouseDummy": {},
+                        "SafehouseDummy": {
+                            "Activate_SA_NoFirearms": [
+                                {
+                                    "Actions": {
+                                        "$set": ["MyPayout", "$Value.Payout"],
+                                        "$dec": "update_counter"
+                                    }
+                                }
+                            ]
+                        },
                         "Start": {
                             "Activate_SA_NoFirearms": [
                                 {
@@ -11999,6 +12150,9 @@
                                 "Transition": "Failure"
                             },
                             "PrestigeObjFailedHC_Event": {
+                                "Transition": "Failure"
+                            },
+                            "Evergreen_ShotFired": {
                                 "Transition": "Failure"
                             },
                             "Evergreen_EvaluateChallenge": {
@@ -12032,14 +12186,6 @@
                             },
                             "AccidentBodyFound": {
                                 "$set": ["LastAccidentTime", "$Timestamp"]
-                            },
-                            "AddSyndicateTarget": {
-                                "Actions": {
-                                    "$pushunique": [
-                                        "ActiveTargets",
-                                        "$Value.repoID"
-                                    ]
-                                }
                             },
                             "Witnesses": {
                                 "Condition": {
@@ -12139,12 +12285,6 @@
                                 }
                             ],
                             "CrowdNPC_Died": {
-                                "Transition": "Failure"
-                            },
-                            "FirstMissedShot": {
-                                "Transition": "Failure"
-                            },
-                            "FirstNonHeadShot": {
                                 "Transition": "Failure"
                             },
                             "MurderedBodySeen": [
@@ -12312,7 +12452,16 @@
                         "MyDisguises": []
                     },
                     "States": {
-                        "SafehouseDummy": {},
+                        "SafehouseDummy": {
+                            "Activate_Timed_Disguising": [
+                                {
+                                    "Actions": {
+                                        "$set": ["MyPayout", "$Value.Payout"],
+                                        "$dec": "update_counter"
+                                    }
+                                }
+                            ]
+                        },
                         "Start": {
                             "Activate_Timed_Disguising": [
                                 {
@@ -12339,7 +12488,7 @@
                                 },
                                 "Transition": "Failure"
                             },
-                            "Evergreen_EvaluateChallenge": {
+                            "NoTargetsLeft": {
                                 "Transition": "Success"
                             },
                             "MissionFailed_Event": {
@@ -12450,7 +12599,16 @@
                         "MyPayout": "1"
                     },
                     "States": {
-                        "SafehouseDummy": {},
+                        "SafehouseDummy": {
+                            "Activate_Timed_Hiding": [
+                                {
+                                    "Actions": {
+                                        "$set": ["MyPayout", "$Value.Payout"],
+                                        "$dec": "update_counter"
+                                    }
+                                }
+                            ]
+                        },
                         "Start": {
                             "Activate_Timed_Hiding": [
                                 {
@@ -12477,7 +12635,7 @@
                                 },
                                 "Transition": "Failure"
                             },
-                            "Evergreen_EvaluateChallenge": {
+                            "NoTargetsLeft": {
                                 "Transition": "Success"
                             },
                             "MissionFailed_Event": {
@@ -12609,7 +12767,16 @@
                         "Delay": 120
                     },
                     "States": {
-                        "SafehouseDummy": {},
+                        "SafehouseDummy": {
+                            "Activate_Timed_NumberOfTargets": [
+                                {
+                                    "Actions": {
+                                        "$set": ["MyPayout", "$Value.Payout"],
+                                        "$dec": "update_counter"
+                                    }
+                                }
+                            ]
+                        },
                         "Start": {
                             "Activate_Timed_NumberOfTargets": [
                                 {
@@ -12732,7 +12899,16 @@
                         "Duration": 150
                     },
                     "States": {
-                        "SafehouseDummy": {},
+                        "SafehouseDummy": {
+                            "Activate_Timed_SilientTakedown": [
+                                {
+                                    "Actions": {
+                                        "$set": ["MyPayout", "$Value.Payout"],
+                                        "$dec": "update_counter"
+                                    }
+                                }
+                            ]
+                        },
                         "Start": {
                             "Activate_Timed_SilientTakedown": [
                                 {
@@ -12759,7 +12935,7 @@
                                 },
                                 "Transition": "Failure"
                             },
-                            "Evergreen_EvaluateChallenge": {
+                            "NoTargetsLeft": {
                                 "Transition": "Success"
                             },
                             "MissionFailed_Event": {
@@ -12855,7 +13031,16 @@
                         "MyPayout": "1"
                     },
                     "States": {
-                        "SafehouseDummy": {},
+                        "SafehouseDummy": {
+                            "Activate_Multikill_Collateral_Firearm": [
+                                {
+                                    "Actions": {
+                                        "$set": ["MyPayout", "$Value.Payout"],
+                                        "$dec": "update_counter"
+                                    }
+                                }
+                            ]
+                        },
                         "Start": {
                             "Activate_Multikill_Collateral_Firearm": [
                                 {
@@ -12871,43 +13056,9 @@
                                     "Transition": "SafehouseDummy"
                                 }
                             ],
-                            "Kill": [
-                                {
-                                    "Condition": {
-                                        "$and": [
-                                            {
-                                                "$eq": ["$Value.IsTarget", true]
-                                            },
-                                            {
-                                                "$eq": [
-                                                    "$Value.KillClass",
-                                                    "ballistic"
-                                                ]
-                                            }
-                                        ]
-                                    },
-                                    "Transition": "Check_Any"
-                                },
-                                {
-                                    "Condition": {
-                                        "$and": [
-                                            {
-                                                "$eq": [
-                                                    "$Value.IsTarget",
-                                                    false
-                                                ]
-                                            },
-                                            {
-                                                "$eq": [
-                                                    "$Value.KillClass",
-                                                    "ballistic"
-                                                ]
-                                            }
-                                        ]
-                                    },
-                                    "Transition": "Check_Target"
-                                }
-                            ],
+                            "Evergreen_CollateralKill_Firearms": {
+                                "Transition": "Success"
+                            },
                             "NoTargetsLeft": {
                                 "Transition": "Failure"
                             },
@@ -12916,49 +13067,6 @@
                             },
                             "PrestigeObjFailedHC_Event": {
                                 "Transition": "Failure"
-                            }
-                        },
-                        "Check_Target": {
-                            "$timer": {
-                                "Condition": {
-                                    "$after": 1
-                                },
-                                "Transition": "Start"
-                            },
-                            "Kill": [
-                                {
-                                    "Condition": {
-                                        "$and": [
-                                            {
-                                                "$eq": ["$Value.IsTarget", true]
-                                            },
-                                            {
-                                                "$eq": [
-                                                    "$Value.KillClass",
-                                                    "ballistic"
-                                                ]
-                                            }
-                                        ]
-                                    },
-                                    "Transition": "Success"
-                                }
-                            ]
-                        },
-                        "Check_Any": {
-                            "$timer": {
-                                "Condition": {
-                                    "$after": 0.5
-                                },
-                                "Transition": "Start"
-                            },
-                            "Kill": {
-                                "Condition": {
-                                    "$eq": ["$Value.KillClass", "ballistic"]
-                                },
-                                "Transition": "Success"
-                            },
-                            "CrowdNPC_Died": {
-                                "Transition": "Success"
                             }
                         }
                     }
@@ -13039,7 +13147,16 @@
                         "MyPayout": "1"
                     },
                     "States": {
-                        "SafehouseDummy": {},
+                        "SafehouseDummy": {
+                            "Activate_Multikill_Collateral_Accident": [
+                                {
+                                    "Actions": {
+                                        "$set": ["MyPayout", "$Value.Payout"],
+                                        "$dec": "update_counter"
+                                    }
+                                }
+                            ]
+                        },
                         "Start": {
                             "Activate_Multikill_Collateral_Accident": [
                                 {
@@ -13055,59 +13172,9 @@
                                     "Transition": "SafehouseDummy"
                                 }
                             ],
-                            "Kill": [
-                                {
-                                    "Condition": {
-                                        "$and": [
-                                            {
-                                                "$eq": ["$Value.IsTarget", true]
-                                            },
-                                            {
-                                                "$any": {
-                                                    "?": {
-                                                        "$eq": [
-                                                            "$.#",
-                                                            "accident"
-                                                        ]
-                                                    },
-                                                    "in": [
-                                                        "$Value.KillMethodBroad",
-                                                        "$Value.KillMethodStrict"
-                                                    ]
-                                                }
-                                            }
-                                        ]
-                                    },
-                                    "Transition": "Check_Any"
-                                },
-                                {
-                                    "Condition": {
-                                        "$and": [
-                                            {
-                                                "$eq": [
-                                                    "$Value.IsTarget",
-                                                    false
-                                                ]
-                                            },
-                                            {
-                                                "$any": {
-                                                    "?": {
-                                                        "$eq": [
-                                                            "$.#",
-                                                            "accident"
-                                                        ]
-                                                    },
-                                                    "in": [
-                                                        "$Value.KillMethodBroad",
-                                                        "$Value.KillMethodStrict"
-                                                    ]
-                                                }
-                                            }
-                                        ]
-                                    },
-                                    "Transition": "Check_Target"
-                                }
-                            ],
+                            "Evergreen_CollateralKill_Accident": {
+                                "Transition": "Success"
+                            },
                             "NoTargetsLeft": {
                                 "Transition": "Failure"
                             },
@@ -13116,65 +13183,6 @@
                             },
                             "PrestigeObjFailedHC_Event": {
                                 "Transition": "Failure"
-                            }
-                        },
-                        "Check_Target": {
-                            "$timer": {
-                                "Condition": {
-                                    "$after": 1
-                                },
-                                "Transition": "Start"
-                            },
-                            "Kill": [
-                                {
-                                    "Condition": {
-                                        "$and": [
-                                            {
-                                                "$eq": ["$Value.IsTarget", true]
-                                            },
-                                            {
-                                                "$any": {
-                                                    "?": {
-                                                        "$eq": [
-                                                            "$.#",
-                                                            "accident"
-                                                        ]
-                                                    },
-                                                    "in": [
-                                                        "$Value.KillMethodBroad",
-                                                        "$Value.KillMethodStrict"
-                                                    ]
-                                                }
-                                            }
-                                        ]
-                                    },
-                                    "Transition": "Success"
-                                }
-                            ]
-                        },
-                        "Check_Any": {
-                            "$timer": {
-                                "Condition": {
-                                    "$after": 0.5
-                                },
-                                "Transition": "Start"
-                            },
-                            "Kill": {
-                                "Condition": {
-                                    "$any": {
-                                        "?": {
-                                            "$eq": ["$.#", "accident"]
-                                        },
-                                        "in": [
-                                            "$Value.KillMethodBroad",
-                                            "$Value.KillMethodStrict"
-                                        ]
-                                    }
-                                },
-                                "Transition": "Success"
-                            },
-                            "CrowdNPC_Died": {
-                                "Transition": "Success"
                             }
                         }
                     }
@@ -13255,7 +13263,16 @@
                         "MyPayout": "1"
                     },
                     "States": {
-                        "SafehouseDummy": {},
+                        "SafehouseDummy": {
+                            "Activate_Multikill_Collateral_Explosion": [
+                                {
+                                    "Actions": {
+                                        "$set": ["MyPayout", "$Value.Payout"],
+                                        "$dec": "update_counter"
+                                    }
+                                }
+                            ]
+                        },
                         "Start": {
                             "Activate_Multikill_Collateral_Explosion": [
                                 {
@@ -13271,79 +13288,9 @@
                                     "Transition": "SafehouseDummy"
                                 }
                             ],
-                            "Kill": [
-                                {
-                                    "Condition": {
-                                        "$and": [
-                                            {
-                                                "$eq": ["$Value.IsTarget", true]
-                                            },
-                                            {
-                                                "$any": {
-                                                    "?": {
-                                                        "$or": [
-                                                            {
-                                                                "$eq": [
-                                                                    "$.#",
-                                                                    "explosive"
-                                                                ]
-                                                            },
-                                                            {
-                                                                "$eq": [
-                                                                    "$.#",
-                                                                    "accident_explosion"
-                                                                ]
-                                                            }
-                                                        ]
-                                                    },
-                                                    "in": [
-                                                        "$Value.KillMethodBroad",
-                                                        "$Value.KillMethodStrict"
-                                                    ]
-                                                }
-                                            }
-                                        ]
-                                    },
-                                    "Transition": "Check_Any"
-                                },
-                                {
-                                    "Condition": {
-                                        "$and": [
-                                            {
-                                                "$eq": [
-                                                    "$Value.IsTarget",
-                                                    false
-                                                ]
-                                            },
-                                            {
-                                                "$any": {
-                                                    "?": {
-                                                        "$or": [
-                                                            {
-                                                                "$eq": [
-                                                                    "$.#",
-                                                                    "explosive"
-                                                                ]
-                                                            },
-                                                            {
-                                                                "$eq": [
-                                                                    "$.#",
-                                                                    "accident_explosion"
-                                                                ]
-                                                            }
-                                                        ]
-                                                    },
-                                                    "in": [
-                                                        "$Value.KillMethodBroad",
-                                                        "$Value.KillMethodStrict"
-                                                    ]
-                                                }
-                                            }
-                                        ]
-                                    },
-                                    "Transition": "Check_Target"
-                                }
-                            ],
+                            "Evergreen_CollateralKill_Explosion": {
+                                "Transition": "Success"
+                            },
                             "NoTargetsLeft": {
                                 "Transition": "Failure"
                             },
@@ -13352,85 +13299,6 @@
                             },
                             "PrestigeObjFailedHC_Event": {
                                 "Transition": "Failure"
-                            }
-                        },
-                        "Check_Target": {
-                            "$timer": {
-                                "Condition": {
-                                    "$after": 1
-                                },
-                                "Transition": "Start"
-                            },
-                            "Kill": [
-                                {
-                                    "Condition": {
-                                        "$and": [
-                                            {
-                                                "$eq": ["$Value.IsTarget", true]
-                                            },
-                                            {
-                                                "$any": {
-                                                    "?": {
-                                                        "$or": [
-                                                            {
-                                                                "$eq": [
-                                                                    "$.#",
-                                                                    "explosive"
-                                                                ]
-                                                            },
-                                                            {
-                                                                "$eq": [
-                                                                    "$.#",
-                                                                    "accident_explosion"
-                                                                ]
-                                                            }
-                                                        ]
-                                                    },
-                                                    "in": [
-                                                        "$Value.KillMethodBroad",
-                                                        "$Value.KillMethodStrict"
-                                                    ]
-                                                }
-                                            }
-                                        ]
-                                    },
-                                    "Transition": "Success"
-                                }
-                            ]
-                        },
-                        "Check_Any": {
-                            "$timer": {
-                                "Condition": {
-                                    "$after": 0.5
-                                },
-                                "Transition": "Start"
-                            },
-                            "Kill": {
-                                "Condition": {
-                                    "$any": {
-                                        "?": {
-                                            "$or": [
-                                                {
-                                                    "$eq": ["$.#", "explosive"]
-                                                },
-                                                {
-                                                    "$eq": [
-                                                        "$.#",
-                                                        "accident_explosion"
-                                                    ]
-                                                }
-                                            ]
-                                        },
-                                        "in": [
-                                            "$Value.KillMethodBroad",
-                                            "$Value.KillMethodStrict"
-                                        ]
-                                    }
-                                },
-                                "Transition": "Success"
-                            },
-                            "CrowdNPC_Died": {
-                                "Transition": "Success"
                             }
                         }
                     }
@@ -13512,7 +13380,16 @@
                         "AnyTargetsLeft": true
                     },
                     "States": {
-                        "SafehouseDummy": {},
+                        "SafehouseDummy": {
+                            "Activate_ShootTargetIntowater": [
+                                {
+                                    "Actions": {
+                                        "$set": ["MyPayout", "$Value.Payout"],
+                                        "$dec": "update_counter"
+                                    }
+                                }
+                            ]
+                        },
                         "Start": {
                             "-": {
                                 "Condition": {
@@ -13656,11 +13533,21 @@
                             "c21f558b-2935-41e5-88ff-642eb1761ccc",
                             "c7296c5f-6c0e-4d52-98cd-e70a0d329e73",
                             "8e445d94-9294-4087-af0d-178ef1f8c8f7",
-                            "1e2bc40b-505a-4cc6-a09c-94470470985b"
+                            "1e2bc40b-505a-4cc6-a09c-94470470985b",
+                            "248cbd89-9923-452a-8cda-a5f76d8930dc"
                         ]
                     },
                     "States": {
-                        "SafehouseDummy": {},
+                        "SafehouseDummy": {
+                            "Activate_Pacify_Target_BaseballBat": [
+                                {
+                                    "Actions": {
+                                        "$set": ["MyPayout", "$Value.Payout"],
+                                        "$dec": "update_counter"
+                                    }
+                                }
+                            ]
+                        },
                         "Start": {
                             "Activate_Pacify_Target_BaseballBat": [
                                 {
@@ -13789,7 +13676,16 @@
                         "MySuspects": []
                     },
                     "States": {
-                        "SafehouseDummy": {},
+                        "SafehouseDummy": {
+                            "Activate_Hot_Timed_Pacifying_Suspect": [
+                                {
+                                    "Actions": {
+                                        "$set": ["MyPayout", "$Value.Payout"],
+                                        "$dec": "update_counter"
+                                    }
+                                }
+                            ]
+                        },
                         "Start": {
                             "Activate_Hot_Timed_Pacifying_Suspect": [
                                 {
@@ -13824,7 +13720,10 @@
                                     ]
                                 }
                             },
-                            "Evergreen_EvaluateChallenge": {
+                            "Kill": {
+                                "Condition": {
+                                    "$eq": ["$Value.IsTarget", true]
+                                },
                                 "Transition": "Success"
                             },
                             "MissionFailed_Event": {
@@ -13931,7 +13830,16 @@
                         "MyPayout": "1"
                     },
                     "States": {
-                        "SafehouseDummy": {},
+                        "SafehouseDummy": {
+                            "Activate_Hot_Killmethod_Meeting": [
+                                {
+                                    "Actions": {
+                                        "$set": ["MyPayout", "$Value.Payout"],
+                                        "$dec": "update_counter"
+                                    }
+                                }
+                            ]
+                        },
                         "Start": {
                             "Activate_Hot_Killmethod_Meeting": [
                                 {
@@ -14038,7 +13946,16 @@
                         "MyPayout": "1"
                     },
                     "States": {
-                        "SafehouseDummy": {},
+                        "SafehouseDummy": {
+                            "Activate_Hot_Killmethod_DuringTell": [
+                                {
+                                    "Actions": {
+                                        "$set": ["MyPayout", "$Value.Payout"],
+                                        "$dec": "update_counter"
+                                    }
+                                }
+                            ]
+                        },
                         "Start": {
                             "Activate_Hot_Killmethod_DuringTell": [
                                 {
@@ -14145,7 +14062,16 @@
                         "MyPayout": "1"
                     },
                     "States": {
-                        "SafehouseDummy": {},
+                        "SafehouseDummy": {
+                            "Activate_Hot_Killmethod_Escaping": [
+                                {
+                                    "Actions": {
+                                        "$set": ["MyPayout", "$Value.Payout"],
+                                        "$dec": "update_counter"
+                                    }
+                                }
+                            ]
+                        },
                         "Start": {
                             "Activate_Hot_Killmethod_Escaping": [
                                 {
@@ -14258,7 +14184,16 @@
                         "Goal": 3
                     },
                     "States": {
-                        "SafehouseDummy": {},
+                        "SafehouseDummy": {
+                            "Activate_Hot_Silent_Takedown_Suspects": [
+                                {
+                                    "Actions": {
+                                        "$set": ["MyPayout", "$Value.Payout"],
+                                        "$dec": "update_counter"
+                                    }
+                                }
+                            ]
+                        },
                         "Start": {
                             "Activate_Hot_Silent_Takedown_Suspects": [
                                 {
@@ -14392,7 +14327,16 @@
                         "MyPayout": "1"
                     },
                     "States": {
-                        "SafehouseDummy": {},
+                        "SafehouseDummy": {
+                            "Activate_Hot_Killmethod_OilWaterSpill": [
+                                {
+                                    "Actions": {
+                                        "$set": ["MyPayout", "$Value.Payout"],
+                                        "$dec": "update_counter"
+                                    }
+                                }
+                            ]
+                        },
                         "Start": {
                             "Activate_Hot_Killmethod_OilWaterSpill": [
                                 {
@@ -14523,7 +14467,16 @@
                         "Assassins": []
                     },
                     "States": {
-                        "SafehouseDummy": {},
+                        "SafehouseDummy": {
+                            "Activate_Hot_Takeout_Assassin": [
+                                {
+                                    "Actions": {
+                                        "$set": ["MyPayout", "$Value.Payout"],
+                                        "$dec": "update_counter"
+                                    }
+                                }
+                            ]
+                        },
                         "Start": {
                             "Activate_Hot_Takeout_Assassin": [
                                 {
@@ -14661,7 +14614,16 @@
                         "Lookouts": []
                     },
                     "States": {
-                        "SafehouseDummy": {},
+                        "SafehouseDummy": {
+                            "Activate_Hot_Takeout_Lookout": [
+                                {
+                                    "Actions": {
+                                        "$set": ["MyPayout", "$Value.Payout"],
+                                        "$dec": "update_counter"
+                                    }
+                                }
+                            ]
+                        },
                         "Start": {
                             "Activate_Hot_Takeout_Lookout": [
                                 {
@@ -14801,7 +14763,16 @@
                         "MyPayout": "1"
                     },
                     "States": {
-                        "SafehouseDummy": {},
+                        "SafehouseDummy": {
+                            "Activate_Safe_BlowOpen": [
+                                {
+                                    "Actions": {
+                                        "$set": ["MyPayout", "$Value.Payout"],
+                                        "$dec": "update_counter"
+                                    }
+                                }
+                            ]
+                        },
                         "Start": {
                             "Activate_Safe_BlowOpen": [
                                 {
@@ -14907,7 +14878,16 @@
                         "MyPayout": "1"
                     },
                     "States": {
-                        "SafehouseDummy": {},
+                        "SafehouseDummy": {
+                            "Activate_Arrange_Meeting": [
+                                {
+                                    "Actions": {
+                                        "$set": ["MyPayout", "$Value.Payout"],
+                                        "$dec": "update_counter"
+                                    }
+                                }
+                            ]
+                        },
                         "Start": {
                             "Activate_Arrange_Meeting": [
                                 {
@@ -15191,5 +15171,127 @@
         ],
         "ShowBasedOnObjectives": null,
         "IsPrestigeObjective": null
+    },
+    "c11bade2-c438-47da-91a5-67901172db42": {
+        "Id": "c11bade2-c438-47da-91a5-67901172db42",
+        "Name": "UI_CONTRACT_EVERGREEN_MILD_CLIENT_REQUIREMENTS_Perfect_Run_TITLE",
+        "Description": "UI_CONTRACT_EVERGREEN_MILD_CLIENT_REQUIREMENTS_Perfect_Run_DESC",
+        "Icon": "images/test/placeholder.jpg",
+        "IsHidden": null,
+        "TileImage": "images/evergreen/gamechangers/133_Hot_Takeout_Lookout.jpg",
+        "Resource": [],
+        "Objectives": [
+            {
+                "Id": "0f2d9adb-efc8-4824-9ccb-9d3197b169de",
+                "Type": "statemachine",
+                "Category": "condition",
+                "ExcludeFromScoring": true,
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "Activate_Perfect_Run": {
+                                "Transition": "Success"
+                            }
+                        },
+                        "Success": {
+                            "Deactivate_Perfect_Run": [
+                                {
+                                    "Transition": "Start"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "f4e3b615-85df-4209-b9eb-5dc0bdfae197",
+                "Activation": {
+                    "$eq": [
+                        "$0f2d9adb-efc8-4824-9ccb-9d3197b169de",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": {
+                    "IfFailed": {
+                        "State": "InProgress"
+                    },
+                    "IfCompleted": {
+                        "State": "InProgress"
+                    }
+                },
+                "Category": "secondary",
+                "IgnoreIfInactive": true,
+                "Type": "statemachine",
+                "Definition": {
+                    "ContextListeners": {
+                        "update_counter": {
+                            "type": "custom",
+                            "HUDTemplate": {
+                                "iconType": 59,
+                                "display": {
+                                    "$loc": {
+                                        "key": "UI_CONTRACT_EVERGREEN_MILD_CLIENT_REQUIREMENTS_Perfect_Run_NAME",
+                                        "data": ["$formatint $.MyPayout"]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "Context": {
+                        "update_counter": 0,
+                        "MyPayout": "1",
+                        "Count": 0
+                    },
+                    "States": {
+                        "SafehouseDummy": {
+                            "Activate_Perfect_Run": [
+                                {
+                                    "Actions": {
+                                        "$set": ["MyPayout", "$Value.Payout"],
+                                        "$dec": "update_counter"
+                                    }
+                                }
+                            ]
+                        },
+                        "Start": {
+                            "Activate_Perfect_Run": [
+                                {
+                                    "Actions": {
+                                        "$set": ["MyPayout", "$Value.Payout"],
+                                        "$dec": "update_counter"
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$Value.SafehouseDummy", true]
+                                    },
+                                    "Transition": "SafehouseDummy"
+                                }
+                            ],
+                            "PayoutObjective_Completed": [
+                                {
+                                    "Actions": {
+                                        "$inc": "Count"
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$ge": ["$.Count", 3]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ],
+                            "MissionFailed_Event": {
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "ShowBasedOnObjectives": true,
+        "IsPrestigeObjective": true
     }
 }

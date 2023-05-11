@@ -33,7 +33,7 @@ import { SyncBailHook, SyncHook } from "../hooksImpl"
 const menuSystemPreRouter = Router()
 const menuSystemRouter = Router()
 
-// /resources-8-11/
+// /resources-8-12/
 
 /**
  * A class for managing the menu system's fetched JSON data.
@@ -90,7 +90,7 @@ export class MenuSystemDatabase {
                     )
 
                     configs.push(
-                        "menusystem/pages/gamemodes/gamemodesniper_page.json",
+                        "images/unlockables_override/47_outfits_legacy47.jpg",
                     )
                 }
 
