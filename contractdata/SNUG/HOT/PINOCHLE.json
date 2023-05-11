@@ -29,12 +29,8 @@
                 "ForceShowOnLoadingScreen": false,
                 "ExcludeFromScoring": true,
                 "OnActive": {
-                    "IfInProgress": {
-                        "Visible": true
-                    },
-                    "IfCompleted": {
-                        "Visible": false
-                    }
+                    "IfInProgress": { "Visible": true },
+                    "IfCompleted": { "Visible": false }
                 },
                 "Image": "images/evergreen/objective/evergreen_objective_primary_hot.jpg",
                 "BriefingName": "$loc UI_CONTRACT_EVERGREEN_HOT_BRIEFINGNAME",
@@ -68,11 +64,7 @@
                         "Suspects": []
                     },
                     "States": {
-                        "Start": {
-                            "-": {
-                                "Transition": "Success"
-                            }
-                        },
+                        "Start": { "-": { "Transition": "Success" } },
                         "Success": {
                             "SetupTarget": {
                                 "Actions": {
@@ -148,14 +140,10 @@
                                     ]
                                 }
                             },
-                            "LeaderEscaped_Event": {
-                                "Transition": "Failure"
-                            },
+                            "LeaderEscaped_Event": { "Transition": "Failure" },
                             "PrestigeObjFailedHC_Event": {
                                 "Transition": "Failure",
-                                "Actions": {
-                                    "$set": ["Suspects", []]
-                                }
+                                "Actions": { "$set": ["Suspects", []] }
                             }
                         }
                     }
@@ -169,29 +157,18 @@
                 "IsHidden": true,
                 "ExcludeFromScoring": true,
                 "OnActive": {
-                    "IfInProgress": {
-                        "Visible": false
-                    },
-                    "IfCompleted": {
-                        "Visible": false
-                    },
-                    "IfFailed": {
-                        "Visible": false
-                    }
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
                 },
                 "Image": "",
                 "BriefingName": "",
                 "BriefingText": "",
                 "LongBriefingText": "",
-                "HUDTemplate": {
-                    "display": "",
-                    "iconType": 1
-                },
+                "HUDTemplate": { "display": "", "iconType": 1 },
                 "Type": "statemachine",
                 "Definition": {
-                    "Context": {
-                        "Targets": []
-                    },
+                    "Context": { "Targets": [] },
                     "States": {
                         "Start": {
                             "SetupTarget": {
@@ -230,14 +207,8 @@
         "GameModesBricks": null,
         "EngineModesBricks": null,
         "GameDifficulties": [
-            {
-                "Difficulty": "easy",
-                "Bricks": []
-            },
-            {
-                "Difficulty": "normal",
-                "Bricks": []
-            },
+            { "Difficulty": "easy", "Bricks": [] },
+            { "Difficulty": "normal", "Bricks": [] },
             {
                 "Difficulty": "hard",
                 "Bricks": [
@@ -353,8 +324,10 @@
             "b08d9153-8470-4161-a5a3-023a63b45550",
             "9f7bc307-2a30-4dd8-84aa-0a0099c0c871",
             "cd8e4727-8776-4d83-9ba3-0b6732f7b6af",
-            "0ab0a960-a496-47f5-a0b6-9ab3e6d07ad8"
-        ]
+            "0ab0a960-a496-47f5-a0b6-9ab3e6d07ad8",
+            "c11bade2-c438-47da-91a5-67901172db42"
+        ],
+        "GameChangerReferences": []
     },
     "Metadata": {
         "Id": "ee67660e-4bd6-4743-9163-40331056f690",
@@ -369,12 +342,7 @@
         "TileImage": "images/test/placeholder.jpg",
         "Type": "evergreen",
         "Subtype": "specialassignment",
-        "Release": {
-            "Major": 3,
-            "Minor": 130,
-            "Build": -1,
-            "Revision": -1
-        },
+        "Release": { "Major": 3, "Minor": 130, "Build": -1, "Revision": -1 },
         "GameModes": null,
         "EngineModes": null,
         "IsVersus": false,
@@ -383,10 +351,7 @@
         "EvergreenMissionName": "Pinochle",
         "EvergreenMissionType": "Hot",
         "Entitlements": ["H2_LEGACY_STANDARD"],
-        "LastUpdate": "2023-01-27T15:19:32.5802821Z",
-        "PublicId": "099721737647",
-        "IsFeatured": false,
-        "OpportunityData": []
+        "PublicId": "099721737647"
     },
     "UserData": {}
 }
