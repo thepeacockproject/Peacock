@@ -29,12 +29,8 @@
                 "ForceShowOnLoadingScreen": false,
                 "ExcludeFromScoring": true,
                 "OnActive": {
-                    "IfInProgress": {
-                        "Visible": true
-                    },
-                    "IfCompleted": {
-                        "Visible": false
-                    }
+                    "IfInProgress": { "Visible": true },
+                    "IfCompleted": { "Visible": false }
                 },
                 "Image": "images/evergreen/objective/evergreen_objective_primary_mild.jpg",
                 "BriefingName": "$loc UI_CONTRACT_EVERGREEN_MILD_BRIEFINGNAME",
@@ -116,9 +112,7 @@
                             ],
                             "PrestigeObjFailedHC_Event": {
                                 "Transition": "Failure",
-                                "Actions": {
-                                    "$set": ["Targets", []]
-                                }
+                                "Actions": { "$set": ["Targets", []] }
                             }
                         }
                     }
@@ -134,14 +128,8 @@
         "GameModesBricks": null,
         "EngineModesBricks": null,
         "GameDifficulties": [
-            {
-                "Difficulty": "easy",
-                "Bricks": []
-            },
-            {
-                "Difficulty": "normal",
-                "Bricks": []
-            },
+            { "Difficulty": "easy", "Bricks": [] },
+            { "Difficulty": "normal", "Bricks": [] },
             {
                 "Difficulty": "hard",
                 "Bricks": [
@@ -248,8 +236,10 @@
             "a29a186f-38d4-4559-84cf-296e5d92d7e0",
             "33809fbf-c91b-4252-8b3e-602282c22799",
             "439d8f99-6283-4f33-962e-cf3fad89073c",
-            "4e706470-0415-4ef6-8f1e-fbdec8ad98f3"
-        ]
+            "4e706470-0415-4ef6-8f1e-fbdec8ad98f3",
+            "c11bade2-c438-47da-91a5-67901172db42"
+        ],
+        "GameChangerReferences": []
     },
     "Metadata": {
         "Id": "be4714d4-c7a5-4c21-a63a-89c5643965e7",
@@ -264,12 +254,7 @@
         "TileImage": "images/test/placeholder.jpg",
         "Type": "evergreen",
         "Subtype": "specialassignment",
-        "Release": {
-            "Major": 3,
-            "Minor": 130,
-            "Build": -1,
-            "Revision": -1
-        },
+        "Release": { "Major": 3, "Minor": 130, "Build": -1, "Revision": -1 },
         "GameModes": null,
         "EngineModes": null,
         "IsVersus": false,
@@ -278,10 +263,7 @@
         "EvergreenMissionName": "Blackjack",
         "EvergreenMissionType": "Mild",
         "Entitlements": ["LOCATION_GREEDY"],
-        "LastUpdate": "2023-01-27T15:19:32.874235Z",
-        "PublicId": "099417541647",
-        "IsFeatured": false,
-        "OpportunityData": []
+        "PublicId": "099417541647"
     },
     "UserData": {}
 }

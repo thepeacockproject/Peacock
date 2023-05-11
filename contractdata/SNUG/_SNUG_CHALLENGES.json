@@ -1147,7 +1147,14 @@
                         },
                         "Context": {
                             "Count": 0,
-                            "ValidLocation": false
+                            "ValidLocation": false,
+                            "KillItems": [
+                                "963123fd-8a53-41b6-8950-335495b3f3af",
+                                "c434db4f-f0dc-4803-bc24-e83f85c09259",
+                                "cbf40151-cb96-435a-b683-6430370a07f2",
+                                "e887e8ea-4554-41e1-b37d-d002dad04fed",
+                                "5c7474ad-d245-43ca-948d-8800b2324e8c"
+                            ]
                         },
                         "ContextListeners": {
                             "Count": {
@@ -1186,26 +1193,15 @@
                                                     ]
                                                 },
                                                 {
-                                                    "$or": [
-                                                        {
+                                                    "$any": {
+                                                        "?": {
                                                             "$eq": [
-                                                                "$Value.KillItemRepositoryId",
-                                                                "963123fd-8a53-41b6-8950-335495b3f3af"
+                                                                "$.#",
+                                                                "$Value.KillItemRepositoryId"
                                                             ]
                                                         },
-                                                        {
-                                                            "$eq": [
-                                                                "$Value.KillItemRepositoryId",
-                                                                "c434db4f-f0dc-4803-bc24-e83f85c09259"
-                                                            ]
-                                                        },
-                                                        {
-                                                            "$eq": [
-                                                                "$Value.KillItemRepositoryId",
-                                                                "cbf40151-cb96-435a-b683-6430370a07f2"
-                                                            ]
-                                                        }
-                                                    ]
+                                                        "in": "$.KillItems"
+                                                    }
                                                 }
                                             ]
                                         },
@@ -6943,7 +6939,7 @@
                     "Rewards": {
                         "MasteryXP": 4000
                     },
-                    "Drops": [],
+                    "Drops": ["EG_CHALLENGE_SKIN_OUTFIT_HERO_BLOODY"],
                     "IsPlayable": true,
                     "IsLocked": false,
                     "HideProgression": false,
@@ -7762,6 +7758,236 @@
                                     {
                                         "Condition": {
                                             "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["feats", "medium"]
+                },
+                {
+                    "Id": "d747fc95-4bdc-4722-9207-f09d5cebfaf6",
+                    "Name": "UI_EVERGREEN_CHALLENGES_PRESTIGE_1_TITLE",
+                    "ImageName": "images/evergreen/challenges/Evergreen_Challenge_Prestige_1.jpg",
+                    "Description": "UI_EVERGREEN_CHALLENGES_PRESTIGE_1_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_SNUG",
+                    "ParentLocationId": "LOCATION_PARENT_SNUG",
+                    "Type": "parentlocation",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 110001,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "profile",
+                        "States": {
+                            "Start": {
+                                "Prestige1Complete": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["feats", "medium"]
+                },
+                {
+                    "Id": "7f865e2d-59a2-4d8b-b0e5-319185658fa2",
+                    "Name": "UI_EVERGREEN_CHALLENGES_PRESTIGE_2_TITLE",
+                    "ImageName": "images/evergreen/challenges/Evergreen_Challenge_Prestige_2.jpg",
+                    "Description": "UI_EVERGREEN_CHALLENGES_PRESTIGE_2_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_SNUG",
+                    "ParentLocationId": "LOCATION_PARENT_SNUG",
+                    "Type": "parentlocation",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 110002,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 3
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "Scope": "profile",
+                        "States": {
+                            "Start": {
+                                "PrestigeUpdate": [
+                                    {
+                                        "Actions": {
+                                            "$set": ["Count", "$Value.Rank"]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$ge": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["feats", "medium"]
+                },
+                {
+                    "Id": "4060dc5e-4842-46c7-9a76-f73eb6a74cc7",
+                    "Name": "UI_EVERGREEN_CHALLENGES_PRESTIGE_3_TITLE",
+                    "ImageName": "images/evergreen/challenges/Evergreen_Challenge_Prestige_3.jpg",
+                    "Description": "UI_EVERGREEN_CHALLENGES_PRESTIGE_3_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_SNUG",
+                    "ParentLocationId": "LOCATION_PARENT_SNUG",
+                    "Type": "parentlocation",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 110003,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 5
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "Scope": "profile",
+                        "States": {
+                            "Start": {
+                                "PrestigeUpdate": [
+                                    {
+                                        "Actions": {
+                                            "$set": ["Count", "$Value.Rank"]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$ge": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["feats", "medium"]
+                },
+                {
+                    "Id": "0cfb9d0c-a92c-4e8a-8575-9868555106a1",
+                    "Name": "UI_EVERGREEN_CHALLENGES_PRESTIGE_4_TITLE",
+                    "ImageName": "images/evergreen/challenges/Evergreen_Challenge_Prestige_4.jpg",
+                    "Description": "UI_EVERGREEN_CHALLENGES_PRESTIGE_4_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_SNUG",
+                    "ParentLocationId": "LOCATION_PARENT_SNUG",
+                    "Type": "parentlocation",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 110004,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 7
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "Scope": "profile",
+                        "States": {
+                            "Start": {
+                                "PrestigeUpdate": [
+                                    {
+                                        "Actions": {
+                                            "$set": ["Count", "$Value.Rank"]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$ge": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["feats", "medium"]
+                },
+                {
+                    "Id": "3752b9ab-fa00-459b-b1eb-99215da72720",
+                    "Name": "UI_EVERGREEN_CHALLENGES_PRESTIGE_5_TITLE",
+                    "ImageName": "images/evergreen/challenges/Evergreen_Challenge_Prestige_5.jpg",
+                    "Description": "UI_EVERGREEN_CHALLENGES_PRESTIGE_5_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_SNUG",
+                    "ParentLocationId": "LOCATION_PARENT_SNUG",
+                    "Type": "parentlocation",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 110005,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 10
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "Scope": "profile",
+                        "States": {
+                            "Start": {
+                                "PrestigeUpdate": [
+                                    {
+                                        "Actions": {
+                                            "$set": ["Count", "$Value.Rank"]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$ge": ["$.Count", "$.Goal"]
                                         },
                                         "Transition": "Success"
                                     }

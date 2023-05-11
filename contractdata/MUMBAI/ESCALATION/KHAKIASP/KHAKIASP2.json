@@ -8,16 +8,26 @@
                 "Category": "primary",
                 "Definition": {
                     "Context": {
-                        "Targets": ["5e042967-19a9-45af-acfb-4ce879eb0483"]
+                        "Targets": [
+                            "5066bc16-68f7-4f84-831e-bfb982d670de",
+                            "5e042967-19a9-45af-acfb-4ce879eb0483",
+                            "7366b55d-bfdd-40b7-a333-9e9468f846aa",
+                            "bf102062-f894-484f-9beb-8872a7295fb3"
+                        ]
                     },
                     "States": {
                         "Start": {
                             "ItemPickedUp": {
                                 "Condition": {
-                                    "$eq": [
-                                        "$Value.RepositoryId",
-                                        "5e042967-19a9-45af-acfb-4ce879eb0483"
-                                    ]
+                                    "$inarray": {
+                                        "in": "$.Targets",
+                                        "?": {
+                                            "$eq": [
+                                                "$.#",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    }
                                 },
                                 "Transition": "Success"
                             }

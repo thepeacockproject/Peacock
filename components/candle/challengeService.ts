@@ -455,12 +455,14 @@ export class ChallengeService extends ChallengeRegistry {
             data[challengeId].State = {
                 CurrentState: "Success",
             }
+            data[challengeId].CurrentState = "Success"
         }
 
         // apply default context if no progression exists
         data[challengeId] ??= {
             Ticked: false,
             Completed: false,
+            CurrentState: "Start",
             State:
                 (<ChallengeDefinitionLike>challenge?.Definition)?.Context || {},
         }
@@ -724,31 +726,40 @@ export class ChallengeService extends ChallengeRegistry {
 
         for (const group of Object.keys(challengeGroups)) {
             for (const challenge of challengeGroups[group]) {
-                const isDone = this.fastGetIsCompleted(profile, challenge.Id)
+                challengeContexts[challenge.Id] = {
+                    context: undefined,
+                    state: this.fastGetIsCompleted(profile, challenge.Id)
+                        ? "Success"
+                        : undefined,
+                    timers: [],
+                    timesCompleted: 0,
+                }
 
                 if (this.needSaveProgression(challenge)) {
                     profile.Extensions.ChallengeProgression[challenge.Id] ??= {
                         Ticked: false,
                         Completed: false,
+                        CurrentState: "Start",
                         State:
                             (<ChallengeDefinitionLike>challenge?.Definition)
                                 ?.Context || {},
                     }
-                }
 
-                const ctx = this.needSaveProgression(challenge)
-                    ? profile.Extensions.ChallengeProgression[challenge.Id]
-                          .State
-                    : fastClone(
-                          (<ChallengeDefinitionLike>challenge.Definition)
-                              ?.Context || {},
-                      ) || {}
-
-                challengeContexts[challenge.Id] = {
-                    context: ctx,
-                    state: isDone ? "Success" : "Start",
-                    timers: [],
-                    timesCompleted: 0,
+                    challengeContexts[challenge.Id].context =
+                        profile.Extensions.ChallengeProgression[
+                            challenge.Id
+                        ].State
+                    challengeContexts[challenge.Id].state ??=
+                        profile.Extensions.ChallengeProgression[
+                            challenge.Id
+                        ].CurrentState
+                } else {
+                    challengeContexts[challenge.Id].context =
+                        fastClone(
+                            (<ChallengeDefinitionLike>challenge.Definition)
+                                ?.Context || {},
+                        ) || {}
+                    challengeContexts[challenge.Id].state ??= "Start"
                 }
             }
         }
@@ -807,6 +818,10 @@ export class ChallengeService extends ChallengeRegistry {
             if (this.needSaveProgression(challenge)) {
                 userData.Extensions.ChallengeProgression[challengeId].State =
                     result.context
+
+                userData.Extensions.ChallengeProgression[
+                    challengeId
+                ].CurrentState = result.state
 
                 writeUserData(session.userId, session.gameVersion)
             }
@@ -876,6 +891,11 @@ export class ChallengeService extends ChallengeRegistry {
         const userData = getUserData(userId, gameVersion)
 
         const contractData = this.controller.resolveContract(contractId, true)
+
+        if (!contractData) {
+            return []
+        }
+
         const levelData =
             contractData.Metadata.Type === "arcade" &&
             contractData.Metadata.Id === contractId
@@ -888,10 +908,6 @@ export class ChallengeService extends ChallengeRegistry {
                       false,
                   )
                 : this.controller.resolveContract(contractId, false)
-
-        if (!contractData) {
-            return []
-        }
 
         const subLocation = getSubLocationFromContract(levelData, gameVersion)
 
@@ -1424,7 +1440,8 @@ export class ChallengeService extends ChallengeRegistry {
                 ContractSessionId: session.Id,
                 ContractId: session.contractId,
                 Name: "ChallengeCompleted",
-                Timestamp: new Date().getTime(),
+                // The timestamp (used for timers) is not important here, since it's not an event sent by the game.
+                Timestamp: 0,
             },
             session,
         )
@@ -1436,6 +1453,7 @@ export class ChallengeService extends ChallengeRegistry {
             userData.Extensions.ChallengeProgression ??= {}
 
             userData.Extensions.ChallengeProgression[challenge.Id] ??= {
+                CurrentState: "Start",
                 State: {},
                 Completed: false,
                 Ticked: false,

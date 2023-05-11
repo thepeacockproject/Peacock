@@ -29,12 +29,8 @@
                 "ForceShowOnLoadingScreen": false,
                 "ExcludeFromScoring": true,
                 "OnActive": {
-                    "IfInProgress": {
-                        "Visible": true
-                    },
-                    "IfCompleted": {
-                        "Visible": false
-                    }
+                    "IfInProgress": { "Visible": true },
+                    "IfCompleted": { "Visible": false }
                 },
                 "Image": "images/evergreen/objective/evergreen_objective_primary_hot.jpg",
                 "BriefingName": "$loc UI_CONTRACT_EVERGREEN_HOT_BRIEFINGNAME",
@@ -68,11 +64,7 @@
                         "Suspects": []
                     },
                     "States": {
-                        "Start": {
-                            "-": {
-                                "Transition": "Success"
-                            }
-                        },
+                        "Start": { "-": { "Transition": "Success" } },
                         "Success": {
                             "SetupTarget": {
                                 "Actions": {
@@ -148,14 +140,10 @@
                                     ]
                                 }
                             },
-                            "LeaderEscaped_Event": {
-                                "Transition": "Failure"
-                            },
+                            "LeaderEscaped_Event": { "Transition": "Failure" },
                             "PrestigeObjFailedHC_Event": {
                                 "Transition": "Failure",
-                                "Actions": {
-                                    "$set": ["Suspects", []]
-                                }
+                                "Actions": { "$set": ["Suspects", []] }
                             }
                         }
                     }
@@ -169,29 +157,18 @@
                 "IsHidden": true,
                 "ExcludeFromScoring": true,
                 "OnActive": {
-                    "IfInProgress": {
-                        "Visible": false
-                    },
-                    "IfCompleted": {
-                        "Visible": false
-                    },
-                    "IfFailed": {
-                        "Visible": false
-                    }
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
                 },
                 "Image": "",
                 "BriefingName": "",
                 "BriefingText": "",
                 "LongBriefingText": "",
-                "HUDTemplate": {
-                    "display": "",
-                    "iconType": 1
-                },
+                "HUDTemplate": { "display": "", "iconType": 1 },
                 "Type": "statemachine",
                 "Definition": {
-                    "Context": {
-                        "Targets": []
-                    },
+                    "Context": { "Targets": [] },
                     "States": {
                         "Start": {
                             "SetupTarget": {
@@ -236,10 +213,7 @@
                     "assembly:/_pro/scenes/missions/colorado_2/difficulty_easy_colorado_bull.brick"
                 ]
             },
-            {
-                "Difficulty": "normal",
-                "Bricks": []
-            },
+            { "Difficulty": "normal", "Bricks": [] },
             {
                 "Difficulty": "hard",
                 "Bricks": [
@@ -356,7 +330,8 @@
             "9f7bc307-2a30-4dd8-84aa-0a0099c0c871",
             "cd8e4727-8776-4d83-9ba3-0b6732f7b6af",
             "0ab0a960-a496-47f5-a0b6-9ab3e6d07ad8"
-        ]
+        ],
+        "GameChangerReferences": []
     },
     "Metadata": {
         "Id": "4a95baa5-6ad6-43c8-ae3e-be8449d578ec",
@@ -371,12 +346,7 @@
         "TileImage": "images/test/placeholder.jpg",
         "Type": "evergreen",
         "Subtype": "specialassignment",
-        "Release": {
-            "Major": 3,
-            "Minor": 130,
-            "Build": -1,
-            "Revision": -1
-        },
+        "Release": { "Major": 3, "Minor": 130, "Build": -1, "Revision": -1 },
         "GameModes": null,
         "EngineModes": null,
         "IsVersus": false,
@@ -385,10 +355,7 @@
         "EvergreenMissionName": "Spades",
         "EvergreenMissionType": "Hot",
         "Entitlements": ["H1_LEGACY_STANDARD"],
-        "LastUpdate": "2023-01-27T15:19:32.7183648Z",
-        "PublicId": "099718901647",
-        "IsFeatured": false,
-        "OpportunityData": []
+        "PublicId": "099718901647"
     },
     "UserData": {}
 }

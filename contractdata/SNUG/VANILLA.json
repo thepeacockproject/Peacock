@@ -44,11 +44,7 @@
                     },
                     "States": {
                         "Start": {
-                            "-": {
-                                "Actions": {
-                                    "$dec": "update_counter"
-                                }
-                            },
+                            "-": { "Actions": { "$dec": "update_counter" } },
                             "CheckAnsweringMachine": [
                                 {
                                     "Actions": {
@@ -59,9 +55,7 @@
                                     }
                                 },
                                 {
-                                    "Actions": {
-                                        "$set": ["Second", ""]
-                                    },
+                                    "Actions": { "$set": ["Second", ""] },
                                     "Transition": "SetText"
                                 }
                             ],
@@ -75,9 +69,7 @@
                                     }
                                 },
                                 {
-                                    "Actions": {
-                                        "$set": ["Second", ""]
-                                    },
+                                    "Actions": { "$set": ["Second", ""] },
                                     "Transition": "SetText"
                                 }
                             ],
@@ -91,9 +83,7 @@
                                     }
                                 },
                                 {
-                                    "Actions": {
-                                        "$set": ["Second", ""]
-                                    },
+                                    "Actions": { "$set": ["Second", ""] },
                                     "Transition": "SetText"
                                 }
                             ],
@@ -132,15 +122,9 @@
                                     "Transition": "SetText"
                                 }
                             ],
-                            "Prepare_HQ_Finished": {
-                                "Transition": "Success"
-                            }
+                            "Prepare_HQ_Finished": { "Transition": "Success" }
                         },
-                        "SetText": {
-                            "-": {
-                                "Transition": "Start"
-                            }
-                        }
+                        "SetText": { "-": { "Transition": "Start" } }
                     }
                 }
             },
@@ -156,9 +140,7 @@
                 "Definition": {
                     "States": {
                         "Start": {
-                            "GearSlotsTutorialised": {
-                                "Transition": "Success"
-                            }
+                            "GearSlotsTutorialised": { "Transition": "Success" }
                         }
                     }
                 }
@@ -196,21 +178,14 @@
                         }
                     },
                     "Scope": "session",
-                    "Context": {
-                        "Total": 0,
-                        "Used": 0
-                    },
+                    "Context": { "Total": 0, "Used": 0 },
                     "States": {
                         "Start": {
                             "GearSlotsTotal": {
-                                "Actions": {
-                                    "$set": ["Total", "$Value"]
-                                }
+                                "Actions": { "$set": ["Total", "$Value"] }
                             },
                             "GearSlotsUsed": {
-                                "Actions": {
-                                    "$set": ["Used", "$Value"]
-                                }
+                                "Actions": { "$set": ["Used", "$Value"] }
                             }
                         }
                     }
@@ -338,8 +313,10 @@
             "cd8e4727-8776-4d83-9ba3-0b6732f7b6af",
             "fb940ea3-32f5-4e59-bf75-3d89eae810a6",
             "4e706470-0415-4ef6-8f1e-fbdec8ad98f3",
-            "0ab0a960-a496-47f5-a0b6-9ab3e6d07ad8"
+            "0ab0a960-a496-47f5-a0b6-9ab3e6d07ad8",
+            "c11bade2-c438-47da-91a5-67901172db42"
         ],
+        "GameChangerReferences": [],
         "MandatoryLoadout": [],
         "MandatoryLoadoutClearDisguiseIfMissing": false
     },
@@ -356,12 +333,7 @@
         "TileImage": "images/locations/location_snug/snug_tile.jpg",
         "Type": "evergreen",
         "Subtype": "base",
-        "Release": {
-            "Major": 3,
-            "Minor": 130,
-            "Build": -1,
-            "Revision": -1
-        },
+        "Release": { "Major": 3, "Minor": 130, "Build": -1, "Revision": -1 },
         "GameModes": null,
         "EngineModes": null,
         "IsVersus": false,
@@ -370,10 +342,7 @@
         "BriefingVideo": "intro_evergreen",
         "IsEvergreenSafehouse": true,
         "Entitlements": ["LOCATION_GOLDEN"],
-        "LastUpdate": "2023-01-27T15:19:33.0756225Z",
-        "PublicId": "035616025847",
-        "IsFeatured": false,
-        "OpportunityData": []
+        "PublicId": "035616025847"
     },
     "UserData": {}
 }

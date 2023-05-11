@@ -111,6 +111,7 @@ export class HitsCategoryService {
      */
     public paginationExempt = ["Elusive_Target_Hits", "Arcade", "Sniper"]
     public realtimeFetched = ["Trending", "MostPlayedLastWeek"]
+    public filterSupported = ["MyPlaylist", "MyHistory", "MyContracts"]
 
     /**
      * The number of hits per page.
@@ -238,15 +239,6 @@ export class HitsCategoryService {
             ),
         )
 
-        // Stores the repo ID —— public ID lookup for the planning page to use.
-        hits.forEach((hit) =>
-            controller.contractIdToPublicId.set(
-                hit.UserCentricContract.Contract.Metadata.Id,
-                hit.UserCentricContract.Contract.Metadata.PublicId,
-            ),
-        )
-        controller.storeIdToPublicId(hits.map((hit) => hit.UserCentricContract))
-
         // Fix completion and favorite status for retrieved contracts
         const userProfile = getUserData(userId, gameVersion)
         const played = userProfile?.Extensions.PeacockPlayedContracts
@@ -329,7 +321,8 @@ export class HitsCategoryService {
         userId: string,
         type: ContractFilter,
         category: string,
-    ): string {
+    ): string | undefined {
+        if (!this.filterSupported.includes(category)) return undefined
         const user = getUserData(userId, gameVersion)
 
         if (type === "default") {
@@ -458,7 +451,9 @@ export class HitsCategoryService {
 
             hitsCategory.Data.Hits = paginated[pageNumber]
             hitsCategory.Data.HasMore = paginated.length > pageNumber + 1
-            hitsCategory.CurrentSubType = `${category}_${filter}`
+            hitsCategory.CurrentSubType = filter
+                ? `${category}_${filter}`
+                : categoryName
         } else {
             hitsCategory.Data.Hits = hitObjectList
             hitsCategory.CurrentSubType = category
