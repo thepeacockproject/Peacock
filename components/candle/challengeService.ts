@@ -893,6 +893,11 @@ export class ChallengeService extends ChallengeRegistry {
         const userData = getUserData(userId, gameVersion)
 
         const contractData = this.controller.resolveContract(contractId, true)
+
+        if (!contractData) {
+            return []
+        }
+
         const levelData =
             contractData.Metadata.Type === "arcade" &&
             contractData.Metadata.Id === contractId
@@ -905,10 +910,6 @@ export class ChallengeService extends ChallengeRegistry {
                       false,
                   )
                 : this.controller.resolveContract(contractId, false)
-
-        if (!contractData) {
-            return []
-        }
 
         const subLocation = getSubLocationFromContract(levelData, gameVersion)
 
