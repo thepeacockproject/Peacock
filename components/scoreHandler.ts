@@ -435,7 +435,11 @@ export function calculateSniperScore(
     const bulletsMissedPenalty =
         bulletsMissed *
         contractSession.scoring.Settings["bulletsused"]["penalty"]
-    const silentAssassin = false // TODO
+    // Get SA status from global SA challenge for contracttype sniper
+    const silentAssassin =
+        contractSession.challengeContexts[
+            "029c4971-0ddd-47ab-a568-17b007eec04e"
+        ].state === "Success"
     const saBonus = silentAssassin
         ? contractSession.scoring.Settings["silentassassin"]["score"]
         : 0
