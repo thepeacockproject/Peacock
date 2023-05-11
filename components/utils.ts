@@ -287,7 +287,7 @@ function updateUserProfile(
                     if (gameVersion === "h1") {
                         // No sniper locations, but we add normal and pro1
                         obj[newKey] = {
-                            // Data from previous profiles only contains normal, pro1 is default.
+                            // Data from previous profiles only contains normal and is the default.
                             normal: {
                                 Xp: curData.Xp ?? 0,
                                 Level: curData.Level ?? 1,
