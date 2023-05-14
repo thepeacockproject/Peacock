@@ -985,15 +985,14 @@ menuDataRouter.get(
             },
         }
 
-        availableDiff: if (req.gameVersion === "h1") {
+        if (
+            req.gameVersion === "h1" &&
+            LOCATION !== "LOCATION_PARENT_ICA_FACILITY"
+        ) {
             const inventory = createInventory(
                 req.jwt.unique_name,
                 req.gameVersion,
             )
-
-            if (LOCATION === "LOCATION_PARENT_ICA_FACILITY") {
-                break availableDiff
-            }
 
             response.data.DifficultyData = {
                 AvailableDifficultyModes: [
