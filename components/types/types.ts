@@ -27,6 +27,8 @@ import {
 } from "./challenges"
 import { SessionGhostModeDetails } from "../multiplayer/multiplayerService"
 import { IContextListener } from "../statemachines/contextListeners"
+import { ManifestScoringModule, ScoringModule } from "./scoring"
+import { Timer } from "@peacockproject/statemachine-parser"
 
 /**
  * A duration or relative point in time expressed in seconds.
@@ -275,6 +277,33 @@ export interface ContractSession {
         scoringScreenEndState: string
         failed: boolean
     }
+    /**
+     * Scoring settings, and statemachine settings.
+     * Currently only used for Sniper Challenge missions.
+     *
+     * Settings: Keyed by the type property in modules.
+     * Context: The current context of the scoring statemachine.
+     * Definition: The initial definition of the scoring statemachine.
+     * State: The current state of the scoring statemachine.
+     * Timers: The current timers of the scoring statemachine.
+     *
+     * @since v7.0.0
+     */
+    scoring?: {
+        Settings: {
+            [name: string]: ScoringModule
+        }
+        Context: unknown
+        Definition: unknown
+        State: string
+        Timers: Timer[]
+    }
+    /**
+     * Timestamp of first kill.
+     * Used for calculating Sniper Challenge time bonus.
+     * @since v7.0.0
+     */
+    firstKillTimestamp?: number
 }
 
 /**
@@ -947,6 +976,8 @@ export interface MissionManifestMetadata {
     CpdId?: string
     // Elusive custom property (like official's year)
     Season?: number
+    // Used for sniper scoring
+    Modules?: ManifestScoringModule[]
 }
 
 export interface GroupObjectiveDisplayOrderItem {

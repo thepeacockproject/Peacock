@@ -18,18 +18,21 @@
 
 import { getSubLocationByName } from "../contracts/dataGen"
 import { controller } from "../controller"
-import { grantDrops, getDataForUnlockables } from "../inventory"
-import type { ContractSession, UserProfile, GameVersion } from "../types/types"
+import { getDataForUnlockables, grantDrops } from "../inventory"
+import type { ContractSession, GameVersion, UserProfile } from "../types/types"
 import {
-    DEFAULT_MASTERY_MAXLEVEL,
     clampValue,
-    xpRequiredForLevel,
-    xpRequiredForEvergreenLevel,
-    levelForXp,
+    DEFAULT_MASTERY_MAXLEVEL,
     evergreenLevelForXp,
     getMaxProfileLevel,
+    levelForXp,
+    sniperLevelForXp,
+    xpRequiredForEvergreenLevel,
+    xpRequiredForLevel,
+    xpRequiredForSniperLevel,
 } from "../utils"
 import { writeUserData } from "../databaseHandler"
+import { MasteryPackageDrop } from "../types/mastery"
 
 export class ProgressionService {
     // NOTE: Official will always grant XP to both Location Mastery and the Player Profile
@@ -41,12 +44,16 @@ export class ProgressionService {
         userProfile: UserProfile,
         gameVersion: GameVersion,
         location: string,
+        sniperUnlockable?: string,
     ) {
         // Total XP for profile XP is the total sum of the action and mastery XP
         const xp = actionXp + masteryXp
 
-        // Grants profile XP
-        this.grantUserXp(xp, contractSession, userProfile)
+        // Grants profile XP, if this is at contract end where we're adding the final
+        // sniper score, don't grant it to the profile, otherwise you'll get 1,000+ levels.
+        if (!sniperUnlockable) {
+            this.grantUserXp(xp, contractSession, userProfile)
+        }
 
         // Grants Mastery Progression and Drops
         this.grantLocationMasteryXpAndRewards(
@@ -56,13 +63,17 @@ export class ProgressionService {
             userProfile,
             gameVersion,
             location,
+            sniperUnlockable,
         )
 
-        // Award provided drops. E.g. From challenges
-        grantDrops(
-            userProfile.Id,
-            getDataForUnlockables(contractSession.gameVersion, dropIds),
-        )
+        // Award provided drops. E.g. From challenges. Don't run this function
+        // if there aren't any drops being granted.
+        if (dropIds.length > 0) {
+            grantDrops(
+                userProfile.Id,
+                getDataForUnlockables(contractSession.gameVersion, dropIds),
+            )
+        }
 
         // Saves profile data
         writeUserData(userProfile.Id, contractSession.gameVersion)
@@ -83,10 +94,7 @@ export class ProgressionService {
     private getLocationMasteryDrops(
         gameVersion: GameVersion,
         isEvergreenContract: boolean,
-        masteryLocationDrops: {
-            Id: string
-            Level: number
-        }[],
+        masteryLocationDrops: MasteryPackageDrop[],
         minLevel: number,
         maxLevel: number,
     ) {
@@ -126,6 +134,7 @@ export class ProgressionService {
         userProfile: UserProfile,
         gameVersion: GameVersion,
         location: string,
+        sniperUnlockable?: string,
     ): boolean {
         const contract = controller.resolveContract(contractSession.contractId)
 
@@ -146,52 +155,69 @@ export class ProgressionService {
             return false
         }
 
-        const masteryData = controller.masteryService.getMasteryPackage(
-            parentLocationId,
-            gameVersion,
-        )
-
-        // TODO: Grant sniper XP here too
-        const locationData = this.getMasteryProgressionForLocation(
-            userProfile,
-            parentLocationId,
-            gameVersion === "h1"
-                ? contract.Metadata.Difficulty ?? "normal"
-                : undefined,
-        )
-
-        const maxLevel = masteryData?.MaxLevel || DEFAULT_MASTERY_MAXLEVEL
-        const isEvergreenContract = contract.Metadata.Type === "evergreen"
-
-        if (masteryData) {
-            const previousLevel = locationData.Level
-
-            locationData.Xp = clampValue(
-                locationData.Xp + masteryXp + actionXp,
-                0,
-                isEvergreenContract
-                    ? xpRequiredForEvergreenLevel(maxLevel)
-                    : xpRequiredForLevel(maxLevel),
+        // We can't grant sniper XP here as it's based on final score, so we skip updating mastery
+        // until we call this in mission end.
+        if (contract.Metadata.Type !== "sniper" || sniperUnlockable) {
+            const masteryData = controller.masteryService.getMasteryPackage(
+                parentLocationId,
+                gameVersion,
+            )
+            const locationData = this.getMasteryProgressionForLocation(
+                userProfile,
+                parentLocationId,
+                gameVersion === "h1"
+                    ? contract.Metadata.Difficulty ?? "normal"
+                    : sniperUnlockable ?? undefined,
             )
 
-            locationData.Level = clampValue(
-                isEvergreenContract
-                    ? evergreenLevelForXp(locationData.Xp)
-                    : levelForXp(locationData.Xp),
-                1,
-                maxLevel,
-            )
+            const maxLevel = masteryData?.MaxLevel || DEFAULT_MASTERY_MAXLEVEL
+            const isEvergreenContract = contract.Metadata.Type === "evergreen"
 
-            // If mastery level has gone up, check if there are available drop rewards and award them
-            if (locationData.Level > previousLevel) {
-                const masteryLocationDrops = this.getLocationMasteryDrops(
-                    contractSession.gameVersion,
-                    isEvergreenContract,
-                    masteryData.Drops,
-                    previousLevel,
-                    locationData.Level,
+            if (masteryData) {
+                const previousLevel = locationData.Level
+
+                locationData.Xp = clampValue(
+                    locationData.Xp + masteryXp + actionXp,
+                    0,
+                    isEvergreenContract
+                        ? xpRequiredForEvergreenLevel(maxLevel)
+                        : sniperUnlockable
+                        ? xpRequiredForSniperLevel(maxLevel)
+                        : xpRequiredForLevel(maxLevel),
                 )
-                grantDrops(userProfile.Id, masteryLocationDrops)
+
+                locationData.Level = clampValue(
+                    isEvergreenContract
+                        ? evergreenLevelForXp(locationData.Xp)
+                        : sniperUnlockable
+                        ? sniperLevelForXp(locationData.Xp)
+                        : levelForXp(locationData.Xp),
+                    1,
+                    maxLevel,
+                )
+
+                // If mastery level has gone up, check if there are available drop rewards and award them
+                if (locationData.Level > previousLevel) {
+                    const masteryLocationDrops = this.getLocationMasteryDrops(
+                        contractSession.gameVersion,
+                        isEvergreenContract,
+                        sniperUnlockable
+                            ? masteryData.SubPackages.find(
+                                  (pkg) => pkg.Id === sniperUnlockable,
+                              ).Drops
+                            : masteryData.Drops,
+                        previousLevel,
+                        locationData.Level,
+                    )
+                    grantDrops(userProfile.Id, masteryLocationDrops)
+                }
+            }
+
+            // Update the EvergreenLevel with the latest Mastery Level
+            if (isEvergreenContract) {
+                userProfile.Extensions.CPD[contract.Metadata.CpdId][
+                    "EvergreenLevel"
+                ] = locationData.Level
             }
         }
 
@@ -214,13 +240,6 @@ export class ProgressionService {
 
         foundSubLocation.Xp += masteryXp
         foundSubLocation.ActionXp += actionXp
-
-        // Update the EvergreenLevel with the latest Mastery Level
-        if (isEvergreenContract) {
-            userProfile.Extensions.CPD[contract.Metadata.CpdId][
-                "EvergreenLevel"
-            ] = locationData.Level
-        }
 
         return true
     }

@@ -442,14 +442,12 @@ function updateWithDefaultSuit(
  * @param profileId  The profile ID of the player
  * @param gameVersion  The game version
  * @param sublocation  The sublocation to generate the inventory for. Used to award default suits for the sublocation. Defaulted to undefined.
- * @param forSniper This controls whether sniper challenge unlockables should be included.
  * @returns The player's inventory
  */
 export function createInventory(
     profileId: string,
     gameVersion: GameVersion,
     sublocation = undefined,
-    forSniper = false,
 ): InventoryItem[] {
     if (inventoryUserCache.has(profileId)) {
         return updateWithDefaultSuit(
@@ -470,9 +468,7 @@ export function createInventory(
             gameVersion,
             true,
         ),
-        ...(forSniper
-            ? getConfig<Unlockable[]>("SniperUnlockables", true)
-            : []),
+        ...getConfig<Unlockable[]>("SniperUnlockables", true),
     ].filter((u) => u.Type !== "location") // locations not in inventory
 
     let unlockables: Unlockable[] = allunlockables
@@ -587,11 +583,14 @@ export function getDataForUnlockables(
     gameVersion: GameVersion,
     unlockableIds: string[],
 ): Unlockable[] {
-    return getVersionedConfig<Unlockable[]>(
-        "allunlockables",
-        gameVersion,
-        true,
-    ).filter((unlockable) => unlockableIds.includes(unlockable.Id))
+    return [
+        ...getVersionedConfig<Unlockable[]>(
+            "allunlockables",
+            gameVersion,
+            true,
+        ),
+        ...getConfig<Unlockable[]>("SniperUnlockables", true),
+    ].filter((unlockable) => unlockableIds.includes(unlockable.Id))
 }
 
 export function getUnlockableById(

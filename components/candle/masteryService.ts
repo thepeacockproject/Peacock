@@ -264,6 +264,15 @@ export class MasteryService {
             return undefined
         }
 
+        const name = isSniper
+            ? getVersionedConfig<Unlockable[]>(
+                  "SniperUnlockables",
+                  gameVersion,
+                  false,
+              ).find((unlockable) => unlockable.Id === subPackageId).Properties
+                  .Name
+            : undefined
+
         return {
             ...this.getCompletionData(
                 userId,
@@ -282,7 +291,7 @@ export class MasteryService {
             SubLocationId: isSniper ? "" : subLocationId,
             HideProgression: masteryPkg.HideProgression || false,
             IsLocationProgression: !isSniper,
-            Name: undefined,
+            Name: name,
         }
     }
 

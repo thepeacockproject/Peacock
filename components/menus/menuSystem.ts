@@ -240,8 +240,6 @@ export class MenuSystemDatabase {
                     }
                 case "/pages/multiplayer/content/lobbyslim.json":
                     return getConfig("LobbySlimTemplate", false)
-                case "/pages/gamemodes/gamemodesniper_page.json":
-                    return getConfig("SniperGamemodesTemplate", false)
                 case "/pages/pause/pausemenu/restart.json":
                     return {
                         $if: {

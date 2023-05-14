@@ -74,10 +74,12 @@ import random from "random"
 import { getUserData } from "./databaseHandler"
 import {
     createMainOpportunityTile,
+    createMenuPageTile,
     createPlayNextTile,
     getSeasonId,
     orderedMissions,
     orderedPZMissions,
+    sniperMissionIds,
 } from "./menus/playnext"
 import { randomUUID } from "crypto"
 import { planningView } from "./menus/planning"
@@ -416,9 +418,13 @@ menuDataRouter.get("/SafehouseCategory", (req: RequestWithJwt, res) => {
             item.Unlockable.Type === "package" ||
             item.Unlockable.Type === "loadoutunlock" ||
             item.Unlockable.Type === "difficultyunlock" ||
-            item.Unlockable.Type === "agencypickup"
+            item.Unlockable.Type === "agencypickup" ||
+            item.Unlockable.Type === "challengemultiplier"
         ) {
             continue // these types should not be displayed when not asked for
+        } else if (item.Unlockable.Properties.InclusionData) {
+            // Only sniper unlockables have inclusion data, don't show them
+            continue
         }
 
         if (
@@ -604,7 +610,9 @@ menuDataRouter.get(
                                 !item.Unlockable.Properties.IsContainer) &&
                             (req.query.allowlargeitems === "true" ||
                                 item.Unlockable.Properties.LoadoutSlot !==
-                                    "carriedweapon")
+                                    "carriedweapon") &&
+                            item.Unlockable.Type !== "challengemultiplier" &&
+                            !item.Unlockable.Properties.InclusionData
                         ) // not sure about this one
                     })
                     .map((item) => ({
@@ -977,7 +985,10 @@ menuDataRouter.get(
             },
         }
 
-        if (req.gameVersion === "h1") {
+        if (
+            req.gameVersion === "h1" &&
+            LOCATION !== "LOCATION_PARENT_ICA_FACILITY"
+        ) {
             const inventory = createInventory(
                 req.jwt.unique_name,
                 req.gameVersion,
@@ -1348,6 +1359,10 @@ menuDataRouter.get(
                     },
                 ),
             )
+        }
+
+        if (sniperMissionIds.includes(req.query.contractId)) {
+            cats.push(createMenuPageTile("sniper"))
         }
 
         const pluginData = controller.hooks.getNextCampaignMission.call(
@@ -2048,6 +2063,38 @@ menuDataRouter.get(
                 req.jwt.unique_name,
             ),
         )
+    },
+)
+
+menuDataRouter.get(
+    "/GetMasteryCompletionDataForUnlockable",
+    (req: RequestWithJwt<{ unlockableId: string }>, res) => {
+        // We make this lookup table to quickly get it, there's no other quick way for it.
+        const unlockToLoc = {
+            FIREARMS_SC_HERO_SNIPER_HM: "LOCATION_PARENT_AUSTRIA",
+            FIREARMS_SC_HERO_SNIPER_KNIGHT: "LOCATION_PARENT_AUSTRIA",
+            FIREARMS_SC_HERO_SNIPER_STONE: "LOCATION_PARENT_AUSTRIA",
+            FIREARMS_SC_SEAGULL_HM: "LOCATION_PARENT_SALTY",
+            FIREARMS_SC_SEAGULL_KNIGHT: "LOCATION_PARENT_SALTY",
+            FIREARMS_SC_SEAGULL_STONE: "LOCATION_PARENT_SALTY",
+            FIREARMS_SC_FALCON_HM: "LOCATION_PARENT_CAGED",
+            FIREARMS_SC_FALCON_KNIGHT: "LOCATION_PARENT_CAGED",
+            FIREARMS_SC_FALCON_STONE: "LOCATION_PARENT_CAGED",
+        }
+
+        res.json({
+            template: null,
+            data: {
+                CompletionData: controller.masteryService.getLocationCompletion(
+                    unlockToLoc[req.query.unlockableId],
+                    unlockToLoc[req.query.unlockableId],
+                    req.gameVersion,
+                    req.jwt.unique_name,
+                    "sniper",
+                    req.query.unlockableId,
+                ),
+            },
+        })
     },
 )
 

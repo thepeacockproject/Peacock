@@ -117,7 +117,6 @@ import HitsCategoryElusiveTemplate from "../static/HitsCategoryElusiveTemplate.j
 import MissionRewardsTemplate from "../static/MissionRewardsTemplate.json"
 import SniperUnlockables from "../static/SniperUnlockables.json"
 import ScpcLocationsData from "../static/ScpcLocationsData.json"
-import SniperGamemodesTemplate from "../static/SniperGamemodesTemplate.json"
 import type { GameVersion } from "./types/types"
 import { fastClone } from "./utils"
 
@@ -222,7 +221,6 @@ const configs = {
     HitsCategoryElusiveTemplate,
     MissionRewardsTemplate,
     SniperUnlockables,
-    SniperGamemodesTemplate,
 }
 
 Object.keys(configs).forEach((cfg) => {

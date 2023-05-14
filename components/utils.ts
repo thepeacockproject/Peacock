@@ -200,6 +200,18 @@ export const SNIPER_LEVEL_INFO: number[] = [
     38000000, 47000000, 58000000, 70000000,
 ]
 
+export function sniperLevelForXp(xp: number): number {
+    for (let i = 1; i < SNIPER_LEVEL_INFO.length; i++) {
+        if (xp >= SNIPER_LEVEL_INFO[i]) {
+            continue
+        }
+
+        return i
+    }
+
+    return 1
+}
+
 /**
  * Get the number of xp needed to reach a level in sniper missions.
  * @param level The level in question.
@@ -287,7 +299,7 @@ function updateUserProfile(
                     if (gameVersion === "h1") {
                         // No sniper locations, but we add normal and pro1
                         obj[newKey] = {
-                            // Data from previous profiles only contains normal, pro1 is default.
+                            // Data from previous profiles only contains normal and is the default.
                             normal: {
                                 Xp: curData.Xp ?? 0,
                                 Level: curData.Level ?? 1,
