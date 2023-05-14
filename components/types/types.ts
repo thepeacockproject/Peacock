@@ -278,12 +278,14 @@ export interface ContractSession {
         failed: boolean
     }
     /**
-     * Scoring settings, context, and definition.
+     * Scoring settings, and statemachine settings.
      * Currently only used for Sniper Challenge missions.
      *
      * Settings: Keyed by the type property in modules.
-     * Context: The current context of the scoring state machine.
-     * Definition: The initial definition of the scoring state machine.
+     * Context: The current context of the scoring statemachine.
+     * Definition: The initial definition of the scoring statemachine.
+     * State: The current state of the scoring statemachine.
+     * Timers: The current timers of the scoring statemachine.
      *
      * @since v7.0.0
      */

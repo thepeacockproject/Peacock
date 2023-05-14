@@ -28,10 +28,11 @@ import {
     levelForXp,
     PEACOCKVERSTRING,
     SNIPER_LEVEL_INFO,
+    sniperLevelForXp,
     xpRequiredForLevel,
 } from "./utils"
 import { contractSessions, getCurrentState } from "./eventHandler"
-import { getConfig, getVersionedConfig } from "./configSwizzleManager"
+import { getConfig } from "./configSwizzleManager"
 import { _theLastYardbirdScpc, controller } from "./controller"
 import type {
     ContractHistory,
@@ -42,7 +43,6 @@ import type {
     MissionManifestObjective,
     RequestWithJwt,
     Seconds,
-    Unlockable,
 } from "./types/types"
 import {
     escalationTypes,
@@ -439,7 +439,7 @@ export function calculateSniperScore(
     const silentAssassin =
         contractSession.challengeContexts[
             "029c4971-0ddd-47ab-a568-17b007eec04e"
-        ].state === "Success"
+        ].state !== "Failure"
     const saBonus = silentAssassin
         ? contractSession.scoring.Settings["silentassassin"]["score"]
         : 0
@@ -739,7 +739,7 @@ export async function missionEnd(
             })
         })
 
-    const completionData = generateCompletionData(
+    let completionData = generateCompletionData(
         levelData.Metadata.Location,
         req.jwt.unique_name,
         req.gameVersion,
@@ -925,24 +925,7 @@ export async function missionEnd(
         SilentAssassin: calculateScoreResult.silentAssassin,
     }
 
-    // TODO: Calculate proper Sniper XP and Score
-    // TODO: Move most of this to its own calculateSniperScore function
     if (contractData.Metadata.Type === "sniper") {
-        unlockableProgression = {
-            LevelInfo: SNIPER_LEVEL_INFO,
-            XP: SNIPER_LEVEL_INFO[SNIPER_LEVEL_INFO.length - 1],
-            Level: SNIPER_LEVEL_INFO.length,
-            XPGain: 0,
-            Id: req.query.masteryUnlockableId,
-            Name: getVersionedConfig<Unlockable[]>(
-                "SniperUnlockables",
-                req.gameVersion,
-                false,
-            ).find(
-                (unlockable) => unlockable.Id === req.query.masteryUnlockableId,
-            ).Properties.Name,
-        }
-
         const userInventory = createInventory(
             req.jwt.unique_name,
             req.gameVersion,
@@ -955,6 +938,56 @@ export async function missionEnd(
             userInventory,
         )
         sniperChallengeScore = sniperScore
+
+        // Grant sniper mastery
+        controller.progressionService.grantProfileProgression(
+            0,
+            sniperScore.FinalScore,
+            [],
+            sessionDetails,
+            userData,
+            req.gameVersion,
+            locationParentId,
+            req.query.masteryUnlockableId,
+        )
+
+        // Update completion data with latest mastery
+        locationLevelInfo = SNIPER_LEVEL_INFO
+        oldLocationLevel = sniperLevelForXp(oldLocationXp)
+
+        // Temporarily get completion data for the unlockable
+        completionData = generateCompletionData(
+            levelData.Metadata.Location,
+            req.jwt.unique_name,
+            req.gameVersion,
+            "sniper", // We know the type will be sniper.
+            req.query.masteryUnlockableId,
+        )
+        newLocationLevel = completionData.Level
+        unlockableProgression = {
+            Id: completionData.Id,
+            Level: completionData.Level,
+            LevelInfo: locationLevelInfo,
+            Name: completionData.Name,
+            XP: completionData.XP,
+            XPGain:
+                completionData.Level === completionData.MaxLevel
+                    ? 0
+                    : sniperScore.FinalScore,
+        }
+
+        userData.Extensions.progression.Locations[locationParentId][
+            req.query.masteryUnlockableId
+        ].PreviouslySeenXp = completionData.XP
+
+        writeUserData(req.jwt.unique_name, req.gameVersion)
+
+        // Set the completion data to the location so the end screen formats properly.
+        completionData = generateCompletionData(
+            levelData.Metadata.Location,
+            req.jwt.unique_name,
+            req.gameVersion,
+        )
 
         // Override the contract score
         contractScore = undefined
@@ -970,15 +1003,18 @@ export async function missionEnd(
     let masteryDrops: MissionEndDrop[] = []
 
     if (newLocationLevel - oldLocationLevel > 0) {
+        // We get the subpackage as it functions like getMasteryDataForDestination
+        // but allows us to get the specific unlockable if required.
         const masteryData =
-            controller.masteryService.getMasteryDataForDestination(
+            controller.masteryService.getMasteryDataForSubPackage(
                 locationParentId,
+                req.query.masteryUnlockableId ?? undefined,
                 req.gameVersion,
                 req.jwt.unique_name,
-            ) as MasteryData[]
+            ) as MasteryData
 
-        if (masteryData.length > 0) {
-            masteryDrops = masteryData[0].Drops.filter(
+        if (masteryData) {
+            masteryDrops = masteryData.Drops.filter(
                 (e) =>
                     e.Level > oldLocationLevel && e.Level <= newLocationLevel,
             ).map((e) => {
@@ -1092,7 +1128,9 @@ export async function missionEnd(
         getFlag("leaderboards") === true &&
         sessionDetails.compat === true &&
         contractData.Metadata.Type !== "vsrace" &&
-        contractData.Metadata.Type !== "evergreen"
+        contractData.Metadata.Type !== "evergreen" &&
+        // Disable sending sniper scores for now
+        contractData.Metadata.Type !== "sniper"
     ) {
         try {
             // update leaderboards
@@ -1131,8 +1169,7 @@ export async function missionEnd(
                             StarCount: calculateScoreResult.stars,
                         },
                         GroupIndex: 0,
-                        // TODO sniper scores
-                        SniperChallengeScore: null,
+                        SniperChallengeScore: sniperChallengeScore,
                         PlayStyle: result.ScoreOverview.PlayStyle || null,
                         Description: "UI_MENU_SCORE_CONTRACT_COMPLETED",
                         ContractSessionId: req.query.contractSessionId,

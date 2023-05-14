@@ -109,7 +109,7 @@ export function getParentLocationByName(
  * @param userId The ID of the user.
  * @param gameVersion The game's version.
  * @param contractType The type of the contract, only used to distinguish evergreen from other types (default).
- * @param subPackageId The sub package id you want (think of mastery, only needed for difficulty really).
+ * @param subPackageId The sub package id you want (think of mastery).
  * @returns The completion data object.
  */
 export function generateCompletionData(
@@ -143,7 +143,8 @@ export function generateCompletionData(
     )
 
     if (!completionData) {
-        // Should only reach here for sniper locations or the ICA Facility in H2016.
+        // Should only reach here for sniper locations with no subpackage id
+        // specified or the ICA Facility in H2016.
         return {
             Level: 1,
             MaxLevel: 1,

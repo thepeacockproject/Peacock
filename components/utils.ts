@@ -200,6 +200,18 @@ export const SNIPER_LEVEL_INFO: number[] = [
     38000000, 47000000, 58000000, 70000000,
 ]
 
+export function sniperLevelForXp(xp: number): number {
+    for (let i = 1; i < SNIPER_LEVEL_INFO.length; i++) {
+        if (xp >= SNIPER_LEVEL_INFO[i]) {
+            continue
+        }
+
+        return i
+    }
+
+    return 1
+}
+
 /**
  * Get the number of xp needed to reach a level in sniper missions.
  * @param level The level in question.

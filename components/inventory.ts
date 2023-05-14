@@ -583,11 +583,14 @@ export function getDataForUnlockables(
     gameVersion: GameVersion,
     unlockableIds: string[],
 ): Unlockable[] {
-    return getVersionedConfig<Unlockable[]>(
-        "allunlockables",
-        gameVersion,
-        true,
-    ).filter((unlockable) => unlockableIds.includes(unlockable.Id))
+    return [
+        ...getVersionedConfig<Unlockable[]>(
+            "allunlockables",
+            gameVersion,
+            true,
+        ),
+        ...getConfig<Unlockable[]>("SniperUnlockables", true),
+    ].filter((unlockable) => unlockableIds.includes(unlockable.Id))
 }
 
 export function getUnlockableById(
