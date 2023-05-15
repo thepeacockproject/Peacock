@@ -66,7 +66,11 @@ import picocolors from "picocolors"
 import { setCpd } from "./evergreen"
 import { getConfig } from "./configSwizzleManager"
 import { resetUserEscalationProgress } from "./contracts/escalations/escalationService"
-import { ManifestScoringModule } from "./types/scoring"
+import {
+    ManifestScoringDefinition,
+    ManifestScoringModule,
+} from "./types/scoring"
+import { deepmerge } from "deepmerge-ts"
 
 const eventRouter = Router()
 
@@ -169,10 +173,9 @@ export function setupScoring(
         const name = module.Type.split(".").at(-1)
 
         if (name === "scoring") {
-            // TODO: Add co-op defs
-            const definition = {
-                ...module.ScoringDefinitions[0],
-            }
+            const definition: ManifestScoringDefinition = deepmerge(
+                ...module.ScoringDefinitions,
+            )
 
             let state = "Start"
             let context = definition.Context

@@ -48,22 +48,24 @@ export type ManifestScoringModule =
           Type: string
       }
 
+export type ManifestScoringDefinition = {
+    ContextListeners?: null | Record<string, IContextListener<never>>
+    ScoreEvents?: {
+        [name: string]: {
+            type: number
+            text: string
+        }
+    }
+    States?: Record<string, unknown>
+    Constants?: Record<string, unknown>
+    Context?: Record<string, unknown | string[] | string>
+}
+
 export type ScoringModule = {
     score?: number
     maxtime?: number
     multiplier?: number
     penalty?: number
     Unlockables?: string[]
-    ScoringDefinitions?: {
-        ContextListeners?: null | Record<string, IContextListener<never>>
-        ScoreEvents?: {
-            [name: string]: {
-                type: number
-                text: string
-            }
-        }
-        States?: Record<string, unknown>
-        Constants?: Record<string, unknown>
-        Context?: Record<string, unknown | string[] | string>
-    }[]
+    ScoringDefinitions?: ManifestScoringDefinition[]
 }
