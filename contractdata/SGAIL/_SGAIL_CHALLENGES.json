@@ -4176,6 +4176,56 @@
                     }
                 },
                 {
+                    "Id": "d87afe4d-d51d-4390-ad7f-947400013dcd",
+                    "Name": "UI_PEACOCK_CHALLENGES_ET_GOLDENDOUBLET_BLAKE_NAME",
+                    "ImageName": "images/challenges/elusive_target/et_goldendoublet_blake.jpg",
+                    "Description": "UI_PEACOCK_CHALLENGES_ET_GOLDENDOUBLET_BLAKE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+                    "Icon": "elusive",
+                    "LocationId": "LOCATION_NORTHSEA",
+                    "ParentLocationId": "LOCATION_PARENT_NORTHSEA",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": ["$Value.IsTarget", true]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "d40fe7e8-ec8d-429b-a86b-7844c0e4d1c7"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "elusive", "peacock"],
+                    "InclusionData": {
+                        "ContractIds": ["263eca3d-d25d-40ce-ba0a-48a221cd0b9e"]
+                    }
+                },
+                {
                     "Id": "cc4e642f-4257-4a72-9f0a-84d040124f79",
                     "Name": "UI_CHALLENGES_ET_SKITTLEBOMB_TARGETDOWN_NAME",
                     "ImageName": "images/challenges/elusive_target/et_skittlebomb_targetdown.jpg",
@@ -4440,6 +4490,49 @@
                         }
                     },
                     "Tags": ["story", "hard", "elusive"],
+                    "InclusionData": {
+                        "ContractIds": ["cbc86bed-51ce-4699-89d4-0ded8f200cbc"]
+                    }
+                },
+                {
+                    "Id": "f523c503-49bc-4f5f-a4d6-65b0d322a0c5",
+                    "Name": "UI_PEACOCK_CHALLENGES_ET_SKITTLEBOMB_CONFRONT_NAME",
+                    "ImageName": "images/challenges/elusive_target/et_skittlebomb_confront.jpg",
+                    "Description": "UI_PEACOCK_CHALLENGES_ET_SKITTLEBOMB_CONFRONT_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+                    "Icon": "elusive",
+                    "LocationId": "LOCATION_NORTHSEA",
+                    "ParentLocationId": "LOCATION_PARENT_NORTHSEA",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "setpieces": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.name_metricvalue",
+                                            "47_Dialog_Activated"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "elusive", "peacock"],
                     "InclusionData": {
                         "ContractIds": ["cbc86bed-51ce-4699-89d4-0ded8f200cbc"]
                     }

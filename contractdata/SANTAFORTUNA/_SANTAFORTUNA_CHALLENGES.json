@@ -6298,6 +6298,55 @@
                     }
                 },
                 {
+                    "Id": "4da6016a-3082-4b69-add8-50bf188cc7d9",
+                    "Name": "UI_PEACOCK_CHALLENGES_ET_HIGHBALL_WINE_NAME",
+                    "ImageName": "images/challenges/elusive_target/et_highball_wine.jpg",
+                    "Description": "UI_PEACOCK_CHALLENGES_ET_HIGHBALL_WINE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+                    "Icon": "elusive",
+                    "LocationId": "LOCATION_COLOMBIA",
+                    "ParentLocationId": "LOCATION_PARENT_COLOMBIA",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": ["$Value.IsTarget", true]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillMethodStrict",
+                                                    "consumed_poison"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "elusive", "peacock"],
+                    "InclusionData": {
+                        "ContractIds": ["654685ab-d52d-49cb-815d-f98ee00454d3"]
+                    }
+                },
+                {
                     "Id": "bbe16ff6-77df-4b9e-811e-29fa86e5fd44",
                     "Name": "UI_CHALLENGES_ELUSIVE_TARGET_COLUMBIA_NAME",
                     "ImageName": "images/challenges/profile_challenges/elusive_target_hippo.jpg",

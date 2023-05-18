@@ -6615,6 +6615,59 @@
                         "Scope": "session",
                         "States": {
                             "Start": {
+                                "Spotted": {
+                                    "Transition": "Failure"
+                                },
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": ["$Value.IsTarget", true]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "e17172cc-bf70-4df6-9828-d9856b1a24fd"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Description": "UI_PEACOCK_CHALLENGES_ET_SAMBUCA_KNIFE_DESC",
+                    "DifficultyLevels": [],
+                    "Drops": [],
+                    "HideProgression": false,
+                    "Icon": "elusive",
+                    "Id": "93b8df40-9263-44d2-9e70-eb350a7814b1",
+                    "ImageName": "images/challenges/elusive_target/et_sambuca_knife.jpg",
+                    "InclusionData": {
+                        "ContractIds": ["06a58b66-56f4-45c3-ba1b-d03998212289"]
+                    },
+                    "IsLocked": false,
+                    "IsPlayable": false,
+                    "LocationId": "LOCATION_MIAMI",
+                    "Name": "UI_PEACOCK_CHALLENGES_ET_SAMBUCA_KNIFE_NAME",
+                    "OrderIndex": 10000,
+                    "ParentLocationId": "LOCATION_PARENT_MIAMI",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "RuntimeType": "Hit",
+                    "Tags": ["story", "medium", "elusive", "peacock"],
+                    "Type": "contract",
+                    "XpModifier": {}
+                },
+                {
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
                                 "Kill": {
                                     "Condition": {
                                         "$eq": ["$Value.IsTarget", true]
@@ -6876,6 +6929,56 @@
                     "InclusionData": {
                         "ContractIds": ["ecf353e8-3dd8-4958-b255-f963926aea51"]
                     }
+                },
+                {
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": ["$Value.IsTarget", true]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceId",
+                                                    "c4077678-c16f-4d46-b17a-82cbbc55d9de"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Description": "UI_PEACOCK_CHALLENGES_ET_SAMBUCA2_PEN_DESC",
+                    "DifficultyLevels": [],
+                    "Drops": [],
+                    "HideProgression": false,
+                    "Icon": "elusive",
+                    "Id": "e211fc82-4bae-4370-98d0-58c857ccfba6",
+                    "ImageName": "images/challenges/elusive_target/et_sambuca2_pen.jpg",
+                    "InclusionData": {
+                        "ContractIds": ["ecf353e8-3dd8-4958-b255-f963926aea51"]
+                    },
+                    "IsLocked": false,
+                    "IsPlayable": false,
+                    "LocationId": "LOCATION_MIAMI",
+                    "Name": "UI_PEACOCK_CHALLENGES_ET_SAMBUCA2_PEN_NAME",
+                    "OrderIndex": 10000,
+                    "ParentLocationId": "LOCATION_PARENT_MIAMI",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "RuntimeType": "Hit",
+                    "Tags": ["story", "medium", "elusive", "peacock"],
+                    "Type": "contract",
+                    "XpModifier": {}
                 },
                 {
                     "Id": "85162cf4-0929-4541-9247-08a8c8a717b1",
