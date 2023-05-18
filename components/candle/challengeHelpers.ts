@@ -172,7 +172,7 @@ function isChallengeInContract(
                 : {
                       ...challenge.InclusionData,
                       ContractTypes:
-                          challenge.InclusionData.ContractTypes.filter(
+                          challenge.InclusionData.ContractTypes?.filter(
                               (type) => type !== "tutorial",
                           ),
                   },
