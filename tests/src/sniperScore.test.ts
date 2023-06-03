@@ -9,34 +9,58 @@ import {
 import { handleEvent } from "@peacockproject/statemachine-parser"
 
 describe("calculateSniperScore", () => {
-    test("default", async () => {
-        const jsonContractData = await readFile(
+    test("session #1", async () => {
+        const actual = await calculateScoreForContract(
             join(
                 process.cwd(),
                 "contractdata",
                 "SNIPER",
                 "THELASTYARDBIRD.json",
             ),
+            join(process.cwd(), "tests", "res", "sniperScore1.session.json"),
         )
 
-        const jsonEventData = await readFile(
-            join(process.cwd(), "tests", "res", "sniperScore.session.json"),
+        assert.equal(actual, 71000)
+    })
+
+    test("session #2", async () => {
+        const actual = await calculateScoreForContract(
+            join(
+                process.cwd(),
+                "contractdata",
+                "SNIPER",
+                "THELASTYARDBIRD.json",
+            ),
+            join(process.cwd(), "tests", "res", "sniperScore2.session.json"),
         )
 
-        const session = <ContractSession>{}
+        assert.equal(actual, 126250)
+    })
+})
 
-        const contractData = JSON.parse(
-            jsonContractData.toString(),
-        ) as MissionManifest
+async function calculateScoreForContract(
+    contractDataJsonFile,
+    eventDataJsonFile,
+    enableLogging = false,
+): Promise<number> {
+    const jsonContractData = await readFile(contractDataJsonFile)
+    const jsonEventData = await readFile(eventDataJsonFile)
 
-        const eventData = JSON.parse(
-            jsonEventData.toString(),
-        ) as ClientToServerEvent[]
+    const session = <ContractSession>{}
 
-        setupScoring(session, contractData.Metadata.Modules)
+    const contractData = JSON.parse(
+        jsonContractData.toString(),
+    ) as MissionManifest
 
-        // NOTE: Direct copy from scoreHandler, because saveEvents is not exported and rewire doesn't work with ES6 modules.
-        eventData.forEach((event) => {
+    const eventData = JSON.parse(
+        jsonEventData.toString(),
+    ) as ClientToServerEvent[]
+
+    setupScoring(session, contractData.Metadata.Modules)
+
+    // NOTE: Direct copy from scoreHandler, because saveEvents is not exported and rewire doesn't work with ES6 modules.
+    eventData.forEach((event) => {
+        enableLogging &&
             console.log(
                 `\n[${event.Timestamp}] ${event.Name}\n${JSON.stringify(
                     event.Value,
@@ -45,30 +69,35 @@ describe("calculateSniperScore", () => {
                 }`,
             )
 
-            const scoringContext = session.scoring.Context
-            const scoringState = session.scoring.State
+        const scoringContext = session.scoring.Context
+        const scoringState = session.scoring.State
 
-            const val = handleEvent(
-                session.scoring.Definition as never,
-                scoringContext,
-                event.Value,
-                {
-                    // logger: (category, message) => console.log(category, message),
-                    eventName: event.Name,
-                    timestamp: event.Timestamp,
-                    currentState: scoringState,
-                    timers: session.scoring.Timers,
-                },
-            )
+        const val = handleEvent(
+            session.scoring.Definition as never,
+            scoringContext,
+            event.Value,
+            {
+                logger: enableLogging
+                    ? (category, message) => console.log(category, message)
+                    : undefined,
+                eventName: event.Name,
+                timestamp: event.Timestamp,
+                currentState: scoringState,
+                timers: session.scoring.Timers,
+                contractId: event.ContractId,
+            },
+        )
 
-            if (val.context) {
-                session.scoring.Context = val.context
-                session.scoring.State = val.state
+        if (val.context) {
+            session.scoring.Context = val.context
+            session.scoring.State = val.state
 
+            enableLogging &&
                 console.log(
                     `${session.scoring.Context["TotalScore"]} @ ${session.scoring.State}`,
                 )
-            }
-        })
+        }
     })
-})
+
+    return session.scoring.Context["TotalScore"] as number
+}
