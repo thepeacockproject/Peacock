@@ -23,9 +23,6 @@ import "./generatedPeacockRequireTable"
 
 // load flags as soon as possible
 import { getFlag, loadFlags } from "./flags"
-
-loadFlags()
-
 import { setFlagsFromString } from "v8"
 import { program } from "commander"
 import express, { Request, Router } from "express"
@@ -90,6 +87,8 @@ import { pack, unpack } from "msgpackr"
 import { liveSplitManager } from "./livesplit/liveSplitManager"
 import { cheapLoadUserData } from "./databaseHandler"
 import { reportRouter } from "./contracts/reportRouting"
+
+loadFlags()
 
 // welcome to the bleeding edge
 setFlagsFromString("--harmony")
@@ -205,7 +204,6 @@ app.get(
         }
 
         if (req.params.audience === "scpc-prod") {
-            log(LogLevel.DEBUG, "Entering special mode.")
             // sniper challenge is a different game/audience
             config.Versions[0].Name = "scpc-prod"
             config.Versions[0].GAME_VER = "7.3.0"
@@ -259,62 +257,6 @@ app.get("/files/onlineconfig.json", (req, res) => {
     res.set("Content-Type", "application/octet-stream")
     res.send(getConfig("OnlineConfig", false))
 })
-
-app.get(
-    "/profiles/page//dashboard//Dashboard_Category_Sniper_Singleplayer/00000000-0000-0000-0000-000000000015/Contract/ff9f46cf-00bd-4c12-b887-eac491c3a96d",
-    (req: RequestWithJwt, res) => {
-        res.json({
-            template: getConfig("FrankensteinMmSpTemplate", false),
-            data: {
-                Item: {
-                    Id: "ff9f46cf-00bd-4c12-b887-eac491c3a96d",
-                    Type: "Contract",
-                    Title: "UI_CONTRACT_HAWK_TITLE",
-                    Date: new Date().toISOString(),
-                    Data: generateUserCentric(
-                        _theLastYardbirdScpc,
-                        req.jwt.unique_name,
-                        "h1",
-                    ),
-                },
-            },
-        })
-    },
-)
-
-// We handle this for now, but it's not used. For the future though.
-app.get(
-    "/profiles/page//dashboard//Dashboard_Category_Sniper_Multiplayer/00000000-0000-0000-0000-000000000015/Contract/ff9f46cf-00bd-4c12-b887-eac491c3a96d",
-    (req: RequestWithJwt, res) => {
-        const template = getConfig("FrankensteinMmMpTemplate", false)
-
-        /* To enable multiplayer:
-         * Change MultiplayerNotSupported to false
-         * NOTE: REMOVING THIS FULLY WILL BREAK THE EDITED TEMPLATE!
-         */
-
-        res.json({
-            template: template,
-            data: {
-                Item: {
-                    Id: "ff9f46cf-00bd-4c12-b887-eac491c3a96d",
-                    Type: "Contract",
-                    Title: "UI_CONTRACT_HAWK_TITLE",
-                    Date: new Date().toISOString(),
-                    Disabled: true,
-                    Data: {
-                        ...generateUserCentric(
-                            _theLastYardbirdScpc,
-                            req.jwt.unique_name,
-                            "h1",
-                        ),
-                        ...{ MultiplayerNotSupported: true },
-                    },
-                },
-            },
-        })
-    },
-)
 
 // NOTE! All routes attached after this point will be checked for a JWT or blob signature.
 // If you are adding a route that does NOT require authentication, put it ABOVE this message!
@@ -374,6 +316,62 @@ app.use(
 
             next()
         }),
+)
+
+app.get(
+    "/profiles/page//dashboard//Dashboard_Category_Sniper_Singleplayer/00000000-0000-0000-0000-000000000015/Contract/ff9f46cf-00bd-4c12-b887-eac491c3a96d",
+    (req: RequestWithJwt, res) => {
+        res.json({
+            template: getConfig("FrankensteinMmSpTemplate", false),
+            data: {
+                Item: {
+                    Id: "ff9f46cf-00bd-4c12-b887-eac491c3a96d",
+                    Type: "Contract",
+                    Title: "UI_CONTRACT_HAWK_TITLE",
+                    Date: new Date().toISOString(),
+                    Data: generateUserCentric(
+                        _theLastYardbirdScpc,
+                        req.jwt.unique_name,
+                        "scpc",
+                    ),
+                },
+            },
+        })
+    },
+)
+
+// We handle this for now, but it's not used. For the future though.
+app.get(
+    "/profiles/page//dashboard//Dashboard_Category_Sniper_Multiplayer/00000000-0000-0000-0000-000000000015/Contract/ff9f46cf-00bd-4c12-b887-eac491c3a96d",
+    (req: RequestWithJwt, res) => {
+        const template = getConfig("FrankensteinMmMpTemplate", false)
+
+        /* To enable multiplayer:
+         * Change MultiplayerNotSupported to false
+         * NOTE: REMOVING THIS FULLY WILL BREAK THE EDITED TEMPLATE!
+         */
+
+        res.json({
+            template: template,
+            data: {
+                Item: {
+                    Id: "ff9f46cf-00bd-4c12-b887-eac491c3a96d",
+                    Type: "Contract",
+                    Title: "UI_CONTRACT_HAWK_TITLE",
+                    Date: new Date().toISOString(),
+                    Disabled: true,
+                    Data: {
+                        ...generateUserCentric(
+                            _theLastYardbirdScpc,
+                            req.jwt.unique_name,
+                            "scpc",
+                        ),
+                        ...{ MultiplayerNotSupported: true },
+                    },
+                },
+            },
+        })
+    },
 )
 
 if (getFlag("developmentAllowRuntimeRestart")) {

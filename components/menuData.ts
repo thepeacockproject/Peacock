@@ -20,9 +20,9 @@ import { missionEnd } from "./scoreHandler"
 import { Response, Router } from "express"
 import {
     contractCreationTutorialId,
-    DEFAULT_MASTERY_MAXLEVEL,
     gameDifficulty,
     getMaxProfileLevel,
+    isSniperLocation,
     isSuit,
     PEACOCKVERSTRING,
     unlockOrderComparer,
@@ -51,6 +51,7 @@ import type {
     MissionManifest,
     PeacockLocationsData,
     PlayerProfileView,
+    ProgressionData,
     RequestWithJwt,
     SafehouseCategory,
     SceneConfig,
@@ -73,10 +74,12 @@ import random from "random"
 import { getUserData } from "./databaseHandler"
 import {
     createMainOpportunityTile,
+    createMenuPageTile,
     createPlayNextTile,
     getSeasonId,
     orderedMissions,
     orderedPZMissions,
+    sniperMissionIds,
 } from "./menus/playnext"
 import { randomUUID } from "crypto"
 import { planningView } from "./menus/planning"
@@ -100,7 +103,6 @@ import {
     StashpointQuery,
 } from "./types/gameSchemas"
 import assert from "assert"
-import { SniperLoadoutConfig } from "./menus/sniper"
 
 export const preMenuDataRouter = Router()
 const menuDataRouter = Router()
@@ -195,13 +197,10 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
             ? getConfig("FrankensteinHubTemplate", false)
             : getConfig("LegacyHubTemplate", false)
 
-    if (req.gameVersion === "scpc") {
-        req.gameVersion = "h1"
-    }
-
-    const contractCreationTutorial = controller.resolveContract(
-        contractCreationTutorialId,
-    )!
+    const contractCreationTutorial =
+        req.gameVersion !== "scpc"
+            ? controller.resolveContract(contractCreationTutorialId)!
+            : undefined
 
     const locations = getVersionedConfig<PeacockLocationsData>(
         "LocationsData",
@@ -230,6 +229,9 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
             Name: locations.parents[parent].DisplayNameLocKey,
         }
 
+        // Exclude ICA Facility from showing in the Career -> Mastery page
+        if (parent === "LOCATION_PARENT_ICA_FACILITY") continue
+
         if (
             controller.masteryService.getMasteryDataForDestination(
                 parent,
@@ -244,6 +246,7 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
                     req.gameVersion,
                     req.jwt.unique_name,
                     parent.includes("SNUG") ? "evergreen" : "mission",
+                    req.gameVersion === "h1" ? "normal" : undefined,
                 )
 
             masteryData.push({
@@ -254,9 +257,18 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
                               normal: {
                                   CompletionData: completionData,
                               },
-                              // pro1 is currently a copy of normal completion as it is not implemented
                               pro1: {
-                                  CompletionData: completionData,
+                                  CompletionData:
+                                      controller.masteryService.getLocationCompletion(
+                                          parent,
+                                          parent,
+                                          req.gameVersion,
+                                          req.jwt.unique_name,
+                                          parent.includes("SNUG")
+                                              ? "evergreen"
+                                              : "mission",
+                                          "pro1",
+                                      ),
                               },
                           },
                       }
@@ -330,12 +342,7 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
                 },
             },
             DashboardData: [],
-            DestinationsData:
-                req.gameVersion === "h3"
-                    ? destinationsMenu(req)
-                    : req.gameVersion === "h2"
-                    ? getConfig("H2DestinationsData", false)
-                    : getConfig("LegacyDestinations", false),
+            DestinationsData: destinationsMenu(req),
             CreateContractTutorial: generateUserCentric(
                 contractCreationTutorial,
                 req.jwt.unique_name,
@@ -376,13 +383,7 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
 })
 
 menuDataRouter.get("/SafehouseCategory", (req: RequestWithJwt, res) => {
-    const exts = getUserData(req.jwt.unique_name, req.gameVersion).Extensions
-
-    const inventory = createInventory(
-        req.jwt.unique_name,
-        req.gameVersion,
-        exts.entP,
-    )
+    const inventory = createInventory(req.jwt.unique_name, req.gameVersion)
 
     const safehouseData = {
         template:
@@ -416,9 +417,14 @@ menuDataRouter.get("/SafehouseCategory", (req: RequestWithJwt, res) => {
             item.Unlockable.Type === "location" ||
             item.Unlockable.Type === "package" ||
             item.Unlockable.Type === "loadoutunlock" ||
-            item.Unlockable.Type === "agencypickup"
+            item.Unlockable.Type === "difficultyunlock" ||
+            item.Unlockable.Type === "agencypickup" ||
+            item.Unlockable.Type === "challengemultiplier"
         ) {
             continue // these types should not be displayed when not asked for
+        } else if (item.Unlockable.Properties.InclusionData) {
+            // Only sniper unlockables have inclusion data, don't show them
+            continue
         }
 
         if (
@@ -542,8 +548,6 @@ menuDataRouter.get(
             return
         }
 
-        const userData = getUserData(req.jwt.unique_name, req.gameVersion)
-
         let contractData: MissionManifest | undefined = undefined
 
         if (req.query.contractid) {
@@ -553,7 +557,6 @@ menuDataRouter.get(
         const inventory = createInventory(
             req.jwt.unique_name,
             req.gameVersion,
-            userData.Extensions.entP,
             getSubLocationByName(
                 contractData?.Metadata.Location,
                 req.gameVersion,
@@ -607,7 +610,9 @@ menuDataRouter.get(
                                 !item.Unlockable.Properties.IsContainer) &&
                             (req.query.allowlargeitems === "true" ||
                                 item.Unlockable.Properties.LoadoutSlot !==
-                                    "carriedweapon")
+                                    "carriedweapon") &&
+                            item.Unlockable.Type !== "challengemultiplier" &&
+                            !item.Unlockable.Properties.InclusionData
                         ) // not sure about this one
                     })
                     .map((item) => ({
@@ -746,16 +751,7 @@ menuDataRouter.get(
             ),
         } as CommonSelectScreenConfig
 
-        const exts = getUserData(
-            req.jwt.unique_name,
-            req.gameVersion,
-        ).Extensions
-
-        const inventory = createInventory(
-            req.jwt.unique_name,
-            req.gameVersion,
-            exts.entP,
-        )
+        const inventory = createInventory(req.jwt.unique_name, req.gameVersion)
 
         const contractData = controller.resolveContract(req.query.contractId)
 
@@ -843,16 +839,7 @@ menuDataRouter.get(
             ),
         }
 
-        const exts = getUserData(
-            req.jwt.unique_name,
-            req.gameVersion,
-        ).Extensions
-
-        const inventory = createInventory(
-            req.jwt.unique_name,
-            req.gameVersion,
-            exts.entP,
-        )
+        const inventory = createInventory(req.jwt.unique_name, req.gameVersion)
 
         const contractData = controller.resolveContract(req.query.contractId)
 
@@ -966,6 +953,7 @@ menuDataRouter.get(
                 req.query.locationId,
                 req.gameVersion,
                 req.jwt.unique_name,
+                req.query.difficulty,
             )
 
         const response = {
@@ -988,13 +976,24 @@ menuDataRouter.get(
                         ),
                 },
                 MasteryData:
-                    // No pro1 mastery, in an ideal world we'd pass normal as 0 and pro1 as 1
-                    req.gameVersion === "h1" ? masteryData[0] : masteryData,
+                    LOCATION !== "LOCATION_PARENT_ICA_FACILITY"
+                        ? req.gameVersion === "h1"
+                            ? masteryData[0]
+                            : masteryData
+                        : {},
                 DifficultyData: undefined,
             },
         }
 
-        if (req.gameVersion === "h1") {
+        if (
+            req.gameVersion === "h1" &&
+            LOCATION !== "LOCATION_PARENT_ICA_FACILITY"
+        ) {
+            const inventory = createInventory(
+                req.jwt.unique_name,
+                req.gameVersion,
+            )
+
             response.data.DifficultyData = {
                 AvailableDifficultyModes: [
                     {
@@ -1003,7 +1002,11 @@ menuDataRouter.get(
                     },
                     {
                         Name: "pro1",
-                        Available: true,
+                        Available: inventory.some(
+                            (e) =>
+                                e.Unlockable.Id ===
+                                locationData.Properties.DifficultyUnlock.pro1,
+                        ),
                     },
                 ],
                 Difficulty: req.query.difficulty,
@@ -1022,8 +1025,6 @@ menuDataRouter.get(
         response.data.Location = locationData
 
         if (req.query.difficulty === "pro1") {
-            log(LogLevel.DEBUG, "Adjusting for legacy-pro1.")
-
             const obj = {
                 Location: locationData,
                 SubLocation: locationData,
@@ -1153,7 +1154,7 @@ menuDataRouter.get(
                 if (theMissions !== undefined) {
                     ;(theMissions as string[])
                         .filter(
-                            // removes snow festival on h1, traditions on non-h3
+                            // removes snow festival on h1
                             (m) =>
                                 m &&
                                 !(
@@ -1358,6 +1359,10 @@ menuDataRouter.get(
                     },
                 ),
             )
+        }
+
+        if (sniperMissionIds.includes(req.query.contractId)) {
+            cats.push(createMenuPageTile("sniper"))
         }
 
         const pluginData = controller.hooks.getNextCampaignMission.call(
@@ -1936,11 +1941,15 @@ menuDataRouter.get("/PlayerProfile", (req: RequestWithJwt, res) => {
             f.Xp = subLocationData?.Xp || 0
             f.ActionXp = subLocationData?.ActionXp || 0
 
-            if (f.LocationProgression) {
+            if (f.LocationProgression && !isSniperLocation(f.LocationId)) {
+                // We typecast below as it could be an object for subpackages.
+                // Checks before this ensure it isn't, but TS doesn't realise this.
                 f.LocationProgression.Level =
-                    userProfile.Extensions.progression.Locations[
-                        f.LocationId.toLocaleLowerCase()
-                    ]?.Level || 1
+                    (
+                        userProfile.Extensions.progression.Locations[
+                            f.LocationId
+                        ] as ProgressionData
+                    ).Level || 1
             }
         }),
     )
@@ -2003,23 +2012,18 @@ menuDataRouter.get(
             false,
         )
 
-        const location = (() => {
+        const parentLocation = (() => {
             switch (req.query.unlockableId?.split("_").slice(0, 3).join("_")) {
                 case "FIREARMS_SC_HERO":
-                    return "LOCATION_AUSTRIA"
+                    return "LOCATION_PARENT_AUSTRIA"
                 case "FIREARMS_SC_SEAGULL":
-                    return "LOCATION_SALTY_SEAGULL"
+                    return "LOCATION_PARENT_SALTY"
                 case "FIREARMS_SC_FALCON":
-                    return "LOCATION_CAGED_FALCON"
+                    return "LOCATION_PARENT_CAGED"
                 default:
                     assert.fail("fell through switch (bad query?)")
             }
         })()
-
-        let sniperLoadout = getConfig<SniperLoadoutConfig>(
-            "SniperLoadouts",
-            false,
-        )[location][req.query.unlockableId]
 
         if (req.gameVersion === "scpc") {
             masteryUnlockTemplate = JSON.parse(
@@ -2029,33 +2033,21 @@ menuDataRouter.get(
                 ),
             )
 
-            sniperLoadout = JSON.parse(
-                JSON.stringify(sniperLoadout).replace(/hawk\/+/g, ""),
-            )
+            // Do we still need to do this? - AF
+            // sniperLoadout = JSON.parse(
+            //     JSON.stringify(sniperLoadout).replace(/hawk\/+/g, ""),
+            // )
         }
-
-        const unlockables = sniperLoadout.Unlockable
 
         res.json({
             template: masteryUnlockTemplate,
             data: {
-                CompletionData: controller.masteryService.getFirearmCompletion(
+                ...controller.masteryService.getMasteryDataForSubPackage(
+                    parentLocation,
                     req.query.unlockableId,
-                    sniperLoadout.MainUnlockable.Properties.Name,
-                    req.jwt.unique_name,
                     req.gameVersion,
+                    req.jwt.unique_name,
                 ),
-                Drops: unlockables.map((unlockable) => ({
-                    IsLevelMarker: false,
-                    Unlockable: unlockable,
-                    Level:
-                        unlockable.Properties.UnlockOrder ??
-                        DEFAULT_MASTERY_MAXLEVEL,
-                    // TODO: Everything is unlocked. Change this when adding sniper progression
-                    IsLocked: false,
-                    TypeLocaKey: "UI_MENU_PAGE_MASTERY_UNLOCKABLE_NAME_weapon",
-                })),
-                Unlockable: sniperLoadout.MainUnlockable,
             },
         })
     },
@@ -2071,6 +2063,38 @@ menuDataRouter.get(
                 req.jwt.unique_name,
             ),
         )
+    },
+)
+
+menuDataRouter.get(
+    "/GetMasteryCompletionDataForUnlockable",
+    (req: RequestWithJwt<{ unlockableId: string }>, res) => {
+        // We make this lookup table to quickly get it, there's no other quick way for it.
+        const unlockToLoc = {
+            FIREARMS_SC_HERO_SNIPER_HM: "LOCATION_PARENT_AUSTRIA",
+            FIREARMS_SC_HERO_SNIPER_KNIGHT: "LOCATION_PARENT_AUSTRIA",
+            FIREARMS_SC_HERO_SNIPER_STONE: "LOCATION_PARENT_AUSTRIA",
+            FIREARMS_SC_SEAGULL_HM: "LOCATION_PARENT_SALTY",
+            FIREARMS_SC_SEAGULL_KNIGHT: "LOCATION_PARENT_SALTY",
+            FIREARMS_SC_SEAGULL_STONE: "LOCATION_PARENT_SALTY",
+            FIREARMS_SC_FALCON_HM: "LOCATION_PARENT_CAGED",
+            FIREARMS_SC_FALCON_KNIGHT: "LOCATION_PARENT_CAGED",
+            FIREARMS_SC_FALCON_STONE: "LOCATION_PARENT_CAGED",
+        }
+
+        res.json({
+            template: null,
+            data: {
+                CompletionData: controller.masteryService.getLocationCompletion(
+                    unlockToLoc[req.query.unlockableId],
+                    unlockToLoc[req.query.unlockableId],
+                    req.gameVersion,
+                    req.jwt.unique_name,
+                    "sniper",
+                    req.query.unlockableId,
+                ),
+            },
+        })
     },
 )
 

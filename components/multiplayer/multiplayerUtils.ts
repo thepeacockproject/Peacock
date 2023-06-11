@@ -93,11 +93,7 @@ export function getMultiplayerLoadoutData(
         false,
     )
 
-    const inventory = createInventory(
-        userData.Id,
-        gameVersion,
-        userData.Extensions.entP,
-    )
+    const inventory = createInventory(userData.Id, gameVersion)
 
     let unlockable = inventory.find(
         (unlockable) =>

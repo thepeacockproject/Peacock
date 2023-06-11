@@ -151,6 +151,8 @@ export async function loadUserData(
 
     const userProfile = castUserProfile(
         JSON.parse((await readFile(path)).toString()),
+        gameVersion,
+        path,
     )
 
     asyncGuard.addLoadedProfile(`${userId}.${gameVersion}`, userProfile)

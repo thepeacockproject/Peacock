@@ -1,4 +1,9 @@
 {
+    "$setpageargs": {
+        "IsUpgradeMastery": true,
+        "OverrideUnlockableTileImage": true
+    },
+    "_dynamicPackerOverride": ["SniperChallenge"],
     "buttons": [
         {
             "actiontype": "accept",
@@ -36,6 +41,47 @@
                 }
             },
             {
+                "$if $not $($arg _isonline)": {
+                    "$then": {
+                        "id": "selectable_invisible_element",
+                        "nrows": 0,
+                        "ncols": 0,
+                        "selectable": false,
+                        "pressable": false,
+                        "actions": {
+                            "on-add-child": {
+                                "replace-children": {
+                                    "target": "headline_container",
+                                    "children": {
+                                        "view": "menu3.basic.DefaultNoContentHeader",
+                                        "selectable": false,
+                                        "pressable": false,
+                                        "data": {
+                                            "header": "",
+                                            "title": "$loc UI_MENU_PAGE_CONNECTION_REQUIRED_MASTERY",
+                                            "multilinetitle": true,
+                                            "typeicon": {
+                                                "$if $.Icon": {
+                                                    "$then": "$.Icon",
+                                                    "$else": "info"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "on-remove-child": {
+                                "replace-children": {
+                                    "target": "headline_container",
+                                    "children": []
+                                }
+                            }
+                        }
+                    },
+                    "$else": null
+                }
+            },
+            {
                 "controller": "list",
                 "id": "mastery_category_container"
             },
@@ -69,570 +115,450 @@
                     }
                 },
                 "children": {
-                    "id": "$formatstring mastery_category_{$.Location.Id}",
+                    "id": "$formatstring mastery_category_{$.LocationId}_{$.Name}",
                     "view": "menu3.basic.CategoryElement",
                     "data": {
-                        "title": "$loc $formatstring UI_{$.Location.Id}_CITY",
-                        "icon": "unlocked"
+                        "title": "$loc $.Unlockable.Properties.Name",
+                        "icon": "$.Unlockable.Subtype"
                     },
                     "children": {
-                        "$if $eq (0,0)": {
-                            "$then": [
+                        "controller": "list",
+                        "id": "mastery_scrolling_group",
+                        "view": "menu3.containers.ScrollingListContainer",
+                        "col": 0.0,
+                        "row": 1.0,
+                        "ncols": 10,
+                        "nrows": 3,
+                        "direction": "horizontal",
+                        "data": {
+                            "direction": "horizontal",
+                            "reversestartpos": true
+                        },
+                        "actions": {
+                            "select": {
+                                "set-mastery-data": {
+                                    "$setup": {
+                                        "$set ValidContractType": {
+                                            "$if $isnull $.Contract": {
+                                                "$then": true,
+                                                "$else": {
+                                                    "$switch $.Contract.Metadata.Type": [
+                                                        {
+                                                            "case": "usercreated",
+                                                            "return": false
+                                                        },
+                                                        {
+                                                            "case": "featured",
+                                                            "return": false
+                                                        },
+                                                        {
+                                                            "default": true
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        },
+                                        "$set HideProgression": {
+                                            "$if $isnull $.CompletionData": {
+                                                "$then": "$.Data.LocationHideProgression",
+                                                "$else": "$.CompletionData.HideProgression"
+                                            }
+                                        },
+                                        "$set MasteryTitle": {
+                                            "$if $isnull $.CompletionData": {
+                                                "$then": "$formatstring {$.Data.LocationLevel,.0f}/{$.Data.LocationMaxLevel,.0f}",
+                                                "$else": "$formatstring {$.CompletionData.Level,.0f}/{$.CompletionData.MaxLevel,.0f}"
+                                            }
+                                        },
+                                        "$set MasteryCompletion": {
+                                            "$if $isnull $.CompletionData": {
+                                                "$then": "$.Data.LocationCompletion",
+                                                "$else": "$.CompletionData.Completion"
+                                            }
+                                        },
+                                        "$set MasteryXpLeft": {
+                                            "$if $isnull $.CompletionData": {
+                                                "$then": "$.Data.LocationXpLeft",
+                                                "$else": "$.CompletionData.XpLeft"
+                                            }
+                                        },
+                                        "$set NameLocalized": {
+                                            "$if $isnull $.CompletionData.Name": {
+                                                "$then": "$loc UI_MENU_PAGE_MASTERY_TITLE",
+                                                "$else": "$loc $.CompletionData.Name"
+                                            }
+                                        },
+                                        "$set IsLocationProgression": {
+                                            "$if": {
+                                                "$condition": {
+                                                    "$or": [
+                                                        "$isnull $.CompletionData",
+                                                        "$.CompletionData.IsLocationProgression"
+                                                    ]
+                                                },
+                                                "$then": true,
+                                                "$else": false
+                                            }
+                                        },
+                                        "$set ShowUnit": {
+                                            "$if $.IsLocationProgression": {
+                                                "$then": true,
+                                                "$else": false
+                                            }
+                                        },
+                                        "$in": {
+                                            "$if": {
+                                                "$condition": {
+                                                    "$and": [
+                                                        "$arg _isonline",
+                                                        "$not $.HideProgression",
+                                                        "$.ValidContractType"
+                                                    ]
+                                                },
+                                                "$then": {
+                                                    "masteryheader": "$.NameLocalized",
+                                                    "masterytitle": "$.MasteryTitle",
+                                                    "masterycompletion": "$.MasteryCompletion",
+                                                    "masteryxpleft": "$.MasteryXpLeft",
+                                                    "showUnit": "$.ShowUnit"
+                                                },
+                                                "$else": {}
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "deselect": {
+                                "set-mastery-data": {}
+                            }
+                        },
+                        "children": {
+                            "$merge": [
                                 {
-                                    "controller": "list",
-                                    "id": "sub_category_container",
-                                    "row": 0.1,
-                                    "col": 0,
-                                    "_comment": "enable analog handling to allow the submenu to handle LT/RT",
-                                    "handleanalog": true,
-                                    "actions": {
-                                        "$if $not $arg _isingame": {
-                                            "$then": {
-                                                "on-add-child": {
-                                                    "show-background-layers": {
-                                                        "showMenuBackgroundFullOverlay": true
+                                    "$if $not $isnull $.Unlockable": {
+                                        "$then": {
+                                            "$setup": {
+                                                "$set Item": "$.Unlockable",
+                                                "$set LocalizedReproItem": "$item $.Unlockable",
+                                                "$set IsUpgradeMastery": false,
+                                                "$in": {
+                                                    "id": "mastery-tile-unlocked",
+                                                    "view": "menu3.basic.CategoryTile",
+                                                    "nrows": 3,
+                                                    "ncols": 2,
+                                                    "pressable": true,
+                                                    "data": {
+                                                        "image": {
+                                                            "$if $arg OverrideUnlockableTileImage": {
+                                                                "$then": "$res $formatstring images/unlockables_override/{$.Unlockable.Id}_Tile.jpg",
+                                                                "$else": "$.LocalizedReproItem.image"
+                                                            }
+                                                        },
+                                                        "islocked": "$.IsLocked",
+                                                        "header": "$.LocalizedReproItem.type",
+                                                        "title": "$.LocalizedReproItem.name",
+                                                        "icon": {
+                                                            "$switch $.Unlockable.Type": [
+                                                                {
+                                                                    "case": "access",
+                                                                    "return": "starting"
+                                                                },
+                                                                {
+                                                                    "case": "agencypickup",
+                                                                    "return": "stashpointempty"
+                                                                },
+                                                                {
+                                                                    "case": "loadoutunlock",
+                                                                    "return": "pistol"
+                                                                },
+                                                                {
+                                                                    "case": "difficultyunlock",
+                                                                    "return": "difficultylevel"
+                                                                },
+                                                                {
+                                                                    "default": "$.Unlockable.Subtype"
+                                                                }
+                                                            ]
+                                                        }
+                                                    },
+                                                    "actions": {
+                                                        "accept": {
+                                                            "show-modal": {
+                                                                "config": {
+                                                                    "priority": "low",
+                                                                    "view": "menu3.modal.ModalDialogItemDetails",
+                                                                    "buttons": [
+                                                                        {
+                                                                            "label": "$loc UI_BUTTON_PROMPTS_ACTION_BACK",
+                                                                            "type": "cancel"
+                                                                        }
+                                                                    ],
+                                                                    "data": {
+                                                                        "description": "$.LocalizedReproItem.desc",
+                                                                        "name": "$.LocalizedReproItem.name",
+                                                                        "type": {
+                                                                            "$if $.IsUpgradeMastery": {
+                                                                                "$then": "$loc UI_MENU_PAGE_MASTERY_UPGRADE_TITLE",
+                                                                                "$else": "$.Item.Type"
+                                                                            }
+                                                                        },
+                                                                        "subtype": {
+                                                                            "$if $.IsUpgradeMastery": {
+                                                                                "$then": null,
+                                                                                "$else": "$.Item.Subtype"
+                                                                            }
+                                                                        },
+                                                                        "image": "$.LocalizedReproItem.image",
+                                                                        "rarity": "$.LocalizedReproItem.rarity",
+                                                                        "perks": "$.LocalizedReproItem.perks",
+                                                                        "item": "$($repository $.LocalizedReproItem.repositoryid)",
+                                                                        "displaybuttons": [
+                                                                            {
+                                                                                "actiontype": "cancel",
+                                                                                "actionlabel": "$loc UI_BUTTON_PROMPTS_ACTION_BACK",
+                                                                                "hideIndicator": true
+                                                                            }
+                                                                        ],
+                                                                        "actionAndKillTypes": {
+                                                                            "$setup": {
+                                                                                "$set ItemRepositoryId": "$repository $.LocalizedReproItem.repositoryid",
+                                                                                "$in": {
+                                                                                    "$convertarray": {
+                                                                                        "discardElementsWithoutConversion": true,
+                                                                                        "sourceArray": "$.ItemRepositoryId.OnlineTraits",
+                                                                                        "conversionRules": {
+                                                                                            "melee_nonlethal": "$loc UI_ITEM_ONLINETRAITS_MELEE_NONLETHAL",
+                                                                                            "melee_lethal": "$loc UI_ITEM_ONLINETRAITS_MELEE_LETHAL",
+                                                                                            "throw_nonlethal": "$loc UI_ITEM_ONLINETRAITS_THROW_NONLETHAL",
+                                                                                            "throw_lethal": "$loc UI_ITEM_ONLINETRAITS_THROW_LETHAL",
+                                                                                            "fiberwire": "$loc UI_ITEM_ONLINETRAITS_FIBERWIRE",
+                                                                                            "syringe_poison": "$loc UI_ITEM_ONLINETRAITS_SYRINGE_POISON",
+                                                                                            "consumable_poison": "$loc UI_ITEM_ONLINETRAITS_CONSUMABLE_POISON",
+                                                                                            "accident_explosion": "$loc UI_KILL_METHOD_ACCIDENT_EXPLOSION",
+                                                                                            "detonator_explosive_device": "$loc UI_KILL_METHOD_EXPLOSIVE",
+                                                                                            "explosive_device": "$loc UI_KILL_METHOD_EXPLOSIVE"
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        },
+                                                        "select": {
+                                                            "update-content": {
+                                                                "target": "headline_element"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "$else": null
+                                    }
+                                },
+                                {
+                                    "$each $.Drops": {
+                                        "$setup": {
+                                            "$set Item": "$.Unlockable",
+                                            "$set LocalizedReproItem": "$item $.Unlockable",
+                                            "$set IsUpgradeMastery": "$arg IsUpgradeMastery",
+                                            "$in": {
+                                                "id": {
+                                                    "$if $.IsLocked": {
+                                                        "$then": "mastery-tile-locked",
+                                                        "$else": "mastery-tile-unlocked"
                                                     }
                                                 },
-                                                "on-remove-child": {
-                                                    "show-background-layers": {
-                                                        "showMenuBackgroundFullOverlay": false
-                                                    }
+                                                "view": "menu3.basic.ObjectiveTile",
+                                                "nrows": 3,
+                                                "ncols": 2,
+                                                "pressable": true,
+                                                "data": {
+                                                    "image": "$.LocalizedReproItem.image",
+                                                    "islocked": "$.IsLocked",
+                                                    "header": {
+                                                        "$if $isnull $.Level": {
+                                                            "$then": "$loc UI_OBJECTIVES_UNLOCKS_HEADER",
+                                                            "$else": {
+                                                                "$if $.IsLocked": {
+                                                                    "$then": "$loc UI_MENU_PAGE_MASTERY_UNLOCKS_AT_HEADER",
+                                                                    "$else": "$loc UI_MENU_PAGE_MASTERY_UNLOCKED_HEADER"
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "title": "$formatstring {$loc UI_MENU_PAGE_MASTERY_LEVEL_SHORT} {$.Level,.0f}",
+                                                    "icon": {
+                                                        "$switch $.IsLocked": [
+                                                            {
+                                                                "case": false,
+                                                                "return": "masteryunlocked"
+                                                            },
+                                                            {
+                                                                "case": true,
+                                                                "return": "locked"
+                                                            },
+                                                            {
+                                                                "default": "locked"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "description": "$.LocalizedReproItem.desc",
+                                                    "descriptionAlignment": "top",
+                                                    "perks": "$.LocalizedReproItem.perks",
+                                                    "rarity": "$.LocalizedReproItem.rarity",
+                                                    "masteryLevel": "$formatstring {$loc UI_MENU_PAGE_MASTERY_LEVEL} {$.Level,.0f}",
+                                                    "conditions": [
+                                                        {
+                                                            "header": {
+                                                                "$if $arg IsUpgradeMastery": {
+                                                                    "$then": "$loc UI_MENU_PAGE_MASTERY_UPGRADE_TITLE",
+                                                                    "$else": "$.LocalizedReproItem.type"
+                                                                }
+                                                            },
+                                                            "title": "$.LocalizedReproItem.name",
+                                                            "icon": {
+                                                                "$switch $.Unlockable.Type": [
+                                                                    {
+                                                                        "case": "access",
+                                                                        "return": "starting"
+                                                                    },
+                                                                    {
+                                                                        "case": "agencypickup",
+                                                                        "return": "stashpointempty"
+                                                                    },
+                                                                    {
+                                                                        "case": "loadoutunlock",
+                                                                        "return": "pistol"
+                                                                    },
+                                                                    {
+                                                                        "case": "difficultyunlock",
+                                                                        "return": "difficultylevel"
+                                                                    },
+                                                                    {
+                                                                        "default": "$.Unlockable.Subtype"
+                                                                    }
+                                                                ]
+                                                            }
+                                                        }
+                                                    ]
                                                 },
-                                                "on-page-closed": {
-                                                    "show-background-layers": {
-                                                        "showMenuBackgroundFullOverlay": false
+                                                "actions": {
+                                                    "accept": {
+                                                        "show-modal": {
+                                                            "config": {
+                                                                "priority": "low",
+                                                                "view": "menu3.modal.ModalDialogItemDetails",
+                                                                "buttons": [
+                                                                    {
+                                                                        "label": "$loc UI_BUTTON_PROMPTS_ACTION_BACK",
+                                                                        "type": "cancel"
+                                                                    }
+                                                                ],
+                                                                "data": {
+                                                                    "description": "$.LocalizedReproItem.desc",
+                                                                    "name": "$.LocalizedReproItem.name",
+                                                                    "type": {
+                                                                        "$if $.IsUpgradeMastery": {
+                                                                            "$then": "$loc UI_MENU_PAGE_MASTERY_UPGRADE_TITLE",
+                                                                            "$else": "$.Item.Type"
+                                                                        }
+                                                                    },
+                                                                    "subtype": {
+                                                                        "$if $.IsUpgradeMastery": {
+                                                                            "$then": null,
+                                                                            "$else": "$.Item.Subtype"
+                                                                        }
+                                                                    },
+                                                                    "image": "$.LocalizedReproItem.image",
+                                                                    "rarity": "$.LocalizedReproItem.rarity",
+                                                                    "perks": "$.LocalizedReproItem.perks",
+                                                                    "item": "$($repository $.LocalizedReproItem.repositoryid)",
+                                                                    "displaybuttons": [
+                                                                        {
+                                                                            "actiontype": "cancel",
+                                                                            "actionlabel": "$loc UI_BUTTON_PROMPTS_ACTION_BACK",
+                                                                            "hideIndicator": true
+                                                                        }
+                                                                    ],
+                                                                    "actionAndKillTypes": {
+                                                                        "$setup": {
+                                                                            "$set ItemRepositoryId": "$repository $.LocalizedReproItem.repositoryid",
+                                                                            "$in": {
+                                                                                "$convertarray": {
+                                                                                    "discardElementsWithoutConversion": true,
+                                                                                    "sourceArray": "$.ItemRepositoryId.OnlineTraits",
+                                                                                    "conversionRules": {
+                                                                                        "melee_nonlethal": "$loc UI_ITEM_ONLINETRAITS_MELEE_NONLETHAL",
+                                                                                        "melee_lethal": "$loc UI_ITEM_ONLINETRAITS_MELEE_LETHAL",
+                                                                                        "throw_nonlethal": "$loc UI_ITEM_ONLINETRAITS_THROW_NONLETHAL",
+                                                                                        "throw_lethal": "$loc UI_ITEM_ONLINETRAITS_THROW_LETHAL",
+                                                                                        "fiberwire": "$loc UI_ITEM_ONLINETRAITS_FIBERWIRE",
+                                                                                        "syringe_poison": "$loc UI_ITEM_ONLINETRAITS_SYRINGE_POISON",
+                                                                                        "consumable_poison": "$loc UI_ITEM_ONLINETRAITS_CONSUMABLE_POISON",
+                                                                                        "accident_explosion": "$loc UI_KILL_METHOD_ACCIDENT_EXPLOSION",
+                                                                                        "detonator_explosive_device": "$loc UI_KILL_METHOD_EXPLOSIVE",
+                                                                                        "explosive_device": "$loc UI_KILL_METHOD_EXPLOSIVE"
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "select": {
+                                                        "replace-children": {
+                                                            "target": "headline_container",
+                                                            "children": {
+                                                                "id": "headline_element",
+                                                                "view": "menu3.basic.HeadlineElement",
+                                                                "selectable": false,
+                                                                "pressable": false,
+                                                                "data": {
+                                                                    "header": {
+                                                                        "$if $.IsUpgradeMastery": {
+                                                                            "$then": "$loc UI_MENU_PAGE_MASTERY_UPGRADE_TITLE",
+                                                                            "$else": "$loc $.TypeLocaKey"
+                                                                        }
+                                                                    },
+                                                                    "title": "$($item $.Item).name",
+                                                                    "typeicon": {
+                                                                        "$switch $.Unlockable.Type": [
+                                                                            {
+                                                                                "case": "access",
+                                                                                "return": "starting"
+                                                                            },
+                                                                            {
+                                                                                "case": "agencypickup",
+                                                                                "return": "stashpointempty"
+                                                                            },
+                                                                            {
+                                                                                "case": "loadoutunlock",
+                                                                                "return": "pistol"
+                                                                            },
+                                                                            {
+                                                                                "case": "difficultyunlock",
+                                                                                "return": "difficultylevel"
+                                                                            },
+                                                                            {
+                                                                                "default": "$.Unlockable.Subtype"
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
                                                     }
                                                 }
                                             }
                                         }
                                     }
-                                },
-                                {
-                                    "$setpageargs": {
-                                        "ShowPrevNextButtonPrompt": "$gt ($arraysize $.MasteryData,1)"
-                                    },
-                                    "controller": "category",
-                                    "id": "sub_category_controller",
-                                    "container": "sub_category_container",
-                                    "view": "menu3.containers.ScrollingTabsContainer",
-                                    "direction": "horizontal",
-                                    "submenu-navigation": true,
-                                    "prevnextnav": true,
-                                    "ncols": 10,
-                                    "data": {
-                                        "direction": "horizontal",
-                                        "submenu": true
-                                    },
-                                    "children": {
-                                        "$each $.MasteryData": {
-                                            "$if": {
-                                                "$condition": {
-                                                    "$or": [
-                                                        {
-                                                            "$if $eqs ($arg _platform,stadia)": {
-                                                                "$then": true,
-                                                                "$else": true
-                                                            }
-                                                        },
-                                                        "$eq ($._index,0)"
-                                                    ]
-                                                },
-                                                "$then": {
-                                                    "$setpageargs": {
-                                                        "IsUpgradeMastery": {
-                                                            "$if $not $isnull $.Unlockable": {
-                                                                "$then": true,
-                                                                "$else": false
-                                                            }
-                                                        },
-                                                        "OverrideUnlockableTileImage": {
-                                                            "$if $not $isnull $.Unlockable": {
-                                                                "$then": true,
-                                                                "$else": false
-                                                            }
-                                                        }
-                                                    },
-                                                    "id": "$formatstring challenge_category_{$.Name}",
-                                                    "view": "menu3.basic.SubCategoryElement",
-                                                    "data": {
-                                                        "title": {
-                                                            "$if $not $isnull $.Unlockable": {
-                                                                "$then": "$($item $.Unlockable).name",
-                                                                "$else": "$loc UI_MENU_PAGE_PROFILE_LOCATION_MASTERY"
-                                                            }
-                                                        }
-                                                    },
-                                                    "buttons": [
-                                                        {
-                                                            "$if $arg ShowPrevNextButtonPrompt": {
-                                                                "$then": {
-                                                                    "actiontype": "lt_rt",
-                                                                    "actionlabel": "$loc UI_BUTTON_PROMPTS_ACTION_PREVNEXT_CATEGORY",
-                                                                    "customplatform": {
-                                                                        "platform": "key",
-                                                                        "hide": true,
-                                                                        "actiontype": "mouse_lmb"
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    ],
-                                                    "actions": {
-                                                        "select": {
-                                                            "set-selected": {
-                                                                "target": "mastery-tile-unlocked",
-                                                                "last-found": true
-                                                            }
-                                                        }
-                                                    },
-                                                    "children": {
-                                                        "controller": "list",
-                                                        "id": "mastery_scrolling_group",
-                                                        "view": "menu3.containers.ScrollingListContainer",
-                                                        "col": 0.0,
-                                                        "row": 1.0,
-                                                        "ncols": 10,
-                                                        "nrows": 3,
-                                                        "direction": "horizontal",
-                                                        "data": {
-                                                            "direction": "horizontal",
-                                                            "reversestartpos": true
-                                                        },
-                                                        "actions": {
-                                                            "select": {
-                                                                "set-mastery-data": {
-                                                                    "$setup": {
-                                                                        "$set ValidContractType": {
-                                                                            "$if $isnull $.Contract": {
-                                                                                "$then": true,
-                                                                                "$else": {
-                                                                                    "$switch $.Contract.Metadata.Type": [
-                                                                                        {
-                                                                                            "case": "usercreated",
-                                                                                            "return": false
-                                                                                        },
-                                                                                        {
-                                                                                            "case": "featured",
-                                                                                            "return": false
-                                                                                        },
-                                                                                        {
-                                                                                            "default": true
-                                                                                        }
-                                                                                    ]
-                                                                                }
-                                                                            }
-                                                                        },
-                                                                        "$set HideProgression": {
-                                                                            "$if $isnull $.CompletionData": {
-                                                                                "$then": "$.Data.LocationHideProgression",
-                                                                                "$else": "$.CompletionData.HideProgression"
-                                                                            }
-                                                                        },
-                                                                        "$set MasteryTitle": {
-                                                                            "$if $isnull $.CompletionData": {
-                                                                                "$then": "$formatstring {$.Data.LocationLevel,.0f}/{$.Data.LocationMaxLevel,.0f}",
-                                                                                "$else": "$formatstring {$.CompletionData.Level,.0f}/{$.CompletionData.MaxLevel,.0f}"
-                                                                            }
-                                                                        },
-                                                                        "$set MasteryCompletion": {
-                                                                            "$if $isnull $.CompletionData": {
-                                                                                "$then": "$.Data.LocationCompletion",
-                                                                                "$else": "$.CompletionData.Completion"
-                                                                            }
-                                                                        },
-                                                                        "$set MasteryXpLeft": {
-                                                                            "$if $isnull $.CompletionData": {
-                                                                                "$then": "$.Data.LocationXpLeft",
-                                                                                "$else": "$.CompletionData.XpLeft"
-                                                                            }
-                                                                        },
-                                                                        "$set NameLocalized": {
-                                                                            "$if $isnull $.CompletionData.Name": {
-                                                                                "$then": "$loc UI_MENU_PAGE_MASTERY_TITLE",
-                                                                                "$else": "$loc $.CompletionData.Name"
-                                                                            }
-                                                                        },
-                                                                        "$set IsLocationProgression": {
-                                                                            "$if": {
-                                                                                "$condition": {
-                                                                                    "$or": [
-                                                                                        "$isnull $.CompletionData",
-                                                                                        "$.CompletionData.IsLocationProgression"
-                                                                                    ]
-                                                                                },
-                                                                                "$then": true,
-                                                                                "$else": false
-                                                                            }
-                                                                        },
-                                                                        "$set ShowUnit": {
-                                                                            "$if $.IsLocationProgression": {
-                                                                                "$then": true,
-                                                                                "$else": false
-                                                                            }
-                                                                        },
-                                                                        "$in": {
-                                                                            "$if": {
-                                                                                "$condition": {
-                                                                                    "$and": [
-                                                                                        "$arg _isonline",
-                                                                                        "$not $.HideProgression",
-                                                                                        "$.ValidContractType"
-                                                                                    ]
-                                                                                },
-                                                                                "$then": {
-                                                                                    "masteryheader": "$.NameLocalized",
-                                                                                    "masterytitle": "$.MasteryTitle",
-                                                                                    "masterycompletion": "$.MasteryCompletion",
-                                                                                    "masteryxpleft": "$.MasteryXpLeft",
-                                                                                    "showUnit": "$.ShowUnit"
-                                                                                },
-                                                                                "$else": {}
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            },
-                                                            "deselect": {
-                                                                "set-mastery-data": {}
-                                                            }
-                                                        },
-                                                        "children": {
-                                                            "$merge": [
-                                                                {
-                                                                    "$if $not $isnull $.Unlockable": {
-                                                                        "$then": {
-                                                                            "$setup": {
-                                                                                "$set Item": "$.Unlockable",
-                                                                                "$set LocalizedReproItem": "$item $.Unlockable",
-                                                                                "$set IsUpgradeMastery": false,
-                                                                                "$in": {
-                                                                                    "id": "mastery-tile-unlocked",
-                                                                                    "view": "menu3.basic.CategoryTile",
-                                                                                    "nrows": 3,
-                                                                                    "ncols": 2,
-                                                                                    "pressable": true,
-                                                                                    "data": {
-                                                                                        "image": {
-                                                                                            "$if $arg OverrideUnlockableTileImage": {
-                                                                                                "$then": "$res $formatstring images/unlockables_override/{$.Unlockable.Id}_Tile.jpg",
-                                                                                                "$else": "$.LocalizedReproItem.image"
-                                                                                            }
-                                                                                        },
-                                                                                        "islocked": "$.IsLocked",
-                                                                                        "header": "$.LocalizedReproItem.type",
-                                                                                        "title": "$.LocalizedReproItem.name",
-                                                                                        "icon": {
-                                                                                            "$switch $.Unlockable.Type": [
-                                                                                                {
-                                                                                                    "case": "access",
-                                                                                                    "return": "starting"
-                                                                                                },
-                                                                                                {
-                                                                                                    "case": "agencypickup",
-                                                                                                    "return": "stashpointempty"
-                                                                                                },
-                                                                                                {
-                                                                                                    "case": "loadoutunlock",
-                                                                                                    "return": "pistol"
-                                                                                                },
-                                                                                                {
-                                                                                                    "case": "difficultyunlock",
-                                                                                                    "return": "difficultylevel"
-                                                                                                },
-                                                                                                {
-                                                                                                    "default": "$.Unlockable.Subtype"
-                                                                                                }
-                                                                                            ]
-                                                                                        }
-                                                                                    },
-                                                                                    "actions": {
-                                                                                        "accept": {
-                                                                                            "show-modal": {
-                                                                                                "config": {
-                                                                                                    "priority": "low",
-                                                                                                    "view": "menu3.modal.ModalDialogItemDetails",
-                                                                                                    "buttons": [
-                                                                                                        {
-                                                                                                            "label": "$loc UI_BUTTON_PROMPTS_ACTION_BACK",
-                                                                                                            "type": "cancel"
-                                                                                                        }
-                                                                                                    ],
-                                                                                                    "data": {
-                                                                                                        "description": "$.LocalizedReproItem.desc",
-                                                                                                        "name": "$.LocalizedReproItem.name",
-                                                                                                        "type": {
-                                                                                                            "$if $.IsUpgradeMastery": {
-                                                                                                                "$then": "$loc UI_MENU_PAGE_MASTERY_UPGRADE_TITLE",
-                                                                                                                "$else": "$.Item.Type"
-                                                                                                            }
-                                                                                                        },
-                                                                                                        "subtype": {
-                                                                                                            "$if $.IsUpgradeMastery": {
-                                                                                                                "$then": null,
-                                                                                                                "$else": "$.Item.Subtype"
-                                                                                                            }
-                                                                                                        },
-                                                                                                        "image": "$.LocalizedReproItem.image",
-                                                                                                        "rarity": "$.LocalizedReproItem.rarity",
-                                                                                                        "perks": "$.LocalizedReproItem.perks",
-                                                                                                        "item": "$($repository $.LocalizedReproItem.repositoryid)",
-                                                                                                        "displaybuttons": [
-                                                                                                            {
-                                                                                                                "actiontype": "cancel",
-                                                                                                                "actionlabel": "$loc UI_BUTTON_PROMPTS_ACTION_BACK",
-                                                                                                                "hideIndicator": true
-                                                                                                            }
-                                                                                                        ],
-                                                                                                        "actionAndKillTypes": {
-                                                                                                            "$setup": {
-                                                                                                                "$set ItemRepositoryId": "$repository $.LocalizedReproItem.repositoryid",
-                                                                                                                "$in": {
-                                                                                                                    "$convertarray": {
-                                                                                                                        "discardElementsWithoutConversion": true,
-                                                                                                                        "sourceArray": "$.ItemRepositoryId.OnlineTraits",
-                                                                                                                        "conversionRules": {
-                                                                                                                            "melee_nonlethal": "$loc UI_ITEM_ONLINETRAITS_MELEE_NONLETHAL",
-                                                                                                                            "melee_lethal": "$loc UI_ITEM_ONLINETRAITS_MELEE_LETHAL",
-                                                                                                                            "throw_nonlethal": "$loc UI_ITEM_ONLINETRAITS_THROW_NONLETHAL",
-                                                                                                                            "throw_lethal": "$loc UI_ITEM_ONLINETRAITS_THROW_LETHAL",
-                                                                                                                            "fiberwire": "$loc UI_ITEM_ONLINETRAITS_FIBERWIRE",
-                                                                                                                            "syringe_poison": "$loc UI_ITEM_ONLINETRAITS_SYRINGE_POISON",
-                                                                                                                            "consumable_poison": "$loc UI_ITEM_ONLINETRAITS_CONSUMABLE_POISON",
-                                                                                                                            "accident_explosion": "$loc UI_KILL_METHOD_ACCIDENT_EXPLOSION",
-                                                                                                                            "detonator_explosive_device": "$loc UI_KILL_METHOD_EXPLOSIVE",
-                                                                                                                            "explosive_device": "$loc UI_KILL_METHOD_EXPLOSIVE"
-                                                                                                                        }
-                                                                                                                    }
-                                                                                                                }
-                                                                                                            }
-                                                                                                        }
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                        },
-                                                                                        "select": {
-                                                                                            "update-content": {
-                                                                                                "target": "headline_element"
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        },
-                                                                        "$else": null
-                                                                    }
-                                                                },
-                                                                {
-                                                                    "$each $.Drops": {
-                                                                        "$setup": {
-                                                                            "$set Item": "$.Unlockable",
-                                                                            "$set LocalizedReproItem": "$item $.Unlockable",
-                                                                            "$set IsUpgradeMastery": "$arg IsUpgradeMastery",
-                                                                            "$in": {
-                                                                                "id": {
-                                                                                    "$if $.IsLocked": {
-                                                                                        "$then": "mastery-tile-locked",
-                                                                                        "$else": "mastery-tile-unlocked"
-                                                                                    }
-                                                                                },
-                                                                                "view": "menu3.basic.ObjectiveTile",
-                                                                                "nrows": 3,
-                                                                                "ncols": 2,
-                                                                                "pressable": true,
-                                                                                "data": {
-                                                                                    "image": "$.LocalizedReproItem.image",
-                                                                                    "islocked": "$.IsLocked",
-                                                                                    "header": {
-                                                                                        "$if $isnull $.Level": {
-                                                                                            "$then": "$loc UI_OBJECTIVES_UNLOCKS_HEADER",
-                                                                                            "$else": {
-                                                                                                "$if $.IsLocked": {
-                                                                                                    "$then": "$loc UI_MENU_PAGE_MASTERY_UNLOCKS_AT_HEADER",
-                                                                                                    "$else": "$loc UI_MENU_PAGE_MASTERY_UNLOCKED_HEADER"
-                                                                                                }
-                                                                                            }
-                                                                                        }
-                                                                                    },
-                                                                                    "title": "$formatstring {$loc UI_MENU_PAGE_MASTERY_LEVEL_SHORT} {$.Level,.0f}",
-                                                                                    "icon": {
-                                                                                        "$switch $.IsLocked": [
-                                                                                            {
-                                                                                                "case": false,
-                                                                                                "return": "masteryunlocked"
-                                                                                            },
-                                                                                            {
-                                                                                                "case": true,
-                                                                                                "return": "locked"
-                                                                                            },
-                                                                                            {
-                                                                                                "default": "locked"
-                                                                                            }
-                                                                                        ]
-                                                                                    },
-                                                                                    "description": "$.LocalizedReproItem.desc",
-                                                                                    "descriptionAlignment": "top",
-                                                                                    "perks": "$.LocalizedReproItem.perks",
-                                                                                    "rarity": "$.LocalizedReproItem.rarity",
-                                                                                    "masteryLevel": "$formatstring {$loc UI_MENU_PAGE_MASTERY_LEVEL} {$.Level,.0f}",
-                                                                                    "conditions": [
-                                                                                        {
-                                                                                            "header": {
-                                                                                                "$if $arg IsUpgradeMastery": {
-                                                                                                    "$then": "$loc UI_MENU_PAGE_MASTERY_UPGRADE_TITLE",
-                                                                                                    "$else": "$.LocalizedReproItem.type"
-                                                                                                }
-                                                                                            },
-                                                                                            "title": "$.LocalizedReproItem.name",
-                                                                                            "icon": {
-                                                                                                "$switch $.Unlockable.Type": [
-                                                                                                    {
-                                                                                                        "case": "access",
-                                                                                                        "return": "starting"
-                                                                                                    },
-                                                                                                    {
-                                                                                                        "case": "agencypickup",
-                                                                                                        "return": "stashpointempty"
-                                                                                                    },
-                                                                                                    {
-                                                                                                        "case": "loadoutunlock",
-                                                                                                        "return": "pistol"
-                                                                                                    },
-                                                                                                    {
-                                                                                                        "case": "difficultyunlock",
-                                                                                                        "return": "difficultylevel"
-                                                                                                    },
-                                                                                                    {
-                                                                                                        "default": "$.Unlockable.Subtype"
-                                                                                                    }
-                                                                                                ]
-                                                                                            }
-                                                                                        }
-                                                                                    ]
-                                                                                },
-                                                                                "actions": {
-                                                                                    "accept": {
-                                                                                        "show-modal": {
-                                                                                            "config": {
-                                                                                                "priority": "low",
-                                                                                                "view": "menu3.modal.ModalDialogItemDetails",
-                                                                                                "buttons": [
-                                                                                                    {
-                                                                                                        "label": "$loc UI_BUTTON_PROMPTS_ACTION_BACK",
-                                                                                                        "type": "cancel"
-                                                                                                    }
-                                                                                                ],
-                                                                                                "data": {
-                                                                                                    "description": "$.LocalizedReproItem.desc",
-                                                                                                    "name": "$.LocalizedReproItem.name",
-                                                                                                    "type": {
-                                                                                                        "$if $.IsUpgradeMastery": {
-                                                                                                            "$then": "$loc UI_MENU_PAGE_MASTERY_UPGRADE_TITLE",
-                                                                                                            "$else": "$.Item.Type"
-                                                                                                        }
-                                                                                                    },
-                                                                                                    "subtype": {
-                                                                                                        "$if $.IsUpgradeMastery": {
-                                                                                                            "$then": null,
-                                                                                                            "$else": "$.Item.Subtype"
-                                                                                                        }
-                                                                                                    },
-                                                                                                    "image": "$.LocalizedReproItem.image",
-                                                                                                    "rarity": "$.LocalizedReproItem.rarity",
-                                                                                                    "perks": "$.LocalizedReproItem.perks",
-                                                                                                    "item": "$($repository $.LocalizedReproItem.repositoryid)",
-                                                                                                    "displaybuttons": [
-                                                                                                        {
-                                                                                                            "actiontype": "cancel",
-                                                                                                            "actionlabel": "$loc UI_BUTTON_PROMPTS_ACTION_BACK",
-                                                                                                            "hideIndicator": true
-                                                                                                        }
-                                                                                                    ],
-                                                                                                    "actionAndKillTypes": {
-                                                                                                        "$setup": {
-                                                                                                            "$set ItemRepositoryId": "$repository $.LocalizedReproItem.repositoryid",
-                                                                                                            "$in": {
-                                                                                                                "$convertarray": {
-                                                                                                                    "discardElementsWithoutConversion": true,
-                                                                                                                    "sourceArray": "$.ItemRepositoryId.OnlineTraits",
-                                                                                                                    "conversionRules": {
-                                                                                                                        "melee_nonlethal": "$loc UI_ITEM_ONLINETRAITS_MELEE_NONLETHAL",
-                                                                                                                        "melee_lethal": "$loc UI_ITEM_ONLINETRAITS_MELEE_LETHAL",
-                                                                                                                        "throw_nonlethal": "$loc UI_ITEM_ONLINETRAITS_THROW_NONLETHAL",
-                                                                                                                        "throw_lethal": "$loc UI_ITEM_ONLINETRAITS_THROW_LETHAL",
-                                                                                                                        "fiberwire": "$loc UI_ITEM_ONLINETRAITS_FIBERWIRE",
-                                                                                                                        "syringe_poison": "$loc UI_ITEM_ONLINETRAITS_SYRINGE_POISON",
-                                                                                                                        "consumable_poison": "$loc UI_ITEM_ONLINETRAITS_CONSUMABLE_POISON",
-                                                                                                                        "accident_explosion": "$loc UI_KILL_METHOD_ACCIDENT_EXPLOSION",
-                                                                                                                        "detonator_explosive_device": "$loc UI_KILL_METHOD_EXPLOSIVE",
-                                                                                                                        "explosive_device": "$loc UI_KILL_METHOD_EXPLOSIVE"
-                                                                                                                    }
-                                                                                                                }
-                                                                                                            }
-                                                                                                        }
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                        }
-                                                                                    },
-                                                                                    "select": {
-                                                                                        "replace-children": {
-                                                                                            "target": "headline_container",
-                                                                                            "children": {
-                                                                                                "id": "headline_element",
-                                                                                                "view": "menu3.basic.HeadlineElement",
-                                                                                                "selectable": false,
-                                                                                                "pressable": false,
-                                                                                                "data": {
-                                                                                                    "header": {
-                                                                                                        "$if $.IsUpgradeMastery": {
-                                                                                                            "$then": "$loc UI_MENU_PAGE_MASTERY_UPGRADE_TITLE",
-                                                                                                            "$else": "$loc $.TypeLocaKey"
-                                                                                                        }
-                                                                                                    },
-                                                                                                    "title": "$($item $.Item).name",
-                                                                                                    "typeicon": {
-                                                                                                        "$switch $.Unlockable.Type": [
-                                                                                                            {
-                                                                                                                "case": "access",
-                                                                                                                "return": "starting"
-                                                                                                            },
-                                                                                                            {
-                                                                                                                "case": "agencypickup",
-                                                                                                                "return": "stashpointempty"
-                                                                                                            },
-                                                                                                            {
-                                                                                                                "case": "loadoutunlock",
-                                                                                                                "return": "pistol"
-                                                                                                            },
-                                                                                                            {
-                                                                                                                "case": "difficultyunlock",
-                                                                                                                "return": "difficultylevel"
-                                                                                                            },
-                                                                                                            {
-                                                                                                                "default": "$.Unlockable.Subtype"
-                                                                                                            }
-                                                                                                        ]
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            ]
-                                                        }
-                                                    }
-                                                },
-                                                "$else": null
-                                            }
-                                        }
-                                    }
                                 }
-                            ],
-                            "$else": null
+                            ]
                         }
                     }
                 }

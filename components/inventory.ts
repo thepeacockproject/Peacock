@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { getVersionedConfig } from "./configSwizzleManager"
+import { getConfig, getVersionedConfig } from "./configSwizzleManager"
 import type { GameVersion, Unlockable, UserProfile } from "./types/types"
 import {
     brokenItems,
@@ -98,12 +98,14 @@ export function clearInventoryCache(): void {
  * @param userProfile
  * @param packagedUnlocks
  * @param challengesUnlockables
+ * @param gameVersion
  * @returns [Unlockable[], Unlockable[]]
  */
 function filterUnlockedContent(
     userProfile: UserProfile,
     packagedUnlocks: Map<string, boolean>,
     challengesUnlockables: object,
+    gameVersion: GameVersion,
 ) {
     return function (
         acc: [Unlockable[], Unlockable[]],
@@ -141,12 +143,16 @@ function filterUnlockedContent(
         // If the unlockable is mastery locked, checks if its unlocked based on user location progression
         else if (
             (unlockableMasteryData =
-                controller.masteryService.getMasteryForUnlockable(unlockable))
+                controller.masteryService.getMasteryForUnlockable(
+                    unlockable,
+                    gameVersion,
+                ))
         ) {
             const locationData =
                 controller.progressionService.getMasteryProgressionForLocation(
                     userProfile,
                     unlockableMasteryData.Location,
+                    unlockableMasteryData.SubPackageId,
                 )
 
             const canUnlock = locationData.Level >= unlockableMasteryData.Level
@@ -435,14 +441,12 @@ function updateWithDefaultSuit(
  * Generate a player's inventory with unlockables.
  * @param profileId  The profile ID of the player
  * @param gameVersion  The game version
- * @param entP  The player's entitlements
  * @param sublocation  The sublocation to generate the inventory for. Used to award default suits for the sublocation. Defaulted to undefined.
  * @returns The player's inventory
  */
 export function createInventory(
     profileId: string,
     gameVersion: GameVersion,
-    entP: string[],
     sublocation = undefined,
 ): InventoryItem[] {
     if (inventoryUserCache.has(profileId)) {
@@ -458,11 +462,14 @@ export function createInventory(
     const userProfile = getUserData(profileId, gameVersion)
 
     // add all unlockables to player's inventory
-    const allunlockables = getVersionedConfig<Unlockable[]>(
-        "allunlockables",
-        gameVersion,
-        true,
-    ).filter((u) => u.Type !== "location") // locations not in inventory
+    const allunlockables = [
+        ...getVersionedConfig<Unlockable[]>(
+            "allunlockables",
+            gameVersion,
+            true,
+        ),
+        ...getConfig<Unlockable[]>("SniperUnlockables", true),
+    ].filter((u) => u.Type !== "location") // locations not in inventory
 
     let unlockables: Unlockable[] = allunlockables
 
@@ -490,6 +497,7 @@ export function createInventory(
                         userProfile,
                         packagedUnlocks,
                         challengesUnlockables,
+                        gameVersion,
                     ),
                     [[], []],
                 )
@@ -534,7 +542,7 @@ export function createInventory(
             }
         })
         // filter again, this time removing legacy unlockables
-        .filter(filterAllowedContent(gameVersion, entP))
+        .filter(filterAllowedContent(gameVersion, userProfile.Extensions.entP))
 
     for (const unlockable of filtered) {
         unlockable!.ProfileId = profileId
@@ -575,11 +583,14 @@ export function getDataForUnlockables(
     gameVersion: GameVersion,
     unlockableIds: string[],
 ): Unlockable[] {
-    return getVersionedConfig<Unlockable[]>(
-        "allunlockables",
-        gameVersion,
-        true,
-    ).filter((unlockable) => unlockableIds.includes(unlockable.Id))
+    return [
+        ...getVersionedConfig<Unlockable[]>(
+            "allunlockables",
+            gameVersion,
+            true,
+        ),
+        ...getConfig<Unlockable[]>("SniperUnlockables", true),
+    ].filter((unlockable) => unlockableIds.includes(unlockable.Id))
 }
 
 export function getUnlockableById(
