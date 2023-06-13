@@ -40,7 +40,7 @@ import {
 import { EPIC_NAMESPACE_2016 } from "./platformEntitlements"
 import { controller } from "./controller"
 import { getUserData } from "./databaseHandler"
-import { log, LogLevel } from "./loggingInterop"
+import assert from "assert"
 import { getFlag } from "./flags"
 import { UnlockableMasteryData } from "./types/mastery"
 import { attainableDefaults, defaultSuits, getDefaultSuitFor } from "./utils"
@@ -95,6 +95,7 @@ export function clearInventoryCache(): void {
 /**
  * Filters unlocked unlockables
  *
+ * @todo Improve documentation for this function.
  * @param userProfile
  * @param packagedUnlocks
  * @param challengesUnlockables
@@ -391,11 +392,12 @@ function filterAllowedContent(gameVersion: GameVersion, entP: string[]) {
  * If the sublocation is undefined, the inputted inventory is returned.
  * Otherwise, a new inventory is cloned, appended with the default suit, and returned.
  * Either way, the inputted inventory is not modified.
+ *
  * @param profileId The profileId of the player
- * @param gameVersion  The game version
- * @param inv  The inventory to update
- * @param sublocation  The sublocation to check for a default suit
- * @returns  The updated inventory
+ * @param gameVersion The game version
+ * @param inv The inventory to update
+ * @param sublocation The sublocation to check for a default suit
+ * @returns The updated inventory
  */
 function updateWithDefaultSuit(
     profileId: string,
@@ -433,10 +435,11 @@ function updateWithDefaultSuit(
 
 /**
  * Generate a player's inventory with unlockables.
- * @param profileId  The profile ID of the player
- * @param gameVersion  The game version
- * @param entP  The player's entitlements
- * @param sublocation  The sublocation to generate the inventory for. Used to award default suits for the sublocation. Defaulted to undefined.
+ *
+ * @param profileId The profile ID of the player
+ * @param gameVersion The game version
+ * @param entP The player's entitlements
+ * @param sublocation The sublocation to generate the inventory for. Used to award default suits for the sublocation. Defaulted to undefined.
  * @returns The player's inventory
  */
 export function createInventory(
@@ -547,48 +550,23 @@ export function createInventory(
 }
 
 export function grantDrops(profileId: string, drops: Unlockable[]): void {
-    if (inventoryUserCache.has(profileId)) {
-        const inventoryItems: InventoryItem[] = drops.map((unlockable) => ({
-            InstanceId: unlockable.Guid,
-            ProfileId: profileId,
-            Unlockable: unlockable,
-            Properties: {},
-        }))
-        inventoryUserCache.set(profileId, [
-            ...new Set([
-                ...inventoryUserCache.get(profileId),
-                ...inventoryItems.filter(
-                    (invItem) => invItem.Unlockable.Type !== "evergreenmastery",
-                ),
-            ]),
-        ])
-    } else {
-        /**
-         * @TODO Don't think theres a situation where the user doesn't have an inventory, but I may be wrong so leaving this for now.
-         * Can delete if unnecessary
-         */
-        log(LogLevel.DEBUG, "No inventory for provided user")
+    if (!inventoryUserCache.has(profileId)) {
+        assert.fail(`User ${profileId} does not have an inventory??!`)
     }
-}
 
-export function getDataForUnlockables(
-    gameVersion: GameVersion,
-    unlockableIds: string[],
-): Unlockable[] {
-    return getVersionedConfig<Unlockable[]>(
-        "allunlockables",
-        gameVersion,
-        true,
-    ).filter((unlockable) => unlockableIds.includes(unlockable.Id))
-}
+    const inventoryItems: InventoryItem[] = drops.map((unlockable) => ({
+        InstanceId: unlockable.Guid,
+        ProfileId: profileId,
+        Unlockable: unlockable,
+        Properties: {},
+    }))
 
-export function getUnlockableById(
-    gameVersion: GameVersion,
-    unlockableId: string,
-): Unlockable | undefined {
-    return getVersionedConfig<Unlockable[]>(
-        "allunlockables",
-        gameVersion,
-        true,
-    ).find((unlockable) => unlockable.Id === unlockableId)
+    inventoryUserCache.set(profileId, [
+        ...new Set([
+            ...inventoryUserCache.get(profileId),
+            ...inventoryItems.filter(
+                (invItem) => invItem.Unlockable.Type !== "evergreenmastery",
+            ),
+        ]),
+    ])
 }

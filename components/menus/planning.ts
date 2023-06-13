@@ -41,13 +41,14 @@ import {
 } from "../utils"
 
 import type { Response } from "express"
-import { createInventory, getUnlockableById } from "../inventory"
+import { createInventory } from "../inventory"
 import { createSniperLoadouts } from "./sniper"
 import { getFlag } from "../flags"
 import { loadouts } from "../loadouts"
 import { resolveProfiles } from "../profileHandler"
 import { PlanningQuery } from "../types/gameSchemas"
 import { userAuths } from "../officialServerAuth"
+import { getUnlockableById } from "../unlockables"
 
 export async function planningView(
     req: RequestWithJwt<PlanningQuery>,

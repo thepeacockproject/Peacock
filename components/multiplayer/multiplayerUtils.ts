@@ -16,18 +16,12 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import {
-    ContractSession,
-    GameVersion,
-    Unlockable,
-    UserProfile,
-} from "../types/types"
-import { getVersionedConfig } from "../configSwizzleManager"
-import { createInventory } from "../inventory"
+import { ContractSession, GameVersion, UserProfile } from "../types/types"
 import { randomUUID } from "crypto"
 import { nilUuid } from "../utils"
 import { log, LogLevel } from "../loggingInterop"
 import assert from "assert"
+import { getUnlockableById } from "../unlockables"
 
 export interface MultiplayerScore {
     Header?: {
@@ -87,28 +81,10 @@ export function getMultiplayerLoadoutData(
     disguiseUnlockableId: string,
     gameVersion: GameVersion,
 ) {
-    const allunlockables = getVersionedConfig<Unlockable[]>(
-        "allunlockables",
-        gameVersion,
-        false,
-    )
-
-    const inventory = createInventory(
-        userData.Id,
-        gameVersion,
-        userData.Extensions.entP,
-    )
-
-    let unlockable = inventory.find(
-        (unlockable) =>
-            unlockable.Unlockable.Id === disguiseUnlockableId &&
-            unlockable.Unlockable.Type === "disguise",
-    )?.Unlockable
+    let unlockable = getUnlockableById(disguiseUnlockableId, gameVersion)
 
     if (!unlockable) {
-        unlockable = allunlockables.find(
-            (unlockable) => unlockable.Id === "TOKEN_OUTFIT_HITMANSUIT",
-        )
+        unlockable = getUnlockableById("TOKEN_OUTFIT_HITMANSUIT", gameVersion)
 
         assert.ok(unlockable)
     }
