@@ -44,6 +44,7 @@ import assert from "assert"
 import { getFlag } from "./flags"
 import { UnlockableMasteryData } from "./types/mastery"
 import { attainableDefaults, defaultSuits, getDefaultSuitFor } from "./utils"
+import { getUnlockableById } from "./unlockables"
 
 const DELUXE_DATA = [
     ...CONCRETEART_UNLOCKABLES,
@@ -74,6 +75,7 @@ export interface InventoryItem {
     Properties: Record<string, string>
 }
 
+// TODO: What is the overhead of storing inventory objects vs IDs?
 const inventoryUserCache: Map<string, InventoryItem[]> = new Map()
 
 /**
@@ -413,11 +415,10 @@ function updateWithDefaultSuit(
     const newInv = [...inv]
 
     // Yes this is slow. We should organize the unlockables into a { [Id: string]: Unlockable } map.
-    const locationSuit = getVersionedConfig<Unlockable[]>(
-        "allunlockables",
+    const locationSuit = getUnlockableById(
+        getDefaultSuitFor(sublocation),
         gameVersion,
-        true,
-    ).find((u) => u.Id === getDefaultSuitFor(sublocation))
+    )
 
     // check if any inventoryItem's unlockable is the default suit for the sublocation
     if (newInv.every((i) => i.Unlockable.Id !== locationSuit.Id)) {

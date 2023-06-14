@@ -520,50 +520,7 @@ export function addDashesToPublicId(publicId: string): string {
  * @returns The new item.
  */
 export function fastClone<T>(item: T): T {
-    // null, undefined values check
-    if (!item) {
-        return item
-    }
-
-    const types = [Number, String, Boolean]
-    let result
-
-    // normalizing primitives if someone did new String("aaa"), or new Number("444")
-    for (const type of types) {
-        if (item instanceof type) {
-            result = type(item)
-        }
-    }
-
-    if (typeof result === "undefined") {
-        if (Array.isArray(item)) {
-            result = []
-
-            // Ugly type casting.
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const itemAsArray: Array<typeof item> = item as any
-
-            itemAsArray.forEach((child, index) => {
-                result[index] = fastClone(child)
-            })
-        } else if (typeof item === "object") {
-            // this is a literal
-            if (item instanceof Date) {
-                result = new Date(item)
-            } else {
-                // object literal
-                result = {}
-
-                for (const i in item) {
-                    result[i] = fastClone(item[i])
-                }
-            }
-        } else {
-            result = item
-        }
-    }
-
-    return result
+    return structuredClone(item)
 }
 
 /**

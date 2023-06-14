@@ -54,7 +54,6 @@ import type {
     RequestWithJwt,
     SafehouseCategory,
     SceneConfig,
-    Unlockable,
     UserCentricContract,
 } from "./types/types"
 import { no2016 } from "./contracts/escalations/escalationService"
@@ -101,6 +100,7 @@ import {
 } from "./types/gameSchemas"
 import assert from "assert"
 import { SniperLoadoutConfig } from "./menus/sniper"
+import { getUnlockableById } from "./unlockables"
 
 export const preMenuDataRouter = Router()
 const menuDataRouter = Router()
@@ -1211,13 +1211,7 @@ async function lookupContractPublicId(
         }
     }
 
-    const location = (
-        getVersionedConfig(
-            "allunlockables",
-            gameVersion,
-            false,
-        ) as readonly Unlockable[]
-    ).find((entry) => entry.Id === contract.Metadata.Location)
+    const location = getUnlockableById(contract.Metadata.Location, gameVersion)
 
     return {
         Contract: contract,
@@ -1777,7 +1771,15 @@ menuDataRouter.get("/contractcreation/create", (req: RequestWithJwt, res) => {
 
 const createLoadSaveMiddleware =
     (menuTemplate: string) =>
-    (req: RequestWithJwt<{ sessionIds?: string }, string[]>, res: Response) => {
+    (
+        req: RequestWithJwt<
+            {
+                sessionIds?: string
+            },
+            string[]
+        >,
+        res: Response,
+    ) => {
         const template = getVersionedConfig(
             menuTemplate,
             req.gameVersion,
