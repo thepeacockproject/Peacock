@@ -61,7 +61,8 @@ import assert from "assert"
 import { getVersionedConfig } from "../configSwizzleManager"
 import { SyncHook } from "../hooksImpl"
 import { getUserEscalationProgress } from "../contracts/escalations/escalationService"
-import { getUnlockableById } from "../unlockables"
+
+import { getUnlockableById } from "../inventory"
 
 type ChallengeDefinitionLike = {
     Context?: Record<string, unknown>
@@ -85,7 +86,7 @@ export abstract class ChallengeRegistry {
     /**
      * @Key1 Game version.
      * @Key2 The challenge Id.
-     * @Value A `RegistryChallenge` object.
+     * @value A `RegistryChallenge` object.
      */
     protected challenges: Map<GameVersion, Map<string, RegistryChallenge>> =
         new Map([
@@ -197,6 +198,8 @@ export abstract class ChallengeRegistry {
 
     /**
      * Returns a list of all challenges unlockables
+     *
+     * @todo This is bad, untyped, and undocumented. Fix it.
      */
     getChallengesUnlockables(gameVersion: GameVersion) {
         return [...this.challenges.get(gameVersion).values()].reduce(
@@ -389,8 +392,8 @@ export class ChallengeService extends ChallengeRegistry {
     }
 
     /**
-     *  Check if the challenge needs to be saved in the user's progression data
-     *  i.e. challenges with scopes being "profile" or "hit".
+     * Check if the challenge needs to be saved in the user's progression data
+     * i.e. challenges with scopes being "profile" or "hit".
      * @param challenge The challenge.
      * @returns   Whether the challenge needs to be saved in the user's progression data.
      */

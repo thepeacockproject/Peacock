@@ -88,7 +88,7 @@ import { swapToBrowsingMenusStatus } from "./discordRp"
 import axios from "axios"
 import { getFlag } from "./flags"
 import { fakePlayerRegistry } from "./profileHandler"
-import { createInventory } from "./inventory"
+import { createInventory, getUnlockableById } from "./inventory"
 import { missionsInLocations } from "./contracts/missionsInLocation"
 import { json as jsonMiddleware } from "body-parser"
 import { hitsCategoryService } from "./contracts/hitsCategoryService"
@@ -100,7 +100,6 @@ import {
 } from "./types/gameSchemas"
 import assert from "assert"
 import { SniperLoadoutConfig } from "./menus/sniper"
-import { getUnlockableById } from "./unlockables"
 
 export const preMenuDataRouter = Router()
 const menuDataRouter = Router()

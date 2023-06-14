@@ -44,7 +44,7 @@ import assert from "assert"
 import { getFlag } from "./flags"
 import { UnlockableMasteryData } from "./types/mastery"
 import { attainableDefaults, defaultSuits, getDefaultSuitFor } from "./utils"
-import { getUnlockableById } from "./unlockables"
+import { log, LogLevel } from "./loggingInterop"
 
 const DELUXE_DATA = [
     ...CONCRETEART_UNLOCKABLES,
@@ -97,11 +97,10 @@ export function clearInventoryCache(): void {
 /**
  * Filters unlocked unlockables
  *
- * @todo Improve documentation for this function.
- * @param userProfile
- * @param packagedUnlocks
- * @param challengesUnlockables
- * @returns [Unlockable[], Unlockable[]]
+ * @param userProfile The user's profile.
+ * @param packagedUnlocks Map of unlockable items that can be available for the user. Each item has the unlockable ID as the key and its unlocked status as the value.
+ * @param challengesUnlockables Object that maps Unlockable IDs to the IDs of the challenges that, when completed, will unlock them.
+ * @returns Returns a function that, when executed, will produce a pair of arrays. The first array contains all unlocked content, and the second array includes items that are not tracked to corresponding challenges and are available for the user to unlock.
  */
 function filterUnlockedContent(
     userProfile: UserProfile,
@@ -386,6 +385,63 @@ function filterAllowedContent(gameVersion: GameVersion, entP: string[]) {
 
         return true
     }
+}
+
+/**
+ * We use maps here instead of objects because we don't want V8 to fall back to
+ * slow property lookups.
+ */
+const caches: Record<GameVersion, Map<string, Unlockable>> = {
+    scpc: new Map<string, Unlockable>(),
+    h1: new Map<string, Unlockable>(),
+    h2: new Map<string, Unlockable>(),
+    h3: new Map<string, Unlockable>(),
+}
+
+/**
+ * Get an unlockable by its ID, lazy-loading the unlockable cache if necessary.
+ *
+ * @param id The unlockable's ID.
+ * @param gameVersion The current game version.
+ * @see getUnlockablesById
+ */
+export function getUnlockableById(
+    id: string,
+    gameVersion: GameVersion,
+): Unlockable | undefined {
+    if (caches[gameVersion].size === 0) {
+        // no data is loaded yet (to save memory), so load it now
+        const unlockables = getVersionedConfig<readonly Unlockable[]>(
+            "allunlockables",
+            gameVersion,
+            false,
+        )
+
+        for (const unlockable of unlockables) {
+            caches[gameVersion].set(unlockable.Id, unlockable)
+        }
+
+        log(
+            LogLevel.DEBUG,
+            `Lazy-loaded ${unlockables.length} unlockables for ${gameVersion}`,
+        )
+    }
+
+    return caches[gameVersion].get(id)
+}
+
+/**
+ * Multi-getter for unlockables.
+ *
+ * @param ids The unlockable IDs to get.
+ * @param gameVersion The current game version.
+ * @see getUnlockableById
+ */
+export function getUnlockablesById(
+    ids: string[],
+    gameVersion: GameVersion,
+): (Unlockable | undefined)[] {
+    return ids.map((id) => getUnlockableById(id, gameVersion))
 }
 
 /**

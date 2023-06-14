@@ -70,7 +70,8 @@ import {
 } from "./types/score"
 import { MasteryData } from "./types/mastery"
 import { calculatePlaystyle } from "./playStyles"
-import { getUnlockablesById } from "./unlockables"
+
+import { getUnlockablesById } from "./inventory"
 
 export function calculateGlobalXp(
     contractSession: ContractSession,

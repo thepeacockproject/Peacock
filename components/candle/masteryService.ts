@@ -38,7 +38,8 @@ import {
     xpRequiredForLevel,
     xpRequiredForSniperLevel,
 } from "../utils"
-import { getUnlockablesById } from "../unlockables"
+
+import { getUnlockablesById } from "../inventory"
 
 export class MasteryService {
     private masteryData: Map<string, MasteryPackage> = new Map()

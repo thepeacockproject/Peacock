@@ -18,7 +18,7 @@
 
 import { getSubLocationByName } from "../contracts/dataGen"
 import { controller } from "../controller"
-import { grantDrops } from "../inventory"
+import { getUnlockablesById, grantDrops } from "../inventory"
 import type { ContractSession, UserProfile, GameVersion } from "../types/types"
 import {
     DEFAULT_MASTERY_MAXLEVEL,
@@ -30,7 +30,6 @@ import {
     getMaxProfileLevel,
 } from "../utils"
 import { writeUserData } from "../databaseHandler"
-import { getUnlockablesById } from "../unlockables"
 
 export class ProgressionService {
     // NOTE: Official will always grant XP to both Location Mastery and the Player Profile

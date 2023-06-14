@@ -29,11 +29,10 @@ import {
 } from "../contracts/dataGen"
 import { getUserData } from "../databaseHandler"
 import { log, LogLevel } from "../loggingInterop"
-import { createInventory } from "../inventory"
+import { createInventory, getUnlockableById } from "../inventory"
 import { getFlag } from "../flags"
 import { loadouts } from "../loadouts"
 import { StashpointQueryH2016, StashpointSlotName } from "../types/gameSchemas"
-import { getUnlockableById } from "../unlockables"
 
 const legacyMenuDataRouter = Router()
 

@@ -21,7 +21,8 @@ import { randomUUID } from "crypto"
 import { nilUuid } from "../utils"
 import { log, LogLevel } from "../loggingInterop"
 import assert from "assert"
-import { getUnlockableById } from "../unlockables"
+
+import { getUnlockableById } from "../inventory"
 
 export interface MultiplayerScore {
     Header?: {
