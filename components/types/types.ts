@@ -989,6 +989,23 @@ export interface MissionManifest {
         noGear?: boolean
         noCarriedWeapon?: boolean
     }
+    SMF?: {
+        destinations:
+            | {
+                  addToDestinations: boolean
+                  narrativeContext?: "Mission" | "Campaign"
+              }
+            | {
+                  addToDestinations: boolean
+                  narrativeContext?: "Mission" | "Campaign"
+                  placeBefore: string
+              }
+            | {
+                  addToDestinations: boolean
+                  narrativeContext?: "Mission" | "Campaign"
+                  placeAfter: string
+              }
+    }
 }
 
 /**
