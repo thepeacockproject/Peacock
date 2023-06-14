@@ -799,14 +799,14 @@ menuDataRouter.get(
         const pickupsInScene = pickupData[scenePath]
 
         const unlockedAgencyPickups = inventory
-            .filter((item) => item.Unlockable.Type === "agencypickup")
             .filter(
                 (item) =>
+                    item.Unlockable.Type === "agencypickup" &&
                     item.Unlockable.Properties.Difficulty ===
-                    contractData.Metadata.Difficulty,
+                        contractData.Metadata.Difficulty &&
+                    item.Unlockable.Properties.RepositoryId,
             )
             .map((i) => i.Unlockable)
-            .filter((unlockable) => unlockable.Properties.RepositoryId)
 
         selectagencypickup.data = {
             Unlocked: unlockedAgencyPickups.map(
@@ -877,14 +877,14 @@ menuDataRouter.get(
         const entrancesInScene = entranceData[scenePath]
 
         const unlockedEntrances = inventory
-            .filter((item) => item.Unlockable.Subtype === "startinglocation")
             .filter(
                 (item) =>
+                    item.Unlockable.Subtype === "startinglocation" &&
                     item.Unlockable.Properties.Difficulty ===
-                    contractData.Metadata.Difficulty,
+                        contractData.Metadata.Difficulty &&
+                    item.Unlockable.Properties.RepositoryId,
             )
             .map((i) => i.Unlockable)
-            .filter((unlockable) => unlockable.Properties.RepositoryId)
 
         selectEntrance.data = {
             Unlocked: unlockedEntrances.map(
