@@ -69,8 +69,8 @@ import {
     MissionEndChallenge,
 } from "./types/score"
 import { MasteryData } from "./types/mastery"
-import { getDataForUnlockables } from "./inventory"
 import { calculatePlaystyle } from "./playStyles"
+import { getUnlockablesById } from "./unlockables"
 
 export function calculateGlobalXp(
     contractSession: ContractSession,
@@ -892,9 +892,9 @@ export async function missionEnd(
     const challengeDrops: MissionEndDrop[] =
         calculateXpResult.completedChallenges.reduce((acc, challenge) => {
             if (challenge?.Drops?.length) {
-                const drops = getDataForUnlockables(
-                    req.gameVersion,
+                const drops = getUnlockablesById(
                     challenge.Drops,
+                    req.gameVersion,
                 )
                 delete challenge.Drops
 

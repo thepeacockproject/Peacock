@@ -18,7 +18,7 @@
 
 import { getSubLocationByName } from "../contracts/dataGen"
 import { controller } from "../controller"
-import { grantDrops, getDataForUnlockables } from "../inventory"
+import { grantDrops } from "../inventory"
 import type { ContractSession, UserProfile, GameVersion } from "../types/types"
 import {
     DEFAULT_MASTERY_MAXLEVEL,
@@ -30,6 +30,7 @@ import {
     getMaxProfileLevel,
 } from "../utils"
 import { writeUserData } from "../databaseHandler"
+import { getUnlockablesById } from "../unlockables"
 
 export class ProgressionService {
     // NOTE: Official will always grant XP to both Location Mastery and the Player Profile
@@ -59,7 +60,7 @@ export class ProgressionService {
         // Award provided drops. E.g. From challenges
         grantDrops(
             userProfile.Id,
-            getDataForUnlockables(contractSession.gameVersion, dropIds),
+            getUnlockablesById(dropIds, contractSession.gameVersion),
         )
 
         // Saves profile data
@@ -95,7 +96,7 @@ export class ProgressionService {
             .filter((drop) => drop.Level > minLevel && drop.Level <= maxLevel)
             .map((drop) => drop.Id)
 
-        const unlockables = getDataForUnlockables(gameVersion, unlockableIds)
+        const unlockables = getUnlockablesById(unlockableIds, gameVersion)
 
         /**
          * If missions type is evergreen, checks if any of the unlockables has unlockable gear, and award those too
@@ -107,13 +108,15 @@ export class ProgressionService {
                 if (u.Properties.Unlocks) acc.push(...u.Properties.Unlocks)
                 return acc
             }, [])
-            evergreenGearUnlockables.length &&
+
+            if (evergreenGearUnlockables.length) {
                 unlockables.push(
-                    ...getDataForUnlockables(
-                        gameVersion,
+                    ...getUnlockablesById(
                         evergreenGearUnlockables,
+                        gameVersion,
                     ),
                 )
+            }
         }
 
         return unlockables
