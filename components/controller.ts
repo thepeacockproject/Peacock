@@ -514,6 +514,12 @@ export class Controller {
                     lastServerSideData.contracts,
                 )) {
                     this.contracts.set(contractId, contractData)
+
+                    if (contractData.SMF.destinations?.addToDestinations) {
+                        controller.missionsInLocations[
+                            contractData.Metadata.Location
+                        ].push(contractData.Metadata.Id)
+                    }
                 }
             }
 
