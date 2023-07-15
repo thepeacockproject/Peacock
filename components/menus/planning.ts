@@ -379,12 +379,12 @@ export async function planningView(
         getFlag("enableMasteryProgression")
     ) {
         const loadoutUnlockable = getUnlockableById(
-            req.gameVersion,
             req.gameVersion === "h1"
-                ? sublocation?.Properties?.NormalLoadoutUnlock[
-                      contractData.Metadata.Difficulty ?? "normal"
-                  ]
-                : sublocation?.Properties?.NormalLoadoutUnlock,
+            ? sublocation?.Properties?.NormalLoadoutUnlock[
+                contractData.Metadata.Difficulty ?? "normal"
+            ]
+            : sublocation?.Properties?.NormalLoadoutUnlock,
+            req.gameVersion,
         )
 
         if (loadoutUnlockable) {
