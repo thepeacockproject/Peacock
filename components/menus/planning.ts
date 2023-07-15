@@ -380,10 +380,10 @@ export async function planningView(
     ) {
         const loadoutUnlockable = getUnlockableById(
             req.gameVersion === "h1"
-            ? sublocation?.Properties?.NormalLoadoutUnlock[
-                contractData.Metadata.Difficulty ?? "normal"
-            ]
-            : sublocation?.Properties?.NormalLoadoutUnlock,
+                ? sublocation?.Properties?.NormalLoadoutUnlock[
+                      contractData.Metadata.Difficulty ?? "normal"
+                  ]
+                : sublocation?.Properties?.NormalLoadoutUnlock,
             req.gameVersion,
         )
 
