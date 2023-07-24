@@ -100,6 +100,7 @@ export function clearInventoryCache(): void {
  * @param userProfile The user's profile.
  * @param packagedUnlocks Map of unlockable items that can be available for the user. Each item has the unlockable ID as the key and its unlocked status as the value.
  * @param challengesUnlockables Object that maps Unlockable IDs to the IDs of the challenges that, when completed, will unlock them.
+ * @param gameVersion The game version to get the unlockables for
  * @returns Returns a function that, when executed, will produce a pair of arrays. The first array contains all unlocked content, and the second array includes items that are not tracked to corresponding challenges and are available for the user to unlock.
  */
 function filterUnlockedContent(
