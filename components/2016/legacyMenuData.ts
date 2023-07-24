@@ -86,7 +86,6 @@ legacyMenuDataRouter.get(
         const inventory = createInventory(
             req.jwt.unique_name,
             req.gameVersion,
-            userProfile.Extensions.entP,
             sublocation,
         )
 
@@ -157,7 +156,10 @@ legacyMenuDataRouter.get(
                                                 .LoadoutSlot !== "disguise")) && // => display all non-disguise items
                                     (req.query.allowlargeitems === "true" ||
                                         item.Unlockable.Properties
-                                            .LoadoutSlot !== "carriedweapon")
+                                            .LoadoutSlot !== "carriedweapon") &&
+                                    item.Unlockable.Type !==
+                                        "challengemultipler" &&
+                                    !item.Unlockable.Properties.InclusionData
                                 ) // not sure about this one
                             })
                             .map((item) => ({
@@ -289,12 +291,11 @@ legacyMenuDataRouter.get(
                         },
                         Available: true,
                     },
-                    // This is currently a copy of "normal" as pro1 is not implemented
                     {
                         Name: "pro1",
                         Data: {
                             LocationId: req.query.locationId,
-                            ...masteryData[0],
+                            ...masteryData[1],
                         },
                         Available: true,
                     },

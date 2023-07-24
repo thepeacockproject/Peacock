@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { CompletionData, Unlockable } from "./types"
+import { CompletionData, GameVersion, Unlockable } from "./types"
 
 export interface MasteryDataTemplate {
     template: unknown
@@ -26,19 +26,40 @@ export interface MasteryDataTemplate {
     }
 }
 
-export interface MasteryPackage {
+export interface MasteryPackageDrop {
+    Id: string
+    Level: number
+}
+
+interface MasterySubPackage {
     Id: string
     MaxLevel?: number
+    Drops: MasteryPackageDrop[]
+}
+
+/**
+ * @since v7.0.0
+ * The Id field has been renamed to LocationId to properly reflect what it is.
+ *
+ * Mastery packages may have Drops OR SubPackages, never the two.
+ * This is to properly support sniper mastery by integrating it into the current system
+ * and mastery on H2016 as it is separated by difficulty.
+ *
+ * Also, a GameVersions array has been added to support multi-version mastery.
+ */
+export interface MasteryPackage {
+    LocationId: string
+    GameVersions: GameVersion[]
+    MaxLevel?: number
     HideProgression?: boolean
-    Drops: {
-        Id: string
-        Level: number
-    }[]
+    Drops?: MasteryPackageDrop[]
+    SubPackages?: MasterySubPackage[]
 }
 
 export interface MasteryData {
     CompletionData: CompletionData
     Drops: MasteryDrop[]
+    Unlockable?: Unlockable
 }
 
 export interface MasteryDrop {
@@ -51,5 +72,6 @@ export interface MasteryDrop {
 
 export interface UnlockableMasteryData {
     Location: string
+    SubPackageId?: string
     Level: number
 }

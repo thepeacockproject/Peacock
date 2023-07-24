@@ -354,7 +354,7 @@ export abstract class ChallengeRegistry {
      * Parse a challenge's context listeners into the format used internally.
      *
      * @param challenge The challenge.
-     * @param Context The context to use for parsing.
+     * @param Context The current context of the challenge.
      * @returns The context listener details.
      */
     protected static _parseContextListeners(
@@ -1355,7 +1355,7 @@ export class ChallengeService extends ChallengeRegistry {
 
     /**
      * Checks if the conditions to complete a challenge are met. If so, calls `onChallengeCompleted` for it.
-     * @param session The contract session.
+     * @param session The contract session where the challenge was completed.
      * @param challengeId The id of the challenge.
      * @param userData The profile of the user.
      * @param parentId A parent challenge of this challenge, the completion of which might cause this challenge to complete. Pass `undefined` if such a parent is unknown or doesn't exist.
@@ -1484,6 +1484,7 @@ export class ChallengeService extends ChallengeRegistry {
             challenge?.Drops ?? [],
             session,
             userData,
+            gameVersion,
             challenge.LocationId,
         )
 

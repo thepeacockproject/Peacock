@@ -18,16 +18,17 @@
 
 import type { Response } from "express"
 import {
-    DEFAULT_MASTERY_MAXLEVEL,
     contractTypes,
+    DEFAULT_MASTERY_MAXLEVEL,
     difficultyToString,
-    evergreenLevelForXp,
     EVERGREEN_LEVEL_INFO,
+    evergreenLevelForXp,
     handleAxiosError,
     isObjectiveActive,
     levelForXp,
     PEACOCKVERSTRING,
     SNIPER_LEVEL_INFO,
+    sniperLevelForXp,
     xpRequiredForLevel,
 } from "./utils"
 import { contractSessions, getCurrentState } from "./eventHandler"
@@ -61,17 +62,17 @@ import { MissionEndRequestQuery } from "./types/gameSchemas"
 import { ChallengeFilterType } from "./candle/challengeHelpers"
 import { getCompletionPercent } from "./menus/destinations"
 import {
-    CalculateXpResult,
     CalculateScoreResult,
-    MissionEndResponse,
+    CalculateSniperScoreResult,
+    CalculateXpResult,
+    MissionEndChallenge,
     MissionEndDrop,
     MissionEndEvergreen,
-    MissionEndChallenge,
+    MissionEndResponse,
 } from "./types/score"
 import { MasteryData } from "./types/mastery"
+import { createInventory, InventoryItem, getUnlockablesById } from "./inventory"
 import { calculatePlaystyle } from "./playStyles"
-
-import { getUnlockablesById } from "./inventory"
 
 export function calculateGlobalXp(
     contractSession: ContractSession,
@@ -362,10 +363,159 @@ export function calculateScore(
     }
 }
 
+export function calculateSniperScore(
+    contractSession: ContractSession,
+    timeTotal: Seconds,
+    inventory: InventoryItem[],
+): [CalculateSniperScoreResult, ScoringHeadline[]] {
+    const timeMinutes = Math.floor(timeTotal / 60)
+    const timeSeconds = Math.floor(timeTotal % 60)
+    const timeMiliseconds = Math.floor(((timeTotal % 60) - timeSeconds) * 1000)
+
+    const bonusTimeStart =
+        contractSession.firstKillTimestamp ?? contractSession.timerStart
+    const bonusTimeEnd = contractSession.timerEnd
+    const bonusTimeTotal: Seconds =
+        (bonusTimeEnd as number) - (bonusTimeStart as number)
+
+    let timeBonus = 0
+
+    // TODO? generate this curve from contractSession.scoring.Settings["timebonus"] somehow
+    const scorePoints = [
+        [0, 50000], // 50000 bonus score at 0 secs (0 min)
+        [240, 40000], // 40000 bonus score at 240 secs (4 min)
+        [480, 35000], // 35000 bonus score at 480 secs (8 min)
+        [900, 0], // 0 bonus score at 900 secs (15 min)
+    ]
+    let prevsecs: number, prevscore: number
+
+    for (const [secs, score] of scorePoints) {
+        if (bonusTimeTotal > secs) {
+            prevsecs = secs
+            prevscore = score
+            continue
+        }
+
+        // linear interpolation between current and previous scorePoints
+        timeBonus =
+            prevscore -
+            ((prevscore - score) * (bonusTimeTotal - prevsecs)) /
+                (secs - prevsecs)
+        break
+    }
+
+    timeBonus = Math.floor(timeBonus)
+
+    const defaultHeadline: Partial<ScoringHeadline> = {
+        type: "summary",
+        count: "",
+        scoreIsFloatingType: false,
+        fractionNumerator: 0,
+        fractionDenominator: 0,
+        scoreTotal: 0,
+    }
+
+    const baseScore = contractSession.scoring.Context["TotalScore"]
+    const challengeMultiplier = contractSession.scoring.Settings["challenges"][
+        "Unlockables"
+    ].reduce((acc, unlockable) => {
+        const item = inventory.find((item) => item.Unlockable.Id === unlockable)
+
+        if (item) {
+            return acc + item.Unlockable.Properties["Multiplier"]
+        }
+
+        return acc
+    }, 1.0)
+    const bulletsMissed = 0 // TODO? not sure if neccessary, the penalty is always 0 for inbuilt contracts
+    const bulletsMissedPenalty =
+        bulletsMissed *
+        contractSession.scoring.Settings["bulletsused"]["penalty"]
+    // Get SA status from global SA challenge for contracttype sniper
+    const silentAssassin =
+        contractSession.challengeContexts[
+            "029c4971-0ddd-47ab-a568-17b007eec04e"
+        ].state !== "Failure"
+    const saBonus = silentAssassin
+        ? contractSession.scoring.Settings["silentassassin"]["score"]
+        : 0
+    const saMultiplier = silentAssassin
+        ? contractSession.scoring.Settings["silentassassin"]["multiplier"]
+        : 1.0
+
+    const subTotalScore = baseScore + timeBonus + saBonus - bulletsMissedPenalty
+    const totalScore = Math.round(
+        subTotalScore * challengeMultiplier * saMultiplier,
+    )
+
+    const headlines = [
+        {
+            headline: "UI_SNIPERSCORING_SUMMARY_BASESCORE",
+            scoreTotal: baseScore,
+        },
+        {
+            headline: "UI_SNIPERSCORING_SUMMARY_BULLETS_MISSED_PENALTY",
+            scoreTotal: bulletsMissedPenalty,
+        },
+        {
+            headline: "UI_SNIPERSCORING_SUMMARY_TIME_BONUS",
+            count: `${String(timeMinutes).padStart(2, "0")}:${String(
+                timeSeconds,
+            ).padStart(2, "0")}.${String(timeMiliseconds).padStart(3, "0")}`,
+            scoreTotal: timeBonus,
+        },
+        {
+            headline: "UI_SNIPERSCORING_SUMMARY_SILENT_ASSASIN_BONUS",
+            scoreTotal: saBonus,
+        },
+        {
+            headline: "UI_SNIPERSCORING_SUMMARY_SUBTOTAL",
+            scoreTotal: subTotalScore,
+        },
+        {
+            headline: "UI_SNIPERSCORING_SUMMARY_CHALLENGE_MULTIPLIER",
+            scoreIsFloatingType: true,
+            scoreTotal: challengeMultiplier,
+        },
+        {
+            headline: "UI_SNIPERSCORING_SUMMARY_SILENT_ASSASIN_MULTIPLIER",
+            scoreIsFloatingType: true,
+            scoreTotal: saMultiplier,
+        },
+        {
+            type: "total",
+            headline: "UI_SNIPERSCORING_SUMMARY_TOTAL",
+            scoreTotal: totalScore,
+        },
+    ].map((e) => {
+        return Object.assign(
+            Object.assign({}, defaultHeadline),
+            e,
+        ) as ScoringHeadline
+    })
+
+    return [
+        {
+            FinalScore: totalScore,
+            BaseScore: baseScore,
+            TotalChallengeMultiplier: challengeMultiplier,
+            BulletsMissed: bulletsMissed,
+            BulletsMissedPenalty: bulletsMissedPenalty,
+            TimeTaken: timeTotal,
+            TimeBonus: timeBonus,
+            SilentAssassin: silentAssassin,
+            SilentAssassinBonus: saBonus,
+            SilentAssassinMultiplier: saMultiplier,
+        },
+        headlines,
+    ]
+}
+
 export async function missionEnd(
     req: RequestWithJwt<MissionEndRequestQuery>,
     res: Response,
 ): Promise<void> {
+    // TODO: For this entire function, add support for 2016 difficulties
     // Resolve the contract session
     if (!req.query.contractSessionId) {
         res.status(400).end()
@@ -585,11 +735,12 @@ export async function missionEnd(
             })
         })
 
-    const completionData = generateCompletionData(
+    let completionData = generateCompletionData(
         levelData.Metadata.Location,
         req.jwt.unique_name,
         req.gameVersion,
         contractData.Metadata.Type,
+        req.query.masteryUnlockableId,
     )
 
     // Calculate the old location progression based on the current one and process it
@@ -600,19 +751,30 @@ export async function missionEnd(
 
     const newLocationXp = completionData.XP
     let newLocationLevel = levelForXp(newLocationXp)
-    userData.Extensions.progression.Locations[
-        locationParentId.toLowerCase()
-    ].PreviouslySeenXp = newLocationXp
+
+    if (!req.query.masteryUnlockableId) {
+        userData.Extensions.progression.Locations[
+            locationParentId
+        ].PreviouslySeenXp = newLocationXp
+    }
+
     writeUserData(req.jwt.unique_name, req.gameVersion)
 
-    const masteryData =
-        controller.masteryService.getMasteryPackage(locationParentId)
+    const masteryData = controller.masteryService.getMasteryPackage(
+        locationParentId,
+        req.gameVersion,
+    )
 
     let maxLevel = 1
     let locationLevelInfo = [0]
 
     if (masteryData) {
-        maxLevel = masteryData.MaxLevel || DEFAULT_MASTERY_MAXLEVEL
+        maxLevel =
+            (req.query.masteryUnlockableId
+                ? masteryData.SubPackages.find(
+                      (subPkg) => subPkg.Id === req.query.masteryUnlockableId,
+                  ).MaxLevel
+                : masteryData.MaxLevel) || DEFAULT_MASTERY_MAXLEVEL
 
         locationLevelInfo = Array.from({ length: maxLevel }, (_, i) => {
             return xpRequiredForLevel(i + 1)
@@ -759,37 +921,68 @@ export async function missionEnd(
         SilentAssassin: calculateScoreResult.silentAssassin,
     }
 
-    // TODO: Calculate proper Sniper XP and Score
-    // TODO: Move most of this to its own calculateSniperScore function
     if (contractData.Metadata.Type === "sniper") {
-        const sniperLoadouts = getConfig("SniperLoadouts", true)
+        const userInventory = createInventory(
+            req.jwt.unique_name,
+            req.gameVersion,
+            undefined,
+        )
 
-        const mainUnlockableProperties =
-            sniperLoadouts[contractData.Metadata.Location][
-                req.query.masteryUnlockableId
-            ].MainUnlockable.Properties
+        const [sniperScore, headlines] = calculateSniperScore(
+            sessionDetails,
+            timeTotal,
+            userInventory,
+        )
+        sniperChallengeScore = sniperScore
 
+        // Grant sniper mastery
+        controller.progressionService.grantProfileProgression(
+            0,
+            sniperScore.FinalScore,
+            [],
+            sessionDetails,
+            userData,
+            locationParentId,
+            req.query.masteryUnlockableId,
+        )
+
+        // Update completion data with latest mastery
+        locationLevelInfo = SNIPER_LEVEL_INFO
+        oldLocationLevel = sniperLevelForXp(oldLocationXp)
+
+        // Temporarily get completion data for the unlockable
+        completionData = generateCompletionData(
+            levelData.Metadata.Location,
+            req.jwt.unique_name,
+            req.gameVersion,
+            "sniper", // We know the type will be sniper.
+            req.query.masteryUnlockableId,
+        )
+        newLocationLevel = completionData.Level
         unlockableProgression = {
-            LevelInfo: SNIPER_LEVEL_INFO,
-            XP: SNIPER_LEVEL_INFO[SNIPER_LEVEL_INFO.length - 1],
-            Level: SNIPER_LEVEL_INFO.length,
-            XPGain: 0,
-            Id: mainUnlockableProperties.ProgressionKey,
-            Name: mainUnlockableProperties.Name,
+            Id: completionData.Id,
+            Level: completionData.Level,
+            LevelInfo: locationLevelInfo,
+            Name: completionData.Name,
+            XP: completionData.XP,
+            XPGain:
+                completionData.Level === completionData.MaxLevel
+                    ? 0
+                    : sniperScore.FinalScore,
         }
 
-        sniperChallengeScore = {
-            FinalScore: 112000,
-            BaseScore: 112000,
-            TotalChallengeMultiplier: 1.0,
-            BulletsMissed: 0,
-            BulletsMissedPenalty: 0,
-            TimeTaken: timeTotal,
-            TimeBonus: 0,
-            SilentAssassin: false,
-            SilentAssassinBonus: 0,
-            SilentAssassinMultiplier: 1.0,
-        }
+        userData.Extensions.progression.Locations[locationParentId][
+            req.query.masteryUnlockableId
+        ].PreviouslySeenXp = completionData.XP
+
+        writeUserData(req.jwt.unique_name, req.gameVersion)
+
+        // Set the completion data to the location so the end screen formats properly.
+        completionData = generateCompletionData(
+            levelData.Metadata.Location,
+            req.jwt.unique_name,
+            req.gameVersion,
+        )
 
         // Override the contract score
         contractScore = undefined
@@ -797,88 +990,26 @@ export async function missionEnd(
         // Override the playstyle
         playstyle = undefined
 
-        // Override the calculated score
-        const timeMinutes = Math.floor(timeTotal / 60)
-        const timeSeconds = Math.floor(timeTotal % 60)
-        const timeMiliseconds = Math.floor(
-            ((timeTotal % 60) - timeSeconds) * 1000,
-        )
-
-        const defaultHeadline: Partial<ScoringHeadline> = {
-            type: "summary",
-            count: "",
-            scoreIsFloatingType: false,
-            fractionNumerator: 0,
-            fractionDenominator: 0,
-            scoreTotal: 0,
-        }
-
-        const headlines = [
-            {
-                headline: "UI_SNIPERSCORING_SUMMARY_BASESCORE",
-                scoreTotal: 112000,
-            },
-            {
-                headline: "UI_SNIPERSCORING_SUMMARY_BULLETS_MISSED_PENALTY",
-                scoreTotal: 0,
-            },
-            {
-                headline: "UI_SNIPERSCORING_SUMMARY_TIME_BONUS",
-                count: `${String(timeMinutes).padStart(2, "0")}:${String(
-                    timeSeconds,
-                ).padStart(2, "0")}.${String(timeMiliseconds).padStart(
-                    3,
-                    "0",
-                )}`,
-                scoreTotal: 0,
-            },
-            {
-                headline: "UI_SNIPERSCORING_SUMMARY_SILENT_ASSASIN_BONUS",
-                scoreTotal: 0,
-            },
-            {
-                headline: "UI_SNIPERSCORING_SUMMARY_SUBTOTAL",
-                scoreTotal: 112000,
-            },
-            {
-                headline: "UI_SNIPERSCORING_SUMMARY_CHALLENGE_MULTIPLIER",
-                scoreIsFloatingType: true,
-                scoreTotal: 1.0,
-            },
-            {
-                headline: "UI_SNIPERSCORING_SUMMARY_SILENT_ASSASIN_MULTIPLIER",
-                scoreIsFloatingType: true,
-                scoreTotal: 1.0,
-            },
-            {
-                type: "total",
-                headline: "UI_SNIPERSCORING_SUMMARY_TOTAL",
-                scoreTotal: 112000,
-            },
-        ]
-
         calculateScoreResult.stars = undefined
-        calculateScoreResult.scoringHeadlines = headlines.map((e) => {
-            return Object.assign(
-                Object.assign({}, defaultHeadline),
-                e,
-            ) as ScoringHeadline
-        })
+        calculateScoreResult.scoringHeadlines = headlines
     }
 
     // Mastery Drops
     let masteryDrops: MissionEndDrop[] = []
 
     if (newLocationLevel - oldLocationLevel > 0) {
+        // We get the subpackage as it functions like getMasteryDataForDestination
+        // but allows us to get the specific unlockable if required.
         const masteryData =
-            controller.masteryService.getMasteryDataForDestination(
+            controller.masteryService.getMasteryDataForSubPackage(
                 locationParentId,
+                req.query.masteryUnlockableId ?? undefined,
                 req.gameVersion,
                 req.jwt.unique_name,
-            ) as MasteryData[]
+            ) as MasteryData
 
-        if (masteryData.length > 0) {
-            masteryDrops = masteryData[0].Drops.filter(
+        if (masteryData) {
+            masteryDrops = masteryData.Drops.filter(
                 (e) =>
                     e.Level > oldLocationLevel && e.Level <= newLocationLevel,
             ).map((e) => {
@@ -990,10 +1121,11 @@ export async function missionEnd(
 
     if (
         getFlag("leaderboards") === true &&
-        req.gameVersion !== "scpc" &&
-        req.gameVersion !== "h1" &&
         sessionDetails.compat === true &&
-        contractData.Metadata.Type !== "vsrace"
+        contractData.Metadata.Type !== "vsrace" &&
+        contractData.Metadata.Type !== "evergreen" &&
+        // Disable sending sniper scores for now
+        contractData.Metadata.Type !== "sniper"
     ) {
         try {
             // update leaderboards
@@ -1032,8 +1164,7 @@ export async function missionEnd(
                             StarCount: calculateScoreResult.stars,
                         },
                         GroupIndex: 0,
-                        // TODO sniper scores
-                        SniperChallengeScore: null,
+                        SniperChallengeScore: sniperChallengeScore,
                         PlayStyle: result.ScoreOverview.PlayStyle || null,
                         Description: "UI_MENU_SCORE_CONTRACT_COMPLETED",
                         ContractSessionId: req.query.contractSessionId,
