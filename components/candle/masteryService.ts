@@ -21,7 +21,7 @@ import {
     getSubLocationByName,
 } from "../contracts/dataGen"
 import { log, LogLevel } from "../loggingInterop"
-import { getConfig } from "../configSwizzleManager"
+import { getConfig, getVersionedConfig } from "../configSwizzleManager"
 import { getUserData } from "../databaseHandler"
 import {
     MasteryData,
@@ -266,6 +266,7 @@ export class MasteryService {
             return undefined
         }
 
+        // TODO: Refactor this into the new inventory system?
         const name = isSniper
             ? getVersionedConfig<Unlockable[]>(
                   "SniperUnlockables",
@@ -383,7 +384,7 @@ export class MasteryService {
         } else {
             dropIdSet = new Set(masteryPkg.Drops.map((drop) => drop.Id))
         }
-          
+
         // Get all unlockables with matching Ids
         const unlockableData: Unlockable[] = getUnlockablesById(
             Array.from(dropIdSet),

@@ -58,7 +58,7 @@ import {
     mergeSavedChallengeGroups,
 } from "./challengeHelpers"
 import assert from "assert"
-import { getConfig, getVersionedConfig } from "../configSwizzleManager"
+import { getVersionedConfig } from "../configSwizzleManager"
 import { SyncHook } from "../hooksImpl"
 import { getUserEscalationProgress } from "../contracts/escalations/escalationService"
 

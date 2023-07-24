@@ -84,7 +84,7 @@ export function getMultiplayerLoadoutData(
 ) {
     let unlockable = getUnlockableById(disguiseUnlockableId, gameVersion)
 
-    if (!unlockable || unlockable.Unlockable.Type !== "disguise") {
+    if (!unlockable || unlockable.Type !== "disguise") {
         unlockable = getUnlockableById("TOKEN_OUTFIT_HITMANSUIT", gameVersion)
 
         assert.ok(unlockable)
