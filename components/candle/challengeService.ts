@@ -354,7 +354,7 @@ export abstract class ChallengeRegistry {
      * Parse a challenge's context listeners into the format used internally.
      *
      * @param challenge The challenge.
-     * @param Context? the current context of the challenge.
+     * @param Context The current context of the challenge.
      * @returns The context listener details.
      */
     protected static _parseContextListeners(
