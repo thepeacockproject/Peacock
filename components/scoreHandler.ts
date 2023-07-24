@@ -71,13 +71,8 @@ import {
     MissionEndResponse,
 } from "./types/score"
 import { MasteryData } from "./types/mastery"
-import {
-    createInventory,
-    InventoryItem,
-} from "./inventory"
+import { createInventory, InventoryItem, getUnlockablesById } from "./inventory"
 import { calculatePlaystyle } from "./playStyles"
-
-import { getUnlockablesById } from "./inventory"
 
 export function calculateGlobalXp(
     contractSession: ContractSession,
