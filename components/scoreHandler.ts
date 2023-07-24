@@ -942,7 +942,6 @@ export async function missionEnd(
             [],
             sessionDetails,
             userData,
-            req.gameVersion,
             locationParentId,
             req.query.masteryUnlockableId,
         )

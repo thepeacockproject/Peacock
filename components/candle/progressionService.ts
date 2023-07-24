@@ -42,7 +42,6 @@ export class ProgressionService {
         dropIds: string[],
         contractSession: ContractSession,
         userProfile: UserProfile,
-        gameVersion: GameVersion,
         location: string,
         sniperUnlockable?: string,
     ) {
@@ -61,7 +60,6 @@ export class ProgressionService {
             actionXp,
             contractSession,
             userProfile,
-            gameVersion,
             location,
             sniperUnlockable,
         )
@@ -134,7 +132,6 @@ export class ProgressionService {
         actionXp: number,
         contractSession: ContractSession,
         userProfile: UserProfile,
-        gameVersion: GameVersion,
         location: string,
         sniperUnlockable?: string,
     ): boolean {
@@ -162,12 +159,12 @@ export class ProgressionService {
         if (contract.Metadata.Type !== "sniper" || sniperUnlockable) {
             const masteryData = controller.masteryService.getMasteryPackage(
                 parentLocationId,
-                gameVersion,
+                contractSession.gameVersion,
             )
             const locationData = this.getMasteryProgressionForLocation(
                 userProfile,
                 parentLocationId,
-                gameVersion === "h1"
+                contractSession.gameVersion === "h1"
                     ? contract.Metadata.Difficulty ?? "normal"
                     : sniperUnlockable ?? undefined,
             )
