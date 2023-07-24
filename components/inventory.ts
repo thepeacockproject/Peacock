@@ -40,10 +40,11 @@ import {
 import { EPIC_NAMESPACE_2016 } from "./platformEntitlements"
 import { controller } from "./controller"
 import { getUserData } from "./databaseHandler"
-import { log, LogLevel } from "./loggingInterop"
+import assert from "assert"
 import { getFlag } from "./flags"
 import { UnlockableMasteryData } from "./types/mastery"
 import { attainableDefaults, defaultSuits, getDefaultSuitFor } from "./utils"
+import { log, LogLevel } from "./loggingInterop"
 
 const DELUXE_DATA = [
     ...CONCRETEART_UNLOCKABLES,
@@ -74,6 +75,7 @@ export interface InventoryItem {
     Properties: Record<string, string>
 }
 
+// TODO: What is the overhead of storing inventory objects vs IDs?
 const inventoryUserCache: Map<string, InventoryItem[]> = new Map()
 
 /**
@@ -95,11 +97,10 @@ export function clearInventoryCache(): void {
 /**
  * Filters unlocked unlockables
  *
- * @param userProfile
- * @param packagedUnlocks
- * @param challengesUnlockables
- * @param gameVersion
- * @returns [Unlockable[], Unlockable[]]
+ * @param userProfile The user's profile.
+ * @param packagedUnlocks Map of unlockable items that can be available for the user. Each item has the unlockable ID as the key and its unlocked status as the value.
+ * @param challengesUnlockables Object that maps Unlockable IDs to the IDs of the challenges that, when completed, will unlock them.
+ * @returns Returns a function that, when executed, will produce a pair of arrays. The first array contains all unlocked content, and the second array includes items that are not tracked to corresponding challenges and are available for the user to unlock.
  */
 function filterUnlockedContent(
     userProfile: UserProfile,
@@ -392,16 +393,74 @@ function filterAllowedContent(gameVersion: GameVersion, entP: string[]) {
 }
 
 /**
+ * We use maps here instead of objects because we don't want V8 to fall back to
+ * slow property lookups.
+ */
+const caches: Record<GameVersion, Map<string, Unlockable>> = {
+    scpc: new Map<string, Unlockable>(),
+    h1: new Map<string, Unlockable>(),
+    h2: new Map<string, Unlockable>(),
+    h3: new Map<string, Unlockable>(),
+}
+
+/**
+ * Get an unlockable by its ID, lazy-loading the unlockable cache if necessary.
+ *
+ * @param id The unlockable's ID.
+ * @param gameVersion The current game version.
+ * @see getUnlockablesById
+ */
+export function getUnlockableById(
+    id: string,
+    gameVersion: GameVersion,
+): Unlockable | undefined {
+    if (caches[gameVersion].size === 0) {
+        // no data is loaded yet (to save memory), so load it now
+        const unlockables = getVersionedConfig<readonly Unlockable[]>(
+            "allunlockables",
+            gameVersion,
+            false,
+        )
+
+        for (const unlockable of unlockables) {
+            caches[gameVersion].set(unlockable.Id, unlockable)
+        }
+
+        log(
+            LogLevel.DEBUG,
+            `Lazy-loaded ${unlockables.length} unlockables for ${gameVersion}`,
+        )
+    }
+
+    return caches[gameVersion].get(id)
+}
+
+/**
+ * Multi-getter for unlockables.
+ *
+ * @param ids The unlockable IDs to get.
+ * @param gameVersion The current game version.
+ * @see getUnlockableById
+ */
+export function getUnlockablesById(
+    ids: string[],
+    gameVersion: GameVersion,
+): (Unlockable | undefined)[] {
+    return ids.map((id) => getUnlockableById(id, gameVersion))
+}
+
+/**
  * Given an inventory and a sublocation, returns a new inventory with
  * the default suit for the sublocation added if it is not already present.
  * If the sublocation is undefined, the inputted inventory is returned.
  * Otherwise, a new inventory is cloned, appended with the default suit, and returned.
  * Either way, the inputted inventory is not modified.
+ *
  * @param profileId The profileId of the player
- * @param gameVersion  The game version
- * @param inv  The inventory to update
- * @param sublocation  The sublocation to check for a default suit
- * @returns  The updated inventory
+ * @param gameVersion The game version
+ * @param inv The inventory to update
+ * @param sublocation The sublocation to check for a default suit
+ * @returns The updated inventory
  */
 function updateWithDefaultSuit(
     profileId: string,
@@ -417,11 +476,10 @@ function updateWithDefaultSuit(
     const newInv = [...inv]
 
     // Yes this is slow. We should organize the unlockables into a { [Id: string]: Unlockable } map.
-    const locationSuit = getVersionedConfig<Unlockable[]>(
-        "allunlockables",
+    const locationSuit = getUnlockableById(
+        getDefaultSuitFor(sublocation),
         gameVersion,
-        true,
-    ).find((u) => u.Id === getDefaultSuitFor(sublocation))
+    )
 
     // check if any inventoryItem's unlockable is the default suit for the sublocation
     if (newInv.every((i) => i.Unlockable.Id !== locationSuit.Id)) {
@@ -555,51 +613,23 @@ export function createInventory(
 }
 
 export function grantDrops(profileId: string, drops: Unlockable[]): void {
-    if (inventoryUserCache.has(profileId)) {
-        const inventoryItems: InventoryItem[] = drops.map((unlockable) => ({
-            InstanceId: unlockable.Guid,
-            ProfileId: profileId,
-            Unlockable: unlockable,
-            Properties: {},
-        }))
-        inventoryUserCache.set(profileId, [
-            ...new Set([
-                ...inventoryUserCache.get(profileId),
-                ...inventoryItems.filter(
-                    (invItem) => invItem.Unlockable.Type !== "evergreenmastery",
-                ),
-            ]),
-        ])
-    } else {
-        /**
-         * @TODO Don't think theres a situation where the user doesn't have an inventory, but I may be wrong so leaving this for now.
-         * Can delete if unnecessary
-         */
-        log(LogLevel.DEBUG, "No inventory for provided user")
+    if (!inventoryUserCache.has(profileId)) {
+        assert.fail(`User ${profileId} does not have an inventory??!`)
     }
-}
 
-export function getDataForUnlockables(
-    gameVersion: GameVersion,
-    unlockableIds: string[],
-): Unlockable[] {
-    return [
-        ...getVersionedConfig<Unlockable[]>(
-            "allunlockables",
-            gameVersion,
-            true,
-        ),
-        ...getConfig<Unlockable[]>("SniperUnlockables", true),
-    ].filter((unlockable) => unlockableIds.includes(unlockable.Id))
-}
+    const inventoryItems: InventoryItem[] = drops.map((unlockable) => ({
+        InstanceId: unlockable.Guid,
+        ProfileId: profileId,
+        Unlockable: unlockable,
+        Properties: {},
+    }))
 
-export function getUnlockableById(
-    gameVersion: GameVersion,
-    unlockableId: string,
-): Unlockable | undefined {
-    return getVersionedConfig<Unlockable[]>(
-        "allunlockables",
-        gameVersion,
-        true,
-    ).find((unlockable) => unlockable.Id === unlockableId)
+    inventoryUserCache.set(profileId, [
+        ...new Set([
+            ...inventoryUserCache.get(profileId),
+            ...inventoryItems.filter(
+                (invItem) => invItem.Unlockable.Type !== "evergreenmastery",
+            ),
+        ]),
+    ])
 }

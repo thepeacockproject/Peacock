@@ -1042,6 +1042,15 @@ export interface MissionManifest {
         noGear?: boolean
         noCarriedWeapon?: boolean
     }
+    SMF?: {
+        destinations: {
+            addToDestinations: boolean
+            peacockIntegration?: boolean
+            narrativeContext?: "Mission" | "Campaign"
+            placeBefore?: string
+            placeAfter?: string
+        }
+    }
 }
 
 /**

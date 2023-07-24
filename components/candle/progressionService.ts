@@ -18,8 +18,8 @@
 
 import { getSubLocationByName } from "../contracts/dataGen"
 import { controller } from "../controller"
-import { getDataForUnlockables, grantDrops } from "../inventory"
-import type { ContractSession, GameVersion, UserProfile } from "../types/types"
+import { getUnlockablesById, grantDrops } from "../inventory"
+import type { ContractSession, UserProfile, GameVersion } from "../types/types"
 import {
     clampValue,
     DEFAULT_MASTERY_MAXLEVEL,
@@ -71,7 +71,7 @@ export class ProgressionService {
         if (dropIds.length > 0) {
             grantDrops(
                 userProfile.Id,
-                getDataForUnlockables(contractSession.gameVersion, dropIds),
+                getUnlockablesById(dropIds, contractSession.gameVersion),
             )
         }
 
@@ -102,7 +102,7 @@ export class ProgressionService {
             .filter((drop) => drop.Level > minLevel && drop.Level <= maxLevel)
             .map((drop) => drop.Id)
 
-        const unlockables = getDataForUnlockables(gameVersion, unlockableIds)
+        const unlockables = getUnlockablesById(unlockableIds, gameVersion)
 
         /**
          * If missions type is evergreen, checks if any of the unlockables has unlockable gear, and award those too
@@ -114,13 +114,15 @@ export class ProgressionService {
                 if (u.Properties.Unlocks) acc.push(...u.Properties.Unlocks)
                 return acc
             }, [])
-            evergreenGearUnlockables.length &&
+
+            if (evergreenGearUnlockables.length) {
                 unlockables.push(
-                    ...getDataForUnlockables(
-                        gameVersion,
+                    ...getUnlockablesById(
                         evergreenGearUnlockables,
+                        gameVersion,
                     ),
                 )
+            }
         }
 
         return unlockables

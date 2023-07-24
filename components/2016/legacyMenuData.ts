@@ -29,7 +29,7 @@ import {
 } from "../contracts/dataGen"
 import { getUserData } from "../databaseHandler"
 import { log, LogLevel } from "../loggingInterop"
-import { createInventory } from "../inventory"
+import { createInventory, getUnlockableById } from "../inventory"
 import { getFlag } from "../flags"
 import { loadouts } from "../loadouts"
 import { StashpointQueryH2016, StashpointSlotName } from "../types/gameSchemas"
@@ -184,10 +184,9 @@ legacyMenuDataRouter.get(
                         Page: 0,
                         Recommended: getLoadoutItem(slotid)
                             ? {
-                                  item: inventory.find(
-                                      (item) =>
-                                          item.Unlockable.Id ===
-                                          getLoadoutItem(slotid),
+                                  item: getUnlockableById(
+                                      getLoadoutItem(slotid),
+                                      req.gameVersion,
                                   ),
                                   type: loadoutSlots[slotid],
                                   owned: true,
@@ -222,7 +221,7 @@ legacyMenuDataRouter.get("/Safehouse", (req: RequestWithJwt, res, next) => {
     req.url = `/SafehouseCategory?page=0&type=${req.query.type}&subtype=`
     const originalJsonFunc = res.json
 
-    res.json = function (originalData) {
+    res.json = function json(originalData) {
         return originalJsonFunc.call(this, {
             template,
             data: {

@@ -174,14 +174,8 @@ profileRouter.post(
 
         for (const extension in userdata.Extensions) {
             if (
-                Object.prototype.hasOwnProperty.call(
-                    userdata.Extensions,
-                    extension,
-                ) &&
-                !Object.prototype.hasOwnProperty.call(
-                    req.body.extensions,
-                    extension,
-                )
+                Object.hasOwn(userdata.Extensions, extension) &&
+                !Object.hasOwn(req.body.extensions, extension)
             ) {
                 delete userdata[extension]
             }

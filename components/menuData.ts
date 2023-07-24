@@ -55,7 +55,6 @@ import type {
     RequestWithJwt,
     SafehouseCategory,
     SceneConfig,
-    Unlockable,
     UserCentricContract,
 } from "./types/types"
 import { no2016 } from "./contracts/escalations/escalationService"
@@ -92,7 +91,7 @@ import { swapToBrowsingMenusStatus } from "./discordRp"
 import axios from "axios"
 import { getFlag } from "./flags"
 import { fakePlayerRegistry } from "./profileHandler"
-import { createInventory } from "./inventory"
+import { createInventory, getUnlockableById } from "./inventory"
 import { missionsInLocations } from "./contracts/missionsInLocation"
 import { json as jsonMiddleware } from "body-parser"
 import { hitsCategoryService } from "./contracts/hitsCategoryService"
@@ -796,14 +795,14 @@ menuDataRouter.get(
         const pickupsInScene = pickupData[scenePath]
 
         const unlockedAgencyPickups = inventory
-            .filter((item) => item.Unlockable.Type === "agencypickup")
             .filter(
                 (item) =>
+                    item.Unlockable.Type === "agencypickup" &&
                     item.Unlockable.Properties.Difficulty ===
-                    contractData.Metadata.Difficulty,
+                        contractData.Metadata.Difficulty &&
+                    item.Unlockable.Properties.RepositoryId,
             )
             .map((i) => i.Unlockable)
-            .filter((unlockable) => unlockable.Properties.RepositoryId)
 
         selectagencypickup.data = {
             Unlocked: unlockedAgencyPickups.map(
@@ -865,14 +864,14 @@ menuDataRouter.get(
         const entrancesInScene = entranceData[scenePath]
 
         const unlockedEntrances = inventory
-            .filter((item) => item.Unlockable.Subtype === "startinglocation")
             .filter(
                 (item) =>
+                    item.Unlockable.Subtype === "startinglocation" &&
                     item.Unlockable.Properties.Difficulty ===
-                    contractData.Metadata.Difficulty,
+                        contractData.Metadata.Difficulty &&
+                    item.Unlockable.Properties.RepositoryId,
             )
             .map((i) => i.Unlockable)
-            .filter((unlockable) => unlockable.Properties.RepositoryId)
 
         selectEntrance.data = {
             Unlocked: unlockedEntrances.map(
@@ -1212,13 +1211,7 @@ async function lookupContractPublicId(
         }
     }
 
-    const location = (
-        getVersionedConfig(
-            "allunlockables",
-            gameVersion,
-            false,
-        ) as readonly Unlockable[]
-    ).find((entry) => entry.Id === contract.Metadata.Location)
+    const location = getUnlockableById(contract.Metadata.Location, gameVersion)
 
     return {
         Contract: contract,
@@ -1782,7 +1775,15 @@ menuDataRouter.get("/contractcreation/create", (req: RequestWithJwt, res) => {
 
 const createLoadSaveMiddleware =
     (menuTemplate: string) =>
-    (req: RequestWithJwt<{ sessionIds?: string }, string[]>, res: Response) => {
+    (
+        req: RequestWithJwt<
+            {
+                sessionIds?: string
+            },
+            string[]
+        >,
+        res: Response,
+    ) => {
         const template = getVersionedConfig(
             menuTemplate,
             req.gameVersion,

@@ -62,6 +62,8 @@ import { getConfig, getVersionedConfig } from "../configSwizzleManager"
 import { SyncHook } from "../hooksImpl"
 import { getUserEscalationProgress } from "../contracts/escalations/escalationService"
 
+import { getUnlockableById } from "../inventory"
+
 type ChallengeDefinitionLike = {
     Context?: Record<string, unknown>
 }
@@ -84,7 +86,7 @@ export abstract class ChallengeRegistry {
     /**
      * @Key1 Game version.
      * @Key2 The challenge Id.
-     * @Value A `RegistryChallenge` object.
+     * @value A `RegistryChallenge` object.
      */
     protected challenges: Map<GameVersion, Map<string, RegistryChallenge>> =
         new Map([
@@ -196,6 +198,8 @@ export abstract class ChallengeRegistry {
 
     /**
      * Returns a list of all challenges unlockables
+     *
+     * @todo This is bad, untyped, and undocumented. Fix it.
      */
     getChallengesUnlockables(gameVersion: GameVersion) {
         return [...this.challenges.get(gameVersion).values()].reduce(
@@ -216,7 +220,7 @@ export abstract class ChallengeRegistry {
      * Gets a challenge group by its parent location and group ID.
      * @param groupId The group ID of the challenge group.
      * @param location The parent location for this challenge group.
-     * @param gameVersion The game version.
+     * @param gameVersion The current game version.
      * @returns A `SavedChallengeGroup` if such a group exists, or `undefined` if not.
      */
     getGroupByIdLoc(
@@ -388,8 +392,8 @@ export class ChallengeService extends ChallengeRegistry {
     }
 
     /**
-     *  Check if the challenge needs to be saved in the user's progression data
-     *  i.e. challenges with scopes being "profile" or "hit".
+     * Check if the challenge needs to be saved in the user's progression data
+     * i.e. challenges with scopes being "profile" or "hit".
      * @param challenge The challenge.
      * @returns   Whether the challenge needs to be saved in the user's progression data.
      */
@@ -556,7 +560,7 @@ export class ChallengeService extends ChallengeRegistry {
      *
      * @param filter The filter to use.
      * @param location The parent location whose challenges to get.
-     * @param gameVersion The game version.
+     * @param gameVersion The active game version.
      * @returns A GroupIndexedChallengeLists containing the resulting challenge groups.
      */
     getGroupedChallengeLists(
@@ -849,8 +853,8 @@ export class ChallengeService extends ChallengeRegistry {
 
     /**
      * Upon an event, updates the context for all challenges in a contract session. Challenges not in the session are ignored.
-     * @param event  The event to handle.
-     * @param session  The contract session the event is for.
+     * @param event The event to handle.
+     * @param session The session.
      */
     onContractEvent(
         event: ClientToServerEvent,
@@ -1195,18 +1199,9 @@ export class ChallengeService extends ChallengeRegistry {
         userId: string,
         isDestination = false,
     ): CompiledChallengeTreeData {
-        const allUnlockables = [
-            ...getVersionedConfig<Unlockable[]>(
-                "allunlockables",
-                gameVersion,
-                false,
-            ),
-            ...getConfig<Unlockable[]>("SniperUnlockables", false),
-        ]
-
         const drops = challenge.Drops.map((e) =>
-            allUnlockables.find((f) => f.Id === e),
-        ).filter((e) => e !== undefined)
+            getUnlockableById(e, gameVersion),
+        ).filter(Boolean)
 
         if (drops.length !== challenge.Drops.length) {
             log(

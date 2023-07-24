@@ -21,7 +21,7 @@ import {
     getSubLocationByName,
 } from "../contracts/dataGen"
 import { log, LogLevel } from "../loggingInterop"
-import { getConfig, getVersionedConfig } from "../configSwizzleManager"
+import { getConfig } from "../configSwizzleManager"
 import { getUserData } from "../databaseHandler"
 import {
     MasteryData,
@@ -40,6 +40,8 @@ import {
     xpRequiredForLevel,
     xpRequiredForSniperLevel,
 } from "../utils"
+
+import { getUnlockablesById } from "../inventory"
 
 export class MasteryService {
     /**
@@ -381,21 +383,16 @@ export class MasteryService {
         } else {
             dropIdSet = new Set(masteryPkg.Drops.map((drop) => drop.Id))
         }
+          
+        // Get all unlockables with matching Ids
+        const unlockableData: Unlockable[] = getUnlockablesById(
+            Array.from(dropIdSet),
+            gameVersion,
+        )
 
-        // Get all unlockables with matching Ids and put them in a map for quick lookup
+        // Put all unlockabkes in a map for quick lookup
         const unlockableMap = new Map(
-            [
-                ...getVersionedConfig<Unlockable[]>(
-                    "allunlockables",
-                    gameVersion,
-                    true,
-                ),
-                ...(isSniper
-                    ? getConfig<Unlockable[]>("SniperUnlockables", true)
-                    : []),
-            ]
-                .filter((unlockable) => dropIdSet.has(unlockable.Id))
-                .map((unlockable) => [unlockable.Id, unlockable]),
+            unlockableData.map((unlockable) => [unlockable.Id, unlockable]),
         )
 
         const masteryData: MasteryData[] = []
