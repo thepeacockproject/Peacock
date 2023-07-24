@@ -416,11 +416,18 @@ export function getUnlockableById(
 ): Unlockable | undefined {
     if (caches[gameVersion].size === 0) {
         // no data is loaded yet (to save memory), so load it now
-        const unlockables = getVersionedConfig<readonly Unlockable[]>(
+        let unlockables = getVersionedConfig<readonly Unlockable[]>(
             "allunlockables",
             gameVersion,
             false,
         )
+
+        if (["h2", "h3"].includes(gameVersion)) {
+            unlockables = [
+                ...unlockables,
+                ...getConfig<readonly Unlockable[]>("SniperUnlockables", false),
+            ]
+        }
 
         for (const unlockable of unlockables) {
             caches[gameVersion].set(unlockable.Id, unlockable)
