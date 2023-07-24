@@ -23,6 +23,9 @@ import "./generatedPeacockRequireTable"
 
 // load flags as soon as possible
 import { getFlag, loadFlags } from "./flags"
+
+loadFlags()
+
 import { setFlagsFromString } from "v8"
 import { program } from "commander"
 import express, { Request, Router } from "express"
@@ -87,8 +90,6 @@ import { pack, unpack } from "msgpackr"
 import { liveSplitManager } from "./livesplit/liveSplitManager"
 import { cheapLoadUserData } from "./databaseHandler"
 import { reportRouter } from "./contracts/reportRouting"
-
-loadFlags()
 
 // welcome to the bleeding edge
 setFlagsFromString("--harmony")
