@@ -974,8 +974,13 @@ export interface MissionManifestMetadata {
     IsEvergreenSafehouse?: boolean
     UseContractProgressionData?: boolean
     CpdId?: string
-    // Elusive custom property (like official's year)
+    /**
+     * Custom property used for Elusives (like official's year)
+     * and Escalations (if it's 0, it is a Peacock escalation,
+     * and OriginalSeason will exist for filtering).
+     */
     Season?: number
+    OriginalSeason?: number
     // Used for sniper scoring
     Modules?: ManifestScoringModule[]
 }
