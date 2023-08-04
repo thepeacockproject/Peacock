@@ -506,7 +506,7 @@ program.description(
     "The Peacock Project is a HITMAN™ World of Assassination Trilogy server built for general use.",
 )
 
-const PEECOCK_ART = `
+const PEECOCK_ART = picocolors.yellow(`
  ███████████  ██████████ ██████████   █████████     ███████      █████████  █████   ████
 ░░███░░░░░███░░███░░░░░█░░███░░░░░█  ███░░░░░███  ███░░░░░███   ███░░░░░███░░███   ███░
  ░███    ░███ ░███  █ ░  ░███  █ ░  ███     ░░░  ███     ░░███ ███     ░░░  ░███  ███
@@ -515,7 +515,7 @@ const PEECOCK_ART = `
  ░███         ░███ ░   █ ░███ ░   █░░███     ███░░███     ███ ░░███     ███ ░███ ░░███
  █████        ██████████ ██████████ ░░█████████  ░░░███████░   ░░█████████  █████ ░░████
 ░░░░░        ░░░░░░░░░░ ░░░░░░░░░░   ░░░░░░░░░     ░░░░░░░      ░░░░░░░░░  ░░░░░   ░░░░
-`
+`)
 
 function startServer(options: { hmr: boolean; pluginDevHost: boolean }): void {
     checkForUpdates()
