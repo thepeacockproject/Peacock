@@ -46,7 +46,7 @@ import {
 } from "./entitlementStrategies"
 import { getFlag } from "./flags"
 
-const JWT_SECRET =
+export const JWT_SECRET =
     getFlag("developmentAllowRuntimeRestart") || PEACOCK_DEV
         ? "secret"
         : randomBytes(32).toString("hex")
