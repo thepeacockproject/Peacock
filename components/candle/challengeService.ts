@@ -1484,7 +1484,6 @@ export class ChallengeService extends ChallengeRegistry {
             challenge?.Drops ?? [],
             session,
             userData,
-            gameVersion,
             challenge.LocationId,
         )
 
