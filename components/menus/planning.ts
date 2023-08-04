@@ -93,6 +93,8 @@ export async function planningView(
         // now reassign properties and continue
         req.query.contractid =
             controller.escalationMappings.get(escalationGroupId)["1"]
+
+        contractData = controller.resolveContract(req.query.contractid)
     }
 
     if (!contractData) {
