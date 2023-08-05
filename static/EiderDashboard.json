@@ -185,13 +185,8 @@
                 },
                 "actions": {
                     "accept": {
-                        "$if $isnullorempty $.ServerTile.url": {
-                            "$then": {},
-                            "$else": {
-                                "open-url": {
-                                    "url": "$.ServerTile.url"
-                                }
-                            }
+                        "open-url": {
+                            "url": "https://thepeacockproject.org"
                         }
                     },
                     "select": {
