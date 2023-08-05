@@ -4,11 +4,13 @@ on:
   push:
     branches: ["v*"]
     paths: ["resources/locale.json"]
+  workflow_dispatch:
 
 jobs:
   rebuild-locale:
     name: Rebuild Localisation
     runs-on: windows-latest
+
     steps:
       - name: Checkout Peacock
         uses: actions/checkout@v3
@@ -96,4 +98,3 @@ jobs:
           author_email: admin@thepeacockproject.org
           message: "enhancement: update strings"
 
-    

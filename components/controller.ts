@@ -514,6 +514,44 @@ export class Controller {
                     lastServerSideData.contracts,
                 )) {
                     this.contracts.set(contractId, contractData)
+
+                    if (contractData.SMF.destinations?.addToDestinations) {
+                        if (contractData.SMF.destinations.peacockIntegration) {
+                            if (contractData.SMF.destinations.placeBefore) {
+                                controller.missionsInLocations[
+                                    contractData.Metadata.Location
+                                ].splice(
+                                    controller.missionsInLocations[
+                                        contractData.Metadata.Location
+                                    ].indexOf(
+                                        contractData.SMF.destinations
+                                            .placeBefore,
+                                    ),
+                                    0,
+                                    contractData.Metadata.Id,
+                                )
+                            } else if (
+                                contractData.SMF.destinations.placeAfter
+                            ) {
+                                controller.missionsInLocations[
+                                    contractData.Metadata.Location
+                                ].splice(
+                                    controller.missionsInLocations[
+                                        contractData.Metadata.Location
+                                    ].indexOf(
+                                        contractData.SMF.destinations
+                                            .placeAfter,
+                                    ) + 1,
+                                    0,
+                                    contractData.Metadata.Id,
+                                )
+                            } else {
+                                controller.missionsInLocations[
+                                    contractData.Metadata.Location
+                                ].push(contractData.Metadata.Id)
+                            }
+                        }
+                    }
                 }
             }
 
@@ -1295,7 +1333,7 @@ export function contractIdToHitObject(
     ).parents[subLocation?.Properties?.ParentLocation]
 
     // failed to find the location, must be from a newer game
-    if (!subLocation && (gameVersion === "h1" || gameVersion === "h2")) {
+    if (!subLocation && ["h1", "h2", "scpc"].includes(gameVersion)) {
         log(
             LogLevel.DEBUG,
             `${contract.Metadata.Location} looks to be from a newer game, skipping (hitObj)!`,
