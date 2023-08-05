@@ -140,6 +140,7 @@ export class MenuSystemDatabase {
                     configs.push(
                         "menusystem/pages/multiplayer/content/lobbyslim.json",
                     )
+                    configs.push("menusystem/pages/hub/career.json")
                 }
             },
         )
@@ -259,6 +260,9 @@ export class MenuSystemDatabase {
                             $else: true,
                         },
                     }
+                // This will only get hit by H2
+                case "/pages/hub/career.json":
+                    return getConfig("H2CareerTemplate", false)
                 case "/pages/multiplayer/content/lobbyslim.json":
                     return getConfig("LobbySlimTemplate", false)
                 case "/pages/pause/pausemenu/restart.json":
@@ -538,6 +542,7 @@ menuSystemRouter.get(
         log(
             LogLevel.DEBUG,
             `Serving dynamic resources from file ${dynamicResourceName}.`,
+            "dynRes",
         )
 
         const hash = await md5File(dynamicResourcePath)

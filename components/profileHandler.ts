@@ -675,6 +675,7 @@ profileRouter.post(
                         `Unable to save session ${
                             save?.ContractSessionId
                         } because ${getErrorMessage(e)}.`,
+                        "updateSaves",
                     )
                 }
             }

@@ -1,0 +1,171 @@
+{
+    "controller": "categoryitem",
+    "view": "menu3.basic.CategoryElement",
+    "id": "career_tab",
+    "data": {
+        "title": "$loc UI_MENU_PAGE_HUB_PROFILE",
+        "icon": "profile"
+    },
+    "actions": {
+        "activated": {
+            "set-value": {
+                "target": "$.@global.CurrentBackgroundImage",
+                "value": "images/backgrounds/menu_bg.jpg"
+            }
+        }
+    },
+    "children": [
+        {
+            "controller": "context",
+            "view": "menu3.containers.ScrollingListContainer",
+            "row": 1,
+            "nrows": 3,
+            "ncols": 10,
+            "direction": "horizontal",
+            "data": {
+                "direction": "horizontal"
+            },
+            "children": [
+                {
+                    "$datacontext": {
+                        "in": "$.",
+                        "datavalues": {
+                            "Title": "$loc UI_MENU_PAGE_PROFILE_PLAYER_PROFILE",
+                            "Icon": "profile",
+                            "Image": "$res images/ui/career/0.jpg",
+                            "ExtraActions": {
+                                "accept": {
+                                    "link": {
+                                        "page": "playerprofile",
+                                        "args": {
+                                            "url": "playerprofile"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "do": {
+                            "$include": {
+                                "$path": "menusystem/pages/hub/career/profiletile.json"
+                            }
+                        }
+                    }
+                },
+                {
+                    "$datacontext": {
+                        "in": "$.",
+                        "datavalues": {
+                            "Title": "$loc UI_MENU_PAGE_PROFILE_CHALLENGES",
+                            "Icon": "challenge",
+                            "Image": "$res images/ui/career/1.jpg",
+                            "Id": "challenge_tile"
+                        },
+                        "do": {
+                            "$mergeobjects": [
+                                {
+                                    "$include": {
+                                        "$path": "menusystem/pages/hub/career/profiletile.json"
+                                    }
+                                },
+                                {
+                                    "children": [
+                                        {
+                                            "$include": {
+                                                "$path": "menusystem/elements/challenges/challengelocationview.json"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "$datacontext": {
+                        "in": "$.",
+                        "datavalues": {
+                            "Title": "$loc UI_MENU_PAGE_PROFILE_MASTERY",
+                            "Icon": "unlocked",
+                            "Image": "$res images/ui/career/2.jpg",
+                            "Id": "mastery_tile"
+                        },
+                        "do": {
+                            "$mergeobjects": [
+                                {
+                                    "$include": {
+                                        "$path": "menusystem/pages/hub/career/profiletile.json"
+                                    }
+                                },
+                                {
+                                    "children": [
+                                        {
+                                            "$include": {
+                                                "$path": "menusystem/elements/mastery/masterylocationview.json"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "$datacontext": {
+                        "in": "$.",
+                        "datavalues": {
+                            "Title": "$loc UI_MENU_PAGE_SAFEHOUSE_ELEMENT_CATEGORY_INVENTORY",
+                            "Icon": "inventory",
+                            "Image": "$res images/ui/career/3.jpg",
+                            "ExtraActions": {
+                                "accept": {
+                                    "link": {
+                                        "page": "safehouse",
+                                        "args": {
+                                            "url": "safehousecategory",
+                                            "usetalltile": false
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "do": {
+                            "$include": {
+                                "$path": "menusystem/pages/hub/career/profiletile.json"
+                            }
+                        }
+                    }
+                },
+                {
+                    "$datacontext": {
+                        "in": "$.",
+                        "datavalues": {
+                            "Title": "$loc UI_MENU_PAGE_HITS_ELEMENT_CATEGORY_Elusive_Target_Hits",
+                            "Icon": "elusive",
+                            "Image": "$res images/ui/career/4.jpg",
+                            "Category": "Elusive_Target_Hits",
+                            "Id": "career_tab_Elusive_Target_Hits"
+                        },
+                        "do": {
+                            "$mergeobjects": [
+                                {
+                                    "$include": {
+                                        "$path": "menusystem/pages/hub/career/profiletile.json"
+                                    }
+                                },
+                                {
+                                    "children": [
+                                        {
+                                            "$include": {
+                                                "$path": "menusystem/elements/contract/contractshitcategoryloading.json"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}
