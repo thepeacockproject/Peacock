@@ -82,7 +82,6 @@ import * as livesplit from "./types/livesplit"
 import * as mastery from "./types/mastery"
 import * as score from "./types/score"
 import * as scoring from "./types/scoring"
-import * as sniperModules from "./types/sniperModules"
 import * as types from "./types/types"
 import * as escalationService from "./contracts/escalations/escalationService"
 
@@ -267,10 +266,6 @@ export default {
     "@peacockproject/core/types/mastery": { __esModule: true, ...mastery },
     "@peacockproject/core/types/score": { __esModule: true, ...score },
     "@peacockproject/core/types/scoring": { __esModule: true, ...scoring },
-    "@peacockproject/core/types/sniperModules": {
-        __esModule: true,
-        ...sniperModules,
-    },
     "@peacockproject/core/types/types": { __esModule: true, ...types },
     "@peacockproject/core/contracts/escalations/escalationService": {
         __esModule: true,

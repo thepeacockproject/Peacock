@@ -16,6 +16,8 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { IContextListener } from "../statemachines/contextListeners"
+
 export type Playstyle = {
     Id: string
     Name: string
@@ -39,4 +41,31 @@ export type ScoringHeadline = {
     fractionNumerator: number
     fractionDenominator: number
     scoreTotal: number
+}
+
+export type ManifestScoringModule =
+    | ScoringModule & {
+          Type: string
+      }
+
+export type ManifestScoringDefinition = {
+    ContextListeners?: null | Record<string, IContextListener<never>>
+    ScoreEvents?: {
+        [name: string]: {
+            type: number
+            text: string
+        }
+    }
+    States?: Record<string, unknown>
+    Constants?: Record<string, unknown>
+    Context?: Record<string, unknown | string[] | string>
+}
+
+export type ScoringModule = {
+    score?: number
+    maxtime?: number
+    multiplier?: number
+    penalty?: number
+    Unlockables?: string[]
+    ScoringDefinitions?: ManifestScoringDefinition[]
 }

@@ -116,6 +116,12 @@ export class MenuSystemDatabase {
                         "menusystem/elements/contract/hitscategory_elusive.json",
                     )
 
+                    // To allow the elusive page loading on H2 and for contract
+                    // attack pages in H2/3 - AF
+                    configs.push(
+                        "menusystem/elements/contract/contractshitcategoryloading.json",
+                    )
+
                     // The following is to allow restart/replan/save/load on elusive contracts
                     // alongside removing the warning when starting one in H2/3 - AF
                     configs.push(
@@ -133,9 +139,6 @@ export class MenuSystemDatabase {
                     configs.push("menusystem/data/ismultiplayeravailable.json")
                     configs.push(
                         "menusystem/pages/multiplayer/content/lobbyslim.json",
-                    )
-                    configs.push(
-                        "menusystem/elements/contract/contractshitcategoryloading.json",
                     )
                 }
             },
@@ -155,6 +158,11 @@ export class MenuSystemDatabase {
                     }
                 case "/elements/contract/hitscategory_elusive.json":
                     return getConfig("HitsCategoryElusiveTemplate", false)
+                case "/elements/contract/hitscategory_contractattack.json":
+                    return getConfig(
+                        "HitsCategoryContractAttackTemplate",
+                        false,
+                    )
                 case "/elements/contract/contractshitcategoryloading.json":
                     return {
                         controller: "group",
@@ -172,7 +180,13 @@ export class MenuSystemDatabase {
                                         "$if $eq ($.Category,Elusive_Target_Hits)":
                                             {
                                                 $then: "menusystem/elements/contract/hitscategory_elusive.json",
-                                                $else: "menusystem/elements/contract/hitscategory.json",
+                                                $else: {
+                                                    "$if $eq ($.Category,ContractAttack)":
+                                                        {
+                                                            $then: "menusystem/elements/contract/hitscategory_contractattack.json",
+                                                            $else: "menusystem/elements/contract/hitscategory.json",
+                                                        },
+                                                },
                                             },
                                     },
                                     from: {
@@ -235,6 +249,13 @@ export class MenuSystemDatabase {
                     return {
                         "$if $eq ($platform,stadia)": {
                             $then: false,
+                            $else: true,
+                        },
+                    }
+                case "/data/ispeacock.json":
+                    return {
+                        "$if $eq (0,0)": {
+                            $then: true,
                             $else: true,
                         },
                     }

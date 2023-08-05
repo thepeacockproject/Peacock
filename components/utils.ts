@@ -21,6 +21,7 @@ import type { NextFunction, Response } from "express"
 import type {
     GameVersion,
     MissionManifestObjective,
+    PeacockLocationsData,
     RepositoryId,
     RequestWithJwt,
     ServerVersion,
@@ -31,7 +32,7 @@ import axios, { AxiosError } from "axios"
 import { log, LogLevel } from "./loggingInterop"
 import { writeFileSync } from "fs"
 import { getFlag } from "./flags"
-import { getConfig } from "./configSwizzleManager"
+import { getConfig, getVersionedConfig } from "./configSwizzleManager"
 
 /**
  * True if the server is being run by the launcher, false otherwise.
@@ -56,6 +57,13 @@ export const contractTypes = ["featured", "usercreated"]
 export const versions: GameVersion[] = ["h1", "h2", "h3"]
 
 export const contractCreationTutorialId = "d7e2607c-6916-48e2-9588-976c7d8998bb"
+
+/**
+ * The latest profile version, this should be changed in conjunction with the updating mechanism.
+ *
+ * See docs/USER_PROFILES.md for more.
+ */
+export const LATEST_PROFILE_VERSION = 1
 
 export async function checkForUpdates(): Promise<void> {
     if (getFlag("updateChecking") === false) {
@@ -192,6 +200,18 @@ export const SNIPER_LEVEL_INFO: number[] = [
     38000000, 47000000, 58000000, 70000000,
 ]
 
+export function sniperLevelForXp(xp: number): number {
+    for (let i = 1; i < SNIPER_LEVEL_INFO.length; i++) {
+        if (xp >= SNIPER_LEVEL_INFO[i]) {
+            continue
+        }
+
+        return i
+    }
+
+    return 1
+}
+
 /**
  * Get the number of xp needed to reach a level in sniper missions.
  * @param level The level in question.
@@ -209,6 +229,123 @@ export function clampValue(value: number, min: number, max: number) {
 }
 
 /**
+ * Updates a user profile depending on the current version (if any).
+ * @param profile The userprofile to update
+ * @param gameVersion The game version
+ * @returns The updated user profile
+ */
+function updateUserProfile(
+    profile: UserProfile,
+    gameVersion: GameVersion,
+): void {
+    /**
+     * This switch is structured such that the current profile version will return.
+     * thus stopping the function.
+     *
+     * As the version number is incremented, the previous version should be added
+     * as a case to update it to the newest version.
+     */
+    switch (profile.Version) {
+        case LATEST_PROFILE_VERSION:
+            // This profile updated to the latest version, we're done.
+            return
+        default: {
+            // Check that the profile version is indeed undefined. If it isn't,
+            // we've forgotten to add a version to the switch.
+            if (profile.Version !== undefined) {
+                log(
+                    LogLevel.ERROR,
+                    `Unhandled profile version ${profile.Version}`,
+                )
+                return
+            }
+
+            // Profile has no version, update it to version 1, then re-run
+            // the function to update it to subsequent versions.
+
+            const sniperLocs = {
+                LOCATION_PARENT_AUSTRIA: [
+                    "FIREARMS_SC_HERO_SNIPER_HM",
+                    "FIREARMS_SC_HERO_SNIPER_KNIGHT",
+                    "FIREARMS_SC_HERO_SNIPER_STONE",
+                ],
+                LOCATION_PARENT_SALTY: [
+                    "FIREARMS_SC_SEAGULL_HM",
+                    "FIREARMS_SC_SEAGULL_KNIGHT",
+                    "FIREARMS_SC_SEAGULL_STONE",
+                ],
+                LOCATION_PARENT_CAGED: [
+                    "FIREARMS_SC_FALCON_HM",
+                    "FIREARMS_SC_FALCON_KNIGHT",
+                    "FIREARMS_SC_FALCON_STONE",
+                ],
+            }
+
+            // We need this to ensure all locations are added.
+            const allLocs = Object.keys(
+                getVersionedConfig<PeacockLocationsData>(
+                    "LocationsData",
+                    gameVersion,
+                    false,
+                ).parents,
+            ).map((key) => key.toLocaleLowerCase())
+
+            profile.Extensions.progression.Locations = allLocs.reduce(
+                (obj, key) => {
+                    const newKey = key.toLocaleUpperCase()
+                    const curData =
+                        profile.Extensions.progression.Locations[key]
+
+                    if (gameVersion === "h1") {
+                        // No sniper locations, but we add normal and pro1
+                        obj[newKey] = {
+                            // Data from previous profiles only contains normal and is the default.
+                            normal: {
+                                Xp: curData.Xp ?? 0,
+                                Level: curData.Level ?? 1,
+                                PreviouslySeenXp: curData.PreviouslySeenXp ?? 0,
+                            },
+                            pro1: {
+                                Xp: 0,
+                                Level: 1,
+                                PreviouslySeenXp: 0,
+                            },
+                        }
+                    } else {
+                        // We need to update sniper locations.
+                        obj[newKey] = sniperLocs[newKey]
+                            ? sniperLocs[newKey].reduce((obj, uId) => {
+                                  obj[uId] = {
+                                      Xp: 0,
+                                      Level: 1,
+                                      PreviouslySeenXp: 0,
+                                  }
+
+                                  return obj
+                              }, {})
+                            : {
+                                  Xp: curData.Xp ?? 0,
+                                  Level: curData.Level ?? 1,
+                                  PreviouslySeenXp:
+                                      curData.PreviouslySeenXp ?? 0,
+                              }
+                    }
+
+                    return obj
+                },
+                {},
+            )
+
+            delete profile.Extensions.progression["Unlockables"]
+
+            profile.Version = 1
+
+            return updateUserProfile(profile, gameVersion)
+        }
+    }
+}
+
+/**
  * Returns whether a location is a sniper location. Works for both parent and child locations.
  * @param location The location ID string.
  * @returns A boolean denoting the result.
@@ -221,7 +358,11 @@ export function isSniperLocation(location: string): boolean {
     )
 }
 
-export function castUserProfile(profile: UserProfile): UserProfile {
+export function castUserProfile(
+    profile: UserProfile,
+    gameVersion: GameVersion,
+    path?: string,
+): UserProfile {
     const j = fastClone(profile)
 
     if (!j.Extensions || Object.keys(j.Extensions).length === 0) {
@@ -311,8 +452,15 @@ export function castUserProfile(profile: UserProfile): UserProfile {
         }
     }
 
+    if (j.Version !== LATEST_PROFILE_VERSION) {
+        // This profile is not the latest version. We must update it.
+        log(LogLevel.DEBUG, `Profile is outdated, updating...`)
+        updateUserProfile(j, gameVersion)
+        dirty = true
+    }
+
     if (dirty) {
-        writeFileSync(`userdata/users/${j.Id}.json`, JSON.stringify(j))
+        writeFileSync(path ?? `userdata/users/${j.Id}.json`, JSON.stringify(j))
         log(LogLevel.INFO, "Profile successfully repaired!")
     }
 
@@ -520,50 +668,7 @@ export function addDashesToPublicId(publicId: string): string {
  * @returns The new item.
  */
 export function fastClone<T>(item: T): T {
-    // null, undefined values check
-    if (!item) {
-        return item
-    }
-
-    const types = [Number, String, Boolean]
-    let result
-
-    // normalizing primitives if someone did new String("aaa"), or new Number("444")
-    for (const type of types) {
-        if (item instanceof type) {
-            result = type(item)
-        }
-    }
-
-    if (typeof result === "undefined") {
-        if (Array.isArray(item)) {
-            result = []
-
-            // Ugly type casting.
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const itemAsArray: Array<typeof item> = item as any
-
-            itemAsArray.forEach((child, index) => {
-                result[index] = fastClone(child)
-            })
-        } else if (typeof item === "object") {
-            // this is a literal
-            if (item instanceof Date) {
-                result = new Date(item)
-            } else {
-                // object literal
-                result = {}
-
-                for (const i in item) {
-                    result[i] = fastClone(item[i])
-                }
-            }
-        } else {
-            result = item
-        }
-    }
-
-    return result
+    return structuredClone(item)
 }
 
 /**

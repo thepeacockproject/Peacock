@@ -1333,7 +1333,7 @@ export function contractIdToHitObject(
     ).parents[subLocation?.Properties?.ParentLocation]
 
     // failed to find the location, must be from a newer game
-    if (!subLocation && (gameVersion === "h1" || gameVersion === "h2")) {
+    if (!subLocation && ["h1", "h2", "scpc"].includes(gameVersion)) {
         log(
             LogLevel.DEBUG,
             `${contract.Metadata.Location} looks to be from a newer game, skipping (hitObj)!`,

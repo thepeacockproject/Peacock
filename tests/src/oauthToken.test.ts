@@ -18,7 +18,7 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { UserProfile } from "../../components/types/types"
-import { handleOauthToken } from "../../components/oauthToken"
+import { handleOauthToken, JWT_SECRET } from "../../components/oauthToken"
 import { sign, verify } from "jsonwebtoken"
 import * as databaseHandler from "../../components/databaseHandler"
 import * as platformEntitlements from "../../components/platformEntitlements"
@@ -88,7 +88,7 @@ describe("oauthToken", () => {
         expect(getUserData).toHaveBeenCalledWith(pId, "h3")
 
         const jsonResponse = getMockCallArgument<any>(response.json, 0, 0)
-        const accessToken = verify(jsonResponse.access_token, "secret", {
+        const accessToken = verify(jsonResponse.access_token, JWT_SECRET, {
             complete: true,
         })
 
@@ -112,7 +112,7 @@ describe("oauthToken", () => {
                         appid: "fghi4567xQOCheZIin0pazB47qGUvZw4",
                         app: "Hitman 3",
                     },
-                    "secret",
+                    JWT_SECRET,
                 ),
             pId: pId,
         }
@@ -130,7 +130,7 @@ describe("oauthToken", () => {
         expect(getUserData).toHaveBeenCalledWith(pId, "h3")
 
         const jsonResponse = getMockCallArgument<any>(response.json, 0, 0)
-        const accessToken = verify(jsonResponse.access_token, "secret", {
+        const accessToken = verify(jsonResponse.access_token, JWT_SECRET, {
             complete: true,
         })
 
@@ -192,7 +192,7 @@ describe("oauthToken", () => {
         await handleOauthToken(request, response)
 
         const jsonResponse = getMockCallArgument<any>(response.json, 0, 0)
-        const accessToken = verify(jsonResponse.access_token, "secret", {
+        const accessToken = verify(jsonResponse.access_token, JWT_SECRET, {
             complete: true,
         })
 
