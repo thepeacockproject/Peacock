@@ -69,7 +69,10 @@
                 "Image": "images/contracts/escalation/ContractEscalation_Marrakesh_Salvia_BreakAndEnterObjective.jpg",
                 "BriefingName": "$loc UI_GAMECHANGERS_MARRAKESH_SAFE_CONSULATE_BASEMENT_NAME",
                 "BriefingText": "$loc UI_CONTRACT_SALVIA_OBJ_2",
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_SALVIA_OBJ_2" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_SALVIA_OBJ_2",
+                    "iconType": 17
+                },
                 "Type": "statemachine",
                 "Definition": {
                     "Context": {
@@ -164,14 +167,19 @@
                 "ObjectiveType": "custom",
                 "BriefingName": "$loc UI_CONTRACT_SALVIA_HIDEBODY_BRIEFINGNAME",
                 "Image": "images/contracts/escalation/ContractEscalation_Marrakesh_Salvia_Objective_HideBody.jpg",
-                "HUDTemplate": { "display": "$loc UI_CONTRACT_SALVIA_OBJ_4" },
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_SALVIA_OBJ_4",
+                    "iconType": 17
+                },
                 "BriefingText": "$loc UI_CONTRACT_SALVIA_OBJ_4",
                 "Type": "statemachine",
                 "Definition": {
                     "Scope": "hit",
                     "Context": {
                         "KilledActors": [],
-                        "Targets": ["fbc01079-8c4a-4213-84ca-c5f8629774eb"]
+                        "Targets": ["fbc01079-8c4a-4213-84ca-c5f8629774eb"],
+                        "BodyCount": 0,
+                        "BodyCountGoal": 2
                     },
                     "States": {
                         "Start": {
@@ -184,17 +192,6 @@
                                 },
                                 "Transition": "Failure"
                             },
-                            "BodyHidden": {
-                                "Condition": {
-                                    "$eq": [
-                                        "$Value.RepositoryId",
-                                        "fbc01079-8c4a-4213-84ca-c5f8629774eb"
-                                    ]
-                                },
-                                "Transition": "ValidContainer"
-                            }
-                        },
-                        "ValidContainer": {
                             "setpieces": [
                                 {
                                     "Condition": {
@@ -213,10 +210,44 @@
                                             }
                                         ]
                                     },
+                                    "Actions": {
+                                        "$inc": "BodyCount"
+                                    },
+                                    "Transition": "ValidBody"
+                                }
+                            ]
+                        },
+                        "ValidBody": {
+                            "BodyHidden": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "fbc01079-8c4a-4213-84ca-c5f8629774eb"
+                                        ]
+                                    },
                                     "Transition": "Success"
                                 },
-                                { "Transition": "Failure" }
-                            ]
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$.BodyCount",
+                                            "$.BodyCountGoal"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                },
+                                { "Transition": "Start" }
+                            ],
+                            "BodyBagged": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "fbc01079-8c4a-4213-84ca-c5f8629774eb"
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            }
                         }
                     }
                 }
@@ -229,7 +260,7 @@
     "Metadata": {
         "Id": "4ab2babf-b5ce-44d8-a463-94bd70b8abff",
         "IsPublished": true,
-        "CreationTimestamp": "2016-02-18T14:06:33.347Z",
+        "CreationTimestamp": "2016-02-18T14:06:33.3476585Z",
         "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
         "Title": "UI_CONTRACT_SALVIA_LEVEL_3_TITLE",
         "Description": "UI_CONTRACT_SALVIA_LEVEL_3_DESC",
@@ -245,7 +276,7 @@
             { "Id": "07455b1c-cd7a-492c-854c-c2757a6f7ef1" },
             { "Id": "ef5772fc-4c30-49cc-8dee-ab9824af51c6" }
         ],
-        "LastUpdate": "2020-11-09T13:35:49.5231556Z",
+        "LastUpdate": "2023-05-11T10:33:16.5529157Z",
         "PublicId": "006715164947",
         "Entitlements": ["H1_LEGACY_STANDARD"]
     },
