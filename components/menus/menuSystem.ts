@@ -86,6 +86,10 @@ export class MenuSystemDatabase {
                     )
 
                     configs.push(
+                        "menusystem/pages/gamemodes/gamemodearcade_page.json",
+                    )
+
+                    configs.push(
                         "images/unlockables/outfit_ef223b60-b53a-4c7b-b914-13c3310fc61a_0.jpg",
                     )
 
@@ -157,6 +161,8 @@ export class MenuSystemDatabase {
                             $else: true,
                         },
                     }
+                case "/pages/gamemodes/gamemodearcade_page.json":
+                    return getConfig("ArcadePageTemplate", false)
                 case "/elements/contract/hitscategory_elusive.json":
                     return getConfig("HitsCategoryElusiveTemplate", false)
                 case "/elements/contract/hitscategory_contractattack.json":

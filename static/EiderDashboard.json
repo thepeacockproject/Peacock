@@ -266,76 +266,63 @@
                 }
             },
             {
-                "$datacontext": {
-                    "in": "$.",
-                    "datavalues": {
-                        "Category": "ContractAttack"
+                "id": "contractattack_button",
+                "controller": "contextitem",
+                "view": "menu3.basic.ItemTileSmall",
+                "row": 1.5,
+                "col": 4,
+                "nrows": 1.5,
+                "ncols": 2,
+                "data": {
+                    "title": "$loc UI_PEACOCK_ESCALATIONS",
+                    "header": "$loc UI_MENU_PAGE_HUB_GAMEMODE",
+                    "icon": "54",
+                    "image": "$res images/challenges/profile_challenges/escalation_s2_tier_9.jpg"
+                },
+                "actions": {
+                    "accept": {
+                        "link": {
+                            "page": "gamemode_arcade",
+                            "args": {
+                                "url": "hitscategory",
+                                "type": "ContractAttack",
+                                "mode": "dataonly"
+                            }
+                        }
                     },
-                    "do": {
-                        "id": "contractattack_button",
-                        "controller": "contextitem",
-                        "view": "menu3.basic.MenuTileSmall",
-                        "row": 1.5,
-                        "col": 4,
-                        "nrows": 1.5,
-                        "ncols": 2,
-                        "data": {
-                            "title": "$loc UI_PEACOCK_ESCALATIONS",
-                            "header": "$loc UI_MENU_PAGE_HUB_GAMEMODE",
-                            "icon": "54",
-                            "image": "$res images/challenges/profile_challenges/escalation_s2_tier_9.jpg"
-                        },
-                        "selectable": true,
-                        "pressable": true,
-                        "actions": {
-                            "select": [
-                                {
-                                    "replace-children": {
-                                        "target": "headline_container",
-                                        "children": [
-                                            {
-                                                "view": "menu3.basic.HeadlineElement",
-                                                "selectable": true,
-                                                "pressable": true,
-                                                "data": {
-                                                    "header": "$loc UI_MENU_PAGE_HUB_GAMEMODE",
-                                                    "title": "$loc UI_PEACOCK_ESCALATIONS",
-                                                    "typeicon": "54"
-                                                }
-                                            }
-                                        ]
-                                    }
-                                }
-                            ],
-                            "deselect": [
-                                {
-                                    "replace-children": {
-                                        "target": "headline_container",
-                                        "children": [
-                                            {
-                                                "view": "menu3.basic.HeadlineElement",
-                                                "selectable": true,
-                                                "pressable": true
-                                            }
-                                        ]
-                                    }
-                                }
-                            ]
-                        },
-                        "children": [
-                            {
-                                "controller": "container",
-                                "row": -0.75,
+                    "select": [
+                        {
+                            "replace-children": {
+                                "target": "headline_container",
                                 "children": [
                                     {
-                                        "$include": {
-                                            "$path": "menusystem/elements/contract/contractshitcategoryloading.json"
+                                        "view": "menu3.basic.HeadlineElement",
+                                        "selectable": true,
+                                        "pressable": true,
+                                        "data": {
+                                            "header": "$loc UI_MENU_PAGE_HUB_GAMEMODE",
+                                            "title": "$loc UI_PEACOCK_ESCALATIONS",
+                                            "typeicon": "54"
                                         }
                                     }
                                 ]
                             }
-                        ]
-                    }
+                        }
+                    ],
+                    "deselect": [
+                        {
+                            "replace-children": {
+                                "target": "headline_container",
+                                "children": [
+                                    {
+                                        "view": "menu3.basic.HeadlineElement",
+                                        "selectable": true,
+                                        "pressable": true
+                                    }
+                                ]
+                            }
+                        }
+                    ]
                 }
             },
             {

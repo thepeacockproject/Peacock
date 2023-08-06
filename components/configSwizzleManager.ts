@@ -114,6 +114,7 @@ import LegacyMasteryLocationTemplate from "../static/LegacyMasteryLocationTempla
 import DefaultCpdConfig from "../static/DefaultCpdConfig.json"
 import EvergreenGameChangerProperties from "../static/EvergreenGameChangerProperties.json"
 import AreaMap from "../static/AreaMap.json"
+import ArcadePageTemplate from "../static/ArcadePageTemplate.json"
 import HitsCategoryElusiveTemplate from "../static/HitsCategoryElusiveTemplate.json"
 import HitsCategoryContractAttackTemplate from "../static/HitsCategoryContractAttackTemplate.json"
 import MissionRewardsTemplate from "../static/MissionRewardsTemplate.json"
@@ -221,6 +222,7 @@ const configs = {
     DefaultCpdConfig,
     EvergreenGameChangerProperties,
     AreaMap,
+    ArcadePageTemplate,
     HitsCategoryElusiveTemplate,
     HitsCategoryContractAttackTemplate,
     MissionRewardsTemplate,
