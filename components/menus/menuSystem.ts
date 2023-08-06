@@ -145,6 +145,9 @@ export class MenuSystemDatabase {
                         "menusystem/pages/multiplayer/content/lobbyslim.json",
                     )
                     configs.push("menusystem/pages/hub/career.json")
+                    configs.push(
+                        "menusystem/pages/gamemodes/gamemodesniper_content.json",
+                    )
                 }
             },
         )
@@ -163,6 +166,11 @@ export class MenuSystemDatabase {
                     }
                 case "/pages/gamemodes/gamemodearcade_page.json":
                     return getConfig("ArcadePageTemplate", false)
+                // Only for Hitman 2
+                case "/pages/gamemodes/gamemodesniper_content.json":
+                    // Every time I see this, I get increasingly annoyed that we
+                    // had to do this - AF
+                    return getConfig("H2SniperContentTemplate", false)
                 case "/elements/contract/hitscategory_elusive.json":
                     return getConfig("HitsCategoryElusiveTemplate", false)
                 case "/elements/contract/hitscategory_contractattack.json":

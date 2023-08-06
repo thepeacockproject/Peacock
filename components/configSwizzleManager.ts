@@ -94,6 +94,7 @@ import Videos from "../static/Videos.json"
 import ChallengeLocationTemplate from "../static/ChallengeLocationTemplate.json"
 import H2ChallengeLocationTemplate from "../static/H2ChallengeLocationTemplate.json"
 import H2CareerTemplate from "../static/H2CareerTemplate.json"
+import H2SniperContentTemplate from "../static/H2SniperContentTemplate.json"
 import LegacyChallengeLocationTemplate from "../static/LegacyChallengeLocationTemplate.json"
 import ReportTemplate from "../static/ReportTemplate.json"
 import ContractSearchPageTemplate from "../static/ContractSearchPageTemplate.json"
@@ -196,6 +197,7 @@ const configs = {
     H2FilterData,
     H2CareerTemplate,
     H2DashboardTemplate,
+    H2SniperContentTemplate,
     FrankensteinMmSpTemplate,
     FrankensteinMmMpTemplate,
     FrankensteinPlanningTemplate,

@@ -186,68 +186,65 @@
                 }
             },
             {
-                "$datacontext": {
-                    "in": "$.",
-                    "datavalues": {
-                        "Category": "ContractAttack"
-                    },
-                    "do": {
-                        "id": "contractattack_button",
-                        "controller": "contextitem",
-                        "view": "menu3.basic.MenuTileSmall",
-                        "row": 1.5,
-                        "col": 4,
-                        "nrows": 1.5,
-                        "ncols": 2,
-                        "data": {
-                            "title": "$loc UI_PEACOCK_ESCALATIONS",
-                            "header": "$loc UI_MENU_PAGE_HUB_GAMEMODE",
-                            "icon": "54",
-                            "image": "$res images/livetile/tile_contractescalation_nocontent.jpg"
-                        },
-                        "selectable": true,
-                        "pressable": true,
-                        "actions": {
-                            "select": [
-                                {
-                                    "replace-children": {
-                                        "target": "headline_container",
-                                        "children": [
-                                            {
-                                                "view": "menu3.basic.HeadlineElement",
-                                                "selectable": true,
-                                                "pressable": true,
-                                                "data": {
-                                                    "header": "$loc UI_MENU_PAGE_HUB_GAMEMODE",
-                                                    "title": "$loc UI_PEACOCK_ESCALATIONS",
-                                                    "typeicon": "54"
-                                                }
-                                            }
-                                        ]
-                                    }
-                                }
-                            ],
-                            "deselect": [
-                                {
-                                    "replace-children": {
-                                        "target": "headline_container",
-                                        "children": [
-                                            {
-                                                "view": "menu3.basic.HeadlineElement",
-                                                "selectable": true,
-                                                "pressable": true
-                                            }
-                                        ]
-                                    }
-                                }
-                            ]
-                        },
-                        "children": {
-                            "$include": {
-                                "$path": "menusystem/elements/contract/contractshitcategoryloading.json"
+                "id": "contractattack_button",
+                "controller": "contextitem",
+                "view": "menu3.basic.MenuTileSmall",
+                "row": 1.5,
+                "col": 4,
+                "nrows": 1.5,
+                "ncols": 2,
+                "data": {
+                    "title": "$loc UI_PEACOCK_ESCALATIONS",
+                    "header": "$loc UI_MENU_PAGE_HUB_GAMEMODE",
+                    "icon": "54",
+                    "image": "$res images/livetile/tile_contractescalation_nocontent.jpg"
+                },
+                "selectable": true,
+                "pressable": true,
+                "actions": {
+                    "accept": {
+                        "link": {
+                            "page": "gamemode_sniper",
+                            "args": {
+                                "url": "hitscategory",
+                                "type": "ContractAttack",
+                                "mode": "dataonly"
                             }
                         }
-                    }
+                    },
+                    "select": [
+                        {
+                            "replace-children": {
+                                "target": "headline_container",
+                                "children": [
+                                    {
+                                        "view": "menu3.basic.HeadlineElement",
+                                        "selectable": true,
+                                        "pressable": true,
+                                        "data": {
+                                            "header": "$loc UI_MENU_PAGE_HUB_GAMEMODE",
+                                            "title": "$loc UI_PEACOCK_ESCALATIONS",
+                                            "typeicon": "54"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "deselect": [
+                        {
+                            "replace-children": {
+                                "target": "headline_container",
+                                "children": [
+                                    {
+                                        "view": "menu3.basic.HeadlineElement",
+                                        "selectable": true,
+                                        "pressable": true
+                                    }
+                                ]
+                            }
+                        }
+                    ]
                 }
             },
             {

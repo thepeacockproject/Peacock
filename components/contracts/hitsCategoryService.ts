@@ -230,16 +230,20 @@ export class HitsCategoryService {
         this.hitsCategories
             .for("ContractAttack")
             .tap(tapName, (contracts, gameVersion) => {
+                // We need to push Peacock contracts first to work around H2 not
+                // having the "order" property for $arraygroupby. (The game just crashes)
+                const nEscalations = []
+
                 for (const escalations of Object.values(
                     missionsInLocations.escalations,
                 )) {
                     for (const id of escalations) {
                         const contract = controller.resolveContract(id)
 
-                        const season =
-                            contract.Metadata.Season === 0
-                                ? contract.Metadata.OriginalSeason
-                                : contract.Metadata.Season
+                        const isPeacock = contract.Metadata.Season === 0
+                        const season = isPeacock
+                            ? contract.Metadata.OriginalSeason
+                            : contract.Metadata.Season
 
                         switch (gameVersion) {
                             case "h1":
@@ -248,13 +252,18 @@ export class HitsCategoryService {
                                 if (season === 1) contracts.push(id)
                                 break
                             case "h2":
-                                if (season <= 2) contracts.push(id)
+                                if (season <= 2)
+                                    (isPeacock ? contracts : nEscalations).push(
+                                        id,
+                                    )
                                 break
                             default:
-                                contracts.push(id)
+                                ;(isPeacock ? contracts : nEscalations).push(id)
                         }
                     }
                 }
+
+                contracts.push(...nEscalations)
             })
     }
 
