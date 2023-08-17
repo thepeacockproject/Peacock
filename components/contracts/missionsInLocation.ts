@@ -296,7 +296,14 @@ export const missionsInLocations = {
         LOCATION_CAGED_FALCON: ["25b20d86-bb5a-4ebd-b6bb-81ed2779c180"],
     },
     elusive: {},
-    sarajevo: {},
+    sarajevo: {
+        LOCATION_PARIS: ["dd906289-7c32-427f-b689-98ae645b407f"],
+        LOCATION_COASTALTOWN: ["350ceea9-cfa9-4639-a66b-0d4de586eeee"],
+        LOCATION_MARRAKECH: ["59966a7f-3348-48da-a56c-4447aa548c85"],
+        LOCATION_BANGKOK: ["30c3546d-9881-45fa-8c7a-8b2c76b03e59"],
+        LOCATION_COLORADO: ["1c82c1e3-fe61-4001-a173-81fa11023460"],
+        LOCATION_HOKKAIDO: ["781c68ca-9318-40bf-9cc1-232007be02bf"],
+    },
     /**
      * Special property for pro mode missions (2016 exclusive).
      * Mapping of location parent to pro mode contract ID, instead of the typical mission array.
