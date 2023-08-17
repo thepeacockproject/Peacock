@@ -515,7 +515,7 @@ export class Controller {
                 )) {
                     this.addMission(contractData)
 
-                    if (contractData.SMF.destinations?.addToDestinations) {
+                    if (contractData.SMF?.destinations?.addToDestinations) {
                         if (
                             typeof contractData.SMF.destinations
                                 .peacockIntegration === "undefined" ||
