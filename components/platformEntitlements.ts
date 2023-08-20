@@ -79,6 +79,8 @@ export const H3_EPIC_ENTITLEMENTS = [
     "08d2bc4d20754191b6c488541d2b4fa1",
     // CONCRETEART:
     "a1e9a63fa4f3425aa66b9b8fa3c9cc35",
+    // THESARAJEVOSIX:
+    "28455871cd0d4ffab52f557cc012ea5e",
 ]
 
 export const H2_STEAM_ENTITLEMENTS = [
