@@ -510,10 +510,52 @@ export class Controller {
             }
 
             if (lastServerSideData?.contracts) {
-                for (const [contractId, contractData] of Object.entries(
+                for (const contractData of Object.values(
                     lastServerSideData.contracts,
                 )) {
-                    this.contracts.set(contractId, contractData)
+                    this.addMission(contractData)
+
+                    if (contractData.SMF?.destinations?.addToDestinations) {
+                        if (
+                            typeof contractData.SMF.destinations
+                                .peacockIntegration === "undefined" ||
+                            contractData.SMF.destinations.peacockIntegration
+                        ) {
+                            if (contractData.SMF.destinations.placeBefore) {
+                                controller.missionsInLocations[
+                                    contractData.Metadata.Location
+                                ].splice(
+                                    controller.missionsInLocations[
+                                        contractData.Metadata.Location
+                                    ].indexOf(
+                                        contractData.SMF.destinations
+                                            .placeBefore,
+                                    ),
+                                    0,
+                                    contractData.Metadata.Id,
+                                )
+                            } else if (
+                                contractData.SMF.destinations.placeAfter
+                            ) {
+                                controller.missionsInLocations[
+                                    contractData.Metadata.Location
+                                ].splice(
+                                    controller.missionsInLocations[
+                                        contractData.Metadata.Location
+                                    ].indexOf(
+                                        contractData.SMF.destinations
+                                            .placeAfter,
+                                    ) + 1,
+                                    0,
+                                    contractData.Metadata.Id,
+                                )
+                            } else {
+                                controller.missionsInLocations[
+                                    contractData.Metadata.Location
+                                ].push(contractData.Metadata.Id)
+                            }
+                        }
+                    }
 
                     if (contractData.SMF.destinations?.addToDestinations) {
                         if (contractData.SMF.destinations.peacockIntegration) {
