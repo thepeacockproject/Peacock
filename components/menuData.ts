@@ -1077,9 +1077,9 @@ menuDataRouter.get(
                     [undefined, "Missions"],
                     ["elusive", "ElusiveMissions"],
                 ],
-                ...(req.gameVersion === "h1" ||
-                (req.gameVersion === "h3" &&
-                    missionsInLocations.sarajevo["h3enabled"])
+                ...((req.gameVersion === "h1" &&
+                    missionsInLocations.sarajevo["h2016enabled"]) ||
+                req.gameVersion === "h3"
                     ? [["sarajevo", "SarajevoSixMissions"]]
                     : []),
             ]
