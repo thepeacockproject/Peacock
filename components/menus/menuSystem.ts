@@ -80,6 +80,9 @@ export class MenuSystemDatabase {
         this.hooks.getDatabaseDiff.tap(
             "PeacockInternal",
             (configs, gameVersion) => {
+                // This is global to all versions
+                configs.push("menusystem/data/ispeacock.json")
+
                 if (gameVersion === "h3") {
                     configs.push(
                         "menusystem/elements/settings/data/isnonvroptionvisible.json",
