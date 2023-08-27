@@ -18,7 +18,7 @@
 
 import { existsSync, readdirSync, readFileSync } from "fs"
 import { readdir, readFile, writeFile } from "fs/promises"
-import { join } from "path"
+import { join, basename } from "path"
 import {
     generateUserCentric,
     getSubLocationFromContract,
@@ -595,6 +595,18 @@ export class Controller {
                         }
                     },
                 )
+            }
+
+            if (lastServerSideData?.peacockPlugins) {
+                for (const plugin of lastServerSideData.peacockPlugins) {
+                    if (!existsSync(plugin)) continue
+
+                    await this._executePlugin(
+                        basename(plugin),
+                        (await readFile(plugin)).toString(),
+                        plugin,
+                    )
+                }
             }
         }
 

@@ -1551,5 +1551,6 @@ export interface SMFLastDeploy {
             [k: string]: MissionManifest
         }
         blobs?: Record<string, string>
+        peacockPlugins?: string[]
     }
 }
