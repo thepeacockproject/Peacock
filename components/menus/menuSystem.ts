@@ -80,6 +80,9 @@ export class MenuSystemDatabase {
         this.hooks.getDatabaseDiff.tap(
             "PeacockInternal",
             (configs, gameVersion) => {
+                // This is global to all versions
+                configs.push("menusystem/data/ispeacock.json")
+
                 if (gameVersion === "h3") {
                     configs.push(
                         "menusystem/elements/settings/data/isnonvroptionvisible.json",
@@ -235,6 +238,13 @@ export class MenuSystemDatabase {
                     return {
                         "$if $eq ($platform,stadia)": {
                             $then: false,
+                            $else: true,
+                        },
+                    }
+                case "/data/ispeacock.json":
+                    return {
+                        "$if $eq (0,0)": {
+                            $then: true,
                             $else: true,
                         },
                     }
