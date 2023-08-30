@@ -113,61 +113,27 @@
             },
             {
                 "Type": "statemachine",
-                "Id": "d9408a0f-b860-40a6-ac1f-a49c2024dbc2",
+                "Id": "a62f4f63-430c-47d9-b527-1545706bb132",
                 "ObjectiveType": "statemachine",
                 "HUDTemplate": {
-                    "display": "Eliminate Zackary Pullman with a falling object"
+                    "display": "Eliminate Philip Milner"
                 },
-                "TargetConditions": [
-                    {
-                        "Type": "killmethod",
-                        "KillMethod": "accident_suspended_object",
-                        "HardCondition": true
-                    }
-                ],
                 "Category": "primary",
                 "Definition": {
                     "Context": {
-                        "Targets": ["2e1836c9-b410-4285-893d-6bda99923aca"]
+                        "Targets": ["08116939-5362-4f44-9187-3d672747a539"]
                     },
                     "States": {
                         "Start": {
                             "Kill": [
                                 {
                                     "Condition": {
-                                        "$and": [
-                                            {
-                                                "$eq": [
-                                                    "$Value.RepositoryId",
-                                                    "2e1836c9-b410-4285-893d-6bda99923aca"
-                                                ]
-                                            },
-                                            {
-                                                "$any": {
-                                                    "?": {
-                                                        "$eq": [
-                                                            "$.#",
-                                                            "accident_suspended_object"
-                                                        ]
-                                                    },
-                                                    "in": [
-                                                        "$Value.KillMethodBroad",
-                                                        "$Value.KillMethodStrict"
-                                                    ]
-                                                }
-                                            }
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "08116939-5362-4f44-9187-3d672747a539"
                                         ]
                                     },
                                     "Transition": "Success"
-                                },
-                                {
-                                    "Condition": {
-                                        "$eq": [
-                                            "$Value.RepositoryId",
-                                            "2e1836c9-b410-4285-893d-6bda99923aca"
-                                        ]
-                                    },
-                                    "Transition": "Failure"
                                 }
                             ]
                         }
@@ -190,7 +156,7 @@
         "InGroup": "50fa5e99-0b51-45d4-9062-cd46dd928461",
         "GroupObjectiveDisplayOrder": [
             {
-                "Id": "d9408a0f-b860-40a6-ac1f-a49c2024dbc2",
+                "Id": "a62f4f63-430c-47d9-b527-1545706bb132",
                 "IsNew": true
             },
             {
