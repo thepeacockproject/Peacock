@@ -30,11 +30,7 @@ import {
 } from "./utils"
 import { contractSessions, getSession } from "./eventHandler"
 import { getConfig, getVersionedConfig } from "./configSwizzleManager"
-import {
-    contractIdToHitObject,
-    controller,
-    peacockRecentEscalations,
-} from "./controller"
+import { contractIdToHitObject, controller } from "./controller"
 import { makeCampaigns } from "./menus/campaigns"
 import {
     createLocationsData,
@@ -107,47 +103,6 @@ export const preMenuDataRouter = Router()
 const menuDataRouter = Router()
 
 // /profiles/page/
-
-function dashEscalations(req: RequestWithJwt, res: Response) {
-    const contracts: UserCentricContract[] = []
-
-    for (const groupId of peacockRecentEscalations) {
-        const userCentric = generateUserCentric(
-            controller.resolveContract(groupId, true)!,
-            req.jwt.unique_name,
-            req.gameVersion,
-        )
-
-        if (!userCentric) {
-            continue
-        }
-
-        contracts.push(userCentric)
-    }
-
-    res.json({
-        template: null,
-        data: {
-            Item: {
-                Id: req.params.id,
-                Type: "ContractList",
-                Title: "ContractList",
-                Date: new Date().toISOString(),
-                Data: contracts.length > 0 ? contracts : null,
-            },
-        },
-    })
-}
-
-menuDataRouter.get(
-    "/dashboard/Dashboard_Category_Escalation/:subscriptionId/:type/:id",
-    dashEscalations,
-)
-
-menuDataRouter.get(
-    "/dashboard/Dashboard_Category_Escalation/:subscriptionId/:type/:id/:mode",
-    dashEscalations,
-)
 
 menuDataRouter.get(
     "/ChallengeLocation",

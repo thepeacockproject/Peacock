@@ -89,6 +89,10 @@ export class MenuSystemDatabase {
                     )
 
                     configs.push(
+                        "menusystem/pages/gamemodes/gamemodearcade_page.json",
+                    )
+
+                    configs.push(
                         "images/unlockables/outfit_ef223b60-b53a-4c7b-b914-13c3310fc61a_0.jpg",
                     )
 
@@ -143,6 +147,10 @@ export class MenuSystemDatabase {
                     configs.push(
                         "menusystem/pages/multiplayer/content/lobbyslim.json",
                     )
+                    configs.push("menusystem/pages/hub/career.json")
+                    configs.push(
+                        "menusystem/pages/gamemodes/gamemodesniper_content.json",
+                    )
                 }
             },
         )
@@ -159,6 +167,13 @@ export class MenuSystemDatabase {
                             $else: true,
                         },
                     }
+                case "/pages/gamemodes/gamemodearcade_page.json":
+                    return getConfig("ArcadePageTemplate", false)
+                // Only for Hitman 2
+                case "/pages/gamemodes/gamemodesniper_content.json":
+                    // Every time I see this, I get increasingly annoyed that we
+                    // had to do this - AF
+                    return getConfig("H2SniperContentTemplate", false)
                 case "/elements/contract/hitscategory_elusive.json":
                     return getConfig("HitsCategoryElusiveTemplate", false)
                 case "/elements/contract/hitscategory_contractattack.json":
@@ -262,6 +277,9 @@ export class MenuSystemDatabase {
                             $else: true,
                         },
                     }
+                // This will only get hit by H2
+                case "/pages/hub/career.json":
+                    return getConfig("H2CareerTemplate", false)
                 case "/pages/multiplayer/content/lobbyslim.json":
                     return getConfig("LobbySlimTemplate", false)
                 case "/pages/pause/pausemenu/restart.json":
@@ -541,6 +559,7 @@ menuSystemRouter.get(
         log(
             LogLevel.DEBUG,
             `Serving dynamic resources from file ${dynamicResourceName}.`,
+            "dynRes",
         )
 
         const hash = await md5File(dynamicResourcePath)

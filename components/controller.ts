@@ -238,13 +238,6 @@ export const _legacyBull: MissionManifest = JSON.parse(LEGACYFF)
 export const _theLastYardbirdScpc: MissionManifest =
     JSON.parse(LASTYARDBIRDSCPC)
 
-export const peacockRecentEscalations: readonly string[] = [
-    "74415eca-d01e-4070-9bc9-5ef9b4e8f7d2",
-    "9e0188e8-bdad-476c-b4ce-2faa5d2be56c",
-    "0cceeecb-c8fe-42a4-aee4-d7b575f56a1b",
-    "667f48a3-7f6b-486e-8f6b-2f782a5c4857",
-]
-
 /**
  * Ensure a mission has the bare minimum required to work.
  *
@@ -480,6 +473,7 @@ export class Controller {
         log(
             LogLevel.INFO,
             "Booting Peacock internal services - this may take a moment.",
+            "boot",
         )
 
         await this._loadInternalContracts()
@@ -496,6 +490,7 @@ export class Controller {
             log(
                 LogLevel.INFO,
                 "Simple Mod Framework installed - using the data it outputs.",
+                "boot",
             )
 
             const lastServerSideData = (
@@ -639,7 +634,11 @@ export class Controller {
             this.hooks.challengesLoaded.call()
             this.hooks.masteryDataLoaded.call()
         } catch (e) {
-            log(LogLevel.ERROR, `Fatal error with challenge bootstrap: ${e}`)
+            log(
+                LogLevel.ERROR,
+                `Fatal error with challenge bootstrap: ${e}`,
+                "boot",
+            )
             log(LogLevel.ERROR, e.stack)
         }
     }
@@ -1311,7 +1310,11 @@ export class Controller {
             groupCount++
         }
 
-        log(LogLevel.DEBUG, `Discovered ${groupCount} escalation groups.`)
+        log(
+            LogLevel.DEBUG,
+            `Discovered ${groupCount} escalation groups.`,
+            "scanGroups",
+        )
     }
 }
 
