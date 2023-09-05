@@ -171,13 +171,16 @@ profileRouter.post(
         }
 
         const userdata = getUserData(req.jwt.unique_name, req.gameVersion)
-        const extensions = req.body.extensions.reduce((acc: object, key: string) => {
-            if (Object.hasOwn(userdata.Extensions, key)) {
-                acc[key] = userdata.Extensions[key]
-            }
+        const extensions = req.body.extensions.reduce(
+            (acc: object, key: string) => {
+                if (Object.hasOwn(userdata.Extensions, key)) {
+                    acc[key] = userdata.Extensions[key]
+                }
 
-            return acc
-        }, {} as object)
+                return acc
+            },
+            {} as object,
+        )
         res.setHeader("Content-Type", "application/json")
         res.json({ ...userdata, Extensions: extensions })
     },
