@@ -430,22 +430,6 @@ export class Controller {
     }
 
     /**
-     * You should use {@link modIsInstalled} instead!
-     *
-     * Returns whether a mod is UNAVAILABLE.
-     *
-     * @param modId The mod's ID.
-     * @returns If the mod is unavailable. You should probably abort initialization if true is returned. Also returns true if the `overrideFrameworkChecks` flag is set.
-     * @deprecated since v5.5.0
-     */
-    public addClientSideModDependency(modId: string): boolean {
-        return (
-            !this.installedMods.includes(modId) ||
-            getFlag("overrideFrameworkChecks") === true
-        )
-    }
-
-    /**
      * Returns whether a mod is available and installed.
      *
      * @param modId The mod's ID.
