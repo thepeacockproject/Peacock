@@ -435,7 +435,7 @@ export class Controller {
      */
     public modIsInstalled(modId: string): boolean {
         return (
-            this.lastDeploy.loadOrder.includes(modId) ||
+            this.lastDeploy?.loadOrder.includes(modId) ||
             getFlag("overrideFrameworkChecks") === true
         )
     }
