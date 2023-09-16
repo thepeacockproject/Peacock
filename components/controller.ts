@@ -475,7 +475,7 @@ export class Controller {
                 "boot",
             )
 
-            const lastServerSideData = this.lastDeploy.lastServerSideStates
+            const lastServerSideData = this.lastDeploy?.lastServerSideStates
 
             if (lastServerSideData?.unlockables) {
                 this.configManager.configs["allunlockables"] =
