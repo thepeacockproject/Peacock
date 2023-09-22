@@ -1531,8 +1531,21 @@ export type ContractProgressionData = Record<string, string | number | boolean>
 
 /** SMF's lastDeploy.json */
 export interface SMFLastDeploy {
+    runtimePath: string
+    retailPath: string
+    skipIntro: boolean
+    outputToSeparateDirectory: boolean
     loadOrder: string[]
+    modOptions: {
+        [modId: string]: string[]
+    }
+    outputConfigToAppDataOnDeploy: boolean
+    reportErrors: boolean
+    developerMode: boolean
+    knownMods: string[]
+    platform: string
     lastServerSideStates?: {
+        peacockPlugins: string[]
         unlockables?: Unlockable[]
         contracts?: {
             [k: string]: MissionManifest

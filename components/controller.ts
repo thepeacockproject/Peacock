@@ -390,9 +390,9 @@ export class Controller {
     escalationMappings: Map<string, Record<string, string>> = new Map()
     public progressionService: ProgressionService
     /**
-     * A list of Simple Mod Framework mods installed.
+     * SMF's lastDeploy.json
      */
-    public readonly installedMods: readonly string[]
+    public readonly lastDeploy: SMFLastDeploy
     private _pubIdToContractId: Map<string, string> = new Map()
     /** Internal elusive target contracts - only accessible during bootstrap. */
     private _internalElusives: MissionManifest[] | undefined
@@ -418,31 +418,13 @@ export class Controller {
         }
 
         if (modFrameworkDataPath && existsSync(modFrameworkDataPath)) {
-            this.installedMods = (
-                parse(
-                    readFileSync(modFrameworkDataPath!).toString(),
-                ) as SMFLastDeploy
-            )?.loadOrder as readonly string[]
+            this.lastDeploy = parse(
+                readFileSync(modFrameworkDataPath!).toString(),
+            )
             return
         }
 
-        this.installedMods = []
-    }
-
-    /**
-     * You should use {@link modIsInstalled} instead!
-     *
-     * Returns whether a mod is UNAVAILABLE.
-     *
-     * @param modId The mod's ID.
-     * @returns If the mod is unavailable. You should probably abort initialization if true is returned. Also returns true if the `overrideFrameworkChecks` flag is set.
-     * @deprecated since v5.5.0
-     */
-    public addClientSideModDependency(modId: string): boolean {
-        return (
-            !this.installedMods.includes(modId) ||
-            getFlag("overrideFrameworkChecks") === true
-        )
+        this.lastDeploy = null
     }
 
     /**
@@ -453,7 +435,7 @@ export class Controller {
      */
     public modIsInstalled(modId: string): boolean {
         return (
-            this.installedMods.includes(modId) ||
+            this.lastDeploy?.loadOrder.includes(modId) ||
             getFlag("overrideFrameworkChecks") === true
         )
     }
@@ -493,11 +475,7 @@ export class Controller {
                 "boot",
             )
 
-            const lastServerSideData = (
-                parse(
-                    readFileSync(modFrameworkDataPath!).toString(),
-                ) as SMFLastDeploy
-            ).lastServerSideStates
+            const lastServerSideData = this.lastDeploy?.lastServerSideStates
 
             if (lastServerSideData?.unlockables) {
                 this.configManager.configs["allunlockables"] =

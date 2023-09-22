@@ -260,6 +260,8 @@ function updateUserProfile(
                 return
             }
 
+            /* ////// VERSION 1 ////// */
+
             // Profile has no version, update it to version 1, then re-run
             // the function to update it to subsequent versions.
 
