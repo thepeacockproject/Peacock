@@ -3,7 +3,7 @@ name: Localisation
 on:
   push:
     branches: ["v*"]
-    paths: ["resources/locale.json"]
+    paths: ["resources/locale.json", ".github/workflows/locale.yml"]
   workflow_dispatch:
 
 jobs:
@@ -47,7 +47,7 @@ jobs:
 
       - name: Download RPKG-CLI
         id: rpkgcli
-        uses: vcup/release-downloader@v1.7
+        uses: robinraju/release-downloader@v1.8
         with:
           repository: "glacier-modding/RPKG-Tool"
           latest: true
@@ -56,7 +56,7 @@ jobs:
 
       - name: Download HMLanguageTools
         id: hmlt
-        uses: vcup/release-downloader@v1.7
+        uses: robinraju/release-downloader@v1.8
         with:
           repository: "AnthonyFuller/TonyTools"
           latest: true
