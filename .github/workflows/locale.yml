@@ -66,8 +66,8 @@ jobs:
       - name: Unzip dependencies
         run: |
           cd Peacock/resources
-          7z x ${{ steps.rpkgcli.outputs.downloaded_file_0 }}
-          7z x ${{ steps.hmlt.outputs.downloaded_file_0 }}
+          7z x ${{ fromJson(steps.rpkgcli.outputs.downloaded_files)[0] }}
+          7z x ${{ fromJson(steps.hmlt.outputs.downloaded_files)[0] }}
 
       - name: Rebuild Locale Packages
         run: |
