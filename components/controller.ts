@@ -530,7 +530,7 @@ export class Controller {
                         }
                     }
 
-                    if (contractData.SMF.destinations?.addToDestinations) {
+                    if (contractData.SMF?.destinations?.addToDestinations) {
                         if (contractData.SMF.destinations.peacockIntegration) {
                             if (contractData.SMF.destinations.placeBefore) {
                                 controller.missionsInLocations[
