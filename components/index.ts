@@ -212,6 +212,13 @@ app.get(
                 "scpc-prod"
         }
 
+        if (req.params.audience === "pcgdk-prod") {
+            // PC Xbox version is a special audience
+            config.Versions[0].Name = "pcgdk-prod"
+            config.Versions[0].SERVER_VER.GlobalAuthentication.RequestedAudience =
+                "pcgdk-prod_8"
+        }
+
         config.Versions[0].ISSUER_ID = req.query.issuer || "*"
 
         config.Versions[0].SERVER_VER.Metrics.MetricsServerHost = `${proto}://${serverhost}`
@@ -298,6 +305,7 @@ app.use(
                     break
                 case "fghi4567xQOCheZIin0pazB47qGUvZw4":
                 case STEAM_NAMESPACE_2021:
+                case "RETAIL":
                     req.serverVersion = "8-13"
                     break
                 default:
@@ -560,6 +568,7 @@ function startServer(options: { hmr: boolean; pluginDevHost: boolean }): void {
         "contracts",
         join("userdata", "epicids"),
         join("userdata", "steamids"),
+        join("userdata", "xboxids"),
         join("userdata", "users"),
         join("userdata", "h1", "steamids"),
         join("userdata", "h1", "epicids"),

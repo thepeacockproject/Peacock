@@ -55,6 +55,7 @@ export type GameAudience =
     | "xboxone-prod"
     | "scpc-prod"
     | "playtest01-prod_8"
+    | "pcgdk-prod_8"
 
 /**
  * Data from the JSON Web Token (JWT) authentication scheme.
@@ -78,9 +79,9 @@ export interface JwtData {
      */
     userid: string
     /**
-     * Either "steam" or "epic" on PC.
+     * Either "steam", "epic" or "live" on PC.
      */
-    platform: "steam" | "epic"
+    platform: "steam" | "epic" | "live"
     /**
      * Client/account locale.
      */
