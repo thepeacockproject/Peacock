@@ -237,6 +237,7 @@ export const missionsInLocations = {
             "72aaaa7b-4386-4ee7-9e9e-73fb8ff8e416",
         ],
         LOCATION_TRAPPED_WOLVERINE: ["078a50d1-6427-4fc3-9099-e46390e637a0"],
+        LOCATION_ROCKY_DUGONG: ["50fa5e99-0b51-45d4-9062-cd46dd928461"],
     },
     arcade: {
         LOCATION_NORTHSEA: [
