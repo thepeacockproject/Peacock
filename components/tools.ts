@@ -190,21 +190,15 @@ async function downloadImagePack(): Promise<void> {
 
     log(LogLevel.INFO, "Starting asset download...")
 
-    let resp, totalLength
+    let resp, totalLength: number
 
     try {
         const releaseInfo = await axios.get(
             `https://api.github.com/repos/${IMAGE_PACK_REPO}/releases/latest`,
         )
 
-        if (releaseInfo.status !== 200) {
-            throw new Error("Failed to get release info!")
-        }
-
-        // eslint-disable-next-line prefer-const
         totalLength = releaseInfo.data["assets"][0]["size"]
 
-        // eslint-disable-next-line prefer-const
         resp = await axios.get<Stream>(
             releaseInfo.data["assets"][0]["browser_download_url"],
             {

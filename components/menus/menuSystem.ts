@@ -33,7 +33,7 @@ import { SyncBailHook, SyncHook } from "../hooksImpl"
 const menuSystemPreRouter = Router()
 const menuSystemRouter = Router()
 
-// /resources-8-12/
+// /resources-8-13/
 
 /**
  * A class for managing the menu system's fetched JSON data.
@@ -80,9 +80,16 @@ export class MenuSystemDatabase {
         this.hooks.getDatabaseDiff.tap(
             "PeacockInternal",
             (configs, gameVersion) => {
+                // This is global to all versions
+                configs.push("menusystem/data/ispeacock.json")
+
                 if (gameVersion === "h3") {
                     configs.push(
                         "menusystem/elements/settings/data/isnonvroptionvisible.json",
+                    )
+
+                    configs.push(
+                        "menusystem/pages/gamemodes/gamemodearcade_page.json",
                     )
 
                     configs.push(
@@ -116,6 +123,12 @@ export class MenuSystemDatabase {
                         "menusystem/elements/contract/hitscategory_elusive.json",
                     )
 
+                    // To allow the elusive page loading on H2 and for contract
+                    // attack pages in H2/3 - AF
+                    configs.push(
+                        "menusystem/elements/contract/contractshitcategoryloading.json",
+                    )
+
                     // The following is to allow restart/replan/save/load on elusive contracts
                     // alongside removing the warning when starting one in H2/3 - AF
                     configs.push(
@@ -134,8 +147,9 @@ export class MenuSystemDatabase {
                     configs.push(
                         "menusystem/pages/multiplayer/content/lobbyslim.json",
                     )
+                    configs.push("menusystem/pages/hub/career.json")
                     configs.push(
-                        "menusystem/elements/contract/contractshitcategoryloading.json",
+                        "menusystem/pages/gamemodes/gamemodesniper_content.json",
                     )
                 }
             },
@@ -153,8 +167,20 @@ export class MenuSystemDatabase {
                             $else: true,
                         },
                     }
+                case "/pages/gamemodes/gamemodearcade_page.json":
+                    return getConfig("ArcadePageTemplate", false)
+                // Only for Hitman 2
+                case "/pages/gamemodes/gamemodesniper_content.json":
+                    // Every time I see this, I get increasingly annoyed that we
+                    // had to do this - AF
+                    return getConfig("H2SniperContentTemplate", false)
                 case "/elements/contract/hitscategory_elusive.json":
                     return getConfig("HitsCategoryElusiveTemplate", false)
+                case "/elements/contract/hitscategory_contractattack.json":
+                    return getConfig(
+                        "HitsCategoryContractAttackTemplate",
+                        false,
+                    )
                 case "/elements/contract/contractshitcategoryloading.json":
                     return {
                         controller: "group",
@@ -172,7 +198,13 @@ export class MenuSystemDatabase {
                                         "$if $eq ($.Category,Elusive_Target_Hits)":
                                             {
                                                 $then: "menusystem/elements/contract/hitscategory_elusive.json",
-                                                $else: "menusystem/elements/contract/hitscategory.json",
+                                                $else: {
+                                                    "$if $eq ($.Category,ContractAttack)":
+                                                        {
+                                                            $then: "menusystem/elements/contract/hitscategory_contractattack.json",
+                                                            $else: "menusystem/elements/contract/hitscategory.json",
+                                                        },
+                                                },
                                             },
                                     },
                                     from: {
@@ -238,6 +270,16 @@ export class MenuSystemDatabase {
                             $else: true,
                         },
                     }
+                case "/data/ispeacock.json":
+                    return {
+                        "$if $eq (0,0)": {
+                            $then: true,
+                            $else: true,
+                        },
+                    }
+                // This will only get hit by H2
+                case "/pages/hub/career.json":
+                    return getConfig("H2CareerTemplate", false)
                 case "/pages/multiplayer/content/lobbyslim.json":
                     return getConfig("LobbySlimTemplate", false)
                 case "/pages/pause/pausemenu/restart.json":
@@ -517,6 +559,7 @@ menuSystemRouter.get(
         log(
             LogLevel.DEBUG,
             `Serving dynamic resources from file ${dynamicResourceName}.`,
+            "dynRes",
         )
 
         const hash = await md5File(dynamicResourcePath)

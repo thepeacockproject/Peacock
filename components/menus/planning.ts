@@ -93,6 +93,8 @@ export async function planningView(
         // now reassign properties and continue
         req.query.contractid =
             controller.escalationMappings.get(escalationGroupId)["1"]
+
+        contractData = controller.resolveContract(req.query.contractid)
     }
 
     if (!contractData) {
@@ -138,7 +140,7 @@ export async function planningView(
     const escalation = escalationTypes.includes(contractData.Metadata.Type)
 
     // It is possible for req.query.contractid to be the id of a group OR a level in that group.
-    let escalationGroupId =
+    const escalationGroupId =
         contractData.Metadata.InGroup ?? contractData.Metadata.Id
 
     if (escalation) {

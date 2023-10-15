@@ -1,174 +1,109 @@
 {
-    "$datacontext": {
-        "in": "$.",
-        "datavalues": {
-            "PeacockDashValues": [
-                {
-                    "Id": "25739126-6a40-4b0b-b9a6-5da1b737190b",
-                    "Type": "ContractList",
-                    "Title": "UI_HEADLINE_PLAY_CONTRACT_ATTACK",
-                    "Text": "UI_HEADLINE_PLAY_CONTRACT_ATTACK",
-                    "Date": "2022-01-01T00:00:00.0000000Z",
-                    "SubscriptionId": "10000000-0000-0000-0000-000000000000",
-                    "Priority": 40,
-                    "Properties": {
-                        "ContractId": "25739126-6a40-4b0b-b9a6-5da1b737190b",
-                        "DashboardCategory": "Dashboard_Category_Escalation"
-                    },
-                    "LoadValue": "menusystem/pages/hub/dashboard/category_escalation/loadasync.json",
-                    "row": 1.5,
-                    "col": 4
-                }
-            ]
-        },
-        "do": {
-            "controller": "group",
-            "row": 1,
-            "nrows": 3,
-            "ncols": 10,
-            "layoutchildren": true,
-            "children": {
-                "$mergearrays": [
-                    {
-                        "$if": {
-                            "$condition": {
-                                "$and": [
-                                    "$isuser vr",
-                                    {
-                                        "$or": [
-                                            "$isvrdeviceavailable",
-                                            "$eq ($platform,orbis)"
-                                        ]
-                                    }
+    "controller": "group",
+    "row": 1,
+    "nrows": 3,
+    "ncols": 10,
+    "layoutchildren": true,
+    "children": {
+        "$mergearrays": [
+            {
+                "$if": {
+                    "$condition": {
+                        "$and": [
+                            "$isuser vr",
+                            {
+                                "$or": [
+                                    "$isvrdeviceavailable",
+                                    "$eq ($platform,orbis)"
                                 ]
+                            }
+                        ]
+                    },
+                    "$then": [
+                        {
+                            "view": "menu3.basic.MenuTileLarge",
+                            "row": 0,
+                            "col": 0,
+                            "nrows": 3,
+                            "ncols": 4,
+                            "data": {
+                                "header": "$loc UI_MENU_PAGE_HUB_CAMPAIGN",
+                                "title": "$loc UI_MENU_PAGE_HUB_STORY",
+                                "icon": "story",
+                                "image": "$res images/livetile/tile_story.jpg"
                             },
-                            "$then": [
-                                {
-                                    "view": "menu3.basic.MenuTileLarge",
-                                    "row": 0,
-                                    "col": 0,
-                                    "nrows": 3,
-                                    "ncols": 4,
-                                    "data": {
-                                        "header": "$loc UI_MENU_PAGE_HUB_CAMPAIGN",
-                                        "title": "$loc UI_MENU_PAGE_HUB_STORY",
-                                        "icon": "story",
-                                        "image": "$res images/livetile/tile_story.jpg"
-                                    },
-                                    "actions": {
-                                        "accept": [
+                            "actions": {
+                                "accept": [
+                                    {
+                                        "set-selected": {
+                                            "target": "category_story"
+                                        }
+                                    }
+                                ],
+                                "select": {
+                                    "replace-children": {
+                                        "target": "headline_container",
+                                        "children": [
                                             {
-                                                "set-selected": {
-                                                    "target": "category_story"
+                                                "view": "menu3.basic.HeadlineElement",
+                                                "selectable": false,
+                                                "pressable": false,
+                                                "data": {
+                                                    "header": "$loc UI_MENU_PAGE_HUB_CAMPAIGN",
+                                                    "title": "$loc UI_MENU_PAGE_HUB_STORY",
+                                                    "typeicon": "story"
                                                 }
                                             }
-                                        ],
-                                        "select": {
-                                            "replace-children": {
-                                                "target": "headline_container",
-                                                "children": [
-                                                    {
-                                                        "view": "menu3.basic.HeadlineElement",
-                                                        "selectable": false,
-                                                        "pressable": false,
-                                                        "data": {
-                                                            "header": "$loc UI_MENU_PAGE_HUB_CAMPAIGN",
-                                                            "title": "$loc UI_MENU_PAGE_HUB_STORY",
-                                                            "typeicon": "story"
-                                                        }
-                                                    }
-                                                ]
-                                            }
-                                        },
-                                        "deselect": {
-                                            "replace-children": {
-                                                "target": "headline_container",
-                                                "children": []
-                                            }
-                                        }
+                                        ]
                                     }
                                 },
+                                "deselect": {
+                                    "replace-children": {
+                                        "target": "headline_container",
+                                        "children": []
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "$databinding menusystem/pages/hub/dashboard/data/data_dashboardtile_vr.json": {
+                                "view": "menu3.basic.ButtonTileXXSmall",
+                                "row": 3,
+                                "col": 8,
+                                "nrows": 3,
+                                "ncols": 2,
+                                "data": {
+                                    "header": "$.Header",
+                                    "title": "$.Title",
+                                    "icon": "$.Icon",
+                                    "image": "$.Image"
+                                },
+                                "actions": {
+                                    "$include": "menusystem/pages/hub/dashboard/actions/actions_dashboardtile_vr.json"
+                                }
+                            }
+                        }
+                    ],
+                    "$else": {
+                        "view": "menu3.basic.MenuTileLarge",
+                        "row": 0,
+                        "col": 0,
+                        "nrows": 3,
+                        "ncols": 4,
+                        "data": {
+                            "header": "$loc UI_MENU_PAGE_HUB_CAMPAIGN",
+                            "title": "$loc UI_MENU_PAGE_HUB_STORY",
+                            "icon": "story",
+                            "image": "$res images/livetile/tile_story.jpg"
+                        },
+                        "actions": {
+                            "accept": [
                                 {
-                                    "$databinding menusystem/pages/hub/dashboard/data/data_dashboardtile_vr.json": {
-                                        "view": "menu3.basic.ButtonTileXXSmall",
-                                        "row": 3,
-                                        "col": 8,
-                                        "nrows": 3,
-                                        "ncols": 2,
-                                        "data": {
-                                            "header": "$.Header",
-                                            "title": "$.Title",
-                                            "icon": "$.Icon",
-                                            "image": "$.Image"
-                                        },
-                                        "actions": {
-                                            "$include": "menusystem/pages/hub/dashboard/actions/actions_dashboardtile_vr.json"
-                                        }
+                                    "set-selected": {
+                                        "target": "category_story"
                                     }
                                 }
                             ],
-                            "$else": {
-                                "view": "menu3.basic.MenuTileLarge",
-                                "row": 0,
-                                "col": 0,
-                                "nrows": 3,
-                                "ncols": 4,
-                                "data": {
-                                    "header": "$loc UI_MENU_PAGE_HUB_CAMPAIGN",
-                                    "title": "$loc UI_MENU_PAGE_HUB_STORY",
-                                    "icon": "story",
-                                    "image": "$res images/livetile/tile_story.jpg"
-                                },
-                                "actions": {
-                                    "accept": [
-                                        {
-                                            "set-selected": {
-                                                "target": "category_story"
-                                            }
-                                        }
-                                    ],
-                                    "select": {
-                                        "replace-children": {
-                                            "target": "headline_container",
-                                            "children": [
-                                                {
-                                                    "view": "menu3.basic.HeadlineElement",
-                                                    "selectable": false,
-                                                    "pressable": false,
-                                                    "data": {
-                                                        "header": "$loc UI_MENU_PAGE_HUB_CAMPAIGN",
-                                                        "title": "$loc UI_MENU_PAGE_HUB_STORY",
-                                                        "typeicon": "story"
-                                                    }
-                                                }
-                                            ]
-                                        }
-                                    },
-                                    "deselect": {
-                                        "replace-children": {
-                                            "target": "headline_container",
-                                            "children": []
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    {
-                        "view": "menu3.basic.ItemTileSmall",
-                        "row": 0,
-                        "col": 6,
-                        "nrows": 1.5,
-                        "ncols": 2,
-                        "data": {
-                            "title": "$loc UI_PEACOCK_GO_OFFLINE",
-                            "icon": "goonline",
-                            "image": "$res images/ui/tiles/button_goonline.jpg"
-                        },
-                        "actions": {
-                            "accept": {
-                                "force-offline": {}
-                            },
                             "select": {
                                 "replace-children": {
                                     "target": "headline_container",
@@ -178,56 +113,8 @@
                                             "selectable": false,
                                             "pressable": false,
                                             "data": {
-                                                "header": "",
-                                                "title": "$loc UI_PEACOCK_GO_OFFLINE",
-                                                "typeicon": "goonline"
-                                            }
-                                        }
-                                    ]
-                                }
-                            },
-                            "deselect": {
-                                "replace-children": {
-                                    "target": "headline_container",
-                                    "children": []
-                                }
-                            }
-                        }
-                    },
-                    {
-                        "view": "menu3.basic.ItemTileSmall",
-                        "row": 0,
-                        "col": 4,
-                        "nrows": 1.5,
-                        "ncols": 2,
-                        "data": {
-                            "header": "$loc UI_PEACOCK_POWERED_BY",
-                            "title": "$loc UI_PEACOCK_BRANDING",
-                            "icon": "story",
-                            "image": "$res images/contracts/novikov_and_magolis/tile.jpg"
-                        },
-                        "actions": {
-                            "accept": {
-                                "$if $isnullorempty $.ServerTile.url": {
-                                    "$then": {},
-                                    "$else": {
-                                        "open-url": {
-                                            "url": "$.ServerTile.url"
-                                        }
-                                    }
-                                }
-                            },
-                            "select": {
-                                "replace-children": {
-                                    "target": "headline_container",
-                                    "children": [
-                                        {
-                                            "view": "menu3.basic.HeadlineElement",
-                                            "selectable": false,
-                                            "pressable": false,
-                                            "data": {
-                                                "header": "$loc UI_PEACOCK_POWERED_BY",
-                                                "title": "$loc UI_PEACOCK_BRANDING",
+                                                "header": "$loc UI_MENU_PAGE_HUB_CAMPAIGN",
+                                                "title": "$loc UI_MENU_PAGE_HUB_STORY",
                                                 "typeicon": "story"
                                             }
                                         }
@@ -241,153 +128,279 @@
                                 }
                             }
                         }
+                    }
+                }
+            },
+            {
+                "view": "menu3.basic.ItemTileSmall",
+                "row": 0,
+                "col": 6,
+                "nrows": 1.5,
+                "ncols": 2,
+                "data": {
+                    "title": "$loc UI_PEACOCK_GO_OFFLINE",
+                    "icon": "goonline",
+                    "image": "$res images/ui/tiles/button_goonline.jpg"
+                },
+                "actions": {
+                    "accept": {
+                        "force-offline": {}
                     },
-                    {
-                        "view": "menu3.basic.ItemTileSmall",
-                        "row": 1.5,
-                        "col": 6,
-                        "nrows": 1.5,
-                        "ncols": 2,
-                        "data": {
-                            "title": "$loc UI_DIALOG_LOAD_GAME",
-                            "icon": "load",
-                            "image": "$res images/ui/tiles/load_menu_tile.jpg"
-                        },
-                        "actions": {
-                            "accept": {
-                                "link": {
-                                    "page": "loadpage",
-                                    "args": {
-                                        "url": "load",
-                                        "args": {
-                                            "saveorload": "load"
-                                        },
-                                        "saveorload": "load",
-                                        "mainmenu": true,
-                                        "reloadonchange": true
-                                    }
-                                }
-                            },
-                            "select": {
-                                "replace-children": {
-                                    "target": "headline_container",
-                                    "children": [
-                                        {
-                                            "view": "menu3.basic.HeadlineElement",
-                                            "selectable": false,
-                                            "pressable": false,
-                                            "data": {
-                                                "header": "",
-                                                "title": "$loc UI_DIALOG_LOAD_GAME",
-                                                "typeicon": "load"
-                                            }
-                                        }
-                                    ]
-                                }
-                            },
-                            "deselect": {
-                                "replace-children": {
-                                    "target": "headline_container",
-                                    "children": []
-                                }
-                            }
-                        }
-                    },
-                    {
-                        "$each $.PeacockDashValues": {
-                            "controller": "container",
-                            "row": "$.row",
-                            "col": "$.col",
-                            "nrows": 1.5,
-                            "ncols": 2,
-                            "usechilddimensions": true,
+                    "select": {
+                        "replace-children": {
+                            "target": "headline_container",
                             "children": [
                                 {
-                                    "$include": {
-                                        "$path": "$.LoadValue"
+                                    "view": "menu3.basic.HeadlineElement",
+                                    "selectable": false,
+                                    "pressable": false,
+                                    "data": {
+                                        "header": "",
+                                        "title": "$loc UI_PEACOCK_GO_OFFLINE",
+                                        "typeicon": "goonline"
                                     }
                                 }
                             ]
                         }
                     },
-                    {
-                        "view": "menu3.basic.MenuTileTall",
-                        "row": 0,
-                        "col": 8,
-                        "nrows": 3,
-                        "ncols": 2,
-                        "data": {
-                            "header": "$loc UI_MENU_PAGE_HUB_GAMEMODE",
-                            "title": "$loc UI_EVERGREEN_TITLE",
-                            "icon": "evergreen_gamemode",
-                            "image": "$res images/livetile/tile_gamemode_evergreen.jpg"
-                        },
-                        "actions": {
-                            "accept": [
+                    "deselect": {
+                        "replace-children": {
+                            "target": "headline_container",
+                            "children": []
+                        }
+                    }
+                }
+            },
+            {
+                "view": "menu3.basic.ItemTileSmall",
+                "row": 0,
+                "col": 4,
+                "nrows": 1.5,
+                "ncols": 2,
+                "data": {
+                    "header": "$loc UI_PEACOCK_POWERED_BY",
+                    "title": "$loc UI_PEACOCK_BRANDING",
+                    "icon": "story",
+                    "image": "$res images/contracts/novikov_and_magolis/tile.jpg"
+                },
+                "actions": {
+                    "accept": {
+                        "open-url": {
+                            "url": "https://thepeacockproject.org"
+                        }
+                    },
+                    "select": {
+                        "replace-children": {
+                            "target": "headline_container",
+                            "children": [
                                 {
-                                    "set-menu-context": {
-                                        "value": {
-                                            "onpageopened": {
-                                                "set-selected": {
-                                                    "target": "PLANNING_BUTTON_PLAY"
-                                                },
-                                                "trigger-input": {
-                                                    "action": "accept"
-                                                }
-                                            }
-                                        }
+                                    "view": "menu3.basic.HeadlineElement",
+                                    "selectable": false,
+                                    "pressable": false,
+                                    "data": {
+                                        "header": "$loc UI_PEACOCK_POWERED_BY",
+                                        "title": "$loc UI_PEACOCK_BRANDING",
+                                        "typeicon": "story"
                                     }
+                                }
+                            ]
+                        }
+                    },
+                    "deselect": {
+                        "replace-children": {
+                            "target": "headline_container",
+                            "children": []
+                        }
+                    }
+                }
+            },
+            {
+                "view": "menu3.basic.ItemTileSmall",
+                "row": 1.5,
+                "col": 6,
+                "nrows": 1.5,
+                "ncols": 2,
+                "data": {
+                    "title": "$loc UI_DIALOG_LOAD_GAME",
+                    "icon": "load",
+                    "image": "$res images/ui/tiles/load_menu_tile.jpg"
+                },
+                "actions": {
+                    "accept": {
+                        "link": {
+                            "page": "loadpage",
+                            "args": {
+                                "url": "load",
+                                "args": {
+                                    "saveorload": "load"
                                 },
+                                "saveorload": "load",
+                                "mainmenu": true,
+                                "reloadonchange": true
+                            }
+                        }
+                    },
+                    "select": {
+                        "replace-children": {
+                            "target": "headline_container",
+                            "children": [
                                 {
-                                    "link": {
-                                        "page": "planning",
-                                        "args": {
-                                            "url": "planning",
-                                            "args": {
-                                                "contractid": "f8ec92c2-4fa2-471e-ae08-545480c746ee",
-                                                "resetescalation": false
-                                            },
-                                            "contractid": "f8ec92c2-4fa2-471e-ae08-545480c746ee"
-                                        }
+                                    "view": "menu3.basic.HeadlineElement",
+                                    "selectable": false,
+                                    "pressable": false,
+                                    "data": {
+                                        "header": "",
+                                        "title": "$loc UI_DIALOG_LOAD_GAME",
+                                        "typeicon": "load"
                                     }
                                 }
-                            ],
-                            "select": {
-                                "replace-children": {
-                                    "target": "headline_container",
-                                    "children": [
-                                        {
-                                            "view": "menu3.basic.HeadlineElement",
-                                            "selectable": false,
-                                            "pressable": false,
-                                            "data": {
-                                                "header": "$loc UI_MENU_PAGE_HUB_GAMEMODE",
-                                                "title": "$loc UI_EVERGREEN_TITLE",
-                                                "typeicon": "evergreen_gamemode"
-                                            }
+                            ]
+                        }
+                    },
+                    "deselect": {
+                        "replace-children": {
+                            "target": "headline_container",
+                            "children": []
+                        }
+                    }
+                }
+            },
+            {
+                "id": "contractattack_button",
+                "controller": "contextitem",
+                "view": "menu3.basic.ItemTileSmall",
+                "row": 1.5,
+                "col": 4,
+                "nrows": 1.5,
+                "ncols": 2,
+                "data": {
+                    "title": "$loc UI_PEACOCK_ESCALATIONS",
+                    "header": "$loc UI_MENU_PAGE_HUB_GAMEMODE",
+                    "icon": "54",
+                    "image": "$res images/challenges/profile_challenges/escalation_s2_tier_9.jpg"
+                },
+                "actions": {
+                    "accept": {
+                        "link": {
+                            "page": "gamemode_arcade",
+                            "args": {
+                                "url": "hitscategory",
+                                "type": "ContractAttack",
+                                "mode": "dataonly"
+                            }
+                        }
+                    },
+                    "select": [
+                        {
+                            "replace-children": {
+                                "target": "headline_container",
+                                "children": [
+                                    {
+                                        "view": "menu3.basic.HeadlineElement",
+                                        "selectable": true,
+                                        "pressable": true,
+                                        "data": {
+                                            "header": "$loc UI_MENU_PAGE_HUB_GAMEMODE",
+                                            "title": "$loc UI_PEACOCK_ESCALATIONS",
+                                            "typeicon": "54"
                                         }
-                                    ]
-                                }
-                            },
-                            "deselect": {
-                                "replace-children": {
-                                    "target": "headline_container",
-                                    "children": []
-                                }
-                            },
-                            "actiony": {
-                                "prompt_label": "$loc UI_PEACOCK_GO_TO_DESTINATION",
-                                "link": {
-                                    "page": "gamemode_evergreen",
-                                    "args": {
-                                        "locationId": "LOCATION_PARENT_SNUG"
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "deselect": [
+                        {
+                            "replace-children": {
+                                "target": "headline_container",
+                                "children": [
+                                    {
+                                        "view": "menu3.basic.HeadlineElement",
+                                        "selectable": true,
+                                        "pressable": true
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "view": "menu3.basic.MenuTileTall",
+                "row": 0,
+                "col": 8,
+                "nrows": 3,
+                "ncols": 2,
+                "data": {
+                    "header": "$loc UI_MENU_PAGE_HUB_GAMEMODE",
+                    "title": "$loc UI_EVERGREEN_TITLE",
+                    "icon": "evergreen_gamemode",
+                    "image": "$res images/livetile/tile_gamemode_evergreen.jpg"
+                },
+                "actions": {
+                    "accept": [
+                        {
+                            "set-menu-context": {
+                                "value": {
+                                    "onpageopened": {
+                                        "set-selected": {
+                                            "target": "PLANNING_BUTTON_PLAY"
+                                        },
+                                        "trigger-input": {
+                                            "action": "accept"
+                                        }
                                     }
                                 }
                             }
+                        },
+                        {
+                            "link": {
+                                "page": "planning",
+                                "args": {
+                                    "url": "planning",
+                                    "args": {
+                                        "contractid": "f8ec92c2-4fa2-471e-ae08-545480c746ee",
+                                        "resetescalation": false
+                                    },
+                                    "contractid": "f8ec92c2-4fa2-471e-ae08-545480c746ee"
+                                }
+                            }
+                        }
+                    ],
+                    "select": {
+                        "replace-children": {
+                            "target": "headline_container",
+                            "children": [
+                                {
+                                    "view": "menu3.basic.HeadlineElement",
+                                    "selectable": false,
+                                    "pressable": false,
+                                    "data": {
+                                        "header": "$loc UI_MENU_PAGE_HUB_GAMEMODE",
+                                        "title": "$loc UI_EVERGREEN_TITLE",
+                                        "typeicon": "evergreen_gamemode"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "deselect": {
+                        "replace-children": {
+                            "target": "headline_container",
+                            "children": []
+                        }
+                    },
+                    "actiony": {
+                        "prompt_label": "$loc UI_PEACOCK_GO_TO_DESTINATION",
+                        "link": {
+                            "page": "gamemode_evergreen",
+                            "args": {
+                                "locationId": "LOCATION_PARENT_SNUG"
+                            }
                         }
                     }
-                ]
+                }
             }
-        }
+        ]
     }
 }

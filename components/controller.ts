@@ -238,13 +238,6 @@ export const _legacyBull: MissionManifest = JSON.parse(LEGACYFF)
 export const _theLastYardbirdScpc: MissionManifest =
     JSON.parse(LASTYARDBIRDSCPC)
 
-export const peacockRecentEscalations: readonly string[] = [
-    "74415eca-d01e-4070-9bc9-5ef9b4e8f7d2",
-    "9e0188e8-bdad-476c-b4ce-2faa5d2be56c",
-    "0cceeecb-c8fe-42a4-aee4-d7b575f56a1b",
-    "667f48a3-7f6b-486e-8f6b-2f782a5c4857",
-]
-
 /**
  * Ensure a mission has the bare minimum required to work.
  *
@@ -397,9 +390,9 @@ export class Controller {
     escalationMappings: Map<string, Record<string, string>> = new Map()
     public progressionService: ProgressionService
     /**
-     * A list of Simple Mod Framework mods installed.
+     * SMF's lastDeploy.json
      */
-    public readonly installedMods: readonly string[]
+    public readonly lastDeploy: SMFLastDeploy
     private _pubIdToContractId: Map<string, string> = new Map()
     /** Internal elusive target contracts - only accessible during bootstrap. */
     private _internalElusives: MissionManifest[] | undefined
@@ -425,31 +418,13 @@ export class Controller {
         }
 
         if (modFrameworkDataPath && existsSync(modFrameworkDataPath)) {
-            this.installedMods = (
-                parse(
-                    readFileSync(modFrameworkDataPath!).toString(),
-                ) as SMFLastDeploy
-            )?.loadOrder as readonly string[]
+            this.lastDeploy = parse(
+                readFileSync(modFrameworkDataPath!).toString(),
+            )
             return
         }
 
-        this.installedMods = []
-    }
-
-    /**
-     * You should use {@link modIsInstalled} instead!
-     *
-     * Returns whether a mod is UNAVAILABLE.
-     *
-     * @param modId The mod's ID.
-     * @returns If the mod is unavailable. You should probably abort initialization if true is returned. Also returns true if the `overrideFrameworkChecks` flag is set.
-     * @deprecated since v5.5.0
-     */
-    public addClientSideModDependency(modId: string): boolean {
-        return (
-            !this.installedMods.includes(modId) ||
-            getFlag("overrideFrameworkChecks") === true
-        )
+        this.lastDeploy = null
     }
 
     /**
@@ -460,7 +435,7 @@ export class Controller {
      */
     public modIsInstalled(modId: string): boolean {
         return (
-            this.installedMods.includes(modId) ||
+            this.lastDeploy?.loadOrder.includes(modId) ||
             getFlag("overrideFrameworkChecks") === true
         )
     }
@@ -480,6 +455,7 @@ export class Controller {
         log(
             LogLevel.INFO,
             "Booting Peacock internal services - this may take a moment.",
+            "boot",
         )
 
         await this._loadInternalContracts()
@@ -496,13 +472,10 @@ export class Controller {
             log(
                 LogLevel.INFO,
                 "Simple Mod Framework installed - using the data it outputs.",
+                "boot",
             )
 
-            const lastServerSideData = (
-                parse(
-                    readFileSync(modFrameworkDataPath!).toString(),
-                ) as SMFLastDeploy
-            ).lastServerSideStates
+            const lastServerSideData = this.lastDeploy?.lastServerSideStates
 
             if (lastServerSideData?.unlockables) {
                 this.configManager.configs["allunlockables"] =
@@ -510,12 +483,54 @@ export class Controller {
             }
 
             if (lastServerSideData?.contracts) {
-                for (const [contractId, contractData] of Object.entries(
+                for (const contractData of Object.values(
                     lastServerSideData.contracts,
                 )) {
-                    this.contracts.set(contractId, contractData)
+                    this.addMission(contractData)
 
-                    if (contractData.SMF.destinations?.addToDestinations) {
+                    if (contractData.SMF?.destinations?.addToDestinations) {
+                        if (
+                            typeof contractData.SMF.destinations
+                                .peacockIntegration === "undefined" ||
+                            contractData.SMF.destinations.peacockIntegration
+                        ) {
+                            if (contractData.SMF.destinations.placeBefore) {
+                                controller.missionsInLocations[
+                                    contractData.Metadata.Location
+                                ].splice(
+                                    controller.missionsInLocations[
+                                        contractData.Metadata.Location
+                                    ].indexOf(
+                                        contractData.SMF.destinations
+                                            .placeBefore,
+                                    ),
+                                    0,
+                                    contractData.Metadata.Id,
+                                )
+                            } else if (
+                                contractData.SMF.destinations.placeAfter
+                            ) {
+                                controller.missionsInLocations[
+                                    contractData.Metadata.Location
+                                ].splice(
+                                    controller.missionsInLocations[
+                                        contractData.Metadata.Location
+                                    ].indexOf(
+                                        contractData.SMF.destinations
+                                            .placeAfter,
+                                    ) + 1,
+                                    0,
+                                    contractData.Metadata.Id,
+                                )
+                            } else {
+                                controller.missionsInLocations[
+                                    contractData.Metadata.Location
+                                ].push(contractData.Metadata.Id)
+                            }
+                        }
+                    }
+
+                    if (contractData.SMF?.destinations?.addToDestinations) {
                         if (contractData.SMF.destinations.peacockIntegration) {
                             if (contractData.SMF.destinations.placeBefore) {
                                 controller.missionsInLocations[
@@ -597,7 +612,11 @@ export class Controller {
             this.hooks.challengesLoaded.call()
             this.hooks.masteryDataLoaded.call()
         } catch (e) {
-            log(LogLevel.ERROR, `Fatal error with challenge bootstrap: ${e}`)
+            log(
+                LogLevel.ERROR,
+                `Fatal error with challenge bootstrap: ${e}`,
+                "boot",
+            )
             log(LogLevel.ERROR, e.stack)
         }
     }
@@ -1177,7 +1196,6 @@ export class Controller {
         let theExports
 
         try {
-            // eslint-disable-next-line prefer-const
             theExports = new Script(pluginContents, {
                 filename: pluginPath,
             }).runInContext(context)
@@ -1269,7 +1287,11 @@ export class Controller {
             groupCount++
         }
 
-        log(LogLevel.DEBUG, `Discovered ${groupCount} escalation groups.`)
+        log(
+            LogLevel.DEBUG,
+            `Discovered ${groupCount} escalation groups.`,
+            "scanGroups",
+        )
     }
 }
 

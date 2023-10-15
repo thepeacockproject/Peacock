@@ -11,96 +11,6 @@
         },
         "Objectives": [
             {
-                "Id": "857f627c-8297-4185-a07d-670b0a73c929",
-                "Name": "UI_GAMECHANGERS_COLOMBIA_NO_HELICOPTER_EXIT_NAME",
-                "BriefingName": "$loc UI_GAMECHANGERS_COLOMBIA_NO_HELICOPTER_EXIT_NAME",
-                "Description": "UI_GAMECHANGERS_COLOMBIA_NO_HELICOPTER_EXIT_DESC",
-                "Image": "images/contracts/gamechangers/Gamechanger_Colombia_No_Helicopter_Exit.jpg",
-                "ObjectivesCategory": "primary",
-                "IsHidden": null,
-                "Resource": [],
-                "Exits": [
-                    "b4fe489f-bd01-446c-869c-b37efb7cab33",
-                    "a58d7495-ea70-45e5-be02-690698b74a33",
-                    "6e23cf2d-42b0-4474-baa8-3e175a6ed206",
-                    "d7187ebf-f693-4fde-81fb-18b342dd096a",
-                    "f4cc9dbb-7aa5-47c2-990a-e0ef73545261",
-                    "e0911939-e000-4984-83a3-882df7d65093",
-                    "18b7dd32-caf9-4710-ad42-f7594b3a96fe"
-                ],
-                "ObjectiveType": "custom",
-                "Category": "primary",
-                "ExcludeFromScoring": true,
-                "BriefingText": "$loc UI_GAMECHANGERS_COLOMBIA_NO_HELICOPTER_EXIT_DESC",
-                "HUDTemplate": {
-                    "display": "$loc UI_GAMECHANGERS_COLOMBIA_NO_HELICOPTER_EXIT_NAME"
-                },
-                "Type": "statemachine",
-                "Definition": {
-                    "States": { "Start": { "-": { "Transition": "Success" } } }
-                }
-            },
-            {
-                "Id": "a7f29a71-04e5-47aa-b170-7adce4359acf",
-                "Name": "UI_GAMECHANGERS_COLOMBIA_HIDING_IN_LVA_NAME",
-                "Description": "UI_GAMECHANGERS_COLOMBIA_HIDING_IN_LVA_DESC",
-                "Image": "images/contracts/gamechangers/Gamechanger_Colombia_Hiding_In_LVA.jpg",
-                "ObjectivesCategory": "primary",
-                "IsHidden": null,
-                "Resource": [],
-                "Category": "primary",
-                "OnActive": { "IfCompleted": { "Visible": false } },
-                "BriefingText": "$loc UI_GAMECHANGERS_COLOMBIA_HIDING_IN_LVA_NAME",
-                "HUDTemplate": {
-                    "display": "$loc UI_GAMECHANGERS_COLOMBIA_HIDING_IN_LVA_DESC"
-                },
-                "Type": "statemachine",
-                "ExcludeFromScoring": true,
-                "Definition": {
-                    "Scope": "session",
-                    "Context": {},
-                    "States": {
-                        "Start": {
-                            "IntroCutEnd": { "Transition": "TimerRunning" }
-                        },
-                        "Success": {
-                            "CurrentlyNotInLVA": {
-                                "Transition": "TimerRunning"
-                            }
-                        },
-                        "TimerRunning": {
-                            "exit_gate": { "Transition": "Success" },
-                            "$timer": {
-                                "Condition": { "$after": 15 },
-                                "Transition": "Failure"
-                            },
-                            "CurrentlyInLVA": { "Transition": "Success" }
-                        }
-                    }
-                }
-            },
-            {
-                "Id": "ea688d1a-81c2-4807-ab12-297a1347c772",
-                "Name": "UI_GAMECHANGERS_COLOMBIA_HIDING_IN_LVA_NAME",
-                "Description": "UI_GAMECHANGERS_COLOMBIA_HIDING_IN_LVA_DESC",
-                "Image": "images/contracts/gamechangers/Gamechanger_Colombia_Hiding_In_LVA.jpg",
-                "BriefingName": "$loc UI_GAMECHANGERS_COLOMBIA_HIDING_IN_LVA_NAME",
-                "ObjectiveType": "custom",
-                "ObjectivesCategory": "primary",
-                "IsHidden": null,
-                "Resource": [],
-                "Category": "primary",
-                "ExcludeFromScoring": true,
-                "BriefingText": "$loc UI_GAMECHANGERS_COLOMBIA_HIDING_IN_LVA_DESC",
-                "HUDTemplate": {
-                    "display": "$loc UI_GAMECHANGERS_COLOMBIA_HIDING_IN_LVA_DESC"
-                },
-                "Type": "statemachine",
-                "Definition": {
-                    "States": { "Start": { "-": { "Transition": "Success" } } }
-                }
-            },
-            {
                 "Id": "a66f63a6-b617-4ea4-9ab5-225dd001dd1b",
                 "Category": "primary",
                 "ObjectiveType": "kill",
@@ -278,8 +188,7 @@
             }
         ],
         "Bricks": [
-            "assembly:/_pro/scenes/missions/colombia/gamechanger_hippo_calluna.brick",
-            "assembly:/_PRO/Scenes/Missions/Colombia/gamechanger_hippo_hiding_in_lva.brick"
+            "assembly:/_pro/scenes/missions/colombia/gamechanger_hippo_calluna.brick"
         ],
         "GameChangers": [
             "a7f29a71-04e5-47aa-b170-7adce4359acf",
@@ -295,15 +204,21 @@
         "CreationTimestamp": "2018-09-25T15:01:38.7653611Z",
         "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
         "Title": "UI_CONTRACT_CALLUNA_LEVEL_3_TITLE",
-        "TileImage": "images/contracts/escalation/contractescalation_colombia_calluna.jpg",
         "Description": "",
         "CodeName_Hint": "Calluna Level 3",
         "Location": "LOCATION_COLOMBIA",
         "ScenePath": "assembly:/_pro/scenes/missions/colombia/scene_hippo_calluna.entity",
         "Release": "2.1.x Escalation",
         "Type": "escalation",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "857f627c-8297-4185-a07d-670b0a73c929" },
+            { "IsNew": true, "Id": "1ec56e15-d9d8-493e-ad28-c2592a0a7f77" },
+            { "Id": "6517b906-933e-48cc-b361-5094e4013ff1" },
+            { "Id": "a66f63a6-b617-4ea4-9ab5-225dd001dd1b" },
+            { "Id": "a7f29a71-04e5-47aa-b170-7adce4359acf" }
+        ],
         "Entitlements": ["H2_LEGACY_STANDARD"],
-        "LastUpdate": "2021-04-20T12:25:01.343019Z",
+        "LastUpdate": "2023-05-11T10:33:14.4335477Z",
         "PublicId": "012321761947"
     },
     "UserData": {}

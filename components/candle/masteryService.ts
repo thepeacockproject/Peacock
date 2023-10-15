@@ -62,7 +62,7 @@ export class MasteryService {
      * @Value A `MasteryPackage` object.
      */
     private unlockableMasteryData: Map<
-        string,
+        GameVersion,
         Map<string, UnlockableMasteryData>
     > = new Map([
         ["h1", new Map()],
@@ -182,7 +182,7 @@ export class MasteryService {
      * @param locationParentId The location's parent ID, used for progression storage @since v7.0.0
      * @param maxLevel The max level for this progression.
      * @param levelToXpRequired A function to get the XP required for a level.
-     * @param subPackageId? The subpackage id you want.
+     * @param subPackageId The subpackage id you want.
      */
     private getCompletionData(
         userId: string,
@@ -237,7 +237,7 @@ export class MasteryService {
      * @param gameVersion The game version.
      * @param userId The id of the user.
      * @param contractType The type of the contract, only used to distinguish evergreen from other types (default).
-     * @param subPackageId? The id of the subpackage you want.
+     * @param subPackageId The id of the subpackage you want.
      * @returns The CompletionData object.
      */
     getLocationCompletion(

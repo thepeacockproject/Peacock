@@ -93,6 +93,8 @@ import FrankensteinPlanningTemplate from "../static/FrankensteinPlanningTemplate
 import Videos from "../static/Videos.json"
 import ChallengeLocationTemplate from "../static/ChallengeLocationTemplate.json"
 import H2ChallengeLocationTemplate from "../static/H2ChallengeLocationTemplate.json"
+import H2CareerTemplate from "../static/H2CareerTemplate.json"
+import H2SniperContentTemplate from "../static/H2SniperContentTemplate.json"
 import LegacyChallengeLocationTemplate from "../static/LegacyChallengeLocationTemplate.json"
 import ReportTemplate from "../static/ReportTemplate.json"
 import ContractSearchPageTemplate from "../static/ContractSearchPageTemplate.json"
@@ -113,7 +115,9 @@ import LegacyMasteryLocationTemplate from "../static/LegacyMasteryLocationTempla
 import DefaultCpdConfig from "../static/DefaultCpdConfig.json"
 import EvergreenGameChangerProperties from "../static/EvergreenGameChangerProperties.json"
 import AreaMap from "../static/AreaMap.json"
+import ArcadePageTemplate from "../static/ArcadePageTemplate.json"
 import HitsCategoryElusiveTemplate from "../static/HitsCategoryElusiveTemplate.json"
+import HitsCategoryContractAttackTemplate from "../static/HitsCategoryContractAttackTemplate.json"
 import MissionRewardsTemplate from "../static/MissionRewardsTemplate.json"
 import SniperUnlockables from "../static/SniperUnlockables.json"
 import ScpcLocationsData from "../static/ScpcLocationsData.json"
@@ -191,7 +195,9 @@ const configs = {
     H2LookupContractByIdTemplate: H2LookupContractTemplate,
     H2LookupContractFavoriteTemplate: H2LookupContractTemplate,
     H2FilterData,
+    H2CareerTemplate,
     H2DashboardTemplate,
+    H2SniperContentTemplate,
     FrankensteinMmSpTemplate,
     FrankensteinMmMpTemplate,
     FrankensteinPlanningTemplate,
@@ -218,7 +224,9 @@ const configs = {
     DefaultCpdConfig,
     EvergreenGameChangerProperties,
     AreaMap,
+    ArcadePageTemplate,
     HitsCategoryElusiveTemplate,
+    HitsCategoryContractAttackTemplate,
     MissionRewardsTemplate,
     SniperUnlockables,
 }

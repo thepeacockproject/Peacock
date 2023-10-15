@@ -974,8 +974,13 @@ export interface MissionManifestMetadata {
     IsEvergreenSafehouse?: boolean
     UseContractProgressionData?: boolean
     CpdId?: string
-    // Elusive custom property (like official's year)
+    /**
+     * Custom property used for Elusives (like official's year)
+     * and Escalations (if it's 0, it is a Peacock escalation,
+     * and OriginalSeason will exist for filtering).
+     */
     Season?: number
+    OriginalSeason?: number
     // Used for sniper scoring
     Modules?: ManifestScoringModule[]
 }
@@ -1526,8 +1531,21 @@ export type ContractProgressionData = Record<string, string | number | boolean>
 
 /** SMF's lastDeploy.json */
 export interface SMFLastDeploy {
+    runtimePath: string
+    retailPath: string
+    skipIntro: boolean
+    outputToSeparateDirectory: boolean
     loadOrder: string[]
+    modOptions: {
+        [modId: string]: string[]
+    }
+    outputConfigToAppDataOnDeploy: boolean
+    reportErrors: boolean
+    developerMode: boolean
+    knownMods: string[]
+    platform: string
     lastServerSideStates?: {
+        peacockPlugins: string[]
         unlockables?: Unlockable[]
         contracts?: {
             [k: string]: MissionManifest
