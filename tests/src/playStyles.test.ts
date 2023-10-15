@@ -19,6 +19,7 @@
 import { loadConfig } from "../mocks/configSwizzleManager"
 import { ContractSession, RatingKill } from "../../components/types/types"
 import { calculatePlaystyle } from "../../components/playStyles"
+import { describe, expect, test } from "vitest"
 
 loadConfig("Playstyles")
 

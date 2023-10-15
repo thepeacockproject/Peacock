@@ -1106,6 +1106,7 @@ menuDataRouter.get(
                 }
 
                 if (theMissions !== undefined) {
+                    // eslint-disable-next-line no-extra-semi
                     ;(theMissions as string[])
                         .filter(
                             // removes snow festival on h1

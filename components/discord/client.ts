@@ -172,10 +172,14 @@ export class RPCClient extends EventEmitter {
         pid = process.pid,
     ): Promise<unknown> {
         let timestamps
-        let assets
+        let assets: {
+            large_image: string
+            large_text: string
+            small_image: string
+            small_text: string
+        }
 
         if (args.startTimestamp || args.endTimestamp) {
-            // eslint-disable-next-line prefer-const
             timestamps = {
                 start: args.startTimestamp,
                 end: args.endTimestamp,
@@ -196,7 +200,6 @@ export class RPCClient extends EventEmitter {
             args.smallImageKey ||
             args.smallImageText
         ) {
-            // eslint-disable-next-line prefer-const
             assets = {
                 large_image: args.largeImageKey,
                 large_text: args.largeImageText,

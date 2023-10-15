@@ -1196,7 +1196,6 @@ export class Controller {
         let theExports
 
         try {
-            // eslint-disable-next-line prefer-const
             theExports = new Script(pluginContents, {
                 filename: pluginPath,
             }).runInContext(context)

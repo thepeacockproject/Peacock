@@ -258,6 +258,7 @@ export class HitsCategoryService {
                                     )
                                 break
                             default:
+                                // eslint-disable-next-line no-extra-semi
                                 ;(isPeacock ? contracts : nEscalations).push(id)
                         }
                     }
