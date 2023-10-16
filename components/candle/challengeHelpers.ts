@@ -270,7 +270,6 @@ export function filterChallenge(
             }
 
             if (challenge.Tags.includes("escalation")) {
-                // TODO: change this when pontus is added.
                 return (
                     !isSniperLocation(options.parent) &&
                     "LOCATION_PARENT_SNUG" !== options.parent
