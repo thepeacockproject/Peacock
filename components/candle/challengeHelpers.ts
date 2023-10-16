@@ -273,9 +273,7 @@ export function filterChallenge(
                 // TODO: change this when pontus is added.
                 return (
                     !isSniperLocation(options.parent) &&
-                    !["LOCATION_PARENT_SNUG", "LOCATION_PARENT_ROCKY"].includes(
-                        options.parent,
-                    )
+                    "LOCATION_PARENT_SNUG" !== options.parent
                 )
             }
 
