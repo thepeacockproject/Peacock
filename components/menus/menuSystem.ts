@@ -91,10 +91,6 @@ export class MenuSystemDatabase {
                     configs.push(
                         "images/unlockables/outfit_ef223b60-b53a-4c7b-b914-13c3310fc61a_0.jpg",
                     )
-
-                    configs.push(
-                        "images/unlockables_override/47_outfits_legacy47.jpg",
-                    )
                 }
 
                 if (["h3", "h1"].includes(gameVersion)) {
