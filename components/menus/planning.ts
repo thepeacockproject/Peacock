@@ -372,7 +372,7 @@ export async function planningView(
     const limitedLoadoutUnlockLevelMap = {
         LOCATION_MIAMI: 2,
         LOCATION_HOKKAIDO: 20,
-        LOCATION_HOKKAIDO_SHIM_MAMUSHI: 20,
+        LOCATION_HOKKAIDO_MAMUSHI: 20,
     }
 
     if (

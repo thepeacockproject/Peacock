@@ -240,7 +240,6 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
     for (const child in locations.children) {
         if (
             child === "LOCATION_ICA_FACILITY_ARRIVAL" ||
-            child === "LOCATION_HOKKAIDO_SHIM_MAMUSHI" ||
             child.includes("SNUG_")
         ) {
             continue
@@ -1821,7 +1820,6 @@ menuDataRouter.get("/PlayerProfile", (req: RequestWithJwt, res) => {
         // Ewww...
         if (
             subLocationKey === "LOCATION_ICA_FACILITY_ARRIVAL" ||
-            subLocationKey === "LOCATION_HOKKAIDO_SHIM_MAMUSHI" ||
             subLocationKey.includes("SNUG_")
         ) {
             continue
