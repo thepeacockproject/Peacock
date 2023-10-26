@@ -1545,7 +1545,6 @@ export interface SMFLastDeploy {
     knownMods: string[]
     platform: string
     lastServerSideStates?: {
-        peacockPlugins: string[]
         unlockables?: Unlockable[]
         contracts?: {
             [k: string]: MissionManifest
