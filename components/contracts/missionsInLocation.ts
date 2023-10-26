@@ -65,7 +65,6 @@ export const missionsInLocations = {
         LOCATION_ICA_FACILITY_SHIP: ["aee6a16f-6525-4d63-a37f-225e293c6118"],
         LOCATION_ICA_FACILITY: ["c469d91d-01fc-4314-b22c-71cb804e92c0"],
         LOCATION_PARIS: [
-            "07bbf22b-d6ae-4883-bec2-122eeeb7b665",
             "4f6ee6ec-b6d7-4958-9838-0352c10294a0",
             "e6be23e8-8602-42c8-a014-17ffbfa053f5",
             "e01113e6-f27d-4ea1-a8ba-93062335bbf5",
@@ -86,6 +85,7 @@ export const missionsInLocations = {
             "d6961637-effe-4c39-b99a-f2df4402657d",
             "ced3ecb8-70ab-40b0-b033-6f6235c61900",
         ],
+        LOCATION_PARIS_NOEL: ["07bbf22b-d6ae-4883-bec2-122eeeb7b665"],
         LOCATION_COASTALTOWN: [
             "9e0188e8-bdad-476c-b4ce-2faa5d2be56c",
             "74415eca-d01e-4070-9bc9-5ef9b4e8f7d2",
