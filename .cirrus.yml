@@ -8,7 +8,7 @@ Patcher_task:
     # skip if patcher remains unchanged
     skip: "!changesInclude('.cirrus.yml', '**.{cs,resx,config,settings,ico,csproj,sln}')"
     windows_container:
-        image: cirrusci/windowsservercore:visualstudio2022
+        image: mcr.microsoft.com/dotnet/framework/sdk:4.6
     Build_script:
         - patcher/BuildCI.cmd
     Patcher_Windows_artifacts:
