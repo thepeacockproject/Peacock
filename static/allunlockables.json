@@ -783,6 +783,38 @@
         "Rarity": null
     },
     {
+        "Id": "LOCATION_PARIS_NOEL",
+        "Guid": "6aedebec-74d0-4ab9-a056-f5f454e6b8ae",
+        "Type": "location",
+        "Subtype": "sublocation",
+        "ImageId": null,
+        "RMTPrice": -1,
+        "GamePrice": -1,
+        "IsPurchasable": false,
+        "IsPublished": true,
+        "IsDroppable": false,
+        "Capabilities": [],
+        "Qualities": {},
+        "Properties": {
+            "ParentLocation": "LOCATION_PARENT_PARIS",
+            "Quality": "",
+            "v0Id": "525820b6ccd48060e0f35ff1",
+            "Icon": "images/locations/LOCATION_PARIS_NOEL/tile.jpg",
+            "DlcImage": "images/livetile/dlc/tile_hitman3.jpg",
+            "DlcName": "GAME_STORE_METADATA_S3_GAME_TITLE",
+            "Background": "images/locations/LOCATION_PARIS_NOEL/background.jpg",
+            "GameChangers": [],
+            "Order": 0,
+            "ProgressionKey": "LOCATION_PARIS",
+            "CreateContractId": "ff129b85-92fc-4664-8058-39a8deebbac6",
+            "RequiredResources": [
+                "[assembly:/_PRO/Scenes/Missions/Paris/_scene_paris.entity].entitytemplate"
+            ],
+            "Entitlements": ["H1_LEGACY_STANDARD"]
+        },
+        "Rarity": null
+    },
+    {
         "Id": "LOCATION_PARENT_COLORADO",
         "Guid": "fc288d6d-f847-4c5d-a128-8b35755af3f2",
         "Type": "location",
@@ -1049,6 +1081,41 @@
         "Rarity": null
     },
     {
+        "Id": "LOCATION_HOKKAIDO_MAMUSHI",
+        "Guid": "d8f52f08-73e2-447d-a5d2-b83e33add8bb",
+        "Type": "location",
+        "Subtype": "sublocation",
+        "ImageId": null,
+        "RMTPrice": -1,
+        "GamePrice": -1,
+        "IsPurchasable": false,
+        "IsPublished": true,
+        "IsDroppable": false,
+        "Capabilities": [],
+        "Qualities": {},
+        "Properties": {
+            "ParentLocation": "LOCATION_PARENT_HOKKAIDO",
+            "Icon": "images/locations/LOCATION_HOKKAIDO_MAMUSHI/tile.jpg",
+            "LockedIcon": "images/locations/LOCATION_HOKKAIDO_MAMUSHI/tile_unreleased.jpg",
+            "DlcImage": "images/livetile/dlc/tile_hitman3.jpg",
+            "DlcName": "GAME_STORE_METADATA_S3_GAME_TITLE",
+            "IsLocked": false,
+            "UpcomingContent": false,
+            "UpcomingKey": "UI_MENU_LIVETILE_CONTENT_UPCOMING_HEADLINE",
+            "Background": "images/locations/LOCATION_HOKKAIDO_MAMUSHI/background.jpg",
+            "Order": 0,
+            "LimitedLoadout": true,
+            "NormalLoadoutUnlock": "LOADOUT_UNLOCK_HOKKAIDO",
+            "ProgressionKey": "LOCATION_HOKKAIDO",
+            "CreateContractId": "8d5e9e5d-4608-442a-a992-1bd424659dd4",
+            "RequiredResources": [
+                "[assembly:/_PRO/Scenes/Missions/Hokkaido/_Scene_Mission_SnowCrane.entity].entitytemplate"
+            ],
+            "Entitlements": ["H1_LEGACY_STANDARD"]
+        },
+        "Rarity": null
+    },
+    {
         "Id": "LOCATION_HOKKAIDO_FLU",
         "Guid": "c760c6fe-524c-4d75-b703-a0a2750b72de",
         "Type": "location",
@@ -1078,40 +1145,6 @@
             "HideProgression": false,
             "RequiredResources": [
                 "[assembly:/_PRO/Scenes/Missions/Hokkaido/_scene_flu.entity].entitytemplate"
-            ],
-            "Entitlements": ["H1_LEGACY_EXPANSION"]
-        },
-        "Rarity": null
-    },
-    {
-        "Id": "LOCATION_HOKKAIDO_SHIM_MAMUSHI",
-        "Guid": "fe62d3bb-1eac-4eb3-8fdb-ec48c4ada6cf",
-        "Type": "location",
-        "Subtype": "sublocation",
-        "ImageId": null,
-        "RMTPrice": -1,
-        "GamePrice": -1,
-        "IsPurchasable": false,
-        "IsPublished": true,
-        "IsDroppable": false,
-        "Capabilities": [],
-        "Qualities": {},
-        "Properties": {
-            "ParentLocation": "LOCATION_PARENT_HOKKAIDO",
-            "Icon": "images/Contracts/Mamushi/Tile.jpg",
-            "LockedIcon": "images/locations/LOCATION_HOKKAIDO/tile_unreleased.jpg",
-            "DlcImage": "images/livetile/dlc/tile_hitman3.jpg",
-            "DlcName": "GAME_STORE_METADATA_S3_GAME_TITLE",
-            "IsLocked": false,
-            "UpcomingContent": false,
-            "UpcomingKey": "UI_MENU_LIVETILE_CONTENT_UPCOMING_HEADLINE",
-            "Background": "images/locations/LOCATION_HOKKAIDO/background.jpg",
-            "Order": 1,
-            "LimitedLoadout": false,
-            "ProgressionKey": "LOCATION_HOKKAIDO",
-            "HideProgression": false,
-            "RequiredResources": [
-                "[assembly:/_PRO/Scenes/Missions/Hokkaido/scene_mamushi.entity].entitytemplate"
             ],
             "Entitlements": ["H1_LEGACY_EXPANSION"]
         },
@@ -3779,7 +3812,7 @@
             "LoadoutSlot": "disguise",
             "IsConsumable": false,
             "RepositoryId": "4a6e75d4-a37a-47e9-9220-7b8c2ec3f371",
-            "OrderIndex": 935,
+            "OrderIndex": 931,
             "AllowUpSync": true
         },
         "Rarity": "common",
@@ -5354,6 +5387,29 @@
             "LoadoutSlot": "disguise",
             "RepositoryId": "84f2e067-70c3-4d79-aa90-53b46b727505",
             "OrderIndex": 415,
+            "AllowUpSync": true
+        },
+        "Rarity": "common",
+        "IsDroppable": false
+    },
+    {
+        "Id": "TOKEN_OUTFIT_TOMORROWLAND_SUIT_REWARD",
+        "Guid": "e3035017-3325-46b0-81b9-e341f4ca98f0",
+        "Type": "disguise",
+        "Subtype": "casual",
+        "ImageId": "",
+        "RMTPrice": 99,
+        "GamePrice": 99,
+        "IsPurchasable": false,
+        "IsPublished": true,
+        "Capabilities": [],
+        "Qualities": {},
+        "Properties": {
+            "Quality": 1,
+            "Rarity": "common",
+            "LoadoutSlot": "disguise",
+            "RepositoryId": "5fabfe45-e581-4bc3-af41-8c9726dfc1b0",
+            "OrderIndex": 933,
             "AllowUpSync": true
         },
         "Rarity": "common",
@@ -9310,7 +9366,6 @@
         "Properties": {
             "Quality": 4,
             "LoadoutSlot": "gear",
-            "AllowUpSync": true,
             "Rarity": "common",
             "GameAssets": ["PROP_DEVICE_ICA_RUBBERDUCK_REMOTE_EXPLOSIVE_STA"],
             "RepositoryId": "71d7c7eb-812b-40d5-9bb7-029759f0bf01",
@@ -14251,19 +14306,19 @@
         "RMTPrice": -1,
         "GamePrice": -1,
         "IsPurchasable": false,
-        "IsPublished": false,
+        "IsPublished": true,
         "IsDroppable": false,
         "Capabilities": [],
         "Qualities": {},
         "Properties": {
-            "Name": "e3b30dec-d130-4091-85d4-020a29040b74_char_whitespider_flu_hero_flusuit_m_pro81604_name_",
-            "Description": "e3b30dec-d130-4091-85d4-020a29040b74_char_whitespider_flu_hero_flusuit_m_pro81604_description_",
+            "Name": "CHAR_Reward_Hero_HalloweenOutfit_M_PRO140008_Name_ebf1e362-671f-47e8-8c88-dd490d8ad866",
+            "Description": "CHAR_Reward_Hero_HalloweenOutfit_M_PRO140008_Description_ebf1e362-671f-47e8-8c88-dd490d8ad866",
             "Quality": 4,
             "Rarity": "common",
             "LoadoutSlot": "disguise",
             "IsConsumable": false,
             "RepositoryId": "ebf1e362-671f-47e8-8c88-dd490d8ad866",
-            "OrderIndex": 20
+            "OrderIndex": 961
         },
         "Rarity": "common"
     },
@@ -16369,8 +16424,7 @@
             "LoadoutSlot": "gear",
             "IsContainer": true,
             "Rarity": "common",
-            "RepositoryId": "adf6a54d-eb23-44d1-94c4-34d3195e368a",
-            "AllowUpSync": true
+            "RepositoryId": "adf6a54d-eb23-44d1-94c4-34d3195e368a"
         },
         "Rarity": "common"
     },
@@ -17608,7 +17662,7 @@
             "Rarity": "common",
             "LoadoutSlot": "disguise",
             "RepositoryId": "a4ef8071-8931-4179-abec-11a2b9ceba36",
-            "OrderIndex": 1004,
+            "OrderIndex": 132,
             "AllowUpSync": true
         },
         "IsDroppable": false,
@@ -17631,7 +17685,7 @@
             "Rarity": "common",
             "LoadoutSlot": "disguise",
             "RepositoryId": "16be233a-1eb8-4736-b87f-c2a69a2db14b",
-            "OrderIndex": 938,
+            "OrderIndex": 937,
             "AllowUpSync": true
         },
         "IsDroppable": false,
@@ -17792,7 +17846,7 @@
             "Rarity": "common",
             "LoadoutSlot": "disguise",
             "RepositoryId": "bb1115ba-d250-4f8f-b486-f5aba8499ebb",
-            "OrderIndex": 938,
+            "OrderIndex": 936,
             "AllowUpSync": true
         },
         "IsDroppable": false,
@@ -17815,7 +17869,7 @@
             "Rarity": "common",
             "LoadoutSlot": "disguise",
             "RepositoryId": "9b1083cd-c745-4dfd-9c77-b81f87819a90",
-            "OrderIndex": 936,
+            "OrderIndex": 932,
             "AllowUpSync": true
         },
         "IsDroppable": false,
@@ -17931,6 +17985,29 @@
             "LoadoutSlot": "disguise",
             "RepositoryId": "2df119d5-1f55-4394-b1ef-44042c0d913e",
             "OrderIndex": 1000,
+            "AllowUpSync": true
+        },
+        "Rarity": "common",
+        "IsDroppable": false
+    },
+    {
+        "Id": "TOKEN_OUTFIT_REWARD_HERO_CHRISTMASJUMPER_SUIT",
+        "Guid": "a0eb2488-a4a8-47fb-970f-2f9fa4b9dd99",
+        "Type": "disguise",
+        "Subtype": "themed",
+        "ImageId": "",
+        "RMTPrice": 99,
+        "GamePrice": 99,
+        "IsPurchasable": false,
+        "IsPublished": true,
+        "Capabilities": [],
+        "Qualities": {},
+        "Properties": {
+            "Quality": 1,
+            "Rarity": "common",
+            "LoadoutSlot": "disguise",
+            "RepositoryId": "7265209c-41ed-4a33-a466-17b7eb4962e8",
+            "OrderIndex": 985,
             "AllowUpSync": true
         },
         "Rarity": "common",
@@ -18206,8 +18283,7 @@
             "Rarity": "common",
             "LoadoutSlot": "disguise",
             "RepositoryId": "644d6178-8b1c-4c9b-90e6-6bc0d85d084f",
-            "OrderIndex": 160,
-            "AllowUpSync": true
+            "OrderIndex": 160
         },
         "IsDroppable": false,
         "Rarity": "common"
@@ -18259,6 +18335,29 @@
         "Rarity": "common"
     },
     {
+        "Id": "TOKEN_OUTFIT_HERO_PURPLESPECIAL_SUIT",
+        "Guid": "991d8ab8-20c1-4d40-85db-3cc0e678ad99",
+        "Type": "disguise",
+        "Subtype": "classic",
+        "ImageId": "",
+        "RMTPrice": 99,
+        "GamePrice": 99,
+        "IsPurchasable": false,
+        "IsPublished": true,
+        "Capabilities": [],
+        "Qualities": {},
+        "Properties": {
+            "Quality": 1,
+            "Rarity": "common",
+            "LoadoutSlot": "disguise",
+            "RepositoryId": "ad942f93-f8da-48d0-9f02-696f062329cd",
+            "OrderIndex": 175,
+            "AllowUpSync": true
+        },
+        "IsDroppable": false,
+        "Rarity": "common"
+    },
+    {
         "Id": "TOKEN_OUTFIT_HERO_H3_LEGACYREWARD_SUIT",
         "Guid": "6e38f68d-b77f-47ec-839c-555394123f41",
         "Type": "disguise",
@@ -18299,6 +18398,29 @@
             "LoadoutSlot": "disguise",
             "RepositoryId": "a79f5450-c8eb-4237-b459-ef681b92eddf",
             "OrderIndex": 120,
+            "AllowUpSync": true
+        },
+        "Rarity": "common",
+        "IsDroppable": false
+    },
+    {
+        "Id": "TOKEN_OUTFIT_REWARD_HERO_PUBLICENEMY_SUIT",
+        "Guid": "b21c94f1-f270-4190-b4d2-4a5f0aa1e2ab",
+        "Type": "disguise",
+        "Subtype": "classic",
+        "ImageId": "",
+        "RMTPrice": 99,
+        "GamePrice": 99,
+        "IsPurchasable": false,
+        "IsPublished": true,
+        "Capabilities": [],
+        "Qualities": {},
+        "Properties": {
+            "Quality": 1,
+            "Rarity": "common",
+            "LoadoutSlot": "disguise",
+            "RepositoryId": "2b7d70d1-e92e-483a-87a8-a69ddcf1d352",
+            "OrderIndex": 132,
             "AllowUpSync": true
         },
         "Rarity": "common",
@@ -19871,6 +19993,27 @@
                 "ConcealedWeaponSlotEnabled": false
             },
             "RepositoryId": "000fc136-f098-43a2-b204-26c038a55490",
+            "UnlockOrder": 1,
+            "Equip": []
+        },
+        "Rarity": null
+    },
+    {
+        "Id": "STARTING_LOCATION_EDGY_TOMORROWLAND_CLUB_ENTRANCE",
+        "Guid": "e9e7106a-65a4-4612-80b8-f8e11b1f8a76",
+        "Type": "access",
+        "Subtype": "startinglocation",
+        "ImageId": null,
+        "RMTPrice": -1,
+        "GamePrice": -1,
+        "IsPurchasable": false,
+        "IsPublished": true,
+        "IsDroppable": false,
+        "Capabilities": [],
+        "Qualities": {},
+        "Properties": {
+            "Location": "LOCATION_PARENT_EDGY",
+            "RepositoryId": "bb0fbcfc-4a3b-4e00-a8f9-f399817bac83",
             "UnlockOrder": 1,
             "Equip": []
         },

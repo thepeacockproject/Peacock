@@ -591,13 +591,6 @@ export function createInventory(
                 return undefined
             }
 
-            if (unlockable.Guid === "1efe1010-4fff-4ee2-833e-7c58b6518e3e") {
-                unlockable.Properties.Name =
-                    "char_reward_hero_halloweenoutfit_m_pro140008_name_ebf1e362-671f-47e8-8c88-dd490d8ad866"
-                unlockable.Properties.Description =
-                    "char_reward_hero_halloweenoutfit_m_pro140008_description_ebf1e362-671f-47e8-8c88-dd490d8ad866"
-            }
-
             unlockable.GameAsset = null
             unlockable.DisplayNameLocKey = `UI_${unlockable.Id}_NAME`
             return {

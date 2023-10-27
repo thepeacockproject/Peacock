@@ -38,7 +38,6 @@ import * as playStyles from "./playStyles"
 import * as profileHandler from "./profileHandler"
 import * as scoreHandler from "./scoreHandler"
 import * as sessionSerialization from "./sessionSerialization"
-import * as tools from "./tools"
 import * as utils from "./utils"
 import * as webFeatures from "./webFeatures"
 import * as legacyContractHandler from "./2016/legacyContractHandler"
@@ -135,7 +134,6 @@ export default {
         __esModule: true,
         ...sessionSerialization,
     },
-    "@peacockproject/core/tools": { __esModule: true, ...tools },
     "@peacockproject/core/utils": { __esModule: true, ...utils },
     "@peacockproject/core/webFeatures": { __esModule: true, ...webFeatures },
     "@peacockproject/core/2016/legacyContractHandler": {

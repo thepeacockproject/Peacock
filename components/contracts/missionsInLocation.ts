@@ -26,10 +26,8 @@ export const missionsInLocations = {
         "b573932d-7a34-44f1-bcf4-ea8f79f75710",
     ],
     LOCATION_ICA_FACILITY: ["ada5f2b1-8529-48bb-a596-717f75f5eacb"],
-    LOCATION_PARIS: [
-        "00000000-0000-0000-0000-000000000200",
-        "4e45e91a-94ca-4d89-89fc-1b250e608e73",
-    ],
+    LOCATION_PARIS: ["00000000-0000-0000-0000-000000000200"],
+    LOCATION_PARIS_NOEL: ["4e45e91a-94ca-4d89-89fc-1b250e608e73"],
     LOCATION_COASTALTOWN: ["00000000-0000-0000-0000-000000000600"],
     LOCATION_COASTALTOWN_NIGHT: ["00000000-0000-0000-0001-000000000005"],
     LOCATION_COASTALTOWN_EBOLA: ["7e3f758a-2435-42de-93bd-d8f0b72c63a4"],
@@ -40,10 +38,8 @@ export const missionsInLocations = {
     LOCATION_BANGKOK_ZIKA: ["024b6964-a3bb-4457-b085-08f9a7dc7fb7"],
     LOCATION_COLORADO: ["42bac555-bbb9-429d-a8ce-f1ffdf94211c"],
     LOCATION_COLORADO_RABIES: ["ada6205e-6ee8-4189-9cdb-4947cccd84f4"],
-    LOCATION_HOKKAIDO: [
-        "0e81a82e-b409-41e9-9e3b-5f82e57f7a12",
-        "c414a084-a7b9-43ce-b6ca-590620acd87e",
-    ],
+    LOCATION_HOKKAIDO: ["0e81a82e-b409-41e9-9e3b-5f82e57f7a12"],
+    LOCATION_HOKKAIDO_MAMUSHI: ["c414a084-a7b9-43ce-b6ca-590620acd87e"],
     LOCATION_HOKKAIDO_FLU: ["a2befcec-7799-4987-9215-6a152cb6a320"],
     LOCATION_NEWZEALAND: ["c65019e5-43a8-4a33-8a2a-84c750a5eeb3"],
     LOCATION_MIAMI: ["c1d015b4-be08-4e44-808e-ada0f387656f"],
@@ -69,7 +65,6 @@ export const missionsInLocations = {
         LOCATION_ICA_FACILITY_SHIP: ["aee6a16f-6525-4d63-a37f-225e293c6118"],
         LOCATION_ICA_FACILITY: ["c469d91d-01fc-4314-b22c-71cb804e92c0"],
         LOCATION_PARIS: [
-            "07bbf22b-d6ae-4883-bec2-122eeeb7b665",
             "4f6ee6ec-b6d7-4958-9838-0352c10294a0",
             "e6be23e8-8602-42c8-a014-17ffbfa053f5",
             "e01113e6-f27d-4ea1-a8ba-93062335bbf5",
@@ -90,6 +85,7 @@ export const missionsInLocations = {
             "d6961637-effe-4c39-b99a-f2df4402657d",
             "ced3ecb8-70ab-40b0-b033-6f6235c61900",
         ],
+        LOCATION_PARIS_NOEL: ["07bbf22b-d6ae-4883-bec2-122eeeb7b665"],
         LOCATION_COASTALTOWN: [
             "9e0188e8-bdad-476c-b4ce-2faa5d2be56c",
             "74415eca-d01e-4070-9bc9-5ef9b4e8f7d2",
@@ -237,6 +233,7 @@ export const missionsInLocations = {
             "72aaaa7b-4386-4ee7-9e9e-73fb8ff8e416",
         ],
         LOCATION_TRAPPED_WOLVERINE: ["078a50d1-6427-4fc3-9099-e46390e637a0"],
+        LOCATION_ROCKY_DUGONG: ["50fa5e99-0b51-45d4-9062-cd46dd928461"],
     },
     arcade: {
         LOCATION_NORTHSEA: [

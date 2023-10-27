@@ -18,7 +18,7 @@
 
 import { existsSync, readdirSync, readFileSync } from "fs"
 import { readdir, readFile, writeFile } from "fs/promises"
-import { join } from "path"
+import { join, basename } from "path"
 import {
     generateUserCentric,
     getSubLocationFromContract,
@@ -43,13 +43,7 @@ import type {
     UserCentricContract,
 } from "./types/types"
 import type * as configManagerType from "./configSwizzleManager"
-import {
-    configs,
-    getConfig,
-    getSwizzleable,
-    getVersionedConfig,
-    swizzle,
-} from "./configSwizzleManager"
+import { configs, getConfig, getVersionedConfig } from "./configSwizzleManager"
 import { log, LogLevel } from "./loggingInterop"
 import * as axios from "axios"
 import {
@@ -371,9 +365,7 @@ export class Controller {
     public configManager: typeof configManagerType = {
         getConfig,
         configs,
-        getSwizzleable,
         getVersionedConfig,
-        swizzle,
     }
     public missionsInLocations = missionsInLocations
     /**
@@ -595,6 +587,18 @@ export class Controller {
                         }
                     },
                 )
+            }
+
+            if (lastServerSideData?.peacockPlugins) {
+                for (const plugin of lastServerSideData.peacockPlugins) {
+                    if (!existsSync(plugin)) continue
+
+                    await this._executePlugin(
+                        basename(plugin),
+                        (await readFile(plugin)).toString(),
+                        plugin,
+                    )
+                }
             }
         }
 
@@ -1196,7 +1200,6 @@ export class Controller {
         let theExports
 
         try {
-            // eslint-disable-next-line prefer-const
             theExports = new Script(pluginContents, {
                 filename: pluginPath,
             }).runInContext(context)

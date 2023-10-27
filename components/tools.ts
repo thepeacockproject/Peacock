@@ -20,7 +20,6 @@ import prompts from "prompts"
 import { log, LogLevel } from "./loggingInterop"
 import { readdir, writeFile } from "fs/promises"
 import { PEACOCKVER, PEACOCKVERSTRING } from "./utils"
-import { getSwizzleable } from "./configSwizzleManager"
 import md5File from "md5-file"
 import { arch, cpus as cpuList, platform, version } from "os"
 import { Controller, isPlugin } from "./controller"
@@ -33,6 +32,7 @@ import { resolve as pathResolve } from "path"
 import picocolors from "picocolors"
 import { Filename, npath, PortablePath, ppath, xfs } from "@yarnpkg/fslib"
 import { makeEmptyArchive, ZipFS } from "@yarnpkg/libzip"
+import { configs } from "./configSwizzleManager"
 
 const IMAGE_PACK_REPO = "thepeacockproject/ImagePack"
 
@@ -108,7 +108,7 @@ async function exportDebugInfo(): Promise<void> {
     const data = {
         version: PEACOCKVERSTRING,
         ident: PEACOCKVER,
-        presentConfigs: getSwizzleable(),
+        presentConfigs: Object.keys(configs),
         chunkDigest: await md5File("chunk0.js"),
         patcherDigest: await md5File("PeacockPatcher.exe"),
         runtimeVersions: process.versions,
@@ -190,21 +190,15 @@ async function downloadImagePack(): Promise<void> {
 
     log(LogLevel.INFO, "Starting asset download...")
 
-    let resp, totalLength
+    let resp, totalLength: number
 
     try {
         const releaseInfo = await axios.get(
             `https://api.github.com/repos/${IMAGE_PACK_REPO}/releases/latest`,
         )
 
-        if (releaseInfo.status !== 200) {
-            throw new Error("Failed to get release info!")
-        }
-
-        // eslint-disable-next-line prefer-const
         totalLength = releaseInfo.data["assets"][0]["size"]
 
-        // eslint-disable-next-line prefer-const
         resp = await axios.get<Stream>(
             releaseInfo.data["assets"][0]["browser_download_url"],
             {

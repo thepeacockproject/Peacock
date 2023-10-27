@@ -23,6 +23,7 @@ import { sign, verify } from "jsonwebtoken"
 import * as databaseHandler from "../../components/databaseHandler"
 import * as platformEntitlements from "../../components/platformEntitlements"
 import axios from "axios"
+import { describe, expect, beforeEach, vi, it } from "vitest"
 
 import {
     getMockCallArgument,
