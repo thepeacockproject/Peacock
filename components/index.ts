@@ -40,7 +40,7 @@ import {
     PEACOCKVERSTRING,
     ServerVer,
 } from "./utils"
-import { getConfig, getSwizzleable, swizzle } from "./configSwizzleManager"
+import { getConfig } from "./configSwizzleManager"
 import { handleOauthToken } from "./oauthToken"
 import type {
     RequestWithJwt,
@@ -621,35 +621,6 @@ program.option(
     getFlag("developmentPluginDevHost") as boolean,
 )
 program.action(startServer)
-
-program
-    .command("swizzle")
-    .option(
-        "-c, --config <name>",
-        "the config file to generate an override for",
-        "",
-    )
-    .option("--list", "get a list of config files that can be overridden")
-    .description(
-        "generates a file that overrides its internal config counterpart",
-    )
-    .action((args: { list: boolean; config: string }) => {
-        if (args.list) {
-            log(LogLevel.INFO, "The following configurations can be swizzled:")
-            getSwizzleable().forEach((swizzleable) => {
-                log(LogLevel.INFO, `  - ${swizzleable}`)
-            })
-            return
-        }
-
-        // doesn't want list, but hasn't specified a swizzleable
-        if (!args.list && args.config === "") {
-            log(LogLevel.ERROR, "No config specified! - Aborting.")
-            return process.exit(1)
-        }
-
-        return swizzle(args.config)
-    })
 
 program
     .command("tools")

@@ -43,13 +43,7 @@ import type {
     UserCentricContract,
 } from "./types/types"
 import type * as configManagerType from "./configSwizzleManager"
-import {
-    configs,
-    getConfig,
-    getSwizzleable,
-    getVersionedConfig,
-    swizzle,
-} from "./configSwizzleManager"
+import { configs, getConfig, getVersionedConfig } from "./configSwizzleManager"
 import { log, LogLevel } from "./loggingInterop"
 import * as axios from "axios"
 import {
@@ -371,9 +365,7 @@ export class Controller {
     public configManager: typeof configManagerType = {
         getConfig,
         configs,
-        getSwizzleable,
         getVersionedConfig,
-        swizzle,
     }
     public missionsInLocations = missionsInLocations
     /**

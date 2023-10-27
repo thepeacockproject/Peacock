@@ -19,10 +19,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-nocheck
 
-import { existsSync, mkdirSync, writeFileSync } from "fs"
-import { join } from "path"
-import { log, LogLevel } from "./loggingInterop"
-
 import Roadmap from "../static/Roadmap.json"
 import StoreData from "../static/StoreData.json"
 import FilterData from "../static/FilterData.json"
@@ -306,44 +302,4 @@ export function getVersionedConfig<T = unknown>(
         `${h1Prefix}${gameVersion === "h2" ? "H2" : ""}${config}`,
         clone,
     )
-}
-
-/**
- * Creates an override config.
- *
- * @param name The name of the config to override.
- */
-export function swizzle(name: string): void {
-    if (existsSync(join("overrides", `${name}.json`))) {
-        log(
-            LogLevel.ERROR,
-            `That file already exists in overrides/${name}.json - Aborting.`,
-        )
-        process.exit(1)
-    }
-
-    if (!Object.prototype.hasOwnProperty.call(configs, name)) {
-        log(LogLevel.ERROR, `No configs have the name ${name} - Aborting.`)
-        process.exit(1)
-    }
-
-    if (!existsSync("overrides")) {
-        mkdirSync("overrides")
-    }
-
-    writeFileSync(
-        join("overrides", `${name}.json`),
-        JSON.stringify(configs[name]),
-    )
-
-    log(LogLevel.INFO, `Done! Wrote override to overrides/${name}.json`)
-}
-
-/**
- * Gets a list of swizzleable configurations.
- *
- * @returns A list of swizzleable configs.
- */
-export function getSwizzleable(): string[] {
-    return Object.keys(configs)
 }
