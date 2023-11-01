@@ -12,6 +12,95 @@
             "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_ELUSIVE",
             "Challenges": [
                 {
+                    "Id": "68a1ffd6-0ace-4534-b757-96f517d6993c",
+                    "Name": "UI_PEACOCK_CHALLENGES_ELUSIVE_TARGETS_H2_NAME",
+                    "ImageName": "images/challenges/profile_challenges/elusive_targets_h2.jpg",
+                    "Description": "UI_PEACOCK_CHALLENGES_ELUSIVE_TARGETS_H2_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["TOKEN_OUTFIT_HERO_H3_LEGACYREWARD_SUIT"],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+                    "Icon": "elusive",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 70001,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "profile",
+                        "Constants": {
+                            "RequiredChallenges": [
+                                "4da6016a-3082-4b69-add8-50bf188cc7d9",
+                                "56e880d9-81ed-446e-a8db-aca1375c8ad9",
+                                "3e331d19-ec3d-425f-b9b8-9c3f76675562",
+                                "e211fc82-4bae-4370-98d0-58c857ccfba6",
+                                "93b8df40-9263-44d2-9e70-eb350a7814b1",
+                                "f523c503-49bc-4f5f-a4d6-65b0d322a0c5",
+                                "d87afe4d-d51d-4390-ad7f-947400013dcd"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedChallenges": []
+                        },
+                        "ContextListeners": {
+                            "CompletedChallenges": {
+                                "type": "challengetree",
+                                "comparand": "$.RequiredChallenges"
+                            }
+                        },
+                        "States": {
+                            "Start": {
+                                "ChallengeCompleted": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$Value.ChallengeId"
+                                                    ]
+                                                },
+                                                "in": "$.RequiredChallenges"
+                                            }
+                                        },
+                                        "$pushunique": [
+                                            "CompletedChallenges",
+                                            "$Value.ChallengeId"
+                                        ]
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "($.CompletedChallenges).Count",
+                                                "($.RequiredChallenges).Count"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "elusive", "peacock"],
+                    "InclusionData": {
+                        "ContractIds": [
+                            "654685ab-d52d-49cb-815d-f98ee00454d3",
+                            "9f5b8d74-1f70-49ea-94e2-21d2de3e5cf3",
+                            "44fd7474-d7be-4d3d-b944-6c1cf6ca09d1",
+                            "ecf353e8-3dd8-4958-b255-f963926aea51",
+                            "06a58b66-56f4-45c3-ba1b-d03998212289",
+                            "263eca3d-d25d-40ce-ba0a-48a221cd0b9e",
+                            "cbc86bed-51ce-4699-89d4-0ded8f200cbc"
+                        ]
+                    }
+                },
+                {
                     "Id": "1cb6662f-b471-427d-af62-14906ea8f2ed",
                     "Name": "UI_CHALLENGES_ELUSIVE_TARGETS_1_NAME",
                     "ImageName": "images/challenges/profile_challenges/elusive_targets_3.jpg",

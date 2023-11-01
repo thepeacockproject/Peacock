@@ -6743,6 +6743,89 @@
                     }
                 },
                 {
+                    "Id": "56e880d9-81ed-446e-a8db-aca1375c8ad9",
+                    "Name": "UI_PEACOCK_CHALLENGES_ET_ALABAMASLAMMER_GRASS_NAME",
+                    "ImageName": "images/challenges/elusive_target/et_alabamaslammer_grass.jpg",
+                    "Description": "UI_PEACOCK_CHALLENGES_ET_ALABAMASLAMMER_GRASS_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+                    "Icon": "elusive",
+                    "LocationId": "LOCATION_NORTHAMERICA",
+                    "ParentLocationId": "LOCATION_PARENT_NORTHAMERICA",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "ServerDown": false
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Pacify": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "1f85840e-aefb-462c-901e-bdcdc0eb0200"
+                                        ]
+                                    },
+                                    "Actions": {
+                                        "$set": ["ServerDown", true]
+                                    }
+                                },
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "1f85840e-aefb-462c-901e-bdcdc0eb0200"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$.ServerDown",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.OutfitRepositoryId",
+                                                        "5d19c9f8-7df2-4113-b81d-b32d5e231717"
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "elusive", "peacock"],
+                    "InclusionData": {
+                        "ContractIds": ["9f5b8d74-1f70-49ea-94e2-21d2de3e5cf3"]
+                    }
+                },
+                {
                     "Id": "a2b3c3c6-148d-4543-a689-177edf391576",
                     "Name": "UI_CHALLENGES_ELUSIVE_TARGET_NORTHAMERICA_NAME",
                     "ImageName": "images/challenges/profile_challenges/elusive_target_skunk.jpg",

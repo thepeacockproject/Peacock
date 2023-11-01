@@ -3152,6 +3152,81 @@
                     }
                 },
                 {
+                    "Id": "3e331d19-ec3d-425f-b9b8-9c3f76675562",
+                    "Name": "UI_PEACOCK_CHALLENGES_ET_ADONIS_DOUBLEKILL_NAME",
+                    "ImageName": "images/challenges/elusive_target/et_adonis_doublekill.jpg",
+                    "Description": "UI_PEACOCK_CHALLENGES_ET_ADONIS_DOUBLEKILL_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+                    "Icon": "elusive",
+                    "LocationId": "LOCATION_NEWZEALAND",
+                    "ParentLocationId": "LOCATION_PARENT_NEWZEALAND",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "Constants": {
+                            "Targets": [
+                                "580f96a8-0e13-4e54-ae0a-a0dff1a90fde",
+                                "da70a09e-606a-4527-b9f1-bdaff831e5d4"
+                            ]
+                        },
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$any": {
+                                            "?": {
+                                                "$eq": [
+                                                    "$.#",
+                                                    "$Value.RepositoryId"
+                                                ]
+                                            },
+                                            "in": "$.Targets"
+                                        }
+                                    },
+                                    "Transition": "Is_DoubleKill"
+                                }
+                            },
+                            "Is_DoubleKill": {
+                                "$timer": {
+                                    "Condition": {
+                                        "$after": 0.5
+                                    },
+                                    "Transition": "Failure"
+                                },
+                                "Kill": {
+                                    "Condition": {
+                                        "$any": {
+                                            "?": {
+                                                "$eq": [
+                                                    "$.#",
+                                                    "$Value.RepositoryId"
+                                                ]
+                                            },
+                                            "in": "$.Targets"
+                                        }
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "hard", "elusive", "peacock"],
+                    "InclusionData": {
+                        "ContractIds": ["44fd7474-d7be-4d3d-b944-6c1cf6ca09d1"]
+                    }
+                },
+                {
                     "Id": "48c13797-d937-4808-8625-720b94ce9e66",
                     "Name": "UI_CHALLENGES_ELUSIVE_TARGET_NEWZEALAND_NAME",
                     "ImageName": "images/challenges/profile_challenges/elusive_target_sheep.jpg",
