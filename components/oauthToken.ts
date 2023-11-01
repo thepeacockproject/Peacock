@@ -34,7 +34,7 @@ import {
     writeNewUserData,
 } from "./databaseHandler"
 import { OfficialServerAuth, userAuths } from "./officialServerAuth"
-import { randomUUID } from "crypto"
+import { randomUUID, randomBytes } from "crypto"
 import { clearInventoryFor } from "./inventory"
 import {
     EpicH1Strategy,
@@ -44,6 +44,12 @@ import {
     SteamH2Strategy,
     SteamScpcStrategy,
 } from "./entitlementStrategies"
+import { getFlag } from "./flags"
+
+export const JWT_SECRET =
+    getFlag("developmentAllowRuntimeRestart") || PEACOCK_DEV
+        ? "secret"
+        : randomBytes(32).toString("hex")
 
 export async function handleOauthToken(
     req: RequestWithJwt,
@@ -123,7 +129,7 @@ export async function handleOauthToken(
         }
 
         res.json({
-            access_token: sign(req.jwt, "secret", signOptions),
+            access_token: sign(req.jwt, JWT_SECRET, signOptions),
             token_type: "bearer",
             expires_in: 5000,
             refresh_token: randomUUID(),
@@ -318,7 +324,7 @@ export async function handleOauthToken(
     clearInventoryFor(req.body.pId)
 
     res!.json({
-        access_token: sign(userinfo, "secret", signOptions),
+        access_token: sign(userinfo, JWT_SECRET, signOptions),
         token_type: "bearer",
         expires_in: 5000,
         refresh_token: randomUUID(),

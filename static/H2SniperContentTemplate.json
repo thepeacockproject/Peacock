@@ -1,0 +1,191 @@
+{
+    "$if $eq ($.data.Data.Type,ContractAttack)": {
+        "$then": {
+            "$include": {
+                "$path": "menusystem/pages/gamemodes/gamemodearcade_page.json"
+            }
+        },
+        "$else": {
+            "id": "gamemodesniper_root",
+            "controller": "list",
+            "children": [
+                {
+                    "controller": "category",
+                    "id": "category_controller",
+                    "view": "menu3.containers.ScrollingTabsContainer",
+                    "direction": "horizontal",
+                    "data": {
+                        "direction": "horizontal",
+                        "topnavigation": {
+                            "title": "$loc UI_MENU_PAGE_HUB_GAMEMODES",
+                            "icon": "mission"
+                        }
+                    },
+                    "children": [
+                        {
+                            "view": "menu3.basic.CategoryElement",
+                            "controller": "categoryitem",
+                            "data": {
+                                "title": "$loc UI_SNIPER_CHALLENGE_TITLE",
+                                "icon": "sniperrifle"
+                            },
+                            "children": [
+                                {
+                                    "controller": "container",
+                                    "id": "statusline_container",
+                                    "view": "menu3.containers.ListContainer",
+                                    "direction": "horizontal",
+                                    "data": {
+                                        "direction": "horizontal"
+                                    },
+                                    "row": 4.92,
+                                    "col": 0,
+                                    "selectable": false,
+                                    "pressable": false,
+                                    "children": []
+                                },
+                                {
+                                    "id": "hitscategory_container",
+                                    "controller": "context",
+                                    "view": "menu3.containers.ScrollingListContainer",
+                                    "row": 4.25,
+                                    "nrows": 0.5,
+                                    "ncols": 10,
+                                    "direction": "horizontal",
+                                    "data": {
+                                        "direction": "horizontal",
+                                        "scrollbarspaceoffset": -440
+                                    },
+                                    "children": {
+                                        "$each $.data.Data.Hits": {
+                                            "$datacontext": {
+                                                "in": "$.",
+                                                "datavalues": {
+                                                    "Contract": "$.UserCentricContract.Contract",
+                                                    "ResourceAvailability": "$availabilityofcontract $.UserCentricContract.Contract"
+                                                },
+                                                "do": {
+                                                    "id": "$formatstring {$.UserCentricContract.Contract.Metadata.Title}_button",
+                                                    "view": "menu3.basic.SimpleButtonTile",
+                                                    "controller": "contextitem",
+                                                    "nrows": 0.5,
+                                                    "ncols": 2,
+                                                    "data": {
+                                                        "title": "$loc $formatstring UI_{$.UserCentricContract.Contract.Metadata.Location}_CITY",
+                                                        "header": "$loc $.UserCentricContract.Contract.Metadata.Title",
+                                                        "_icon": {
+                                                            "$include": {
+                                                                "$path": "menusystem/elements/contract/data/contract_icon.json"
+                                                            }
+                                                        },
+                                                        "availability": "$.ResourceAvailability.Availability"
+                                                    },
+                                                    "actions": {
+                                                        "select": {
+                                                            "replace-children": {
+                                                                "target": "statusline_container",
+                                                                "children": {
+                                                                    "$include": {
+                                                                        "$path": "menusystem/elements/contract/data/contract_statusline.json"
+                                                                    }
+                                                                }
+                                                            },
+                                                            "call": {
+                                                                "onmenuframe": true,
+                                                                "method": "setBackground",
+                                                                "args": {
+                                                                    "$include": {
+                                                                        "$path": "menusystem/elements/contract/data/contract_backgroundimage.json"
+                                                                    }
+                                                                }
+                                                            }
+                                                        },
+                                                        "deselect": {
+                                                            "replace-children": {
+                                                                "target": "statusline_container",
+                                                                "children": []
+                                                            }
+                                                        },
+                                                        "accept": {
+                                                            "$if": {
+                                                                "$condition": {
+                                                                    "$include": {
+                                                                        "$path": "menusystem/data/issnipermultiplayeravailable.json"
+                                                                    }
+                                                                },
+                                                                "$then": {
+                                                                    "$if $not $eq($.ResourceAvailability.State,available)": {
+                                                                        "$then": {
+                                                                            "$include": {
+                                                                                "$path": "menusystem/actions/availability/not_available_action.json"
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                },
+                                                                "$else": {
+                                                                    "$include": {
+                                                                        "$path": "menusystem/elements/contract/actions/contract_gotoplanning.json"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "children": [
+                                                        {
+                                                            "id": "sub_list",
+                                                            "controller": "list",
+                                                            "view": "menu3.containers.ScrollingListContainer",
+                                                            "nrows": 0.5,
+                                                            "ncols": 10,
+                                                            "direction": "horizontal",
+                                                            "data": {
+                                                                "direction": "horizontal",
+                                                                "scrollbarspaceoffset": -440
+                                                            },
+                                                            "children": [
+                                                                {
+                                                                    "$datacontext": {
+                                                                        "in": "$.",
+                                                                        "datavalues": {
+                                                                            "Contract": "$.Contract",
+                                                                            "ResourceAvailability": "$.ResourceAvailability",
+                                                                            "EngineMode": "$.Contract.Metadata.Enginemodes[0]"
+                                                                        },
+                                                                        "do": {
+                                                                            "$include": {
+                                                                                "$path": "menusystem/pages/gamemodes/contentsniper/button_contractmode.json"
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "$datacontext": {
+                                                                        "in": "$.",
+                                                                        "datavalues": {
+                                                                            "Contract": "$.Contract",
+                                                                            "ResourceAvailability": "$.ResourceAvailability",
+                                                                            "EngineMode": "$.Contract.Metadata.Enginemodes[1]"
+                                                                        },
+                                                                        "do": {
+                                                                            "$include": {
+                                                                                "$path": "menusystem/pages/gamemodes/contentsniper/button_contractmode.json"
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

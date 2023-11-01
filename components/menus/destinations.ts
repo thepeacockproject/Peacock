@@ -41,6 +41,16 @@ type GameFacingDestination = {
     OpportunityStatistics: OpportunityStatistics
     LocationCompletionPercent: number
     Location: Unlockable
+    // H2016 only
+    Data?: {
+        [difficulty: string]: {
+            ChallengeCompletion: {
+                ChallengesCount: number
+                CompletedChallengesCount: number
+            }
+            CompletionData: CompletionData
+        }
+    }
 }
 const missionStories = getConfig<Record<string, MissionStory>>(
     "MissionStories",
@@ -149,8 +159,44 @@ export function destinationsMenu(req: RequestWithJwt): GameFacingDestination[] {
                     req.jwt.unique_name,
                     req.gameVersion,
                 ),
+                Data:
+                    req.gameVersion === "h1"
+                        ? {
+                              normal: {
+                                  ChallengeCompletion: undefined,
+                                  CompletionData: generateCompletionData(
+                                      destination,
+                                      req.jwt.unique_name,
+                                      req.gameVersion,
+                                      "mission",
+                                      "normal",
+                                  ),
+                              },
+                              pro1: {
+                                  ChallengeCompletion: undefined,
+                                  CompletionData: generateCompletionData(
+                                      destination,
+                                      req.jwt.unique_name,
+                                      req.gameVersion,
+                                      "mission",
+                                      "pro1",
+                                  ),
+                              },
+                          }
+                        : undefined,
             },
         }
+
+        // TODO: THIS IS NOT CORRECT FOR 2016!
+        // There are different challenges for normal and pro1 in 2016, right now, we do not support this.
+        // We're just reusing this for now.
+        if (req.gameVersion === "h1") {
+            template.Data.normal.ChallengeCompletion =
+                template.ChallengeCompletion
+            template.Data.pro1.ChallengeCompletion =
+                template.ChallengeCompletion
+        }
+
         result.push(template)
     }
 

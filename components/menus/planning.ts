@@ -93,6 +93,8 @@ export async function planningView(
         // now reassign properties and continue
         req.query.contractid =
             controller.escalationMappings.get(escalationGroupId)["1"]
+
+        contractData = controller.resolveContract(req.query.contractid)
     }
 
     if (!contractData) {
@@ -138,7 +140,7 @@ export async function planningView(
     const escalation = escalationTypes.includes(contractData.Metadata.Type)
 
     // It is possible for req.query.contractid to be the id of a group OR a level in that group.
-    let escalationGroupId =
+    const escalationGroupId =
         contractData.Metadata.InGroup ?? contractData.Metadata.Id
 
     if (escalation) {
@@ -208,7 +210,6 @@ export async function planningView(
     const typedInv = createInventory(
         req.jwt.unique_name,
         req.gameVersion,
-        userData.Extensions.entP,
         sublocation,
     )
 
@@ -371,7 +372,7 @@ export async function planningView(
     const limitedLoadoutUnlockLevelMap = {
         LOCATION_MIAMI: 2,
         LOCATION_HOKKAIDO: 20,
-        LOCATION_HOKKAIDO_SHIM_MAMUSHI: 20,
+        LOCATION_HOKKAIDO_MAMUSHI: 20,
     }
 
     if (
@@ -379,27 +380,30 @@ export async function planningView(
         getFlag("enableMasteryProgression")
     ) {
         const loadoutUnlockable = getUnlockableById(
-            req.gameVersion,
             req.gameVersion === "h1"
                 ? sublocation?.Properties?.NormalLoadoutUnlock[
                       contractData.Metadata.Difficulty ?? "normal"
                   ]
                 : sublocation?.Properties?.NormalLoadoutUnlock,
+            req.gameVersion,
         )
 
         if (loadoutUnlockable) {
             const loadoutMasteryData =
                 controller.masteryService.getMasteryForUnlockable(
                     loadoutUnlockable,
+                    req.gameVersion,
                 )
 
-            const locationProgression = (loadoutMasteryData &&
-                userData.Extensions.progression.Locations[
-                    loadoutMasteryData.Location
-                ]) ?? {
-                Xp: 0,
-                Level: 1,
-            }
+            const locationProgression =
+                loadoutMasteryData &&
+                (loadoutMasteryData.SubPackageId
+                    ? userData.Extensions.progression.Locations[
+                          loadoutMasteryData.Location
+                      ][loadoutMasteryData.SubPackageId]
+                    : userData.Extensions.progression.Locations[
+                          loadoutMasteryData.Location
+                      ])
 
             if (locationProgression.Level < loadoutMasteryData.Level)
                 loadoutSlots = loadoutSlots.filter(

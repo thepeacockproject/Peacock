@@ -19,10 +19,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-nocheck
 
-import { existsSync, mkdirSync, writeFileSync } from "fs"
-import { join } from "path"
-import { log, LogLevel } from "./loggingInterop"
-
 import Roadmap from "../static/Roadmap.json"
 import StoreData from "../static/StoreData.json"
 import FilterData from "../static/FilterData.json"
@@ -93,6 +89,8 @@ import FrankensteinPlanningTemplate from "../static/FrankensteinPlanningTemplate
 import Videos from "../static/Videos.json"
 import ChallengeLocationTemplate from "../static/ChallengeLocationTemplate.json"
 import H2ChallengeLocationTemplate from "../static/H2ChallengeLocationTemplate.json"
+import H2CareerTemplate from "../static/H2CareerTemplate.json"
+import H2SniperContentTemplate from "../static/H2SniperContentTemplate.json"
 import LegacyChallengeLocationTemplate from "../static/LegacyChallengeLocationTemplate.json"
 import ReportTemplate from "../static/ReportTemplate.json"
 import ContractSearchPageTemplate from "../static/ContractSearchPageTemplate.json"
@@ -101,7 +99,6 @@ import ContractSearchResponseTemplate from "../static/ContractSearchResponseTemp
 import LegacyDebriefingChallengesTemplate from "../static/LegacyDebriefingChallengesTemplate.json"
 import DebriefingChallengesTemplate from "../static/DebriefingChallengesTemplate.json"
 import MasteryUnlockablesTemplate from "../static/MasteryUnlockablesTemplate.json"
-import SniperLoadouts from "../static/SniperLoadouts.json"
 import Scpcallunlockables from "../static/Scpcallunlockables.json"
 import DiscordRichAssetsForBricks from "../static/DiscordRichAssetsForBricks.json"
 import EscalationCodenames from "../static/EscalationCodenames.json"
@@ -114,8 +111,12 @@ import LegacyMasteryLocationTemplate from "../static/LegacyMasteryLocationTempla
 import DefaultCpdConfig from "../static/DefaultCpdConfig.json"
 import EvergreenGameChangerProperties from "../static/EvergreenGameChangerProperties.json"
 import AreaMap from "../static/AreaMap.json"
+import ArcadePageTemplate from "../static/ArcadePageTemplate.json"
 import HitsCategoryElusiveTemplate from "../static/HitsCategoryElusiveTemplate.json"
+import HitsCategoryContractAttackTemplate from "../static/HitsCategoryContractAttackTemplate.json"
 import MissionRewardsTemplate from "../static/MissionRewardsTemplate.json"
+import SniperUnlockables from "../static/SniperUnlockables.json"
+import ScpcLocationsData from "../static/ScpcLocationsData.json"
 import type { GameVersion } from "./types/types"
 import { fastClone } from "./utils"
 
@@ -190,7 +191,9 @@ const configs = {
     H2LookupContractByIdTemplate: H2LookupContractTemplate,
     H2LookupContractFavoriteTemplate: H2LookupContractTemplate,
     H2FilterData,
+    H2CareerTemplate,
     H2DashboardTemplate,
+    H2SniperContentTemplate,
     FrankensteinMmSpTemplate,
     FrankensteinMmMpTemplate,
     FrankensteinPlanningTemplate,
@@ -204,8 +207,8 @@ const configs = {
     ContractSearchPaginateTemplate,
     ContractSearchResponseTemplate,
     MasteryUnlockablesTemplate,
-    SniperLoadouts,
     Scpcallunlockables,
+    ScpcLocationsData,
     DiscordRichAssetsForBricks,
     EscalationCodenames,
     ScoreOverviewTemplate,
@@ -217,8 +220,11 @@ const configs = {
     DefaultCpdConfig,
     EvergreenGameChangerProperties,
     AreaMap,
+    ArcadePageTemplate,
     HitsCategoryElusiveTemplate,
+    HitsCategoryContractAttackTemplate,
     MissionRewardsTemplate,
+    SniperUnlockables,
 }
 
 Object.keys(configs).forEach((cfg) => {
@@ -296,44 +302,4 @@ export function getVersionedConfig<T = unknown>(
         `${h1Prefix}${gameVersion === "h2" ? "H2" : ""}${config}`,
         clone,
     )
-}
-
-/**
- * Creates an override config.
- *
- * @param name The name of the config to override.
- */
-export function swizzle(name: string): void {
-    if (existsSync(join("overrides", `${name}.json`))) {
-        log(
-            LogLevel.ERROR,
-            `That file already exists in overrides/${name}.json - Aborting.`,
-        )
-        process.exit(1)
-    }
-
-    if (!Object.prototype.hasOwnProperty.call(configs, name)) {
-        log(LogLevel.ERROR, `No configs have the name ${name} - Aborting.`)
-        process.exit(1)
-    }
-
-    if (!existsSync("overrides")) {
-        mkdirSync("overrides")
-    }
-
-    writeFileSync(
-        join("overrides", `${name}.json`),
-        JSON.stringify(configs[name]),
-    )
-
-    log(LogLevel.INFO, `Done! Wrote override to overrides/${name}.json`)
-}
-
-/**
- * Gets a list of swizzleable configurations.
- *
- * @returns A list of swizzleable configs.
- */
-export function getSwizzleable(): string[] {
-    return Object.keys(configs)
 }

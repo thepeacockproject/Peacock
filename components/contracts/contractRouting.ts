@@ -30,6 +30,7 @@ import {
     getSession,
     newSession,
     registerObjectiveListener,
+    setupScoring,
 } from "../eventHandler"
 import { controller } from "../controller"
 import { getConfig } from "../configSwizzleManager"
@@ -221,6 +222,10 @@ contractRoutingRouter.post(
         for (const obj of contractData.Data.Objectives || []) {
             // register the objective as a tracked statemachine
             registerObjectiveListener(theSession, obj)
+        }
+
+        if (contractData.Metadata.Modules) {
+            setupScoring(theSession, contractData.Metadata.Modules)
         }
     },
 )

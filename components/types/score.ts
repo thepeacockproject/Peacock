@@ -41,6 +41,19 @@ export interface CalculateScoreResult {
     scoreWithBonus: number
 }
 
+export interface CalculateSniperScoreResult {
+    FinalScore: number
+    BaseScore: number
+    TotalChallengeMultiplier: number
+    BulletsMissed: number
+    BulletsMissedPenalty: number
+    TimeTaken: number
+    TimeBonus: number
+    SilentAssassin: boolean
+    SilentAssassinBonus: number
+    SilentAssassinMultiplier: number
+}
+
 export interface MissionEndChallenge {
     ChallengeId: string
     ChallengeTags: string[]

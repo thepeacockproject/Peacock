@@ -1,0 +1,129 @@
+{
+    "Data": {
+        "Objectives": [
+            {
+                "Type": "statemachine",
+                "Id": "83ae9dcf-ee05-4cfa-9101-85a434d9ae85",
+                "ObjectiveType": "statemachine",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_PONTUS_OBJ1"
+                },
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "5db9cefd-391e-4c35-a4c4-bb672ac9b996",
+                        "HardCondition": true
+                    }
+                ],
+                "Category": "primary",
+                "Definition": {
+                    "Context": {
+                        "Targets": ["721f3c39-299d-4869-9373-14a2e98ca50b"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "721f3c39-299d-4869-9373-14a2e98ca50b"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "5db9cefd-391e-4c35-a4c4-bb672ac9b996"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "721f3c39-299d-4869-9373-14a2e98ca50b"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "538ecb95-2931-4303-904e-5b3c98d417e4",
+                "ObjectiveType": "statemachine",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_PONTUS_OBJ2"
+                },
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "5db9cefd-391e-4c35-a4c4-bb672ac9b996",
+                        "HardCondition": true
+                    }
+                ],
+                "Category": "primary",
+                "Definition": {
+                    "Context": {
+                        "Targets": ["87be73e8-64a2-4381-8438-013bb5d4f241"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "87be73e8-64a2-4381-8438-013bb5d4f241"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "5db9cefd-391e-4c35-a4c4-bb672ac9b996"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "87be73e8-64a2-4381-8438-013bb5d4f241"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": []
+    },
+    "Metadata": {
+        "TileImage": "images/contracts/escalation/contractescalation_pontus.jpg",
+        "Location": "LOCATION_ROCKY_DUGONG",
+        "Title": "UI_PEACOCK_PONTUS1",
+        "ScenePath": "assembly:/_pro/scenes/missions/Rocky/scene_dugong.entity",
+        "Description": "",
+        "Id": "b11ff525-a28d-4714-8c72-ce8a2067aedd",
+        "Type": "escalation",
+        "Entitlements": ["LOCATION_ROCKY"],
+        "InGroup": "50fa5e99-0b51-45d4-9062-cd46dd928461"
+    }
+}

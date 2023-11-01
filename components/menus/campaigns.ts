@@ -423,6 +423,39 @@ export function makeCampaigns(
                     },
                     pzCampaign,
                     {
+                        Name: "UI_MENU_PAGE_HITS_ELEMENT_CATEGORY_SARAJEVOSIX",
+                        Image: "",
+                        Type: "campaign",
+                        BackgroundImage:
+                            "images/story/background_sarajevosix.jpg",
+                        StoryData: [
+                            genSingleMission(
+                                "dd906289-7c32-427f-b689-98ae645b407f",
+                                gameVersion,
+                            ),
+                            genSingleMission(
+                                "350ceea9-cfa9-4639-a66b-0d4de586eeee",
+                                gameVersion,
+                            ),
+                            genSingleMission(
+                                "59966a7f-3348-48da-a56c-4447aa548c85",
+                                gameVersion,
+                            ),
+                            genSingleMission(
+                                "30c3546d-9881-45fa-8c7a-8b2c76b03e59",
+                                gameVersion,
+                            ),
+                            genSingleMission(
+                                "1c82c1e3-fe61-4001-a173-81fa11023460",
+                                gameVersion,
+                            ),
+                            genSingleMission(
+                                "781c68ca-9318-40bf-9cc1-232007be02bf",
+                                gameVersion,
+                            ),
+                        ],
+                    },
+                    {
                         Name: "UI_MENU_PAGE_BONUS_MISSIONS_TITLE",
                         Image: "",
                         Type: "campaign",
