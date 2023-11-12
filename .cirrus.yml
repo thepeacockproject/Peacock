@@ -7,7 +7,7 @@ Patcher_task:
     skip_notifications: "!changesInclude('.cirrus.yml', '**.{cs,resx,config,settings,ico,csproj,sln}')"
     # skip if patcher remains unchanged
     skip: "!changesInclude('.cirrus.yml', '**.{cs,resx,config,settings,ico,csproj,sln}')"
-    windows_container:
+    container:
         image: mcr.microsoft.com/dotnet/framework/sdk:4.6
     Build_script:
         - patcher/BuildCI.cmd
