@@ -29,7 +29,7 @@ import {
 } from "../contracts/dataGen"
 import { getUserData } from "../databaseHandler"
 import { log, LogLevel } from "../loggingInterop"
-import { createInventory } from "../inventory"
+import { createInventory, getUnlockableById } from "../inventory"
 import { getFlag } from "../flags"
 import { loadouts } from "../loadouts"
 import { StashpointQueryH2016, StashpointSlotName } from "../types/gameSchemas"
@@ -86,7 +86,6 @@ legacyMenuDataRouter.get(
         const inventory = createInventory(
             req.jwt.unique_name,
             req.gameVersion,
-            userProfile.Extensions.entP,
             sublocation,
         )
 
@@ -157,7 +156,10 @@ legacyMenuDataRouter.get(
                                                 .LoadoutSlot !== "disguise")) && // => display all non-disguise items
                                     (req.query.allowlargeitems === "true" ||
                                         item.Unlockable.Properties
-                                            .LoadoutSlot !== "carriedweapon")
+                                            .LoadoutSlot !== "carriedweapon") &&
+                                    item.Unlockable.Type !==
+                                        "challengemultipler" &&
+                                    !item.Unlockable.Properties.InclusionData
                                 ) // not sure about this one
                             })
                             .map((item) => ({
@@ -182,10 +184,9 @@ legacyMenuDataRouter.get(
                         Page: 0,
                         Recommended: getLoadoutItem(slotid)
                             ? {
-                                  item: inventory.find(
-                                      (item) =>
-                                          item.Unlockable.Id ===
-                                          getLoadoutItem(slotid),
+                                  item: getUnlockableById(
+                                      getLoadoutItem(slotid),
+                                      req.gameVersion,
                                   ),
                                   type: loadoutSlots[slotid],
                                   owned: true,
@@ -220,7 +221,7 @@ legacyMenuDataRouter.get("/Safehouse", (req: RequestWithJwt, res, next) => {
     req.url = `/SafehouseCategory?page=0&type=${req.query.type}&subtype=`
     const originalJsonFunc = res.json
 
-    res.json = function (originalData) {
+    res.json = function json(originalData) {
         return originalJsonFunc.call(this, {
             template,
             data: {
@@ -290,12 +291,11 @@ legacyMenuDataRouter.get(
                         },
                         Available: true,
                     },
-                    // This is currently a copy of "normal" as pro1 is not implemented
                     {
                         Name: "pro1",
                         Data: {
                             LocationId: req.query.locationId,
-                            ...masteryData[0],
+                            ...masteryData[1],
                         },
                         Available: true,
                     },

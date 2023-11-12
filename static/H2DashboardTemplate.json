@@ -1,237 +1,321 @@
 {
-    "$datacontext": {
-        "in": "$.",
-        "datavalues": {
-            "PeacockDashValues": [
-                {
-                    "Id": "25739126-6a40-4b0b-b9a6-5da1b737190b",
-                    "Type": "ContractList",
-                    "Title": "UI_HEADLINE_PLAY_CONTRACT_ATTACK",
-                    "Text": "UI_HEADLINE_PLAY_CONTRACT_ATTACK",
-                    "Date": "2022-01-01T00:00:00.0000000Z",
-                    "SubscriptionId": "10000000-0000-0000-0000-000000000000",
-                    "Priority": 40,
-                    "Properties": {
-                        "ContractId": "25739126-6a40-4b0b-b9a6-5da1b737190b",
-                        "DashboardCategory": "Dashboard_Category_Escalation"
-                    },
-                    "LoadValue": "menusystem/pages/hub/dashboard/category_escalation/loadasync.json",
-                    "row": 1.5,
-                    "col": 4
-                }
-            ]
-        },
-        "do": {
-            "controller": "group",
-            "row": 1,
-            "nrows": 3,
-            "ncols": 10,
-            "layoutchildren": true,
-            "children": {
-                "$mergearrays": [
-                    {
-                        "view": "menu3.basic.MenuTileLarge",
-                        "row": 0,
-                        "col": 0,
-                        "nrows": 3,
-                        "ncols": 4,
-                        "data": {
-                            "header": "$loc UI_MENU_PAGE_HUB_CAMPAIGN",
-                            "title": "$loc UI_MENU_PAGE_HUB_STORY",
-                            "icon": "story",
-                            "image": "$res images/livetile/tile_story.jpg"
-                        },
-                        "actions": {
-                            "accept": [
-                                {
-                                    "set-selected": {
-                                        "target": "category_story"
-                                    }
-                                }
-                            ],
-                            "select": {
-                                "replace-children": {
-                                    "target": "headline_container",
-                                    "children": [
-                                        {
-                                            "view": "menu3.basic.HeadlineElement",
-                                            "selectable": false,
-                                            "pressable": false,
-                                            "data": {
-                                                "header": "$loc UI_MENU_PAGE_HUB_CAMPAIGN",
-                                                "title": "$loc UI_MENU_PAGE_HUB_STORY",
-                                                "typeicon": "story"
-                                            }
-                                        }
-                                    ]
-                                }
-                            },
-                            "deselect": {
-                                "replace-children": {
-                                    "target": "headline_container",
-                                    "children": []
-                                }
+    "controller": "group",
+    "row": 1,
+    "nrows": 3,
+    "ncols": 10,
+    "layoutchildren": true,
+    "children": {
+        "$mergearrays": [
+            {
+                "view": "menu3.basic.MenuTileLarge",
+                "row": 0,
+                "col": 0,
+                "nrows": 3,
+                "ncols": 4,
+                "data": {
+                    "header": "$loc UI_MENU_PAGE_HUB_CAMPAIGN",
+                    "title": "$loc UI_MENU_PAGE_HUB_STORY",
+                    "icon": "story",
+                    "image": "$res images/livetile/tile_story.jpg"
+                },
+                "actions": {
+                    "accept": [
+                        {
+                            "set-selected": {
+                                "target": "category_story"
                             }
                         }
-                    },
-                    {
-                        "view": "menu3.basic.ItemTileSmall",
-                        "row": 0,
-                        "col": 6,
-                        "nrows": 1.5,
-                        "ncols": 2,
-                        "data": {
-                            "title": "$loc UI_PEACOCK_GO_OFFLINE",
-                            "icon": "goonline",
-                            "image": "$res images/ui/tiles/button_goonline.jpg"
-                        },
-                        "actions": {
-                            "accept": {
-                                "force-offline": {}
-                            },
-                            "select": {
-                                "replace-children": {
-                                    "target": "headline_container",
-                                    "children": [
-                                        {
-                                            "view": "menu3.basic.HeadlineElement",
-                                            "selectable": false,
-                                            "pressable": false,
-                                            "data": {
-                                                "header": "",
-                                                "title": "$loc UI_PEACOCK_GO_OFFLINE",
-                                                "typeicon": "goonline"
-                                            }
-                                        }
-                                    ]
-                                }
-                            },
-                            "deselect": {
-                                "replace-children": {
-                                    "target": "headline_container",
-                                    "children": []
-                                }
-                            }
-                        }
-                    },
-                    {
-                        "view": "menu3.basic.ItemTileSmall",
-                        "row": 0,
-                        "col": 4,
-                        "nrows": 1.5,
-                        "ncols": 2,
-                        "data": {
-                            "header": "$loc UI_PEACOCK_POWERED_BY",
-                            "title": "$loc UI_PEACOCK_BRANDING",
-                            "icon": "story",
-                            "image": "$res images/contracts/novikov_and_magolis/tile.jpg"
-                        },
-                        "actions": {
-                            "accept": {
-                                "$if $isnullorempty $.ServerTile.url": {
-                                    "$then": {},
-                                    "$else": {
-                                        "open-url": {
-                                            "url": "$.ServerTile.url"
-                                        }
-                                    }
-                                }
-                            },
-                            "select": {
-                                "replace-children": {
-                                    "target": "headline_container",
-                                    "children": [
-                                        {
-                                            "view": "menu3.basic.HeadlineElement",
-                                            "selectable": false,
-                                            "pressable": false,
-                                            "data": {
-                                                "header": "$loc UI_PEACOCK_POWERED_BY",
-                                                "title": "$loc UI_PEACOCK_BRANDING",
-                                                "typeicon": "story"
-                                            }
-                                        }
-                                    ]
-                                }
-                            },
-                            "deselect": {
-                                "replace-children": {
-                                    "target": "headline_container",
-                                    "children": []
-                                }
-                            }
-                        }
-                    },
-                    {
-                        "view": "menu3.basic.ItemTileSmall",
-                        "row": 1.5,
-                        "col": 6,
-                        "nrows": 1.5,
-                        "ncols": 2,
-                        "data": {
-                            "title": "$loc UI_DIALOG_LOAD_GAME",
-                            "icon": "load",
-                            "image": "$res images/ui/tiles/load_menu_tile.jpg"
-                        },
-                        "actions": {
-                            "accept": {
-                                "link": {
-                                    "page": "loadpage",
-                                    "args": {
-                                        "url": "load",
-                                        "args": {
-                                            "saveorload": "load"
-                                        },
-                                        "saveorload": "load",
-                                        "mainmenu": true,
-                                        "reloadonchange": true
-                                    }
-                                }
-                            },
-                            "select": {
-                                "replace-children": {
-                                    "target": "headline_container",
-                                    "children": [
-                                        {
-                                            "view": "menu3.basic.HeadlineElement",
-                                            "selectable": false,
-                                            "pressable": false,
-                                            "data": {
-                                                "header": "",
-                                                "title": "$loc UI_DIALOG_LOAD_GAME",
-                                                "typeicon": "load"
-                                            }
-                                        }
-                                    ]
-                                }
-                            },
-                            "deselect": {
-                                "replace-children": {
-                                    "target": "headline_container",
-                                    "children": []
-                                }
-                            }
-                        }
-                    },
-                    {
-                        "$each $.PeacockDashValues": {
-                            "controller": "container",
-                            "row": "$.row",
-                            "col": "$.col",
-                            "nrows": 1.5,
-                            "ncols": 2,
-                            "usechilddimensions": true,
+                    ],
+                    "select": {
+                        "replace-children": {
+                            "target": "headline_container",
                             "children": [
                                 {
-                                    "$include": {
-                                        "$path": "$.LoadValue"
+                                    "view": "menu3.basic.HeadlineElement",
+                                    "selectable": false,
+                                    "pressable": false,
+                                    "data": {
+                                        "header": "$loc UI_MENU_PAGE_HUB_CAMPAIGN",
+                                        "title": "$loc UI_MENU_PAGE_HUB_STORY",
+                                        "typeicon": "story"
                                     }
                                 }
                             ]
                         }
+                    },
+                    "deselect": {
+                        "replace-children": {
+                            "target": "headline_container",
+                            "children": []
+                        }
                     }
-                ]
+                }
+            },
+            {
+                "view": "menu3.basic.ItemTileSmall",
+                "row": 0,
+                "col": 6,
+                "nrows": 1.5,
+                "ncols": 2,
+                "data": {
+                    "title": "$loc UI_PEACOCK_GO_OFFLINE",
+                    "icon": "goonline",
+                    "image": "$res images/ui/tiles/button_goonline.jpg"
+                },
+                "actions": {
+                    "accept": {
+                        "force-offline": {}
+                    },
+                    "select": {
+                        "replace-children": {
+                            "target": "headline_container",
+                            "children": [
+                                {
+                                    "view": "menu3.basic.HeadlineElement",
+                                    "selectable": false,
+                                    "pressable": false,
+                                    "data": {
+                                        "header": "",
+                                        "title": "$loc UI_PEACOCK_GO_OFFLINE",
+                                        "typeicon": "goonline"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "deselect": {
+                        "replace-children": {
+                            "target": "headline_container",
+                            "children": []
+                        }
+                    }
+                }
+            },
+            {
+                "view": "menu3.basic.ItemTileSmall",
+                "row": 0,
+                "col": 4,
+                "nrows": 1.5,
+                "ncols": 2,
+                "data": {
+                    "header": "$loc UI_PEACOCK_POWERED_BY",
+                    "title": "$loc UI_PEACOCK_BRANDING",
+                    "icon": "story",
+                    "image": "$res images/contracts/novikov_and_magolis/tile.jpg"
+                },
+                "actions": {
+                    "accept": {
+                        "open-url": {
+                            "url": "https://thepeacockproject.org"
+                        }
+                    },
+                    "select": {
+                        "replace-children": {
+                            "target": "headline_container",
+                            "children": [
+                                {
+                                    "view": "menu3.basic.HeadlineElement",
+                                    "selectable": false,
+                                    "pressable": false,
+                                    "data": {
+                                        "header": "$loc UI_PEACOCK_POWERED_BY",
+                                        "title": "$loc UI_PEACOCK_BRANDING",
+                                        "typeicon": "story"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "deselect": {
+                        "replace-children": {
+                            "target": "headline_container",
+                            "children": []
+                        }
+                    }
+                }
+            },
+            {
+                "view": "menu3.basic.ItemTileSmall",
+                "row": 1.5,
+                "col": 6,
+                "nrows": 1.5,
+                "ncols": 2,
+                "data": {
+                    "title": "$loc UI_DIALOG_LOAD_GAME",
+                    "icon": "load",
+                    "image": "$res images/ui/tiles/load_menu_tile.jpg"
+                },
+                "actions": {
+                    "accept": {
+                        "link": {
+                            "page": "loadpage",
+                            "args": {
+                                "url": "load",
+                                "args": {
+                                    "saveorload": "load"
+                                },
+                                "saveorload": "load",
+                                "mainmenu": true,
+                                "reloadonchange": true
+                            }
+                        }
+                    },
+                    "select": {
+                        "replace-children": {
+                            "target": "headline_container",
+                            "children": [
+                                {
+                                    "view": "menu3.basic.HeadlineElement",
+                                    "selectable": false,
+                                    "pressable": false,
+                                    "data": {
+                                        "header": "",
+                                        "title": "$loc UI_DIALOG_LOAD_GAME",
+                                        "typeicon": "load"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "deselect": {
+                        "replace-children": {
+                            "target": "headline_container",
+                            "children": []
+                        }
+                    }
+                }
+            },
+            {
+                "id": "contractattack_button",
+                "controller": "contextitem",
+                "view": "menu3.basic.MenuTileSmall",
+                "row": 1.5,
+                "col": 4,
+                "nrows": 1.5,
+                "ncols": 2,
+                "data": {
+                    "title": "$loc UI_PEACOCK_ESCALATIONS",
+                    "header": "$loc UI_MENU_PAGE_HUB_GAMEMODE",
+                    "icon": "54",
+                    "image": "$res images/livetile/tile_contractescalation_nocontent.jpg"
+                },
+                "selectable": true,
+                "pressable": true,
+                "actions": {
+                    "accept": {
+                        "link": {
+                            "page": "gamemode_sniper",
+                            "args": {
+                                "url": "hitscategory",
+                                "type": "ContractAttack",
+                                "mode": "dataonly"
+                            }
+                        }
+                    },
+                    "select": [
+                        {
+                            "replace-children": {
+                                "target": "headline_container",
+                                "children": [
+                                    {
+                                        "view": "menu3.basic.HeadlineElement",
+                                        "selectable": true,
+                                        "pressable": true,
+                                        "data": {
+                                            "header": "$loc UI_MENU_PAGE_HUB_GAMEMODE",
+                                            "title": "$loc UI_PEACOCK_ESCALATIONS",
+                                            "typeicon": "54"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "deselect": [
+                        {
+                            "replace-children": {
+                                "target": "headline_container",
+                                "children": [
+                                    {
+                                        "view": "menu3.basic.HeadlineElement",
+                                        "selectable": true,
+                                        "pressable": true
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "view": "menu3.basic.MenuTileTall",
+                "row": 0,
+                "col": 8,
+                "nrows": 3,
+                "ncols": 2,
+                "data": {
+                    "header": "$loc UI_PEACOCK_BRANDING",
+                    "title": "$loc UI_MENU_PAGE_HITS_ELEMENT_CATEGORY_Elusive_Target_Hits",
+                    "icon": "elusive",
+                    "image": "$res images/challenges/categories/elusive/tile.jpg"
+                },
+                "actions": {
+                    "accept": [
+                        {
+                            "call": {
+                                "onmenuframe": true,
+                                "method": "showBackground",
+                                "args": false
+                            }
+                        },
+                        {
+                            "set-selected": {
+                                "target": "career_tab"
+                            }
+                        },
+                        {
+                            "set-selected": {
+                                "target": "$formatstring career_tab_Elusive_Target_Hits"
+                            }
+                        },
+                        {
+                            "trigger-input": {
+                                "action": "accept"
+                            }
+                        },
+                        {
+                            "call": {
+                                "onmenuframe": true,
+                                "method": "showBackground",
+                                "args": true
+                            }
+                        }
+                    ],
+                    "select": {
+                        "replace-children": {
+                            "target": "headline_container",
+                            "children": [
+                                {
+                                    "view": "menu3.basic.HeadlineElement",
+                                    "selectable": false,
+                                    "pressable": false,
+                                    "data": {
+                                        "header": "$loc UI_PEACOCK_BRANDING",
+                                        "title": "$loc UI_MENU_PAGE_HITS_ELEMENT_CATEGORY_Elusive_Target_Hits",
+                                        "typeicon": "elusive"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "deselect": {
+                        "replace-children": {
+                            "target": "headline_container",
+                            "children": []
+                        }
+                    }
+                }
             }
-        }
+        ]
     }
 }

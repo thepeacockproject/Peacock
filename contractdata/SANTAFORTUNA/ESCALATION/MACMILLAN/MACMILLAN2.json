@@ -10,66 +10,6 @@
         },
         "Objectives": [
             {
-                "Id": "ea688d1a-81c2-4807-ab12-297a1347c772",
-                "Name": "UI_GAMECHANGERS_COLOMBIA_HIDING_IN_LVA_NAME",
-                "Description": "UI_GAMECHANGERS_COLOMBIA_HIDING_IN_LVA_DESC",
-                "Image": "images/contracts/gamechangers/Gamechanger_Colombia_Hiding_In_LVA.jpg",
-                "BriefingName": "$loc UI_GAMECHANGERS_COLOMBIA_HIDING_IN_LVA_NAME",
-                "ObjectiveType": "custom",
-                "ObjectivesCategory": "primary",
-                "IsHidden": null,
-                "Resource": [],
-                "Category": "primary",
-                "ExcludeFromScoring": true,
-                "BriefingText": "$loc UI_GAMECHANGERS_COLOMBIA_HIDING_IN_LVA_DESC",
-                "HUDTemplate": {
-                    "display": "$loc UI_GAMECHANGERS_COLOMBIA_HIDING_IN_LVA_DESC"
-                },
-                "Type": "statemachine",
-                "Definition": {
-                    "States": { "Start": { "-": { "Transition": "Success" } } }
-                }
-            },
-            {
-                "Id": "a7f29a71-04e5-47aa-b170-7adce4359acf",
-                "Name": "UI_GAMECHANGERS_COLOMBIA_HIDING_IN_LVA_NAME",
-                "Description": "UI_GAMECHANGERS_COLOMBIA_HIDING_IN_LVA_DESC",
-                "Image": "images/contracts/gamechangers/Gamechanger_Colombia_Hiding_In_LVA.jpg",
-                "ObjectivesCategory": "primary",
-                "IsHidden": null,
-                "Resource": [],
-                "Category": "primary",
-                "OnActive": { "IfCompleted": { "Visible": false } },
-                "BriefingText": "$loc UI_GAMECHANGERS_COLOMBIA_HIDING_IN_LVA_NAME",
-                "HUDTemplate": {
-                    "display": "$loc UI_GAMECHANGERS_COLOMBIA_HIDING_IN_LVA_DESC"
-                },
-                "Type": "statemachine",
-                "ExcludeFromScoring": true,
-                "Definition": {
-                    "Scope": "session",
-                    "Context": {},
-                    "States": {
-                        "Start": {
-                            "IntroCutEnd": { "Transition": "TimerRunning" }
-                        },
-                        "Success": {
-                            "CurrentlyNotInLVA": {
-                                "Transition": "TimerRunning"
-                            }
-                        },
-                        "TimerRunning": {
-                            "exit_gate": { "Transition": "Success" },
-                            "$timer": {
-                                "Condition": { "$after": 15 },
-                                "Transition": "Failure"
-                            },
-                            "CurrentlyInLVA": { "Transition": "Success" }
-                        }
-                    }
-                }
-            },
-            {
                 "Id": "a66f63a6-b617-4ea4-9ab5-225dd001dd1b",
                 "Category": "primary",
                 "ObjectiveType": "kill",
@@ -191,8 +131,7 @@
             }
         ],
         "Bricks": [
-            "assembly:/_pro/scenes/missions/colombia/gamechanger_hippo_calluna.brick",
-            "assembly:/_PRO/Scenes/Missions/Colombia/gamechanger_hippo_hiding_in_lva.brick"
+            "assembly:/_pro/scenes/missions/colombia/gamechanger_hippo_calluna.brick"
         ],
         "GameChangers": ["a7f29a71-04e5-47aa-b170-7adce4359acf"],
         "GameChangerReferences": [],
@@ -218,7 +157,7 @@
             { "Id": "a7f29a71-04e5-47aa-b170-7adce4359acf" }
         ],
         "Entitlements": ["H2_LEGACY_STANDARD"],
-        "LastUpdate": "2021-04-20T12:25:01.3211285Z",
+        "LastUpdate": "2023-05-11T10:33:14.4207472Z",
         "PublicId": "012779483547"
     },
     "UserData": {}

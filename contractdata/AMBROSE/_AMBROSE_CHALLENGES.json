@@ -2051,6 +2051,49 @@
                         }
                     },
                     "Tags": ["story", "feats", "medium"]
+                },
+                {
+                    "Id": "fdc3e2fd-3609-4a27-92b6-89c2034ae499",
+                    "Name": "UI_PEACOCK_PONTUS",
+                    "ImageName": "images/contracts/escalation/contractescalation_pontus.jpg",
+                    "Description": "UI_CHALLENGES_ESCLATION_COMPLETE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_ROCKY_DUGONG",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$ContractId",
+                                            "4b478156-615c-46aa-8fa2-932bca131f11"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["feats", "hard"],
+                    "InclusionData": {
+                        "ContractIds": ["50fa5e99-0b51-45d4-9062-cd46dd928461"]
+                    }
                 }
             ]
         },

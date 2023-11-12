@@ -11,42 +11,6 @@
         },
         "Objectives": [
             {
-                "Id": "0358233c-a85a-486d-9a0a-56fee0835917",
-                "Name": "UI_GAMECHANGERS_COLOMBIA_NO_FOREMAN_PACIFICATION_NAME",
-                "BriefingName": "$loc UI_GAMECHANGERS_COLOMBIA_NO_FOREMAN_PACIFICATION_NAME",
-                "Description": "UI_GAMECHANGERS_COLOMBIA_NO_FOREMAN_PACIFICATION_DESC",
-                "Image": "images/contracts/gamechangers/Gamechanger_Colombia_No_Foreman_Pacification.jpg",
-                "ObjectivesCategory": "primary",
-                "ObjectiveType": "custom",
-                "IsHidden": null,
-                "Resource": [],
-                "HUDTemplate": {
-                    "display": "$loc UI_GAMECHANGERS_COLOMBIA_NO_FOREMAN_PACIFICATION_DESC"
-                },
-                "Category": "primary",
-                "BriefingText": "$loc UI_GAMECHANGERS_COLOMBIA_NO_FOREMAN_PACIFICATION_DESC",
-                "Type": "statemachine",
-                "Definition": {
-                    "Scope": "session",
-                    "States": {
-                        "Start": { "-": { "Transition": "Success" } },
-                        "Success": {
-                            "Pacify": [
-                                {
-                                    "Condition": {
-                                        "$eq": [
-                                            "$Value.RepositoryId",
-                                            "0d94664b-9b43-4a54-96ad-be970ff7875a"
-                                        ]
-                                    },
-                                    "Transition": "Failure"
-                                }
-                            ]
-                        }
-                    }
-                }
-            },
-            {
                 "Id": "a7b75b35-e6e7-438b-84d5-24d531aa30d0",
                 "Category": "primary",
                 "BriefingName": "UI_CONTRACT_HOLLY_OBJ_3_NAME",
@@ -240,9 +204,7 @@
                 }
             }
         ],
-        "Bricks": [
-            "assembly:/_PRO/Scenes/Missions/Colombia/gamechanger_hippo_holly.brick"
-        ],
+        "Bricks": [],
         "GameChangers": [
             "015467e5-4e7f-435b-9efd-69aaa7b851e9",
             "0358233c-a85a-486d-9a0a-56fee0835917"
@@ -270,7 +232,7 @@
             { "Id": "a7b75b35-e6e7-438b-84d5-24d531aa30d0" }
         ],
         "Entitlements": ["H2_LEGACY_STANDARD"],
-        "LastUpdate": "2021-04-20T12:25:03.1066687Z",
+        "LastUpdate": "2023-05-11T10:33:15.5662877Z",
         "PublicId": "012621679547"
     },
     "UserData": {}

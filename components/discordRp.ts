@@ -261,6 +261,8 @@ export function scenePathToRpAsset(
             return ["berlinapexpredator", "Apex Predator", "Berlin"]
         case "assembly:/_pro/scenes/missions/edgy/mission_fox/scene_grasssnake.entity":
             return ["berlinegghunt", "Berlin Egg Hunt", "Berlin"]
+        case "assembly:/_pro/scenes/missions/edgy/mission_fox/scene_fox_tomorrowland.entity":
+            return ["elusivetomorrowland", "The Drop", "Berlin"]
 
         // mendozer
         case "assembly:/_pro/scenes/missions/elegant/scene_llama_elusive_clerico.entity":

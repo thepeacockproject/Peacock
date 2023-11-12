@@ -1,0 +1,91 @@
+{
+    "id": "gamemodearcade_root",
+    "controller": "list",
+    "actions": {
+        "activated": {
+            "call": {
+                "$if": {
+                    "$condition": {
+                        "$or": [
+                            {
+                                "$include": "menusystem/data/isheritage.json"
+                            },
+                            "$eq ($.data.Data.Type,ContractAttack)"
+                        ]
+                    },
+                    "$then": {},
+                    "$else": {
+                        "onmenuframe": true,
+                        "method": "setBackground",
+                        "args": "$res images/backgrounds/gamemode_arcade.jpg"
+                    }
+                }
+            }
+        }
+    },
+    "children": [
+        {
+            "controller": "category",
+            "id": "category_controller",
+            "view": "menu3.containers.ScrollingTabsContainer",
+            "direction": "horizontal",
+            "data": {
+                "direction": "horizontal",
+                "topnavigation": {
+                    "title": "$loc UI_MENU_PAGE_HUB_GAMEMODES",
+                    "icon": "mission"
+                }
+            },
+            "children": [
+                {
+                    "view": "menu3.basic.CategoryElement",
+                    "controller": "categoryitem",
+                    "data": {
+                        "$if $eq ($.data.Data.Type,ContractAttack)": {
+                            "$then": {
+                                "title": "$loc UI_PEACOCK_ESCALATIONS",
+                                "icon": "54"
+                            },
+                            "$else": {
+                                "title": "$loc UI_ARCADE_TITLE",
+                                "icon": "arcademode"
+                            }
+                        }
+                    },
+                    "children": [
+                        {
+                            "controller": "container",
+                            "id": "headline_container",
+                            "view": "menu3.containers.ListContainer",
+                            "direction": "horizontal",
+                            "data": {
+                                "direction": "horizontal"
+                            },
+                            "row": 4.22,
+                            "col": 0,
+                            "selectable": false,
+                            "pressable": false,
+                            "children": []
+                        },
+                        {
+                            "controller": "container",
+                            "row": 1,
+                            "children": [
+                                {
+                                    "$include": {
+                                        "$path": {
+                                            "$if $eq ($.data.Data.Type,ContractAttack)": {
+                                                "$then": "menusystem/elements/contract/hitscategory_contractattack.json",
+                                                "$else": "menusystem/elements/contract/hitscategory.json"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

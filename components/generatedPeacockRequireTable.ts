@@ -38,7 +38,6 @@ import * as playStyles from "./playStyles"
 import * as profileHandler from "./profileHandler"
 import * as scoreHandler from "./scoreHandler"
 import * as sessionSerialization from "./sessionSerialization"
-import * as tools from "./tools"
 import * as utils from "./utils"
 import * as webFeatures from "./webFeatures"
 import * as legacyContractHandler from "./2016/legacyContractHandler"
@@ -82,7 +81,6 @@ import * as livesplit from "./types/livesplit"
 import * as mastery from "./types/mastery"
 import * as score from "./types/score"
 import * as scoring from "./types/scoring"
-import * as sniperModules from "./types/sniperModules"
 import * as types from "./types/types"
 import * as escalationService from "./contracts/escalations/escalationService"
 
@@ -136,7 +134,6 @@ export default {
         __esModule: true,
         ...sessionSerialization,
     },
-    "@peacockproject/core/tools": { __esModule: true, ...tools },
     "@peacockproject/core/utils": { __esModule: true, ...utils },
     "@peacockproject/core/webFeatures": { __esModule: true, ...webFeatures },
     "@peacockproject/core/2016/legacyContractHandler": {
@@ -267,10 +264,6 @@ export default {
     "@peacockproject/core/types/mastery": { __esModule: true, ...mastery },
     "@peacockproject/core/types/score": { __esModule: true, ...score },
     "@peacockproject/core/types/scoring": { __esModule: true, ...scoring },
-    "@peacockproject/core/types/sniperModules": {
-        __esModule: true,
-        ...sniperModules,
-    },
     "@peacockproject/core/types/types": { __esModule: true, ...types },
     "@peacockproject/core/contracts/escalations/escalationService": {
         __esModule: true,

@@ -232,17 +232,6 @@ export class AsyncSeriesHook<Params> extends BaseImpl<Params, Promise<void>> {
         this._intercepts = []
     }
 
-    /**
-     * Async hooks cannot be called from a sync function - use {@link callAsync} instead!
-     * This function will only throw an error.
-     *
-     * @throws {Error} Always throws an error, see the note above.
-     * @deprecated
-     */
-    public call(): Promise<void> {
-        throw new Error("Can't call an async hook with the sync method.")
-    }
-
     public async callAsync(...params: AsArray<Params>): Promise<void> {
         const context = {}
 
