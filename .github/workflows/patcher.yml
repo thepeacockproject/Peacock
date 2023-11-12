@@ -1,0 +1,30 @@
+name: Patcher
+
+on:
+  push:
+    branches: [ "v*" ]
+    paths: [ "patcher/**/*" ]
+  pull_request:
+    branches: [ "v*" ]
+    paths: [ "patcher/**/*" ]
+
+jobs:
+  build:
+    name: Build Patcher
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1.1
+
+      - name: Build Patcher
+        run: msbuild.exe patcher\HitmanPatcher.sln -t:Build -p:Configuration=Release -p:Platform=x64 -m
+
+      - name: Upload Patcher Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: patcher-windows
+          path: patcher/bin/x64/Release/PeacockPatcher.exe
