@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v1.1
+        uses: microsoft/setup-msbuild@v1.3
 
       - name: Build Patcher
         run: msbuild.exe patcher\HitmanPatcher.sln -t:Build -p:Configuration=Release -p:Platform=x64 -m
