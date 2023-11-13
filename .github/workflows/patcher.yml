@@ -24,7 +24,7 @@ jobs:
         run: msbuild.exe patcher\HitmanPatcher.sln -t:Build -p:Configuration=Release -p:Platform=x64 -m
 
       - name: Upload Patcher Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: patcher-windows
           path: patcher/bin/x64/Release/PeacockPatcher.exe
