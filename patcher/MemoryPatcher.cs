@@ -62,7 +62,6 @@ namespace HitmanPatcher
 					patchedprocesses.Add(process.Id);
 					try
 					{
-#if TARGET_WINDOWS
 						bool dontPatch = false;
 						try
 						{
@@ -88,7 +87,6 @@ namespace HitmanPatcher
 							process.Dispose();
 							continue;
 						}
-#endif
 
 						if (MemoryPatcher.Patch(process, patchOptions))
 						{
