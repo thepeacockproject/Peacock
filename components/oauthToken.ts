@@ -65,9 +65,9 @@ export async function handleOauthToken(
         noTimestamp: true,
     }
 
-    let external_platform: "steam" | "epic",
+    let external_platform: "steam" | "epic" | "live",
         external_userid: string,
-        external_users_folder: "steamids" | "epicids",
+        external_users_folder: "steamids" | "epicids" | "xboxids",
         external_appid: string
 
     if (req.body.grant_type === "external_steam") {
@@ -102,6 +102,11 @@ export async function handleOauthToken(
         external_platform = "epic"
         external_userid = req.body.epic_userid
         external_users_folder = "epicids"
+    } else if (req.body.grant_type === "external_xbox") {
+        external_appid = "RETAIL"
+        external_platform = "live"
+        external_userid = req.body.xbox_userid
+        external_users_folder = "xboxids"
     } else if (req.body.grant_type === "refresh_token") {
         // send back the token from the request (re-signed so the timestamps update)
         extractToken(req) // init req.jwt
@@ -148,7 +153,8 @@ export async function handleOauthToken(
 
     const isHitman3 =
         external_appid === "fghi4567xQOCheZIin0pazB47qGUvZw4" ||
-        external_appid === STEAM_NAMESPACE_2021
+        external_appid === STEAM_NAMESPACE_2021 ||
+        external_appid === "RETAIL"
 
     const gameVersion: GameVersion = isFrankenstein
         ? "scpc"
@@ -199,13 +205,20 @@ export async function handleOauthToken(
     }
 
     /* 
-       Store user auth for all games except scpc
+       Store user auth for all games except scpc & h3 xbox
     */
-    if (!isFrankenstein) {
-        const authContainer = new OfficialServerAuth(
-            gameVersion,
-            req.body.access_token,
-        )
+    if (!isFrankenstein && external_platform !== "live") {
+        let gameAuthToken: string
+
+        if (external_platform === "epic") {
+            gameAuthToken = req.body.access_token
+        } else if (external_platform === "steam") {
+            gameAuthToken = req.body.steam_clienttoken
+        } else {
+            gameAuthToken = undefined
+        }
+
+        const authContainer = new OfficialServerAuth(gameVersion, gameAuthToken)
 
         log(LogLevel.DEBUG, `Setting up container with ID ${req.body.pId}.`)
 
@@ -226,12 +239,20 @@ export async function handleOauthToken(
             true,
         ) as UserProfile
         userData.Id = req.body.pId
-        userData.LinkedAccounts[external_platform] = external_userid
+
+        // IOI uses "xboxone" here
+        if (external_platform === "live") {
+            userData.LinkedAccounts["xboxone"] = external_userid
+        } else {
+            userData.LinkedAccounts[external_platform] = external_userid
+        }
 
         if (external_platform === "steam") {
             userData.SteamId = req.body.steam_userid
         } else if (external_platform === "epic") {
             userData.EpicId = req.body.epic_userid
+        } else if (external_platform === "live") {
+            userData.XboxLiveId = req.body.xbox_userid
         }
 
         if (
@@ -276,6 +297,9 @@ export async function handleOauthToken(
                     gameVersion,
                     STEAM_NAMESPACE_2021,
                 ).get(req.body.pId)
+            } else if (external_platform === "live") {
+                // TODO: fetch proper entitlements
+                return ["9P2JC6R9S37C"]
             } else {
                 log(LogLevel.ERROR, "Unsupported platform.")
                 return []

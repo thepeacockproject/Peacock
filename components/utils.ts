@@ -114,7 +114,9 @@ export function extractToken(
     res?: Response,
     next?: NextFunction,
 ): void {
-    const header = req.header("Authorization")
+    // Xbox version uses X-GPS-Authorization
+    const header =
+        req.header("X-GPS-Authorization") ?? req.header("Authorization")
     const auth = header ? header.split(" ") : []
 
     if (auth.length === 2 && auth[0].toLowerCase() === "bearer") {
