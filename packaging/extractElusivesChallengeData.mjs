@@ -24,6 +24,7 @@ import jsonfile from "jsonfile"
 import fs from "fs"
 import path from "path"
 import { randomUUID } from "crypto"
+
 function makeTargetDown(id, codename, parent, sub) {
     return {
         CategoryName: "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
@@ -391,7 +392,7 @@ async function fetchContractCAndPFromIOI(axiosClient, contractId) {
 
 /**
  * @param {import("axios").AxiosInstance} axiosClient
- * @param {string} locationId
+ * @param {string} contractId
  * @returns {Promise<*>}
  */
 async function fetchContract(axiosClient, contractId) {
@@ -572,15 +573,13 @@ async function extract(locationParent, jwt, apiUrl) {
         }
     }
 
-    const uniqueObjects = challengeObjects.filter((object, index) => {
+    challengeObjects = challengeObjects.filter((object, index) => {
         const lastIndex = challengeObjects.findIndex(
             (otherObject, otherIndex) =>
                 otherIndex < index && otherObject.Id === object.Id,
         )
         return lastIndex === -1
     })
-
-    challengeObjects = uniqueObjects
 
     console.log(`Compiled ${pc.green(challengeObjects.length)} challenges`)
 

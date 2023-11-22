@@ -1,72 +1,70 @@
 env:
-    # don't clone the entire repository history, saves time
-    CIRRUS_CLONE_DEPTH: 1
+  # don't clone the entire repository history, saves time
+  CIRRUS_CLONE_DEPTH: 1
 
 Build_task:
-    container:
-        image: node:18-slim
-    Enable_Corepack_script:
-        - corepack enable
-    Yarn_cache:
-        folder: .yarn/cache
-        reupload_on_changes: true
-    Yarn_Populate_script:
-        - yarn
-    Install_System_Dependencies_script:
-        - apt update --yes
-        - apt install zip jq curl --yes
-    Build_Modules_script:
-        - yarn build
-    Optimize_script:
-        - yarn optimize
-    Download_NodeJS_script:
-        - curl https://nodejs.org/dist/$(cat .nvmrc)/node-$(cat .nvmrc)-win-x64.zip -o node.zip
-        - unzip node.zip
-        - mkdir nodedist
-        - cp node-$(cat .nvmrc)-win-x64/node.exe nodedist/node.exe
-        - cp node-$(cat .nvmrc)-win-x64/LICENSE nodedist/LICENSE
-    Assemble_Full_script:
-        - ./packaging/ciAssemble.sh
-    Assemble_Linux_script:
-        - ./packaging/ciAssemble.sh linux
-    Peacock_Release_artifacts:
-        path: Peacock-v*.zip
-        type: application/zip
-    SourceMap_artifacts:
-        path: chunk0.js.map
+  container:
+    image: node:18-slim
+  Enable_Corepack_script:
+    - corepack enable
+  Yarn_cache:
+    folder: .yarn/cache
+    reupload_on_changes: true
+  Yarn_Populate_script:
+    - yarn
+  Install_System_Dependencies_script:
+    - apt update --yes
+    - apt install zip jq curl --yes
+  Build_Modules_script:
+    - yarn build
+  Optimize_script:
+    - yarn optimize
+  Download_NodeJS_script:
+    - curl https://nodejs.org/dist/$(cat .nvmrc)/node-$(cat .nvmrc)-win-x64.zip -o node.zip
+    - unzip node.zip
+    - mkdir nodedist
+    - cp node-$(cat .nvmrc)-win-x64/node.exe nodedist/node.exe
+    - cp node-$(cat .nvmrc)-win-x64/LICENSE nodedist/LICENSE
+  Assemble_Full_script:
+    - ./packaging/ciAssemble.sh
+  Assemble_Linux_script:
+    - ./packaging/ciAssemble.sh linux
+  Peacock_Release_artifacts:
+    path: Peacock-v*.zip
+    type: application/zip
+  SourceMap_artifacts:
+    path: chunk0.js.map
 
 task:
-    container:
-        image: node:18-slim
-    Enable_Corepack_script:
-        - corepack enable
-    Yarn_cache:
-        folder: .yarn/cache
-        reupload_on_changes: true
-    Yarn_Populate_script:
-        - yarn
-    Type_Check_script:
-        - yarn typecheck
-    matrix:
-        -   only_if: $CIRRUS_TAG != ''
-            name: Types Publish
-            env:
-                NPM_AUTH_TOKEN: ENCRYPTED[7e0bc6b5e2d4f27aff6a60acf686376ca26abed3334738847a419e4bd8c245490caeddc81d8ce403745516e11604c094]
-            Install_System_Dependencies_script:
-                - apt update --yes
-                - apt install rsync --yes
-            Push_Types_script:
-                - rsync -a --include '*/' --include '*.d.ts' --exclude '*' build/ packaging/typedefs/
-                - yarn typedefs reversion
-                - yarn typedefs pack
-                - yarn config set npmAuthToken $NPM_AUTH_TOKEN
-                - yarn typedefs npm publish
-        -   only_if: $CIRRUS_TAG == ''
-            name: Linting
-            Lint_script:
-                - yarn lint
-                - yarn prettier:check
-        - only_if: $CIRRUS_TAG == ''
-          name: Tests
-          Test_script:
-            - yarn test
+  container:
+    image: node:18-slim
+  Enable_Corepack_script:
+    - corepack enable
+  Yarn_cache:
+    folder: .yarn/cache
+    reupload_on_changes: true
+  Yarn_Populate_script:
+    - yarn
+  Type_Check_script:
+    - yarn typecheck
+  matrix:
+    - only_if: $CIRRUS_TAG != ''
+      name: Types Publish
+      env:
+        NPM_AUTH_TOKEN: ENCRYPTED[7e0bc6b5e2d4f27aff6a60acf686376ca26abed3334738847a419e4bd8c245490caeddc81d8ce403745516e11604c094]
+      Install_System_Dependencies_script:
+        - apt update --yes
+        - apt install rsync --yes
+      Push_Types_script:
+        - rsync -a --include '*/' --include '*.d.ts' --exclude '*' build/ packaging/typedefs/
+        - yarn typedefs reversion
+        - yarn typedefs pack
+        - yarn config set npmAuthToken $NPM_AUTH_TOKEN
+        - yarn typedefs npm publish
+    - only_if: $CIRRUS_TAG == ''
+      name: Tests
+      Lint_script:
+        - yarn lint
+        - yarn prettier:check
+      Test_script:
+        - yarn test:main
