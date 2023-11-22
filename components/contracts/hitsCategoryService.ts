@@ -34,6 +34,7 @@ import { userAuths } from "../officialServerAuth"
 import { log, LogLevel } from "../loggingInterop"
 import { fastClone, getRemoteService } from "../utils"
 import { orderedETAs } from "./elusiveTargetArcades"
+import { missionsInLocations } from "./missionsInLocation"
 
 /**
  * The filters supported for HitsCategories.
@@ -109,7 +110,12 @@ export class HitsCategoryService {
     /**
      * Hits categories that should not be automatically paginated.
      */
-    public paginationExempt = ["Elusive_Target_Hits", "Arcade", "Sniper"]
+    public paginationExempt = [
+        "Elusive_Target_Hits",
+        "Arcade",
+        "Sniper",
+        "ContractAttack",
+    ]
     public realtimeFetched = ["Trending", "MostPlayedLastWeek"]
     public filterSupported = ["MyPlaylist", "MyHistory", "MyContracts"]
 
@@ -130,11 +136,15 @@ export class HitsCategoryService {
     _useDefaultHitsCategories(): void {
         const tapName = "HitsCategoryServiceImpl"
 
+        // Sniper Challenge
+
         this.hitsCategories.for("Sniper").tap(tapName, (contracts) => {
             contracts.push("ff9f46cf-00bd-4c12-b887-eac491c3a96d")
             contracts.push("00e57709-e049-44c9-a2c3-7655e19884fb")
             contracts.push("25b20d86-bb5a-4ebd-b6bb-81ed2779c180")
         })
+
+        // Elusives
 
         this.hitsCategories
             .for("Elusive_Target_Hits")
@@ -157,11 +167,15 @@ export class HitsCategoryService {
                 }
             })
 
+        // My Contracts
+
         this.hitsCategories
             .for("MyContracts")
             .tap(tapName, (contracts, gameVersion, userId, filter) => {
                 this.writeMyContracts(gameVersion, contracts, userId, filter)
             })
+
+        // Featured
 
         this.hitsCategories
             .for("Featured")
@@ -209,6 +223,48 @@ export class HitsCategoryService {
                 // Just in case
                 if (gameVersion !== "h3") return
                 contracts.push(...orderedETAs)
+            })
+
+        // Escalations
+
+        this.hitsCategories
+            .for("ContractAttack")
+            .tap(tapName, (contracts, gameVersion) => {
+                // We need to push Peacock contracts first to work around H2 not
+                // having the "order" property for $arraygroupby. (The game just crashes)
+                const nEscalations = []
+
+                for (const escalations of Object.values(
+                    missionsInLocations.escalations,
+                )) {
+                    for (const id of escalations) {
+                        const contract = controller.resolveContract(id)
+
+                        const isPeacock = contract.Metadata.Season === 0
+                        const season = isPeacock
+                            ? contract.Metadata.OriginalSeason
+                            : contract.Metadata.Season
+
+                        switch (gameVersion) {
+                            case "h1":
+                                // This is a Peacock contract, we must skip it.
+                                if (contract.Metadata.Season === 0) break
+                                if (season === 1) contracts.push(id)
+                                break
+                            case "h2":
+                                if (season <= 2)
+                                    (isPeacock ? contracts : nEscalations).push(
+                                        id,
+                                    )
+                                break
+                            default:
+                                // eslint-disable-next-line no-extra-semi
+                                ;(isPeacock ? contracts : nEscalations).push(id)
+                        }
+                    }
+                }
+
+                contracts.push(...nEscalations)
             })
     }
 

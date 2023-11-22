@@ -21,6 +21,7 @@ import path from "path"
 import {
     castUserProfile,
     getMaxProfileLevel,
+    LATEST_PROFILE_VERSION,
     nilUuid,
     uuidRegex,
     XP_PER_LEVEL,
@@ -170,37 +171,25 @@ profileRouter.post(
         }
 
         const userdata = getUserData(req.jwt.unique_name, req.gameVersion)
+        const extensions = req.body.extensions.reduce(
+            (acc: object, key: string) => {
+                if (Object.hasOwn(userdata.Extensions, key)) {
+                    acc[key] = userdata.Extensions[key]
+                }
 
-        for (const extension in userdata.Extensions) {
-            if (
-                Object.prototype.hasOwnProperty.call(
-                    userdata.Extensions,
-                    extension,
-                ) &&
-                !Object.prototype.hasOwnProperty.call(
-                    req.body.extensions,
-                    extension,
-                )
-            ) {
-                delete userdata[extension]
-            }
-        }
-
-        res.json(userdata)
+                return acc
+            },
+            {} as object,
+        )
+        res.setHeader("Content-Type", "application/json")
+        res.json({ ...userdata, Extensions: extensions })
     },
 )
 
 profileRouter.post(
     "/UnlockableService/GetInventory",
     (req: RequestWithJwt, res) => {
-        const exts = getUserData(
-            req.jwt.unique_name,
-            req.gameVersion,
-        ).Extensions
-
-        res.json(
-            createInventory(req.jwt.unique_name, req.gameVersion, exts.entP),
-        )
+        res.json(createInventory(req.jwt.unique_name, req.gameVersion))
     },
 )
 
@@ -256,11 +245,7 @@ profileRouter.post(
         writeUserData(req.jwt.unique_name, req.gameVersion)
 
         res.json({
-            Inventory: createInventory(
-                req.jwt.unique_name,
-                req.gameVersion,
-                userdata.Extensions.entP,
-            ),
+            Inventory: createInventory(req.jwt.unique_name, req.gameVersion),
             Stats: req.body.localStats,
         })
     },
@@ -298,6 +283,7 @@ export async function resolveProfiles(
                         XboxLiveId: null,
                         PSNAccountId: null,
                         PSNOnlineId: null,
+                        Version: LATEST_PROFILE_VERSION,
                     })
                 }
 
@@ -323,6 +309,7 @@ export async function resolveProfiles(
                         XboxLiveId: null,
                         PSNAccountId: null,
                         PSNOnlineId: null,
+                        Version: LATEST_PROFILE_VERSION,
                     })
                 }
 
@@ -352,6 +339,7 @@ export async function resolveProfiles(
                         XboxLiveId: null,
                         PSNAccountId: null,
                         PSNOnlineId: null,
+                        Version: LATEST_PROFILE_VERSION,
                     })
                 }
 
@@ -391,7 +379,7 @@ export async function resolveProfiles(
             let userdata: UserProfile = outcome.value
 
             if (!fakeIds.includes(outcome?.value?.Id)) {
-                userdata = castUserProfile(outcome.value)
+                userdata = castUserProfile(outcome.value, gameVersion)
             }
 
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -688,6 +676,7 @@ profileRouter.post(
                         `Unable to save session ${
                             save?.ContractSessionId
                         } because ${getErrorMessage(e)}.`,
+                        "updateSaves",
                     )
                 }
             }

@@ -11,131 +11,6 @@
         },
         "Objectives": [
             {
-                "Id": "97350ccb-40a4-41a6-95b9-702e24fb6e8c",
-                "Name": "UI_GAMECHANGERS_COLOMBIA_KILL_WITH_SHAMAN_FOLLOWERS_ACTIVE_NAME",
-                "BriefingName": "$loc UI_GAMECHANGERS_COLOMBIA_KILL_WITH_SHAMAN_FOLLOWERS_ACTIVE_NAME",
-                "Description": "UI_GAMECHANGERS_COLOMBIA_KILL_WITH_SHAMAN_FOLLOWERS_ACTIVE_DESC",
-                "Image": "images/contracts/gamechangers/Gamechanger_Colombia_Shaman_Followers_Active.jpg",
-                "ObjectiveType": "custom",
-                "ObjectivesCategory": "primary",
-                "IsHidden": null,
-                "Resource": [],
-                "Category": "primary",
-                "ExcludeFromScoring": true,
-                "BriefingText": "$loc UI_GAMECHANGERS_COLOMBIA_KILL_WITH_SHAMAN_FOLLOWERS_ACTIVE_DESC",
-                "HUDTemplate": {
-                    "display": "$loc UI_GAMECHANGERS_COLOMBIA_KILL_WITH_SHAMAN_FOLLOWERS_ACTIVE_DESC"
-                },
-                "Type": "statemachine",
-                "Definition": {
-                    "States": { "Start": { "-": { "Transition": "Success" } } }
-                }
-            },
-            {
-                "Id": "b1f4470e-3ba4-475e-9e22-4d4bc50da01d",
-                "Name": "UI_GAMECHANGERS_COLOMBIA_KILL_WITH_SHAMAN_FOLLOWERS_ACTIVE_NAME",
-                "Description": "UI_GAMECHANGERS_COLOMBIA_KILL_WITH_SHAMAN_FOLLOWERS_ACTIVE_DESC",
-                "Image": "images/contracts/gamechangers/Gamechanger_Colombia_Shaman_Followers_Active.jpg",
-                "ObjectivesCategory": "primary",
-                "IsHidden": null,
-                "Resource": [],
-                "Type": "statemachine",
-                "Category": "condition",
-                "ExcludeFromScoring": true,
-                "OnActive": { "IfInProgress": { "Visible": false } },
-                "Definition": {
-                    "Scope": "session",
-                    "Context": {},
-                    "States": {
-                        "Start": {
-                            "Disguise": [
-                                {
-                                    "Condition": {
-                                        "$eq": [
-                                            "$Value",
-                                            "30005896-2b39-49c0-bb04-3475d4a12ae6"
-                                        ]
-                                    },
-                                    "Transition": "Success"
-                                }
-                            ]
-                        }
-                    }
-                }
-            },
-            {
-                "Id": "2dd05c69-e8a8-4fb1-bf31-9aabfc63e31b",
-                "Category": "primary",
-                "IgnoreIfInactive": true,
-                "IsHidden": true,
-                "Activation": {
-                    "$eq": [
-                        "$cbe4f8a0-b8a5-48ea-aa84-7f0bb986c3d5",
-                        "Completed"
-                    ]
-                },
-                "OnActive": { "IfCompleted": { "Visible": false } },
-                "ExcludeFromScoring": false,
-                "Image": "images/contracts/gamechangers/Gamechanger_Colombia_Shaman_Followers_Active.jpg",
-                "HUDTemplate": {
-                    "display": "$loc UI_CONTRACT_TITANUMARUM_FOLLOW_BRIEFING_NAME",
-                    "iconType": 17
-                },
-                "BriefingText": "$loc UI_CONTRACT_TITANUMARUM_FOLLOW_BRIEFING_NAME",
-                "Type": "statemachine",
-                "Definition": {
-                    "display": { "iconType": 17 },
-                    "Context": {
-                        "AmountToFollow": 99,
-                        "Targets": [],
-                        "TargetsCounter": 0
-                    },
-                    "ContextListeners": {
-                        "TargetsCounter": {
-                            "type": "objective-counter",
-                            "header": "UI_CONTRACT_TITANUMARUM_FOLLOW_COUNT"
-                        }
-                    },
-                    "States": {
-                        "Start": {
-                            "IncrementFollowers": {
-                                "Actions": {
-                                    "$dec": "AmountToFollow",
-                                    "$inc": "TargetsCounter"
-                                },
-                                "Transition": "CheckCount"
-                            },
-                            "DecrementFollowers": {
-                                "Actions": {
-                                    "$dec": "TargetsCounter",
-                                    "$inc": "AmountToFollow"
-                                }
-                            },
-                            "CAO": { "Transition": "Success" },
-                            "DisguiseChanged": {
-                                "Actions": { "$set": ["TargetsCounter", 0] },
-                                "Transition": "Start"
-                            }
-                        },
-                        "CheckCount": {
-                            "-": [
-                                {
-                                    "Actions": {
-                                        "$set": ["TargetsCounter", 0]
-                                    },
-                                    "Condition": {
-                                        "$eq": ["$.AmountToFollow", 0]
-                                    },
-                                    "Transition": "Success"
-                                },
-                                { "Transition": "Start" }
-                            ]
-                        },
-                        "CAO": { "Transition": "Success" }
-                    }
-                }
-            },
-            {
                 "Id": "b87302da-91d4-4213-bdf0-2f4d9ef5a51d",
                 "Category": "primary",
                 "IsHidden": true,
@@ -464,11 +339,11 @@
                 }
             }
         ],
-        "Bricks": [
-            "assembly:/_PRO/Scenes/Missions/Colombia/gamechanger_hippo_kill_with_shaman_followers_active.brick",
-            "assembly:/_PRO/Scenes/Missions/Colombia/gamechanger_hippo_titanumarum.brick"
+        "Bricks": [],
+        "GameChangers": [
+            "97350ccb-40a4-41a6-95b9-702e24fb6e8c",
+            "b1f4470e-3ba4-475e-9e22-4d4bc50da01d"
         ],
-        "GameChangers": [],
         "GameChangerReferences": []
     },
     "Metadata": {
@@ -485,8 +360,14 @@
         "ScenePath": "assembly:/_pro/scenes/missions/colombia/scene_hippo.entity",
         "Type": "escalation",
         "Release": "2.1.x escalation",
+        "GroupObjectiveDisplayOrder": [
+            { "IsNew": true, "Id": "b1f4470e-3ba4-475e-9e22-4d4bc50da01d" },
+            { "IsNew": true, "Id": "7e7daaf6-0794-4142-ba0b-5407ea0eadb2" },
+            { "Id": "23c492af-5dbd-4b46-a13e-0c4733007e51" },
+            { "Id": "e44846fb-0947-403d-aa65-f5f316ec7d13" }
+        ],
         "Entitlements": ["H2_LEGACY_STANDARD"],
-        "LastUpdate": "2021-04-20T12:25:04.8062752Z",
+        "LastUpdate": "2023-05-11T10:33:16.9359609Z",
         "PublicId": "012784035647"
     },
     "UserData": {}

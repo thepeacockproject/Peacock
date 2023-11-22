@@ -352,8 +352,9 @@ export class LiveSplitClient extends EventEmitter {
      * @internal
      */
     private async _waitForResponse(): LiveSplitResult {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any,@typescript-eslint/no-empty-function
-        let listener: (...args: any[]) => void = () => {}
+        let listener: (
+            ...args: (string | boolean | PromiseLike<string | boolean>)[]
+        ) => void = () => {}
 
         const responseRecieved = new Promise<Awaited<LiveSplitResult>>(
             (resolve) => {

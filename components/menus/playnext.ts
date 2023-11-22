@@ -55,6 +55,12 @@ export const orderedPZMissions: string[] = [
     "a2befcec-7799-4987-9215-6a152cb6a320",
 ]
 
+export const sniperMissionIds: string[] = [
+    "ff9f46cf-00bd-4c12-b887-eac491c3a96d",
+    "00e57709-e049-44c9-a2c3-7655e19884fb",
+    "25b20d86-bb5a-4ebd-b6bb-81ed2779c180",
+]
+
 /**
  * Gets the ID for a season.
  *
@@ -139,5 +145,26 @@ export function createMainOpportunityTile(contractId: string) {
                 },
                 CategoryType: "MainOpportunity",
             })),
+    }
+}
+
+/**
+ * Generates tiles for menu pages
+ * @param menuPages An array of menu page IDs.
+ * @returns The tile object
+ */
+export function createMenuPageTile(...menuPages: string[]) {
+    // This is all based on what sniper does, not sure if any others have it.
+    return {
+        CategoryType: "MenuPage",
+        CategoryName: "UI_MENU_PAGE_DEBRIEFING_MAIN_MENU",
+        Items: menuPages.map((id) => ({
+            ItemType: null,
+            ContentType: "MenuPage",
+            CategoryType: "MenuPage",
+            Content: {
+                Name: id,
+            },
+        })),
     }
 }

@@ -2,22 +2,6 @@ env:
     # don't clone the entire repository history, saves time
     CIRRUS_CLONE_DEPTH: 1
 
-Patcher_task:
-    # we don't need to tell GitHub if this isn't done
-    skip_notifications: "!changesInclude('.cirrus.yml', '**.{cs,resx,config,settings,ico,csproj,sln}')"
-    # skip if patcher remains unchanged
-    skip: "!changesInclude('.cirrus.yml', '**.{cs,resx,config,settings,ico,csproj,sln}')"
-    windows_container:
-        image: cirrusci/windowsservercore:visualstudio2019
-    Build_script:
-        - patcher/BuildCI.cmd
-    Patcher_Windows_artifacts:
-        path: patcher/bin/x64/Release/PeacockPatcher.exe
-        type: application/vnd.microsoft.portable-executable
-    Patcher_Linux_artifacts:
-        path: patcher/bin/x64/Linux.Release/PeacockPatcher.exe
-        type: application/vnd.microsoft.portable-executable
-
 Build_task:
     container:
         image: node:18-slim

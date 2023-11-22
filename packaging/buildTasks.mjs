@@ -55,6 +55,7 @@ export async function generateRequireTable() {
     const files = glob.sync("**/*.ts", {
         cwd: "./components",
         ignore: [
+            "tools.ts",
             "index.ts",
             "generatedPeacockRequireTable.ts",
             "types/globals.d.ts",

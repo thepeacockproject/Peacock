@@ -1,0 +1,83 @@
+{
+    "Data": {
+        "EnableSaving": true,
+        "Objectives": [
+            {
+                "Id": "5a9d069b-30e3-40d6-a310-fb9da5c9406d",
+                "Primary": true,
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "c04167bc-f321-4e0b-be51-0b5e662d2669"
+                    }
+                }
+            },
+            {
+                "Id": "b1ec35e8-2b35-4394-815f-ac4db064f877",
+                "ObjectiveType": "custom",
+                "Image": "Images/Contracts/sarajevosix/Orbis006_SeaBreeze/Objective1.jpg",
+                "BriefingName": "$loc UI_CONTRACT_SEABREEZE_OBJ_1_TITLE",
+                "BriefingText": "$loc UI_CONTRACT_SEABREEZE_OBJ_1_TITLE",
+                "LongBriefingText": "$loc UI_CONTRACT_SEABREEZE_OBJ_1_DESC",
+                "Category": "primary",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_SEABREEZE_OBJ_1_TITLE",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {
+                        "Targets": ["08374fe4-147e-48ca-a662-505be5409ae9"]
+                    },
+                    "States": {
+                        "Start": {
+                            "UncoveredEvidence": {
+                                "Transition": "Success"
+                            },
+                            "Spotted": {
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [
+            "assembly:/_PRO/Scenes/Missions/Hokkaido/mission_hokkaido_ts6_seabreeze.brick"
+        ],
+        "Entrances": [
+            "0e7dd303-c9bb-42cc-aca0-70499931d098",
+            "2fc483c8-500c-4475-ba5d-e2cdd6ccc64c",
+            "74b1ad25-06cd-41a2-9cf5-9dd5dac7345d",
+            "a786fc74-b379-41f4-a4ac-ce970ee88b2c",
+            "bdc80464-31dd-440d-ad79-2767b923a0a4",
+            "df752dfa-623d-4750-83a6-8b4aba1d8e08",
+            "fedf6cd3-d076-4037-b7d8-1449726b4c0a",
+            "be6045fd-26ab-4a3b-a6ce-b1ccdf405d09"
+        ],
+        "GameChangers": []
+    },
+    "Metadata": {
+        "Id": "781c68ca-9318-40bf-9cc1-232007be02bf",
+        "IsPublished": true,
+        "Year": 1,
+        "Title": "UI_CONTRACT_SEABREEZE_TITLE",
+        "Description": "UI_CONTRACT_SEABREEZE_DESC",
+        "BriefingVideo": "briefing_seabreeze",
+        "DebriefingVideo": "debriefing_seabreeze",
+        "CodeName_Hint": "Sea Breeze",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Hokkaido/_Scene_SnowCrane.entity",
+        "TileImage": "images/contracts/sarajevosix/Orbis006_SeaBreeze/Title.jpg",
+        "Location": "LOCATION_HOKKAIDO",
+        "LastUpdate": "2015-03-10T12:00:00.441Z",
+        "CreationTimestamp": "2023-08-17T11:03:06.192973Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Type": "orbis",
+        "Release": "1.6.x",
+        "RequiredUnlockable": "ACCESS_SARAJEVO6_SEA_BREEZE",
+        "Entitlements": ["H3_SARAJEVO_SIX"],
+        "Drops": ["ACCESS_SARAJEVO6_S1_CONCLUSION"],
+        "PublicId": "010767183947"
+    },
+    "UserData": {}
+}

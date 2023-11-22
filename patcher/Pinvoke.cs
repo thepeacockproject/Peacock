@@ -1,8 +1,6 @@
 using System;
-#if TARGET_WINDOWS
 using System.ComponentModel;
 using System.Diagnostics;
-#endif
 using System.Runtime.InteropServices;
 
 namespace HitmanPatcher
@@ -29,15 +27,12 @@ namespace HitmanPatcher
     [Flags]
     public enum ProcessAccess : uint
     {
-#if TARGET_WINDOWS
         PROCESS_QUERY_INFORMATION = 0x0400, // Required to retrieve certain information about a process.
-#endif
         PROCESS_VM_READ = 0x0010, // Required to read memory in a process using ReadProcessMemory.
         PROCESS_VM_WRITE = 0x0020, // Required to write to memory in a process using WriteProcessMemory.
         PROCESS_VM_OPERATION = 0x0008 // Required to perform an operation on the address space of a process using VirtualProtectEx
     }
 
-#if TARGET_WINDOWS
     // from https://docs.microsoft.com/en-us/windows/win32/api/winternl/nf-winternl-ntqueryinformationprocess
     public enum PROCESSINFOCLASS
     {
@@ -60,7 +55,6 @@ namespace HitmanPatcher
         public IntPtr UniqueProcessId;
         public IntPtr Reserved3;
     }
-#endif
 
     public static class Pinvoke
     {
@@ -79,7 +73,6 @@ namespace HitmanPatcher
         [DllImport("kernel32.dll", SetLastError = true)]
         public static extern bool VirtualProtectEx([In] IntPtr hProcess, [In] IntPtr lpAddress, [In] UIntPtr dwSize, [In] MemProtection flNewProtect, [Out] out MemProtection lpflOldProtect);
 
-#if TARGET_WINDOWS
         [DllImport("ntdll.dll")]
         public static extern int NtQueryInformationProcess(IntPtr hProcess, PROCESSINFOCLASS processInformationClass, out PROCESS_BASIC_INFORMATION processInformation, uint processInformationLength, out uint returnLength);
 
@@ -109,6 +102,5 @@ namespace HitmanPatcher
 
             return PEB.Reserved3.ToInt32(); // undocumented, but should hold the parent PID
         }
-#endif
     }
 }
