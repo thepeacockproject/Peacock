@@ -5,10 +5,11 @@ env:
 Build_task:
     container:
         image: node:18-slim
-        cpu: 4
-        memory: 4gb
+    Enable_Corepack_script:
+        - corepack enable
     Yarn_cache:
         folder: .yarn/cache
+        reupload_on_changes: true
     Yarn_Populate_script:
         - yarn
     Install_System_Dependencies_script:
@@ -26,8 +27,8 @@ Build_task:
         - cp node-$(cat .nvmrc)-win-x64/LICENSE nodedist/LICENSE
     Assemble_Full_script:
         - ./packaging/ciAssemble.sh
-    Assemble_Lite_script:
-        - ./packaging/ciAssemble.sh lite
+    Assemble_Linux_script:
+        - ./packaging/ciAssemble.sh linux
     Peacock_Release_artifacts:
         path: Peacock-v*.zip
         type: application/zip
@@ -37,8 +38,11 @@ Build_task:
 task:
     container:
         image: node:18-slim
+    Enable_Corepack_script:
+        - corepack enable
     Yarn_cache:
         folder: .yarn/cache
+        reupload_on_changes: true
     Yarn_Populate_script:
         - yarn
     Type_Check_script:
