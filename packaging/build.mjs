@@ -57,6 +57,7 @@ await e.build({
         "node-gyp-build-optional-packages",
         "msgpackr-extract",
         "esbuild-wasm",
+        "static",
     ],
     define: {
         PEACOCK_DEV: "false",

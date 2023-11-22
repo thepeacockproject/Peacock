@@ -28,7 +28,7 @@ import {
 } from "../types/types"
 import { nilUuid } from "../utils"
 import { randomUUID } from "crypto"
-import { getConfig } from "../configSwizzleManager"
+import { getConfig } from "../configManager"
 import { generateUserCentric } from "../contracts/dataGen"
 import { controller } from "../controller"
 import { MatchOverC2SEvent } from "../types/events"

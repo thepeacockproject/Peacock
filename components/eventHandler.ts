@@ -64,7 +64,7 @@ import {
 } from "./types/events"
 import picocolors from "picocolors"
 import { setCpd } from "./evergreen"
-import { getConfig } from "./configSwizzleManager"
+import { getConfig } from "./configManager"
 import { resetUserEscalationProgress } from "./contracts/escalations/escalationService"
 import {
     ManifestScoringDefinition,

@@ -22,7 +22,7 @@ import type {
     RequestWithJwt,
 } from "../types/types"
 import { log, LogLevel } from "../loggingInterop"
-import { getConfig } from "../configSwizzleManager"
+import { getConfig } from "../configManager"
 
 import { Router } from "express"
 import { controller } from "../controller"

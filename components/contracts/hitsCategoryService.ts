@@ -16,7 +16,6 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { HookMap, SyncHook } from "../hooksImpl"
 import {
     ContractHistory,
     GameVersion,
@@ -35,6 +34,7 @@ import { log, LogLevel } from "../loggingInterop"
 import { fastClone, getRemoteService } from "../utils"
 import { orderedETAs } from "./elusiveTargetArcades"
 import { missionsInLocations } from "./missionsInLocation"
+import { HookMap, SyncHook } from "tapable"
 
 /**
  * The filters supported for HitsCategories.

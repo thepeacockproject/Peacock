@@ -20,12 +20,12 @@ import { NextFunction, Response, Router } from "express"
 import serveStatic from "serve-static"
 import { join } from "path"
 import md5File from "md5-file"
-import { getConfig } from "../configSwizzleManager"
+import { getConfig } from "../configManager"
 import { readFile } from "atomically"
 import { GameVersion, RequestWithJwt } from "../types/types"
 import { log, LogLevel } from "../loggingInterop"
 import { imageFetchingMiddleware } from "./imageHandler"
-import { SyncBailHook, SyncHook } from "../hooksImpl"
+import { SyncBailHook, SyncHook } from "tapable"
 
 /**
  * Router triggered before {@link menuSystemRouter}.

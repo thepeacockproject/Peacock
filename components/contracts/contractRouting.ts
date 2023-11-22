@@ -33,7 +33,7 @@ import {
     setupScoring,
 } from "../eventHandler"
 import { controller } from "../controller"
-import { getConfig } from "../configSwizzleManager"
+import { getConfig } from "../configManager"
 import type {
     CreateFromParamsBody,
     GameChanger,

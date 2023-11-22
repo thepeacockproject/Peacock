@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import * as configSwizzleManager from "./configSwizzleManager"
+import * as configManager from "./configManager"
 import * as controller from "./controller"
 import * as databaseHandler from "./databaseHandler"
 import * as discordRp from "./discordRp"
@@ -24,7 +24,6 @@ import * as entitlementStrategies from "./entitlementStrategies"
 import * as eventHandler from "./eventHandler"
 import * as evergreen from "./evergreen"
 import * as flags from "./flags"
-import * as hooksImpl from "./hooksImpl"
 import * as hotReloadService from "./hotReloadService"
 import * as inventory from "./inventory"
 import * as loadouts from "./loadouts"
@@ -86,9 +85,9 @@ import * as types from "./types/types"
 import * as escalationService from "./contracts/escalations/escalationService"
 
 export default {
-    "@peacockproject/core/configSwizzleManager": {
+    "@peacockproject/core/configManager": {
         __esModule: true,
-        ...configSwizzleManager,
+        ...configManager,
     },
     "@peacockproject/core/controller": { __esModule: true, ...controller },
     "@peacockproject/core/databaseHandler": {
@@ -103,7 +102,6 @@ export default {
     "@peacockproject/core/eventHandler": { __esModule: true, ...eventHandler },
     "@peacockproject/core/evergreen": { __esModule: true, ...evergreen },
     "@peacockproject/core/flags": { __esModule: true, ...flags },
-    "@peacockproject/core/hooksImpl": { __esModule: true, ...hooksImpl },
     "@peacockproject/core/hotReloadService": {
         __esModule: true,
         ...hotReloadService,

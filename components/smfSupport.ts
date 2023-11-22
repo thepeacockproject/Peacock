@@ -25,6 +25,7 @@ import { basename, join } from "path"
 import { readFile } from "fs/promises"
 import { menuSystemDatabase } from "./menus/menuSystem"
 import { parse } from "json5"
+import { configManager } from "./configManager"
 
 type LastServerSideData = SMFLastDeploy["lastServerSideStates"]
 
@@ -138,8 +139,14 @@ export class SMFSupport {
 
     private handleUnlockables(lastServerSideData: LastServerSideData) {
         if (lastServerSideData?.unlockables) {
-            this.controller.configManager.configs["allunlockables"] =
-                lastServerSideData.unlockables.slice(1)
+            configManager.hooks.getConfig.tap(
+                "internal_SMFUnlockablesPlugin",
+                (currentConfig, configName) => {
+                    return configName === "allunlockables"
+                        ? lastServerSideData.unlockables.slice(1)
+                        : currentConfig
+                },
+            )
         }
     }
 

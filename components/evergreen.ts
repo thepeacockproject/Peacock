@@ -17,7 +17,7 @@
  */
 
 import { getUserData, writeUserData } from "./databaseHandler"
-import { getConfig } from "./configSwizzleManager"
+import { getConfig } from "./configManager"
 import { ContractProgressionData } from "./types/types"
 import { getFlag } from "./flags"
 import { EVERGREEN_LEVEL_INFO } from "./utils"

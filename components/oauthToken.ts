@@ -20,7 +20,7 @@ import type { Response } from "express"
 import { decode, sign } from "jsonwebtoken"
 import { extractToken, uuidRegex } from "./utils"
 import type { GameVersion, RequestWithJwt, UserProfile } from "./types/types"
-import { getVersionedConfig } from "./configSwizzleManager"
+import { getVersionedConfig } from "./configManager"
 import { log, LogLevel } from "./loggingInterop"
 import {
     STEAM_NAMESPACE_2018,
@@ -198,7 +198,7 @@ export async function handleOauthToken(
         log(LogLevel.DEBUG, "Unable to load profile information.")
     }
 
-    /* 
+    /*
        Store user auth for all games except scpc
     */
     if (!isFrankenstein) {

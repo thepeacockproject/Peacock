@@ -29,7 +29,7 @@ import {
     uuidRegex,
 } from "./utils"
 import { contractSessions, getSession } from "./eventHandler"
-import { getConfig, getVersionedConfig } from "./configSwizzleManager"
+import { ConfigKey, getConfig, getVersionedConfig } from "./configManager"
 import { contractIdToHitObject, controller } from "./controller"
 import { makeCampaigns } from "./menus/campaigns"
 import {
@@ -1553,7 +1553,7 @@ menuDataRouter.post(
     async (req: RequestWithJwt<{ sorting?: unknown }, string[]>, res) => {
         const specialContracts: string[] = []
 
-        await controller.hooks.getSearchResults.callAsync(
+        await controller.hooks.getSearchResults.promise(
             req.body,
             specialContracts,
         )
@@ -1729,7 +1729,7 @@ menuDataRouter.get("/contractcreation/create", (req: RequestWithJwt, res) => {
 })
 
 const createLoadSaveMiddleware =
-    (menuTemplate: string) =>
+    (menuTemplate: ConfigKey) =>
     (
         req: RequestWithJwt<
             {

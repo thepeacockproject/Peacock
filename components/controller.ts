@@ -41,8 +41,6 @@ import type {
     Unlockable,
     UserCentricContract,
 } from "./types/types"
-import type * as configManagerType from "./configSwizzleManager"
-import { configs, getConfig, getVersionedConfig } from "./configSwizzleManager"
 import { log, LogLevel } from "./loggingInterop"
 import * as axios from "axios"
 import {
@@ -52,7 +50,6 @@ import {
     hitmapsUrl,
     versions,
 } from "./utils"
-import { AsyncSeriesHook, SyncBailHook, SyncHook } from "./hooksImpl"
 import { parse } from "json5"
 import { userAuths } from "./officialServerAuth"
 // @ts-expect-error Ignore JSON import
@@ -77,6 +74,8 @@ import generatedPeacockRequireTable from "./generatedPeacockRequireTable"
 import { escalationTypes } from "./contracts/escalations/escalationService"
 import { orderedETAs } from "./contracts/elusiveTargetArcades"
 import { SMFSupport } from "./smfSupport"
+import { AsyncSeriesHook, SyncBailHook, SyncHook } from "tapable"
+import { getVersionedConfig } from "./configManager"
 
 /**
  * An array of string arrays that contains the IDs of the featured contracts.
@@ -307,8 +306,7 @@ function registerInternals(contracts: MissionManifest[]): void {
 export class Controller {
     public hooks: {
         serverStart: SyncHook<[]>
-        challengesLoaded: SyncHook<[]>
-        masteryDataLoaded: SyncHook<[]>
+        resourcesLoaded: SyncHook<[]>
         newEvent: SyncHook<
             [
                 /** event */ ClientToServerEvent,
@@ -351,11 +349,7 @@ export class Controller {
             PlayNextGetCampaignsHookReturn | undefined
         >
         onMissionEnd: SyncHook<[/** session */ ContractSession]>
-    }
-    public configManager: typeof configManagerType = {
-        getConfig,
-        configs,
-        getVersionedConfig,
+        groupSearchDiscovery: SyncHook<[string[]]>
     }
     public missionsInLocations = missionsInLocations
     /**
@@ -379,21 +373,26 @@ export class Controller {
     public locationsWithETA = new Set<string>()
     public parentsWithETA = new Set<string>()
 
-    /**
-     * The constructor.
-     */
-    public constructor() {
+    constructor() {
         this.hooks = {
             serverStart: new SyncHook(),
-            challengesLoaded: new SyncHook(),
-            masteryDataLoaded: new SyncHook(),
-            newEvent: new SyncHook(),
-            newMetricsEvent: new SyncHook(),
-            getContractManifest: new SyncBailHook(),
-            contributeCampaigns: new SyncHook(),
-            getSearchResults: new AsyncSeriesHook(),
-            getNextCampaignMission: new SyncBailHook(),
-            onMissionEnd: new SyncHook(),
+            resourcesLoaded: new SyncHook(),
+            newEvent: new SyncHook(["event", "request", "session"]),
+            newMetricsEvent: new SyncHook(["event", "request"]),
+            getContractManifest: new SyncBailHook(["contractId"]),
+            contributeCampaigns: new SyncHook([
+                "campaigns",
+                "genSingleMissionFunc",
+                "genSingleVideoFunc",
+                "gameVersion",
+            ]),
+            getSearchResults: new AsyncSeriesHook(["query", "contractIds"]),
+            getNextCampaignMission: new SyncBailHook([
+                "contractId",
+                "gameVersion",
+            ]),
+            onMissionEnd: new SyncHook(["session"]),
+            groupSearchDiscovery: new SyncHook(),
         }
     }
 
@@ -403,12 +402,6 @@ export class Controller {
      * @throws {Error} If all hope is lost. (In theory, this should never happen)
      */
     async boot(pluginDevHost: boolean): Promise<void> {
-        // this should never actually be hit, but it makes IntelliJ not
-        // complain that it's unused, so...
-        if (!this.configManager) {
-            throw new Error("All hope is lost.")
-        }
-
         log(
             LogLevel.INFO,
             "Booting Peacock internal services - this may take a moment.",
@@ -443,8 +436,7 @@ export class Controller {
         try {
             await this._loadResources()
 
-            this.hooks.challengesLoaded.call()
-            this.hooks.masteryDataLoaded.call()
+            this.hooks.resourcesLoaded.call()
         } catch (e) {
             log(
                 LogLevel.ERROR,
@@ -1027,10 +1019,12 @@ export class Controller {
             require: createPeacockRequire(pluginName),
         })
 
-        let theExports
+        type Plugin = (controller: Controller) => Promise<void> | void
+        type ESMPlugin = { default: Plugin; __esModule?: true }
+
+        let theExports: ESMPlugin | Plugin
 
         try {
-            // eslint-disable-next-line prefer-const
             theExports = new Script(pluginContents, {
                 filename: pluginPath,
             }).runInContext(context)
@@ -1045,17 +1039,17 @@ export class Controller {
         }
 
         try {
-            let plugin = theExports
+            // if __esModule, the plugin thinks it's an ES module
+            // (yet it's in a CommonJS environment, meaning the plugin
+            // was likely written as a module, and then compiled by a tool),
+            // so the actual function will likely be on the 'default' property
+            const plugin: Plugin = (<ESMPlugin>theExports).__esModule
+                ? // fake esm
+                  (<ESMPlugin>theExports).default ?? (theExports as Plugin)
+                : // commonjs
+                  <Plugin>theExports
 
-            if (theExports.__esModule) {
-                // the plugin thinks it's an ES module (incorrectly, as it's in
-                // a CommonJS environment, meaning the plugin was likely written
-                // as a module, and then compiled by a tool), so the actual
-                // function will likely be on the 'default' property
-                plugin = theExports.default ?? theExports
-            }
-
-            await (plugin as (controller: Controller) => Promise<void>)(this)
+            await (<Plugin>plugin)(this)
         } catch (e) {
             log(LogLevel.ERROR, `Error while evaluating plugin ${pluginName}!`)
             log(LogLevel.ERROR, e)
@@ -1087,9 +1081,13 @@ export class Controller {
     scanForGroups(): void {
         let groupCount = 0
 
+        const groupsFromHook: string[] = []
+
+        this.hooks.groupSearchDiscovery.call(groupsFromHook)
+
         allGroups: for (const contractId of new Set<string>([
             ...Object.keys(internalContracts),
-            ...this.hooks.getContractManifest.allTapNames,
+            ...groupsFromHook,
         ])) {
             const contract = this.resolveContract(contractId)
 

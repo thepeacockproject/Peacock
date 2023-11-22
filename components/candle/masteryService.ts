@@ -21,7 +21,7 @@ import {
     getSubLocationByName,
 } from "../contracts/dataGen"
 import { log, LogLevel } from "../loggingInterop"
-import { getConfig, getVersionedConfig } from "../configSwizzleManager"
+import { getConfig, getVersionedConfig } from "../configManager"
 import { getUserData } from "../databaseHandler"
 import {
     MasteryData,

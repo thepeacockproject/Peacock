@@ -47,7 +47,7 @@ import {
     writeUserData,
 } from "./databaseHandler"
 import { randomUUID } from "crypto"
-import { getVersionedConfig } from "./configSwizzleManager"
+import { getVersionedConfig } from "./configManager"
 import { createInventory } from "./inventory"
 import { controller } from "./controller"
 import { loadouts } from "./loadouts"

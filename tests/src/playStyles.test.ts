@@ -16,12 +16,9 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { loadConfig } from "../mocks/configSwizzleManager"
-import { ContractSession, RatingKill } from "../../components/types/types"
-import { calculatePlaystyle } from "../../components/playStyles"
+import { ContractSession, RatingKill } from "../../components/types/types.ts"
+import { calculatePlaystyle } from "../../components/playStyles.ts"
 import { describe, expect, test } from "vitest"
-
-loadConfig("Playstyles")
 
 describe("calculatePlaystyle", () => {
     test("default", () => {

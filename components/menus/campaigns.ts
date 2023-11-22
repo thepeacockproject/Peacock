@@ -27,7 +27,7 @@ import type {
     StoryData,
 } from "../types/types"
 import { log, LogLevel } from "../loggingInterop"
-import { getConfig } from "../configSwizzleManager"
+import { getConfig } from "../configManager"
 import { fastClone } from "../utils"
 import assert from "assert"
 

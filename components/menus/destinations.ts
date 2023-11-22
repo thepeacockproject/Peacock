@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { getConfig, getVersionedConfig } from "../configSwizzleManager"
+import { getConfig, getVersionedConfig } from "../configManager"
 import type {
     CompletionData,
     GameLocationsData,

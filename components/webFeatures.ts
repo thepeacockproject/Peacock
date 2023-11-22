@@ -17,7 +17,7 @@
  */
 
 import { Request, Response, Router } from "express"
-import { getConfig } from "./configSwizzleManager"
+import { getConfig } from "./configManager"
 import { readFileSync } from "atomically"
 import { GameVersion, UserProfile } from "./types/types"
 import { join } from "path"

@@ -18,7 +18,7 @@
 
 import { Router } from "express"
 import { RequestWithJwt } from "../types/types"
-import { getConfig } from "../configSwizzleManager"
+import { getConfig } from "../configManager"
 import { getDefaultSuitFor, uuidRegex } from "../utils"
 import { json as jsonMiddleware } from "body-parser"
 import { controller } from "../controller"

@@ -18,7 +18,7 @@
 
 import { Playstyle } from "./types/scoring"
 import { RatingKill } from "./types/types"
-import { getConfig } from "./configSwizzleManager"
+import { getConfig } from "./configManager"
 
 /**
  * Checks the criteria of each possible play-style, ranking them by scoring.

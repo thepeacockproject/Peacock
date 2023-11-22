@@ -40,7 +40,7 @@ import {
     PEACOCKVERSTRING,
     ServerVer,
 } from "./utils"
-import { getConfig } from "./configSwizzleManager"
+import { getConfig } from "./configManager"
 import { handleOauthToken } from "./oauthToken"
 import type {
     RequestWithJwt,

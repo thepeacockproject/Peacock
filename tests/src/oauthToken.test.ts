@@ -17,11 +17,11 @@
  */
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { UserProfile } from "../../components/types/types"
-import { handleOauthToken, JWT_SECRET } from "../../components/oauthToken"
+import { UserProfile } from "../../components/types/types.ts"
+import { handleOauthToken, JWT_SECRET } from "../../components/oauthToken.ts"
 import { sign, verify } from "jsonwebtoken"
-import * as databaseHandler from "../../components/databaseHandler"
-import * as platformEntitlements from "../../components/platformEntitlements"
+import * as databaseHandler from "../../components/databaseHandler.ts"
+import * as platformEntitlements from "../../components/platformEntitlements.ts"
 import axios from "axios"
 import { describe, expect, beforeEach, vi, it } from "vitest"
 
@@ -31,7 +31,7 @@ import {
     mockRequestWithJwt,
     mockRequestWithValidJwt,
     mockResponse,
-} from "../helpers/testHelpers"
+} from "../helpers/testHelpers.ts"
 
 describe("oauthToken", () => {
     const pId = "00000000-0000-0000-0000-000000000047"

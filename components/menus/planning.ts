@@ -30,7 +30,7 @@ import {
     getSubLocationFromContract,
     mapObjectives,
 } from "../contracts/dataGen"
-import { getConfig } from "../configSwizzleManager"
+import { getConfig } from "../configManager"
 import { getUserData, writeUserData } from "../databaseHandler"
 import {
     getDefaultSuitFor,

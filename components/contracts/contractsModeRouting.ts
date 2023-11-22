@@ -22,7 +22,7 @@ import type {
     RequestWithJwt,
 } from "../types/types"
 import type { Response } from "express"
-import { getConfig, getVersionedConfig } from "../configSwizzleManager"
+import { getConfig, getVersionedConfig } from "../configManager"
 import { getUserData } from "../databaseHandler"
 import { generateUserCentric } from "./dataGen"
 import { controller, preserveContracts } from "../controller"

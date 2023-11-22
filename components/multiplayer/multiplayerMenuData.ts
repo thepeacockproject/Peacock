@@ -25,7 +25,7 @@ import {
     MultiplayerScore,
 } from "./multiplayerUtils"
 import { Router } from "express"
-import { getConfig } from "../configSwizzleManager"
+import { getConfig } from "../configManager"
 import { MultiplayerPreset } from "./multiplayerService"
 import { generateUserCentric } from "../contracts/dataGen"
 import { controller } from "../controller"

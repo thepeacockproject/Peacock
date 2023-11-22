@@ -32,7 +32,7 @@ import axios, { AxiosError } from "axios"
 import { log, LogLevel } from "./loggingInterop"
 import { writeFileSync } from "fs"
 import { getFlag } from "./flags"
-import { getConfig, getVersionedConfig } from "./configSwizzleManager"
+import { getConfig, getVersionedConfig } from "./configManager"
 
 /**
  * True if the server is being run by the launcher, false otherwise.

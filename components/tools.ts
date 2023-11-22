@@ -32,7 +32,7 @@ import { join, resolve as pathResolve } from "path"
 import picocolors from "picocolors"
 import { Filename, npath, PortablePath, ppath, xfs } from "@yarnpkg/fslib"
 import { makeEmptyArchive, ZipFS } from "@yarnpkg/libzip"
-import { configs } from "./configSwizzleManager"
+import { configKeys } from "./configManager"
 
 const IMAGE_PACK_REPO = "thepeacockproject/ImagePack"
 
@@ -117,7 +117,7 @@ async function exportDebugInfo(): Promise<void> {
     const data = {
         version: PEACOCKVERSTRING,
         ident: PEACOCKVER,
-        presentConfigs: Object.keys(configs),
+        presentConfigs: configKeys,
         chunkDigest: await md5File("chunk0.js"),
         patcherDigest: await md5File("PeacockPatcher.exe"),
         runtimeVersions: process.versions,

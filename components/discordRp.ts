@@ -17,7 +17,7 @@
  */
 
 import { RPCClient } from "./discord/client"
-import { getConfig } from "./configSwizzleManager"
+import { getConfig } from "./configManager"
 import type { GameVersion, MissionType } from "./types/types"
 import { getFlag } from "./flags"
 import { log, LogLevel } from "./loggingInterop"

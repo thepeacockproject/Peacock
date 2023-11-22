@@ -58,11 +58,11 @@ import {
     mergeSavedChallengeGroups,
 } from "./challengeHelpers"
 import assert from "assert"
-import { getVersionedConfig } from "../configSwizzleManager"
-import { SyncHook } from "../hooksImpl"
+import { getVersionedConfig } from "../configManager"
 import { getUserEscalationProgress } from "../contracts/escalations/escalationService"
 
 import { getUnlockableById } from "../inventory"
+import { SyncHook } from "tapable"
 
 type ChallengeDefinitionLike = {
     Context?: Record<string, unknown>

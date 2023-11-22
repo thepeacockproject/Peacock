@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { getConfig } from "../configSwizzleManager"
+import { getConfig } from "../configManager"
 import { generateUserCentric } from "../contracts/dataGen"
 import { controller } from "../controller"
 import type {

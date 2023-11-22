@@ -25,7 +25,7 @@ import type {
 import { controller } from "../controller"
 import { generateUserCentric } from "../contracts/dataGen"
 import { getUserData, writeUserData } from "../databaseHandler"
-import { getVersionedConfig } from "../configSwizzleManager"
+import { getVersionedConfig } from "../configManager"
 import type { Response } from "express"
 import { getUnlockableById } from "../inventory"
 

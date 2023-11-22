@@ -32,7 +32,7 @@ import {
     xpRequiredForLevel,
 } from "./utils"
 import { contractSessions, getCurrentState } from "./eventHandler"
-import { getConfig } from "./configSwizzleManager"
+import { getConfig } from "./configManager"
 import { _theLastYardbirdScpc, controller } from "./controller"
 import type {
     ContractHistory,
