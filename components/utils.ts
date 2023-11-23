@@ -338,6 +338,7 @@ function updateUserProfile(
                 {},
             )
 
+            // ts-expect-error Legacy property.
             delete profile.Extensions.progression["Unlockables"]
 
             profile.Version = 1
@@ -527,7 +528,7 @@ export function attainableDefaults(gameVersion: GameVersion): string[] {
  * @param subLocation The sub-location.
  * @returns The default suit for the given sub-location and parent location.
  */
-export function getDefaultSuitFor(subLocation: Unlockable) {
+export function getDefaultSuitFor(subLocation: Unlockable): string | undefined {
     return (
         defaultSuits[subLocation.Id] ||
         defaultSuits[subLocation.Properties.ParentLocation] ||
@@ -688,7 +689,9 @@ export function isSuit(repoId: string): boolean {
     ).filter((unlockable) => unlockable.Type === "disguise")
 
     for (const u of unlockablesFiltered) {
-        suitsToTypeMap[u.Properties.RepositoryId] = u.Subtype
+        if (u.Subtype && u.Properties.RepositoryId) {
+            suitsToTypeMap[u.Properties.RepositoryId] = u.Subtype
+        }
     }
 
     return suitsToTypeMap[repoId]

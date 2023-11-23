@@ -26,6 +26,7 @@ import type {
 } from "../../types/types"
 import { getUserData } from "../../databaseHandler"
 import { log, LogLevel } from "../../loggingInterop"
+import assert from "assert"
 
 /**
  * Put a group id in here to hide it from the menus on 2016.
@@ -100,8 +101,10 @@ export function resetUserEscalationProgress(
  * @param groupContract The escalation group's contract.
  * @returns The number of levels.
  */
-export function getLevelCount(groupContract: MissionManifest): number {
-    return groupContract.Metadata.GroupDefinition.Order.length
+export function getLevelCount(
+    groupContract: MissionManifest | undefined,
+): number {
+    return groupContract?.Metadata.GroupDefinition?.Order.length ?? 0
 }
 
 /**
@@ -121,6 +124,8 @@ export function getPlayEscalationInfo(
 
     const p = getUserEscalationProgress(userData, groupContractId)
     const groupCt = controller.escalationMappings.get(groupContractId)
+
+    assert.ok(groupCt, `No escalation mapping for ${groupContractId}`)
 
     const totalLevelCount = getLevelCount(
         controller.resolveContract(groupContractId),

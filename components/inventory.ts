@@ -513,7 +513,7 @@ function updateWithDefaultSuit(
 export function createInventory(
     profileId: string,
     gameVersion: GameVersion,
-    sublocation = undefined,
+    sublocation: Unlockable | undefined = undefined,
 ): InventoryItem[] {
     if (inventoryUserCache.has(profileId)) {
         return updateWithDefaultSuit(

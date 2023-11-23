@@ -49,33 +49,36 @@ export class MasteryService {
      * @Key2 The parent location Id.
      * @Value A `MasteryPackage` object.
      */
-    protected masteryPackages: Map<GameVersion, Map<string, MasteryPackage>> =
-        new Map([
-            ["h1", new Map()],
-            ["h2", new Map()],
-            ["h3", new Map()],
-            ["scpc", new Map()],
-        ])
+    protected masteryPackages: Record<
+        GameVersion,
+        Map<string, MasteryPackage>
+    > = {
+        h1: new Map(),
+        h2: new Map(),
+        h3: new Map(),
+        scpc: new Map(),
+    }
     /**
      * @Key1 Game version.
      * @Key2 Unlockable Id.
      * @Value A `MasteryPackage` object.
      */
-    private unlockableMasteryData: Map<
+    private unlockableMasteryData: Record<
         GameVersion,
         Map<string, UnlockableMasteryData>
-    > = new Map([
-        ["h1", new Map()],
-        ["h2", new Map()],
-        ["h3", new Map()],
-        ["scpc", new Map()],
-    ])
+    > = {
+        h1: new Map(),
+        h2: new Map(),
+        h3: new Map(),
+        scpc: new Map(),
+    }
 
     registerMasteryData(masteryPackage: MasteryPackage) {
         for (const gv of masteryPackage.GameVersions) {
-            this.masteryPackages
-                .get(gv)
-                .set(masteryPackage.LocationId, masteryPackage)
+            this.masteryPackages[gv].set(
+                masteryPackage.LocationId,
+                masteryPackage,
+            )
 
             /**
              * Generates the same data in a reverse order. It could be considered redundant but this allows for
@@ -84,7 +87,7 @@ export class MasteryService {
             if (masteryPackage.SubPackages) {
                 for (const subPkg of masteryPackage.SubPackages) {
                     for (const drop of subPkg.Drops) {
-                        this.unlockableMasteryData.get(gv).set(drop.Id, {
+                        this.unlockableMasteryData[gv].set(drop.Id, {
                             Location: masteryPackage.LocationId,
                             SubPackageId: subPkg.Id,
                             Level: drop.Level,
@@ -93,7 +96,7 @@ export class MasteryService {
                 }
             } else {
                 for (const drop of masteryPackage.Drops) {
-                    this.unlockableMasteryData.get(gv).set(drop.Id, {
+                    this.unlockableMasteryData[gv].set(drop.Id, {
                         Location: masteryPackage.LocationId,
                         Level: drop.Level,
                     })
@@ -106,15 +109,17 @@ export class MasteryService {
      * Returns mastery data for unlockable, if there's any
      * @param unlockable
      * @param gameVersion
-     * @returns { Location: string, Level: number  } | undefined
      */
     getMasteryForUnlockable(
         unlockable: Unlockable,
         gameVersion: GameVersion,
     ): UnlockableMasteryData | undefined {
-        return this.unlockableMasteryData.get(gameVersion).get(unlockable.Id)
+        return this.unlockableMasteryData[gameVersion].get(unlockable.Id)
     }
 
+    /**
+     * Exact same thing as {@link getMasteryData}.
+     */
     getMasteryDataForDestination(
         locationParentId: string,
         gameVersion: GameVersion,
@@ -247,7 +252,7 @@ export class MasteryService {
         userId: string,
         contractType = "mission",
         subPackageId?: string,
-    ): CompletionData {
+    ): CompletionData | undefined {
         // Get the mastery data
         const masteryPkg = this.getMasteryPackage(locationParentId, gameVersion)
 
@@ -301,12 +306,8 @@ export class MasteryService {
     getMasteryPackage(
         locationParentId: string,
         gameVersion: GameVersion,
-    ): MasteryPackage {
-        if (!this.masteryPackages.get(gameVersion).has(locationParentId)) {
-            return undefined
-        }
-
-        return this.masteryPackages.get(gameVersion).get(locationParentId)
+    ): MasteryPackage | undefined {
+        return this.masteryPackages[gameVersion].get(locationParentId)
     }
 
     private processDrops(
@@ -325,7 +326,7 @@ export class MasteryService {
                 return true
             })
             .map((drop) => {
-                const unlockable: Unlockable = unlockableMap.get(drop.Id)
+                const unlockable: Unlockable = unlockableMap.get(drop.Id)!
 
                 return {
                     IsLevelMarker: false,
@@ -357,7 +358,7 @@ export class MasteryService {
         const isSniper = isSniperLocation(locationParentId)
 
         // Put all Ids into a set for quick lookup
-        let dropIdSet = undefined
+        let dropIdSet: Set<string>
 
         if (masteryPkg.SubPackages) {
             dropIdSet = new Set(

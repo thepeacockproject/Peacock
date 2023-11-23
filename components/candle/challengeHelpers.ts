@@ -111,13 +111,13 @@ export function inclusionDataCheck(
     if (!incData) return true
     if (!contract) return false
 
-    return (
+    return Boolean(
         incData.ContractIds?.includes(contract.Metadata.Id) ||
-        incData.ContractTypes?.includes(contract.Metadata.Type) ||
-        incData.Locations?.includes(contract.Metadata.Location) ||
-        contract.Metadata?.Gamemodes?.some((r) =>
-            incData.GameModes?.includes(r),
-        )
+            incData.ContractTypes?.includes(contract.Metadata.Type) ||
+            incData.Locations?.includes(contract.Metadata.Location) ||
+            contract.Metadata?.Gamemodes?.some((r) =>
+                incData.GameModes?.includes(r),
+            ),
     )
 }
 
@@ -134,7 +134,8 @@ export function isChallengeForDifficulty(
 
 /**
  * Judges whether a challenge should be included in the challenges list of a contract.
- * @requires The challenge and the contract share the same parent location.
+ * Requires the challenge and the contract share the same parent location.
+ *
  * @param contractId The id of the contract.
  * @param locationId The sublocation ID of the challenge.
  * @param difficulty The upper bound on the difficulty of the challenges to return.

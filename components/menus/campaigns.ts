@@ -484,7 +484,7 @@ export function makeCampaigns(
                             ),
                         ],
                     },
-                ].filter((o) => o !== undefined),
+                ].filter(Boolean) as Campaign[],
                 StoryData: [],
                 Properties: {
                     BackgroundImage:

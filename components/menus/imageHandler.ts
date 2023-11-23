@@ -100,7 +100,10 @@ export async function imageFetchingMiddleware(
             axiosResponse.data.pipe(writeStream)
         }
     } catch (e) {
-        log(LogLevel.DEBUG, `[Image loading] Err ${e} ${e.stack}`)
+        log(
+            LogLevel.DEBUG,
+            `[Image loading] Err ${e} ${(e as Error | undefined)?.stack}`,
+        )
 
         res.status(500).send("Failed to get data")
     }

@@ -156,15 +156,14 @@ webFeaturesRouter.get(
             return
         }
 
-        if (controller.escalationMappings.get(req.query.id) === undefined) {
+        const mapping = controller.escalationMappings.get(req.query.id)
+
+        if (mapping === undefined) {
             formErrorMessage(res, "Unknown escalation.")
             return
         }
 
-        if (
-            Object.keys(controller.escalationMappings.get(req.query.id))
-                .length < parseInt(req.query.level, 10)
-        ) {
+        if (Object.keys(mapping).length < parseInt(req.query.level, 10)) {
             formErrorMessage(
                 res,
                 "Cannot exceed the maximum level for this escalation!",

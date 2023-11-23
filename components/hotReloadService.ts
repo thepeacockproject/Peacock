@@ -35,7 +35,7 @@ export async function setupHotListener(
             callback(event)
         }
     } catch (err) {
-        if (err.name === "AbortError") {
+        if ((err as Error).name === "AbortError") {
             return
         }
 

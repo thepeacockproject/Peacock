@@ -78,7 +78,7 @@ export class IOIStrategy extends EntitlementStrategy {
 
         const user = userAuths.get(userId)
 
-        let resp: AxiosResponse<string[]> = undefined
+        let resp: AxiosResponse<string[]> | undefined = undefined
 
         try {
             resp = await user?._useService<string[]>(
@@ -92,7 +92,7 @@ export class IOIStrategy extends EntitlementStrategy {
             if (error instanceof AxiosError) {
                 log(
                     LogLevel.ERROR,
-                    `Failed to get entitlements from Steam: got ${error.response.status} ${error.response.statusText}.`,
+                    `Failed to get entitlements from Steam: got ${error.response?.status} ${error.response?.statusText}.`,
                 )
             } else {
                 log(

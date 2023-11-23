@@ -106,7 +106,12 @@ const menuDataRouter = Router()
 
 menuDataRouter.get(
     "/ChallengeLocation",
-    (req: RequestWithJwt<{ locationId: string }>, res) => {
+    (
+        req: RequestWithJwt<{
+            locationId: string
+        }>,
+        res,
+    ) => {
         if (typeof req.query.locationId !== "string") {
             res.status(400).send("Invalid locationId")
             return
@@ -422,7 +427,7 @@ menuDataRouter.get("/SafehouseCategory", (req: RequestWithJwt, res) => {
             category.SubCategories.push(subcategory)
         }
 
-        subcategory.Data.Items.push({
+        subcategory.Data?.Items.push({
             Item: item,
             ItemDetails: {
                 Capabilities: [],
@@ -612,7 +617,12 @@ menuDataRouter.get(
 
 menuDataRouter.get(
     "/missionrewards",
-    (req: RequestWithJwt<{ contractSessionId: string }>, res) => {
+    (
+        req: RequestWithJwt<{
+            contractSessionId: string
+        }>,
+        res,
+    ) => {
         const { contractId } = getSession(req.jwt.unique_name)
         const contractData = controller.resolveContract(contractId, true)
 
@@ -693,7 +703,12 @@ menuDataRouter.get("/Planning", planningView)
 
 menuDataRouter.get(
     "/selectagencypickup",
-    (req: RequestWithJwt<{ contractId: string }>, res) => {
+    (
+        req: RequestWithJwt<{
+            contractId: string
+        }>,
+        res,
+    ) => {
         const pickupData = getConfig<SceneConfig>("AgencyPickups", false)
 
         const selectagencypickup = {
@@ -781,7 +796,12 @@ menuDataRouter.get(
 
 menuDataRouter.get(
     "/selectentrance",
-    (req: RequestWithJwt<{ contractId: string }>, res) => {
+    (
+        req: RequestWithJwt<{
+            contractId: string
+        }>,
+        res,
+    ) => {
         const entranceData = getConfig<SceneConfig>("Entrances", false)
 
         const selectEntrance: CommonSelectScreenConfig = {
@@ -891,7 +911,13 @@ menuDataRouter.get("/scoreoverviewandunlocks", missionEnd)
 
 menuDataRouter.get(
     "/Destination",
-    (req: RequestWithJwt<{ locationId: string; difficulty?: string }>, res) => {
+    (
+        req: RequestWithJwt<{
+            locationId: string
+            difficulty?: string
+        }>,
+        res,
+    ) => {
         const LOCATION = req.query.locationId
 
         const locData = getVersionedConfig<PeacockLocationsData>(
@@ -1177,7 +1203,12 @@ async function lookupContractPublicId(
 
 menuDataRouter.get(
     "/LookupContractPublicId",
-    async (req: RequestWithJwt<{ publicid: string }>, res) => {
+    async (
+        req: RequestWithJwt<{
+            publicid: string
+        }>,
+        res,
+    ) => {
         if (!req.query.publicid || typeof req.query.publicid !== "string") {
             return res.status(400).send("no/invalid public id specified!")
         }
@@ -1200,7 +1231,10 @@ menuDataRouter.get(
 menuDataRouter.get(
     "/HitsCategory",
     async (
-        req: RequestWithJwt<{ type: string; page?: number | string }>,
+        req: RequestWithJwt<{
+            type: string
+            page?: number | string
+        }>,
         res,
     ) => {
         const category = req.query.type
@@ -1237,7 +1271,12 @@ menuDataRouter.get(
 
 menuDataRouter.get(
     "/PlayNext",
-    (req: RequestWithJwt<{ contractId: string }>, res) => {
+    (
+        req: RequestWithJwt<{
+            contractId: string
+        }>,
+        res,
+    ) => {
         if (!req.query.contractId) {
             res.status(400).send("no contract id!")
             return
@@ -1359,7 +1398,10 @@ menuDataRouter.get("/LeaderboardsView", (req, res) => {
 })
 
 const leaderboardEntries = async (
-    req: RequestWithJwt<{ contractid: string; difficultyLevel?: string }>,
+    req: RequestWithJwt<{
+        contractid: string
+        difficultyLevel?: string
+    }>,
     res: Response,
 ) => {
     let difficulty = "unset"
@@ -1448,7 +1490,10 @@ menuDataRouter.get("/LeaderboardEntries", leaderboardEntries)
 menuDataRouter.get(
     "/DebriefingLeaderboards",
     async (
-        req: RequestWithJwt<{ contractid: string; difficulty?: string }>,
+        req: RequestWithJwt<{
+            contractid: string
+            difficulty?: string
+        }>,
         res,
     ) => {
         const debriefingLeaderboardsTemplate = getConfig(
@@ -1474,7 +1519,9 @@ menuDataRouter.get("/Contracts", contractsModeHome)
 preMenuDataRouter.get(
     "/contractcreation/planning",
     (
-        req: RequestWithJwt<{ contractCreationIdOverwrite: string }>,
+        req: RequestWithJwt<{
+            contractCreationIdOverwrite: string
+        }>,
         res,
         next,
     ) => {
@@ -1550,7 +1597,15 @@ menuDataRouter.get("/contractsearchpage", (req: RequestWithJwt, res) => {
 menuDataRouter.post(
     "/ContractSearch",
     jsonMiddleware(),
-    async (req: RequestWithJwt<{ sorting?: unknown }, string[]>, res) => {
+    async (
+        req: RequestWithJwt<
+            {
+                sorting?: unknown
+            },
+            string[]
+        >,
+        res,
+    ) => {
         const specialContracts: string[] = []
 
         await controller.hooks.getSearchResults.callAsync(
@@ -1563,7 +1618,9 @@ menuDataRouter.post(
         if (specialContracts.length > 0) {
             // Handled by a plugin
 
-            const contracts: { UserCentricContract: UserCentricContract }[] = []
+            const contracts: {
+                UserCentricContract: UserCentricContract
+            }[] = []
 
             for (const contract of specialContracts) {
                 const userCentric = generateUserCentric(
@@ -1619,7 +1676,15 @@ menuDataRouter.post(
 menuDataRouter.post(
     "/ContractSearchPaginate",
     jsonMiddleware(),
-    async (req: RequestWithJwt<{ page: number }, string[]>, res) => {
+    async (
+        req: RequestWithJwt<
+            {
+                page: number
+            },
+            string[]
+        >,
+        res,
+    ) => {
         res.json({
             template: getConfig("ContractSearchPaginateTemplate", false),
             data: await officialSearchContract(
@@ -1634,7 +1699,12 @@ menuDataRouter.post(
 
 menuDataRouter.get(
     "/DebriefingChallenges",
-    (req: RequestWithJwt<{ contractId: string }>, res) => {
+    (
+        req: RequestWithJwt<{
+            contractId: string
+        }>,
+        res,
+    ) => {
         res.json({
             template: getConfig("DebriefingChallengesTemplate", false),
             data: {
@@ -1889,8 +1959,8 @@ menuDataRouter.get("/PlayerProfile", (req: RequestWithJwt, res) => {
         ),
     )
 
-    playerProfilePage.data.PlayerProfileXp.Seasons.forEach((e) =>
-        e.Locations.forEach((f) => {
+    for (const e of playerProfilePage.data.PlayerProfileXp.Seasons) {
+        for (const f of e.Locations) {
             const subLocationData = subLocationMap.get(f.LocationId)
 
             f.Xp = subLocationData?.Xp || 0
@@ -1906,8 +1976,8 @@ menuDataRouter.get("/PlayerProfile", (req: RequestWithJwt, res) => {
                         ] as ProgressionData
                     ).Level || 1
             }
-        }),
-    )
+        }
+    }
 
     res.json(playerProfilePage)
 })
@@ -2010,7 +2080,12 @@ menuDataRouter.get(
 
 menuDataRouter.get(
     "/MasteryDataForLocation",
-    (req: RequestWithJwt<{ locationId: string }>, res) => {
+    (
+        req: RequestWithJwt<{
+            locationId: string
+        }>,
+        res,
+    ) => {
         res.json(
             controller.masteryService.getMasteryDataForLocation(
                 req.query.locationId,
@@ -2023,7 +2098,12 @@ menuDataRouter.get(
 
 menuDataRouter.get(
     "/GetMasteryCompletionDataForUnlockable",
-    (req: RequestWithJwt<{ unlockableId: string }>, res) => {
+    (
+        req: RequestWithJwt<{
+            unlockableId: string
+        }>,
+        res,
+    ) => {
         // We make this lookup table to quickly get it, there's no other quick way for it.
         const unlockToLoc = {
             FIREARMS_SC_HERO_SNIPER_HM: "LOCATION_PARENT_AUSTRIA",
