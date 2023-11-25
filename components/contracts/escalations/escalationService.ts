@@ -99,7 +99,7 @@ export function resetUserEscalationProgress(
  * Get the number of levels in the specified group.
  *
  * @param groupContract The escalation group's contract.
- * @returns The number of levels.
+ * @returns The number of levels. If the group contract is undefined, always 0.
  */
 export function getLevelCount(
     groupContract: MissionManifest | undefined,
