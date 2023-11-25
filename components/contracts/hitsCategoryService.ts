@@ -439,7 +439,7 @@ export class HitsCategoryService {
                     !played[contractId]?.IsEscalation
                 )
             case "all":
-                return !played[contractId]?.IsEscalation ?? true
+                return !played[contractId]?.IsEscalation
         }
     }
 
