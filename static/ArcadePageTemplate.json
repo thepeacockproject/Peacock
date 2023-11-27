@@ -10,7 +10,8 @@
                             {
                                 "$include": "menusystem/data/isheritage.json"
                             },
-                            "$eq ($.data.Data.Type,ContractAttack)"
+                            "$eq ($.data.Data.Type,ContractAttack)",
+                            "$eq ($.data.Data.Type,Elusive_Target_Hits)"
                         ]
                     },
                     "$then": {},
@@ -41,16 +42,28 @@
                     "view": "menu3.basic.CategoryElement",
                     "controller": "categoryitem",
                     "data": {
-                        "$if $eq ($.data.Data.Type,ContractAttack)": {
-                            "$then": {
-                                "title": "$loc UI_PEACOCK_ESCALATIONS",
-                                "icon": "54"
+                        "$switch $.data.Data.Type": [
+                            {
+                                "case": "ContractAttack",
+                                "return": {
+                                    "title": "$loc UI_PEACOCK_ESCALATIONS",
+                                    "icon": "54"
+                                }
                             },
-                            "$else": {
-                                "title": "$loc UI_ARCADE_TITLE",
-                                "icon": "arcademode"
+                            {
+                                "case": "Elusive_Target_Hits",
+                                "return": {
+                                    "title": "$loc UI_MENU_PAGE_HITS_ELEMENT_CATEGORY_Elusive_Target_Hits",
+                                    "icon": "elusive"
+                                }
+                            },
+                            {
+                                "default": {
+                                    "title": "$loc UI_ARCADE_TITLE",
+                                    "icon": "arcademode"
+                                }
                             }
-                        }
+                        ]
                     },
                     "children": [
                         {
@@ -74,10 +87,22 @@
                                 {
                                     "$include": {
                                         "$path": {
-                                            "$if $eq ($.data.Data.Type,ContractAttack)": {
-                                                "$then": "menusystem/elements/contract/hitscategory_contractattack.json",
-                                                "$else": "menusystem/elements/contract/hitscategory.json"
-                                            }
+                                            "$switch $.data.Data.Type": [
+                                                {
+                                                    "case": "ContractAttack",
+                                                    "return": "menusystem/elements/contract/hitscategory_contractattack.json"
+                                                },
+                                                {
+                                                    "case": "Elusive_Target_Hits",
+                                                    "return": "menusystem/elements/contract/hitscategory_elusive.json"
+                                                },
+                                                {
+                                                    "default": {
+                                                        "title": "$loc UI_ARCADE_TITLE",
+                                                        "icon": "menusystem/elements/contract/hitscategory.json"
+                                                    }
+                                                }
+                                            ]
                                         }
                                     }
                                 }
