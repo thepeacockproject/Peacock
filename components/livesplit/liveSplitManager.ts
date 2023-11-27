@@ -24,6 +24,7 @@ import { getFlag } from "../flags"
 import { controller } from "../controller"
 import { scenePathToRpAsset } from "../discordRp"
 import { LiveSplitTimeCalcEntry } from "../types/livesplit"
+import assert from "assert"
 
 export class LiveSplitManager {
     private readonly _liveSplitClient: LiveSplitClient
@@ -32,7 +33,7 @@ export class LiveSplitManager {
     private _initialized: boolean
     private _initializationAttempted: boolean
     private _resetMinimum: Seconds
-    private _currentCampaign: string[]
+    private _currentCampaign: string[] = []
     private _inValidCampaignRun: boolean
     private _currentMission: string | undefined
     private _currentMissionTotalTime: number
@@ -169,6 +170,11 @@ export class LiveSplitManager {
         }
 
         if (this._inValidCampaignRun) {
+            assert.ok(
+                this._currentMission !== undefined,
+                "current mission undefined while in campaign run",
+            )
+
             const computedTime = this._addMissionTime(attemptTime)
             this._addTimeCalcEntry(this._currentMission, computedTime, false)
             LiveSplitManager._logAttempt(computedTime)
@@ -184,6 +190,11 @@ export class LiveSplitManager {
         }
 
         if (this._inValidCampaignRun) {
+            assert.ok(
+                this._currentMission !== undefined,
+                "current mission undefined while in campaign run",
+            )
+
             const computedTime = this._addMissionTime(attemptTime)
             this._addTimeCalcEntry(this._currentMission, computedTime, true)
             log(
@@ -268,7 +279,7 @@ export class LiveSplitManager {
             this._initializationAttempted = true
         } catch (e) {
             log(LogLevel.DEBUG, "Failed to initialize LiveSplit: ")
-            log(LogLevel.DEBUG, e)
+            log(LogLevel.DEBUG, e as string)
         }
     }
 
@@ -409,12 +420,17 @@ export class LiveSplitManager {
         await this._setGameTime(this._campaignTotalTime)
     }
 
-    private _getMissionLocationName(contractId: string) {
+    private _getMissionLocationName(contractId: string): string | undefined {
         const contract = controller.resolveContract(contractId)
+
+        if (!contract) {
+            return undefined
+        }
+
         const [, , location] = scenePathToRpAsset(
             contract.Metadata.ScenePath,
             contract.Data.Bricks,
-        )
+        ) || [undefined, undefined, undefined]
         return location
     }
 
@@ -424,6 +440,9 @@ export class LiveSplitManager {
         isCompleted: boolean,
     ) {
         const location = this._getMissionLocationName(contractId)
+
+        if (!location) return
+
         const entry: LiveSplitTimeCalcEntry = {
             contractId,
             location,
@@ -435,6 +454,9 @@ export class LiveSplitManager {
 
     private _unsplitLastTimeCalcEntry() {
         const entry = this._timeCalcEntries.pop()
+
+        if (!entry) return
+
         entry.isCompleted = false
         this._timeCalcEntries.push(entry)
     }

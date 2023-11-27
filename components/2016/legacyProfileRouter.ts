@@ -46,7 +46,7 @@ legacyProfileRouter.post(
 legacyProfileRouter.post(
     "/AuthenticationService/GetBlobOfflineCacheDatabaseDiff",
     (req: RequestWithJwt, res) => {
-        const configs = []
+        const configs: string[] = []
 
         menuSystemDatabase.hooks.getDatabaseDiff.call(configs, req.gameVersion)
 

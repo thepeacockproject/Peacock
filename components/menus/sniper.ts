@@ -43,7 +43,7 @@ export function createSniperLoadouts(
     const parentLocation = getSubLocationByName(
         contractData.Metadata.Location,
         gameVersion,
-    ).Properties.ParentLocation
+    )?.Properties.ParentLocation
 
     // This function call is used as it gets all mastery data for the current location
     // which includes all the characters we'll need.
@@ -122,7 +122,7 @@ export function createSniperLoadouts(
                         ],
                         LimitedLoadoutUnlockLevel: 0 as number | undefined,
                     },
-                    CompletionData: masteryData.CompletionData,
+                    CompletionData: masteryData?.CompletionData,
                 }
 
                 if (loadoutData) {

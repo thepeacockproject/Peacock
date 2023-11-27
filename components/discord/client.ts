@@ -201,10 +201,10 @@ export class RPCClient extends EventEmitter {
             args.smallImageText
         ) {
             assets = {
-                large_image: args.largeImageKey,
-                large_text: args.largeImageText,
-                small_image: args.smallImageKey,
-                small_text: args.smallImageText,
+                large_image: args.largeImageKey!,
+                large_text: args.largeImageText!,
+                small_image: args.smallImageKey!,
+                small_text: args.smallImageText!,
             }
         }
 

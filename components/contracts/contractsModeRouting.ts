@@ -73,7 +73,7 @@ export async function officialSearchContract(
     gameVersion: GameVersion,
     filters: string[],
     pageNumber: number,
-): Promise<ContractSearchResult> {
+): Promise<ContractSearchResult | undefined> {
     const remoteService = getRemoteService(gameVersion)
     const user = userAuths.get(userId)
 
@@ -95,7 +95,7 @@ export async function officialSearchContract(
     preserveContracts(
         resp.data.data.Data.Contracts.map(
             (c) => c.UserCentricContract.Contract.Metadata.PublicId,
-        ),
+        ).filter(Boolean) as string[],
     )
 
     return resp.data.data

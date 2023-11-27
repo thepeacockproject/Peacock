@@ -29,7 +29,7 @@ import { parse } from "json5"
 type LastServerSideData = SMFLastDeploy["lastServerSideStates"]
 
 export class SMFSupport {
-    public readonly lastDeploy: SMFLastDeploy
+    public readonly lastDeploy: SMFLastDeploy | null
 
     constructor(private readonly controller: Controller) {
         const dataPath = SMFSupport.modFrameworkDataPath
@@ -73,17 +73,19 @@ export class SMFSupport {
                 if (
                     !(
                         gameVersion === "h3" &&
-                        (lastServerSideData.blobs[name] ||
-                            lastServerSideData.blobs[name.slice(1)])
+                        (lastServerSideData.blobs?.[name] ||
+                            lastServerSideData.blobs?.[name.slice(1)])
                     )
                 ) {
                     return
                 }
 
+                if (!process.env.LOCALAPPDATA) return
+
                 return parse(
                     readFileSync(
                         join(
-                            process.env.LOCALAPPDATA,
+                            process.env.LOCALAPPDATA as string,
                             "Simple Mod Framework",
                             "blobs",
                             lastServerSideData.blobs[name] ||
@@ -116,23 +118,20 @@ export class SMFSupport {
     private handleDestination(contractData: MissionManifest) {
         const location = contractData.Metadata.Location
         const id = contractData.Metadata.Id
-        const placeBefore = contractData.SMF.destinations.placeBefore
-        const placeAfter = contractData.SMF.destinations.placeAfter
+        const placeBefore = contractData.SMF?.destinations.placeBefore
+        const placeAfter = contractData.SMF?.destinations.placeAfter
+        const inLocation = this.controller.missionsInLocations[
+            location
+        ] as string[]
 
         if (placeBefore) {
-            const index =
-                this.controller.missionsInLocations[location].indexOf(
-                    placeBefore,
-                )
-            this.controller.missionsInLocations[location].splice(index, 0, id)
+            const index = inLocation.indexOf(placeBefore)
+            inLocation.splice(index, 0, id)
         } else if (placeAfter) {
-            const index =
-                this.controller.missionsInLocations[location].indexOf(
-                    placeAfter,
-                ) + 1
-            this.controller.missionsInLocations[location].splice(index, 0, id)
+            const index = inLocation.indexOf(placeAfter) + 1
+            inLocation.splice(index, 0, id)
         } else {
-            this.controller.missionsInLocations[location].push(id)
+            inLocation.push(id)
         }
     }
 

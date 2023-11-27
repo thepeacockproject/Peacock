@@ -1149,15 +1149,16 @@ export async function missionEnd(
                             Total: calculateScoreResult.scoreWithBonus,
                             AchievedMasteries:
                                 result.ScoreOverview.ContractScore
-                                    .AchievedMasteries,
+                                    ?.AchievedMasteries,
                             AwardedBonuses:
                                 result.ScoreOverview.ContractScore
-                                    .AwardedBonuses,
+                                    ?.AwardedBonuses,
                             TotalNoMultipliers:
                                 result.ScoreOverview.ContractScore
-                                    .TotalNoMultipliers,
+                                    ?.TotalNoMultipliers,
                             TimeUsedSecs:
-                                result.ScoreOverview.ContractScore.TimeUsedSecs,
+                                result.ScoreOverview.ContractScore
+                                    ?.TimeUsedSecs,
                             FailedBonuses: null,
                             IsVR: false,
                             SilentAssassin: result.ScoreOverview.SilentAssassin,

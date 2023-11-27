@@ -33,6 +33,7 @@ import {
 } from "../utils"
 import { writeUserData } from "../databaseHandler"
 import { MasteryPackageDrop } from "../types/mastery"
+import assert from "assert"
 
 export class ProgressionService {
     // NOTE: Official will always grant XP to both Location Mastery and the Player Profile
@@ -108,10 +109,13 @@ export class ProgressionService {
          * This is required to unlock the item to the normal inventory too, as the freelancer and normal inventory item ID is not the same
          */
         if (isEvergreenContract) {
-            const evergreenGearUnlockables = unlockables.reduce((acc, u) => {
-                if (u.Properties.Unlocks) acc.push(...u.Properties.Unlocks)
-                return acc
-            }, [])
+            const evergreenGearUnlockables = unlockables.reduce(
+                (acc: string[], u) => {
+                    if (u?.Properties.Unlocks) acc.push(...u.Properties.Unlocks)
+                    return acc
+                },
+                [],
+            )
 
             if (evergreenGearUnlockables.length) {
                 unlockables.push(
@@ -214,6 +218,11 @@ export class ProgressionService {
 
             // Update the EvergreenLevel with the latest Mastery Level
             if (isEvergreenContract) {
+                assert.ok(
+                    contract.Metadata.CpdId,
+                    "evergreen contract has no CPD",
+                )
+
                 userProfile.Extensions.CPD[contract.Metadata.CpdId][
                     "EvergreenLevel"
                 ] = locationData.Level

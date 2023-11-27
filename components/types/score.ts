@@ -63,7 +63,7 @@ export interface MissionEndChallenge {
     XPGain: number
     IsGlobal: boolean
     IsActionReward: boolean
-    Drops: string[]
+    Drops?: string[]
 }
 
 export interface MissionEndSourceChallenge {

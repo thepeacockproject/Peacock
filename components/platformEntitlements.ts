@@ -165,7 +165,7 @@ export async function getEpicEntitlements(
     async function getEnts(
         ents: string[],
     ): Promise<NamespaceEntitlementEpic[]> {
-        const v = {
+        const v: { headers: Record<string, string> } = {
             headers: {},
         }
 
@@ -183,7 +183,7 @@ export async function getEpicEntitlements(
             if (error instanceof AxiosError) {
                 log(
                     LogLevel.ERROR,
-                    `Failed to get entitlements from Epic: got ${error.response.status} ${error.response.statusText}.`,
+                    `Failed to get entitlements from Epic: got ${error.response?.status} ${error.response?.statusText}.`,
                 )
             } else {
                 log(

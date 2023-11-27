@@ -175,7 +175,7 @@ export function logDebug(...args: unknown[]): void {
  */
 export function log(
     level: LogLevel,
-    data: string,
+    data: string | unknown,
     category: LogCategory | string = LOG_CATEGORY_DEFAULT,
 ): void {
     if (category === LogCategory.CALLER) {
