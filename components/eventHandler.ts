@@ -369,10 +369,7 @@ export function newSession(
     })
     userIdToTempSession.set(userId, sessionId)
 
-    controller.challengeService.startContract(
-        userId,
-        contractSessions.get(sessionId)!,
-    )
+    controller.challengeService.startContract(contractSessions.get(sessionId)!)
 }
 
 eventRouter.post(
