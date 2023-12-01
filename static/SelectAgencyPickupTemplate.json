@@ -4,9 +4,13 @@
         "location": "$.Contract.Metadata.Location"
     },
     "onpageopened": {
-        "set-selected": { "target": "$arg SelectedAgencyPickup" }
+        "set-selected": {
+            "target": "$arg SelectedAgencyPickup"
+        }
     },
-    "onpageclosed": { "set-mastery-data": {} },
+    "onpageclosed": {
+        "set-mastery-data": {}
+    },
     "buttons": [
         {
             "actiontype": "accept",
@@ -25,11 +29,17 @@
         "$setupcomponents": {
             "difficulty-manager": {
                 "always-reload-setup": true,
-                "setup": { "difficulty": "$.Contract.Metadata.Difficulty" }
+                "setup": {
+                    "difficulty": "$.Contract.Metadata.Difficulty"
+                }
             }
         },
         "controller": "list",
-        "actions": { "select": { "select-category": {} } },
+        "actions": {
+            "select": {
+                "select-category": {}
+            }
+        },
         "children": [
             {
                 "controller": "group",
@@ -44,7 +54,10 @@
                     "view": "menu3.basic.HeadlineElement"
                 }
             },
-            { "id": "category_container", "controller": "list" },
+            {
+                "id": "category_container",
+                "controller": "list"
+            },
             {
                 "view": "menu3.containers.ScrollingTabsContainer",
                 "controller": "category",
@@ -85,11 +98,21 @@
                                         ]
                                     }
                                 },
-                                { "case": "orbis", "return": "ica" },
-                                { "case": "campaign", "return": "mission" },
+                                {
+                                    "case": "orbis",
+                                    "return": "ica"
+                                },
+                                {
+                                    "case": "campaign",
+                                    "return": "mission"
+                                },
                                 {
                                     "case": "sniper",
                                     "return": "sniperrifle"
+                                },
+                                {
+                                    "case": "arcade",
+                                    "return": "arcademode"
                                 },
                                 {
                                     "default": {
@@ -121,7 +144,9 @@
                                                         "case": "featured",
                                                         "return": false
                                                     },
-                                                    { "default": true }
+                                                    {
+                                                        "default": true
+                                                    }
                                                 ]
                                             }
                                         }
@@ -209,7 +234,9 @@
                             "controller": "group",
                             "view": "menu3.containers.ScrollingListContainer",
                             "direction": "horizontal",
-                            "data": { "direction": "horizontal" },
+                            "data": {
+                                "direction": "horizontal"
+                            },
                             "row": 1,
                             "pages": true,
                             "nrows": 3,
@@ -303,7 +330,9 @@
                                                                 "rarity": "$($arg SelectedItem).rarity"
                                                             }
                                                         },
-                                                        { "default": null }
+                                                        {
+                                                            "default": null
+                                                        }
                                                     ]
                                                 },
                                                 "locked": "$not $.unlocked",
