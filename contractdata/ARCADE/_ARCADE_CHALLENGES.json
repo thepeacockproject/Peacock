@@ -657,6 +657,49 @@
                     }
                 },
                 {
+                    "Id": "02f9c806-1f2e-4f55-8a49-8b4a7e93a521",
+                    "Name": "UI_PEACOCK_KASTURI_COMPLETED_NAME",
+                    "ImageName": "images/contracts/arcade/Arcade_Kasturi_Group.jpg",
+                    "Description": "UI_PEACOCK_KASTURI_COMPLETED_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": ["TOKEN_OUTFIT_HERO_BUTCHER_SUIT"],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ARCADE",
+                    "Icon": "arcademode",
+                    "LocationId": "LOCATION_EGDY_FOX",
+                    "ParentLocationId": "LOCATION_PARENT_EDGY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$ContractId",
+                                            "78131b0a-2320-4008-adf1-2d81f018abe7"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["arcade", "hard"],
+                    "InclusionData": {
+                        "ContractIds": ["797e204a-ef3d-463b-a386-57df0fe29b8f"]
+                    }
+                },
+                {
                     "Id": "70fc6583-e596-4210-a53e-4ed42d6c3435",
                     "Name": "UI_LIME_COMPLETION_CHALLENGE_NAME",
                     "ImageName": "images/contracts/arcade/Arcade_Lime_Group.jpg",

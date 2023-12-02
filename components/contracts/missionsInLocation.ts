@@ -256,6 +256,7 @@ export const missionsInLocations = {
             "d21e2e91-602c-49d2-9d42-e8bcfb810e9a",
             "be787ec9-e7b9-4984-bb39-fda4c71705ec",
             "e4b29c19-13b4-471b-b188-cd9c0a788cd0",
+            "797e204a-ef3d-463b-a386-57df0fe29b8f",
         ],
         LOCATION_PARIS: [
             "7886bed7-3805-46c6-a792-4a0d55758934",
