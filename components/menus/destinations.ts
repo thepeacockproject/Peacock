@@ -21,10 +21,10 @@ import type {
     CompletionData,
     GameLocationsData,
     GameVersion,
+    JwtData,
     MissionStory,
     OpportunityStatistics,
     PeacockLocationsData,
-    RequestWithJwt,
     Unlockable,
 } from "../types/types"
 import { controller } from "../controller"
@@ -52,24 +52,26 @@ type GameFacingDestination = {
         }
     }
 }
-const missionStories = getConfig<Record<string, MissionStory>>(
-    "MissionStories",
-    false,
-)
 
 export function getDestinationCompletion(
     parent: Unlockable,
     child: Unlockable | undefined,
-    req: RequestWithJwt,
+    gameVersion: GameVersion,
+    jwt: JwtData,
 ) {
-    const userData = getUserData(req.jwt.unique_name, req.gameVersion)
+    const missionStories = getConfig<Record<string, MissionStory>>(
+        "MissionStories",
+        false,
+    )
+
+    const userData = getUserData(jwt.unique_name, gameVersion)
     const challenges = controller.challengeService.getGroupedChallengeLists(
         {
             type: ChallengeFilterType.ParentLocation,
             parent: parent.Id,
         },
         parent.Id,
-        req.gameVersion,
+        gameVersion,
     )
 
     const opportunities = Object.values(missionStories)
@@ -90,7 +92,7 @@ export function getDestinationCompletion(
         controller.challengeService.countTotalNCompletedChallenges(
             challenges,
             userData.Id,
-            req.gameVersion,
+            gameVersion,
         )
 
     return {
@@ -138,11 +140,14 @@ export function getCompletionPercent(
         : (100 * totalCompleted) / totalCompletables
 }
 
-export function destinationsMenu(req: RequestWithJwt): GameFacingDestination[] {
+export function destinationsMenu(
+    gameVersion: GameVersion,
+    jwt: JwtData,
+): GameFacingDestination[] {
     const result: GameFacingDestination[] = []
     const locations = getVersionedConfig<PeacockLocationsData>(
         "LocationsData",
-        req.gameVersion,
+        gameVersion,
         true,
     )
 
@@ -152,22 +157,22 @@ export function destinationsMenu(req: RequestWithJwt): GameFacingDestination[] {
             "UI_LOCATION_PARENT_" + destination.substring(16) + "_NAME"
 
         const template: GameFacingDestination = {
-            ...getDestinationCompletion(parent, undefined, req),
+            ...getDestinationCompletion(parent, undefined, gameVersion, jwt),
             ...{
                 CompletionData: generateCompletionData(
                     destination,
-                    req.jwt.unique_name,
-                    req.gameVersion,
+                    jwt.unique_name,
+                    gameVersion,
                 ),
                 Data:
-                    req.gameVersion === "h1"
+                    gameVersion === "h1"
                         ? {
                               normal: {
                                   ChallengeCompletion: undefined,
                                   CompletionData: generateCompletionData(
                                       destination,
-                                      req.jwt.unique_name,
-                                      req.gameVersion,
+                                      jwt.unique_name,
+                                      gameVersion,
                                       "mission",
                                       "normal",
                                   ),
@@ -176,8 +181,8 @@ export function destinationsMenu(req: RequestWithJwt): GameFacingDestination[] {
                                   ChallengeCompletion: undefined,
                                   CompletionData: generateCompletionData(
                                       destination,
-                                      req.jwt.unique_name,
-                                      req.gameVersion,
+                                      jwt.unique_name,
+                                      gameVersion,
                                       "mission",
                                       "pro1",
                                   ),
@@ -190,7 +195,7 @@ export function destinationsMenu(req: RequestWithJwt): GameFacingDestination[] {
         // TODO: THIS IS NOT CORRECT FOR 2016!
         // There are different challenges for normal and pro1 in 2016, right now, we do not support this.
         // We're just reusing this for now.
-        if (req.gameVersion === "h1") {
+        if (gameVersion === "h1") {
             template.Data.normal.ChallengeCompletion =
                 template.ChallengeCompletion
             template.Data.pro1.ChallengeCompletion =

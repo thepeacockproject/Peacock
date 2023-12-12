@@ -103,7 +103,7 @@ export interface MissionEndEvergreenPayout {
     IsPrestige: boolean
 }
 
-export interface MissionEndResponse {
+export interface MissionEndResult {
     MissionReward: {
         LocationProgression: {
             LevelInfo: number[]
