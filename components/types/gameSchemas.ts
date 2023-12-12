@@ -104,3 +104,19 @@ export type LoadSaveBody = Partial<{
     difficultyLevel: number
     contractId: string
 }>
+
+/**
+ * Query params that `/profiles/page/SafehouseCategory` (used for Career > Inventory and possibly some of the H1 stuff) gets.
+ */
+export type SafehouseCategoryQuery = {
+    type?: string
+    subtype?: string
+}
+
+/**
+ * Query params that `/profiles/page/Destination` gets.
+ */
+export type GetDestinationQuery = {
+    locationId: string
+    difficulty?: string
+}

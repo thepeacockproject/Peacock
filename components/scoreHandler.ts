@@ -16,7 +16,6 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type { Response } from "express"
 import {
     contractTypes,
     DEFAULT_MASTERY_MAXLEVEL,
@@ -39,9 +38,9 @@ import type {
     ContractSession,
     GameChanger,
     GameVersion,
+    JwtData,
     MissionManifest,
     MissionManifestObjective,
-    RequestWithJwt,
     Seconds,
 } from "./types/types"
 import {
@@ -68,7 +67,7 @@ import {
     MissionEndChallenge,
     MissionEndDrop,
     MissionEndEvergreen,
-    MissionEndResponse,
+    MissionEndResult,
 } from "./types/score"
 import { MasteryData } from "./types/mastery"
 import { createInventory, InventoryItem, getUnlockablesById } from "./inventory"
@@ -511,42 +510,45 @@ export function calculateSniperScore(
     ]
 }
 
-export async function missionEnd(
-    req: RequestWithJwt<MissionEndRequestQuery>,
-    res: Response,
-): Promise<void> {
-    // TODO: For this entire function, add support for 2016 difficulties
-    // Resolve the contract session
-    if (!req.query.contractSessionId) {
-        res.status(400).end()
-        return
-    }
+export type MissionEndError = { errorCode: number; error: string }
 
-    const sessionDetails = contractSessions.get(req.query.contractSessionId)
+export async function getMissionEndData(
+    query: MissionEndRequestQuery,
+    jwt: JwtData,
+    gameVersion: GameVersion,
+): Promise<MissionEndError | MissionEndResult> {
+    // TODO: For this entire function, add support for 2016 difficulties
+    const sessionDetails = contractSessions.get(query.contractSessionId)
 
     if (!sessionDetails) {
-        res.status(404).send("contract session not found")
-        return
+        return {
+            errorCode: 404,
+            error: "contract session not found",
+        }
     }
 
-    if (sessionDetails.userId !== req.jwt.unique_name) {
-        res.status(401).send("requested score for other user's session")
-        return
+    if (sessionDetails.userId !== jwt.unique_name) {
+        return {
+            errorCode: 401,
+            error: "requested score for other user's session",
+        }
     }
 
     // Resolve userdata
-    const userData = getUserData(req.jwt.unique_name, req.gameVersion)
+    const userData = getUserData(jwt.unique_name, gameVersion)
 
     // Resolve contract data
     const contractData =
-        req.gameVersion === "scpc" &&
+        gameVersion === "scpc" &&
         sessionDetails.contractId === "ff9f46cf-00bd-4c12-b887-eac491c3a96d"
             ? _theLastYardbirdScpc
             : controller.resolveContract(sessionDetails.contractId, true)
 
     if (!contractData) {
-        res.status(404).send("contract not found")
-        return
+        return {
+            errorCode: 404,
+            error: "Contract not found",
+        }
     }
 
     // Handle escalation groups
@@ -559,8 +561,11 @@ export async function missionEnd(
                 LogLevel.ERROR,
                 `Unregistered escalation group ${sessionDetails.contractId}`,
             )
-            res.status(500).end()
-            return
+
+            return {
+                errorCode: 500,
+                error: "unregistered escalation group",
+            }
         }
 
         if (!userData.Extensions.PeacockEscalations[eGroupId]) {
@@ -598,7 +603,7 @@ export async function missionEnd(
 
         userData.Extensions.PeacockPlayedContracts[eGroupId] = history
 
-        writeUserData(req.jwt.unique_name, req.gameVersion)
+        writeUserData(jwt.unique_name, gameVersion)
     } else if (contractTypes.includes(contractData.Metadata.Type)) {
         // Update the contract in the played list
         const id = contractData.Metadata.Id
@@ -612,7 +617,7 @@ export async function missionEnd(
             Completed: true,
         }
 
-        writeUserData(req.jwt.unique_name, req.gameVersion)
+        writeUserData(jwt.unique_name, gameVersion)
     }
 
     const levelData = controller.resolveContract(
@@ -623,7 +628,7 @@ export async function missionEnd(
     // Resolve the id of the parent location
     const subLocation = getSubLocationByName(
         levelData.Metadata.Location,
-        req.gameVersion,
+        gameVersion,
     )
 
     const locationParentId = subLocation
@@ -631,8 +636,10 @@ export async function missionEnd(
         : levelData.Metadata.Location
 
     if (!locationParentId) {
-        res.status(404).send("location parentid not found")
-        return
+        return {
+            errorCode: 400,
+            error: "location parentid not found",
+        }
     }
 
     // Resolve all opportunities for the location
@@ -652,27 +659,27 @@ export async function missionEnd(
                 parent: locationParentId,
             },
             locationParentId,
-            req.gameVersion,
+            gameVersion,
         )
     const contractChallenges =
         controller.challengeService.getChallengesForContract(
             sessionDetails.contractId,
-            req.gameVersion,
-            req.jwt.unique_name,
+            gameVersion,
+            jwt.unique_name,
             sessionDetails.difficulty,
         )
     const locationChallengeCompletion =
         controller.challengeService.countTotalNCompletedChallenges(
             locationChallenges,
             userData.Id,
-            req.gameVersion,
+            gameVersion,
         )
 
     const contractChallengeCompletion =
         controller.challengeService.countTotalNCompletedChallenges(
             contractChallenges,
             userData.Id,
-            req.gameVersion,
+            gameVersion,
         )
 
     const locationPercentageComplete = getCompletionPercent(
@@ -688,7 +695,7 @@ export async function missionEnd(
     // Calculate XP based on global challenges.
     const calculateXpResult: CalculateXpResult = calculateGlobalXp(
         sessionDetails,
-        req.gameVersion,
+        gameVersion,
     )
     let justTickedChallenges = 0
     let totalXpGain = calculateXpResult.xp
@@ -711,8 +718,7 @@ export async function missionEnd(
             )
         })
         .forEach((challengeData) => {
-            const userId = req.jwt.unique_name
-            const gameVersion = req.gameVersion
+            const userId = jwt.unique_name
 
             userData.Extensions.ChallengeProgression[challengeData.Id].Ticked =
                 true
@@ -737,10 +743,10 @@ export async function missionEnd(
 
     let completionData = generateCompletionData(
         levelData.Metadata.Location,
-        req.jwt.unique_name,
-        req.gameVersion,
+        jwt.unique_name,
+        gameVersion,
         contractData.Metadata.Type,
-        req.query.masteryUnlockableId,
+        query.masteryUnlockableId,
     )
 
     // Calculate the old location progression based on the current one and process it
@@ -752,17 +758,17 @@ export async function missionEnd(
     const newLocationXp = completionData.XP
     let newLocationLevel = levelForXp(newLocationXp)
 
-    if (!req.query.masteryUnlockableId) {
+    if (!query.masteryUnlockableId) {
         userData.Extensions.progression.Locations[
             locationParentId
         ].PreviouslySeenXp = newLocationXp
     }
 
-    writeUserData(req.jwt.unique_name, req.gameVersion)
+    writeUserData(jwt.unique_name, gameVersion)
 
     const masteryData = controller.masteryService.getMasteryPackage(
         locationParentId,
-        req.gameVersion,
+        gameVersion,
     )
 
     let maxLevel = 1
@@ -770,9 +776,9 @@ export async function missionEnd(
 
     if (masteryData) {
         maxLevel =
-            (req.query.masteryUnlockableId
+            (query.masteryUnlockableId
                 ? masteryData.SubPackages.find(
-                      (subPkg) => subPkg.Id === req.query.masteryUnlockableId,
+                      (subPkg) => subPkg.Id === query.masteryUnlockableId,
                   ).MaxLevel
                 : masteryData.MaxLevel) || DEFAULT_MASTERY_MAXLEVEL
 
@@ -815,7 +821,7 @@ export async function missionEnd(
 
     // Calculate score and summary
     const calculateScoreResult = calculateScore(
-        req.gameVersion,
+        gameVersion,
         sessionDetails,
         contractData,
         timeTotal,
@@ -923,8 +929,8 @@ export async function missionEnd(
 
     if (contractData.Metadata.Type === "sniper") {
         const userInventory = createInventory(
-            req.jwt.unique_name,
-            req.gameVersion,
+            jwt.unique_name,
+            gameVersion,
             undefined,
         )
 
@@ -943,7 +949,7 @@ export async function missionEnd(
             sessionDetails,
             userData,
             locationParentId,
-            req.query.masteryUnlockableId,
+            query.masteryUnlockableId,
         )
 
         // Update completion data with latest mastery
@@ -953,10 +959,10 @@ export async function missionEnd(
         // Temporarily get completion data for the unlockable
         completionData = generateCompletionData(
             levelData.Metadata.Location,
-            req.jwt.unique_name,
-            req.gameVersion,
+            jwt.unique_name,
+            gameVersion,
             "sniper", // We know the type will be sniper.
-            req.query.masteryUnlockableId,
+            query.masteryUnlockableId,
         )
         newLocationLevel = completionData.Level
         unlockableProgression = {
@@ -972,16 +978,16 @@ export async function missionEnd(
         }
 
         userData.Extensions.progression.Locations[locationParentId][
-            req.query.masteryUnlockableId
+            query.masteryUnlockableId
         ].PreviouslySeenXp = completionData.XP
 
-        writeUserData(req.jwt.unique_name, req.gameVersion)
+        writeUserData(jwt.unique_name, gameVersion)
 
         // Set the completion data to the location so the end screen formats properly.
         completionData = generateCompletionData(
             levelData.Metadata.Location,
-            req.jwt.unique_name,
-            req.gameVersion,
+            jwt.unique_name,
+            gameVersion,
         )
 
         // Override the contract score
@@ -1003,9 +1009,9 @@ export async function missionEnd(
         const masteryData =
             controller.masteryService.getMasteryDataForSubPackage(
                 locationParentId,
-                req.query.masteryUnlockableId ?? undefined,
-                req.gameVersion,
-                req.jwt.unique_name,
+                query.masteryUnlockableId ?? undefined,
+                gameVersion,
+                jwt.unique_name,
             ) as MasteryData
 
         if (masteryData) {
@@ -1024,10 +1030,7 @@ export async function missionEnd(
     const challengeDrops: MissionEndDrop[] =
         calculateXpResult.completedChallenges.reduce((acc, challenge) => {
             if (challenge?.Drops?.length) {
-                const drops = getUnlockablesById(
-                    challenge.Drops,
-                    req.gameVersion,
-                )
+                const drops = getUnlockablesById(challenge.Drops, gameVersion)
                 delete challenge.Drops
 
                 for (const drop of drops) {
@@ -1042,7 +1045,7 @@ export async function missionEnd(
         }, [])
 
     // Setup the result
-    const result: MissionEndResponse = {
+    const result: MissionEndResult = {
         MissionReward: {
             LocationProgression: {
                 LevelInfo: locationLevelInfo,
@@ -1082,7 +1085,7 @@ export async function missionEnd(
             XPGain: 0,
             ChallengesCompleted: justTickedChallenges,
             LocationHideProgression: masteryData?.HideProgression || false,
-            ProdileId1: req.jwt.unique_name,
+            ProdileId1: jwt.unique_name,
             stars: calculateScoreResult.stars,
             ScoreDetails: {
                 Headlines: calculateScoreResult.scoringHeadlines,
@@ -1136,11 +1139,11 @@ export async function missionEnd(
                     gameDifficulty: difficultyToString(
                         sessionDetails.difficulty,
                     ),
-                    gameVersion: req.gameVersion,
-                    platform: req.jwt.platform,
+                    gameVersion,
+                    platform: jwt.platform,
                     username: userData.Gamertag,
                     platformId:
-                        req.jwt.platform === "epic"
+                        jwt.platform === "epic"
                             ? userData.EpicId
                             : userData.SteamId,
                     score: calculateScoreResult.scoreWithBonus,
@@ -1168,7 +1171,7 @@ export async function missionEnd(
                         SniperChallengeScore: sniperChallengeScore,
                         PlayStyle: result.ScoreOverview.PlayStyle || null,
                         Description: "UI_MENU_SCORE_CONTRACT_COMPLETED",
-                        ContractSessionId: req.query.contractSessionId,
+                        ContractSessionId: query.contractSessionId,
                         Percentile: {
                             Spread: Array(10).fill(0),
                             Index: 0,
@@ -1192,11 +1195,5 @@ export async function missionEnd(
         }
     }
 
-    res.json({
-        template:
-            req.gameVersion === "scpc"
-                ? getConfig("FrankensteinScoreOverviewTemplate", false)
-                : null,
-        data: result,
-    })
+    return result
 }

@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { missionEnd } from "./scoreHandler"
+import { getMissionEndData, MissionEndError } from "./scoreHandler"
 import { Response, Router } from "express"
 import {
     contractCreationTutorialId,
@@ -44,6 +44,7 @@ import type {
     GameVersion,
     HitsCategoryCategory,
     IHit,
+    JwtData,
     MissionManifest,
     PeacockLocationsData,
     PlayerProfileView,
@@ -93,11 +94,18 @@ import { json as jsonMiddleware } from "body-parser"
 import { hitsCategoryService } from "./contracts/hitsCategoryService"
 import {
     GetCompletionDataForLocationQuery,
+    GetDestinationQuery,
     MasteryUnlockableQuery,
     MissionEndRequestQuery,
+    SafehouseCategoryQuery,
     StashpointQuery,
 } from "./types/gameSchemas"
 import assert from "assert"
+import {
+    challengeLocation,
+    ChallengeLocationQuery,
+} from "./candle/challengeRouting"
+import { MissionEndResult } from "./types/score"
 
 export const preMenuDataRouter = Router()
 const menuDataRouter = Router()
@@ -106,68 +114,48 @@ const menuDataRouter = Router()
 
 menuDataRouter.get(
     "/ChallengeLocation",
-    (
-        req: RequestWithJwt<{
-            locationId: string
-        }>,
-        res,
-    ) => {
+    (req: RequestWithJwt<ChallengeLocationQuery>, res) => {
         if (typeof req.query.locationId !== "string") {
             res.status(400).send("Invalid locationId")
             return
         }
 
-        const location = getVersionedConfig<PeacockLocationsData>(
-            "LocationsData",
-            req.gameVersion,
-            true,
-        ).children[req.query.locationId]
-
-        res.json({
-            template: getVersionedConfig(
-                "ChallengeLocationTemplate",
-                req.gameVersion,
-                false,
-            ),
-            data: {
-                Name: location.DisplayNameLocKey,
-                Location: location,
-                Children:
-                    controller.challengeService.getChallengeDataForLocation(
-                        req.query.locationId,
-                        req.gameVersion,
-                        req.jwt.unique_name,
-                    ),
-            },
+        const r = challengeLocation({
+            query: req.query,
+            body: undefined as never,
+            gameVersion: req.gameVersion,
+            jwt: req.jwt,
         })
+
+        res.json(r)
     },
 )
 
-menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
-    swapToBrowsingMenusStatus(req.gameVersion)
-    const userdata = getUserData(req.jwt.unique_name, req.gameVersion)
+function getHubInfo(gameVersion: GameVersion, jwt: JwtData) {
+    swapToBrowsingMenusStatus(gameVersion)
+    const userdata = getUserData(jwt.unique_name, gameVersion)
 
     const theTemplate =
-        req.gameVersion === "h3"
+        gameVersion === "h3"
             ? null
-            : req.gameVersion === "h2"
+            : gameVersion === "h2"
             ? null
-            : req.gameVersion === "scpc"
+            : gameVersion === "scpc"
             ? getConfig("FrankensteinHubTemplate", false)
             : getConfig("LegacyHubTemplate", false)
 
     const contractCreationTutorial =
-        req.gameVersion !== "scpc"
+        gameVersion !== "scpc"
             ? controller.resolveContract(contractCreationTutorialId)!
             : undefined
 
     const locations = getVersionedConfig<PeacockLocationsData>(
         "LocationsData",
-        req.gameVersion,
+        gameVersion,
         true,
     )
     const career =
-        req.gameVersion === "h3"
+        gameVersion === "h3"
             ? {}
             : {
                   // TODO: Add data on elusive challenges. They are only shown on the Career->Challenges page for H1 and H2. They are not supported by Peacock as of v6.0.0.
@@ -194,23 +182,23 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
         if (
             controller.masteryService.getMasteryDataForDestination(
                 parent,
-                req.gameVersion,
-                req.jwt.unique_name,
+                gameVersion,
+                jwt.unique_name,
             ).length
         ) {
             const completionData =
                 controller.masteryService.getLocationCompletion(
                     parent,
                     parent,
-                    req.gameVersion,
-                    req.jwt.unique_name,
+                    gameVersion,
+                    jwt.unique_name,
                     parent.includes("SNUG") ? "evergreen" : "mission",
-                    req.gameVersion === "h1" ? "normal" : undefined,
+                    gameVersion === "h1" ? "normal" : undefined,
                 )
 
             masteryData.push({
                 CompletionData: completionData,
-                ...(req.gameVersion === "h1"
+                ...(gameVersion === "h1"
                     ? {
                           Data: {
                               normal: {
@@ -221,8 +209,8 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
                                       controller.masteryService.getLocationCompletion(
                                           parent,
                                           parent,
-                                          req.gameVersion,
-                                          req.jwt.unique_name,
+                                          gameVersion,
+                                          jwt.unique_name,
                                           parent.includes("SNUG")
                                               ? "evergreen"
                                               : "mission",
@@ -254,13 +242,13 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
         const location = locations.children[child]
         const challenges = controller.challengeService.getChallengesForLocation(
             child,
-            req.gameVersion,
+            gameVersion,
         )
         const challengeCompletion =
             controller.challengeService.countTotalNCompletedChallenges(
                 challenges,
-                req.jwt.unique_name,
-                req.gameVersion,
+                jwt.unique_name,
+                gameVersion,
             )
 
         career[parent]?.Children.push({
@@ -279,13 +267,13 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
             IsPack: false, // should be false for all locations
             CompletionData: generateCompletionData(
                 child,
-                req.jwt.unique_name,
-                req.gameVersion,
+                jwt.unique_name,
+                gameVersion,
             ),
         })
     }
 
-    res.json({
+    return {
         template: theTemplate,
         data: {
             ServerTile: {
@@ -300,26 +288,22 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
                 },
             },
             DashboardData: [],
-            DestinationsData: destinationsMenu(req),
+            DestinationsData: destinationsMenu(gameVersion, jwt),
             CreateContractTutorial: generateUserCentric(
                 contractCreationTutorial,
-                req.jwt.unique_name,
-                req.gameVersion,
+                jwt.unique_name,
+                gameVersion,
             ),
-            LocationsData: createLocationsData(req.gameVersion, true),
+            LocationsData: createLocationsData(gameVersion, true),
             ProfileData: {
                 ChallengeData: {
                     Children: Object.values(career),
                 },
                 MasteryData: masteryData,
             },
-            StoryData: makeCampaigns(req.gameVersion, req.jwt.unique_name),
-            FilterData: getVersionedConfig(
-                "FilterData",
-                req.gameVersion,
-                false,
-            ),
-            StoreData: getVersionedConfig("StoreData", req.gameVersion, false),
+            StoryData: makeCampaigns(gameVersion, jwt.unique_name),
+            FilterData: getVersionedConfig("FilterData", gameVersion, false),
+            StoreData: getVersionedConfig("StoreData", gameVersion, false),
             IOIAccountStatus: {
                 IsConfirmed: true,
                 LinkedEmail: "mail@example.com",
@@ -334,18 +318,31 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
                 XP: userdata.Extensions.progression.PlayerProfileXP.Total,
                 Level: userdata.Extensions.progression.PlayerProfileXP
                     .ProfileLevel,
-                MaxLevel: getMaxProfileLevel(req.gameVersion),
+                MaxLevel: getMaxProfileLevel(gameVersion),
             },
         },
-    })
+    }
+}
+
+menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
+    const hubInfo = getHubInfo(req.gameVersion, req.jwt)
+    res.json(hubInfo)
 })
 
 menuDataRouter.get("/SafehouseCategory", (req: RequestWithJwt, res) => {
-    const inventory = createInventory(req.jwt.unique_name, req.gameVersion)
+    res.json(getSafehouseCategory(req.query, req.gameVersion, req.jwt))
+})
+
+export function getSafehouseCategory(
+    query: SafehouseCategoryQuery,
+    gameVersion: GameVersion,
+    jwt: JwtData,
+) {
+    const inventory = createInventory(jwt.unique_name, gameVersion)
 
     const safehouseData = {
         template:
-            req.gameVersion === "h1"
+            gameVersion === "h1"
                 ? getConfig("LegacySafehouseTemplate", false)
                 : null,
         data: {
@@ -357,16 +354,13 @@ menuDataRouter.get("/SafehouseCategory", (req: RequestWithJwt, res) => {
     }
 
     for (const item of inventory) {
-        if (req.query.type) {
+        if (query.type) {
             // if type is specified in query
-            if (item.Unlockable.Type !== req.query.type) {
+            if (item.Unlockable.Type !== query.type) {
                 continue // skip all items that are not that type
             }
 
-            if (
-                req.query.subtype &&
-                item.Unlockable.Subtype !== req.query.subtype
-            ) {
+            if (query.subtype && item.Unlockable.Subtype !== query.subtype) {
                 // if subtype is specified
                 continue // skip all items that are not that subtype
             }
@@ -385,10 +379,7 @@ menuDataRouter.get("/SafehouseCategory", (req: RequestWithJwt, res) => {
             continue
         }
 
-        if (
-            item.Unlockable.Subtype === "disguise" &&
-            req.gameVersion === "h3"
-        ) {
+        if (item.Unlockable.Subtype === "disguise" && gameVersion === "h3") {
             continue // I don't want to put this in that elif statement
         }
 
@@ -459,8 +450,8 @@ menuDataRouter.get("/SafehouseCategory", (req: RequestWithJwt, res) => {
         safehouseData.data = safehouseData.data.SubCategories[0] // flatten it
     }
 
-    res.json(safehouseData)
-})
+    return safehouseData
+}
 
 menuDataRouter.get("/report", (req: RequestWithJwt, res) => {
     res.json({
@@ -683,22 +674,6 @@ menuDataRouter.get(
     },
 )
 
-menuDataRouter.get(
-    "/scoreoverview",
-    async (req: RequestWithJwt<MissionEndRequestQuery>, res) => {
-        const resJsonFunc = res.json
-
-        res.json = function fakeJsonBind(input) {
-            return resJsonFunc.call(this, {
-                template: getConfig("ScoreOverviewTemplate", false),
-                data: input.data.ScoreOverview,
-            })
-        }
-
-        await missionEnd(req, res)
-    },
-)
-
 menuDataRouter.get("/Planning", planningView)
 
 menuDataRouter.get(
@@ -905,259 +880,305 @@ menuDataRouter.get("/missionendready", async (req, res) => {
     }
 })
 
-menuDataRouter.get("/missionend", missionEnd)
+const missionEndRequest = async (
+    req: RequestWithJwt<Partial<MissionEndRequestQuery>>,
+    res: Response,
+) => {
+    if (!req.query.contractSessionId) {
+        res.status(400).send("no session id")
+        return
+    }
 
-menuDataRouter.get("/scoreoverviewandunlocks", missionEnd)
+    const missionEndOutput = await getMissionEndData(
+        req.query,
+        req.jwt,
+        req.gameVersion,
+    )
+
+    const isErrorPath = (
+        output: MissionEndResult | MissionEndError,
+    ): output is MissionEndError => {
+        return Boolean((output as MissionEndError).errorCode)
+    }
+
+    if (isErrorPath(missionEndOutput)) {
+        res.status(missionEndOutput.errorCode).send(missionEndOutput.error)
+    }
+
+    if (req.path.endsWith("/scoreoverview")) {
+        res.json({
+            template: getConfig("ScoreOverviewTemplate", false),
+            data: (missionEndOutput as MissionEndResult).ScoreOverview,
+        })
+        return
+    }
+
+    res.json({
+        template:
+            req.gameVersion === "scpc"
+                ? getConfig("FrankensteinScoreOverviewTemplate", false)
+                : null,
+        data: missionEndOutput,
+    })
+}
+
+menuDataRouter.get("/missionend", missionEndRequest)
+
+menuDataRouter.get("/scoreoverviewandunlocks", missionEndRequest)
+
+menuDataRouter.get("/scoreoverview", missionEndRequest)
+
+export function getDestination(
+    query: GetDestinationQuery,
+    gameVersion: GameVersion,
+    jwt: JwtData,
+) {
+    const LOCATION = query.locationId
+
+    const locData = getVersionedConfig<PeacockLocationsData>(
+        "LocationsData",
+        gameVersion,
+        false,
+    )
+
+    const locationData = locData.parents[LOCATION]
+    const masteryData = controller.masteryService.getMasteryDataForDestination(
+        query.locationId,
+        gameVersion,
+        jwt.unique_name,
+        query.difficulty,
+    )
+
+    const response = {
+        template:
+            gameVersion === "h1"
+                ? getConfig("LegacyDestinationTemplate", false)
+                : null,
+        data: {
+            Location: {},
+            MissionData: {
+                ...getDestinationCompletion(
+                    locationData,
+                    undefined,
+                    gameVersion,
+                    jwt,
+                ),
+                ...{ SubLocationMissionsData: [] },
+            },
+            ChallengeData: {
+                Children:
+                    controller.challengeService.getChallengeDataForDestination(
+                        query.locationId,
+                        gameVersion,
+                        jwt.unique_name,
+                    ),
+            },
+            MasteryData:
+                LOCATION !== "LOCATION_PARENT_ICA_FACILITY"
+                    ? gameVersion === "h1"
+                        ? masteryData[0]
+                        : masteryData
+                    : {},
+            DifficultyData: undefined,
+        },
+    }
+
+    if (gameVersion === "h1" && LOCATION !== "LOCATION_PARENT_ICA_FACILITY") {
+        const inventory = createInventory(jwt.unique_name, gameVersion)
+
+        response.data.DifficultyData = {
+            AvailableDifficultyModes: [
+                {
+                    Name: "normal",
+                    Available: true,
+                },
+                {
+                    Name: "pro1",
+                    Available: inventory.some(
+                        (e) =>
+                            e.Unlockable.Id ===
+                            locationData.Properties.DifficultyUnlock.pro1,
+                    ),
+                },
+            ],
+            Difficulty: query.difficulty,
+            LocationId: LOCATION,
+        }
+    }
+
+    if (PEACOCK_DEV) {
+        log(LogLevel.DEBUG, `Looking up locations details for ${LOCATION}.`)
+    }
+
+    const sublocationsData = Object.values(locData.children).filter(
+        (subLocation) => subLocation.Properties.ParentLocation === LOCATION,
+    )
+
+    response.data.Location = locationData
+
+    if (query.difficulty === "pro1") {
+        const obj = {
+            Location: locationData,
+            SubLocation: locationData,
+            Missions: [controller.missionsInLocations.pro1[LOCATION]].map(
+                (id) => contractIdToHitObject(id, gameVersion, jwt.unique_name),
+            ),
+            SarajevoSixMissions: [],
+            ElusiveMissions: [],
+            EscalationMissions: [],
+            SniperMissions: [],
+            PlaceholderMissions: [],
+            CampaignMissions: [],
+            CompletionData: generateCompletionData(
+                sublocationsData[0].Id,
+                jwt.unique_name,
+                gameVersion,
+            ),
+        }
+
+        response.data.MissionData.SubLocationMissionsData.push(obj)
+
+        return response
+    }
+
+    for (const e of sublocationsData) {
+        log(LogLevel.DEBUG, `Looking up sublocation details for ${e.Id}`)
+
+        const escalations: IHit[] = []
+
+        // every unique escalation from the sublocation
+        const allUniqueEscalations: string[] = [
+            ...(gameVersion === "h1" && e.Id === "LOCATION_ICA_FACILITY"
+                ? controller.missionsInLocations.escalations[
+                      "LOCATION_ICA_FACILITY_SHIP"
+                  ]
+                : []),
+            ...new Set<string>(
+                controller.missionsInLocations.escalations[e.Id] || [],
+            ),
+        ]
+
+        for (const escalation of allUniqueEscalations) {
+            if (gameVersion === "h1" && no2016.includes(escalation)) continue
+
+            const details = contractIdToHitObject(
+                escalation,
+                gameVersion,
+                jwt.unique_name,
+            )
+
+            if (details) {
+                escalations.push(details)
+            }
+        }
+
+        const sniperMissions: IHit[] = []
+
+        for (const sniperMission of controller.missionsInLocations.sniper[
+            e.Id
+        ] ?? []) {
+            sniperMissions.push(
+                contractIdToHitObject(
+                    sniperMission,
+                    gameVersion,
+                    jwt.unique_name,
+                ),
+            )
+        }
+
+        const obj = {
+            Location: locationData,
+            SubLocation: e,
+            Missions: [],
+            SarajevoSixMissions: [],
+            ElusiveMissions: [],
+            EscalationMissions: escalations,
+            SniperMissions: sniperMissions,
+            PlaceholderMissions: [],
+            CampaignMissions: [],
+            CompletionData: generateCompletionData(
+                e.Id,
+                jwt.unique_name,
+                gameVersion,
+            ),
+        }
+
+        const types = [
+            ...[
+                [undefined, "Missions"],
+                ["elusive", "ElusiveMissions"],
+            ],
+            ...((gameVersion === "h1" &&
+                missionsInLocations.sarajevo["h2016enabled"]) ||
+            gameVersion === "h3"
+                ? [["sarajevo", "SarajevoSixMissions"]]
+                : []),
+        ]
+
+        for (const t of types) {
+            let theMissions = !t[0] // no specific type
+                ? controller.missionsInLocations[e.Id]
+                : controller.missionsInLocations[t[0]][e.Id]
+
+            // edge case: ica facility in h1 was only 1 sublocation, so we merge
+            // these into a single array
+            if (
+                gameVersion === "h1" &&
+                !t[0] &&
+                LOCATION === "LOCATION_PARENT_ICA_FACILITY"
+            ) {
+                theMissions = [
+                    ...controller.missionsInLocations
+                        .LOCATION_ICA_FACILITY_ARRIVAL,
+                    ...controller.missionsInLocations
+                        .LOCATION_ICA_FACILITY_SHIP,
+                    ...controller.missionsInLocations.LOCATION_ICA_FACILITY,
+                ]
+            }
+
+            if (theMissions !== undefined) {
+                // eslint-disable-next-line no-extra-semi
+                ;(theMissions as string[])
+                    .filter(
+                        // removes snow festival on h1
+                        (m) =>
+                            m &&
+                            !(
+                                gameVersion === "h1" &&
+                                m === "c414a084-a7b9-43ce-b6ca-590620acd87e"
+                            ),
+                    )
+                    .forEach((c) => {
+                        const mission = contractIdToHitObject(
+                            c,
+                            gameVersion,
+                            jwt.unique_name,
+                        )
+
+                        obj[t[1]].push(mission)
+                    })
+            }
+        }
+
+        response.data.MissionData.SubLocationMissionsData.push(obj)
+    }
+
+    return response
+}
 
 menuDataRouter.get(
     "/Destination",
-    (
-        req: RequestWithJwt<{
-            locationId: string
-            difficulty?: string
-        }>,
-        res,
-    ) => {
-        const LOCATION = req.query.locationId
-
-        const locData = getVersionedConfig<PeacockLocationsData>(
-            "LocationsData",
-            req.gameVersion,
-            false,
-        )
-
-        const locationData = locData.parents[LOCATION]
-        const masteryData =
-            controller.masteryService.getMasteryDataForDestination(
-                req.query.locationId,
-                req.gameVersion,
-                req.jwt.unique_name,
-                req.query.difficulty,
-            )
-
-        const response = {
-            template:
-                req.gameVersion === "h1"
-                    ? getConfig("LegacyDestinationTemplate", false)
-                    : null,
-            data: {
-                Location: {},
-                MissionData: {
-                    ...getDestinationCompletion(locationData, undefined, req),
-                    ...{ SubLocationMissionsData: [] },
-                },
-                ChallengeData: {
-                    Children:
-                        controller.challengeService.getChallengeDataForDestination(
-                            req.query.locationId,
-                            req.gameVersion,
-                            req.jwt.unique_name,
-                        ),
-                },
-                MasteryData:
-                    LOCATION !== "LOCATION_PARENT_ICA_FACILITY"
-                        ? req.gameVersion === "h1"
-                            ? masteryData[0]
-                            : masteryData
-                        : {},
-                DifficultyData: undefined,
-            },
+    (req: RequestWithJwt<GetDestinationQuery>, res) => {
+        if (!(req.query.difficulty ?? false)) {
+            res.status(400).send("Invalid difficulty")
         }
 
-        if (
-            req.gameVersion === "h1" &&
-            LOCATION !== "LOCATION_PARENT_ICA_FACILITY"
-        ) {
-            const inventory = createInventory(
-                req.jwt.unique_name,
-                req.gameVersion,
-            )
-
-            response.data.DifficultyData = {
-                AvailableDifficultyModes: [
-                    {
-                        Name: "normal",
-                        Available: true,
-                    },
-                    {
-                        Name: "pro1",
-                        Available: inventory.some(
-                            (e) =>
-                                e.Unlockable.Id ===
-                                locationData.Properties.DifficultyUnlock.pro1,
-                        ),
-                    },
-                ],
-                Difficulty: req.query.difficulty,
-                LocationId: LOCATION,
-            }
+        if (!req.query.locationId) {
+            res.status(400).send("Invalid locationId")
         }
 
-        if (PEACOCK_DEV) {
-            log(LogLevel.DEBUG, `Looking up locations details for ${LOCATION}.`)
-        }
-
-        const sublocationsData = Object.values(locData.children).filter(
-            (subLocation) => subLocation.Properties.ParentLocation === LOCATION,
-        )
-
-        response.data.Location = locationData
-
-        if (req.query.difficulty === "pro1") {
-            const obj = {
-                Location: locationData,
-                SubLocation: locationData,
-                Missions: [controller.missionsInLocations.pro1[LOCATION]].map(
-                    (id) =>
-                        contractIdToHitObject(
-                            id,
-                            req.gameVersion,
-                            req.jwt.unique_name,
-                        ),
-                ),
-                SarajevoSixMissions: [],
-                ElusiveMissions: [],
-                EscalationMissions: [],
-                SniperMissions: [],
-                PlaceholderMissions: [],
-                CampaignMissions: [],
-                CompletionData: generateCompletionData(
-                    sublocationsData[0].Id,
-                    req.jwt.unique_name,
-                    req.gameVersion,
-                ),
-            }
-
-            response.data.MissionData.SubLocationMissionsData.push(obj)
-
-            res.json(response)
-            return
-        }
-
-        for (const e of sublocationsData) {
-            log(LogLevel.DEBUG, `Looking up sublocation details for ${e.Id}`)
-
-            const escalations: IHit[] = []
-
-            // every unique escalation from the sublocation
-            const allUniqueEscalations: string[] = [
-                ...(req.gameVersion === "h1" && e.Id === "LOCATION_ICA_FACILITY"
-                    ? controller.missionsInLocations.escalations[
-                          "LOCATION_ICA_FACILITY_SHIP"
-                      ]
-                    : []),
-                ...new Set<string>(
-                    controller.missionsInLocations.escalations[e.Id] || [],
-                ),
-            ]
-
-            for (const escalation of allUniqueEscalations) {
-                if (req.gameVersion === "h1" && no2016.includes(escalation))
-                    continue
-
-                const details = contractIdToHitObject(
-                    escalation,
-                    req.gameVersion,
-                    req.jwt.unique_name,
-                )
-
-                if (details) {
-                    escalations.push(details)
-                }
-            }
-
-            const sniperMissions: IHit[] = []
-
-            for (const sniperMission of controller.missionsInLocations.sniper[
-                e.Id
-            ] ?? []) {
-                sniperMissions.push(
-                    contractIdToHitObject(
-                        sniperMission,
-                        req.gameVersion,
-                        req.jwt.unique_name,
-                    ),
-                )
-            }
-
-            const obj = {
-                Location: locationData,
-                SubLocation: e,
-                Missions: [],
-                SarajevoSixMissions: [],
-                ElusiveMissions: [],
-                EscalationMissions: escalations,
-                SniperMissions: sniperMissions,
-                PlaceholderMissions: [],
-                CampaignMissions: [],
-                CompletionData: generateCompletionData(
-                    e.Id,
-                    req.jwt.unique_name,
-                    req.gameVersion,
-                ),
-            }
-
-            const types = [
-                ...[
-                    [undefined, "Missions"],
-                    ["elusive", "ElusiveMissions"],
-                ],
-                ...((req.gameVersion === "h1" &&
-                    missionsInLocations.sarajevo["h2016enabled"]) ||
-                req.gameVersion === "h3"
-                    ? [["sarajevo", "SarajevoSixMissions"]]
-                    : []),
-            ]
-
-            for (const t of types) {
-                let theMissions = !t[0] // no specific type
-                    ? controller.missionsInLocations[e.Id]
-                    : controller.missionsInLocations[t[0]][e.Id]
-
-                // edge case: ica facility in h1 was only 1 sublocation, so we merge
-                // these into a single array
-                if (
-                    req.gameVersion === "h1" &&
-                    !t[0] &&
-                    LOCATION === "LOCATION_PARENT_ICA_FACILITY"
-                ) {
-                    theMissions = [
-                        ...controller.missionsInLocations
-                            .LOCATION_ICA_FACILITY_ARRIVAL,
-                        ...controller.missionsInLocations
-                            .LOCATION_ICA_FACILITY_SHIP,
-                        ...controller.missionsInLocations.LOCATION_ICA_FACILITY,
-                    ]
-                }
-
-                if (theMissions !== undefined) {
-                    // eslint-disable-next-line no-extra-semi
-                    ;(theMissions as string[])
-                        .filter(
-                            // removes snow festival on h1
-                            (m) =>
-                                m &&
-                                !(
-                                    req.gameVersion === "h1" &&
-                                    m === "c414a084-a7b9-43ce-b6ca-590620acd87e"
-                                ),
-                        )
-                        .forEach((c) => {
-                            const mission = contractIdToHitObject(
-                                c,
-                                req.gameVersion,
-                                req.jwt.unique_name,
-                            )
-
-                            obj[t[1]].push(mission)
-                        })
-                }
-            }
-
-            response.data.MissionData.SubLocationMissionsData.push(obj)
-        }
-
-        res.json(response)
+        const destination = getDestination(req.query, req.gameVersion, req.jwt)
+        res.json(destination)
     },
 )
 
@@ -1932,7 +1953,8 @@ menuDataRouter.get("/PlayerProfile", (req: RequestWithJwt, res) => {
         const destinationCompletion = getDestinationCompletion(
             parentLocation,
             subLocation,
-            req,
+            req.gameVersion,
+            req.jwt,
         )
 
         playerProfilePage.data.SubLocationData.push({
