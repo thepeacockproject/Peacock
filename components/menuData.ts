@@ -68,15 +68,7 @@ import {
 } from "./contracts/contractsModeRouting"
 import random from "random"
 import { getUserData } from "./databaseHandler"
-import {
-    createMainOpportunityTile,
-    createMenuPageTile,
-    createPlayNextTile,
-    getSeasonId,
-    orderedMissions,
-    orderedPZMissions,
-    sniperMissionIds,
-} from "./menus/playnext"
+import { getGamePlayNextData } from "./menus/playnext"
 import { randomUUID } from "crypto"
 import { planningView } from "./menus/planning"
 import {
@@ -1303,107 +1295,13 @@ menuDataRouter.get(
             return
         }
 
-        const cats = []
-
-        const currentIdIndex = orderedMissions.indexOf(req.query.contractId)
-
-        if (
-            currentIdIndex !== -1 &&
-            currentIdIndex !== orderedMissions.length - 1
-        ) {
-            const nextMissionId = orderedMissions[currentIdIndex + 1]
-            const nextSeasonId = getSeasonId(currentIdIndex + 1)
-
-            let shouldContinue = true
-
-            // nextSeasonId > gameVersion's integer
-            if (parseInt(nextSeasonId) > parseInt(req.gameVersion[1])) {
-                shouldContinue = false
-            }
-
-            if (shouldContinue) {
-                cats.push(
-                    createPlayNextTile(
-                        req.jwt.unique_name,
-                        nextMissionId,
-                        req.gameVersion,
-                        {
-                            CampaignName: `UI_SEASON_${nextSeasonId}`,
-                        },
-                    ),
-                )
-            }
-
-            cats.push(createMainOpportunityTile(req.query.contractId))
-        }
-
-        const pzIdIndex = orderedPZMissions.indexOf(req.query.contractId)
-
-        if (pzIdIndex !== -1 && pzIdIndex !== orderedPZMissions.length - 1) {
-            const nextMissionId = orderedPZMissions[pzIdIndex + 1]
-            cats.push(
-                createPlayNextTile(
-                    req.jwt.unique_name,
-                    nextMissionId,
-                    req.gameVersion,
-                    {
-                        CampaignName: "UI_CONTRACT_CAMPAIGN_WHITE_SPIDER_TITLE",
-                        ParentCampaignName: "UI_MENU_PAGE_SIDE_MISSIONS_TITLE",
-                    },
-                ),
-            )
-        }
-
-        if (req.query.contractId === "f1ba328f-e3dd-4ef8-bb26-0363499fdd95") {
-            const nextMissionId = "0b616e62-af0c-495b-82e3-b778e82b5912"
-            cats.push(
-                createPlayNextTile(
-                    req.jwt.unique_name,
-                    nextMissionId,
-                    req.gameVersion,
-                    {
-                        CampaignName: "UI_MENU_PAGE_SPECIAL_ASSIGNMENTS_TITLE",
-                        ParentCampaignName: "UI_MENU_PAGE_SIDE_MISSIONS_TITLE",
-                    },
-                ),
-            )
-        }
-
-        if (sniperMissionIds.includes(req.query.contractId)) {
-            cats.push(createMenuPageTile("sniper"))
-        }
-
-        const pluginData = controller.hooks.getNextCampaignMission.call(
-            req.query.contractId,
-            req.gameVersion,
-        )
-
-        if (pluginData) {
-            if (pluginData.overrideIndex !== undefined) {
-                cats[pluginData.overrideIndex] = createPlayNextTile(
-                    req.jwt.unique_name,
-                    pluginData.nextContractId,
-                    req.gameVersion,
-                    pluginData.campaignDetails,
-                )
-            } else {
-                cats.push(
-                    createPlayNextTile(
-                        req.jwt.unique_name,
-                        pluginData.nextContractId,
-                        req.gameVersion,
-                        pluginData.campaignDetails,
-                    ),
-                )
-            }
-        }
-
         res.json({
             template: getConfig("PlayNextTemplate", false),
-            data: {
-                Categories: cats,
-                ProfileId: req.jwt.unique_name,
-            },
+            data: getGamePlayNextData(
+                req.query.contractId,
+                req.jwt,
+                req.gameVersion,
+            ),
         })
     },
 )
