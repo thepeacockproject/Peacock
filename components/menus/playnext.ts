@@ -21,11 +21,16 @@ import { generateUserCentric } from "../contracts/dataGen"
 import { controller } from "../controller"
 import type {
     GameVersion,
+    JwtData,
     MissionStory,
     PlayNextCampaignDetails,
+    UserCentricContract,
 } from "../types/types"
 
-export const orderedMissions: string[] = [
+/**
+ * Main story campaign ordered mission IDs.
+ */
+export const orderedMainCampaignMissions: string[] = [
     "00000000-0000-0000-0000-000000000200",
     "00000000-0000-0000-0000-000000000600",
     "00000000-0000-0000-0000-000000000400",
@@ -48,6 +53,9 @@ export const orderedMissions: string[] = [
     "a3e19d55-64a6-4282-bb3c-d18c3f3e6e29",
 ]
 
+/**
+ * Ordered Patient Zero campaign mission IDs.
+ */
 export const orderedPZMissions: string[] = [
     "024b6964-a3bb-4457-b085-08f9a7dc7fb7",
     "7e3f758a-2435-42de-93bd-d8f0b72c63a4",
@@ -55,6 +63,9 @@ export const orderedPZMissions: string[] = [
     "a2befcec-7799-4987-9215-6a152cb6a320",
 ]
 
+/**
+ * Ordered sniper campaign mission IDs.
+ */
 export const sniperMissionIds: string[] = [
     "ff9f46cf-00bd-4c12-b887-eac491c3a96d",
     "00e57709-e049-44c9-a2c3-7655e19884fb",
@@ -62,13 +73,9 @@ export const sniperMissionIds: string[] = [
 ]
 
 /**
- * Gets the ID for a season.
- *
- * @param index The index in orderedMissions.
- * @returns The season's ID. ("1", "2", or "3")
- * @see orderedMissions
+ * Gets the ID for a season based on the main mission index.
  */
-export function getSeasonId(index: number): string {
+function getSeasonId(index: number): string {
     if (index <= 5) {
         return "1"
     }
@@ -81,7 +88,7 @@ export function getSeasonId(index: number): string {
 }
 
 /**
- * Generates a tile for play next given a contract ID and other details.
+ * Generates a "Continue Story" tile for play next given a contract ID and other details.
  *
  * @param userId The user's ID.
  * @param contractId The next contract ID.
@@ -89,12 +96,12 @@ export function getSeasonId(index: number): string {
  * @param campaignInfo The campaign information.
  * @returns The tile object.
  */
-export function createPlayNextTile(
+export function createPlayNextMission(
     userId: string,
     contractId: string,
     gameVersion: GameVersion,
     campaignInfo: PlayNextCampaignDetails,
-) {
+): PlayNextCategory {
     return {
         CategoryType: "NextMission",
         CategoryName: "UI_PLAYNEXT_CONTINUE_STORY_TITLE",
@@ -117,13 +124,32 @@ export function createPlayNextTile(
     }
 }
 
+export type PlayNextCategory = {
+    CategoryType: "NextMission" | "MainOpportunity" | "MenuPage"
+    CategoryName: string
+    Items: {
+        ItemType: null | unknown
+        ContentType: "Contract" | "Opportunity" | "MenuPage"
+        Content: {
+            ContractId?: string
+            RepositoryId?: string
+            Name?: string
+            UserCentricContract?: UserCentricContract
+            CampaignInfo?: PlayNextCampaignDetails
+        }
+        CategoryType: "NextMission" | "MainOpportunity" | "MenuPage"
+    }[]
+}
+
 /**
  * Generates tiles for recommended mission stories given a contract ID.
  *
  * @param contractId The contract ID.
  * @returns The tile object.
  */
-export function createMainOpportunityTile(contractId: string) {
+export function createMainOpportunityTile(
+    contractId: string,
+): PlayNextCategory {
     const contractData = controller.resolveContract(contractId)
 
     const missionStories = getConfig<Record<string, MissionStory>>(
@@ -153,7 +179,7 @@ export function createMainOpportunityTile(contractId: string) {
  * @param menuPages An array of menu page IDs.
  * @returns The tile object
  */
-export function createMenuPageTile(...menuPages: string[]) {
+export function createMenuPageTile(...menuPages: string[]): PlayNextCategory {
     // This is all based on what sniper does, not sure if any others have it.
     return {
         CategoryType: "MenuPage",
@@ -166,5 +192,107 @@ export function createMenuPageTile(...menuPages: string[]) {
                 Name: id,
             },
         })),
+    }
+}
+
+export type GameFacingPlayNextData = {
+    Categories: PlayNextCategory[]
+    ProfileId: string
+}
+
+export function getGamePlayNextData(
+    contractId: string,
+    jwt: JwtData,
+    gameVersion: GameVersion,
+): GameFacingPlayNextData {
+    const cats: PlayNextCategory[] = []
+
+    const currentIdIndex = orderedMainCampaignMissions.indexOf(contractId)
+
+    if (
+        currentIdIndex !== -1 &&
+        currentIdIndex !== orderedMainCampaignMissions.length - 1
+    ) {
+        const nextMissionId = orderedMainCampaignMissions[currentIdIndex + 1]
+        const nextSeasonId = getSeasonId(currentIdIndex + 1)
+
+        let shouldContinue = true
+
+        // nextSeasonId > gameVersion's integer
+        if (parseInt(nextSeasonId) > parseInt(gameVersion[1])) {
+            shouldContinue = false
+        }
+
+        if (shouldContinue) {
+            cats.push(
+                createPlayNextMission(
+                    jwt.unique_name,
+                    nextMissionId,
+                    gameVersion,
+                    {
+                        CampaignName: `UI_SEASON_${nextSeasonId}`,
+                    },
+                ),
+            )
+        }
+
+        cats.push(createMainOpportunityTile(contractId))
+    }
+
+    const pzIdIndex = orderedPZMissions.indexOf(contractId)
+
+    if (pzIdIndex !== -1 && pzIdIndex !== orderedPZMissions.length - 1) {
+        const nextMissionId = orderedPZMissions[pzIdIndex + 1]
+        cats.push(
+            createPlayNextMission(jwt.unique_name, nextMissionId, gameVersion, {
+                CampaignName: "UI_CONTRACT_CAMPAIGN_WHITE_SPIDER_TITLE",
+                ParentCampaignName: "UI_MENU_PAGE_SIDE_MISSIONS_TITLE",
+            }),
+        )
+    }
+
+    // Atlantide mini-campaign (Miami Cottonmouth -> Skunk Gartersnake)
+    if (contractId === "f1ba328f-e3dd-4ef8-bb26-0363499fdd95") {
+        const nextMissionId = "0b616e62-af0c-495b-82e3-b778e82b5912"
+        cats.push(
+            createPlayNextMission(jwt.unique_name, nextMissionId, gameVersion, {
+                CampaignName: "UI_MENU_PAGE_SPECIAL_ASSIGNMENTS_TITLE",
+                ParentCampaignName: "UI_MENU_PAGE_SIDE_MISSIONS_TITLE",
+            }),
+        )
+    }
+
+    if (sniperMissionIds.includes(contractId)) {
+        cats.push(createMenuPageTile("sniper"))
+    }
+
+    const pluginData = controller.hooks.getNextCampaignMission.call(
+        contractId,
+        gameVersion,
+    )
+
+    if (pluginData) {
+        if (pluginData.overrideIndex !== undefined) {
+            cats[pluginData.overrideIndex] = createPlayNextMission(
+                jwt.unique_name,
+                pluginData.nextContractId,
+                gameVersion,
+                pluginData.campaignDetails,
+            )
+        } else {
+            cats.push(
+                createPlayNextMission(
+                    jwt.unique_name,
+                    pluginData.nextContractId,
+                    gameVersion,
+                    pluginData.campaignDetails,
+                ),
+            )
+        }
+    }
+
+    return {
+        Categories: cats,
+        ProfileId: jwt.unique_name,
     }
 }
