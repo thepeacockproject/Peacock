@@ -120,3 +120,20 @@ export type GetDestinationQuery = {
     locationId: string
     difficulty?: string
 }
+
+/**
+ * Query params that `/profiles/page/Leaderboards` gets.
+ */
+export type LeaderboardEntriesCommonQuery = {
+    contractid: string
+    difficultyLevel?: string
+}
+
+/**
+ * Query params that `/profiles/page/DebriefingLeaderboards` gets.
+ * Because ofc it's different. Thanks IOI.
+ */
+export type DebriefingLeaderboardsQuery = {
+    contractid: string
+    difficulty?: string
+}
