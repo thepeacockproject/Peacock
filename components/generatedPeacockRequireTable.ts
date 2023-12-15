@@ -76,14 +76,6 @@ import * as multiplayerService from "./multiplayer/multiplayerService"
 import * as multiplayerUtils from "./multiplayer/multiplayerUtils"
 import * as contextListeners from "./statemachines/contextListeners"
 import * as contractCreation from "./statemachines/contractCreation"
-import * as challenges from "./types/challenges"
-import * as events from "./types/events"
-import * as gameSchemas from "./types/gameSchemas"
-import * as livesplit from "./types/livesplit"
-import * as mastery from "./types/mastery"
-import * as score from "./types/score"
-import * as scoring from "./types/scoring"
-import * as types from "./types/types"
 import * as escalationService from "./contracts/escalations/escalationService"
 
 export default {
@@ -258,20 +250,6 @@ export default {
         __esModule: true,
         ...contractCreation,
     },
-    "@peacockproject/core/types/challenges": {
-        __esModule: true,
-        ...challenges,
-    },
-    "@peacockproject/core/types/events": { __esModule: true, ...events },
-    "@peacockproject/core/types/gameSchemas": {
-        __esModule: true,
-        ...gameSchemas,
-    },
-    "@peacockproject/core/types/livesplit": { __esModule: true, ...livesplit },
-    "@peacockproject/core/types/mastery": { __esModule: true, ...mastery },
-    "@peacockproject/core/types/score": { __esModule: true, ...score },
-    "@peacockproject/core/types/scoring": { __esModule: true, ...scoring },
-    "@peacockproject/core/types/types": { __esModule: true, ...types },
     "@peacockproject/core/contracts/escalations/escalationService": {
         __esModule: true,
         ...escalationService,
