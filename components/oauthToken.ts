@@ -198,7 +198,7 @@ export async function handleOauthToken(
         log(LogLevel.DEBUG, "Unable to load profile information.")
     }
 
-    /* 
+    /*
        Store user auth for all games except scpc
     */
     if (!isFrankenstein) {
@@ -234,12 +234,7 @@ export async function handleOauthToken(
             userData.EpicId = req.body.epic_userid
         }
 
-        if (
-            Object.prototype.hasOwnProperty.call(
-                userData.Extensions,
-                "inventory",
-            )
-        ) {
+        if (Object.hasOwn(userData.Extensions, "inventory")) {
             // @ts-expect-error No longer in the typedefs.
             delete userData.Extensions.inventory
         }

@@ -59,9 +59,8 @@ import {
 import { eventRouter } from "./eventHandler"
 import { contractRoutingRouter } from "./contracts/contractRouting"
 import { profileRouter } from "./profileHandler"
-import { menuDataRouter, preMenuDataRouter } from "./menuData"
+import { menuDataRouter } from "./menuData"
 import { menuSystemPreRouter, menuSystemRouter } from "./menus/menuSystem"
-import { legacyEventRouter } from "./2016/legacyEventRouter"
 import { legacyMenuSystemRouter } from "./2016/legacyMenuSystem"
 import { _theLastYardbirdScpc, controller } from "./controller"
 import {
@@ -140,7 +139,7 @@ if (getFlag("developmentLogRequests")) {
 
 app.use("/_wf", webFeaturesRouter)
 
-app.get("/", (req: Request, res) => {
+app.get("/", (_: Request, res) => {
     if (PEACOCK_DEV) {
         res.contentType("text/html")
         res.send(
@@ -240,21 +239,19 @@ app.post(
     "/api/metrics/*",
     jsonMiddleware({ limit: "10Mb" }),
     (req: RequestWithJwt<never, S2CEventWithTimestamp[]>, res) => {
-        req.body.forEach((event) => {
+        for (const event of req.body) {
             controller.hooks.newMetricsEvent.call(event, req)
-        })
+        }
 
         res.send()
     },
 )
 
-app.use("/oauth/token", urlencoded())
-
-app.post("/oauth/token", (req: RequestWithJwt, res) =>
+app.post("/oauth/token", urlencoded(), (req: RequestWithJwt, res) =>
     handleOauthToken(req, res),
 )
 
-app.get("/files/onlineconfig.json", (req, res) => {
+app.get("/files/onlineconfig.json", (_, res) => {
     res.set("Content-Type", "application/octet-stream")
     res.send(getConfig("OnlineConfig", false))
 })
@@ -270,9 +267,7 @@ app.use(
                 req.serverVersion = req.params.serverVersion
                 req.gameVersion = req.serverVersion.startsWith("8")
                     ? "h3"
-                    : req.serverVersion.startsWith("7") &&
-                      // prettier-ignore
-                      req.serverVersion !== "7.3.0"
+                    : req.serverVersion.startsWith("7")
                     ? // prettier-ignore
                       "h2"
                     : // prettier-ignore
@@ -426,10 +421,6 @@ app.post(
 const legacyRouter = Router()
 const primaryRouter = Router()
 
-legacyRouter.use(
-    "/authentication/api/userchannel/EventsService/",
-    legacyEventRouter,
-)
 legacyRouter.use("/resources-(\\d+-\\d+)/", legacyMenuSystemRouter)
 legacyRouter.use("/authentication/api/userchannel/", legacyProfileRouter)
 legacyRouter.use("/profiles/page/", legacyMenuDataRouter)
@@ -456,7 +447,6 @@ primaryRouter.use(
     reportRouter,
 )
 primaryRouter.use("/authentication/api/userchannel/", profileRouter)
-primaryRouter.use("/profiles/page/", preMenuDataRouter)
 primaryRouter.use("/profiles/page", multiplayerMenuDataRouter)
 primaryRouter.use("/profiles/page/", menuDataRouter)
 primaryRouter.use("/resources-(\\d+-\\d+)/", menuSystemPreRouter)
@@ -464,7 +454,7 @@ primaryRouter.use("/resources-(\\d+-\\d+)/", menuSystemRouter)
 
 app.use(
     Router()
-        .use((req: RequestWithJwt, res, next) => {
+        .use((req: RequestWithJwt, _, next) => {
             if (req.shouldCease) {
                 return next("router")
             }
@@ -477,7 +467,7 @@ app.use(
         })
         .use(legacyRouter),
     Router()
-        .use((req: RequestWithJwt, res, next) => {
+        .use((req: RequestWithJwt, _, next) => {
             if (req.shouldCease) {
                 return next("router")
             }
@@ -636,9 +626,7 @@ program
     .description("packs an input file into a Challenge Resource Package")
     .action((input, options: { output: string }) => {
         const outputPath =
-            options.output !== ""
-                ? options.output
-                : input.replace(/\.[^/\\.]+$/, ".crp")
+            options.output || input.replace(/\.[^/\\.]+$/, ".crp")
 
         writeFileSync(
             outputPath,
@@ -655,9 +643,7 @@ program
     .description("unpacks a Challenge Resource Package")
     .action((input, options: { output: string }) => {
         const outputPath =
-            options.output !== ""
-                ? options.output
-                : input.replace(/\.[^/\\.]+$/, ".json")
+            options.output || input.replace(/\.[^/\\.]+$/, ".json")
 
         writeFileSync(outputPath, JSON.stringify(unpack(readFileSync(input))))
 

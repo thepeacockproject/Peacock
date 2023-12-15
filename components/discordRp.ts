@@ -150,12 +150,7 @@ export function scenePathToRpAsset(
     )
 
     for (const brick of bricks) {
-        if (
-            Object.prototype.hasOwnProperty.call(
-                brickAssetsMap,
-                brick.toLowerCase(),
-            )
-        ) {
+        if (brickAssetsMap[brick.toLowerCase()]) {
             return brickAssetsMap[brick.toLowerCase()]!
         }
     }

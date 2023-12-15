@@ -212,12 +212,7 @@ profileRouter.post(
         const userdata = getUserData(req.jwt.unique_name, req.gameVersion)
 
         for (const extension in req.body.extensionsData) {
-            if (
-                Object.prototype.hasOwnProperty.call(
-                    req.body.extensionsData,
-                    extension,
-                )
-            ) {
+            if (Object.hasOwn(req.body.extensionsData, extension)) {
                 userdata.Extensions[extension] =
                     req.body.extensionsData[extension]
             }
