@@ -42,11 +42,11 @@ import * as smfSupport from "./smfSupport"
 import * as utils from "./utils"
 import * as webFeatures from "./webFeatures"
 import * as legacyContractHandler from "./2016/legacyContractHandler"
-import * as legacyEventRouter from "./2016/legacyEventRouter"
 import * as legacyMenuData from "./2016/legacyMenuData"
 import * as legacyMenuSystem from "./2016/legacyMenuSystem"
 import * as legacyProfileRouter from "./2016/legacyProfileRouter"
 import * as challengeHelpers from "./candle/challengeHelpers"
+import * as challengeRouting from "./candle/challengeRouting"
 import * as challengeService from "./candle/challengeService"
 import * as masteryService from "./candle/masteryService"
 import * as progressionService from "./candle/progressionService"
@@ -56,6 +56,7 @@ import * as dataGen from "./contracts/dataGen"
 import * as elusiveTargetArcades from "./contracts/elusiveTargetArcades"
 import * as elusiveTargets from "./contracts/elusiveTargets"
 import * as hitsCategoryService from "./contracts/hitsCategoryService"
+import * as leaderboards from "./contracts/leaderboards"
 import * as missionsInLocation from "./contracts/missionsInLocation"
 import * as reportRouting from "./contracts/reportRouting"
 import * as client from "./discord/client"
@@ -142,10 +143,6 @@ export default {
         __esModule: true,
         ...legacyContractHandler,
     },
-    "@peacockproject/core/2016/legacyEventRouter": {
-        __esModule: true,
-        ...legacyEventRouter,
-    },
     "@peacockproject/core/2016/legacyMenuData": {
         __esModule: true,
         ...legacyMenuData,
@@ -161,6 +158,10 @@ export default {
     "@peacockproject/core/candle/challengeHelpers": {
         __esModule: true,
         ...challengeHelpers,
+    },
+    "@peacockproject/core/candle/challengeRouting": {
+        __esModule: true,
+        ...challengeRouting,
     },
     "@peacockproject/core/candle/challengeService": {
         __esModule: true,
@@ -194,6 +195,10 @@ export default {
     "@peacockproject/core/contracts/hitsCategoryService": {
         __esModule: true,
         ...hitsCategoryService,
+    },
+    "@peacockproject/core/contracts/leaderboards": {
+        __esModule: true,
+        ...leaderboards,
     },
     "@peacockproject/core/contracts/missionsInLocation": {
         __esModule: true,
