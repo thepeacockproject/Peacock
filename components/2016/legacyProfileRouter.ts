@@ -26,33 +26,14 @@ import { getConfig } from "../configSwizzleManager"
 
 import { Router } from "express"
 import { controller } from "../controller"
-import { getPlatformEntitlements } from "../platformEntitlements"
 import { json as jsonMiddleware } from "body-parser"
 import { uuidRegex } from "../utils"
-import { menuSystemDatabase } from "../menus/menuSystem"
 import { compileRuntimeChallenge } from "../candle/challengeHelpers"
 import { LegacyGetProgressionBody } from "../types/gameSchemas"
 
 const legacyProfileRouter = Router()
 
 // /authentication/api/userchannel/
-
-legacyProfileRouter.post(
-    "/ProfileService/GetPlatformEntitlements",
-    jsonMiddleware(),
-    getPlatformEntitlements,
-)
-
-legacyProfileRouter.post(
-    "/AuthenticationService/GetBlobOfflineCacheDatabaseDiff",
-    (req: RequestWithJwt, res) => {
-        const configs: string[] = []
-
-        menuSystemDatabase.hooks.getDatabaseDiff.call(configs, req.gameVersion)
-
-        res.json(configs)
-    },
-)
 
 legacyProfileRouter.post(
     "/ChallengesService/GetActiveChallenges",
