@@ -43,7 +43,6 @@ import type {
     GameVersion,
     HitsCategoryCategory,
     JwtData,
-    MissionManifest,
     PeacockLocationsData,
     PlayerProfileView,
     ProgressionData,
@@ -56,7 +55,6 @@ import {
     complications,
     generateCompletionData,
     generateUserCentric,
-    getSubLocationByName,
 } from "./contracts/dataGen"
 import { log, LogLevel } from "./loggingInterop"
 import {
@@ -82,6 +80,7 @@ import { createInventory, getUnlockableById } from "./inventory"
 import { json as jsonMiddleware } from "body-parser"
 import { hitsCategoryService } from "./contracts/hitsCategoryService"
 import {
+    ChallengeLocationQuery,
     DebriefingLeaderboardsQuery,
     GetCompletionDataForLocationQuery,
     GetDestinationQuery,
@@ -90,15 +89,14 @@ import {
     MissionEndRequestQuery,
     PlanningQuery,
     SafehouseCategoryQuery,
+    SafehouseQuery,
     StashpointQuery,
+    StashpointQueryH2016,
 } from "./types/gameSchemas"
 import assert from "assert"
-import {
-    challengeLocation,
-    ChallengeLocationQuery,
-} from "./candle/challengeRouting"
 import { MissionEndResult } from "./types/score"
 import { getLeaderboardEntries } from "./contracts/leaderboards"
+import { getLegacyStashData, getModernStashData } from "./menus/stashpoints"
 
 const menuDataRouter = Router()
 
@@ -112,14 +110,30 @@ menuDataRouter.get(
             return
         }
 
-        const r = challengeLocation({
-            query: req.query,
-            body: undefined as never,
-            gameVersion: req.gameVersion,
-            jwt: req.jwt,
-        })
+        const location = getVersionedConfig<PeacockLocationsData>(
+            "LocationsData",
+            req.gameVersion,
+            true,
+        ).children[req.query.locationId]
 
-        res.json(r)
+        const data = {
+            Name: location.DisplayNameLocKey,
+            Location: location,
+            Children: controller.challengeService.getChallengeDataForLocation(
+                req.query.locationId,
+                req.gameVersion,
+                req.jwt.unique_name,
+            ),
+        }
+
+        res.json({
+            template: getVersionedConfig(
+                "ChallengeLocationTemplate",
+                req.gameVersion,
+                false,
+            ),
+            data,
+        })
     },
 )
 
@@ -322,7 +336,32 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
 })
 
 menuDataRouter.get("/SafehouseCategory", (req: RequestWithJwt, res) => {
-    res.json(getSafehouseCategory(req.query, req.gameVersion, req.jwt))
+    res.json({
+        template:
+            req.gameVersion === "h1"
+                ? getConfig("LegacySafehouseTemplate", false)
+                : null,
+        data: getSafehouseCategory(req.query, req.gameVersion, req.jwt),
+    })
+})
+
+menuDataRouter.get("/Safehouse", (req: RequestWithJwt<SafehouseQuery>, res) => {
+    const template = getConfig("LegacySafehouseTemplate", false)
+
+    const newQuery: SafehouseCategoryQuery = {
+        type: req.query.type,
+    }
+
+    res.json({
+        template,
+        data: {
+            SafehouseData: getSafehouseCategory(
+                newQuery,
+                req.gameVersion,
+                req.jwt,
+            ),
+        },
+    })
 })
 
 export function getSafehouseCategory(
@@ -332,17 +371,11 @@ export function getSafehouseCategory(
 ) {
     const inventory = createInventory(jwt.unique_name, gameVersion)
 
-    const safehouseData = {
-        template:
-            gameVersion === "h1"
-                ? getConfig("LegacySafehouseTemplate", false)
-                : null,
-        data: {
-            Category: "_root",
-            SubCategories: [],
-            IsLeaf: false,
-            Data: null,
-        } as SafehouseCategory,
+    let safehouseData: SafehouseCategory = {
+        Category: "_root",
+        SubCategories: [],
+        IsLeaf: false,
+        Data: null,
     }
 
     for (const item of inventory) {
@@ -375,7 +408,7 @@ export function getSafehouseCategory(
             continue // I don't want to put this in that elif statement
         }
 
-        let category = safehouseData.data.SubCategories.find(
+        let category = safehouseData.SubCategories.find(
             (cat) => cat.Category === item.Unlockable.Type,
         )
         let subcategory
@@ -387,7 +420,7 @@ export function getSafehouseCategory(
                 IsLeaf: false,
                 Data: null,
             }
-            safehouseData.data.SubCategories.push(category)
+            safehouseData.SubCategories.push(category)
         }
 
         subcategory = category.SubCategories.find(
@@ -429,17 +462,17 @@ export function getSafehouseCategory(
         })
     }
 
-    for (const [id, category] of safehouseData.data.SubCategories.entries()) {
+    for (const [id, category] of safehouseData.SubCategories.entries()) {
         if (category.SubCategories.length === 1) {
             // if category only has one subcategory
-            safehouseData.data.SubCategories[id] = category.SubCategories[0] // flatten it
-            safehouseData.data.SubCategories[id].Category = category.Category // but keep the top category's name
+            safehouseData.SubCategories[id] = category.SubCategories[0] // flatten it
+            safehouseData.SubCategories[id].Category = category.Category // but keep the top category's name
         }
     }
 
-    if (safehouseData.data.SubCategories.length === 1) {
+    if (safehouseData.SubCategories.length === 1) {
         // if root has only one subcategory
-        safehouseData.data = safehouseData.data.SubCategories[0] // flatten it
+        safehouseData = safehouseData.SubCategories[0] // flatten it
     }
 
     return safehouseData
@@ -457,144 +490,69 @@ menuDataRouter.get("/report", (req: RequestWithJwt, res) => {
     })
 })
 
+// /stashpoint?contractid=e5b6ccf4-1f29-4ec6-bfb8-2e9b78882c85&slotid=4&slotname=gear4&stashpoint=&allowlargeitems=true&allowcontainers=true
+// /stashpoint?contractid=c1d015b4-be08-4e44-808e-ada0f387656f&slotid=3&slotname=disguise3&stashpoint=&allowlargeitems=true&allowcontainers=true
+// /stashpoint?contractid=&slotid=3&slotname=disguise&stashpoint=&allowlargeitems=true&allowcontainers=false
+// /stashpoint?contractid=5b5f8aa4-ecb4-4a0a-9aff-98aa1de43dcc&slotid=6&slotname=stashpoint6&stashpoint=28b03709-d1f0-4388-b207-f03611eafb64&allowlargeitems=true&allowcontainers=false
 menuDataRouter.get(
     "/stashpoint",
-    (req: RequestWithJwt<StashpointQuery>, res) => {
-        // Note: this is handled differently for 2016
-        // /stashpoint?contractid=e5b6ccf4-1f29-4ec6-bfb8-2e9b78882c85&slotid=4&slotname=gear4&stashpoint=&allowlargeitems=true&allowcontainers=true
-        // /stashpoint?contractid=c1d015b4-be08-4e44-808e-ada0f387656f&slotid=3&slotname=disguise3&stashpoint=&allowlargeitems=true&allowcontainers=true
-        // /stashpoint?contractid=&slotid=3&slotname=disguise&stashpoint=&allowlargeitems=true&allowcontainers=false
-        // /stashpoint?contractid=5b5f8aa4-ecb4-4a0a-9aff-98aa1de43dcc&slotid=6&slotname=stashpoint6&stashpoint=28b03709-d1f0-4388-b207-f03611eafb64&allowlargeitems=true&allowcontainers=false
-        const stashData: {
-            template: unknown
-            data?: {
-                SlotId?: string | number
-                LoadoutItemsData?: unknown
-                UserCentric?: UserCentricContract
-                ShowSlotName?: string | number
-            }
-        } = {
-            template: getVersionedConfig(
-                "StashpointTemplate",
-                req.gameVersion === "h1" ? "h1" : "h3",
-                false,
-            ),
-        }
-
-        if (
-            typeof req.query.slotname !== "string" ||
-            !(req.query.slotid ?? undefined)
-        ) {
-            res.status(400).send("invalid slot data")
-            return
-        }
-
-        let contractData: MissionManifest | undefined = undefined
-
-        if (req.query.contractid) {
-            contractData = controller.resolveContract(req.query.contractid)
-        }
-
-        const inventory = createInventory(
-            req.jwt.unique_name,
-            req.gameVersion,
-            getSubLocationByName(
-                contractData?.Metadata.Location,
-                req.gameVersion,
-            ),
-        )
-
-        if (req.query.slotname.endsWith(req.query.slotid!.toString())) {
-            req.query.slotname = req.query.slotname.slice(
-                0,
-                -req.query.slotid!.toString().length,
-            ) // weird
-        }
-
-        stashData.data = {
-            SlotId: req.query.slotid,
-            LoadoutItemsData: {
-                SlotId: req.query.slotid,
-                Items: inventory
-                    .filter((item) => {
-                        if (
-                            req.query.slotname === "gear" &&
-                            contractData?.Peacock?.noGear === true
-                        ) {
-                            return false
-                        }
-
-                        if (
-                            req.query.slotname === "concealedweapon" &&
-                            contractData?.Peacock?.noCarriedWeapon === true
-                        ) {
-                            return false
-                        }
-
-                        if (
-                            item.Unlockable.Subtype === "disguise" &&
-                            req.gameVersion === "h3"
-                        ) {
-                            return false
-                        }
-
-                        return (
-                            item.Unlockable.Properties.LoadoutSlot && // only display items
-                            (!req.query.slotname ||
-                                ((uuidRegex.test(req.query.slotid as string) || // container
-                                    req.query.slotname === "stashpoint") && // stashpoint
-                                    item.Unlockable.Properties.LoadoutSlot !==
-                                        "disguise") || // container or stashpoint => display all items
-                                item.Unlockable.Properties.LoadoutSlot ===
-                                    req.query.slotname) && // else: display items for requested slot
-                            (req.query.allowcontainers === "true" ||
-                                !item.Unlockable.Properties.IsContainer) &&
-                            (req.query.allowlargeitems === "true" ||
-                                item.Unlockable.Properties.LoadoutSlot !==
-                                    "carriedweapon") &&
-                            item.Unlockable.Type !== "challengemultiplier" &&
-                            !item.Unlockable.Properties.InclusionData
-                        ) // not sure about this one
-                    })
-                    .map((item) => ({
-                        Item: item,
-                        ItemDetails: {
-                            Capabilities: [],
-                            StatList: item.Unlockable.Properties.Gameplay
-                                ? Object.entries(
-                                      item.Unlockable.Properties.Gameplay,
-                                  ).map(([key, value]) => ({
-                                      Name: key,
-                                      Ratio: value,
-                                  }))
-                                : [],
-                            PropertyTexts: [],
-                        },
-                        SlotId: req.query.slotid,
-                        SlotName: null,
-                    })),
-                Page: 0,
-                HasMore: false,
-                HasMoreLeft: false,
-                HasMoreRight: false,
-                OptionalData: {
-                    stashpoint: req.query.stashpoint || "",
-                    AllowLargeItems: req.query.allowlargeitems,
-                    AllowContainers: req.query.allowcontainers, // ?? true
-                },
-            },
-            ShowSlotName: req.query.slotname,
-        }
-
-        if (contractData) {
-            stashData.data.UserCentric = generateUserCentric(
-                contractData,
-                req.jwt.unique_name,
-                req.gameVersion,
+    (req: RequestWithJwt<StashpointQuery | StashpointQueryH2016>, res) => {
+        function isValidModernQuery(
+            query: StashpointQuery | StashpointQueryH2016,
+        ): query is StashpointQuery {
+            return (
+                query?.slotname !== undefined &&
+                (query as StashpointQuery)?.slotid !== undefined
             )
         }
 
-        res.json(stashData)
+        if (["h1", "scpc"].includes(req.gameVersion)) {
+            // H1 or SCPC
+            if (!uuidRegex.test(req.query.contractid)) {
+                res.status(400).send("contract id was not a uuid")
+                return
+            }
+
+            if (typeof req.query.slotname !== "string") {
+                res.status(400).send("invalid slot data")
+                return
+            }
+
+            const data = getLegacyStashData(
+                req.query,
+                req.jwt.unique_name,
+                req.gameVersion,
+            )
+
+            if (!data) {
+                res.status(400).send("impossible to fulfill")
+                return
+            }
+
+            res.json({
+                template: getConfig("LegacyStashpointTemplate", false),
+                data,
+            })
+        } else {
+            // H2 or H3
+            if (!isValidModernQuery(req.query)) {
+                res.status(400).send("invalid query")
+                return
+            }
+
+            res.json({
+                template: getVersionedConfig(
+                    "StashpointTemplate",
+                    req.gameVersion === "h1" ? "h1" : "h3",
+                    false,
+                ),
+                data: getModernStashData(
+                    req.query,
+                    req.jwt.unique_name,
+                    req.gameVersion,
+                ),
+            })
+        }
     },
 )
 
@@ -1724,14 +1682,12 @@ menuDataRouter.get(
 
         res.json({
             template: masteryUnlockTemplate,
-            data: {
-                ...controller.masteryService.getMasteryDataForSubPackage(
-                    parentLocation,
-                    req.query.unlockableId,
-                    req.gameVersion,
-                    req.jwt.unique_name,
-                ),
-            },
+            data: controller.masteryService.getMasteryDataForSubPackage(
+                parentLocation,
+                req.query.unlockableId,
+                req.gameVersion,
+                req.jwt.unique_name,
+            ),
         })
     },
 )

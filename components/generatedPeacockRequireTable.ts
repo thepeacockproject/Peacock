@@ -46,7 +46,6 @@ import * as legacyMenuData from "./2016/legacyMenuData"
 import * as legacyMenuSystem from "./2016/legacyMenuSystem"
 import * as legacyProfileRouter from "./2016/legacyProfileRouter"
 import * as challengeHelpers from "./candle/challengeHelpers"
-import * as challengeRouting from "./candle/challengeRouting"
 import * as challengeService from "./candle/challengeService"
 import * as masteryService from "./candle/masteryService"
 import * as progressionService from "./candle/progressionService"
@@ -71,6 +70,7 @@ import * as menuSystem from "./menus/menuSystem"
 import * as planning from "./menus/planning"
 import * as playnext from "./menus/playnext"
 import * as sniper from "./menus/sniper"
+import * as stashpoints from "./menus/stashpoints"
 import * as multiplayerMenuData from "./multiplayer/multiplayerMenuData"
 import * as multiplayerService from "./multiplayer/multiplayerService"
 import * as multiplayerUtils from "./multiplayer/multiplayerUtils"
@@ -151,10 +151,6 @@ export default {
         __esModule: true,
         ...challengeHelpers,
     },
-    "@peacockproject/core/candle/challengeRouting": {
-        __esModule: true,
-        ...challengeRouting,
-    },
     "@peacockproject/core/candle/challengeService": {
         __esModule: true,
         ...challengeService,
@@ -230,6 +226,10 @@ export default {
     "@peacockproject/core/menus/planning": { __esModule: true, ...planning },
     "@peacockproject/core/menus/playnext": { __esModule: true, ...playnext },
     "@peacockproject/core/menus/sniper": { __esModule: true, ...sniper },
+    "@peacockproject/core/menus/stashpoints": {
+        __esModule: true,
+        ...stashpoints,
+    },
     "@peacockproject/core/multiplayer/multiplayerMenuData": {
         __esModule: true,
         ...multiplayerMenuData,
