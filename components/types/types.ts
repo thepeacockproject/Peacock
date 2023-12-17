@@ -1553,10 +1553,3 @@ export interface SMFLastDeploy {
         peacockPlugins?: string[]
     }
 }
-
-export interface StandardRequest<Query = never, Body = never> {
-    query: Query
-    body: Body
-    gameVersion: GameVersion
-    jwt: JwtData
-}
