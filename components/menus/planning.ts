@@ -110,7 +110,6 @@ export type GamePlanningData = {
     }
 }
 
-// TODO: proper return type for happy path
 export async function getPlanningData(
     contractId: string,
     resetEscalation: boolean,
