@@ -375,7 +375,7 @@ app.get(
     },
 )
 
-if (getFlag("developmentAllowRuntimeRestart")) {
+if (PEACOCK_DEV) {
     app.use(async (req: RequestWithJwt, _res, next): Promise<void> => {
         if (!req.jwt) {
             next()

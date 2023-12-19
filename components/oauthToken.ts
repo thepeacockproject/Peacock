@@ -44,12 +44,10 @@ import {
     SteamH2Strategy,
     SteamScpcStrategy,
 } from "./entitlementStrategies"
-import { getFlag } from "./flags"
 
-export const JWT_SECRET =
-    getFlag("developmentAllowRuntimeRestart") || PEACOCK_DEV
-        ? "secret"
-        : randomBytes(32).toString("hex")
+export const JWT_SECRET = PEACOCK_DEV
+    ? "secret"
+    : randomBytes(32).toString("hex")
 
 export async function handleOauthToken(
     req: RequestWithJwt,
@@ -198,7 +196,7 @@ export async function handleOauthToken(
         log(LogLevel.DEBUG, "Unable to load profile information.")
     }
 
-    /* 
+    /*
        Store user auth for all games except scpc
     */
     if (!isFrankenstein) {

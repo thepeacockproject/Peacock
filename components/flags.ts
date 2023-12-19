@@ -105,10 +105,6 @@ const defaultFlags: Flags = {
         desc: "[Development - Workspace required] Toggle loading of plugins with a .ts/.cts extension inside the /plugins folder",
         default: false,
     },
-    developmentAllowRuntimeRestart: {
-        desc: "[Development] When set to true, it will be possible to restart Peacock while the game is running and connected.",
-        default: false,
-    },
     leaderboardsHost: {
         desc: "[Development] Please do not modify - intended for development only",
         default: "https://backend.rdil.rocks",
