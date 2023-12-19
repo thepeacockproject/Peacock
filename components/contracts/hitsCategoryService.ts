@@ -300,7 +300,7 @@ export class HitsCategoryService {
         const played = userProfile?.Extensions.PeacockPlayedContracts
         const favorites = userProfile?.Extensions.PeacockFavoriteContracts
 
-        hits.forEach((hit) => {
+        for (const hit of hits) {
             if (Object.keys(played).includes(hit.Id)) {
                 // Replace with data stored by Peacock
                 hit.UserCentricContract.Data.LastPlayedAt = new Date(
@@ -316,7 +316,7 @@ export class HitsCategoryService {
 
             hit.UserCentricContract.Data.PlaylistData.IsAdded =
                 favorites.includes(hit.Id)
-        })
+        }
 
         return resp.data.data
     }
@@ -450,7 +450,7 @@ export class HitsCategoryService {
      * @param pageNumber The current page's number.
      * @param gameVersion The game version being used for the request.
      * @param userId The current user's ID.
-     * @returns The {@link HitsCategoryCategory} object.
+     * @returns The hits category object.
      */
     public async paginateHitsCategory(
         categoryName: string,
