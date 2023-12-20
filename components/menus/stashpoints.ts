@@ -19,10 +19,13 @@
 import { createInventory, getUnlockableById, InventoryItem } from "../inventory"
 import type {
     GameVersion,
+    JwtData,
     MissionManifest,
+    SafehouseCategory,
     UserCentricContract,
 } from "../types/types"
 import {
+    SafehouseCategoryQuery,
     StashpointQuery,
     StashpointQueryH2016,
     StashpointSlotName,
@@ -343,4 +346,118 @@ export function getLegacyStashData(
         ShowSlotName: query.slotname,
         UserCentric: userCentricContract,
     }
+}
+
+export function getSafehouseCategory(
+    query: SafehouseCategoryQuery,
+    gameVersion: GameVersion,
+    jwt: JwtData,
+) {
+    const inventory = createInventory(jwt.unique_name, gameVersion)
+
+    let safehouseData: SafehouseCategory = {
+        Category: "_root",
+        SubCategories: [],
+        IsLeaf: false,
+        Data: null,
+    }
+
+    for (const item of inventory) {
+        if (query.type) {
+            // if type is specified in query
+            if (item.Unlockable.Type !== query.type) {
+                continue // skip all items that are not that type
+            }
+
+            if (query.subtype && item.Unlockable.Subtype !== query.subtype) {
+                // if subtype is specified
+                continue // skip all items that are not that subtype
+            }
+        } else if (
+            item.Unlockable.Type === "access" ||
+            item.Unlockable.Type === "location" ||
+            item.Unlockable.Type === "package" ||
+            item.Unlockable.Type === "loadoutunlock" ||
+            item.Unlockable.Type === "difficultyunlock" ||
+            item.Unlockable.Type === "agencypickup" ||
+            item.Unlockable.Type === "challengemultiplier"
+        ) {
+            continue // these types should not be displayed when not asked for
+        } else if (item.Unlockable.Properties.InclusionData) {
+            // Only sniper unlockables have inclusion data, don't show them
+            continue
+        }
+
+        if (item.Unlockable.Subtype === "disguise" && gameVersion === "h3") {
+            continue // I don't want to put this in that elif statement
+        }
+
+        let category = safehouseData.SubCategories.find(
+            (cat) => cat.Category === item.Unlockable.Type,
+        )
+        let subcategory
+
+        if (!category) {
+            category = {
+                Category: item.Unlockable.Type,
+                SubCategories: [],
+                IsLeaf: false,
+                Data: null,
+            }
+            safehouseData.SubCategories.push(category)
+        }
+
+        subcategory = category.SubCategories.find(
+            (cat) => cat.Category === item.Unlockable.Subtype,
+        )
+
+        if (!subcategory) {
+            subcategory = {
+                Category: item.Unlockable.Subtype,
+                SubCategories: null,
+                IsLeaf: true,
+                Data: {
+                    Type: item.Unlockable.Type,
+                    SubType: item.Unlockable.Subtype,
+                    Items: [],
+                    Page: 0,
+                    HasMore: false,
+                },
+            }
+            category.SubCategories.push(subcategory)
+        }
+
+        subcategory.Data?.Items.push({
+            Item: item,
+            ItemDetails: {
+                Capabilities: [],
+                StatList: item.Unlockable.Properties.Gameplay
+                    ? Object.entries(item.Unlockable.Properties.Gameplay).map(
+                          ([key, value]) => ({
+                              Name: key,
+                              Ratio: value,
+                          }),
+                      )
+                    : [],
+                PropertyTexts: [],
+            },
+            Type: item.Unlockable.Type,
+            SubType: item.Unlockable.SubType,
+        })
+    }
+
+    for (const [id, category] of safehouseData.SubCategories.entries()) {
+        if (category.SubCategories.length === 1) {
+            // if category only has one subcategory
+            safehouseData.SubCategories[id] = category.SubCategories[0] // flatten it
+            safehouseData.SubCategories[id].Category = category.Category // but keep the top category's name
+        }
+    }
+
+    if (safehouseData.SubCategories.length === 1) {
+        // if root has only one subcategory
+        safehouseData = safehouseData.SubCategories[0] // flatten it
+    }
+
+    return safehouseData
 }

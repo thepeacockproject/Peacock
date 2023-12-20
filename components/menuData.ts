@@ -29,25 +29,21 @@ import {
 import { contractSessions, getSession } from "./eventHandler"
 import { getConfig, getVersionedConfig } from "./configSwizzleManager"
 import { controller } from "./controller"
-import { makeCampaigns } from "./menus/campaigns"
 import {
     createLocationsData,
-    getAllGameDestinations,
     getDestination,
     getDestinationCompletion,
 } from "./menus/destinations"
 import type {
     ChallengeCategoryCompletion,
-    CommonSelectScreenConfig,
+    SelectEntranceOrPickupData,
     ContractSearchResult,
     GameVersion,
     HitsCategoryCategory,
-    JwtData,
     PeacockLocationsData,
     PlayerProfileView,
     ProgressionData,
     RequestWithJwt,
-    SafehouseCategory,
     SceneConfig,
     UserCentricContract,
 } from "./types/types"
@@ -75,7 +71,6 @@ import {
     directRoute,
     withLookupDialog,
 } from "./menus/favoriteContracts"
-import { swapToBrowsingMenusStatus } from "./discordRp"
 import { createInventory, getUnlockableById } from "./inventory"
 import { json as jsonMiddleware } from "body-parser"
 import { hitsCategoryService } from "./contracts/hitsCategoryService"
@@ -96,7 +91,12 @@ import {
 import assert from "assert"
 import { MissionEndResult } from "./types/score"
 import { getLeaderboardEntries } from "./contracts/leaderboards"
-import { getLegacyStashData, getModernStashData } from "./menus/stashpoints"
+import {
+    getLegacyStashData,
+    getModernStashData,
+    getSafehouseCategory,
+} from "./menus/stashpoints"
+import { getHubData } from "./menus/hub"
 
 const menuDataRouter = Router()
 
@@ -137,202 +137,22 @@ menuDataRouter.get(
     },
 )
 
-function getHubInfo(gameVersion: GameVersion, jwt: JwtData) {
-    swapToBrowsingMenusStatus(gameVersion)
-    const userdata = getUserData(jwt.unique_name, gameVersion)
+menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
+    const hubInfo = getHubData(req.gameVersion, req.jwt)
 
-    const theTemplate =
-        gameVersion === "h3"
+    const template =
+        req.gameVersion === "h3"
             ? null
-            : gameVersion === "h2"
+            : req.gameVersion === "h2"
             ? null
-            : gameVersion === "scpc"
+            : req.gameVersion === "scpc"
             ? getConfig("FrankensteinHubTemplate", false)
             : getConfig("LegacyHubTemplate", false)
 
-    const contractCreationTutorial =
-        gameVersion !== "scpc"
-            ? controller.resolveContract(contractCreationTutorialId)!
-            : undefined
-
-    const locations = getVersionedConfig<PeacockLocationsData>(
-        "LocationsData",
-        gameVersion,
-        true,
-    )
-    const career =
-        gameVersion === "h3"
-            ? {}
-            : {
-                  // TODO: Add data on elusive challenges. They are only shown on the Career->Challenges page for H1 and H2. They are not supported by Peacock as of v6.0.0.
-                  ELUSIVES_UNSUPPORTED: {
-                      Children: [],
-                      Name: "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
-                      Location:
-                          locations.parents["LOCATION_PARENT_ICA_FACILITY"],
-                  },
-              }
-
-    const masteryData = []
-
-    for (const parent in locations.parents) {
-        career[parent] = {
-            Children: [],
-            Location: locations.parents[parent],
-            Name: locations.parents[parent].DisplayNameLocKey,
-        }
-
-        // Exclude ICA Facility from showing in the Career -> Mastery page
-        if (parent === "LOCATION_PARENT_ICA_FACILITY") continue
-
-        if (
-            controller.masteryService.getMasteryDataForDestination(
-                parent,
-                gameVersion,
-                jwt.unique_name,
-            ).length
-        ) {
-            const completionData =
-                controller.masteryService.getLocationCompletion(
-                    parent,
-                    parent,
-                    gameVersion,
-                    jwt.unique_name,
-                    parent.includes("SNUG") ? "evergreen" : "mission",
-                    gameVersion === "h1" ? "normal" : undefined,
-                )
-
-            masteryData.push({
-                CompletionData: completionData,
-                ...(gameVersion === "h1"
-                    ? {
-                          Data: {
-                              normal: {
-                                  CompletionData: completionData,
-                              },
-                              pro1: {
-                                  CompletionData:
-                                      controller.masteryService.getLocationCompletion(
-                                          parent,
-                                          parent,
-                                          gameVersion,
-                                          jwt.unique_name,
-                                          parent.includes("SNUG")
-                                              ? "evergreen"
-                                              : "mission",
-                                          "pro1",
-                                      ),
-                              },
-                          },
-                      }
-                    : {}),
-                Id: locations.parents[parent].Id,
-                Image: locations.parents[parent].Properties.Icon,
-                IsLocked: locations.parents[parent].Properties.IsLocked,
-                Location: locations.parents[parent],
-                RequiredResources:
-                    locations.parents[parent].Properties.RequiredResources,
-            })
-        }
-    }
-
-    for (const child in locations.children) {
-        if (
-            child === "LOCATION_ICA_FACILITY_ARRIVAL" ||
-            child.includes("SNUG_")
-        ) {
-            continue
-        }
-
-        const parent = locations.children[child].Properties.ParentLocation
-        const location = locations.children[child]
-        const challenges = controller.challengeService.getChallengesForLocation(
-            child,
-            gameVersion,
-        )
-        const challengeCompletion =
-            controller.challengeService.countTotalNCompletedChallenges(
-                challenges,
-                jwt.unique_name,
-                gameVersion,
-            )
-
-        career[parent]?.Children.push({
-            IsLocked: location.Properties.IsLocked,
-            Name: location.DisplayNameLocKey,
-            Image: location.Properties.Icon,
-            Icon: location.Type, // should be "location" for all locations
-            CompletedChallengesCount:
-                challengeCompletion.CompletedChallengesCount,
-            ChallengesCount: challengeCompletion.ChallengesCount,
-            CategoryId: child,
-            Description: `UI_${child}_PRIMARY_DESC`,
-            Location: location,
-            ImageLocked: location.Properties.LockedIcon,
-            RequiredResources: location.Properties.RequiredResources,
-            IsPack: false, // should be false for all locations
-            CompletionData: generateCompletionData(
-                child,
-                jwt.unique_name,
-                gameVersion,
-            ),
-        })
-    }
-
-    return {
-        template: theTemplate,
-        data: {
-            ServerTile: {
-                title: "The Peacock Project",
-                image: "images/contracts/novikov_and_magolis/tile.jpg",
-                icon: "story",
-                url: "",
-                select: {
-                    header: "Playing on a Peacock instance",
-                    title: "The Peacock Project",
-                    icon: "story",
-                },
-            },
-            DashboardData: [],
-            DestinationsData: getAllGameDestinations(gameVersion, jwt),
-            CreateContractTutorial: generateUserCentric(
-                contractCreationTutorial,
-                jwt.unique_name,
-                gameVersion,
-            ),
-            LocationsData: createLocationsData(gameVersion, true),
-            ProfileData: {
-                ChallengeData: {
-                    Children: Object.values(career),
-                },
-                MasteryData: masteryData,
-            },
-            StoryData: makeCampaigns(gameVersion, jwt.unique_name),
-            FilterData: getVersionedConfig("FilterData", gameVersion, false),
-            StoreData: getVersionedConfig("StoreData", gameVersion, false),
-            IOIAccountStatus: {
-                IsConfirmed: true,
-                LinkedEmail: "mail@example.com",
-                IOIAccountId: "00000000-0000-0000-0000-000000000000",
-                IOIAccountBaseUrl: "https://account.ioi.dk",
-            },
-            FinishedFinalTest: true,
-            Currency: {
-                Balance: 0,
-            },
-            PlayerProfileXpData: {
-                XP: userdata.Extensions.progression.PlayerProfileXP.Total,
-                Level: userdata.Extensions.progression.PlayerProfileXP
-                    .ProfileLevel,
-                MaxLevel: getMaxProfileLevel(gameVersion),
-            },
-        },
-    }
-}
-
-menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
-    const hubInfo = getHubInfo(req.gameVersion, req.jwt)
-    res.json(hubInfo)
+    res.json({
+        template,
+        data: hubInfo,
+    })
 })
 
 menuDataRouter.get("/SafehouseCategory", (req: RequestWithJwt, res) => {
@@ -363,120 +183,6 @@ menuDataRouter.get("/Safehouse", (req: RequestWithJwt<SafehouseQuery>, res) => {
         },
     })
 })
-
-export function getSafehouseCategory(
-    query: SafehouseCategoryQuery,
-    gameVersion: GameVersion,
-    jwt: JwtData,
-) {
-    const inventory = createInventory(jwt.unique_name, gameVersion)
-
-    let safehouseData: SafehouseCategory = {
-        Category: "_root",
-        SubCategories: [],
-        IsLeaf: false,
-        Data: null,
-    }
-
-    for (const item of inventory) {
-        if (query.type) {
-            // if type is specified in query
-            if (item.Unlockable.Type !== query.type) {
-                continue // skip all items that are not that type
-            }
-
-            if (query.subtype && item.Unlockable.Subtype !== query.subtype) {
-                // if subtype is specified
-                continue // skip all items that are not that subtype
-            }
-        } else if (
-            item.Unlockable.Type === "access" ||
-            item.Unlockable.Type === "location" ||
-            item.Unlockable.Type === "package" ||
-            item.Unlockable.Type === "loadoutunlock" ||
-            item.Unlockable.Type === "difficultyunlock" ||
-            item.Unlockable.Type === "agencypickup" ||
-            item.Unlockable.Type === "challengemultiplier"
-        ) {
-            continue // these types should not be displayed when not asked for
-        } else if (item.Unlockable.Properties.InclusionData) {
-            // Only sniper unlockables have inclusion data, don't show them
-            continue
-        }
-
-        if (item.Unlockable.Subtype === "disguise" && gameVersion === "h3") {
-            continue // I don't want to put this in that elif statement
-        }
-
-        let category = safehouseData.SubCategories.find(
-            (cat) => cat.Category === item.Unlockable.Type,
-        )
-        let subcategory
-
-        if (!category) {
-            category = {
-                Category: item.Unlockable.Type,
-                SubCategories: [],
-                IsLeaf: false,
-                Data: null,
-            }
-            safehouseData.SubCategories.push(category)
-        }
-
-        subcategory = category.SubCategories.find(
-            (cat) => cat.Category === item.Unlockable.Subtype,
-        )
-
-        if (!subcategory) {
-            subcategory = {
-                Category: item.Unlockable.Subtype,
-                SubCategories: null,
-                IsLeaf: true,
-                Data: {
-                    Type: item.Unlockable.Type,
-                    SubType: item.Unlockable.Subtype,
-                    Items: [],
-                    Page: 0,
-                    HasMore: false,
-                },
-            }
-            category.SubCategories.push(subcategory)
-        }
-
-        subcategory.Data?.Items.push({
-            Item: item,
-            ItemDetails: {
-                Capabilities: [],
-                StatList: item.Unlockable.Properties.Gameplay
-                    ? Object.entries(item.Unlockable.Properties.Gameplay).map(
-                          ([key, value]) => ({
-                              Name: key,
-                              Ratio: value,
-                          }),
-                      )
-                    : [],
-                PropertyTexts: [],
-            },
-            Type: item.Unlockable.Type,
-            SubType: item.Unlockable.SubType,
-        })
-    }
-
-    for (const [id, category] of safehouseData.SubCategories.entries()) {
-        if (category.SubCategories.length === 1) {
-            // if category only has one subcategory
-            safehouseData.SubCategories[id] = category.SubCategories[0] // flatten it
-            safehouseData.SubCategories[id].Category = category.Category // but keep the top category's name
-        }
-    }
-
-    if (safehouseData.SubCategories.length === 1) {
-        // if root has only one subcategory
-        safehouseData = safehouseData.SubCategories[0] // flatten it
-    }
-
-    return safehouseData
-}
 
 menuDataRouter.get("/report", (req: RequestWithJwt, res) => {
     res.json({
@@ -666,14 +372,6 @@ menuDataRouter.get(
     ) => {
         const pickupData = getConfig<SceneConfig>("AgencyPickups", false)
 
-        const selectagencypickup = {
-            template: getVersionedConfig(
-                "SelectAgencyPickupTemplate",
-                req.gameVersion,
-                false,
-            ),
-        } as CommonSelectScreenConfig
-
         const inventory = createInventory(req.jwt.unique_name, req.gameVersion)
 
         const contractData = controller.resolveContract(req.query.contractId)
@@ -701,7 +399,7 @@ menuDataRouter.get(
         }
 
         if (contractData.Peacock?.noAgencyPickupsActive === true) {
-            selectagencypickup.data = {
+            const data: SelectEntranceOrPickupData = {
                 Unlocked: [],
                 Contract: contractData,
                 OrderedUnlocks: [],
@@ -712,7 +410,14 @@ menuDataRouter.get(
                 ),
             }
 
-            res.json(selectagencypickup)
+            res.json({
+                template: getVersionedConfig(
+                    "SelectAgencyPickupTemplate",
+                    req.gameVersion,
+                    false,
+                ),
+                data,
+            })
             return
         }
 
@@ -728,7 +433,7 @@ menuDataRouter.get(
             )
             .map((i) => i.Unlockable)
 
-        selectagencypickup.data = {
+        const data: SelectEntranceOrPickupData = {
             Unlocked: unlockedAgencyPickups.map(
                 (unlockable) => unlockable.Properties.RepositoryId!,
             ),
@@ -745,7 +450,14 @@ menuDataRouter.get(
             ),
         }
 
-        res.json(selectagencypickup)
+        res.json({
+            template: getVersionedConfig(
+                "SelectAgencyPickupTemplate",
+                req.gameVersion,
+                false,
+            ),
+            data,
+        })
     },
 )
 
@@ -758,14 +470,6 @@ menuDataRouter.get(
         res,
     ) => {
         const entranceData = getConfig<SceneConfig>("Entrances", false)
-
-        const selectEntrance: CommonSelectScreenConfig = {
-            template: getVersionedConfig(
-                "SelectEntranceTemplate",
-                req.gameVersion,
-                true,
-            ),
-        }
 
         const inventory = createInventory(req.jwt.unique_name, req.gameVersion)
 
@@ -802,7 +506,7 @@ menuDataRouter.get(
             )
             .map((i) => i.Unlockable)
 
-        selectEntrance.data = {
+        const data: SelectEntranceOrPickupData = {
             Unlocked: unlockedEntrances.map(
                 (unlockable) => unlockable.Properties.RepositoryId!,
             ),
@@ -821,7 +525,14 @@ menuDataRouter.get(
             ),
         }
 
-        res.json(selectEntrance)
+        res.json({
+            template: getVersionedConfig(
+                "SelectEntranceTemplate",
+                req.gameVersion,
+                true,
+            ),
+            data,
+        })
     },
 )
 
