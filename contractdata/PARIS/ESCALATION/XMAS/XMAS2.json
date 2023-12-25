@@ -112,20 +112,30 @@
                                                 }
                                             },
                                             {
-                                                "$inarray": {
-                                                    "in": {
-                                                        "$or": [
-                                                            "$.LethalWeapons",
-                                                            "$.Explosives"
-                                                        ]
+                                                "$or": [
+                                                    {
+                                                        "$inarray": {
+                                                            "in": "$.LethalWeapons",
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$Value.KillItemRepositoryId",
+                                                                    "$.#"
+                                                                    ]
+                                                            }
+                                                        }
                                                     },
-                                                    "?": {
-                                                        "$eq": [
-                                                            "$Value.KillItemRepositoryId",
-                                                            "$.#"
-                                                        ]
+                                                    {
+                                                        "$inarray": {
+                                                            "in": "$.Explosives",
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$Value.KillItemRepositoryId",
+                                                                    "$.#"
+                                                                    ]
+                                                            }
+                                                        }
                                                     }
-                                                }
+                                                ]
                                             }
                                         ]
                                     },
@@ -169,16 +179,31 @@
                                             }
                                         },
                                         {
-                                            "$inarray": {
-                                                "in": "$.NonLethalWeapons",
-                                                "?": {
-                                                    "$eq": [
-                                                        "$Value.KillItemRepositoryId",
-                                                        "$.#"
-                                                    ]
-                                                }
+                                                "$or": [
+                                                    {
+                                                        "$inarray": {
+                                                            "in": "$.NonLethalWeapons",
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$Value.KillItemRepositoryId",
+                                                                    "$.#"
+                                                                    ]
+                                                            }
+                                                        }
+                                                    },
+                                                    {
+                                                        "$inarray": {
+                                                            "in": "$.Explosives",
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$Value.KillItemRepositoryId",
+                                                                    "$.#"
+                                                                    ]
+                                                            }
+                                                        }
+                                                    }
+                                                ]
                                             }
-                                        }
                                     ]
                                 },
                                 "Actions": {
