@@ -120,7 +120,7 @@
                                                                 "$eq": [
                                                                     "$Value.KillItemRepositoryId",
                                                                     "$.#"
-                                                                    ]
+                                                                ]
                                                             }
                                                         }
                                                     },
@@ -131,7 +131,7 @@
                                                                 "$eq": [
                                                                     "$Value.KillItemRepositoryId",
                                                                     "$.#"
-                                                                    ]
+                                                                ]
                                                             }
                                                         }
                                                     }
@@ -179,31 +179,31 @@
                                             }
                                         },
                                         {
-                                                "$or": [
-                                                    {
-                                                        "$inarray": {
-                                                            "in": "$.NonLethalWeapons",
-                                                            "?": {
-                                                                "$eq": [
-                                                                    "$Value.KillItemRepositoryId",
-                                                                    "$.#"
-                                                                    ]
-                                                            }
-                                                        }
-                                                    },
-                                                    {
-                                                        "$inarray": {
-                                                            "in": "$.Explosives",
-                                                            "?": {
-                                                                "$eq": [
-                                                                    "$Value.KillItemRepositoryId",
-                                                                    "$.#"
-                                                                    ]
-                                                            }
+                                            "$or": [
+                                                {
+                                                    "$inarray": {
+                                                        "in": "$.NonLethalWeapons",
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$Value.KillItemRepositoryId",
+                                                                "$.#"
+                                                            ]
                                                         }
                                                     }
-                                                ]
-                                            }
+                                                },
+                                                {
+                                                    "$inarray": {
+                                                        "in": "$.Explosives",
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$Value.KillItemRepositoryId",
+                                                                "$.#"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
                                     ]
                                 },
                                 "Actions": {
