@@ -65,6 +65,7 @@ import * as liveSplitManager from "./livesplit/liveSplitManager"
 import * as campaigns from "./menus/campaigns"
 import * as destinations from "./menus/destinations"
 import * as favoriteContracts from "./menus/favoriteContracts"
+import * as hub from "./menus/hub"
 import * as imageHandler from "./menus/imageHandler"
 import * as menuSystem from "./menus/menuSystem"
 import * as planning from "./menus/planning"
@@ -215,6 +216,7 @@ export default {
         __esModule: true,
         ...favoriteContracts,
     },
+    "@peacockproject/core/menus/hub": { __esModule: true, ...hub },
     "@peacockproject/core/menus/imageHandler": {
         __esModule: true,
         ...imageHandler,

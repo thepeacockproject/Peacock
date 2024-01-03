@@ -174,14 +174,14 @@ multiplayerRouter.post(
             // join existing match
             const match = activeMatches.get(req.body.matchId)!
 
-            match.Players.forEach((playerId) =>
+            for (const playerId of match.Players) {
                 enqueuePushMessage(playerId, {
                     MatchId: req.body.matchId,
                     Type: 1,
                     PlayerId: req.jwt.unique_name,
                     MatchData: null,
-                }),
-            )
+                })
+            }
 
             match.Players.push(req.jwt.unique_name)
         } else {
@@ -233,12 +233,12 @@ multiplayerRouter.post(
     },
 )
 
-multiplayerRouter.post("/RegisterToPreset", jsonMiddleware(), (req, res) => {
+multiplayerRouter.post("/RegisterToPreset", jsonMiddleware(), (_, res) => {
     // matchmaking
     // TODO: implement matchmaking
     // req.body.presetId
     // req.body.lobbyId (this is just a timestamp?)
-    res.status(500).end()
+    res.status(501).end()
 })
 
 export function handleMultiplayerEvent(
