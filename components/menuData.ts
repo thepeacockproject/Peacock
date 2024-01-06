@@ -568,8 +568,10 @@ menuDataRouter.get(
                                 !item.Unlockable.Properties.IsContainer) &&
                             (req.query.allowlargeitems === "true" ||
                                 (req.query.slotname === "stashpoint" &&
-                                    item.Unlockable.Properties.ItemSize === // hidden stash => only allow small items
+                                    item.Unlockable.Properties.ItemSize === // hidden stash => only allow small items / guns
                                         "ITEMSIZE_SMALL") ||
+                                item.Unlockable.Properties.LoadoutSlot ===
+                                    "concealedweapon" ||
                                 (req.query.slotname !== "stashpoint" &&
                                     item.Unlockable.Properties.LoadoutSlot !==
                                         "carriedweapon")) &&
