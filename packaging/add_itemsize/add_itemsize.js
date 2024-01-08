@@ -11,7 +11,7 @@ async function main() {
     const { execSync } = require("child_process")
     let chunk0patches = fs
         .readdirSync(`${process.argv[2]}`)
-        .filter((fn) => fn.includes("chunk0"))
+        .filter((fn) => fn.includes("chunk0") && !fn.includes("300.rpkg"))
     let gameprefix = ""
     if (process.argv[3] === "H1") {
         gameprefix = "Legacy"
