@@ -686,8 +686,16 @@ function saveEvents(
         const contract = controller.resolveContract(session.contractId)
         const contractType = contract?.Metadata?.Type?.toLowerCase()
 
-        // @ts-expect-error Issue with request type mismatch.
-        controller.hooks.newEvent.call(event, req, session)
+        controller.hooks.newEvent.call(
+            event,
+            // to avoid breakage, we pass details as an object instead of the request
+            // since we no longer have access to that
+            {
+                gameVersion,
+                userId,
+            },
+            session,
+        )
 
         for (const objectiveId of session.objectiveStates.keys()) {
             try {

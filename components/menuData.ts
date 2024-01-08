@@ -622,12 +622,9 @@ menuDataRouter.get("/scoreoverview", missionEndRequest)
 menuDataRouter.get(
     "/Destination",
     (req: RequestWithJwt<GetDestinationQuery>, res) => {
-        if (!(req.query.difficulty ?? false)) {
-            res.status(400).send("Invalid difficulty")
-        }
-
         if (!req.query.locationId) {
             res.status(400).send("Invalid locationId")
+            return
         }
 
         const destination = getDestination(req.query, req.gameVersion, req.jwt)

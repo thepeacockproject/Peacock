@@ -307,7 +307,10 @@ export class Controller {
         newEvent: SyncHook<
             [
                 /** event */ ClientToServerEvent,
-                /** request */ RequestWithJwt,
+                /** details */ {
+                    gameVersion: GameVersion
+                    userId: string
+                },
                 /** session */ ContractSession,
             ]
         >
