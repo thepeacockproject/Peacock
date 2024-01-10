@@ -567,8 +567,11 @@ menuDataRouter.get(
                             (req.query.allowcontainers === "true" ||
                                 !item.Unlockable.Properties.IsContainer) &&
                             (req.query.allowlargeitems === "true" ||
-                                item.Unlockable.Properties.LoadoutSlot !==
-                                    "carriedweapon") &&
+                                item.Unlockable.Properties.ItemSize === // regular gear slot or hidden stash => small item
+                                    "ITEMSIZE_SMALL" ||
+                                (!item.Unlockable.Properties.ItemSize &&
+                                    item.Unlockable.Properties.LoadoutSlot !== // use old logic if itemsize is not set
+                                        "carriedweapon")) &&
                             item.Unlockable.Type !== "challengemultiplier" &&
                             !item.Unlockable.Properties.InclusionData
                         ) // not sure about this one

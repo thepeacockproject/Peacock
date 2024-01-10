@@ -155,8 +155,12 @@ legacyMenuDataRouter.get(
                                             item.Unlockable.Properties
                                                 .LoadoutSlot !== "disguise")) && // => display all non-disguise items
                                     (req.query.allowlargeitems === "true" ||
-                                        item.Unlockable.Properties
-                                            .LoadoutSlot !== "carriedweapon") &&
+                                        item.Unlockable.Properties.ItemSize === // regular gear slot or hidden stash => small item
+                                            "ITEMSIZE_SMALL" ||
+                                        (!item.Unlockable.Properties.ItemSize &&
+                                            item.Unlockable.Properties
+                                                .LoadoutSlot !== // use old logic if itemsize is not set
+                                                "carriedweapon")) &&
                                     item.Unlockable.Type !==
                                         "challengemultipler" &&
                                     !item.Unlockable.Properties.InclusionData
