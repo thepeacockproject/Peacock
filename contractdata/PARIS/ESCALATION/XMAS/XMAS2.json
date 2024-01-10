@@ -4,12 +4,12 @@
             {
                 "Type": "statemachine",
                 "ObjectiveType": "custom",
-                "Image": "images/challenges/paris/noel_missioncompleted.jpg",
+                "Image": "images/contracts/escalation/contractescalation_southern_comfort_becomesanta.jpg",
                 "Id": "c4b808ea-607c-484a-a6a1-9ba8bfb038ec",
                 "BriefingName": "$loc UI_PEACOCK_SOUTHERN_COMFORT_SANTA_TITLE",
                 "BriefingText": "$loc UI_PEACOCK_SOUTHERN_COMFORT_SANTA_DESC",
                 "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_SOUTHERN_COMFORT_SANTA_HUD",
+                    "display": "$loc UI_PEACOCK_SOUTHERN_COMFORT_SANTA_TITLE",
                     "iconType": 17
                 },
                 "Category": "primary",
@@ -37,12 +37,12 @@
             {
                 "Type": "statemachine",
                 "Id": "e3368651-38e4-4e0c-91a0-95d76078b09f",
-                "BriefingName": "$loc UI_PEACOCK_TARGETS",
-                "BriefingText": "$loc UI_PEACOCK_SOUTHERN_COMFORT_OBJ1",
+                "BriefingName": "$loc UI_PEACOCK_SOUTHERN_COMFORT_XMASGIFT_TITLE",
+                "BriefingText": "$loc UI_PEACOCK_SOUTHERN_COMFORT_XMASGIFT",
                 "ObjectiveType": "custom",
-                "Image": "images/challenges/paris/noel_master_santa.jpg",
+                "Image": "images/contracts/escalation/contractescalation_southern_comfort_5targets.jpg",
                 "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_ELIMINATE_TARGETS"
+                    "display": "$loc UI_PEACOCK_SOUTHERN_COMFORT_XMASGIFT_TITLE"
                 },
                 "Category": "primary",
                 "Definition": {
@@ -58,6 +58,10 @@
                             "2add9602-cda7-43fd-9758-6269c8fbb233",
                             "1a852006-e632-401f-aedc-d0cf76521b1f",
                             "58dceb1c-d7db-41dc-9750-55e3ab87fdf0"
+                        ],
+                        "Explosives": [
+                            "b75010e8-ed6e-4646-ba22-73a30a7a990d",
+                            "c601c095-e1dc-4490-aeae-e8e200dd9ac8"
                         ]
                     },
                     "Context": {
@@ -108,15 +112,30 @@
                                                 }
                                             },
                                             {
-                                                "$inarray": {
-                                                    "in": "$.LethalWeapons",
-                                                    "?": {
-                                                        "$eq": [
-                                                            "$Value.KillItemRepositoryId",
-                                                            "$.#"
-                                                        ]
+                                                "$or": [
+                                                    {
+                                                        "$inarray": {
+                                                            "in": "$.LethalWeapons",
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$Value.KillItemRepositoryId",
+                                                                    "$.#"
+                                                                ]
+                                                            }
+                                                        }
+                                                    },
+                                                    {
+                                                        "$inarray": {
+                                                            "in": "$.Explosives",
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$Value.KillItemRepositoryId",
+                                                                    "$.#"
+                                                                ]
+                                                            }
+                                                        }
                                                     }
-                                                }
+                                                ]
                                             }
                                         ]
                                     },
@@ -160,15 +179,30 @@
                                             }
                                         },
                                         {
-                                            "$inarray": {
-                                                "in": "$.NonLethalWeapons",
-                                                "?": {
-                                                    "$eq": [
-                                                        "$Value.KillItemRepositoryId",
-                                                        "$.#"
-                                                    ]
+                                            "$or": [
+                                                {
+                                                    "$inarray": {
+                                                        "in": "$.NonLethalWeapons",
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$Value.KillItemRepositoryId",
+                                                                "$.#"
+                                                            ]
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "$inarray": {
+                                                        "in": "$.Explosives",
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$Value.KillItemRepositoryId",
+                                                                "$.#"
+                                                            ]
+                                                        }
+                                                    }
                                                 }
-                                            }
+                                            ]
                                         }
                                     ]
                                 },
@@ -230,7 +264,7 @@
         ],
         "Location": "LOCATION_PARIS_NOEL",
         "InGroup": "07bbf22b-d6ae-4883-bec2-122eeeb7b665",
-        "TileImage": "images/contracts/featured/RedMenace.jpg",
+        "TileImage": "images/contracts/escalation/contractescalation_southern_comfort.jpg",
         "Entitlements": ["H1_LEGACY_STANDARD"]
     }
 }
