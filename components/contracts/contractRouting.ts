@@ -306,7 +306,7 @@ contractRoutingRouter.post(
             Data: {
                 Objectives: objectives,
                 GameChangers: gamechangers,
-                Bricks: [],
+                Bricks: contractData.Data.Bricks,
             },
             Metadata: {
                 Title: req.body.creationData.Title,

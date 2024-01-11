@@ -656,6 +656,7 @@ export interface Unlockable {
             | "disguise"
             | "gear"
             | string
+        ItemSize?: string
         IsConsumable?: boolean
         RepositoryId?: RepositoryId
         OrderIndex?: number
