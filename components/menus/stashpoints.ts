@@ -1,0 +1,469 @@
+/*
+ *     The Peacock Project - a HITMAN server replacement.
+ *     Copyright (C) 2021-2023 The Peacock Project Team
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     You should have received a copy of the GNU Affero General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+import { createInventory, getUnlockableById, InventoryItem } from "../inventory"
+import type {
+    GameVersion,
+    JwtData,
+    MissionManifest,
+    SafehouseCategory,
+    UserCentricContract,
+} from "../types/types"
+import {
+    SafehouseCategoryQuery,
+    StashpointQuery,
+    StashpointQueryH2016,
+    StashpointSlotName,
+} from "../types/gameSchemas"
+import { getDefaultSuitFor, uuidRegex } from "../utils"
+import { controller } from "../controller"
+import { generateUserCentric, getSubLocationByName } from "../contracts/dataGen"
+import { log, LogLevel } from "../loggingInterop"
+import { getUserData } from "../databaseHandler"
+import { getFlag } from "../flags"
+import { loadouts } from "../loadouts"
+
+/**
+ * Algorithm to get the stashpoint items data for H2 and H3.
+ *
+ * @param inventory The user's inventory.
+ * @param query The input query for the stashpoint.
+ * @param gameVersion
+ * @param contractData The optional contract data.
+ */
+export function getModernStashItemsData(
+    inventory: InventoryItem[],
+    query: StashpointQuery,
+    gameVersion: GameVersion,
+    contractData: MissionManifest | undefined,
+) {
+    return inventory
+        .filter((item) => {
+            if (
+                (query.slotname === "gear" &&
+                    contractData?.Peacock?.noGear === true) ||
+                (query.slotname === "concealedweapon" &&
+                    contractData?.Peacock?.noCarriedWeapon === true)
+            ) {
+                return false
+            }
+
+            if (
+                item.Unlockable.Subtype === "disguise" &&
+                gameVersion === "h3"
+            ) {
+                return false
+            }
+
+            return (
+                item.Unlockable.Properties.LoadoutSlot && // only display items
+                (!query.slotname ||
+                    ((uuidRegex.test(query.slotid as string) || // container
+                        query.slotname === "stashpoint") && // stashpoint
+                        item.Unlockable.Properties.LoadoutSlot !==
+                            "disguise") || // container or stashpoint => display all items
+                    item.Unlockable.Properties.LoadoutSlot ===
+                        query.slotname) && // else: display items for requested slot
+                (query.allowcontainers === "true" ||
+                    !item.Unlockable.Properties.IsContainer) &&
+                (query.allowlargeitems === "true" ||
+                    item.Unlockable.Properties.ItemSize === // regular gear slot or hidden stash => small item
+                        "ITEMSIZE_SMALL" ||
+                    (!item.Unlockable.Properties.ItemSize &&
+                        item.Unlockable.Properties.LoadoutSlot !== // use old logic if itemsize is not set
+                            "carriedweapon")) &&
+                item.Unlockable.Type !== "challengemultiplier" &&
+                !item.Unlockable.Properties.InclusionData
+            ) // not sure about this one
+        })
+        .map((item) => ({
+            Item: item,
+            ItemDetails: {
+                Capabilities: [],
+                StatList: item.Unlockable.Properties.Gameplay
+                    ? Object.entries(item.Unlockable.Properties.Gameplay).map(
+                          ([key, value]) => ({
+                              Name: key,
+                              Ratio: value,
+                          }),
+                      )
+                    : [],
+                PropertyTexts: [],
+            },
+            SlotId: query.slotid,
+            SlotName: null,
+        }))
+}
+
+export type ModernStashData = {
+    SlotId: string | number
+    LoadoutItemsData: unknown
+    UserCentric?: UserCentricContract
+    ShowSlotName: string | number
+}
+
+/**
+ * Algorithm to get the stashpoint data for H2 and H3.
+ *
+ * @param query The stashpoint query.
+ * @param userId
+ * @param gameVersion
+ * @returns undefined if the query is invalid, or the stash data.
+ */
+export function getModernStashData(
+    query: StashpointQuery,
+    userId: string,
+    gameVersion: GameVersion,
+): ModernStashData {
+    let contractData: MissionManifest | undefined = undefined
+
+    if (query.contractid) {
+        contractData = controller.resolveContract(query.contractid)
+    }
+
+    const inventory = createInventory(
+        userId,
+        gameVersion,
+        getSubLocationByName(contractData?.Metadata.Location, gameVersion),
+    )
+
+    if (query.slotname.endsWith(query.slotid!.toString())) {
+        query.slotname = query.slotname.slice(
+            0,
+            -query.slotid!.toString().length,
+        ) // weird
+    }
+
+    const stashData: ModernStashData = {
+        SlotId: query.slotid,
+        LoadoutItemsData: {
+            SlotId: query.slotid,
+            Items: getModernStashItemsData(
+                inventory,
+                query,
+                gameVersion,
+                contractData,
+            ),
+            Page: 0,
+            HasMore: false,
+            HasMoreLeft: false,
+            HasMoreRight: false,
+            OptionalData: {
+                stashpoint: query.stashpoint || "",
+                AllowLargeItems: query.allowlargeitems,
+                AllowContainers: query.allowcontainers, // ?? true
+            },
+        },
+        ShowSlotName: query.slotname,
+    }
+
+    if (contractData) {
+        stashData.UserCentric = generateUserCentric(
+            contractData,
+            userId,
+            gameVersion,
+        )
+    }
+
+    return stashData
+}
+
+/**
+ * Algorithm to get the stashpoint items data for H2016.
+ *
+ * @param inventory The user's inventory.
+ * @param slotname The slot name.
+ * @param query
+ * @param slotid The slot id.
+ */
+export function getLegacyStashItems(
+    inventory: InventoryItem[],
+    slotname: StashpointSlotName,
+    query: StashpointQueryH2016,
+    slotid: number,
+) {
+    return inventory
+        .filter((item) => {
+            return (
+                item.Unlockable.Properties.LoadoutSlot && // only display items
+                (item.Unlockable.Properties.LoadoutSlot === slotname || // display items for requested slot
+                    (slotname === "stashpoint" && // else: if stashpoint
+                        item.Unlockable.Properties.LoadoutSlot !==
+                            "disguise")) && // => display all non-disguise items
+                (query.allowlargeitems === "true" ||
+                    item.Unlockable.Properties.ItemSize === // regular gear slot or hidden stash => small item
+                        "ITEMSIZE_SMALL" ||
+                    (!item.Unlockable.Properties.ItemSize &&
+                        item.Unlockable.Properties.LoadoutSlot !== // use old logic if itemsize is not set
+                            "carriedweapon")) &&
+                item.Unlockable.Type !== "challengemultipler" &&
+                !item.Unlockable.Properties.InclusionData
+            ) // not sure about this one
+        })
+        .map((item) => ({
+            Item: item,
+            ItemDetails: {
+                Capabilities: [],
+                StatList: item.Unlockable.Properties.Gameplay
+                    ? Object.entries(item.Unlockable.Properties.Gameplay).map(
+                          ([key, value]) => ({
+                              Name: key,
+                              Ratio: value,
+                          }),
+                      )
+                    : [],
+                PropertyTexts: [],
+            },
+            SlotId: slotid.toString(),
+            SlotName: slotname,
+        }))
+}
+
+const loadoutSlots: StashpointSlotName[] = [
+    "carriedweapon",
+    "carrieditem",
+    "concealedweapon",
+    "disguise",
+    "gear",
+    "gear",
+    "stashpoint",
+]
+
+/**
+ * Algorithm to get the stashpoint data for H2016.
+ *
+ * @param query The stashpoint query.
+ * @param userId
+ * @param gameVersion
+ */
+export function getLegacyStashData(
+    query: StashpointQueryH2016,
+    userId: string,
+    gameVersion: GameVersion,
+) {
+    const contractData = controller.resolveContract(query.contractid)
+
+    if (!contractData) {
+        return undefined
+    }
+
+    if (!loadoutSlots.includes(query.slotname.slice(0, -1))) {
+        log(
+            LogLevel.ERROR,
+            `Unknown slotname in legacy stashpoint: ${query.slotname}`,
+        )
+        return undefined
+    }
+
+    const userProfile = getUserData(userId, gameVersion)
+
+    const sublocation = getSubLocationByName(
+        contractData.Metadata.Location,
+        gameVersion,
+    )
+
+    const inventory = createInventory(userId, gameVersion, sublocation)
+
+    const userCentricContract = generateUserCentric(
+        contractData,
+        userId,
+        gameVersion,
+    )
+
+    const defaultLoadout = {
+        2: "FIREARMS_HERO_PISTOL_TACTICAL_001_SU_SKIN01",
+        3: getDefaultSuitFor(sublocation),
+        4: "TOKEN_FIBERWIRE",
+        5: "PROP_TOOL_COIN",
+    }
+
+    const getLoadoutItem = (id: number) => {
+        if (getFlag("loadoutSaving") === "LEGACY") {
+            const dl = userProfile.Extensions.defaultloadout
+
+            if (!dl) {
+                return defaultLoadout[id]
+            }
+
+            const forLocation = (userProfile.Extensions.defaultloadout || {})[
+                sublocation?.Properties?.ParentLocation
+            ]
+
+            return (forLocation || defaultLoadout)[id]
+        } else {
+            let dl = loadouts.getLoadoutFor("h1")
+
+            if (!dl) {
+                dl = loadouts.createDefault("h1")
+            }
+
+            const forLocation = dl.data[sublocation?.Properties?.ParentLocation]
+
+            return (forLocation || defaultLoadout)[id]
+        }
+    }
+
+    return {
+        ContractId: query.contractid,
+        // the game actually only needs the loadoutdata from the requested slotid, but this is what IOI servers do
+        LoadoutData: [...loadoutSlots.entries()].map(([slotid, slotname]) => ({
+            SlotName: slotname,
+            SlotId: slotid.toString(),
+            Items: getLegacyStashItems(inventory, slotname, query, slotid),
+            Page: 0,
+            Recommended: getLoadoutItem(slotid)
+                ? {
+                      item: getUnlockableById(
+                          getLoadoutItem(slotid),
+                          gameVersion,
+                      ),
+                      type: loadoutSlots[slotid],
+                      owned: true,
+                  }
+                : null,
+            HasMore: false,
+            HasMoreLeft: false,
+            HasMoreRight: false,
+            OptionalData:
+                slotid === 6
+                    ? {
+                          stashpoint: query.stashpoint,
+                          AllowLargeItems:
+                              query.allowlargeitems || !query.stashpoint,
+                      }
+                    : {},
+        })),
+        Contract: userCentricContract.Contract,
+        ShowSlotName: query.slotname,
+        UserCentric: userCentricContract,
+    }
+}
+
+export function getSafehouseCategory(
+    query: SafehouseCategoryQuery,
+    gameVersion: GameVersion,
+    jwt: JwtData,
+) {
+    const inventory = createInventory(jwt.unique_name, gameVersion)
+
+    let safehouseData: SafehouseCategory = {
+        Category: "_root",
+        SubCategories: [],
+        IsLeaf: false,
+        Data: null,
+    }
+
+    for (const item of inventory) {
+        if (query.type) {
+            // if type is specified in query
+            if (item.Unlockable.Type !== query.type) {
+                continue // skip all items that are not that type
+            }
+
+            if (query.subtype && item.Unlockable.Subtype !== query.subtype) {
+                // if subtype is specified
+                continue // skip all items that are not that subtype
+            }
+        } else if (
+            item.Unlockable.Type === "access" ||
+            item.Unlockable.Type === "location" ||
+            item.Unlockable.Type === "package" ||
+            item.Unlockable.Type === "loadoutunlock" ||
+            item.Unlockable.Type === "difficultyunlock" ||
+            item.Unlockable.Type === "agencypickup" ||
+            item.Unlockable.Type === "challengemultiplier"
+        ) {
+            continue // these types should not be displayed when not asked for
+        } else if (item.Unlockable.Properties.InclusionData) {
+            // Only sniper unlockables have inclusion data, don't show them
+            continue
+        }
+
+        if (item.Unlockable.Subtype === "disguise" && gameVersion === "h3") {
+            continue // I don't want to put this in that elif statement
+        }
+
+        let category = safehouseData.SubCategories.find(
+            (cat) => cat.Category === item.Unlockable.Type,
+        )
+        let subcategory
+
+        if (!category) {
+            category = {
+                Category: item.Unlockable.Type,
+                SubCategories: [],
+                IsLeaf: false,
+                Data: null,
+            }
+            safehouseData.SubCategories.push(category)
+        }
+
+        subcategory = category.SubCategories.find(
+            (cat) => cat.Category === item.Unlockable.Subtype,
+        )
+
+        if (!subcategory) {
+            subcategory = {
+                Category: item.Unlockable.Subtype,
+                SubCategories: null,
+                IsLeaf: true,
+                Data: {
+                    Type: item.Unlockable.Type,
+                    SubType: item.Unlockable.Subtype,
+                    Items: [],
+                    Page: 0,
+                    HasMore: false,
+                },
+            }
+            category.SubCategories.push(subcategory)
+        }
+
+        subcategory.Data?.Items.push({
+            Item: item,
+            ItemDetails: {
+                Capabilities: [],
+                StatList: item.Unlockable.Properties.Gameplay
+                    ? Object.entries(item.Unlockable.Properties.Gameplay).map(
+                          ([key, value]) => ({
+                              Name: key,
+                              Ratio: value,
+                          }),
+                      )
+                    : [],
+                PropertyTexts: [],
+            },
+            Type: item.Unlockable.Type,
+            SubType: item.Unlockable.SubType,
+        })
+    }
+
+    for (const [id, category] of safehouseData.SubCategories.entries()) {
+        if (category.SubCategories.length === 1) {
+            // if category only has one subcategory
+            safehouseData.SubCategories[id] = category.SubCategories[0] // flatten it
+            safehouseData.SubCategories[id].Category = category.Category // but keep the top category's name
+        }
+    }
+
+    if (safehouseData.SubCategories.length === 1) {
+        // if root has only one subcategory
+        safehouseData = safehouseData.SubCategories[0] // flatten it
+    }
+
+    return safehouseData
+}

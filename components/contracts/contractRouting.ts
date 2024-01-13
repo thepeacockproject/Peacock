@@ -140,12 +140,7 @@ contractRoutingRouter.post(
                 contractData.Data.GameChangerReferences || []
 
             for (const gameChangerId of contractData.Data.GameChangers) {
-                if (
-                    !Object.prototype.hasOwnProperty.call(
-                        gameChangerData,
-                        gameChangerId,
-                    )
-                ) {
+                if (!gameChangerData[gameChangerId]) {
                     log(
                         LogLevel.ERROR,
                         `GetForPlay has detected a missing GameChanger: ${gameChangerId}! This is a bug.`,
@@ -287,12 +282,7 @@ contractRoutingRouter.post(
 
         req.body.creationData.ContractConditionIds.forEach(
             (contractConditionId) => {
-                if (
-                    Object.prototype.hasOwnProperty.call(
-                        gameChangerData,
-                        contractConditionId,
-                    )
-                ) {
+                if (gameChangerData[contractConditionId]) {
                     gamechangers.push(contractConditionId)
                 } else if (
                     contractConditionId ===

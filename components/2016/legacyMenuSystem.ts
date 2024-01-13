@@ -16,13 +16,10 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import serveStatic from "serve-static"
 import { Router } from "express"
 import { join } from "path"
 import md5File from "md5-file"
 import { readFile } from "atomically"
-import { imageFetchingMiddleware } from "../menus/imageHandler"
-import { MenuSystemDatabase } from "../menus/menuSystem"
 
 const legacyMenuSystemRouter = Router()
 
@@ -44,14 +41,6 @@ legacyMenuSystemRouter.get(
 
         res.send(await readFile(filePath))
     },
-)
-
-legacyMenuSystemRouter.use(MenuSystemDatabase.configMiddleware)
-
-legacyMenuSystemRouter.use(
-    "/images/",
-    serveStatic("images", { fallthrough: true }),
-    imageFetchingMiddleware,
 )
 
 export { legacyMenuSystemRouter }

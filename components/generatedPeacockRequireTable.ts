@@ -42,7 +42,6 @@ import * as smfSupport from "./smfSupport"
 import * as utils from "./utils"
 import * as webFeatures from "./webFeatures"
 import * as legacyContractHandler from "./2016/legacyContractHandler"
-import * as legacyEventRouter from "./2016/legacyEventRouter"
 import * as legacyMenuData from "./2016/legacyMenuData"
 import * as legacyMenuSystem from "./2016/legacyMenuSystem"
 import * as legacyProfileRouter from "./2016/legacyProfileRouter"
@@ -56,6 +55,7 @@ import * as dataGen from "./contracts/dataGen"
 import * as elusiveTargetArcades from "./contracts/elusiveTargetArcades"
 import * as elusiveTargets from "./contracts/elusiveTargets"
 import * as hitsCategoryService from "./contracts/hitsCategoryService"
+import * as leaderboards from "./contracts/leaderboards"
 import * as missionsInLocation from "./contracts/missionsInLocation"
 import * as reportRouting from "./contracts/reportRouting"
 import * as client from "./discord/client"
@@ -65,24 +65,18 @@ import * as liveSplitManager from "./livesplit/liveSplitManager"
 import * as campaigns from "./menus/campaigns"
 import * as destinations from "./menus/destinations"
 import * as favoriteContracts from "./menus/favoriteContracts"
+import * as hub from "./menus/hub"
 import * as imageHandler from "./menus/imageHandler"
 import * as menuSystem from "./menus/menuSystem"
 import * as planning from "./menus/planning"
 import * as playnext from "./menus/playnext"
 import * as sniper from "./menus/sniper"
+import * as stashpoints from "./menus/stashpoints"
 import * as multiplayerMenuData from "./multiplayer/multiplayerMenuData"
 import * as multiplayerService from "./multiplayer/multiplayerService"
 import * as multiplayerUtils from "./multiplayer/multiplayerUtils"
 import * as contextListeners from "./statemachines/contextListeners"
 import * as contractCreation from "./statemachines/contractCreation"
-import * as challenges from "./types/challenges"
-import * as events from "./types/events"
-import * as gameSchemas from "./types/gameSchemas"
-import * as livesplit from "./types/livesplit"
-import * as mastery from "./types/mastery"
-import * as score from "./types/score"
-import * as scoring from "./types/scoring"
-import * as types from "./types/types"
 import * as escalationService from "./contracts/escalations/escalationService"
 
 export default {
@@ -142,10 +136,6 @@ export default {
         __esModule: true,
         ...legacyContractHandler,
     },
-    "@peacockproject/core/2016/legacyEventRouter": {
-        __esModule: true,
-        ...legacyEventRouter,
-    },
     "@peacockproject/core/2016/legacyMenuData": {
         __esModule: true,
         ...legacyMenuData,
@@ -195,6 +185,10 @@ export default {
         __esModule: true,
         ...hitsCategoryService,
     },
+    "@peacockproject/core/contracts/leaderboards": {
+        __esModule: true,
+        ...leaderboards,
+    },
     "@peacockproject/core/contracts/missionsInLocation": {
         __esModule: true,
         ...missionsInLocation,
@@ -222,6 +216,7 @@ export default {
         __esModule: true,
         ...favoriteContracts,
     },
+    "@peacockproject/core/menus/hub": { __esModule: true, ...hub },
     "@peacockproject/core/menus/imageHandler": {
         __esModule: true,
         ...imageHandler,
@@ -233,6 +228,10 @@ export default {
     "@peacockproject/core/menus/planning": { __esModule: true, ...planning },
     "@peacockproject/core/menus/playnext": { __esModule: true, ...playnext },
     "@peacockproject/core/menus/sniper": { __esModule: true, ...sniper },
+    "@peacockproject/core/menus/stashpoints": {
+        __esModule: true,
+        ...stashpoints,
+    },
     "@peacockproject/core/multiplayer/multiplayerMenuData": {
         __esModule: true,
         ...multiplayerMenuData,
@@ -253,20 +252,6 @@ export default {
         __esModule: true,
         ...contractCreation,
     },
-    "@peacockproject/core/types/challenges": {
-        __esModule: true,
-        ...challenges,
-    },
-    "@peacockproject/core/types/events": { __esModule: true, ...events },
-    "@peacockproject/core/types/gameSchemas": {
-        __esModule: true,
-        ...gameSchemas,
-    },
-    "@peacockproject/core/types/livesplit": { __esModule: true, ...livesplit },
-    "@peacockproject/core/types/mastery": { __esModule: true, ...mastery },
-    "@peacockproject/core/types/score": { __esModule: true, ...score },
-    "@peacockproject/core/types/scoring": { __esModule: true, ...scoring },
-    "@peacockproject/core/types/types": { __esModule: true, ...types },
     "@peacockproject/core/contracts/escalations/escalationService": {
         __esModule: true,
         ...escalationService,

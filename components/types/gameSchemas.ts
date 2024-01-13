@@ -104,3 +104,51 @@ export type LoadSaveBody = Partial<{
     difficultyLevel: number
     contractId: string
 }>
+
+/**
+ * Query params that `/profiles/page/Safehouse` gets.
+ * Roughly the same as {@link SafehouseCategoryQuery} but this route is only for H1.
+ */
+export type SafehouseQuery = {
+    type?: string
+}
+
+/**
+ * Query params that `/profiles/page/SafehouseCategory` (used for Career > Inventory and possibly some of the H1 stuff) gets.
+ */
+export type SafehouseCategoryQuery = {
+    type?: string
+    subtype?: string
+}
+
+/**
+ * Query params that `/profiles/page/Destination` gets.
+ */
+export type GetDestinationQuery = {
+    locationId: string
+    difficulty?: string
+}
+
+/**
+ * Query params that `/profiles/page/Leaderboards` gets.
+ */
+export type LeaderboardEntriesCommonQuery = {
+    contractid: string
+    difficultyLevel?: string
+}
+
+/**
+ * Query params that `/profiles/page/DebriefingLeaderboards` gets.
+ * Because ofc it's different. Thanks IOI.
+ */
+export type DebriefingLeaderboardsQuery = {
+    contractid: string
+    difficulty?: string
+}
+
+/**
+ * Query params that `/profiles/page/ChallengeLocation` gets.
+ */
+export type ChallengeLocationQuery = {
+    locationId: string
+}

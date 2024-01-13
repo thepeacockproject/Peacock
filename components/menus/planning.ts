@@ -16,7 +16,17 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type { MissionStory, RequestWithJwt, SceneConfig } from "../types/types"
+import type {
+    CompiledChallengeTreeCategory,
+    GameVersion,
+    JwtData,
+    MissionManifest,
+    MissionStory,
+    SceneConfig,
+    Unlockable,
+    UserCentricContract,
+    UserProfile,
+} from "../types/types"
 import { log, LogLevel } from "../loggingInterop"
 import { _legacyBull, _theLastYardbirdScpc, controller } from "../controller"
 import {
@@ -40,33 +50,79 @@ import {
     unlockOrderComparer,
 } from "../utils"
 
-import type { Response } from "express"
 import { createInventory, getUnlockableById } from "../inventory"
 import { createSniperLoadouts } from "./sniper"
 import { getFlag } from "../flags"
 import { loadouts } from "../loadouts"
 import { resolveProfiles } from "../profileHandler"
-import { PlanningQuery } from "../types/gameSchemas"
 import { userAuths } from "../officialServerAuth"
 
-export async function planningView(
-    req: RequestWithJwt<PlanningQuery>,
-    res: Response,
-): Promise<void> {
-    if (!req.query.contractid || !req.query.resetescalation) {
-        res.status(400).send("invalid query")
-        return
-    }
+export type PlanningError = { error: boolean }
 
+export type PlanningGroupData = {
+    GroupId: string | undefined
+    GroupTitle: string | undefined
+    CompletedLevels: number | undefined
+    Completed: boolean | undefined
+    TotalLevels: number | undefined
+    BestScore: number | undefined
+    BestPlayer: string | undefined
+    BestLevel: number | undefined
+}
+
+export type GamePlanningData = {
+    Contract: MissionManifest
+    ElusiveContractState?: "not_completed" | string
+    UserCentric?: UserCentricContract
+    IsFirstInGroup: boolean
+    Creator: UserProfile
+    UserContract?: boolean
+    UnlockedEntrances?: string[]
+    UnlockedAgencyPickups?: string[]
+    Objectives?: unknown
+    GroupData?: PlanningGroupData
+    Entrances: Unlockable[]
+    Location: Unlockable
+    LoadoutData: unknown
+    LimitedLoadoutUnlockLevel: number
+    CharacterLoadoutData?: unknown | null
+    ChallengeData?: {
+        Children: CompiledChallengeTreeCategory[]
+    }
+    Currency?: {
+        Balance: number
+    }
+    PaymentDetails?: {
+        Currency: "Merces" | string
+        Amount: number | null
+        MaximumDeduction: number | null
+        Bonuses: null
+        Expenses: null
+        Entrance: null
+        Pickup: null
+        SideMission: null
+    }
+    OpportunityData?: unknown[]
+    PlayerProfileXpData?: {
+        XP: number
+        Level: number
+        MaxLevel: number
+    }
+}
+
+export async function getPlanningData(
+    contractId: string,
+    resetEscalation: boolean,
+    jwt: JwtData,
+    gameVersion: GameVersion,
+): Promise<PlanningError | GamePlanningData> {
     const entranceData = getConfig<SceneConfig>("Entrances", false)
     const missionStories = getConfig<Record<string, MissionStory>>(
         "MissionStories",
         false,
     )
 
-    const userData = getUserData(req.jwt.unique_name, req.gameVersion)
-
-    const isForReset = req.query.resetescalation === "true"
+    const userData = getUserData(jwt.unique_name, gameVersion)
 
     for (const ms in userData.Extensions.opportunityprogression) {
         if (Object.keys(missionStories).includes(ms)) {
@@ -75,26 +131,25 @@ export async function planningView(
     }
 
     let contractData =
-        req.gameVersion === "h1" &&
-        req.query.contractid === "42bac555-bbb9-429d-a8ce-f1ffdf94211c"
+        gameVersion === "h1" &&
+        contractId === "42bac555-bbb9-429d-a8ce-f1ffdf94211c"
             ? _legacyBull
-            : req.query.contractid === "ff9f46cf-00bd-4c12-b887-eac491c3a96d"
+            : contractId === "ff9f46cf-00bd-4c12-b887-eac491c3a96d"
             ? _theLastYardbirdScpc
-            : controller.resolveContract(req.query.contractid)
+            : controller.resolveContract(contractId)
 
-    if (isForReset) {
+    if (resetEscalation) {
         const escalationGroupId =
             contractData.Metadata.InGroup ?? contractData.Metadata.Id
 
         resetUserEscalationProgress(userData, escalationGroupId)
 
-        writeUserData(req.jwt.unique_name, req.gameVersion)
+        writeUserData(jwt.unique_name, gameVersion)
 
         // now reassign properties and continue
-        req.query.contractid =
-            controller.escalationMappings.get(escalationGroupId)["1"]
+        contractId = controller.escalationMappings.get(escalationGroupId)["1"]
 
-        contractData = controller.resolveContract(req.query.contractid)
+        contractData = controller.resolveContract(contractId)
     }
 
     if (!contractData) {
@@ -104,15 +159,13 @@ export async function planningView(
         // E.g. the user adds a contract to favorites, then deletes the files, then tries to load the contract again.
         log(
             LogLevel.WARN,
-            `Trying to download contract ${req.query.contractid} due to it not found locally.`,
+            `Trying to download contract ${contractId} due to it not found locally.`,
         )
-        const user = userAuths.get(req.jwt.unique_name)
+        const user = userAuths.get(jwt.unique_name)
         const resp = await user._useService(
             `https://${getRemoteService(
-                req.gameVersion,
-            )}.hitman.io/profiles/page/Planning?contractid=${
-                req.query.contractid
-            }&resetescalation=false&forcecurrentcontract=false&errorhandling=false`,
+                gameVersion,
+            )}.hitman.io/profiles/page/Planning?contractid=${contractId}&resetescalation=false&forcecurrentcontract=false&errorhandling=false`,
             true,
         )
 
@@ -121,20 +174,19 @@ export async function planningView(
     }
 
     if (!contractData) {
-        log(LogLevel.ERROR, `Not found: ${req.query.contractid}, .`)
-        res.status(400).send("no ct")
-        return
+        log(LogLevel.ERROR, `Not found: ${contractId}, .`)
+        return { error: true }
     }
 
-    const groupData = {
-        GroupId: undefined as string | undefined,
-        GroupTitle: undefined as string | undefined,
-        CompletedLevels: undefined as number | undefined,
-        Completed: undefined as boolean | undefined,
-        TotalLevels: undefined as number | undefined,
-        BestScore: undefined as number | undefined,
-        BestPlayer: undefined as string | undefined,
-        BestLevel: undefined as number | undefined,
+    const groupData: PlanningGroupData = {
+        GroupId: undefined,
+        GroupTitle: undefined,
+        CompletedLevels: undefined,
+        Completed: undefined,
+        TotalLevels: undefined,
+        BestScore: undefined,
+        BestPlayer: undefined,
+        BestLevel: undefined,
     }
 
     const escalation = escalationTypes.includes(contractData.Metadata.Type)
@@ -171,9 +223,8 @@ export async function planningView(
     }
 
     if (!contractData) {
-        log(LogLevel.WARN, `Unknown contract: ${req.query.contractid}`)
-        res.status(404).send("contract not found!")
-        return
+        log(LogLevel.WARN, `Unknown contract: ${contractId}`)
+        return { error: true }
     }
 
     const creatorProfile = (
@@ -182,7 +233,7 @@ export async function planningView(
                 contractData.Metadata.CreatorUserId || "",
                 "fadb923c-e6bb-4283-a537-eb4d1150262e",
             ],
-            req.gameVersion,
+            gameVersion,
         )
     )[0]
 
@@ -193,12 +244,9 @@ export async function planningView(
         `Looking up details for contract - Location:${contractData.Metadata.Location} (${scenePath})`,
     )
 
-    const sublocation = getSubLocationFromContract(
-        contractData,
-        req.gameVersion,
-    )
+    const sublocation = getSubLocationFromContract(contractData, gameVersion)
 
-    if (!Object.prototype.hasOwnProperty.call(entranceData, scenePath)) {
+    if (!entranceData[scenePath]) {
         log(
             LogLevel.ERROR,
             `Could not find Entrance data for ${scenePath} (loc Planning)! This may cause an unhandled promise rejection.`,
@@ -207,11 +255,7 @@ export async function planningView(
 
     const entrancesInScene = entranceData[scenePath]
 
-    const typedInv = createInventory(
-        req.jwt.unique_name,
-        req.gameVersion,
-        sublocation,
-    )
+    const typedInv = createInventory(jwt.unique_name, gameVersion, sublocation)
 
     const unlockedEntrances = typedInv
         .filter((item) => item.Unlockable.Type === "access")
@@ -229,10 +273,10 @@ export async function planningView(
 
     // Default loadout
 
-    let currentLoadout = loadouts.getLoadoutFor(req.gameVersion)
+    let currentLoadout = loadouts.getLoadoutFor(gameVersion)
 
     if (!currentLoadout) {
-        currentLoadout = loadouts.createDefault(req.gameVersion)
+        currentLoadout = loadouts.createDefault(gameVersion)
     }
 
     let pistol = "FIREARMS_HERO_PISTOL_TACTICAL_ICA_19"
@@ -242,8 +286,6 @@ export async function planningView(
     let briefcaseProp: string | undefined = undefined
     let briefcaseId: string | undefined = undefined
 
-    const hasOwn = Object.prototype.hasOwnProperty.bind(currentLoadout.data)
-
     const dlForLocation =
         getFlag("loadoutSaving") === "LEGACY"
             ? // older default loadout setting (per-person)
@@ -251,8 +293,10 @@ export async function planningView(
                   contractData.Metadata.Location
               ]
             : // new loadout profiles system
-              hasOwn(contractData.Metadata.Location) &&
-              currentLoadout.data[contractData.Metadata.Location]
+              Object.hasOwn(
+                  currentLoadout.data,
+                  contractData.Metadata.Location,
+              ) && currentLoadout.data[contractData.Metadata.Location]
 
     if (dlForLocation) {
         pistol = dlForLocation["2"]
@@ -275,21 +319,21 @@ export async function planningView(
 
     const userCentric = generateUserCentric(
         contractData,
-        req.jwt.unique_name,
-        req.gameVersion,
+        jwt.unique_name,
+        gameVersion,
     )
 
     const sniperLoadouts = createSniperLoadouts(
-        req.jwt.unique_name,
-        req.gameVersion,
+        jwt.unique_name,
+        gameVersion,
         contractData,
     )
 
-    if (req.gameVersion === "scpc") {
-        sniperLoadouts.forEach((loadout) => {
+    if (gameVersion === "scpc") {
+        for (const loadout of sniperLoadouts) {
             loadout["LoadoutData"] = loadout["Loadout"]["LoadoutData"]
             delete loadout["Loadout"]
-        })
+        }
     }
 
     let loadoutSlots = [
@@ -368,6 +412,7 @@ export async function planningView(
 
     /**
      * Handles loadout lock for Miami and Hokkaido
+     * TODO: migrate this to use the actual game data.
      */
     const limitedLoadoutUnlockLevelMap = {
         LOCATION_MIAMI: 2,
@@ -380,19 +425,19 @@ export async function planningView(
         getFlag("enableMasteryProgression")
     ) {
         const loadoutUnlockable = getUnlockableById(
-            req.gameVersion === "h1"
+            gameVersion === "h1"
                 ? sublocation?.Properties?.NormalLoadoutUnlock[
                       contractData.Metadata.Difficulty ?? "normal"
                   ]
                 : sublocation?.Properties?.NormalLoadoutUnlock,
-            req.gameVersion,
+            gameVersion,
         )
 
         if (loadoutUnlockable) {
             const loadoutMasteryData =
                 controller.masteryService.getMasteryForUnlockable(
                     loadoutUnlockable,
-                    req.gameVersion,
+                    gameVersion,
                 )
 
             const locationProgression =
@@ -412,109 +457,96 @@ export async function planningView(
         }
     }
 
-    res.json({
-        template:
-            req.gameVersion === "h1"
-                ? getConfig("LegacyPlanningTemplate", false)
-                : req.gameVersion === "scpc"
-                ? getConfig("FrankensteinPlanningTemplate", false)
-                : null,
-        data: {
-            Contract: contractData,
-            ElusiveContractState: "not_completed",
-            UserCentric: userCentric,
-            IsFirstInGroup: escalation ? groupData.CompletedLevels === 0 : true,
-            Creator: creatorProfile,
-            UserContract: creatorProfile.DevId !== "IOI",
-            UnlockedEntrances:
-                contractData.Metadata.Type === "sniper"
-                    ? null
-                    : typedInv
-                          .filter(
-                              (item) =>
-                                  item.Unlockable.Subtype ===
-                                  "startinglocation",
-                          )
-                          .filter(
-                              (item) =>
-                                  item.Unlockable.Properties.Difficulty ===
-                                  contractData.Metadata.Difficulty,
-                          )
-                          .map((i) => i.Unlockable.Properties.RepositoryId)
-                          .filter((id) => id),
-            UnlockedAgencyPickups:
-                contractData.Metadata.Type === "sniper"
-                    ? null
-                    : typedInv
-                          .filter(
-                              (item) => item.Unlockable.Type === "agencypickup",
-                          )
-                          .filter(
-                              (item) =>
-                                  item.Unlockable.Properties.Difficulty ===
-                                  contractData.Metadata.Difficulty,
-                          )
-                          .map((i) => i.Unlockable.Properties.RepositoryId)
-                          .filter((id) => id),
-            Objectives: mapObjectives(
-                contractData.Data.Objectives,
-                contractData.Data.GameChangers || [],
-                contractData.Metadata.GroupObjectiveDisplayOrder || [],
-                contractData.Metadata.IsEvergreenSafehouse,
+    return {
+        Contract: contractData,
+        ElusiveContractState: "not_completed",
+        UserCentric: userCentric,
+        IsFirstInGroup: escalation ? groupData.CompletedLevels === 0 : true,
+        Creator: creatorProfile,
+        UserContract: creatorProfile.DevId !== "IOI",
+        UnlockedEntrances:
+            contractData.Metadata.Type === "sniper"
+                ? null
+                : typedInv
+                      .filter(
+                          (item) =>
+                              item.Unlockable.Subtype === "startinglocation",
+                      )
+                      .filter(
+                          (item) =>
+                              item.Unlockable.Properties.Difficulty ===
+                              contractData.Metadata.Difficulty,
+                      )
+                      .map((i) => i.Unlockable.Properties.RepositoryId)
+                      .filter((id) => id),
+        UnlockedAgencyPickups:
+            contractData.Metadata.Type === "sniper"
+                ? null
+                : typedInv
+                      .filter((item) => item.Unlockable.Type === "agencypickup")
+                      .filter(
+                          (item) =>
+                              item.Unlockable.Properties.Difficulty ===
+                              contractData.Metadata.Difficulty,
+                      )
+                      .map((i) => i.Unlockable.Properties.RepositoryId)
+                      .filter((id) => id),
+        Objectives: mapObjectives(
+            contractData.Data.Objectives,
+            contractData.Data.GameChangers || [],
+            contractData.Metadata.GroupObjectiveDisplayOrder || [],
+            contractData.Metadata.IsEvergreenSafehouse,
+        ),
+        GroupData: groupData,
+        Entrances:
+            contractData.Metadata.Type === "sniper"
+                ? null
+                : unlockedEntrances
+                      .filter((unlockable) =>
+                          entrancesInScene.includes(
+                              unlockable.Properties.RepositoryId,
+                          ),
+                      )
+                      .filter(
+                          (unlockable) =>
+                              unlockable.Properties.Difficulty ===
+                              contractData.Metadata.Difficulty,
+                      )
+                      .sort(unlockOrderComparer),
+        Location: sublocation,
+        LoadoutData:
+            contractData.Metadata.Type === "sniper" ? null : loadoutSlots,
+        LimitedLoadoutUnlockLevel:
+            limitedLoadoutUnlockLevelMap[sublocation.Id] ?? 0,
+        CharacterLoadoutData:
+            sniperLoadouts.length !== 0 ? sniperLoadouts : null,
+        ChallengeData: {
+            Children: controller.challengeService.getChallengeTreeForContract(
+                contractId,
+                gameVersion,
+                jwt.unique_name,
             ),
-            GroupData: groupData,
-            Entrances:
-                contractData.Metadata.Type === "sniper"
-                    ? null
-                    : unlockedEntrances
-                          .filter((unlockable) =>
-                              entrancesInScene.includes(
-                                  unlockable.Properties.RepositoryId,
-                              ),
-                          )
-                          .filter(
-                              (unlockable) =>
-                                  unlockable.Properties.Difficulty ===
-                                  contractData.Metadata.Difficulty,
-                          )
-                          .sort(unlockOrderComparer),
-            Location: sublocation,
-            LoadoutData:
-                contractData.Metadata.Type === "sniper" ? null : loadoutSlots,
-            LimitedLoadoutUnlockLevel:
-                limitedLoadoutUnlockLevelMap[sublocation.Id] ?? 0,
-            CharacterLoadoutData:
-                sniperLoadouts.length !== 0 ? sniperLoadouts : null,
-            ChallengeData: {
-                Children:
-                    controller.challengeService.getChallengeTreeForContract(
-                        req.query.contractid,
-                        req.gameVersion,
-                        req.jwt.unique_name,
-                    ),
-            },
-            Currency: {
-                Balance: 0,
-            },
-            PaymentDetails: {
-                Currency: "Merces",
-                Amount: 0,
-                MaximumDeduction: 85,
-                Bonuses: null,
-                Expenses: null,
-                Entrance: null,
-                Pickup: null,
-                SideMission: null,
-            },
-            OpportunityData: (contractData.Metadata.Opportunities || [])
-                .map((value) => missionStories[value])
-                .filter(Boolean),
-            PlayerProfileXpData: {
-                XP: userData.Extensions.progression.PlayerProfileXP.Total,
-                Level: userData.Extensions.progression.PlayerProfileXP
-                    .ProfileLevel,
-                MaxLevel: getMaxProfileLevel(req.gameVersion),
-            },
         },
-    })
+        Currency: {
+            Balance: 0,
+        },
+        PaymentDetails: {
+            Currency: "Merces",
+            Amount: 0,
+            MaximumDeduction: 85,
+            Bonuses: null,
+            Expenses: null,
+            Entrance: null,
+            Pickup: null,
+            SideMission: null,
+        },
+        OpportunityData: (contractData.Metadata.Opportunities || [])
+            .map((value) => missionStories[value])
+            .filter(Boolean),
+        PlayerProfileXpData: {
+            XP: userData.Extensions.progression.PlayerProfileXP.Total,
+            Level: userData.Extensions.progression.PlayerProfileXP.ProfileLevel,
+            MaxLevel: getMaxProfileLevel(gameVersion),
+        },
+    }
 }

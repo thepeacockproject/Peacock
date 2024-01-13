@@ -1141,14 +1141,11 @@ export interface CreateFromParamsBody {
     }
 }
 
-export interface CommonSelectScreenConfig {
-    template: unknown
-    data?: {
-        Unlocked: string[]
-        Contract: MissionManifest
-        OrderedUnlocks: Unlockable[]
-        UserCentric: UserCentricContract
-    }
+export interface SelectEntranceOrPickupData {
+    Unlocked: string[]
+    Contract: MissionManifest
+    OrderedUnlocks: Unlockable[]
+    UserCentric: UserCentricContract
 }
 
 export type CompiledIoiStatemachine = unknown

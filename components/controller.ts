@@ -188,12 +188,7 @@ function createPeacockRequire(pluginName: string): NodeRequire {
      * @param specifier The requested module.
      */
     const peacockRequire: NodeRequire = (specifier: string) => {
-        if (
-            Object.prototype.hasOwnProperty.call(
-                generatedPeacockRequireTable,
-                specifier,
-            )
-        ) {
+        if (generatedPeacockRequireTable[specifier]) {
             return generatedPeacockRequireTable[specifier]
         }
 
@@ -312,7 +307,10 @@ export class Controller {
         newEvent: SyncHook<
             [
                 /** event */ ClientToServerEvent,
-                /** request */ RequestWithJwt,
+                /** details */ {
+                    gameVersion: GameVersion
+                    userId: string
+                },
                 /** session */ ContractSession,
             ]
         >

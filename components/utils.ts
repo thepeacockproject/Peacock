@@ -161,7 +161,6 @@ export function xpRequiredForLevel(level: number): number {
     return Math.max(0, (level - 1) * XP_PER_LEVEL)
 }
 
-// TODO: Determine some mathematical function
 export const EVERGREEN_LEVEL_INFO: number[] = [
     0, 5000, 10000, 17000, 24000, 31000, 38000, 45000, 52000, 61000, 70000,
     79000, 88000, 97000, 106000, 115000, 124000, 133000, 142000, 154000, 166000,
@@ -189,11 +188,16 @@ export function evergreenLevelForXp(xp: number): number {
     return 1
 }
 
+/**
+ * Get the amount of XP needed to reach a mastery level in Evergreen.
+ *
+ * @param level
+ * @returns The XP, as a number.
+ */
 export function xpRequiredForEvergreenLevel(level: number): number {
     return EVERGREEN_LEVEL_INFO[level - 1]
 }
 
-// TODO: Determine some mathematical function
 export const SNIPER_LEVEL_INFO: number[] = [
     0, 50000, 150000, 500000, 1000000, 1700000, 2500000, 3500000, 5000000,
     7000000, 9500000, 12500000, 16000000, 20000000, 25000000, 31000000,
@@ -213,16 +217,17 @@ export function sniperLevelForXp(xp: number): number {
 }
 
 /**
- * Get the number of xp needed to reach a level in sniper missions.
- * @param level The level in question.
- * @returns The xp, as a number.
+ * Get the amount of XP needed to reach a mastery level in sniper missions.
+ *
+ * @param level
+ * @returns The XP, as a number.
  */
 export function xpRequiredForSniperLevel(level: number): number {
     return SNIPER_LEVEL_INFO[level - 1]
 }
 
 /**
- * Clamps the given value between a minimum and maximum value
+ * Clamps the given value between a minimum and maximum value.
  */
 export function clampValue(value: number, min: number, max: number) {
     return Math.max(min, Math.min(value, max))
@@ -230,9 +235,10 @@ export function clampValue(value: number, min: number, max: number) {
 
 /**
  * Updates a user profile depending on the current version (if any).
- * @param profile The userprofile to update
+ *
+ * @param profile The user profile to update
  * @param gameVersion The game version
- * @returns The updated user profile
+ * @returns The updated user profile.
  */
 function updateUserProfile(
     profile: UserProfile,
@@ -350,6 +356,7 @@ function updateUserProfile(
 
 /**
  * Returns whether a location is a sniper location. Works for both parent and child locations.
+ *
  * @param location The location ID string.
  * @returns A boolean denoting the result.
  */
@@ -382,7 +389,7 @@ export function castUserProfile(
         "PeacockCompletedEscalations",
         "CPD",
     ]) {
-        if (!Object.prototype.hasOwnProperty.call(j.Extensions, item)) {
+        if (!Object.hasOwn(j.Extensions, item)) {
             log(LogLevel.DEBUG, `Err missing property ${item}`)
             log(
                 LogLevel.WARN,
@@ -420,7 +427,7 @@ export function castUserProfile(
     // Fix Extensions.gamepersistentdata.HitsFilterType.
     // None of the old profiles should have "MyPlaylist".
     if (
-        !Object.prototype.hasOwnProperty.call(
+        !Object.hasOwn(
             j.Extensions.gamepersistentdata.HitsFilterType,
             "MyPlaylist",
         )
@@ -504,11 +511,13 @@ export const defaultSuits = {
 
 /**
  * Default suits that are attainable via challenges or mastery in this version.
+ *
  * NOTE: Currently this is hardcoded. To allow for flexibility and extensibility, this should be generated in real-time
  * using the Drops of challenges and masteries. However, that would require looping through all challenges and masteries
  * for all default suits, which is slow. This is a trade-off.
- * @param   gameVersion The game version.
- * @returns  The default suits that are attainable via challenges or mastery.
+ *
+ * @param gameVersion The game version.
+ * @returns The default suits that are attainable via challenges or mastery.
  */
 export function attainableDefaults(gameVersion: GameVersion): string[] {
     return gameVersion === "h1"
@@ -525,6 +534,7 @@ export function attainableDefaults(gameVersion: GameVersion): string[] {
 /**
  * Gets the default suit for a given sub-location and parent location.
  * Priority is given to the sub-location, then the parent location, then 47's signature suit.
+ *
  * @param subLocation The sub-location.
  * @returns The default suit for the given sub-location and parent location.
  */
@@ -591,6 +601,9 @@ export const gameDifficulty = {
      * Casual mode.
      */
     casual: 1,
+    /**
+     * Alias for {@link casual}.
+     */
     easy: 1,
     /**
      * Professional (normal) mode.
@@ -600,6 +613,9 @@ export const gameDifficulty = {
      * Master mode.
      */
     master: 4,
+    /**
+     * Alias for {@link master}.
+     */
     hard: 4,
 } as const
 

@@ -31,7 +31,7 @@ import {
     Seconds,
     ServerToClientEvent,
 } from "./types/types"
-import { contractTypes, extractToken, gameDifficulty, ServerVer } from "./utils"
+import { contractTypes, gameDifficulty, ServerVer } from "./utils"
 import { json as jsonMiddleware } from "body-parser"
 import { log, LogLevel } from "./loggingInterop"
 import { getUserData, writeUserData } from "./databaseHandler"
@@ -372,18 +372,74 @@ export function newSession(
     controller.challengeService.startContract(contractSessions.get(sessionId)!)
 }
 
+export type SSE3Response = {
+    SavedTokens: string[]
+    NewEvents: ServerToClientEvent[]
+    NextPoll: number
+}
+
+export type SSE4Response = SSE3Response & {
+    PushMessages: string[]
+}
+
+export function saveAndSyncEvents(
+    version: 3 | 4,
+    userId: string,
+    gameVersion: GameVersion,
+    lastEventTicks: number | string,
+    values: ClientToServerEvent[],
+    lastPushDt?: number | string,
+): SSE3Response | SSE4Response {
+    const savedTokens = values.length
+        ? saveEvents(userId, values, gameVersion)
+        : null
+
+    let userQueue: S2CEventWithTimestamp[] | undefined
+    let newEvents: ServerToClientEvent[] | null = null
+
+    // events: (server -> client)
+    if ((userQueue = eventQueue.get(userId))) {
+        userQueue = userQueue.filter((item) => item.time > lastEventTicks)
+        eventQueue.set(userId, userQueue)
+
+        newEvents = Array.from(userQueue, (item) => item.event)
+    }
+
+    // push messages: (server -> client)
+    let userPushQueue: PushMessage[] | undefined
+    let pushMessages: string[] | undefined
+
+    if ((userPushQueue = pushMessageQueue.get(userId))) {
+        userPushQueue = userPushQueue.filter((item) => item.time > lastPushDt)
+        pushMessageQueue.set(userId, userPushQueue)
+
+        pushMessages = Array.from(userPushQueue, (item) => item.message)
+    }
+
+    const sse3Response: SSE3Response = {
+        SavedTokens: savedTokens,
+        NewEvents: newEvents || null,
+        NextPoll: 10.0,
+    }
+
+    return version === 3
+        ? sse3Response
+        : {
+              ...sse3Response,
+              PushMessages: pushMessages || null,
+          }
+}
+
 eventRouter.post(
-    "/SaveAndSynchronizeEvents4",
-    extractToken,
+    "/SaveAndSynchronizeEvents3",
     jsonMiddleware({ limit: "10Mb" }),
     (
         req: RequestWithJwt<
             unknown,
             {
-                lastPushDt: number | string
                 lastEventTicks: number | string
-                userId?: string
-                values?: []
+                userId: string
+                values: ClientToServerEvent[]
             }
         >,
         res,
@@ -398,48 +454,58 @@ eventRouter.post(
             return
         }
 
-        const savedTokens = req.body.values.length
-            ? saveEvents(req.body.userId, req.body.values, req)
-            : null
+        res.json(
+            saveAndSyncEvents(
+                3,
+                req.jwt.unique_name,
+                req.gameVersion,
+                req.body.lastEventTicks,
+                req.body.values,
+            ),
+        )
+    },
+)
 
-        let userQueue: S2CEventWithTimestamp[] | undefined
-        let newEvents: ServerToClientEvent[] | null = null
-
-        // events: (server -> client)
-        if ((userQueue = eventQueue.get(req.jwt.unique_name))) {
-            userQueue = userQueue.filter(
-                (item) => item.time > req.body.lastEventTicks,
-            )
-            eventQueue.set(req.jwt.unique_name, userQueue)
-
-            newEvents = Array.from(userQueue, (item) => item.event)
+eventRouter.post(
+    "/SaveAndSynchronizeEvents4",
+    jsonMiddleware({ limit: "10Mb" }),
+    (
+        req: RequestWithJwt<
+            unknown,
+            {
+                lastPushDt: number | string
+                lastEventTicks: number | string
+                userId: string
+                values: ClientToServerEvent[]
+            }
+        >,
+        res,
+    ) => {
+        if (req.body.userId !== req.jwt.unique_name) {
+            res.status(403).send() // Trying to save events for other user
+            return
         }
 
-        // push messages: (server -> client)
-        let userPushQueue: PushMessage[] | undefined
-        let pushMessages: string[] | null = null
-
-        if ((userPushQueue = pushMessageQueue.get(req.jwt.unique_name))) {
-            userPushQueue = userPushQueue.filter(
-                (item) => item.time > req.body.lastPushDt,
-            )
-            pushMessageQueue.set(req.jwt.unique_name, userPushQueue)
-
-            pushMessages = Array.from(userPushQueue, (item) => item.message)
+        if (!Array.isArray(req.body.values)) {
+            res.status(400).end() // malformed request
+            return
         }
 
-        res.json({
-            SavedTokens: savedTokens,
-            NewEvents: newEvents || null,
-            NextPoll: 10.0,
-            PushMessages: pushMessages || null,
-        })
+        res.json(
+            saveAndSyncEvents(
+                4,
+                req.jwt.unique_name,
+                req.gameVersion,
+                req.body.lastEventTicks,
+                req.body.values,
+                req.body.lastPushDt,
+            ),
+        )
     },
 )
 
 eventRouter.post(
     "/SaveEvents2",
-    extractToken,
     jsonMiddleware({ limit: "10Mb" }),
     (req: RequestWithJwt, res) => {
         if (req.jwt.unique_name !== req.body.userId) {
@@ -447,7 +513,7 @@ eventRouter.post(
             return
         }
 
-        res.json(saveEvents(req.body.userId, req.body.values, req))
+        res.json(saveEvents(req.body.userId, req.body.values, req.gameVersion))
     },
 )
 
@@ -574,11 +640,11 @@ function contractFailed(
 function saveEvents(
     userId: string,
     events: ClientToServerEvent[],
-    req: RequestWithJwt<unknown, unknown>,
+    gameVersion: GameVersion,
 ): string[] {
     const response: string[] = []
     const processed: string[] = []
-    const userData = getUserData(req.jwt.unique_name, req.gameVersion)
+    const userData = getUserData(userId, gameVersion)
     events.forEach((event) => {
         let session = contractSessions.get(event.ContractSessionId)
 
@@ -591,9 +657,9 @@ function saveEvents(
             newSession(
                 event.ContractSessionId,
                 event.ContractId,
-                req.jwt.unique_name,
+                userId,
                 gameDifficulty.normal,
-                req.gameVersion,
+                gameVersion,
                 false,
             )
 
@@ -620,8 +686,16 @@ function saveEvents(
         const contract = controller.resolveContract(session.contractId)
         const contractType = contract?.Metadata?.Type?.toLowerCase()
 
-        // @ts-expect-error Issue with request type mismatch.
-        controller.hooks.newEvent.call(event, req, session)
+        controller.hooks.newEvent.call(
+            event,
+            // to avoid breakage, we pass details as an object instead of the request
+            // since we no longer have access to that
+            {
+                gameVersion,
+                userId,
+            },
+            session,
+        )
 
         for (const objectiveId of session.objectiveStates.keys()) {
             try {
@@ -795,7 +869,7 @@ function saveEvents(
                 )
                 break
             case "BodyFound":
-                if (req.gameVersion === "h1") {
+                if (gameVersion === "h1") {
                     session.legacyHasBodyBeenFound = true
                 }
 
@@ -812,8 +886,8 @@ function saveEvents(
                 session.disguisesUsed.add(disguise)
                 liveSplitManager.startMission(
                     session.contractId,
-                    req.gameVersion,
-                    req.jwt.unique_name,
+                    gameVersion,
+                    userId,
                 )
                 break
             }
@@ -924,7 +998,7 @@ function saveEvents(
                     opportunities[val.RepositoryId] = true
                 }
 
-                writeUserData(req.jwt.unique_name, req.gameVersion)
+                writeUserData(userId, gameVersion)
                 break
             }
             case "AreaDiscovered":

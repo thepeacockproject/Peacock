@@ -150,6 +150,8 @@ export class MasteryService {
         )[0]
     }
 
+    // TODO: what do we want to do with this? We should prob remove the template part
+    //       to make this like the other routes, and more testable.
     getMasteryDataForLocation(
         locationId: string,
         gameVersion: GameVersion,

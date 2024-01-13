@@ -28,6 +28,7 @@ import { SavedChallengeGroup } from "../types/challenges"
 import { controller } from "../controller"
 import { gameDifficulty, isSniperLocation } from "../utils"
 
+// TODO: unused?
 export function compileScoringChallenge(
     challenge: RegistryChallenge,
 ): CompiledChallengeRewardData {
@@ -68,7 +69,7 @@ export function compileRuntimeChallenge(
 }
 
 export enum ChallengeFilterType {
-    // Note that this option will include global elusives and escalations challenges.
+    /** Note that this option will include global elusive and escalations challenges. */
     None = "None",
     Contract = "Contract",
     /** Only used for the CAREER -> CHALLENGES page */
