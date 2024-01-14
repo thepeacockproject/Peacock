@@ -165,7 +165,6 @@ export function parseContextListeners(
             info.challengeCountData.total = test(total, context)
 
             // Might be counting finished challenges, so need required challenges list. e.g. (SA5, SA12, SA17)
-            // todo: maybe not hard-code this?
             if ((count as string).includes("CompletedChallenges")) {
                 info.challengeTreeIds.push(
                     ...test("$.RequiredChallenges", context),

@@ -56,6 +56,7 @@ export class Loadouts {
      * Creates a new instance of the class.
      */
     public constructor() {
+        // ts-expect-error We know this is undefined, but we're going to initialize it later.
         this._loadouts = undefined
     }
 
@@ -217,7 +218,7 @@ loadoutRouter.patch(
     async (
         req: Request<
             never,
-            string,
+            string | { error?: string; message?: string },
             { gameVersion: "h1" | "h2" | "h3"; id: string }
         >,
         res,

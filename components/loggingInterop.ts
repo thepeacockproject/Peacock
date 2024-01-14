@@ -135,6 +135,7 @@ if (consoleLogLevel !== LOG_LEVEL_NONE) {
 }
 
 const winstonLogLevel = {}
+// ts-expect-error Type mismatch.
 Object.values(LogLevel).forEach((e, i) => (winstonLogLevel[e] = i))
 
 const logger = winston.createLogger({
@@ -255,13 +256,13 @@ export function log(
  * Express middleware that logs all requests and their details with the info log level.
  *
  * @param req The Express request object.
- * @param res The Express response object.
+ * @param _ The Express response object.
  * @param next The Express next function.
  * @see LogLevel.INFO
  */
 export function loggingMiddleware(
     req: RequestWithJwt,
-    res: Response,
+    _: Response,
     next?: NextFunction,
 ): void {
     log(
@@ -295,7 +296,7 @@ export function requestLoggingMiddleware(
 export function errorLoggingMiddleware(
     err: Error,
     req: RequestWithJwt,
-    res: Response,
+    _: Response,
     next?: NextFunction,
 ): void {
     const debug = {

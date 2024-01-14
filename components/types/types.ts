@@ -274,7 +274,7 @@ export interface ContractSession {
      */
     evergreen?: {
         payout: number
-        scoringScreenEndState: string
+        scoringScreenEndState: string | null
         failed: boolean
     }
     /**
@@ -367,7 +367,7 @@ export interface S2CEventWithTimestamp<EventValue = unknown> {
  * A server to client push message. The message component is encoded JSON.
  */
 export interface PushMessage {
-    time: number | string
+    time: number | string | bigint
     message: string
 }
 
@@ -893,77 +893,81 @@ export interface EscalationInfo {
 export interface MissionManifestMetadata {
     Id: string
     Location: string
-    IsPublished?: boolean
-    CreationTimestamp?: string
-    CreatorUserId?: string
+    IsPublished?: boolean | null
+    CreationTimestamp?: string | null
+    CreatorUserId?: string | null
     Title: string
-    Description?: string
+    Description?: string | null
     BriefingVideo?:
         | string
         | {
               Mode: string
               VideoId: string
           }[]
-    DebriefingVideo?: string
+    DebriefingVideo?: string | null
     TileImage?:
         | string
         | {
               Mode: string
               Image: string
           }[]
-    CodeName_Hint?: string
+    CodeName_Hint?: string | null
     ScenePath: string
     Type: MissionType
-    Release?: string | object
-    RequiredUnlockable?: string
-    Drops?: string[]
-    Opportunities?: string[]
-    OpportunityData?: MissionStory[]
-    Entitlements: string[]
-    LastUpdate?: string
-    PublicId?: string
-    GroupObjectiveDisplayOrder?: GroupObjectiveDisplayOrderItem[]
-    GameVersion?: string
-    ServerVersion?: string
-    AllowNonTargetKills?: boolean
-    Difficulty?: "pro1" | string
-    CharacterSetup?: {
-        Mode: "singleplayer" | "multiplayer" | string
-        Characters: {
-            Name: string
-            Id: string
-            MandatoryLoadout?: string[]
-        }[]
-    }[]
-    CharacterLoadoutData?: {
-        Id: string
-        Loadout: unknown
-        CompletionData: CompletionData
-    }[]
-    SpawnSelectionType?: "random" | string
-    Gamemodes?: ("versus" | string)[]
-    Enginemodes?: ("singleplayer" | "multiplayer" | string)[]
+    Release?: string | object | null
+    RequiredUnlockable?: string | null
+    Drops?: string[] | null
+    Opportunities?: string[] | null
+    OpportunityData?: MissionStory[] | null
+    Entitlements: string[] | null
+    LastUpdate?: string | null
+    PublicId?: string | null
+    GroupObjectiveDisplayOrder?: GroupObjectiveDisplayOrderItem[] | null
+    GameVersion?: string | null
+    ServerVersion?: string | null
+    AllowNonTargetKills?: boolean | null
+    Difficulty?: "pro1" | string | null
+    CharacterSetup?:
+        | {
+              Mode: "singleplayer" | "multiplayer" | string
+              Characters: {
+                  Name: string
+                  Id: string
+                  MandatoryLoadout?: string[]
+              }[]
+          }[]
+        | null
+    CharacterLoadoutData?:
+        | {
+              Id: string
+              Loadout: unknown
+              CompletionData: CompletionData
+          }[]
+        | null
+    SpawnSelectionType?: "random" | string | null
+    Gamemodes?: ("versus" | string)[] | null
+    Enginemodes?: ("singleplayer" | "multiplayer" | string)[] | null
     EndConditions?: {
         PointLimit?: number
-    }
-    Subtype?: string
-    GroupTitle?: string
-    TargetExpiration?: number
-    TargetExpirationReduced?: number
-    TargetLifeTime?: number
-    NonTargetKillPenaltyEnabled?: boolean
-    NoticedTargetStreakPenaltyMax?: number
-    IsFeatured?: boolean
+    } | null
+    Subtype?: string | null
+    GroupTitle?: string | null
+    TargetExpiration?: number | null
+    TargetExpirationReduced?: number | null
+    TargetLifeTime?: number | null
+    NonTargetKillPenaltyEnabled?: boolean | null
+    NoticedTargetStreakPenaltyMax?: number | null
+    IsFeatured?: boolean | null
     // Begin escalation-exclusive properties
-    InGroup?: string
-    NextContractId?: string
-    GroupDefinition?: ContractGroupDefinition
+    InGroup?: string | null
+    NextContractId?: string | null
+    GroupDefinition?: ContractGroupDefinition | null
     GroupData?: {
         Level: number
         TotalLevels: number
         Completed: boolean
         FirstContractId: string
-    }
+    } | null
     // End escalation-exclusive properties
     /**
      * Useless property.
@@ -971,19 +975,19 @@ export interface MissionManifestMetadata {
      * @deprecated
      */
     readonly UserData?: unknown | null
-    IsVersus?: boolean
-    IsEvergreenSafehouse?: boolean
-    UseContractProgressionData?: boolean
-    CpdId?: string
+    IsVersus?: boolean | null
+    IsEvergreenSafehouse?: boolean | null
+    UseContractProgressionData?: boolean | null
+    CpdId?: string | null
     /**
      * Custom property used for Elusives (like official's year)
      * and Escalations (if it's 0, it is a Peacock escalation,
      * and OriginalSeason will exist for filtering).
      */
-    Season?: number
-    OriginalSeason?: number
+    Season?: number | null
+    OriginalSeason?: number | null
     // Used for sniper scoring
-    Modules?: ManifestScoringModule[]
+    Modules?: ManifestScoringModule[] | null
 }
 
 export interface GroupObjectiveDisplayOrderItem {
@@ -1039,7 +1043,7 @@ export interface MissionManifest {
         EnableExits?: {
             $eq?: (string | boolean)[]
         }
-        DevOnlyBricks?: string[]
+        DevOnlyBricks?: string[] | null
     }
     Metadata: MissionManifestMetadata
     readonly UserData?: Record<string, never> | never[]
