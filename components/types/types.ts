@@ -1220,7 +1220,7 @@ export interface CompiledChallengeTreeData {
     CategoryName: string
     ChallengeProgress?: ChallengeTreeWaterfallState
     Completed: boolean
-    CompletionData: CompletionData
+    CompletionData?: CompletionData
     Description: string
     // A string array of at most one element ("easy", "normal", or "hard").
     // If empty, then the challenge should appear in sessions on any difficulty.
@@ -1288,14 +1288,6 @@ export interface ChallengeProgressionData {
 export interface CompiledChallengeRuntimeData {
     Challenge: CompiledChallengeIngameData
     Progression: ChallengeProgressionData
-}
-
-export interface CompiledChallengeRewardData {
-    ChallengeId: string
-    ChallengeName: string
-    ChallengeDescription: string
-    ChallengeImageUrl: string
-    XPGain: number
 }
 
 export type LoadoutSavingMechanism = "PROFILES" | "LEGACY"

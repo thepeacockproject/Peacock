@@ -634,27 +634,36 @@ export class ChallengeService extends ChallengeRegistry {
         difficulty = 4,
     ): GroupIndexedChallengeLists {
         const userData = getUserData(userId, gameVersion)
-        const contract = this.controller.resolveContract(contractId, true)
+        const contractGroup = this.controller.resolveContract(contractId, true)
+
+        if (!contractGroup) {
+            return {}
+        }
+
+        let contract: MissionManifest | undefined
+
+        if (
+            contractGroup.Metadata.Type === "arcade" &&
+            contractGroup.Metadata.Id === contractId
+        ) {
+            const currentLevel =
+                contractGroup.Metadata.GroupDefinition?.Order[
+                    getUserEscalationProgress(userData, contractId) - 1
+                ]
+
+            assert.ok(currentLevel, "expected current level ID in escalation")
+
+            contract = this.controller.resolveContract(currentLevel, false)
+        } else {
+            contract = this.controller.resolveContract(contractId, false)
+        }
 
         if (!contract) {
             return {}
         }
 
-        const level =
-            contract.Metadata.Type === "arcade" &&
-            contract.Metadata.Id === contractId
-                ? // contractData, being a group contract, has the same Id as the input id parameter.
-                  // This means that we are requesting the challenges for the next level of the group
-                  this.controller.resolveContract(
-                      contract.Metadata.GroupDefinition.Order[
-                          getUserEscalationProgress(userData, contractId) - 1
-                      ],
-                      false,
-                  )
-                : this.controller.resolveContract(contractId, false)
-
         const levelParentLocation = getSubLocationFromContract(
-            level,
+            contract,
             gameVersion,
         )?.Properties.ParentLocation
 
@@ -665,12 +674,12 @@ export class ChallengeService extends ChallengeRegistry {
                 type: ChallengeFilterType.Contract,
                 contractId: contractId,
                 locationId:
-                    contract.Metadata.Id ===
+                    contractGroup.Metadata.Id ===
                         "aee6a16f-6525-4d63-a37f-225e293c6118" &&
                     gameVersion !== "h1"
                         ? "LOCATION_ICA_FACILITY_SHIP"
-                        : level.Metadata.Location,
-                isFeatured: contract.Metadata.Type === "featured",
+                        : contract.Metadata.Location,
+                isFeatured: contractGroup.Metadata.Type === "featured",
                 difficulty,
             },
             levelParentLocation,
@@ -690,16 +699,22 @@ export class ChallengeService extends ChallengeRegistry {
         const parent = locations.children[child].Properties.ParentLocation
 
         let contracts = isSniperLocation(child)
-            ? this.controller.missionsInLocations.sniper[child]
-            : (this.controller.missionsInLocations[child] ?? [])
+            ? // @ts-expect-error This is fine - we know it will be there
+              this.controller.missionsInLocations.sniper[child]
+            : // @ts-expect-error This is fine - we know it will be there
+              (this.controller.missionsInLocations[child] ?? [])
                   .concat(
+                      // @ts-expect-error This is fine - we know it will be there
                       this.controller.missionsInLocations.escalations[child],
                   )
+                  // @ts-expect-error This is fine - we know it will be there
                   .concat(this.controller.missionsInLocations.arcade[child])
 
         if (!contracts) {
             contracts = []
         }
+
+        assert.ok(parent, "expected parent location")
 
         return this.getGroupedChallengeLists(
             {
@@ -1154,80 +1169,89 @@ export class ChallengeService extends ChallengeRegistry {
             gameVersion,
         )
 
-        return entries.map(([groupId, challenges], index) => {
-            const groupData = this.getGroupByIdLoc(
-                groupId,
-                location.Properties.ParentLocation ?? location.Id,
-                gameVersion,
-            )
-            const challengeProgressionData = challenges.map((challengeData) =>
-                this.getPersistentChallengeProgression(
-                    userId,
-                    challengeData.Id,
+        return entries
+            .map(([groupId, challenges], index) => {
+                const groupData = this.getGroupByIdLoc(
+                    groupId,
+                    location.Properties.ParentLocation ?? location.Id,
                     gameVersion,
-                ),
-            )
+                )
 
-            const lastGroup = this.getGroupByIdLoc(
-                Object.keys(challengeLists)[index - 1],
-                location.Properties.ParentLocation ?? location.Id,
-                gameVersion,
-            )
-            const nextGroup = this.getGroupByIdLoc(
-                Object.keys(challengeLists)[index + 1],
-                location.Properties.ParentLocation ?? location.Id,
-                gameVersion,
-            )
+                if (!groupData) {
+                    return undefined
+                }
 
-            return {
-                Name: groupData?.Name,
-                Description: groupData?.Description,
-                Image: groupData?.Image,
-                CategoryId: groupData?.CategoryId,
-                Icon: groupData?.Icon,
-                ChallengesCount: challenges.length,
-                CompletedChallengesCount: challengeProgressionData.filter(
-                    (progressionData) => progressionData.Completed,
-                ).length,
-                CompletionData: completion,
-                Location: location,
-                IsLocked: location.Properties.IsLocked || false,
-                ImageLocked: location.Properties.LockedIcon || "",
-                RequiredResources: location.Properties.RequiredResources!,
-                SwitchData: {
-                    Data: {
-                        Challenges: this.mapSwitchChallenges(
-                            challenges,
+                const challengeProgressionData = challenges.map(
+                    (challengeData) =>
+                        this.getPersistentChallengeProgression(
                             userId,
+                            challengeData.Id,
                             gameVersion,
-                            compiler,
                         ),
-                        HasPrevious: index !== 0, // whether we are not at the first group
-                        HasNext:
-                            index !== Object.keys(challengeLists).length - 1, // whether we are not at the final group
-                        PreviousCategoryIcon:
-                            index !== 0 ? lastGroup?.Icon : "",
-                        NextCategoryIcon:
-                            index !== Object.keys(challengeLists).length - 1
-                                ? nextGroup?.Icon
-                                : "",
-                        CategoryData: {
-                            Name: groupData?.Name,
-                            Image: groupData?.Image,
-                            Icon: groupData?.Icon,
-                            ChallengesCount: challenges.length,
-                            CompletedChallengesCount:
-                                challengeProgressionData.filter(
-                                    (progressionData) =>
-                                        progressionData.Completed,
-                                ).length,
+                )
+
+                const lastGroup = this.getGroupByIdLoc(
+                    Object.keys(challengeLists)[index - 1],
+                    location.Properties.ParentLocation ?? location.Id,
+                    gameVersion,
+                )
+                const nextGroup = this.getGroupByIdLoc(
+                    Object.keys(challengeLists)[index + 1],
+                    location.Properties.ParentLocation ?? location.Id,
+                    gameVersion,
+                )
+
+                return {
+                    Name: groupData.Name,
+                    Description: groupData.Description,
+                    Image: groupData.Image,
+                    CategoryId: groupData.CategoryId,
+                    Icon: groupData.Icon,
+                    ChallengesCount: challenges.length,
+                    CompletedChallengesCount: challengeProgressionData.filter(
+                        (progressionData) => progressionData.Completed,
+                    ).length,
+                    CompletionData: completion,
+                    Location: location,
+                    IsLocked: location.Properties.IsLocked || false,
+                    ImageLocked: location.Properties.LockedIcon || "",
+                    RequiredResources: location.Properties.RequiredResources!,
+                    SwitchData: {
+                        Data: {
+                            Challenges: this.mapSwitchChallenges(
+                                challenges,
+                                userId,
+                                gameVersion,
+                                compiler,
+                            ),
+                            HasPrevious: index !== 0, // whether we are not at the first group
+                            HasNext:
+                                index !==
+                                Object.keys(challengeLists).length - 1, // whether we are not at the final group
+                            PreviousCategoryIcon:
+                                index !== 0 ? lastGroup?.Icon : "",
+                            NextCategoryIcon:
+                                index !== Object.keys(challengeLists).length - 1
+                                    ? nextGroup?.Icon
+                                    : "",
+                            CategoryData: {
+                                Name: groupData.Name,
+                                Image: groupData.Image,
+                                Icon: groupData.Icon,
+                                ChallengesCount: challenges.length,
+                                CompletedChallengesCount:
+                                    challengeProgressionData.filter(
+                                        (progressionData) =>
+                                            progressionData.Completed,
+                                    ).length,
+                            },
+                            CompletionData: completion,
                         },
-                        CompletionData: completion,
+                        IsLeaf: true,
                     },
-                    IsLeaf: true,
-                },
-            }
-        })
+                }
+            })
+            .filter(Boolean) as CompiledChallengeTreeCategory[]
     }
 
     compileRegistryChallengeTreeData(
@@ -1414,8 +1438,7 @@ export class ChallengeService extends ChallengeRegistry {
 
         if (challengeId === parentId) {
             // we're checking the tree of the challenge that was just completed,
-            // so we need to skip it, or we'll get an infinite loop and hit
-            // the max call stack size
+            // so we need to skip it, or we'll get an infinite loop
             return
         }
 
@@ -1432,10 +1455,17 @@ export class ChallengeService extends ChallengeRegistry {
 
         // Check if the dependency tree is completed now
 
-        const dep = this.getChallengeById(challengeId, gameVersion)
+        const challengeDependency = this.getChallengeById(
+            challengeId,
+            gameVersion,
+        )
+
+        if (!challengeDependency) {
+            return
+        }
 
         const { challengeCountData } =
-            ChallengeService._parseContextListeners(dep)
+            ChallengeService._parseContextListeners(challengeDependency)
 
         // First check for challengecounter, then challengetree
         const completed =
@@ -1447,11 +1477,15 @@ export class ChallengeService extends ChallengeRegistry {
             return
         }
 
+        const challenge = this.getChallengeById(challengeId, gameVersion)
+
+        assert.ok(challenge, `No challenge for ${challengeId}`)
+
         this.onChallengeCompleted(
             session,
             userData.Id,
             gameVersion,
-            this.getChallengeById(challengeId, gameVersion),
+            challenge,
             parentId,
         )
     }

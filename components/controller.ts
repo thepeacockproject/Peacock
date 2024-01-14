@@ -188,8 +188,10 @@ function createPeacockRequire(pluginName: string): NodeRequire {
      * @param specifier The requested module.
      */
     const peacockRequire: NodeRequire = (specifier: string) => {
-        if (generatedPeacockRequireTable[specifier]) {
-            return generatedPeacockRequireTable[specifier]
+        type T = keyof typeof generatedPeacockRequireTable
+
+        if (generatedPeacockRequireTable[specifier as T]) {
+            return generatedPeacockRequireTable[specifier as T]
         }
 
         try {
@@ -365,11 +367,11 @@ export class Controller {
      */
     public fetchedContracts: Map<string, MissionManifest> = new Map()
 
-    public challengeService: ChallengeService
-    public masteryService: MasteryService
+    public challengeService!: ChallengeService
+    public masteryService!: MasteryService
     escalationMappings: Map<string, Record<string, string>> = new Map()
-    public progressionService: ProgressionService
-    public smf: SMFSupport
+    public progressionService!: ProgressionService
+    public smf!: SMFSupport
     private _pubIdToContractId: Map<string, string> = new Map()
     /** Internal elusive target contracts - only accessible during bootstrap. */
     private _internalElusives: MissionManifest[] | undefined
@@ -444,12 +446,8 @@ export class Controller {
             this.hooks.challengesLoaded.call()
             this.hooks.masteryDataLoaded.call()
         } catch (e) {
-            log(
-                LogLevel.ERROR,
-                `Fatal error with challenge bootstrap: ${e}`,
-                "boot",
-            )
-            log(LogLevel.ERROR, e.stack)
+            log(LogLevel.ERROR, `Fatal error with challenge bootstrap`, "boot")
+            log(LogLevel.ERROR, e)
         }
     }
 
@@ -509,14 +507,9 @@ export class Controller {
             )
         }
 
-        if (this.contracts.has(this._pubIdToContractId.get(pubId)!)) {
-            return (
-                this.contracts.get(this._pubIdToContractId.get(pubId)!) ||
-                undefined
-            )
-        }
-
-        return undefined
+        return (
+            this.contracts.get(this._pubIdToContractId.get(pubId)!) || undefined
+        )
     }
 
     /**
@@ -650,9 +643,11 @@ export class Controller {
         this.addMission(groupContract)
         fixedLevels.forEach((level) => this.addMission(level))
 
-        this.missionsInLocations.escalations[locationId] ??= []
+        type K = keyof typeof this.missionsInLocations.escalations
 
-        this.missionsInLocations.escalations[locationId].push(
+        this.missionsInLocations.escalations[locationId as K] ??= <any>[]
+
+        this.missionsInLocations.escalations[locationId as K].push(
             groupContract.Metadata.Id,
         )
 
@@ -758,7 +753,6 @@ export class Controller {
                 }
             } catch (e) {
                 log(LogLevel.ERROR, `Failed to load contract ${i}!`)
-                log(LogLevel.ERROR, e.stack)
             }
         })
     }
@@ -1028,7 +1022,6 @@ export class Controller {
         let theExports
 
         try {
-            // eslint-disable-next-line prefer-const
             theExports = new Script(pluginContents, {
                 filename: pluginPath,
             }).runInContext(context)
@@ -1038,7 +1031,6 @@ export class Controller {
                 `Error while attempting to queue plugin ${pluginName} for loading!`,
             )
             log(LogLevel.ERROR, e)
-            log(LogLevel.ERROR, e.stack)
             return
         }
 
@@ -1057,7 +1049,6 @@ export class Controller {
         } catch (e) {
             log(LogLevel.ERROR, `Error while evaluating plugin ${pluginName}!`)
             log(LogLevel.ERROR, e)
-            log(LogLevel.ERROR, e.stack)
         }
     }
 

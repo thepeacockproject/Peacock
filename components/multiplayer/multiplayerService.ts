@@ -89,6 +89,7 @@ const activeMatches: Map<string, MatchData> = new Map()
 multiplayerRouter.post(
     "/GetRequiredResourcesForPreset",
     jsonMiddleware(),
+    // @ts-expect-error Has JWT data.
     (req: RequestWithJwt, res) => {
         const allPresets = getConfig<MultiplayerPreset[]>(
             "MultiplayerPresets",
@@ -132,6 +133,7 @@ multiplayerRouter.post(
 multiplayerRouter.post(
     "/RegisterToMatch",
     jsonMiddleware(),
+    // @ts-expect-error Has JWT data.
     (req: RequestWithJwt, res) => {
         // get a random contract from the list of possible ones in the selected preset
         const multiplayerPresets = getConfig<MultiplayerPreset[]>(
@@ -212,6 +214,7 @@ multiplayerRouter.post(
 multiplayerRouter.post(
     "/SetMatchData",
     jsonMiddleware(),
+    // @ts-expect-error Has JWT data.
     (req: RequestWithJwt, res) => {
         const match = activeMatches.get(req.body.matchId)
 
