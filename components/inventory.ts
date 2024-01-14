@@ -627,7 +627,7 @@ export function grantDrops(profileId: string, drops: Unlockable[]): void {
 
     inventoryUserCache.set(profileId, [
         ...new Set([
-            ...inventoryUserCache.get(profileId),
+            ...(inventoryUserCache.get(profileId) || []),
             ...inventoryItems.filter(
                 (invItem) => invItem.Unlockable.Type !== "evergreenmastery",
             ),

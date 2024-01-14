@@ -287,7 +287,7 @@ export function filterChallenge(
  */
 export function mergeSavedChallengeGroups(
     g1: SavedChallengeGroup,
-    g2: SavedChallengeGroup,
+    g2?: SavedChallengeGroup,
 ): SavedChallengeGroup {
     return {
         ...g1,

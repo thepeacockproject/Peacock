@@ -35,6 +35,7 @@ import { log, LogLevel } from "../loggingInterop"
 import { fastClone, getRemoteService } from "../utils"
 import { orderedETAs } from "./elusiveTargetArcades"
 import { missionsInLocations } from "./missionsInLocation"
+import assert from "assert"
 
 /**
  * The filters supported for HitsCategories.
@@ -154,11 +155,11 @@ export class HitsCategoryService {
 
                     switch (gameVersion) {
                         case "h1":
-                            if (contract.Metadata.Season === 1)
+                            if (contract?.Metadata.Season === 1)
                                 contracts.push(id)
                             break
                         case "h2":
-                            if (contract.Metadata.Season <= 2)
+                            if ((contract?.Metadata.Season || 0) <= 2)
                                 contracts.push(id)
                             break
                         default:
@@ -232,13 +233,17 @@ export class HitsCategoryService {
             .tap(tapName, (contracts, gameVersion) => {
                 // We need to push Peacock contracts first to work around H2 not
                 // having the "order" property for $arraygroupby. (The game just crashes)
-                const nEscalations = []
+                const nEscalations: string[] = []
 
                 for (const escalations of Object.values(
                     missionsInLocations.escalations,
                 )) {
                     for (const id of escalations) {
                         const contract = controller.resolveContract(id)
+
+                        if (!contract) {
+                            continue
+                        }
 
                         const isPeacock = contract.Metadata.Season === 0
                         const season = isPeacock
@@ -252,7 +257,7 @@ export class HitsCategoryService {
                                 if (season === 1) contracts.push(id)
                                 break
                             case "h2":
-                                if (season <= 2)
+                                if ((season || 0) <= 2)
                                     (isPeacock ? contracts : nEscalations).push(
                                         id,
                                     )
@@ -273,7 +278,7 @@ export class HitsCategoryService {
         pageNumber: number,
         gameVersion: GameVersion,
         userId: string,
-    ): Promise<HitsCategoryCategory> {
+    ): Promise<HitsCategoryCategory | undefined> {
         const remoteService = getRemoteService(gameVersion)
         const user = userAuths.get(userId)
 
@@ -289,10 +294,12 @@ export class HitsCategoryService {
             true,
         )
         const hits = resp.data.data.Data.Hits
-        preserveContracts(
-            hits.map(
-                (hit) => hit.UserCentricContract.Contract.Metadata.PublicId,
-            ),
+        void preserveContracts(
+            hits
+                .map(
+                    (hit) => hit.UserCentricContract.Contract.Metadata.PublicId,
+                )
+                .filter(Boolean) as string[],
         )
 
         // Fix completion and favorite status for retrieved contracts
@@ -304,7 +311,7 @@ export class HitsCategoryService {
             if (Object.keys(played).includes(hit.Id)) {
                 // Replace with data stored by Peacock
                 hit.UserCentricContract.Data.LastPlayedAt = new Date(
-                    played[hit.Id].LastPlayedAt,
+                    played[hit.Id].LastPlayedAt || 0,
                 ).toISOString()
                 hit.UserCentricContract.Data.Completed =
                     played[hit.Id].Completed
@@ -314,8 +321,10 @@ export class HitsCategoryService {
                 hit.UserCentricContract.Data.Completed = false
             }
 
-            hit.UserCentricContract.Data.PlaylistData.IsAdded =
-                favorites.includes(hit.Id)
+            if (hit.UserCentricContract.Data.PlaylistData) {
+                hit.UserCentricContract.Data.PlaylistData.IsAdded =
+                    favorites.includes(hit.Id)
+            }
         }
 
         return resp.data.data
@@ -378,13 +387,23 @@ export class HitsCategoryService {
         type: ContractFilter,
         category: string,
     ): string | undefined {
-        if (!this.filterSupported.includes(category)) return undefined
+        if (!this.filterSupported.includes(category)) {
+            return undefined
+        }
+
         const user = getUserData(userId, gameVersion)
+        type Cast =
+            keyof typeof user.Extensions.gamepersistentdata.HitsFilterType
 
         if (type === "default") {
-            type = user.Extensions.gamepersistentdata.HitsFilterType[category]
+            type =
+                user.Extensions.gamepersistentdata.HitsFilterType[
+                    category as Cast
+                ]
         } else {
-            user.Extensions.gamepersistentdata.HitsFilterType[category] = type
+            user.Extensions.gamepersistentdata.HitsFilterType[
+                category as Cast
+            ] = type
             writeUserData(userId, gameVersion)
         }
 
@@ -408,7 +427,10 @@ export class HitsCategoryService {
         return Object.keys(played)
             .filter((id) => this.isContractOfType(played, type, id))
             .sort((a, b) => {
-                return played[b].LastPlayedAt - played[a].LastPlayedAt
+                return (
+                    (played[b].LastPlayedAt || 0) -
+                    (played[a].LastPlayedAt || 0)
+                )
             })
     }
 
@@ -428,9 +450,9 @@ export class HitsCategoryService {
     ): boolean {
         switch (type) {
             case "completed":
-                return (
+                return Boolean(
                     played[contractId]?.Completed &&
-                    !played[contractId]?.IsEscalation
+                        !played[contractId]?.IsEscalation,
                 )
             case "failed":
                 return (
@@ -440,6 +462,8 @@ export class HitsCategoryService {
                 )
             case "all":
                 return !played[contractId]?.IsEscalation
+            default:
+                assert.fail("Invalid type passed to isContractOfType")
         }
     }
 
@@ -457,7 +481,7 @@ export class HitsCategoryService {
         pageNumber: number,
         gameVersion: GameVersion,
         userId: string,
-    ): Promise<HitsCategoryCategory> {
+    ): Promise<HitsCategoryCategory | undefined> {
         if (this.realtimeFetched.includes(categoryName)) {
             return await this.fetchFromOfficial(
                 categoryName,
@@ -479,7 +503,7 @@ export class HitsCategoryService {
             userId,
             filter,
             category,
-        )
+        )!
 
         const hitsCategory: HitsCategoryCategory = {
             Category: category,
