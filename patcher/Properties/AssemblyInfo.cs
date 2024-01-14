@@ -13,7 +13,7 @@ using System.Runtime.InteropServices;
 #endif
 [assembly: AssemblyCompany("The Peacock Project")]
 [assembly: AssemblyProduct("Peacock Patcher")]
-[assembly: AssemblyCopyright("Copyright © 2020-2023 grappigegovert & The Peacock Project")]
+[assembly: AssemblyCopyright("Copyright © 2020-2024 grappigegovert & The Peacock Project")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

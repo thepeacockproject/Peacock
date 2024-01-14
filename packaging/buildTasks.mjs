@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2023 The Peacock Project Team
+ *     Copyright (C) 2021-2024 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -82,7 +82,7 @@ export async function generateRequireTable() {
     const generatedPeacockRequireTableFile = prettier.format(
         `/*
 *     The Peacock Project - a HITMAN server replacement.
-*     Copyright (C) 2021-2023 The Peacock Project Team
+*     Copyright (C) 2021-2024 The Peacock Project Team
 *
 *     This program is free software: you can redistribute it and/or modify
 *     it under the terms of the GNU Affero General Public License as published by
