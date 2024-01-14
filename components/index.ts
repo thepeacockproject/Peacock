@@ -169,6 +169,7 @@ if (getFlag("loadoutSaving") === "PROFILES") {
 
 app.get(
     "/config/:audience/:serverVersion(\\d+_\\d+_\\d+)",
+    // @ts-expect-error Has jwt props.
     (req: RequestWithJwt<{ issuer: string }>, res) => {
         const proto = req.protocol
         const config = getConfig(
@@ -238,6 +239,7 @@ app.get("/files/privacypolicy/hm3/privacypolicy_*.json", (req, res) => {
 app.post(
     "/api/metrics/*",
     jsonMiddleware({ limit: "10Mb" }),
+    // @ts-expect-error jwt props.
     (req: RequestWithJwt<never, S2CEventWithTimestamp[]>, res) => {
         for (const event of req.body) {
             controller.hooks.newMetricsEvent.call(event, req)
@@ -247,6 +249,7 @@ app.post(
     },
 )
 
+// @ts-expect-error jwt props.
 app.post("/oauth/token", urlencoded(), (req: RequestWithJwt, res) =>
     handleOauthToken(req, res),
 )
@@ -263,7 +266,8 @@ app.use(
     Router()
         .use(
             "/resources-:serverVersion(\\d+-\\d+)/",
-            (req: RequestWithJwt, res, next) => {
+            // @ts-expect-error Has jwt props.
+            (req: RequestWithJwt, _, next) => {
                 req.serverVersion = req.params.serverVersion
                 req.gameVersion = req.serverVersion.startsWith("8")
                     ? "h3"
@@ -281,6 +285,7 @@ app.use(
             },
         )
         // we're fine with skipping to the next router if we don't have auth
+        // @ts-expect-error Has jwt props.
         .use(extractToken, (req: RequestWithJwt, res, next) => {
             switch (req.jwt?.pis) {
                 case "egp_io_interactive_hitman_the_complete_first_season":
@@ -316,6 +321,7 @@ app.use(
 
 app.get(
     "/profiles/page//dashboard//Dashboard_Category_Sniper_Singleplayer/00000000-0000-0000-0000-000000000015/Contract/ff9f46cf-00bd-4c12-b887-eac491c3a96d",
+    // @ts-expect-error jwt props.
     (req: RequestWithJwt, res) => {
         res.json({
             template: getConfig("FrankensteinMmSpTemplate", false),
@@ -339,6 +345,7 @@ app.get(
 // We handle this for now, but it's not used. For the future though.
 app.get(
     "/profiles/page//dashboard//Dashboard_Category_Sniper_Multiplayer/00000000-0000-0000-0000-000000000015/Contract/ff9f46cf-00bd-4c12-b887-eac491c3a96d",
+    // @ts-expect-error jwt props.
     (req: RequestWithJwt, res) => {
         const template = getConfig("FrankensteinMmMpTemplate", false)
 
@@ -371,6 +378,7 @@ app.get(
 )
 
 if (PEACOCK_DEV) {
+    // @ts-expect-error Has jwt props.
     app.use(async (req: RequestWithJwt, _res, next): Promise<void> => {
         if (!req.jwt) {
             next()
@@ -397,6 +405,7 @@ function generateBlobConfig(req: RequestWithJwt) {
 
 app.get(
     "/authentication/api/configuration/Init?*",
+    // @ts-expect-error jwt props.
     extractToken,
     (req: RequestWithJwt, res) => {
         // configName=pc-prod&lockedContentDisabled=false&isFreePrologueUser=false&isIntroPackUser=false&isFullExperienceUser=false
@@ -413,6 +422,7 @@ app.get(
 
 app.post(
     "/authentication/api/userchannel/AuthenticationService/RenewBlobSignature",
+    // @ts-expect-error jwt props.
     (req: RequestWithJwt, res) => {
         res.json(generateBlobConfig(req))
     },
@@ -454,6 +464,7 @@ primaryRouter.use("/resources-(\\d+-\\d+)/", menuSystemRouter)
 
 app.use(
     Router()
+        // @ts-expect-error Has jwt props.
         .use((req: RequestWithJwt, _, next) => {
             if (req.shouldCease) {
                 return next("router")
@@ -467,6 +478,7 @@ app.use(
         })
         .use(legacyRouter),
     Router()
+        // @ts-expect-error Has jwt props.
         .use((req: RequestWithJwt, _, next) => {
             if (req.shouldCease) {
                 return next("router")
@@ -496,25 +508,12 @@ program.description(
     "The Peacock Project is a HITMAN™ World of Assassination Trilogy server built for general use.",
 )
 
-const PEECOCK_ART = picocolors.yellow(`
- ███████████  ██████████ ██████████   █████████     ███████      █████████  █████   ████
-░░███░░░░░███░░███░░░░░█░░███░░░░░█  ███░░░░░███  ███░░░░░███   ███░░░░░███░░███   ███░
- ░███    ░███ ░███  █ ░  ░███  █ ░  ███     ░░░  ███     ░░███ ███     ░░░  ░███  ███
- ░██████████  ░██████    ░██████   ░███         ░███      ░███░███          ░███████
- ░███░░░░░░   ░███░░█    ░███░░█   ░███         ░███      ░███░███          ░███░░███
- ░███         ░███ ░   █ ░███ ░   █░░███     ███░░███     ███ ░░███     ███ ░███ ░░███
- █████        ██████████ ██████████ ░░█████████  ░░░███████░   ░░█████████  █████ ░░████
-░░░░░        ░░░░░░░░░░ ░░░░░░░░░░   ░░░░░░░░░     ░░░░░░░      ░░░░░░░░░  ░░░░░   ░░░░
-`)
-
 function startServer(options: { hmr: boolean; pluginDevHost: boolean }): void {
-    checkForUpdates()
+    void checkForUpdates()
 
     if (!IS_LAUNCHER) {
         console.log(
-            Math.random() < 0.001
-                ? PEECOCK_ART
-                : picocolors.greenBright(`
+            picocolors.greenBright(`
  ███████████  ██████████   █████████     █████████     ███████      █████████  █████   ████
 ░░███░░░░░███░░███░░░░░█  ███░░░░░███   ███░░░░░███  ███░░░░░███   ███░░░░░███░░███   ███░
  ░███    ░███ ░███  █ ░  ░███    ░███  ███     ░░░  ███     ░░███ ███     ░░░  ░███  ███
@@ -576,7 +575,7 @@ function startServer(options: { hmr: boolean; pluginDevHost: boolean }): void {
     if (options.hmr) {
         log(LogLevel.DEBUG, "Experimental HMR enabled.")
 
-        setupHotListener("contracts", () => {
+        void setupHotListener("contracts", () => {
             log(LogLevel.INFO, "Detected a change in contracts! Re-indexing...")
             controller.index()
         })
@@ -584,7 +583,7 @@ function startServer(options: { hmr: boolean; pluginDevHost: boolean }): void {
 
     // once contracts directory is present, we are clear to boot
     loadouts.init()
-    controller.boot(options.pluginDevHost)
+    void controller.boot(options.pluginDevHost)
 
     const httpServer = http.createServer(app)
 
@@ -597,7 +596,7 @@ function startServer(options: { hmr: boolean; pluginDevHost: boolean }): void {
     }
 
     // initialize livesplit
-    liveSplitManager.init()
+    void liveSplitManager.init()
 }
 
 program.option(
@@ -616,7 +615,7 @@ program
     .command("tools")
     .description("open the tools UI")
     .action(() => {
-        toolsMenu()
+        void toolsMenu()
     })
 
 program

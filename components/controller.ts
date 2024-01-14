@@ -459,6 +459,11 @@ export class Controller {
                 continue
             }
 
+            assert.ok(
+                contract.Metadata.GroupDefinition,
+                "arcade contract has no group definition",
+            )
+
             for (const lId of contract.Metadata.GroupDefinition.Order) {
                 const level = this.resolveContract(lId, false)
 
@@ -479,9 +484,10 @@ export class Controller {
         )
 
         for (const location of this.locationsWithETA) {
-            this.parentsWithETA.add(
-                locations.children[location].Properties.ParentLocation,
-            )
+            const pl = locations.children[location].Properties.ParentLocation
+            assert.ok(pl, "no parent location")
+
+            this.parentsWithETA.add(pl)
         }
     }
 
@@ -507,9 +513,7 @@ export class Controller {
             )
         }
 
-        return (
-            this.contracts.get(this._pubIdToContractId.get(pubId)!) || undefined
-        )
+        return this.contracts.get(this._pubIdToContractId.get(pubId)!)
     }
 
     /**
@@ -645,6 +649,7 @@ export class Controller {
 
         type K = keyof typeof this.missionsInLocations.escalations
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         this.missionsInLocations.escalations[locationId as K] ??= <any>[]
 
         this.missionsInLocations.escalations[locationId as K].push(

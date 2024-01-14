@@ -123,7 +123,7 @@ function filterUnlockedContent(
 
         // Handles packages
         else if (unlockable.Type === "package") {
-            for (const pkgUnlockableId of unlockable.Properties.Unlocks) {
+            for (const pkgUnlockableId of unlockable.Properties.Unlocks || []) {
                 packagedUnlocks.set(pkgUnlockableId, true)
             }
 
@@ -474,9 +474,9 @@ function updateWithDefaultSuit(
     profileId: string,
     gameVersion: GameVersion,
     inv: InventoryItem[],
-    sublocation: Unlockable,
+    sublocation?: Unlockable,
 ): InventoryItem[] {
-    if (sublocation === undefined) {
+    if (!sublocation) {
         return inv
     }
 
@@ -576,7 +576,7 @@ export function createInventory(
     // and location-wide default suits will be given afterwards.
     const defaults = Object.values(defaultSuits)
 
-    if ((getFlag("getDefaultSuits") as boolean) === false) {
+    if (!getFlag("getDefaultSuits")) {
         unlockables = unlockables.filter(
             (u) =>
                 !defaults.includes(u.Id) ||

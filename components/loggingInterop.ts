@@ -16,8 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type { NextFunction, Response } from "express"
-import type { RequestWithJwt } from "./types/types"
+import type { NextFunction, Request, Response } from "express"
 import picocolors from "picocolors"
 import winston from "winston"
 import "winston-daily-rotate-file"
@@ -261,7 +260,7 @@ export function log(
  * @see LogLevel.INFO
  */
 export function loggingMiddleware(
-    req: RequestWithJwt,
+    req: Request,
     _: Response,
     next?: NextFunction,
 ): void {
@@ -274,7 +273,7 @@ export function loggingMiddleware(
 }
 
 export function requestLoggingMiddleware(
-    req: RequestWithJwt,
+    req: Request,
     res: Response,
     next?: NextFunction,
 ): void {
@@ -295,7 +294,7 @@ export function requestLoggingMiddleware(
 
 export function errorLoggingMiddleware(
     err: Error,
-    req: RequestWithJwt,
+    req: Request,
     _: Response,
     next?: NextFunction,
 ): void {

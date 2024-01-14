@@ -48,7 +48,7 @@ import {
     getLevelCount,
 } from "./contracts/escalations/escalationService"
 import { getUserData, writeUserData } from "./databaseHandler"
-import axios from "axios"
+import axios, { AxiosError } from "axios"
 import { getFlag } from "./flags"
 import { log, LogLevel } from "./loggingInterop"
 import {
@@ -387,7 +387,8 @@ export function calculateSniperScore(
         [480, 35000], // 35000 bonus score at 480 secs (8 min)
         [900, 0], // 0 bonus score at 900 secs (15 min)
     ]
-    let prevsecs: number, prevscore: number
+    let prevsecs: number = 0
+    let prevscore: number = 0
 
     for (const [secs, score] of scorePoints) {
         if (bonusTimeTotal > secs) {
@@ -415,8 +416,9 @@ export function calculateSniperScore(
         scoreTotal: 0,
     }
 
-    const baseScore = contractSession.scoring.Context["TotalScore"]
-    const challengeMultiplier = contractSession.scoring.Settings["challenges"][
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const baseScore = (contractSession.scoring?.Context as any)["TotalScore"]
+    const challengeMultiplier = contractSession.scoring?.Settings["challenges"][
         "Unlockables"
     ].reduce((acc, unlockable) => {
         const item = inventory.find((item) => item.Unlockable.Id === unlockable)
@@ -430,17 +432,17 @@ export function calculateSniperScore(
     const bulletsMissed = 0 // TODO? not sure if neccessary, the penalty is always 0 for inbuilt contracts
     const bulletsMissedPenalty =
         bulletsMissed *
-        contractSession.scoring.Settings["bulletsused"]["penalty"]
+        (contractSession.scoring?.Settings["bulletsused"]["penalty"] || 0)
     // Get SA status from global SA challenge for contracttype sniper
     const silentAssassin =
-        contractSession.challengeContexts[
+        contractSession.challengeContexts?.[
             "029c4971-0ddd-47ab-a568-17b007eec04e"
         ].state !== "Failure"
     const saBonus = silentAssassin
-        ? contractSession.scoring.Settings["silentassassin"]["score"]
+        ? contractSession.scoring?.Settings["silentassassin"]["score"]
         : 0
     const saMultiplier = silentAssassin
-        ? contractSession.scoring.Settings["silentassassin"]["multiplier"]
+        ? contractSession.scoring?.Settings["silentassassin"]["multiplier"]
         : 1.0
 
     const subTotalScore = baseScore + timeBonus + saBonus - bulletsMissedPenalty
@@ -1190,7 +1192,7 @@ export async function getMissionEndData(
                 },
             )
         } catch (e) {
-            handleAxiosError(e)
+            handleAxiosError(e as AxiosError)
             log(
                 LogLevel.WARN,
                 "Failed to commit leaderboards data! Either you or the server may be offline.",

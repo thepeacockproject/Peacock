@@ -28,7 +28,7 @@ import type {
     Unlockable,
     UserProfile,
 } from "./types/types"
-import axios, { AxiosError } from "axios"
+import { AxiosError } from "axios"
 import { log, LogLevel } from "./loggingInterop"
 import { writeFileSync } from "fs"
 import { getFlag } from "./flags"
@@ -71,10 +71,10 @@ export async function checkForUpdates(): Promise<void> {
     }
 
     try {
-        const res = await axios(
+        const res = await fetch(
             "https://backend.rdil.rocks/peacock/latest-version",
         )
-        const current = res.data
+        const current = parseInt(await res.text(), 10)
 
         if (PEACOCKVER < 0 && current < -PEACOCKVER) {
             log(
@@ -306,6 +306,7 @@ function updateUserProfile(
 
                     if (gameVersion === "h1") {
                         // No sniper locations, but we add normal and pro1
+                        // @ts-expect-error I know what I'm doing.
                         obj[newKey] = {
                             // Data from previous profiles only contains normal and is the default.
                             normal: {
@@ -321,8 +322,10 @@ function updateUserProfile(
                         }
                     } else {
                         // We need to update sniper locations.
+                        // @ts-expect-error I know what I'm doing.
                         obj[newKey] = sniperLocs[newKey]
-                            ? sniperLocs[newKey].reduce((obj, uId) => {
+                            ? // @ts-expect-error I know what I'm doing.
+                              sniperLocs[newKey].reduce((obj, uId) => {
                                   obj[uId] = {
                                       Xp: 0,
                                       Level: 1,
@@ -538,7 +541,7 @@ export function attainableDefaults(gameVersion: GameVersion): string[] {
  * @param subLocation The sub-location.
  * @returns The default suit for the given sub-location and parent location.
  */
-export function getDefaultSuitFor(subLocation: Unlockable): string | undefined {
+export function getDefaultSuitFor(subLocation: Unlockable): string {
     type Cast = keyof typeof defaultSuits
     return (
         defaultSuits[subLocation.Id as Cast] ||

@@ -201,6 +201,7 @@ profileRouter.post(
 profileRouter.post(
     "/ProfileService/UpdateExtensions",
     jsonMiddleware(),
+    // @ts-expect-error jwt props.
     (
         req: RequestWithJwt<
             Record<string, never>,
@@ -231,6 +232,7 @@ profileRouter.post(
 profileRouter.post(
     "/ProfileService/SynchroniseGameStats",
     jsonMiddleware(),
+    // @ts-expect-error jwt props.
     (req: RequestWithJwt, res) => {
         if (req.body.profileId !== req.jwt.unique_name) {
             // data requested for different profile id
@@ -455,6 +457,7 @@ profileRouter.post(
 profileRouter.post(
     "/GamePersistentDataService/SaveData",
     jsonMiddleware(),
+    // @ts-expect-error jwt props.
     (req: RequestWithJwt, res) => {
         if (req.jwt.unique_name !== req.body.userId) {
             return res.status(403).end()
@@ -617,6 +620,7 @@ profileRouter.post(
 profileRouter.post(
     "/DefaultLoadoutService/Set",
     jsonMiddleware(),
+    // @ts-expect-error jwt props.
     async (req: RequestWithJwt, res) => {
         if (getFlag("loadoutSaving") === "PROFILES") {
             let loadout = loadouts.getLoadoutFor(req.gameVersion)

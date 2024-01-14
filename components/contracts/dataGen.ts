@@ -316,6 +316,7 @@ export function mapObjectives(
                         gameChangerProps.ObjectivesCategory = (() => {
                             let obj: MissionManifestObjective
 
+                            // @ts-expect-error State machines are impossible to type
                             for (obj of gameChangerProps.Objectives) {
                                 if (obj.Category === "primary") return "primary"
                                 if (obj.Category === "secondary")
@@ -362,11 +363,9 @@ export function mapObjectives(
                 objective.OnActive.IfInProgress.Visible === false) ||
             (objective.OnActive?.IfCompleted &&
                 objective.OnActive.IfCompleted.Visible === false &&
-                objective.Definition &&
-                objective.Definition.States &&
-                objective.Definition.States.Start &&
-                objective.Definition.States.Start["-"] &&
-                objective.Definition.States.Start["-"].Transition === "Success")
+                // @ts-expect-error State machines are impossible to type
+                objective.Definition?.States?.Start?.["-"]?.Transition ===
+                    "Success")
         ) {
             continue // do not show objectives with 'ForceShowOnLoadingScreen: false' or objectives that are not visible on start
         }
@@ -396,6 +395,7 @@ export function mapObjectives(
                 objective.Definition?.Context?.Targets &&
                 (objective.Definition.Context.Targets as string[]).length === 1
             ) {
+                // @ts-expect-error State machines are impossible to type
                 id = objective.Definition.Context.Targets[0]
             }
 
@@ -437,10 +437,8 @@ export function mapObjectives(
             })
         } else if (
             objective.Type === "statemachine" &&
-            objective.Definition &&
-            objective.Definition.Context &&
-            objective.Definition.Context.Targets &&
-            (objective.Definition.Context.Targets as unknown[]).length === 1 &&
+            (objective.Definition?.Context?.Targets as unknown[])?.length ===
+                1 &&
             objective.HUDTemplate
         ) {
             // This objective will be displayed as a kill objective
@@ -457,6 +455,7 @@ export function mapObjectives(
             result.set(objective.Id, {
                 Type: "kill",
                 Properties: {
+                    // @ts-expect-error State machines are impossible to type
                     Id: objective.Definition.Context.Targets[0],
                     Conditions: Conditions,
                 },

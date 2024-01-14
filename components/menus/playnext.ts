@@ -26,6 +26,7 @@ import type {
     PlayNextCampaignDetails,
     UserCentricContract,
 } from "../types/types"
+import assert from "assert"
 
 /**
  * Main story campaign ordered mission IDs.
@@ -156,6 +157,8 @@ export function createMainOpportunityTile(
         "MissionStories",
         false,
     )
+
+    assert.ok(contractData)
 
     return {
         CategoryType: "MainOpportunity",

@@ -200,15 +200,21 @@ export function setupScoring(
                 context = immediate.context
             }
 
+            // @ts-expect-error Type issue
             scoring.Definition = definition
+            // @ts-expect-error Type issue
             scoring.Context = context
+            // @ts-expect-error Type issue
             scoring.State = state
         } else {
+            // @ts-expect-error Type issue
             scoring.Settings[name] = module
+            // @ts-expect-error Type issue
             delete scoring.Settings[name]["Type"]
         }
     }
 
+    // @ts-expect-error Type issue
     session.scoring = scoring
 }
 
