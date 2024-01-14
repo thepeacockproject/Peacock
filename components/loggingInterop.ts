@@ -135,7 +135,7 @@ if (consoleLogLevel !== LOG_LEVEL_NONE) {
 }
 
 const winstonLogLevel = {}
-// ts-expect-error Type mismatch.
+// @ts-expect-error Type mismatch.
 Object.values(LogLevel).forEach((e, i) => (winstonLogLevel[e] = i))
 
 const logger = winston.createLogger({

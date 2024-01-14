@@ -104,13 +104,13 @@ export async function handleOauthToken(
         // send back the token from the request (re-signed so the timestamps update)
         extractToken(req) // init req.jwt
         // remove signOptions from existing jwt
-        // ts-expect-error Non-optional, we're reassigning.
+        // @ts-expect-error Non-optional, we're reassigning.
         delete req.jwt.nbf // notBefore
-        // ts-expect-error Non-optional, we're reassigning.
+        // @ts-expect-error Non-optional, we're reassigning.
         delete req.jwt.exp // expiresIn
-        // ts-expect-error Non-optional, we're reassigning.
+        // @ts-expect-error Non-optional, we're reassigning.
         delete req.jwt.iss // issuer
-        // ts-expect-error Non-optional, we're reassigning.
+        // @ts-expect-error Non-optional, we're reassigning.
         delete req.jwt.aud // audience
 
         if (!isFrankenstein) {

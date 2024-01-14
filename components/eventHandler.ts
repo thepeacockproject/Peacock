@@ -443,7 +443,7 @@ type SSE4Body = SSE3Body & {
 eventRouter.post(
     "/SaveAndSynchronizeEvents3",
     jsonMiddleware({ limit: "10Mb" }),
-    // ts-expect-error Request has jwt props.
+    // @ts-expect-error Request has jwt props.
     (req: RequestWithJwt<unknown, SSE3Body>, res) => {
         if (req.body.userId !== req.jwt.unique_name) {
             res.status(403).send() // Trying to save events for other user
@@ -470,7 +470,7 @@ eventRouter.post(
 eventRouter.post(
     "/SaveAndSynchronizeEvents4",
     jsonMiddleware({ limit: "10Mb" }),
-    // ts-expect-error Request has jwt props.
+    // @ts-expect-error Request has jwt props.
     (req: RequestWithJwt<unknown, SSE4Body>, res) => {
         if (req.body.userId !== req.jwt.unique_name) {
             res.status(403).send() // Trying to save events for other user
@@ -498,7 +498,7 @@ eventRouter.post(
 eventRouter.post(
     "/SaveEvents2",
     jsonMiddleware({ limit: "10Mb" }),
-    // ts-expect-error Request has jwt props.
+    // @ts-expect-error Request has jwt props.
     (req: RequestWithJwt, res) => {
         if (req.jwt.unique_name !== req.body.userId) {
             res.status(403).send() // Trying to save events for other user

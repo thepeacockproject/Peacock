@@ -54,7 +54,7 @@ export const uuidRegex =
 
 export const contractTypes = ["featured", "usercreated"]
 
-export const versions: GameVersion[] = ["h1", "h2", "h3"]
+export const versions: Exclude<GameVersion, "scpc">[] = ["h1", "h2", "h3"]
 
 export const contractCreationTutorialId = "d7e2607c-6916-48e2-9588-976c7d8998bb"
 
@@ -344,7 +344,7 @@ function updateUserProfile(
                 {},
             )
 
-            // ts-expect-error Legacy property.
+            // @ts-expect-error Legacy property.
             delete profile.Extensions.progression["Unlockables"]
 
             profile.Version = 1
@@ -539,9 +539,10 @@ export function attainableDefaults(gameVersion: GameVersion): string[] {
  * @returns The default suit for the given sub-location and parent location.
  */
 export function getDefaultSuitFor(subLocation: Unlockable): string | undefined {
+    type Cast = keyof typeof defaultSuits
     return (
-        defaultSuits[subLocation.Id] ||
-        defaultSuits[subLocation.Properties.ParentLocation] ||
+        defaultSuits[subLocation.Id as Cast] ||
+        defaultSuits[subLocation.Properties.ParentLocation as Cast] ||
         "TOKEN_OUTFIT_HITMANSUIT"
     )
 }

@@ -58,6 +58,7 @@ import {
     inclusionDataCheck,
 } from "./candle/challengeHelpers"
 import { LoadSaveBody } from "./types/gameSchemas"
+import assert from "assert"
 
 const profileRouter = Router()
 
@@ -109,8 +110,9 @@ export const fakePlayerRegistry: {
 
 profileRouter.post(
     "/AuthenticationService/GetBlobOfflineCacheDatabaseDiff",
+    // @ts-expect-error Has jwt props.
     (req: RequestWithJwt, res) => {
-        const configs = []
+        const configs: string[] = []
 
         menuSystemDatabase.hooks.getDatabaseDiff.call(configs, req.gameVersion)
 
@@ -131,6 +133,7 @@ profileRouter.post(
 profileRouter.post(
     "/ProfileService/UpdateProfileStats",
     jsonMiddleware(),
+    // @ts-expect-error Has jwt props.
     (req: RequestWithJwt, res) => {
         if (req.jwt.unique_name !== req.body.id) {
             return res.status(403).end() // data submitted for different profile id
@@ -160,6 +163,7 @@ profileRouter.post("/ProfileService/GetUserConfig", (req, res) => {
 profileRouter.post(
     "/ProfileService/GetProfile",
     jsonMiddleware(),
+    // @ts-expect-error Has jwt props.
     (req: RequestWithJwt, res) => {
         if (req.body.id !== req.jwt.unique_name) {
             res.status(403).end() // data requested for different profile id
@@ -188,6 +192,7 @@ profileRouter.post(
 
 profileRouter.post(
     "/UnlockableService/GetInventory",
+    // @ts-expect-error Has jwt props.
     (req: RequestWithJwt, res) => {
         res.json(createInventory(req.jwt.unique_name, req.gameVersion))
     },
@@ -387,6 +392,7 @@ export async function resolveProfiles(
 profileRouter.post(
     "/ProfileService/ResolveProfiles",
     jsonMiddleware(),
+    // @ts-expect-error Has jwt props.
     async (req: RequestWithJwt, res) => {
         res.json(await resolveProfiles(req.body.profileIDs, req.gameVersion))
     },
@@ -395,6 +401,7 @@ profileRouter.post(
 profileRouter.post(
     "/ProfileService/ResolveGamerTags",
     jsonMiddleware(),
+    // @ts-expect-error Has jwt props.
     async (req: RequestWithJwt, res) => {
         const profiles = (await resolveProfiles(
             req.body.profileIds,
@@ -434,6 +441,7 @@ profileRouter.post("/ProfileService/GetFriendsCount", (req, res) =>
 profileRouter.post(
     "/GamePersistentDataService/GetData",
     jsonMiddleware(),
+    // @ts-expect-error Has jwt props.
     (req: RequestWithJwt, res) => {
         if (req.jwt.unique_name !== req.body.userId) {
             return res.status(403).end()
@@ -464,6 +472,7 @@ profileRouter.post(
 profileRouter.post(
     "/ChallengesService/GetActiveChallengesAndProgression",
     jsonMiddleware(),
+    // @ts-expect-error Has jwt props.
     (
         req: RequestWithJwt<
             Record<string, never>,
@@ -580,6 +589,7 @@ profileRouter.post(
 profileRouter.post(
     "/HubPagesService/GetChallengeTreeFor",
     jsonMiddleware(),
+    // @ts-expect-error Has jwt props.
     (req: RequestWithJwt, res) => {
         res.json({
             Data: {
@@ -638,6 +648,7 @@ profileRouter.post(
 profileRouter.post(
     "/ProfileService/UpdateUserSaveFileTable",
     jsonMiddleware(),
+    // @ts-expect-error Has jwt props.
     async (req: RequestWithJwt<never, UpdateUserSaveFileTableBody>, res) => {
         if (req.body.clientSaveFileList.length > 0) {
             // We are saving to the SaveFile with the most recent timestamp.
@@ -755,6 +766,7 @@ async function saveSession(
 profileRouter.post(
     "/ContractSessionsService/Load",
     jsonMiddleware(),
+    // @ts-expect-error Has jwt props.
     async (req: RequestWithJwt<never, LoadSaveBody>, res) => {
         const userData = getUserData(req.jwt.unique_name, req.gameVersion)
 
@@ -831,6 +843,8 @@ async function loadSession(
         }
     }
 
+    assert.ok(sessionData, "should have session data")
+
     // Update challenge progression with the user's latest progression data
     for (const cid in sessionData.challengeContexts) {
         // Make sure the ChallengeProgression is available, otherwise loading might fail!
@@ -867,7 +881,7 @@ async function loadSession(
 profileRouter.post(
     "/ProfileService/GetSemLinkStatus",
     jsonMiddleware(),
-    (req, res) => {
+    (_, res) => {
         res.json({
             IsConfirmed: true,
             LinkedEmail: "mail@example.com",

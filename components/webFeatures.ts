@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Request, Response, Router } from "express"
+import { NextFunction, Request, Response, Router } from "express"
 import { getConfig } from "./configSwizzleManager"
 import { readFileSync } from "atomically"
 import { GameVersion, UserProfile } from "./types/types"
@@ -41,6 +41,40 @@ if (PEACOCK_DEV) {
     })
 }
 
+type CommonRequest<ExtraQuery = Record<never, never>> = Request<
+    unknown,
+    unknown,
+    unknown,
+    {
+        user: string
+        gv: Exclude<GameVersion, "scpc">
+    } & ExtraQuery
+>
+
+function commonValidationMiddleware(
+    req: CommonRequest,
+    res: Response,
+    next: NextFunction,
+): void {
+    if (!req.query.gv || !versions.includes(req.query.gv ?? null)) {
+        res.json({
+            success: false,
+            error: "invalid game version",
+        })
+        return
+    }
+
+    if (!req.query.user || !uuidRegex.test(req.query.user)) {
+        res.json({
+            success: false,
+            error: "The request must contain the uuid of a user.",
+        })
+        return
+    }
+
+    next()
+}
+
 function formErrorMessage(res: Response, message: string): void {
     res.json({
         success: false,
@@ -48,83 +82,49 @@ function formErrorMessage(res: Response, message: string): void {
     })
 }
 
-webFeaturesRouter.get("/codenames", (req, res) => {
+webFeaturesRouter.get("/codenames", (_, res) => {
     res.json(getConfig("EscalationCodenames", false))
 })
 
-webFeaturesRouter.get(
-    "/local-users",
-    (req: Request<unknown, unknown, unknown, { gv: GameVersion }>, res) => {
-        if (!req.query.gv || !versions.includes(req.query.gv ?? null)) {
-            res.json([])
-            return
-        }
-
-        let dir
-
-        if (req.query.gv === "h3") {
-            dir = join("userdata", "users")
-        } else {
-            dir = join("userdata", req.query.gv, "users")
-        }
-
-        const files: string[] = readdirSync(dir).filter(
-            (name) => name !== "lop.json",
-        )
-
-        const result = []
-
-        for (const file of files) {
-            const read = JSON.parse(
-                readFileSync(join(dir, file)).toString(),
-            ) as UserProfile
-
-            result.push({
-                id: read.Id,
-                name: read.Gamertag,
-                platform: read.EpicId ? "Epic" : "Steam",
-            })
-        }
-
-        res.json(result)
-    },
-)
-
-function validateUserAndGv(
-    req: Request<unknown, unknown, unknown, { gv: GameVersion; user: string }>,
-    res: Response,
-): boolean {
+webFeaturesRouter.get("/local-users", (req: CommonRequest, res) => {
     if (!req.query.gv || !versions.includes(req.query.gv ?? null)) {
-        formErrorMessage(
-            res,
-            'The request must contain a valid game version among "h1", "h2", and "h3".',
-        )
-        return false
+        res.json([])
+        return
     }
 
-    if (!req.query.user || !uuidRegex.test(req.query.user)) {
-        formErrorMessage(res, "The request must contain the uuid of a user.")
-        return false
+    let dir
+
+    if (req.query.gv === "h3") {
+        dir = join("userdata", "users")
+    } else {
+        dir = join("userdata", req.query.gv, "users")
     }
 
-    return true
-}
+    const files: string[] = readdirSync(dir).filter(
+        (name) => name !== "lop.json",
+    )
+
+    const result = []
+
+    for (const file of files) {
+        const read = JSON.parse(
+            readFileSync(join(dir, file)).toString(),
+        ) as UserProfile
+
+        result.push({
+            id: read.Id,
+            name: read.Gamertag,
+            platform: read.EpicId ? "Epic" : "Steam",
+        })
+    }
+
+    res.json(result)
+})
 
 webFeaturesRouter.get(
     "/modify",
-    async (
-        req: Request<
-            unknown,
-            unknown,
-            unknown,
-            { gv: GameVersion; user: string; level: string; id: string }
-        >,
-        res,
-    ) => {
-        if (!validateUserAndGv(req, res)) {
-            return
-        }
-
+    commonValidationMiddleware,
+    async (req: CommonRequest<{ level: string; id: string }>, res) => {
         if (!req.query.level) {
             formErrorMessage(
                 res,
@@ -158,7 +158,7 @@ webFeaturesRouter.get(
 
         const mapping = controller.escalationMappings.get(req.query.id)
 
-        if (mapping === undefined) {
+        if (!mapping) {
             formErrorMessage(res, "Unknown escalation.")
             return
         }
@@ -198,19 +198,8 @@ webFeaturesRouter.get(
 
 webFeaturesRouter.get(
     "/user-progress",
-    async (
-        req: Request<
-            unknown,
-            unknown,
-            unknown,
-            { gv: GameVersion; user: string }
-        >,
-        res,
-    ) => {
-        if (!validateUserAndGv(req, res)) {
-            return
-        }
-
+    commonValidationMiddleware,
+    async (req: CommonRequest, res) => {
         try {
             await loadUserData(req.query.user, req.query.gv)
         } catch (e) {

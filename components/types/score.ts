@@ -25,7 +25,7 @@ import {
     Unlockable,
 } from "./types"
 
-export interface CalculateXpResult {
+export type CalculateXpResult = {
     completedChallenges: MissionEndChallenge[]
     xp: number
 }
@@ -50,8 +50,8 @@ export interface CalculateSniperScoreResult {
     TimeTaken: number
     TimeBonus: number
     SilentAssassin: boolean
-    SilentAssassinBonus: number
-    SilentAssassinMultiplier: number
+    SilentAssassinBonus: number | undefined
+    SilentAssassinMultiplier: number | undefined
 }
 
 export interface MissionEndChallenge {
@@ -77,12 +77,12 @@ export interface MissionEndSourceChallenge {
     IsActionReward: boolean
 }
 
-export interface MissionEndDrop {
+export type MissionEndDrop = {
     Unlockable: Unlockable
     SourceChallenge?: MissionEndSourceChallenge
 }
 
-export interface MissionEndAchievedMastery {
+export type MissionEndAchievedMastery = {
     score: number
     RatioParts: number
     RatioTotal: number
@@ -90,14 +90,14 @@ export interface MissionEndAchievedMastery {
     BaseScore: number
 }
 
-export interface MissionEndEvergreen {
+export type MissionEndEvergreen = {
     Payout: number
     EndStateEventName?: string
     PayoutsCompleted: MissionEndEvergreenPayout[]
     PayoutsFailed: MissionEndEvergreenPayout[]
 }
 
-export interface MissionEndEvergreenPayout {
+export type MissionEndEvergreenPayout = {
     Name: string
     Payout: number
     IsPrestige: boolean

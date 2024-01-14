@@ -1411,7 +1411,7 @@ export interface Loadout {
  *
  * @see LoadoutFile
  */
-export interface LoadoutsGameVersion {
+export type LoadoutsGameVersion = {
     selected: string | null
     loadouts: Loadout[]
 }
@@ -1419,11 +1419,11 @@ export interface LoadoutsGameVersion {
 /**
  * The top-level format for the loadout profiles storage file.
  */
-export interface LoadoutFile {
-    h1: LoadoutsGameVersion
-    h2: LoadoutsGameVersion
-    h3: LoadoutsGameVersion
-}
+export type LoadoutFile = Record<
+    // game version but not scpc
+    Exclude<GameVersion, "scpc">,
+    LoadoutsGameVersion
+>
 
 /**
  * A function that generates a campaign mission object for use in the campaigns menu.

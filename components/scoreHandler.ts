@@ -72,6 +72,7 @@ import {
 import { MasteryData } from "./types/mastery"
 import { createInventory, InventoryItem, getUnlockablesById } from "./inventory"
 import { calculatePlaystyle } from "./playStyles"
+import assert from "assert"
 
 export function calculateGlobalXp(
     contractSession: ContractSession,
@@ -625,6 +626,8 @@ export async function getMissionEndData(
         false,
     )
 
+    assert.ok(levelData, "contract not found")
+
     // Resolve the id of the parent location
     const subLocation = getSubLocationByName(
         levelData.Metadata.Location,
@@ -873,7 +876,7 @@ export async function getMissionEndData(
                 }
 
                 if (
-                    !sessionDetails.evergreen.failed &&
+                    !sessionDetails.evergreen?.failed &&
                     sessionDetails.objectiveStates.get(
                         secondaryObjective.Id,
                     ) === "Success"
@@ -888,7 +891,7 @@ export async function getMissionEndData(
 
         evergreenData.Payout = totalPayout
         evergreenData.EndStateEventName =
-            sessionDetails.evergreen.scoringScreenEndState
+            sessionDetails.evergreen?.scoringScreenEndState
 
         locationLevelInfo = EVERGREEN_LEVEL_INFO
 
@@ -1009,7 +1012,7 @@ export async function getMissionEndData(
         const masteryData =
             controller.masteryService.getMasteryDataForSubPackage(
                 locationParentId,
-                query.masteryUnlockableId ?? undefined,
+                query.masteryUnlockableId,
                 gameVersion,
                 jwt.unique_name,
             ) as MasteryData
@@ -1112,7 +1115,7 @@ export async function getMissionEndData(
     }
 
     // Finalize the response
-    if ((getFlag("autoSplitterForceSilentAssassin") as boolean) === true) {
+    if (getFlag("autoSplitterForceSilentAssassin")) {
         if (result.ScoreOverview.SilentAssassin) {
             await liveSplitManager.completeMission(timeTotal)
         } else {
@@ -1124,7 +1127,7 @@ export async function getMissionEndData(
 
     if (
         getFlag("leaderboards") === true &&
-        sessionDetails.compat === true &&
+        sessionDetails.compat &&
         contractData.Metadata.Type !== "vsrace" &&
         contractData.Metadata.Type !== "evergreen" &&
         // Disable sending sniper scores for now

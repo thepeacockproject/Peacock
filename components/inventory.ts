@@ -199,7 +199,7 @@ function filterUnlockedContent(
  * @returns boolean
  */
 function filterAllowedContent(gameVersion: GameVersion, entP: string[]) {
-    return function (unlockContainer: {
+    return function (unlockContainer?: {
         InstanceId: string
         ProfileId: string
         Unlockable: Unlockable
@@ -584,7 +584,6 @@ export function createInventory(
         )
     }
 
-    // ts-expect-error It cannot be undefined.
     const filtered: InventoryItem[] = unlockables
         .map((unlockable) => {
             if (brokenItems.includes(unlockable.Guid)) {
