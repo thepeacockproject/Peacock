@@ -12,6 +12,95 @@
             "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_SIGNATUREKILL",
             "Challenges": [
                 {
+                    "Id": "09966536-d4d9-47a6-afb5-63a1dfe0a02a",
+                    "Name": "UI_CHALLENGES_NOEL_GIFTKEEPSGIVING_NAME",
+                    "ImageName": "images/challenges/paris/noel_giftkeepsgiving.jpg",
+                    "Description": "UI_CHALLENGES_NOEL_GIFTKEEPSGIVING_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": ["TOKEN_OUTFIT_REWARD_HERO_CHRISTMASJUMPER_SUIT"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_PARIS",
+                    "ParentLocationId": "LOCATION_PARENT_PARIS",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "Constants": {
+                            "Goal": 2
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "States": {
+                            "Start": {
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.KillClass",
+                                                        "poison"
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Chimney"
+                                    }
+                                ]
+                            },
+                            "Chimney": {
+                                "exit_gate": {
+                                    "Condition": {
+                                        "$or": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "b4eaa447-0872-4a88-8b66-572f9eb271a2"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "713feae1-28fc-402b-a8bd-b7f86fbe1e7d"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "hard", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["4e45e91a-94ca-4d89-89fc-1b250e608e73"]
+                    }
+                },
+                {
                     "Id": "98d0787b-cc0b-48e4-b667-5473a0a4c558",
                     "Name": "UI_CHALLENGES_NOEL_BOTH_EXPLOSION_NAME",
                     "ImageName": "images/challenges/paris/noel_both_explosion.jpg",

@@ -358,6 +358,91 @@
                     }
                 },
                 {
+                    "Id": "e8ac5932-a2e0-48e3-9132-68d927493ba9",
+                    "Name": "UI_CHALLENGES_GECKO_TRAVELLER_CHALLENGE_NAME",
+                    "ImageName": "images/challenges/Golden/Golden_Gecko_TravellerChallenge.jpg",
+                    "Description": "UI_CHALLENGES_GECKO_TRAVELLER_CHALLENGE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": ["TRAVELLER_CHALLENGE_STARTING_OUTFIT"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_GOLDEN",
+                    "ParentLocationId": "LOCATION_PARENT_GOLDEN",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "Count": 0,
+                            "Goal": 2
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal",
+                                "text": "UI_CHALLENGES_GECKO_TRAVELLER_CHALLENGE_NAME",
+                                "icon": "some_icon"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$or": [
+                                                        {
+                                                            "$eq": [
+                                                                "$Value.RepositoryId",
+                                                                "bd0689d6-07b4-4757-b8ee-cac19f1c9e16"
+                                                            ]
+                                                        },
+                                                        {
+                                                            "$eq": [
+                                                                "$Value.RepositoryId",
+                                                                "9571d196-8d67-4d94-8dad-6e2d970d7a91"
+                                                            ]
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.KillItemRepositoryId",
+                                                        "3dbd9ee9-f887-41bb-83bf-386324d11485"
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["7d85f2b0-80ca-49be-a2b7-d56f67faf252"]
+                    }
+                },
+                {
                     "Id": "ea32c9f3-b89f-46ad-a1c7-c52e2e537640",
                     "Name": "UI_CHALLENGES_GECKO_DOUBLE_SNIPE_NAME",
                     "ImageName": "images/challenges/Golden/Golden_Gecko_Double_Snipe.jpg",
