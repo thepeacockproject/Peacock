@@ -92,7 +92,7 @@ export type MissionEndAchievedMastery = {
 
 export type MissionEndEvergreen = {
     Payout: number
-    EndStateEventName?: string
+    EndStateEventName?: string | null
     PayoutsCompleted: MissionEndEvergreenPayout[]
     PayoutsFailed: MissionEndEvergreenPayout[]
 }
@@ -101,6 +101,17 @@ export type MissionEndEvergreenPayout = {
     Name: string
     Payout: number
     IsPrestige: boolean
+}
+
+export type ContractScore = {
+    Total: number
+    AchievedMasteries: MissionEndAchievedMastery[]
+    AwardedBonuses: ScoringBonus[]
+    TotalNoMultipliers: number
+    TimeUsedSecs: Seconds
+    StarCount: number
+    FailedBonuses: ScoringBonus[]
+    SilentAssassin: boolean
 }
 
 export interface MissionEndResult {
@@ -149,28 +160,8 @@ export interface MissionEndResult {
         ScoreDetails: {
             Headlines: ScoringHeadline[]
         }
-        ContractScore?: {
-            Total: number
-            AchievedMasteries: MissionEndAchievedMastery[]
-            AwardedBonuses: ScoringBonus[]
-            TotalNoMultipliers: number
-            TimeUsedSecs: Seconds
-            StarCount: number
-            FailedBonuses: ScoringBonus[]
-            SilentAssassin: boolean
-        }
-        SniperChallengeScore?: {
-            FinalScore: number
-            BaseScore: number
-            TotalChallengeMultiplier: number
-            BulletsMissed: number
-            BulletsMissedPenalty: number
-            TimeTaken: number
-            TimeBonus: number
-            SilentAssassin: boolean
-            SilentAssassinBonus: number
-            SilentAssassinMultiplier: number
-        }
+        ContractScore?: ContractScore
+        SniperChallengeScore?: CalculateSniperScoreResult
         SilentAssassin: boolean
         NewRank: number
         RankCount: number

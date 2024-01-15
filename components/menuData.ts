@@ -270,9 +270,15 @@ menuDataRouter.get(
         }>,
         res,
     ) => {
-        const { contractId } = getSession(req.jwt.unique_name)
-        const contractData = controller.resolveContract(contractId, true)
+        const s = getSession(req.jwt.unique_name)
 
+        if (!s) {
+            res.status(400).send("no session")
+            return
+        }
+
+        const { contractId } = s
+        const contractData = controller.resolveContract(contractId, true)
         const userData = getUserData(req.jwt.unique_name, req.gameVersion)
 
         res.json({
@@ -577,6 +583,12 @@ const missionEndRequest = async (
 ) => {
     if (!req.query.contractSessionId) {
         res.status(400).send("no session id")
+        return
+    }
+
+    // prototype pollution prevention
+    if (/(__proto__|prototype|constructor)/.test(req.query.contractSessionId)) {
+        res.status(400).send("invalid session id")
         return
     }
 
@@ -1058,6 +1070,11 @@ menuDataRouter.get("/contractcreation/create", (req: RequestWithJwt, res) => {
     }
 
     const sesh = getSession(req.jwt.unique_name)
+
+    if (!sesh) {
+        res.status(400).send("no session")
+        return
+    }
 
     const one = "1"
     const two = `${random.int(10, 99)}`

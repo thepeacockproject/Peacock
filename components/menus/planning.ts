@@ -22,6 +22,7 @@ import type {
     JwtData,
     MissionManifest,
     MissionStory,
+    ProgressionData,
     SceneConfig,
     Unlockable,
     UserCentricContract,
@@ -51,11 +52,12 @@ import {
 } from "../utils"
 
 import { createInventory, getUnlockableById } from "../inventory"
-import { createSniperLoadouts } from "./sniper"
+import { createSniperLoadouts, SniperCharacter, SniperLoadout } from "./sniper"
 import { getFlag } from "../flags"
 import { loadouts } from "../loadouts"
 import { resolveProfiles } from "../profileHandler"
 import { userAuths } from "../officialServerAuth"
+import assert from "assert"
 
 export type PlanningError = { error: boolean }
 
@@ -77,11 +79,11 @@ export type GamePlanningData = {
     IsFirstInGroup: boolean
     Creator: UserProfile
     UserContract?: boolean
-    UnlockedEntrances?: string[]
-    UnlockedAgencyPickups?: string[]
+    UnlockedEntrances?: string[] | null
+    UnlockedAgencyPickups?: string[] | null
     Objectives?: unknown
     GroupData?: PlanningGroupData
-    Entrances: Unlockable[]
+    Entrances: Unlockable[] | null
     Location: Unlockable
     LoadoutData: unknown
     LimitedLoadoutUnlockLevel: number
@@ -138,6 +140,12 @@ export async function getPlanningData(
             ? _theLastYardbirdScpc
             : controller.resolveContract(contractId)
 
+    if (!contractData) {
+        return {
+            error: true,
+        }
+    }
+
     if (resetEscalation) {
         const escalationGroupId =
             contractData.Metadata.InGroup ?? contractData.Metadata.Id
@@ -146,8 +154,18 @@ export async function getPlanningData(
 
         writeUserData(jwt.unique_name, gameVersion)
 
+        const group = controller.escalationMappings.get(escalationGroupId)
+
+        if (!group) {
+            log(
+                LogLevel.ERROR,
+                `Unknown escalation group: ${escalationGroupId}`,
+            )
+            return { error: true }
+        }
+
         // now reassign properties and continue
-        contractId = controller.escalationMappings.get(escalationGroupId)["1"]
+        contractId = group["1"]
 
         contractData = controller.resolveContract(contractId)
     }
@@ -162,19 +180,28 @@ export async function getPlanningData(
             `Trying to download contract ${contractId} due to it not found locally.`,
         )
         const user = userAuths.get(jwt.unique_name)
-        const resp = await user._useService(
+        const resp = await user?._useService(
             `https://${getRemoteService(
                 gameVersion,
             )}.hitman.io/profiles/page/Planning?contractid=${contractId}&resetescalation=false&forcecurrentcontract=false&errorhandling=false`,
             true,
         )
 
-        contractData = resp.data.data.Contract
+        contractData = resp?.data.data.Contract
+
+        if (!contractData) {
+            log(
+                LogLevel.ERROR,
+                `Official planning lookup no result: ${contractId}`,
+            )
+            return { error: true }
+        }
+
         controller.fetchedContracts.set(contractData.Metadata.Id, contractData)
     }
 
     if (!contractData) {
-        log(LogLevel.ERROR, `Not found: ${contractId}, .`)
+        log(LogLevel.ERROR, `Not found: ${contractId}, planning regular.`)
         return { error: true }
     }
 
@@ -198,6 +225,11 @@ export async function getPlanningData(
     if (escalation) {
         const groupContractData = controller.resolveContract(escalationGroupId)
 
+        if (!groupContractData) {
+            log(LogLevel.ERROR, `Not found: ${contractId}, planning esc group`)
+            return { error: true }
+        }
+
         const p = getUserEscalationProgress(userData, escalationGroupId)
 
         const done =
@@ -216,9 +248,12 @@ export async function getPlanningData(
 
         // Fix contractData to the data of the level in the group.
         if (!contractData.Metadata.InGroup) {
-            contractData = controller.resolveContract(
-                contractData.Metadata.GroupDefinition.Order[p - 1],
-            )
+            const newLevelId =
+                contractData.Metadata.GroupDefinition?.Order[p - 1]
+
+            assert(typeof newLevelId === "string", "newLevelId is not a string")
+
+            contractData = controller.resolveContract(newLevelId)
         }
     }
 
@@ -246,11 +281,16 @@ export async function getPlanningData(
 
     const sublocation = getSubLocationFromContract(contractData, gameVersion)
 
+    assert.ok(sublocation, "contract sublocation is null")
+
     if (!entranceData[scenePath]) {
         log(
             LogLevel.ERROR,
-            `Could not find Entrance data for ${scenePath} (loc Planning)! This may cause an unhandled promise rejection.`,
+            `Could not find Entrance data for ${scenePath} in planning`,
         )
+        return {
+            error: true,
+        }
     }
 
     const entrancesInScene = entranceData[scenePath]
@@ -267,6 +307,9 @@ export async function getPlanningData(
             LogLevel.ERROR,
             "No matching entrance data found in planning, this is a bug!",
         )
+        return {
+            error: true,
+        }
     }
 
     sublocation.DisplayNameLocKey = `UI_${sublocation.Id}_NAME`
@@ -299,10 +342,10 @@ export async function getPlanningData(
               ) && currentLoadout.data[contractData.Metadata.Location]
 
     if (dlForLocation) {
-        pistol = dlForLocation["2"]
-        suit = dlForLocation["3"]
-        tool1 = dlForLocation["4"]
-        tool2 = dlForLocation["5"]
+        pistol = dlForLocation["2"]!
+        suit = dlForLocation["3"]!
+        tool1 = dlForLocation["4"]!
+        tool2 = dlForLocation["5"]!
 
         for (const key of Object.keys(dlForLocation)) {
             if (["2", "3", "4", "5"].includes(key)) {
@@ -311,6 +354,7 @@ export async function getPlanningData(
             }
 
             briefcaseId = key
+            // @ts-expect-error This will work.
             briefcaseProp = dlForLocation[key]
         }
     }
@@ -331,8 +375,11 @@ export async function getPlanningData(
 
     if (gameVersion === "scpc") {
         for (const loadout of sniperLoadouts) {
-            loadout["LoadoutData"] = loadout["Loadout"]["LoadoutData"]
-            delete loadout["Loadout"]
+            const l = loadout as SniperLoadout
+            l["LoadoutData"] = (loadout as SniperCharacter)["Loadout"][
+                "LoadoutData"
+            ]
+            delete (loadout as Partial<SniperCharacter>)["Loadout"]
         }
     }
 
@@ -440,22 +487,28 @@ export async function getPlanningData(
                     gameVersion,
                 )
 
-            const locationProgression =
-                loadoutMasteryData &&
-                (loadoutMasteryData.SubPackageId
-                    ? userData.Extensions.progression.Locations[
+            const locationProgression: ProgressionData =
+                loadoutMasteryData?.SubPackageId
+                    ? // @ts-expect-error This works
+                      userData.Extensions.progression.Locations[
                           loadoutMasteryData.Location
                       ][loadoutMasteryData.SubPackageId]
                     : userData.Extensions.progression.Locations[
-                          loadoutMasteryData.Location
-                      ])
+                          loadoutMasteryData?.Location as unknown as string
+                      ]
 
-            if (locationProgression.Level < loadoutMasteryData.Level)
+            if (locationProgression.Level < (loadoutMasteryData?.Level || 0)) {
+                type S = {
+                    SlotId: string
+                }
                 loadoutSlots = loadoutSlots.filter(
-                    (slot) => !["2", "4", "5"].includes(slot.SlotId),
+                    (slot) => !["2", "4", "5"].includes((slot as S)?.SlotId),
                 )
+            }
         }
     }
+
+    assert.ok(contractData, "no contract data at final - planning")
 
     return {
         Contract: contractData,
@@ -467,7 +520,7 @@ export async function getPlanningData(
         UnlockedEntrances:
             contractData.Metadata.Type === "sniper"
                 ? null
-                : typedInv
+                : (typedInv
                       .filter(
                           (item) =>
                               item.Unlockable.Subtype === "startinglocation",
@@ -475,14 +528,14 @@ export async function getPlanningData(
                       .filter(
                           (item) =>
                               item.Unlockable.Properties.Difficulty ===
-                              contractData.Metadata.Difficulty,
+                              contractData!.Metadata.Difficulty,
                       )
                       .map((i) => i.Unlockable.Properties.RepositoryId)
-                      .filter((id) => id),
+                      .filter(Boolean) as string[]),
         UnlockedAgencyPickups:
             contractData.Metadata.Type === "sniper"
                 ? null
-                : typedInv
+                : (typedInv
                       .filter((item) => item.Unlockable.Type === "agencypickup")
                       .filter(
                           (item) =>
@@ -490,12 +543,12 @@ export async function getPlanningData(
                               contractData.Metadata.Difficulty,
                       )
                       .map((i) => i.Unlockable.Properties.RepositoryId)
-                      .filter((id) => id),
+                      .filter(Boolean) as string[]),
         Objectives: mapObjectives(
-            contractData.Data.Objectives,
+            contractData.Data.Objectives!,
             contractData.Data.GameChangers || [],
             contractData.Metadata.GroupObjectiveDisplayOrder || [],
-            contractData.Metadata.IsEvergreenSafehouse,
+            Boolean(contractData.Metadata.IsEvergreenSafehouse),
         ),
         GroupData: groupData,
         Entrances:

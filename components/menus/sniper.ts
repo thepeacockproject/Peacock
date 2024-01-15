@@ -26,13 +26,13 @@ import { getSubLocationByName } from "../contracts/dataGen"
 import { InventoryItem } from "../inventory"
 import assert from "assert"
 
-type SniperCharacter = {
+export type SniperCharacter = {
     Id: string
     Loadout: SniperLoadout
     CompletionData: CompletionData
 }
 
-type SniperLoadout = {
+export type SniperLoadout = {
     LoadoutData: {
         SlotId: string
         SlotName: string

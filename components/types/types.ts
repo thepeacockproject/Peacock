@@ -1487,13 +1487,6 @@ export type SafehouseCategory = {
     Data: null
 }
 
-export type SniperLoadout = {
-    ID: string
-    InstanceID: string
-    Unlockable: Unlockable[]
-    MainUnlockable: Unlockable
-}
-
 /**
  * Common type for the `Entrances` and `AgencyPickups` configs.
  */
