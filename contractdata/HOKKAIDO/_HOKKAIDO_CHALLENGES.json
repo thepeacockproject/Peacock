@@ -3274,6 +3274,76 @@
             "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_COMMUNITY",
             "Challenges": [
                 {
+                    "Id": "1f469f6e-93a6-4b8b-9fe1-8ccc9bff5e1c",
+                    "Name": "UI_CHALLENGES_FLU_PATIENT_47_NAME",
+                    "ImageName": "images/challenges/Hokkaido/flu_patient_47.jpg",
+                    "Description": "UI_CHALLENGES_FLU_PATIENT_47_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": ["TOKEN_OUTFIT_REWARD_HERO_WOLVERINE_SUIT"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "ParentLocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Constants": {
+                            "HIPS": [
+                                "ab1b6335-685e-44a8-ba1e-4a992814b753",
+                                "47666ef1-c1a7-4cfa-9cac-514c4f894d76",
+                                "3a2172af-cf6f-4da3-8ed6-9b33058f718e",
+                                "c9940d3b-0fbc-4d2b-9a4a-80251d63c121",
+                                "00efa3fc-e1fe-47d8-8eac-f0a661413b0a"
+                            ]
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "47_Infected": {
+                                    "Transition": "CheckLieDown"
+                                }
+                            },
+                            "CheckLieDown": {
+                                "setpieces": {
+                                    "Condition": {
+                                        "$any": {
+                                            "?": {
+                                                "$eq": [
+                                                    "$.#",
+                                                    "$Value.RepositoryId"
+                                                ]
+                                            },
+                                            "in": "$.HIPS"
+                                        }
+                                    },
+                                    "Transition": "CheckCompletion"
+                                },
+                                "47_Cured": {
+                                    "Transition": "Failure"
+                                }
+                            },
+                            "CheckCompletion": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["live", "medium", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["a2befcec-7799-4987-9215-6a152cb6a320"]
+                    }
+                },
+                {
                     "Id": "2e7d7608-1096-4279-a59d-85d4971f7625",
                     "Name": "UI_CHALLENGES_FLU_NOBIOSUIT_NAME",
                     "ImageName": "images/challenges/Hokkaido/flu_no_rubber.jpg",

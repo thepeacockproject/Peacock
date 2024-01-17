@@ -524,6 +524,84 @@
                     }
                 },
                 {
+                    "Id": "2ce5ea7d-d339-447f-b9a9-4c425af86518",
+                    "Name": "UI_CHALLENGES_SKUNK_PUBLICENEMY_CHALLENGE_NAME",
+                    "ImageName": "images/challenges/NORTHAMERICA/NORTHAMERICA_PublicEnemySuit.jpg",
+                    "Description": "UI_CHALLENGES_SKUNK_PUBLICENEMY_CHALLENGE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": ["TOKEN_OUTFIT_REWARD_HERO_PUBLICENEMY_SUIT"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_NORTHAMERICA",
+                    "ParentLocationId": "LOCATION_PARENT_NORTHAMERICA",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "Constants": {
+                            "Goal": 2
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "States": {
+                            "Start": {
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$or": [
+                                                        {
+                                                            "$eq": [
+                                                                "$Value.KillItemCategory",
+                                                                "assaultrifle"
+                                                            ]
+                                                        },
+                                                        {
+                                                            "$eq": [
+                                                                "$Value.KillItemCategory",
+                                                                "smg"
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "hard", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["82f55837-e26c-41bf-bc6e-fa97b7981fbc"]
+                    }
+                },
+                {
                     "Id": "66f35369-9345-4c5e-ae46-63adc2b4c3f7",
                     "Name": "UI_CHALLENGES_SKUNK_UNREASONABLE_SCOPE_NAME",
                     "ImageName": "images/challenges/NORTHAMERICA/SKUNK_Treehouse_Snipe_Both_OneShot.jpg",
