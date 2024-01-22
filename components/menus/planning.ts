@@ -238,7 +238,7 @@ export async function planningView(
     let suit = getDefaultSuitFor(sublocation)
     let tool1 = "TOKEN_FIBERWIRE"
     let tool2 = "PROP_TOOL_COIN"
-    let briefcaseProp: string | undefined = undefined
+    let briefcaseContainedItemId: string | undefined = undefined
     let briefcaseId: string | undefined = undefined
 
     const hasOwn = Object.prototype.hasOwnProperty.bind(currentLoadout.data)
@@ -266,11 +266,13 @@ export async function planningView(
             }
 
             briefcaseId = key
-            briefcaseProp = dlForLocation[key]
+            briefcaseContainedItemId = dlForLocation[key]
         }
     }
 
-    const i = typedInv.find((item) => item.Unlockable.Id === briefcaseProp)
+    const briefcaseContainedItem = typedInv.find(
+        (item) => item.Unlockable.Id === briefcaseContainedItemId,
+    )
 
     const userCentric = generateUserCentric(
         contractData,
@@ -350,19 +352,20 @@ export async function planningView(
             SlotId: "6",
             Recommended: null,
         },
-        briefcaseId && i && {
-            SlotName: briefcaseProp,
-            SlotId: briefcaseId,
-            Recommended: {
-                item: {
-                    ...i,
-                    Properties: {},
+        briefcaseId &&
+            briefcaseContainedItem && {
+                SlotName: briefcaseContainedItemId,
+                SlotId: briefcaseId,
+                Recommended: {
+                    item: {
+                        ...briefcaseContainedItem,
+                        Properties: {},
+                    },
+                    type: briefcaseContainedItem.Unlockable.Id,
+                    owned: true,
                 },
-                type: i.Unlockable.Id,
-                owned: true,
+                IsContainer: true,
             },
-            IsContainer: true,
-        },
     ].filter(Boolean)
 
     /**
