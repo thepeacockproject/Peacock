@@ -350,7 +350,7 @@ export async function planningView(
             SlotId: "6",
             Recommended: null,
         },
-        briefcaseId && {
+        briefcaseId && i && {
             SlotName: briefcaseProp,
             SlotId: briefcaseId,
             Recommended: {
