@@ -22,15 +22,46 @@
                         "Start": {
                             "Disguise": {
                                 "Condition": {
+                                    "$or": [
+                                        {
+                                            "$eq": [
+                                                "$Value",
+                                                "315400cd-90d8-43cc-8c22-62c0cb8969a5"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value",
+                                                "31ac5259-ff59-46e0-ab0f-8ddeaf296a36"
+                                            ]
+                                        }
+                                    ]
+                                }
+                                "Transition": "Success"
+                            },
+                            "StartingSuit": {
+                                "Condition": {
                                     "$eq": [
                                         "$Value",
-                                        "315400cd-90d8-43cc-8c22-62c0cb8969a5"
+                                        "31ac5259-ff59-46e0-ab0f-8ddeaf296a36"
                                     ]
                                 },
                                 "Transition": "Success"
                             }
                         },
-                        "Success": { "Disguise": { "Transition": "Failure" } }
+                        "Success": {
+                            "Disguise": {
+                                "Transition": "PleaseDoFail"
+                            }
+                        },
+                        "PleaseDoFail": {
+                            "$timer": {
+                                "Condition": {
+                                    "$after": 0
+                                },
+                                "Transition": "Failure"
+                            }
+                        }
                     }
                 }
             },
