@@ -51,6 +51,24 @@
                         },
                         "Success": {
                             "Disguise": {
+                                "Condition": {
+                                    "$not": {
+                                        "$or": [
+                                            {
+                                                "$eq": [
+                                                    "$Value",
+                                                    "315400cd-90d8-43cc-8c22-62c0cb8969a5"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value",
+                                                    "31ac5259-ff59-46e0-ab0f-8ddeaf296a36"
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                },
                                 "Transition": "PleaseDoFail"
                             }
                         },
