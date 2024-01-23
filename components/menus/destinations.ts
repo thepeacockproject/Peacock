@@ -37,6 +37,7 @@ import { createInventory } from "../inventory"
 import { log, LogLevel } from "../loggingInterop"
 import { no2016 } from "../contracts/escalations/escalationService"
 import { missionsInLocations } from "../contracts/missionsInLocation"
+import assert from "assert"
 
 type GameFacingDestination = {
     ChallengeCompletion: {
@@ -258,10 +259,15 @@ export function createLocationsData(
         }
 
         const sublocation = locData.children[sublocationId]
+
+        if (!sublocation.Properties.ParentLocation) {
+            assert.fail("sublocation has no parent, that's illegal")
+        }
+
         const parentLocation =
             locData.parents[sublocation.Properties.ParentLocation]
         const creationContract = controller.resolveContract(
-            sublocation.Properties.CreateContractId,
+            sublocation.Properties.CreateContractId!,
         )
 
         if (!creationContract && excludeIfNoContracts) {
@@ -472,8 +478,10 @@ export function getDestination(
 
         for (const t of types) {
             let theMissions: string[] | undefined = !t[0] // no specific type
-                ? controller.missionsInLocations[e.Id]
-                : controller.missionsInLocations[t[0]][e.Id]
+                ? // @ts-expect-error Yup.
+                  controller.missionsInLocations[e.Id]
+                : // @ts-expect-error Yup.
+                  controller.missionsInLocations[t[0]][e.Id]
 
             // edge case: ica facility in h1 was only 1 sublocation, so we merge
             // these into a single array
@@ -507,6 +515,7 @@ export function getDestination(
                         jwt.unique_name,
                     )
 
+                    // @ts-expect-error Yup.
                     obj[t[1]].push(mission)
                 }
             }

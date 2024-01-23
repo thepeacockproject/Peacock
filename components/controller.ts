@@ -246,7 +246,10 @@ export const validateMission = (m: MissionManifest): boolean => {
         }
     }
 
-    for (const prop of ["Objectives", "Bricks"]) {
+    for (const prop of <(keyof MissionManifest["Data"])[]>[
+        "Objectives",
+        "Bricks",
+    ]) {
         if (!Object.hasOwn(m.Data, prop)) {
             log(LogLevel.ERROR, `Contract missing property Data.${prop}!`)
             return false
@@ -543,6 +546,10 @@ export class Controller {
 
     private getGroupContract(json: MissionManifest) {
         if (escalationTypes.includes(json.Metadata.Type)) {
+            if (!json.Metadata.InGroup) {
+                return json
+            }
+
             return this.resolveContract(json.Metadata.InGroup) ?? json
         }
 
@@ -562,7 +569,7 @@ export class Controller {
      * @returns The mission manifest object, or undefined if it wasn't found.
      */
     public resolveContract(
-        id: string,
+        id: string | undefined,
         getGroup = false,
     ): MissionManifest | undefined {
         if (!id) {
@@ -652,9 +659,11 @@ export class Controller {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         this.missionsInLocations.escalations[locationId as K] ??= <any>[]
 
-        this.missionsInLocations.escalations[locationId as K].push(
-            groupContract.Metadata.Id,
-        )
+        const a = this.missionsInLocations.escalations[
+            locationId as K
+        ] as string[]
+
+        a.push(groupContract.Metadata.Id)
 
         this.scanForGroups()
     }
@@ -1181,7 +1190,7 @@ export function contractIdToHitObject(
         "LocationsData",
         gameVersion,
         false,
-    ).parents[subLocation?.Properties?.ParentLocation]
+    ).parents[subLocation?.Properties?.ParentLocation || ""]
 
     // failed to find the location, must be from a newer game
     if (!subLocation && ["h1", "h2", "scpc"].includes(gameVersion)) {

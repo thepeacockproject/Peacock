@@ -53,8 +53,14 @@ export async function getLeaderboardEntries(
     platform: JwtData["platform"],
     gameVersion: GameVersion,
     difficultyLevel?: string,
-): Promise<GameFacingLeaderboardData> {
+): Promise<GameFacingLeaderboardData | undefined> {
     let difficulty = "unset"
+
+    const contract = controller.resolveContract(contractId)
+
+    if (!contract) {
+        return undefined
+    }
 
     const parsedDifficulty = parseInt(difficultyLevel || "0")
 
@@ -72,7 +78,7 @@ export async function getLeaderboardEntries(
 
     const response: GameFacingLeaderboardData = {
         Entries: [],
-        Contract: controller.resolveContract(contractId),
+        Contract: contract,
         Page: 0,
         HasMore: false,
         LeaderboardType: "singleplayer",

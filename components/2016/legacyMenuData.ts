@@ -26,6 +26,7 @@ const legacyMenuDataRouter = Router()
 
 legacyMenuDataRouter.get(
     "/debriefingchallenges",
+    // @ts-expect-error Has jwt props.
     (
         req: RequestWithJwt<{ contractSessionId: string; contractId: string }>,
         res,
@@ -55,6 +56,7 @@ legacyMenuDataRouter.get(
 
 legacyMenuDataRouter.get(
     "/MasteryLocation",
+    // @ts-expect-error Has jwt props.
     (req: RequestWithJwt<{ locationId: string; difficulty: string }>, res) => {
         const masteryData =
             controller.masteryService.getMasteryDataForDestination(

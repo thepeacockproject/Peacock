@@ -57,7 +57,6 @@ import * as elusiveTargets from "./contracts/elusiveTargets"
 import * as hitsCategoryService from "./contracts/hitsCategoryService"
 import * as leaderboards from "./contracts/leaderboards"
 import * as missionsInLocation from "./contracts/missionsInLocation"
-import * as reportRouting from "./contracts/reportRouting"
 import * as client from "./discord/client"
 import * as ipc from "./discord/ipc"
 import * as liveSplitClient from "./livesplit/liveSplitClient"
@@ -192,10 +191,6 @@ export default {
     "@peacockproject/core/contracts/missionsInLocation": {
         __esModule: true,
         ...missionsInLocation,
-    },
-    "@peacockproject/core/contracts/reportRouting": {
-        __esModule: true,
-        ...reportRouting,
     },
     "@peacockproject/core/discord/client": { __esModule: true, ...client },
     "@peacockproject/core/discord/ipc": { __esModule: true, ...ipc },

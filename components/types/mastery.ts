@@ -18,12 +18,9 @@
 
 import { CompletionData, GameVersion, Unlockable } from "./types"
 
-export interface MasteryDataTemplate {
-    template: unknown
-    data: {
-        Location: Unlockable
-        MasteryData: MasteryData[]
-    }
+export interface LocationMasteryData {
+    Location: Unlockable
+    MasteryData: MasteryData[]
 }
 
 export interface MasteryPackageDrop {

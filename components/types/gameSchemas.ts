@@ -152,3 +152,11 @@ export type DebriefingLeaderboardsQuery = {
 export type ChallengeLocationQuery = {
     locationId: string
 }
+
+/**
+ * Body that `/ReportContract` gets.
+ */
+export type ContractReportBody = {
+    contractId: string
+    reason: number
+}

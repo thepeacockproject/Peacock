@@ -42,7 +42,7 @@ export function calculatePlaystyle(
     const doneKillMethods: string[] = []
     const doneAccidents: string[] = []
 
-    session.kills.forEach((k) => {
+    session.kills?.forEach((k) => {
         if (k.KillClass === "ballistic") {
             if (k.KillItemCategory === "pistol") {
                 playstylesCopy[1].Score += 6000

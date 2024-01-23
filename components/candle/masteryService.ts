@@ -21,11 +21,11 @@ import {
     getSubLocationByName,
 } from "../contracts/dataGen"
 import { log, LogLevel } from "../loggingInterop"
-import { getConfig, getVersionedConfig } from "../configSwizzleManager"
+import { getVersionedConfig } from "../configSwizzleManager"
 import { getUserData } from "../databaseHandler"
 import {
+    LocationMasteryData,
     MasteryData,
-    MasteryDataTemplate,
     MasteryDrop,
     MasteryPackage,
     MasteryPackageDrop,
@@ -156,16 +156,10 @@ export class MasteryService {
         locationId: string,
         gameVersion: GameVersion,
         userId: string,
-    ): MasteryDataTemplate {
+    ): LocationMasteryData {
         const location: Unlockable =
             getSubLocationByName(locationId, gameVersion) ??
             getParentLocationByName(locationId, gameVersion)
-
-        const masteryDataTemplate: MasteryDataTemplate =
-            getConfig<MasteryDataTemplate>(
-                "MasteryDataForLocationTemplate",
-                false,
-            )
 
         const masteryData = this.getMasteryData(
             location.Properties.ParentLocation ?? location.Id,
@@ -174,11 +168,8 @@ export class MasteryService {
         )
 
         return {
-            template: masteryDataTemplate,
-            data: {
-                Location: location,
-                MasteryData: masteryData,
-            },
+            Location: location,
+            MasteryData: masteryData,
         }
     }
 
@@ -279,7 +270,7 @@ export class MasteryService {
                   "SniperUnlockables",
                   gameVersion,
                   false,
-              ).find((unlockable) => unlockable.Id === subPackageId).Properties
+              ).find((unlockable) => unlockable.Id === subPackageId)?.Properties
                   .Name
             : undefined
 
@@ -297,7 +288,7 @@ export class MasteryService {
                     : xpRequiredForLevel,
                 subPackageId,
             ),
-            Id: isSniper ? subPackageId : masteryPkg.LocationId,
+            Id: isSniper ? subPackageId! : masteryPkg.LocationId,
             SubLocationId: isSniper ? "" : subLocationId,
             HideProgression: masteryPkg.HideProgression || false,
             IsLocationProgression: !isSniper,
@@ -347,7 +338,7 @@ export class MasteryService {
         subPackageId?: string,
     ): MasteryData[] {
         // Get the mastery data
-        const masteryPkg: MasteryPackage = this.getMasteryPackage(
+        const masteryPkg: MasteryPackage | undefined = this.getMasteryPackage(
             locationParentId,
             gameVersion,
         )
@@ -389,15 +380,22 @@ export class MasteryService {
         }
 
         // Get all unlockables with matching Ids
-        const unlockableData: Unlockable[] = getUnlockablesById(
+        const unlockableData = getUnlockablesById(
             Array.from(dropIdSet),
             gameVersion,
         )
 
         // Put all unlockabkes in a map for quick lookup
-        const unlockableMap = new Map(
-            unlockableData.map((unlockable) => [unlockable.Id, unlockable]),
+        const mapped: [string, Unlockable][] = unlockableData.map(
+            (unlockable) => {
+                return [unlockable?.Id, unlockable] as unknown as [
+                    string,
+                    Unlockable,
+                ]
+            },
         )
+
+        const unlockableMap: Map<string, Unlockable> = new Map(mapped)
 
         const masteryData: MasteryData[] = []
 

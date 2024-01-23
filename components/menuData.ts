@@ -36,7 +36,6 @@ import {
 } from "./menus/destinations"
 import type {
     ChallengeCategoryCompletion,
-    SelectEntranceOrPickupData,
     ContractSearchResult,
     GameVersion,
     HitsCategoryCategory,
@@ -45,6 +44,7 @@ import type {
     ProgressionData,
     RequestWithJwt,
     SceneConfig,
+    SelectEntranceOrPickupData,
     UserCentricContract,
 } from "./types/types"
 import {
@@ -104,6 +104,7 @@ const menuDataRouter = Router()
 
 menuDataRouter.get(
     "/ChallengeLocation",
+    // @ts-expect-error Jwt props.
     (req: RequestWithJwt<ChallengeLocationQuery>, res) => {
         if (typeof req.query.locationId !== "string") {
             res.status(400).send("Invalid locationId")
@@ -137,6 +138,7 @@ menuDataRouter.get(
     },
 )
 
+// @ts-expect-error Jwt props.
 menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
     const hubInfo = getHubData(req.gameVersion, req.jwt)
 
@@ -155,6 +157,7 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
     })
 })
 
+// @ts-expect-error Jwt props.
 menuDataRouter.get("/SafehouseCategory", (req: RequestWithJwt, res) => {
     res.json({
         template:
@@ -165,6 +168,7 @@ menuDataRouter.get("/SafehouseCategory", (req: RequestWithJwt, res) => {
     })
 })
 
+// @ts-expect-error Jwt props.
 menuDataRouter.get("/Safehouse", (req: RequestWithJwt<SafehouseQuery>, res) => {
     const template = getConfig("LegacySafehouseTemplate", false)
 
@@ -184,6 +188,7 @@ menuDataRouter.get("/Safehouse", (req: RequestWithJwt<SafehouseQuery>, res) => {
     })
 })
 
+// @ts-expect-error Jwt props.
 menuDataRouter.get("/report", (req: RequestWithJwt, res) => {
     res.json({
         template: getVersionedConfig("ReportTemplate", req.gameVersion, false),
@@ -202,6 +207,7 @@ menuDataRouter.get("/report", (req: RequestWithJwt, res) => {
 // /stashpoint?contractid=5b5f8aa4-ecb4-4a0a-9aff-98aa1de43dcc&slotid=6&slotname=stashpoint6&stashpoint=28b03709-d1f0-4388-b207-f03611eafb64&allowlargeitems=true&allowcontainers=false
 menuDataRouter.get(
     "/stashpoint",
+    // @ts-expect-error Jwt props.
     (req: RequestWithJwt<StashpointQuery | StashpointQueryH2016>, res) => {
         function isValidModernQuery(
             query: StashpointQuery | StashpointQueryH2016,
@@ -214,7 +220,7 @@ menuDataRouter.get(
 
         if (["h1", "scpc"].includes(req.gameVersion)) {
             // H1 or SCPC
-            if (!uuidRegex.test(req.query.contractid)) {
+            if (!uuidRegex.test(req.query.contractid!)) {
                 res.status(400).send("contract id was not a uuid")
                 return
             }
@@ -264,6 +270,7 @@ menuDataRouter.get(
 
 menuDataRouter.get(
     "/missionrewards",
+    // @ts-expect-error Jwt props.
     (
         req: RequestWithJwt<{
             contractSessionId: string
@@ -338,6 +345,7 @@ menuDataRouter.get(
 
 menuDataRouter.get(
     "/Planning",
+    // @ts-expect-error Jwt props.
     async (req: RequestWithJwt<PlanningQuery>, res) => {
         if (!req.query.contractid || !req.query.resetescalation) {
             res.status(400).send("invalid query")
@@ -370,6 +378,7 @@ menuDataRouter.get(
 
 menuDataRouter.get(
     "/selectagencypickup",
+    // @ts-expect-error Jwt props.
     (
         req: RequestWithJwt<{
             contractId: string
@@ -469,6 +478,7 @@ menuDataRouter.get(
 
 menuDataRouter.get(
     "/selectentrance",
+    // @ts-expect-error Jwt props.
     (
         req: RequestWithJwt<{
             contractId: string
@@ -625,14 +635,18 @@ const missionEndRequest = async (
     })
 }
 
+// @ts-expect-error Has jwt props.
 menuDataRouter.get("/missionend", missionEndRequest)
 
+// @ts-expect-error Has jwt props.
 menuDataRouter.get("/scoreoverviewandunlocks", missionEndRequest)
 
+// @ts-expect-error Has jwt props.
 menuDataRouter.get("/scoreoverview", missionEndRequest)
 
 menuDataRouter.get(
     "/Destination",
+    // @ts-expect-error Jwt props.
     (req: RequestWithJwt<GetDestinationQuery>, res) => {
         if (!req.query.locationId) {
             res.status(400).send("Invalid locationId")
@@ -693,6 +707,7 @@ async function lookupContractPublicId(
 
 menuDataRouter.get(
     "/LookupContractPublicId",
+    // @ts-expect-error Has jwt props.
     async (
         req: RequestWithJwt<{
             publicid: string
@@ -720,6 +735,7 @@ menuDataRouter.get(
 
 menuDataRouter.get(
     "/HitsCategory",
+    // @ts-expect-error Has jwt props.
     async (
         req: RequestWithJwt<{
             type: string
@@ -761,6 +777,7 @@ menuDataRouter.get(
 
 menuDataRouter.get(
     "/PlayNext",
+    // @ts-expect-error Has jwt props.
     (
         req: RequestWithJwt<{
             contractId: string
@@ -783,7 +800,7 @@ menuDataRouter.get(
     },
 )
 
-menuDataRouter.get("/LeaderboardsView", (req, res) => {
+menuDataRouter.get("/LeaderboardsView", (_, res) => {
     res.json({
         template: getConfig("LeaderboardsViewTemplate", false),
         data: {
@@ -795,6 +812,7 @@ menuDataRouter.get("/LeaderboardsView", (req, res) => {
 
 menuDataRouter.get(
     "/LeaderboardEntries",
+    // @ts-expect-error Has jwt props.
     async (req: RequestWithJwt<LeaderboardEntriesCommonQuery>, res) => {
         if (!req.query.contractid) {
             res.status(400).send("no contract id!")
@@ -822,6 +840,7 @@ menuDataRouter.get(
 
 menuDataRouter.get(
     "/DebriefingLeaderboards",
+    // @ts-expect-error Has jwt props.
     async (req: RequestWithJwt<DebriefingLeaderboardsQuery>, res) => {
         if (!req.query.contractid) {
             res.status(400).send("no contract id!")
@@ -847,10 +866,12 @@ menuDataRouter.get(
     },
 )
 
+// @ts-expect-error Has jwt props.
 menuDataRouter.get("/Contracts", contractsModeHome)
 
 menuDataRouter.get(
     "/contractcreation/planning",
+    // @ts-expect-error Has jwt props.
     async (
         req: RequestWithJwt<{
             contractCreationIdOverwrite: string
@@ -902,6 +923,7 @@ menuDataRouter.get(
     },
 )
 
+// @ts-expect-error Has jwt props.
 menuDataRouter.get("/contractsearchpage", (req: RequestWithJwt, res) => {
     const createContractTutorial = controller.resolveContract(
         contractCreationTutorialId,
@@ -932,6 +954,7 @@ menuDataRouter.get("/contractsearchpage", (req: RequestWithJwt, res) => {
 menuDataRouter.post(
     "/ContractSearch",
     jsonMiddleware(),
+    // @ts-expect-error Jwt props.
     async (
         req: RequestWithJwt<
             {
@@ -1011,6 +1034,7 @@ menuDataRouter.post(
 menuDataRouter.post(
     "/ContractSearchPaginate",
     jsonMiddleware(),
+    // @ts-expect-error Has jwt props.
     async (
         req: RequestWithJwt<
             {
@@ -1034,6 +1058,7 @@ menuDataRouter.post(
 
 menuDataRouter.get(
     "/DebriefingChallenges",
+    // @ts-expect-error Has jwt props.
     (
         req: RequestWithJwt<{
             contractId: string
@@ -1056,6 +1081,7 @@ menuDataRouter.get(
     },
 )
 
+// @ts-expect-error Has jwt props.
 menuDataRouter.get("/contractcreation/create", (req: RequestWithJwt, res) => {
     let cUuid = randomUUID()
     const createContractReturnTemplate = getConfig(
@@ -1160,7 +1186,7 @@ const createLoadSaveMiddleware =
             template,
             data: {
                 Contracts: [] as UserCentricContract[],
-                PaymentEligiblity: {},
+                PaymentEligiblity: {} as Record<string, boolean>,
             },
         }
 
@@ -1203,15 +1229,18 @@ const createLoadSaveMiddleware =
 menuDataRouter.post(
     "/Load",
     jsonMiddleware(),
+    // @ts-expect-error Has jwt props.
     createLoadSaveMiddleware("LoadMenuTemplate"),
 )
 
 menuDataRouter.post(
     "/Save",
     jsonMiddleware(),
+    // @ts-expect-error Has jwt props.
     createLoadSaveMiddleware("SaveMenuTemplate"),
 )
 
+// @ts-expect-error Has jwt props.
 menuDataRouter.get("/PlayerProfile", (req: RequestWithJwt, res) => {
     const playerProfilePage = getConfig<PlayerProfileView>(
         "PlayerProfilePage",
@@ -1326,21 +1355,24 @@ menuDataRouter.get("/PlayerProfile", (req: RequestWithJwt, res) => {
 menuDataRouter.get(
     // who at IOI decided this was a good route name???!
     "/LookupContractDialogAddOrDeleteFromPlaylist",
+    // @ts-expect-error Has jwt props.
     withLookupDialog,
 )
 
 menuDataRouter.get(
-    // this one is sane Kappa
     "/contractplaylist/addordelete/:contractId",
+    // @ts-expect-error Has jwt props.
     directRoute,
 )
 
 menuDataRouter.post(
     "/contractplaylist/deletemultiple",
     jsonMiddleware(),
+    // @ts-expect-error Has jwt props.
     deleteMultiple,
 )
 
+// @ts-expect-error Has jwt props.
 menuDataRouter.get("/GetPlayerProfileXpData", (req: RequestWithJwt, res) => {
     const userData = getUserData(req.jwt.unique_name, req.gameVersion)
 
@@ -1359,6 +1391,7 @@ menuDataRouter.get("/GetPlayerProfileXpData", (req: RequestWithJwt, res) => {
 
 menuDataRouter.get(
     "/GetMasteryCompletionDataForLocation",
+    // @ts-expect-error Has jwt props.
     (req: RequestWithJwt<GetCompletionDataForLocationQuery>, res) => {
         res.json(
             generateCompletionData(
@@ -1372,6 +1405,7 @@ menuDataRouter.get(
 
 menuDataRouter.get(
     "/MasteryUnlockable",
+    // @ts-expect-error Has jwt props.
     (req: RequestWithJwt<MasteryUnlockableQuery>, res) => {
         let masteryUnlockTemplate = getConfig(
             "MasteryUnlockablesTemplate",
@@ -1419,24 +1453,30 @@ menuDataRouter.get(
 
 menuDataRouter.get(
     "/MasteryDataForLocation",
+    // @ts-expect-error Has jwt props.
     (
         req: RequestWithJwt<{
             locationId: string
         }>,
         res,
     ) => {
-        res.json(
-            controller.masteryService.getMasteryDataForLocation(
+        res.json({
+            template: getConfig<MasteryDataTemplate>(
+                "MasteryDataForLocationTemplate",
+                false,
+            ),
+            data: controller.masteryService.getMasteryDataForLocation(
                 req.query.locationId,
                 req.gameVersion,
                 req.jwt.unique_name,
             ),
-        )
+        })
     },
 )
 
 menuDataRouter.get(
     "/GetMasteryCompletionDataForUnlockable",
+    // @ts-expect-error Has jwt props.
     (
         req: RequestWithJwt<{
             unlockableId: string

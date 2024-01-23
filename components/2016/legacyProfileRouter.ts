@@ -38,6 +38,7 @@ const legacyProfileRouter = Router()
 legacyProfileRouter.post(
     "/ChallengesService/GetActiveChallenges",
     jsonMiddleware(),
+    // @ts-expect-error Has jwt props.
     (req: RequestWithJwt, res) => {
         if (!uuidRegex.test(req.body.contractId)) {
             return res.status(404).send("invalid contract")
@@ -93,6 +94,7 @@ legacyProfileRouter.post(
 legacyProfileRouter.post(
     "/ChallengesService/GetProgression",
     jsonMiddleware(),
+    // @ts-expect-error Has jwt props.
     (req: RequestWithJwt<never, LegacyGetProgressionBody>, res) => {
         const legacyGlobalChallenges = getConfig<CompiledChallengeIngameData[]>(
             "LegacyGlobalChallenges",

@@ -256,6 +256,10 @@ export function getLegacyStashData(
     userId: string,
     gameVersion: GameVersion,
 ) {
+    if (!query.contractid || !query.slotname) {
+        return undefined
+    }
+
     const contractData = controller.resolveContract(query.contractid)
 
     if (!contractData) {
@@ -401,7 +405,7 @@ export function getSafehouseCategory(
         let category = safehouseData.SubCategories.find(
             (cat) => cat.Category === item.Unlockable.Type,
         )
-        let subcategory
+        let subcategory: SafehouseCategory | undefined
 
         if (!category) {
             category = {
@@ -430,10 +434,10 @@ export function getSafehouseCategory(
                     HasMore: false,
                 },
             }
-            category.SubCategories.push(subcategory)
+            category.SubCategories.push(subcategory!)
         }
 
-        subcategory.Data?.Items.push({
+        subcategory!.Data?.Items.push({
             Item: item,
             ItemDetails: {
                 Capabilities: [],

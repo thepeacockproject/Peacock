@@ -88,7 +88,6 @@ import { multiplayerMenuDataRouter } from "./multiplayer/multiplayerMenuData"
 import { pack, unpack } from "msgpackr"
 import { liveSplitManager } from "./livesplit/liveSplitManager"
 import { cheapLoadUserData } from "./databaseHandler"
-import { reportRouter } from "./contracts/reportRouting"
 
 // welcome to the bleeding edge
 setFlagsFromString("--harmony")
@@ -230,7 +229,7 @@ app.get(
     },
 )
 
-app.get("/files/privacypolicy/hm3/privacypolicy_*.json", (req, res) => {
+app.get("/files/privacypolicy/hm3/privacypolicy_*.json", (_, res) => {
     res.set("Content-Type", "application/octet-stream")
     res.set("x-ms-meta-version", "20181001")
     res.send(getConfig("PrivacyPolicy", false))
@@ -452,9 +451,12 @@ primaryRouter.use(
     "/authentication/api/userchannel/ContractsService/",
     contractRoutingRouter,
 )
-primaryRouter.use(
-    "/authentication/api/userchannel/ReportingService/",
-    reportRouter,
+primaryRouter.get(
+    "/authentication/api/userchannel/ReportingService/ReportContract",
+    (_, res) => {
+        // TODO
+        res.json({})
+    },
 )
 primaryRouter.use("/authentication/api/userchannel/", profileRouter)
 primaryRouter.use("/profiles/page", multiplayerMenuDataRouter)

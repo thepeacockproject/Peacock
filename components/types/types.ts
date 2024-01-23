@@ -19,7 +19,7 @@
 import type * as core from "express-serve-static-core"
 
 import type { IContractCreationPayload } from "../statemachines/contractCreation"
-import type { Request } from "express"
+import { Request } from "express"
 import {
     ChallengeContext,
     ProfileChallengeData,
@@ -29,6 +29,7 @@ import { SessionGhostModeDetails } from "../multiplayer/multiplayerService"
 import { IContextListener } from "../statemachines/contextListeners"
 import { ManifestScoringModule, ScoringModule } from "./scoring"
 import { Timer } from "@peacockproject/statemachine-parser"
+import { InventoryItem } from "../inventory"
 
 /**
  * A duration or relative point in time expressed in seconds.
@@ -115,6 +116,14 @@ export interface JwtData {
      * @see GameAudience
      */
     aud: GameAudience
+}
+
+declare module "express" {
+    export interface Request {
+        jwt?: JwtData
+        gameVersion?: GameVersion
+        serverVersion?: string
+    }
 }
 
 /**
@@ -1484,7 +1493,23 @@ export type SafehouseCategory = {
     Category: string
     SubCategories: SafehouseCategory[]
     IsLeaf: boolean
-    Data: null
+    Data: null | {
+        Type: string
+        SubType: string | undefined
+        Items: {
+            Item: InventoryItem
+            ItemDetails: {
+                Capabilities: []
+                StatList: {
+                    Name: string
+                    Ratio: unknown
+                    PropertyTexts: []
+                }[]
+            }
+        }[]
+        Page: number
+        HasMore: boolean
+    }
 }
 
 /**
