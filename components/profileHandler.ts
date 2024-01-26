@@ -29,7 +29,8 @@ import {
 import { json as jsonMiddleware } from "body-parser"
 import { getPlatformEntitlements } from "./platformEntitlements"
 import { contractSessions, newSession } from "./eventHandler"
-import type {
+import {
+    ChallengeProgressionData,
     CompiledChallengeIngameData,
     ContractSession,
     GameVersion,
@@ -127,6 +128,7 @@ profileRouter.post("/ProfileService/SetClientEntitlements", (_, res) => {
 profileRouter.post(
     "/ProfileService/GetPlatformEntitlements",
     jsonMiddleware(),
+    // @ts-expect-error Jwt props.
     getPlatformEntitlements,
 )
 
@@ -220,6 +222,7 @@ profileRouter.post(
 
         for (const extension in req.body.extensionsData) {
             if (Object.hasOwn(req.body.extensionsData, extension)) {
+                // @ts-expect-error It's fine.
                 userdata.Extensions[extension] =
                     req.body.extensionsData[extension]
             }
@@ -464,6 +467,7 @@ profileRouter.post(
 
         const userdata = getUserData(req.body.userId, req.gameVersion)
 
+        // @ts-expect-error This is fine.
         userdata.Extensions.gamepersistentdata[req.body.key] = req.body.data
         writeUserData(req.body.userId, req.gameVersion)
 
@@ -500,11 +504,14 @@ profileRouter.post(
             return res.json([])
         }
 
-        let challenges = getVersionedConfig<CompiledChallengeIngameData[]>(
-            "GlobalChallenges",
-            req.gameVersion,
-            true,
-        )
+        type CWP = {
+            Challenge: CompiledChallengeIngameData
+            Progression: ChallengeProgressionData | undefined
+        }
+
+        let challenges: CWP[] = getVersionedConfig<
+            CompiledChallengeIngameData[]
+        >("GlobalChallenges", req.gameVersion, true)
             .filter((val) => inclusionDataCheck(val.InclusionData, json))
             .map((item) => ({ Challenge: item, Progression: undefined }))
 
@@ -539,6 +546,7 @@ profileRouter.post(
             challenges.forEach((val) => {
                 // prettier-ignore
                 if (val.Challenge.Id === "b1a85feb-55af-4707-8271-b3522661c0b1") {
+                    // @ts-expect-error State machines impossible to type.
                     // prettier-ignore
                     val.Challenge.Definition!["States"]["Start"][
                         "CrowdNPC_Died"

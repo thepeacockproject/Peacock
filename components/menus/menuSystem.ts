@@ -544,6 +544,7 @@ export const menuSystemDatabase = new MenuSystemDatabase()
 
 menuSystemRouter.get(
     "/dynamic_resources_pc_release_rpkg",
+    // @ts-expect-error No type issue is actually here.
     async (req: RequestWithJwt, res) => {
         const dynamicResourceName = `dynamic_resources_${req.gameVersion}.rpkg`
         const dynamicResourcePath = join(
@@ -565,6 +566,7 @@ menuSystemRouter.get(
     },
 )
 
+// @ts-expect-error No type issue is actually here.
 menuSystemRouter.use("/menusystem/", MenuSystemDatabase.configMiddleware)
 
 // Miranda Jamison's image path in the repository is escaped for some reason
@@ -587,6 +589,7 @@ menuSystemPreRouter.get(
 
 menuSystemRouter.use(
     "/images/",
+    // @ts-expect-error No type issue is actually here.
     serveStatic("images", { fallthrough: true }),
     imageFetchingMiddleware,
 )

@@ -140,7 +140,10 @@ export function getModernStashData(
     const inventory = createInventory(
         userId,
         gameVersion,
-        getSubLocationByName(contractData?.Metadata.Location!, gameVersion),
+        getSubLocationByName(
+            contractData?.Metadata.Location || "",
+            gameVersion,
+        ),
     )
 
     if (query.slotname?.endsWith(query.slotid!.toString())) {

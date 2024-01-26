@@ -115,7 +115,7 @@ multiplayerRouter.post(
                     req.gameVersion,
                 ),
             )
-            .filter(Boolean)
+            .filter(Boolean) as UserCentricContract[]
 
         res.json(
             userCentrics.map((userCentric: UserCentricContract) => ({

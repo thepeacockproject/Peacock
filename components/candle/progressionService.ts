@@ -19,7 +19,12 @@
 import { getSubLocationByName } from "../contracts/dataGen"
 import { controller } from "../controller"
 import { getUnlockablesById, grantDrops } from "../inventory"
-import type { ContractSession, UserProfile, GameVersion } from "../types/types"
+import type {
+    ContractSession,
+    GameVersion,
+    Unlockable,
+    UserProfile,
+} from "../types/types"
 import {
     clampValue,
     DEFAULT_MASTERY_MAXLEVEL,
@@ -205,13 +210,13 @@ export class ProgressionService {
                         contractSession.gameVersion,
                         isEvergreenContract,
                         sniperUnlockable
-                            ? masteryData.SubPackages.find(
+                            ? masteryData.SubPackages?.find(
                                   (pkg) => pkg.Id === sniperUnlockable,
-                              ).Drops
-                            : masteryData.Drops,
+                              )?.Drops || []
+                            : masteryData.Drops || [],
                         previousLevel,
                         locationData.Level,
-                    )
+                    ).filter(Boolean) as Unlockable[]
                     grantDrops(userProfile.Id, masteryLocationDrops)
                 }
             }

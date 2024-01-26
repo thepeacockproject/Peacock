@@ -142,14 +142,16 @@ menuDataRouter.get(
 menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
     const hubInfo = getHubData(req.gameVersion, req.jwt)
 
-    const template =
-        req.gameVersion === "h3"
-            ? null
-            : req.gameVersion === "h2"
-            ? null
-            : req.gameVersion === "scpc"
-            ? getConfig("FrankensteinHubTemplate", false)
-            : getConfig("LegacyHubTemplate", false)
+    let template: unknown
+
+    if (req.gameVersion === "h3" || req.gameVersion === "h2") {
+        template = null
+    } else {
+        template =
+            req.gameVersion === "scpc"
+                ? getConfig("FrankensteinHubTemplate", false)
+                : getConfig("LegacyHubTemplate", false)
+    }
 
     res.json({
         template,
@@ -422,7 +424,7 @@ menuDataRouter.get(
                     contractData,
                     req.jwt.unique_name,
                     req.gameVersion,
-                ),
+                )!,
             }
 
             res.json({
@@ -462,7 +464,7 @@ menuDataRouter.get(
                 contractData,
                 req.jwt.unique_name,
                 req.gameVersion,
-            ),
+            )!,
         }
 
         res.json({

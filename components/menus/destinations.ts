@@ -434,7 +434,7 @@ export function getDestination(
 
         const escalations: IHit[] = []
 
-        type Cast = keyof typeof controller.missionsInLocations.escalations
+        type ECast = keyof typeof controller.missionsInLocations.escalations
         // every unique escalation from the sublocation
         const allUniqueEscalations: string[] = [
             ...(gameVersion === "h1" && e.Id === "LOCATION_ICA_FACILITY"
@@ -443,7 +443,7 @@ export function getDestination(
                   ]
                 : []),
             ...new Set<string>(
-                controller.missionsInLocations.escalations[e.Id as Cast] || [],
+                controller.missionsInLocations.escalations[e.Id as ECast] || [],
             ),
         ]
 
@@ -462,17 +462,18 @@ export function getDestination(
         }
 
         const sniperMissions: IHit[] = []
+        type SCast = keyof typeof controller.missionsInLocations.sniper
 
         for (const sniperMission of controller.missionsInLocations.sniper[
-            e.Id
+            e.Id as SCast
         ] ?? []) {
-            sniperMissions.push(
-                contractIdToHitObject(
-                    sniperMission,
-                    gameVersion,
-                    jwt.unique_name,
-                ),
+            const hit = contractIdToHitObject(
+                sniperMission,
+                gameVersion,
+                jwt.unique_name,
             )
+
+            if (hit) sniperMissions.push(hit)
         }
 
         const obj = {

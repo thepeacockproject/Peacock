@@ -118,14 +118,6 @@ export interface JwtData {
     aud: GameAudience
 }
 
-declare module "express" {
-    export interface Request {
-        jwt?: JwtData
-        gameVersion?: GameVersion
-        serverVersion?: string
-    }
-}
-
 /**
  * A request with a JSON web token (JWT) already parsed. Also contains our custom request properties.
  */
