@@ -37,6 +37,7 @@ import { log, LogLevel } from "../loggingInterop"
 import { getUserData } from "../databaseHandler"
 import { getFlag } from "../flags"
 import { loadouts } from "../loadouts"
+import assert from "assert"
 
 /**
  * Algorithm to get the stashpoint items data for H2 and H3.
@@ -139,10 +140,10 @@ export function getModernStashData(
     const inventory = createInventory(
         userId,
         gameVersion,
-        getSubLocationByName(contractData?.Metadata.Location, gameVersion),
+        getSubLocationByName(contractData?.Metadata.Location!, gameVersion),
     )
 
-    if (query.slotname.endsWith(query.slotid!.toString())) {
+    if (query.slotname?.endsWith(query.slotid!.toString())) {
         query.slotname = query.slotname.slice(
             0,
             -query.slotid!.toString().length,
@@ -281,6 +282,8 @@ export function getLegacyStashData(
         gameVersion,
     )
 
+    assert.ok(sublocation, "Sublocation not found")
+
     const inventory = createInventory(userId, gameVersion, sublocation)
 
     const userCentricContract = generateUserCentric(
@@ -301,14 +304,16 @@ export function getLegacyStashData(
             const dl = userProfile.Extensions.defaultloadout
 
             if (!dl) {
-                return defaultLoadout[id]
+                return defaultLoadout[id as keyof typeof defaultLoadout]
             }
 
             const forLocation = (userProfile.Extensions.defaultloadout || {})[
-                sublocation?.Properties?.ParentLocation
+                sublocation?.Properties?.ParentLocation || ""
             ]
 
-            return (forLocation || defaultLoadout)[id]
+            return (forLocation || defaultLoadout)[
+                id as keyof typeof defaultLoadout
+            ]
         } else {
             let dl = loadouts.getLoadoutFor("h1")
 
@@ -316,7 +321,8 @@ export function getLegacyStashData(
                 dl = loadouts.createDefault("h1")
             }
 
-            const forLocation = dl.data[sublocation?.Properties?.ParentLocation]
+            const forLocation =
+                dl.data[sublocation?.Properties?.ParentLocation || ""]
 
             return (forLocation || defaultLoadout)[id]
         }
@@ -352,7 +358,7 @@ export function getLegacyStashData(
                       }
                     : {},
         })),
-        Contract: userCentricContract.Contract,
+        Contract: userCentricContract?.Contract,
         ShowSlotName: query.slotname,
         UserCentric: userCentricContract,
     }

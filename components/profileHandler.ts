@@ -120,7 +120,7 @@ profileRouter.post(
     },
 )
 
-profileRouter.post("/ProfileService/SetClientEntitlements", (req, res) => {
+profileRouter.post("/ProfileService/SetClientEntitlements", (_, res) => {
     res.json("null")
 })
 
@@ -151,12 +151,12 @@ profileRouter.post(
 
 profileRouter.post(
     "/ProfileService/SynchronizeOfflineUnlockables",
-    (req, res) => {
+    (_, res) => {
         res.status(204).end()
     },
 )
 
-profileRouter.post("/ProfileService/GetUserConfig", (req, res) => {
+profileRouter.post("/ProfileService/GetUserConfig", (_, res) => {
     res.json({})
 })
 
@@ -178,6 +178,7 @@ profileRouter.post(
         const extensions = req.body.extensions.reduce(
             (acc: object, key: string) => {
                 if (Object.hasOwn(userdata.Extensions, key)) {
+                    // @ts-expect-error Ok.
                     acc[key] = userdata.Extensions[key]
                 }
 
@@ -436,9 +437,7 @@ profileRouter.post(
     },
 )
 
-profileRouter.post("/ProfileService/GetFriendsCount", (req, res) =>
-    res.send("0"),
-)
+profileRouter.post("/ProfileService/GetFriendsCount", (_, res) => res.send("0"))
 
 profileRouter.post(
     "/GamePersistentDataService/GetData",
@@ -762,7 +761,7 @@ async function saveSession(
     log(
         LogLevel.DEBUG,
         `Saved contract to slot ${slot} with token = ${token}, session id = ${sessionId}, start time = ${
-            contractSessions.get(sessionId).timerStart
+            contractSessions.get(sessionId)!.timerStart
         }.`,
     )
 }
@@ -877,7 +876,7 @@ async function loadSession(
     log(
         LogLevel.DEBUG,
         `Loaded contract with token = ${token}, session id = ${sessionId}, start time = ${
-            contractSessions.get(sessionId).timerStart
+            contractSessions.get(sessionId)!.timerStart
         }.`,
     )
 }

@@ -121,7 +121,7 @@ contractRoutingRouter.post(
                 .toString()}-${randomUUID()}`,
             ContractProgressionData: contractData.Metadata
                 .UseContractProgressionData
-                ? getCpd(req.jwt.unique_name, contractData.Metadata.CpdId)
+                ? getCpd(req.jwt.unique_name, contractData.Metadata.CpdId!)
                 : null,
         }
 

@@ -49,7 +49,7 @@ import {
     HandleEventOptions,
 } from "@peacockproject/statemachine-parser"
 import { ChallengeContext, SavedChallengeGroup } from "../types/challenges"
-import { fastClone, isSniperLocation } from "../utils"
+import { fastClone, gameDifficulty, isSniperLocation } from "../utils"
 import {
     ChallengeFilterOptions,
     ChallengeFilterType,
@@ -559,9 +559,9 @@ export class ChallengeService extends ChallengeRegistry {
                             return challenge
                         }
 
-                        return filterChallenge(filter, challenge)
-                            ? challenge
-                            : undefined
+                        const res = filterChallenge(filter, challenge)
+
+                        return res ? challenge : undefined
                     })
                     .filter(Boolean) as RegistryChallenge[]
 
@@ -926,7 +926,7 @@ export class ChallengeService extends ChallengeRegistry {
         contractId: string,
         gameVersion: GameVersion,
         userId: string,
-        difficulty = 4,
+        difficulty = gameDifficulty.master,
     ): CompiledChallengeTreeCategory[] {
         const userData = getUserData(userId, gameVersion)
 

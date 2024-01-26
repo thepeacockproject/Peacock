@@ -106,7 +106,7 @@ export function clearInventoryCache(): void {
 function filterUnlockedContent(
     userProfile: UserProfile,
     packagedUnlocks: Map<string, boolean>,
-    challengesUnlockables: object,
+    challengesUnlockables: Record<string, string>,
     gameVersion: GameVersion,
 ) {
     return function (

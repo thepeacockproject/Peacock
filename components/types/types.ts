@@ -1289,6 +1289,7 @@ export interface ChallengeProgressionData {
     ProfileId: string
     Completed: boolean
     Ticked: boolean
+    ETag?: string
     State: Record<string, unknown>
     CompletedAt: Date | string | null
     MustBeSaved: boolean

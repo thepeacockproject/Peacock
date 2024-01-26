@@ -18,6 +18,8 @@
 
 import { getConfig, getVersionedConfig } from "../configSwizzleManager"
 import type {
+    ChallengeCompletion,
+    CompiledChallengeTreeCategory,
     CompletionData,
     GameLocationsData,
     GameVersion,
@@ -28,6 +30,7 @@ import type {
     PeacockLocationsData,
     Unlockable,
 } from "../types/types"
+import type { MasteryData } from "../types/mastery"
 import { contractIdToHitObject, controller } from "../controller"
 import { generateCompletionData } from "../contracts/dataGen"
 import { getUserData } from "../databaseHandler"
@@ -39,6 +42,16 @@ import { no2016 } from "../contracts/escalations/escalationService"
 import { missionsInLocations } from "../contracts/missionsInLocation"
 import assert from "assert"
 
+type LegacyData = {
+    [difficulty: string]: {
+        ChallengeCompletion: {
+            ChallengesCount: number
+            CompletedChallengesCount: number
+        }
+        CompletionData: CompletionData
+    }
+}
+
 type GameFacingDestination = {
     ChallengeCompletion: {
         ChallengesCount: number
@@ -49,14 +62,32 @@ type GameFacingDestination = {
     LocationCompletionPercent: number
     Location: Unlockable
     // H2016 only
-    Data?: {
-        [difficulty: string]: {
-            ChallengeCompletion: {
-                ChallengesCount: number
-                CompletedChallengesCount: number
-            }
-            CompletionData: CompletionData
+    Data?: LegacyData
+}
+
+type GameDestination = {
+    ChallengeData: {
+        Children: CompiledChallengeTreeCategory[]
+    }
+    DifficultyData: {
+        AvailableDifficultyModes: {
+            Name: string
+            Available: boolean
+        }[]
+        Difficulty: string | undefined
+        LocationId: string
+    }
+    Location: Unlockable
+    MasteryData: MasteryData | MasteryData[] | Record<string, never>
+    MissionData: {
+        ChallengeCompletion: ChallengeCompletion
+        Location: Unlockable
+        LocationCompletionPercent: number
+        OpportunityStatistics: {
+            Completed: number
+            Count: number
         }
+        SubLocationMissionsData: never[]
     }
 }
 
@@ -124,21 +155,10 @@ export function getCompletionPercent(
     opportunityDone: number,
     opportunityTotal: number,
 ): number {
-    if (challengeDone === undefined) {
-        challengeDone = 0
-    }
-
-    if (challengeTotal === undefined) {
-        challengeTotal = 0
-    }
-
-    if (opportunityDone === undefined) {
-        opportunityDone = 0
-    }
-
-    if (opportunityTotal === undefined) {
-        opportunityTotal = 0
-    }
+    challengeDone ??= 0
+    challengeTotal ??= 0
+    opportunityDone ??= 0
+    opportunityTotal ??= 0
 
     const totalCompletables = challengeTotal + opportunityTotal
     const totalCompleted = challengeDone + opportunityDone
@@ -177,31 +197,6 @@ export function getAllGameDestinations(
                     jwt.unique_name,
                     gameVersion,
                 ),
-                Data:
-                    gameVersion === "h1"
-                        ? {
-                              normal: {
-                                  ChallengeCompletion: undefined,
-                                  CompletionData: generateCompletionData(
-                                      destination,
-                                      jwt.unique_name,
-                                      gameVersion,
-                                      "mission",
-                                      "normal",
-                                  ),
-                              },
-                              pro1: {
-                                  ChallengeCompletion: undefined,
-                                  CompletionData: generateCompletionData(
-                                      destination,
-                                      jwt.unique_name,
-                                      gameVersion,
-                                      "mission",
-                                      "pro1",
-                                  ),
-                              },
-                          }
-                        : undefined,
             },
         }
 
@@ -209,10 +204,28 @@ export function getAllGameDestinations(
         // There are different challenges for normal and pro1 in 2016, right now, we do not support this.
         // We're just reusing this for now.
         if (gameVersion === "h1") {
-            template.Data.normal.ChallengeCompletion =
-                template.ChallengeCompletion
-            template.Data.pro1.ChallengeCompletion =
-                template.ChallengeCompletion
+            template.Data = {
+                normal: {
+                    ChallengeCompletion: template.ChallengeCompletion,
+                    CompletionData: generateCompletionData(
+                        destination,
+                        jwt.unique_name,
+                        gameVersion,
+                        "mission",
+                        "normal",
+                    ),
+                },
+                pro1: {
+                    ChallengeCompletion: template.ChallengeCompletion,
+                    CompletionData: generateCompletionData(
+                        destination,
+                        jwt.unique_name,
+                        gameVersion,
+                        "mission",
+                        "pro1",
+                    ),
+                },
+            } satisfies LegacyData
         }
 
         result.push(template)
@@ -294,12 +307,18 @@ export function createLocationsData(
     return finalData
 }
 
-// TODO: this is a mess, write docs and type explicitly
+/**
+ * This gets the game-facing data for a destination.
+ *
+ * @param query
+ * @param gameVersion
+ * @param jwt
+ */
 export function getDestination(
     query: GetDestinationQuery,
     gameVersion: GameVersion,
     jwt: JwtData,
-) {
+): GameDestination {
     const LOCATION = query.locationId
 
     const locData = getVersionedConfig<PeacockLocationsData>(
@@ -316,8 +335,20 @@ export function getDestination(
         query.difficulty,
     )
 
-    const response = {
-        Location: {},
+    let resMasteryData: GameDestination["MasteryData"]
+
+    if (LOCATION !== "LOCATION_PARENT_ICA_FACILITY") {
+        if (gameVersion === "h1") {
+            resMasteryData = masteryData[0]
+        } else {
+            resMasteryData = masteryData
+        }
+    } else {
+        resMasteryData = {}
+    }
+
+    const response: Partial<GameDestination> = {
+        Location: locationData,
         MissionData: {
             ...getDestinationCompletion(
                 locationData,
@@ -335,13 +366,7 @@ export function getDestination(
                     jwt.unique_name,
                 ),
         },
-        MasteryData:
-            LOCATION !== "LOCATION_PARENT_ICA_FACILITY"
-                ? gameVersion === "h1"
-                    ? masteryData[0]
-                    : masteryData
-                : {},
-        DifficultyData: undefined,
+        MasteryData: resMasteryData,
     }
 
     if (gameVersion === "h1" && LOCATION !== "LOCATION_PARENT_ICA_FACILITY") {
@@ -358,7 +383,7 @@ export function getDestination(
                     Available: inventory.some(
                         (e) =>
                             e.Unlockable.Id ===
-                            locationData.Properties.DifficultyUnlock.pro1,
+                            locationData.Properties.DifficultyUnlock?.pro1,
                     ),
                 },
             ],
@@ -375,14 +400,16 @@ export function getDestination(
         (subLocation) => subLocation.Properties.ParentLocation === LOCATION,
     )
 
-    response.Location = locationData
-
     if (query.difficulty === "pro1") {
+        type Cast = keyof typeof controller.missionsInLocations.pro1
+
         const obj = {
             Location: locationData,
             SubLocation: locationData,
-            Missions: [controller.missionsInLocations.pro1[LOCATION]].map(
-                (id) => contractIdToHitObject(id, gameVersion, jwt.unique_name),
+            Missions: [
+                controller.missionsInLocations.pro1[LOCATION as Cast],
+            ].map((id) =>
+                contractIdToHitObject(id, gameVersion, jwt.unique_name),
             ),
             SarajevoSixMissions: [],
             ElusiveMissions: [],
@@ -397,9 +424,9 @@ export function getDestination(
             ),
         }
 
-        response.MissionData.SubLocationMissionsData.push(obj)
+        response.MissionData?.SubLocationMissionsData.push(obj)
 
-        return response
+        return response as GameDestination
     }
 
     for (const e of sublocationsData) {
@@ -407,6 +434,7 @@ export function getDestination(
 
         const escalations: IHit[] = []
 
+        type Cast = keyof typeof controller.missionsInLocations.escalations
         // every unique escalation from the sublocation
         const allUniqueEscalations: string[] = [
             ...(gameVersion === "h1" && e.Id === "LOCATION_ICA_FACILITY"
@@ -415,7 +443,7 @@ export function getDestination(
                   ]
                 : []),
             ...new Set<string>(
-                controller.missionsInLocations.escalations[e.Id] || [],
+                controller.missionsInLocations.escalations[e.Id as Cast] || [],
             ),
         ]
 
@@ -521,8 +549,8 @@ export function getDestination(
             }
         }
 
-        response.MissionData.SubLocationMissionsData.push(obj)
+        response.MissionData?.SubLocationMissionsData.push(obj)
     }
 
-    return response
+    return response as GameDestination
 }

@@ -31,7 +31,12 @@ import {
     MasteryPackageDrop,
     UnlockableMasteryData,
 } from "../types/mastery"
-import { CompletionData, GameVersion, Unlockable } from "../types/types"
+import {
+    CompletionData,
+    GameVersion,
+    ProgressionData,
+    Unlockable,
+} from "../types/types"
 import {
     clampValue,
     DEFAULT_MASTERY_MAXLEVEL,
@@ -42,6 +47,7 @@ import {
 } from "../utils"
 
 import { getUnlockablesById } from "../inventory"
+import assert from "assert"
 
 export class MasteryService {
     /**
@@ -150,16 +156,16 @@ export class MasteryService {
         )[0]
     }
 
-    // TODO: what do we want to do with this? We should prob remove the template part
-    //       to make this like the other routes, and more testable.
     getMasteryDataForLocation(
         locationId: string,
         gameVersion: GameVersion,
         userId: string,
     ): LocationMasteryData {
-        const location: Unlockable =
+        const location =
             getSubLocationByName(locationId, gameVersion) ??
             getParentLocationByName(locationId, gameVersion)
+
+        assert.ok(location, "cannot get mastery data for unknown location")
 
         const masteryData = this.getMasteryData(
             location.Properties.ParentLocation ?? location.Id,
@@ -193,19 +199,12 @@ export class MasteryService {
         // Get the user profile
         const userProfile = getUserData(userId, gameVersion)
 
-        // @since v7.0.0 this has been commented out as the default profile should
-        // have all the required properties - AF
-        /* userProfile.Extensions.progression.Locations[locationParentId] ??= {
-            Xp: 0,
-            Level: 1,
-            PreviouslySeenXp: 0,
-        } */
+        const parent =
+            userProfile.Extensions.progression.Locations[locationParentId]
 
-        const completionData = subPackageId
-            ? userProfile.Extensions.progression.Locations[locationParentId][
-                  subPackageId
-              ]
-            : userProfile.Extensions.progression.Locations[locationParentId]
+        const completionData: ProgressionData = subPackageId
+            ? (parent[subPackageId as keyof typeof parent] as ProgressionData)
+            : (parent as ProgressionData)
 
         const nextLevel: number = clampValue(
             completionData.Level + 1,
@@ -292,7 +291,7 @@ export class MasteryService {
             SubLocationId: isSniper ? "" : subLocationId,
             HideProgression: masteryPkg.HideProgression || false,
             IsLocationProgression: !isSniper,
-            Name: name,
+            Name: name!,
         }
     }
 
@@ -416,17 +415,19 @@ export class MasteryService {
                     subPkg.Id,
                 )
 
-                masteryData.push({
-                    CompletionData: completionData,
-                    Drops: this.processDrops(
-                        completionData.Level,
-                        subPkg.Drops,
-                        unlockableMap,
-                    ),
-                    Unlockable: isSniper
-                        ? unlockableMap.get(subPkg.Id)
-                        : undefined,
-                })
+                if (completionData) {
+                    masteryData.push({
+                        CompletionData: completionData,
+                        Drops: this.processDrops(
+                            completionData.Level,
+                            subPkg.Drops,
+                            unlockableMap,
+                        ),
+                        Unlockable: isSniper
+                            ? unlockableMap.get(subPkg.Id)
+                            : undefined,
+                    })
+                }
             }
         } else {
             // All sniper locations are subpackages, so we don't need to add "sniper"
@@ -439,14 +440,16 @@ export class MasteryService {
                 locationParentId.includes("SNUG") ? "evergreen" : "mission",
             )
 
-            masteryData.push({
-                CompletionData: completionData,
-                Drops: this.processDrops(
-                    completionData.Level,
-                    masteryPkg.Drops,
-                    unlockableMap,
-                ),
-            })
+            if (completionData) {
+                masteryData.push({
+                    CompletionData: completionData,
+                    Drops: this.processDrops(
+                        completionData.Level,
+                        masteryPkg.Drops || [],
+                        unlockableMap,
+                    ),
+                })
+            }
         }
 
         return masteryData
