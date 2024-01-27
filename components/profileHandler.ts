@@ -389,9 +389,9 @@ profileRouter.post(
         )) as UserProfile[]
 
         const result = {
-            steam: {},
-            epic: {},
-            dev: {},
+            steam: {} as Record<string, string>,
+            epic: {} as Record<string, string>,
+            dev: {} as Record<string, string>,
         }
 
         for (const profile of profiles) {
