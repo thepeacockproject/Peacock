@@ -82,7 +82,7 @@ export function withLookupDialog(
                 contract,
                 req.jwt.unique_name,
                 req.gameVersion,
-            ),
+            )!,
         },
         ...(flag && { AddedSuccessfully: true }),
     }

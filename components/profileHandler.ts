@@ -293,32 +293,6 @@ export async function resolveProfiles(
                     })
                 }
 
-                if (id === "a38faeaa-5b5b-4d7e-af90-329e98a26652") {
-                    log(
-                        LogLevel.WARN,
-                        "The game tried to resolve the PeacockProject account, which should no longer be used!",
-                    )
-
-                    return Promise.resolve({
-                        Id: "a38faeaa-5b5b-4d7e-af90-329e98a26652",
-                        LinkedAccounts: {
-                            dev: "PeacockProject",
-                        },
-                        Extensions: {},
-                        ETag: null,
-                        Gamertag: "PeacockProject",
-                        DevId: "PeacockProject",
-                        SteamId: null,
-                        StadiaId: null,
-                        EpicId: null,
-                        NintendoId: null,
-                        XboxLiveId: null,
-                        PSNAccountId: null,
-                        PSNOnlineId: null,
-                        Version: LATEST_PROFILE_VERSION,
-                    })
-                }
-
                 const fakePlayer = fakePlayerRegistry.getFromId(id)
 
                 if (fakePlayer) {
@@ -452,7 +426,8 @@ profileRouter.post(
         }
 
         const userdata = getUserData(req.body.userId, req.gameVersion)
-        res.json(userdata.Extensions.gamepersistentdata[req.body.key])
+        type Cast = keyof typeof userdata.Extensions.gamepersistentdata
+        res.json(userdata.Extensions.gamepersistentdata[req.body.key as Cast])
     },
 )
 

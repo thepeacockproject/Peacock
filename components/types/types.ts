@@ -963,12 +963,7 @@ export interface MissionManifestMetadata {
     InGroup?: string | null
     NextContractId?: string | null
     GroupDefinition?: ContractGroupDefinition | null
-    GroupData?: {
-        Level: number
-        TotalLevels: number
-        Completed: boolean
-        FirstContractId: string
-    } | null
+    GroupData?: EscalationInfo["GroupData"] | null
     // End escalation-exclusive properties
     /**
      * Useless property.
@@ -1320,7 +1315,7 @@ export interface IHit {
 /**
  * A video object.
  *
- * @see ICampaignVideo
+ * @see CampaignVideo
  * @see StoryData
  */
 export interface IVideo {
@@ -1344,7 +1339,7 @@ export interface IVideo {
  *
  * @see IHit
  */
-export type ICampaignMission = {
+export type CampaignMission = {
     Type: "Mission"
     Data: IHit
 }
@@ -1354,7 +1349,7 @@ export type ICampaignMission = {
  *
  * @see IVideo
  */
-export type ICampaignVideo = {
+export type CampaignVideo = {
     Type: "Video"
     Data: IVideo
 }
@@ -1371,7 +1366,7 @@ export interface RegistryChallenge extends SavedChallenge {
 /**
  * An element for the game's story data.
  */
-export type StoryData = ICampaignMission | ICampaignVideo
+export type StoryData = CampaignMission | CampaignVideo
 
 /**
  * A campaign object.
@@ -1429,11 +1424,12 @@ export type LoadoutFile = Record<
 
 /**
  * A function that generates a campaign mission object for use in the campaigns menu.
+ * Will throw if contract is not found.
  */
 export type GenSingleMissionFunc = (
     contractId: string,
     gameVersion: GameVersion,
-) => ICampaignMission
+) => CampaignMission
 
 /**
  * A function that generates a campaign video object for use in the campaigns menu.
@@ -1441,7 +1437,7 @@ export type GenSingleMissionFunc = (
 export type GenSingleVideoFunc = (
     videoId: string,
     gameVersion: GameVersion,
-) => ICampaignVideo
+) => CampaignVideo
 
 /**
  * A "hits category" is used to display lists of contracts in-game.

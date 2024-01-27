@@ -154,7 +154,7 @@ export function getModernStashData(
     }
 
     const stashData: ModernStashData = {
-        SlotId: query.slotid,
+        SlotId: query.slotid!,
         LoadoutItemsData: {
             SlotId: query.slotid,
             Items: getModernStashItemsData(
@@ -173,7 +173,7 @@ export function getModernStashData(
                 AllowContainers: query.allowcontainers, // ?? true
             },
         },
-        ShowSlotName: query.slotname,
+        ShowSlotName: query.slotname!,
     }
 
     if (contractData) {
@@ -342,7 +342,7 @@ export function getLegacyStashData(
             Recommended: getLoadoutItem(slotid)
                 ? {
                       item: getUnlockableById(
-                          getLoadoutItem(slotid),
+                          getLoadoutItem(slotid)!,
                           gameVersion,
                       ),
                       type: loadoutSlots[slotid],

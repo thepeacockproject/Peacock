@@ -19,7 +19,6 @@
 import type {
     CompiledChallengeTreeCategory,
     GameVersion,
-    JwtData,
     MissionManifest,
     MissionStory,
     ProgressionData,
@@ -115,7 +114,7 @@ export type GamePlanningData = {
 export async function getPlanningData(
     contractId: string,
     resetEscalation: boolean,
-    jwt: JwtData,
+    userId: string,
     gameVersion: GameVersion,
 ): Promise<PlanningError | GamePlanningData> {
     const entranceData = getConfig<SceneConfig>("Entrances", false)
@@ -124,7 +123,7 @@ export async function getPlanningData(
         false,
     )
 
-    const userData = getUserData(jwt.unique_name, gameVersion)
+    const userData = getUserData(userId, gameVersion)
 
     for (const ms in userData.Extensions.opportunityprogression) {
         if (Object.keys(missionStories).includes(ms)) {
@@ -132,13 +131,18 @@ export async function getPlanningData(
         }
     }
 
-    let contractData =
+    let contractData: MissionManifest | undefined
+
+    if (
         gameVersion === "h1" &&
         contractId === "42bac555-bbb9-429d-a8ce-f1ffdf94211c"
-            ? _legacyBull
-            : contractId === "ff9f46cf-00bd-4c12-b887-eac491c3a96d"
-            ? _theLastYardbirdScpc
-            : controller.resolveContract(contractId)
+    ) {
+        contractData = _legacyBull
+    } else if (contractId === "ff9f46cf-00bd-4c12-b887-eac491c3a96d") {
+        contractData = _theLastYardbirdScpc
+    } else {
+        contractData = controller.resolveContract(contractId)
+    }
 
     if (!contractData) {
         return {
@@ -152,7 +156,7 @@ export async function getPlanningData(
 
         resetUserEscalationProgress(userData, escalationGroupId)
 
-        writeUserData(jwt.unique_name, gameVersion)
+        writeUserData(userId, gameVersion)
 
         const group = controller.escalationMappings.get(escalationGroupId)
 
@@ -179,7 +183,7 @@ export async function getPlanningData(
             LogLevel.WARN,
             `Trying to download contract ${contractId} due to it not found locally.`,
         )
-        const user = userAuths.get(jwt.unique_name)
+        const user = userAuths.get(userId)
         const resp = await user?._useService(
             `https://${getRemoteService(
                 gameVersion,
@@ -295,7 +299,7 @@ export async function getPlanningData(
 
     const entrancesInScene = entranceData[scenePath]
 
-    const typedInv = createInventory(jwt.unique_name, gameVersion, sublocation)
+    const typedInv = createInventory(userId, gameVersion, sublocation)
 
     const unlockedEntrances = typedInv
         .filter((item) => item.Unlockable.Type === "access")
@@ -361,14 +365,10 @@ export async function getPlanningData(
 
     const i = typedInv.find((item) => item.Unlockable.Id === briefcaseProp)
 
-    const userCentric = generateUserCentric(
-        contractData,
-        jwt.unique_name,
-        gameVersion,
-    )
+    const userCentric = generateUserCentric(contractData, userId, gameVersion)
 
     const sniperLoadouts = createSniperLoadouts(
-        jwt.unique_name,
+        userId,
         gameVersion,
         contractData,
     )
@@ -577,7 +577,7 @@ export async function getPlanningData(
             Children: controller.challengeService.getChallengeTreeForContract(
                 contractId,
                 gameVersion,
-                jwt.unique_name,
+                userId,
             ),
         },
         Currency: {

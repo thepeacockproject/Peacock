@@ -16,7 +16,13 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type { GameVersion, JwtData, PeacockLocationsData } from "../types/types"
+import type {
+    CompletionData,
+    GameVersion,
+    JwtData,
+    PeacockLocationsData,
+    Unlockable,
+} from "../types/types"
 import { swapToBrowsingMenusStatus } from "../discordRp"
 import { getUserData } from "../databaseHandler"
 import { controller } from "../controller"
@@ -28,6 +34,28 @@ import {
 } from "../contracts/dataGen"
 import { createLocationsData, getAllGameDestinations } from "./destinations"
 import { makeCampaigns } from "./campaigns"
+
+type CareerEntry = {
+    Children: CareerEntryChild[]
+    Name: string
+    Location: Unlockable
+}
+
+type CareerEntryChild = {
+    IsLocked: boolean
+    Name: string
+    Image: string
+    Icon: string
+    CompletedChallengesCount: number
+    ChallengesCount: number
+    CategoryId: string
+    Description: string
+    Location: Unlockable
+    ImageLocked: string
+    RequiredResources: string[]
+    IsPack?: boolean
+    CompletionData: CompletionData
+}
 
 export function getHubData(gameVersion: GameVersion, jwt: JwtData) {
     swapToBrowsingMenusStatus(gameVersion)
@@ -44,7 +72,7 @@ export function getHubData(gameVersion: GameVersion, jwt: JwtData) {
         gameVersion,
         true,
     )
-    const career =
+    const career: Record<string, CareerEntry> =
         gameVersion === "h3"
             ? {}
             : {
@@ -141,10 +169,10 @@ export function getHubData(gameVersion: GameVersion, jwt: JwtData) {
                 gameVersion,
             )
 
-        career[parent]?.Children.push({
-            IsLocked: location.Properties.IsLocked,
+        career[parent!]?.Children.push({
+            IsLocked: Boolean(location.Properties.IsLocked),
             Name: location.DisplayNameLocKey,
-            Image: location.Properties.Icon,
+            Image: location.Properties.Icon || "",
             Icon: location.Type, // should be "location" for all locations
             CompletedChallengesCount:
                 challengeCompletion.CompletedChallengesCount,
@@ -152,8 +180,8 @@ export function getHubData(gameVersion: GameVersion, jwt: JwtData) {
             CategoryId: child,
             Description: `UI_${child}_PRIMARY_DESC`,
             Location: location,
-            ImageLocked: location.Properties.LockedIcon,
-            RequiredResources: location.Properties.RequiredResources,
+            ImageLocked: location.Properties.LockedIcon || "",
+            RequiredResources: location.Properties.RequiredResources || [],
             IsPack: false, // should be false for all locations
             CompletionData: generateCompletionData(
                 child,

@@ -336,7 +336,7 @@ menuDataRouter.get(
                 LocationHideProgression: true,
                 Difficulty: "normal", // FIXME: is this right?
                 CompletionData: generateCompletionData(
-                    contractData.Metadata.Location,
+                    contractData?.Metadata.Location || "",
                     req.jwt.unique_name,
                     req.gameVersion,
                 ),
@@ -357,7 +357,7 @@ menuDataRouter.get(
         const planningData = await getPlanningData(
             req.query.contractid,
             req.query.resetescalation === "true",
-            req.jwt,
+            req.jwt.unique_name,
             req.gameVersion,
         )
 
@@ -457,7 +457,9 @@ menuDataRouter.get(
             Contract: contractData,
             OrderedUnlocks: unlockedAgencyPickups
                 .filter((unlockable) =>
-                    pickupsInScene.includes(unlockable.Properties.RepositoryId),
+                    pickupsInScene.includes(
+                        unlockable.Properties.RepositoryId || "",
+                    ),
                 )
                 .sort(unlockOrderComparer),
             UserCentric: generateUserCentric(
@@ -893,7 +895,7 @@ menuDataRouter.get(
         const planningData = await getPlanningData(
             req.query.contractCreationIdOverwrite,
             false,
-            req.jwt,
+            req.jwt.unique_name,
             req.gameVersion,
         )
 
@@ -1014,12 +1016,21 @@ menuDataRouter.post(
             }
         } else {
             // No plugins handle this. Getting search results from official
-            searchResult = await officialSearchContract(
+            searchResult = (await officialSearchContract(
                 req.jwt.unique_name,
                 req.gameVersion,
                 req.body,
                 0,
-            )
+            )) || {
+                Data: {
+                    Contracts: [],
+                    TotalCount: 0,
+                    Page: 0,
+                    ErrorReason: "",
+                    HasPrevious: false,
+                    HasMore: false,
+                },
+            }
         }
 
         res.json({
@@ -1136,25 +1147,23 @@ menuDataRouter.get("/contractcreation/create", (req: RequestWithJwt, res) => {
                 Description: "UI_CONTRACTS_UGC_DESCRIPTION",
                 Targets: Array.from(sesh.kills)
                     .filter((kill) =>
-                        sesh.markedTargets.has(kill._RepositoryId),
+                        sesh.markedTargets.has(kill._RepositoryId || ""),
                     )
-                    .map((km) => {
-                        return {
-                            RepositoryId: km._RepositoryId,
-                            Selected: true,
-                            Weapon: {
-                                RepositoryId: km.KillItemRepositoryId,
-                                KillMethodBroad: km.KillMethodBroad,
-                                KillMethodStrict: km.KillMethodStrict,
-                                RequiredKillMethodType: 3,
-                            },
-                            Outfit: {
-                                RepositoryId: km.OutfitRepoId,
-                                Required: true,
-                                IsHitmanSuit: isSuit(km.OutfitRepoId),
-                            },
-                        }
-                    }),
+                    .map((km) => ({
+                        RepositoryId: km._RepositoryId,
+                        Selected: true,
+                        Weapon: {
+                            RepositoryId: km.KillItemRepositoryId,
+                            KillMethodBroad: km.KillMethodBroad,
+                            KillMethodStrict: km.KillMethodStrict,
+                            RequiredKillMethodType: 3,
+                        },
+                        Outfit: {
+                            RepositoryId: km.OutfitRepoId,
+                            Required: true,
+                            IsHitmanSuit: isSuit(km.OutfitRepoId),
+                        },
+                    })),
                 ContractConditions: complications(timeLimitStr),
                 PublishingDisabled:
                     sesh.contractId === contractCreationTutorialId,
@@ -1268,7 +1277,7 @@ menuDataRouter.get("/PlayerProfile", (req: RequestWithJwt, res) => {
 
         const subLocation = locationData.children[subLocationKey]
         const parentLocation =
-            locationData.parents[subLocation.Properties.ParentLocation]
+            locationData.parents[subLocation.Properties.ParentLocation || ""]
 
         const completionData = generateCompletionData(
             subLocation.Id,
@@ -1463,10 +1472,7 @@ menuDataRouter.get(
         res,
     ) => {
         res.json({
-            template: getConfig<MasteryDataTemplate>(
-                "MasteryDataForLocationTemplate",
-                false,
-            ),
+            template: getConfig("MasteryDataForLocationTemplate", false),
             data: controller.masteryService.getMasteryDataForLocation(
                 req.query.locationId,
                 req.gameVersion,
