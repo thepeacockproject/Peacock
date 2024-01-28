@@ -67,7 +67,7 @@ export class IOIStrategy extends EntitlementStrategy {
     constructor(gameVersion: GameVersion, private readonly issuerId: string) {
         super()
         this.issuerId = issuerId
-        this._remoteService = getRemoteService(gameVersion)
+        this._remoteService = getRemoteService(gameVersion)!
     }
 
     override async get(userId: string) {

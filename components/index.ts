@@ -41,7 +41,12 @@ import {
     ServerVer,
 } from "./utils"
 import { getConfig } from "./configSwizzleManager"
-import { handleOauthToken } from "./oauthToken"
+import {
+    error400,
+    error406,
+    handleOAuthToken,
+    OAuthTokenBody,
+} from "./oauthToken"
 import type {
     RequestWithJwt,
     S2CEventWithTimestamp,
@@ -88,6 +93,8 @@ import { multiplayerMenuDataRouter } from "./multiplayer/multiplayerMenuData"
 import { pack, unpack } from "msgpackr"
 import { liveSplitManager } from "./livesplit/liveSplitManager"
 import { cheapLoadUserData } from "./databaseHandler"
+
+loadFlags()
 
 // welcome to the bleeding edge
 setFlagsFromString("--harmony")
@@ -248,9 +255,26 @@ app.post(
     },
 )
 
-// @ts-expect-error jwt props.
-app.post("/oauth/token", urlencoded(), (req: RequestWithJwt, res) =>
-    handleOauthToken(req, res),
+app.post(
+    "/oauth/token",
+    urlencoded(),
+    // @ts-expect-error jwt props.
+    (req: RequestWithJwt<never, OAuthTokenBody>, res) => {
+        handleOAuthToken(req)
+            .then((token) => {
+                if (token === error400) {
+                    return res.status(400).send()
+                } else if (token === error406) {
+                    return res.status(406).send()
+                } else {
+                    return res.json(token)
+                }
+            })
+            .catch((err) => {
+                log(LogLevel.ERROR, err.message)
+                res.status(500).send()
+            })
+    },
 )
 
 app.get("/files/onlineconfig.json", (_, res) => {

@@ -94,12 +94,15 @@ export async function checkForUpdates(): Promise<void> {
     }
 }
 
-export function getRemoteService(gameVersion: GameVersion): string {
-    return gameVersion === "h3"
-        ? "hm3-service"
-        : gameVersion === "h2"
-        ? "pc2-service"
-        : "pc-service"
+export function getRemoteService(gameVersion: GameVersion): string | undefined {
+    switch (gameVersion) {
+        case "h3":
+            return "hm3-service"
+        case "h2":
+            return "pc2-service"
+        default:
+            return "pc-service"
+    }
 }
 
 /**
@@ -523,15 +526,17 @@ export const defaultSuits = {
  * @returns The default suits that are attainable via challenges or mastery.
  */
 export function attainableDefaults(gameVersion: GameVersion): string[] {
-    return gameVersion === "h1"
-        ? []
-        : gameVersion === "h2"
-        ? ["TOKEN_OUTFIT_WET_SUIT"]
-        : [
-              "TOKEN_OUTFIT_GREENLAND_HERO_TRAININGSUIT",
-              "TOKEN_OUTFIT_WET_SUIT",
-              "TOKEN_OUTFIT_HERO_DUGONG_SUIT",
-          ]
+    if (gameVersion === "h1") {
+        return []
+    } else if (gameVersion === "h2") {
+        return ["TOKEN_OUTFIT_WET_SUIT"]
+    } else {
+        return [
+            "TOKEN_OUTFIT_GREENLAND_HERO_TRAININGSUIT",
+            "TOKEN_OUTFIT_WET_SUIT",
+            "TOKEN_OUTFIT_HERO_DUGONG_SUIT",
+        ]
+    }
 }
 
 /**

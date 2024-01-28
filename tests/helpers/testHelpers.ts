@@ -26,8 +26,11 @@ export function asMock<T>(value: T): Mock {
     return value as Mock
 }
 
-export function mockRequestWithJwt(): RequestWithJwt<core.Query, any> {
-    const mockedRequest = <RequestWithJwt<core.Query, any>>{
+export function mockRequestWithJwt<
+    QS = core.Query,
+    Body = any,
+>(): RequestWithJwt<QS, Body> {
+    const mockedRequest = <RequestWithJwt<QS, Body>>{
         headers: {},
         header: (name: string) =>
             mockedRequest.headers[name.toLowerCase()] as string,
@@ -36,10 +39,10 @@ export function mockRequestWithJwt(): RequestWithJwt<core.Query, any> {
     return mockedRequest
 }
 
-export function mockRequestWithValidJwt(
+export function mockRequestWithValidJwt<QS = core.Query, Body = any>(
     pId: string,
-): RequestWithJwt<core.Query, any> {
-    const mockedRequest = mockRequestWithJwt()
+): RequestWithJwt<QS, Body> {
+    const mockedRequest = mockRequestWithJwt<QS, Body>()
 
     const jwtToken = sign(
         {
@@ -64,15 +67,20 @@ export function mockResponse(): core.Response {
         return response
     }
 
+    // @ts-expect-error It works.
     response.status = vi.fn().mockImplementation(mockImplementation)
+    // @ts-expect-error It works.
     response.json = vi.fn()
+    // @ts-expect-error It works.
     response.end = vi.fn()
 
+    // @ts-expect-error It works.
     return <core.Response>response
 }
 
 export function getResolvingPromise<T>(value?: T): Promise<T> {
     return new Promise((resolve) => {
+        // @ts-expect-error It works.
         resolve(value)
     })
 }
