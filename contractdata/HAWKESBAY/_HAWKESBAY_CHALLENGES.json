@@ -1584,6 +1584,123 @@
                     }
                 },
                 {
+                    "Id": "05817dc2-60cc-4dc8-8f17-c87ffc7606f5",
+                    "Name": "UI_CONTRACT_OPUNTIA_SHURIKENSCARECROW_NAME",
+                    "ImageName": "images/contracts/Escalation/ContractEscalation_NewZealand_Opuntia_Shuriken_Scarecrow.jpg",
+                    "Description": "UI_CONTRACT_OPUNTIA_SHURIKENSCARECROW_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": ["TOKEN_OUTFIT_NEWZEALAND_HERO_OPUNTIA_SUIT"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_NEWZEALAND",
+                    "ParentLocationId": "LOCATION_PARENT_NEWZEALAND",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 5
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal"
+                            }
+                        },
+                        "Context": {
+                            "Witnesses": [],
+                            "KilledTargets": [],
+                            "RecordingDestroyed": true,
+                            "LastAccidentTime": 0,
+                            "Count": 0,
+                            "HalloweenGuards": [
+                                "c04e1fe2-9227-4c86-9068-8ef098d89b57",
+                                "d37dbe48-0cd8-480d-9d61-28fe8057d3e1",
+                                "47c00c25-953a-45da-86e0-3fcdadea3487",
+                                "0ec76339-0fd9-4c83-9368-f235b66b3fa0",
+                                "6024f334-d840-4418-b3b0-12a2870150c4",
+                                "71d833e8-5f8d-4cd5-8dc8-48d5097f71e9",
+                                "7762eb11-138c-4d5b-bf3c-f28921cfa0e0",
+                                "3663ff4d-c47d-4a5c-9de7-5d748449a6fd",
+                                "9a469cd6-0689-49af-86ea-1a2d7022a1e5",
+                                "77fea61d-7993-486c-a5d5-71a6e55d414c",
+                                "6d64c21b-1ae4-47a8-aceb-120cb68ae362",
+                                "dddfaa8a-b4bc-42b4-a0ce-c44b1d1af75a",
+                                "e2196d59-c5fe-43e0-b7e8-508bde38cb67",
+                                "4e98437d-49e2-4cbd-a081-6c3f34c7797d",
+                                "020cded4-84d2-48f8-a593-a13b60574cf0",
+                                "a58ae30e-00ad-42ec-949d-1d6c5fe1bb47",
+                                "c8c6979e-2b8b-48cc-b405-7f1138b88e8c",
+                                "51a33b0d-8262-4efe-a62e-1e0f798535da",
+                                "a358c870-516f-4158-890d-63014b962455",
+                                "0b6e8324-8118-40b4-b0b8-4d75d03ff37f",
+                                "0037cdef-80c5-40aa-85f8-1a28588ae954",
+                                "3b1bffed-bbcf-446e-8824-5855f9df7714",
+                                "afbfb9f3-e629-44f4-bb6d-3537fb94898a",
+                                "dbebec2f-5a75-4713-bb08-c32f141bc9a5"
+                            ]
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Spotted": {
+                                    "Transition": "Failure"
+                                },
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$inarray": {
+                                                        "in": "$.HalloweenGuards",
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$Value.RepositoryId"
+                                                            ]
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.KillItemRepositoryId",
+                                                        "92330cd4-1bb1-419e-98d3-ef26631504bf"
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$inc": "Count",
+                                            "$remove": [
+                                                "HalloweenGuards",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["hard", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["3efc73f9-33f0-4af6-9508-7208e6851394"]
+                    }
+                },
+                {
                     "Id": "760597a5-1ff9-4f23-be1d-73ba6211b561",
                     "Name": "UI_CONTRACT_OPUNTIA_SCARECROW_NAME",
                     "ImageName": "images/contracts/Escalation/ContractEscalation_NewZealand_Opuntia_Scarecrow.jpg",
