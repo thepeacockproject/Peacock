@@ -1480,7 +1480,7 @@ export interface PlayNextGetCampaignsHookReturn {
 
 export type SafehouseCategory = {
     Category: string
-    SubCategories: SafehouseCategory[]
+    SubCategories: SafehouseCategory[] | null
     IsLeaf: boolean
     Data: null | {
         Type: string

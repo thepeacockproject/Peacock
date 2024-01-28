@@ -21,7 +21,6 @@ import type {
     CompletionData,
     GameVersion,
     MissionManifest,
-    Unlockable,
 } from "../types/types"
 import { getSubLocationByName } from "../contracts/dataGen"
 import { InventoryItem } from "../inventory"
@@ -39,7 +38,7 @@ export type SniperLoadout = {
         SlotName: string
         Items: {
             Item: InventoryItem
-            ItemDetails: Unlockable
+            ItemDetails: unknown
         }[]
         Page: number
         Recommended: {

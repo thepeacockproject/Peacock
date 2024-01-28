@@ -79,6 +79,7 @@ import {
     DebriefingLeaderboardsQuery,
     GetCompletionDataForLocationQuery,
     GetDestinationQuery,
+    GetMasteryCompletionDataForUnlockableQuery,
     LeaderboardEntriesCommonQuery,
     LookupContractPublicIdQuery,
     MasteryUnlockableQuery,
@@ -107,16 +108,16 @@ menuDataRouter.get(
     "/ChallengeLocation",
     // @ts-expect-error Jwt props.
     (req: RequestWithJwt<ChallengeLocationQuery>, res) => {
-        if (typeof req.query.locationId !== "string") {
-            res.status(400).send("Invalid locationId")
-            return
-        }
-
         const location = getVersionedConfig<PeacockLocationsData>(
             "LocationsData",
             req.gameVersion,
             true,
         ).children[req.query.locationId]
+
+        if (!location) {
+            res.status(400).send("Invalid locationId")
+            return
+        }
 
         const data = {
             Name: location.DisplayNameLocKey,
@@ -1489,14 +1490,9 @@ menuDataRouter.get(
 menuDataRouter.get(
     "/GetMasteryCompletionDataForUnlockable",
     // @ts-expect-error Has jwt props.
-    (
-        req: RequestWithJwt<{
-            unlockableId: string
-        }>,
-        res,
-    ) => {
+    (req: RequestWithJwt<GetMasteryCompletionDataForUnlockableQuery>, res) => {
         // We make this lookup table to quickly get it, there's no other quick way for it.
-        const unlockToLoc = {
+        const unlockToLoc: Record<string, string> = {
             FIREARMS_SC_HERO_SNIPER_HM: "LOCATION_PARENT_AUSTRIA",
             FIREARMS_SC_HERO_SNIPER_KNIGHT: "LOCATION_PARENT_AUSTRIA",
             FIREARMS_SC_HERO_SNIPER_STONE: "LOCATION_PARENT_AUSTRIA",

@@ -328,6 +328,7 @@ export async function resolveProfiles(
             }),
         )
     )
+        // @ts-expect-error This whole function is an exception handling clusterfunk and needs to be rewritten.
         .map((outcome: PromiseSettledResult<UserProfile>) => {
             if (outcome.status !== "fulfilled") {
                 if (outcome.reason.code === "ENOENT") {

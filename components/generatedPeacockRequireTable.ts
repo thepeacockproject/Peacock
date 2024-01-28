@@ -37,7 +37,6 @@ import * as platformEntitlements from "./platformEntitlements"
 import * as playStyles from "./playStyles"
 import * as profileHandler from "./profileHandler"
 import * as scoreHandler from "./scoreHandler"
-import * as sessionSerialization from "./contracts/sessions"
 import * as smfSupport from "./smfSupport"
 import * as utils from "./utils"
 import * as webFeatures from "./webFeatures"
@@ -57,6 +56,7 @@ import * as elusiveTargets from "./contracts/elusiveTargets"
 import * as hitsCategoryService from "./contracts/hitsCategoryService"
 import * as leaderboards from "./contracts/leaderboards"
 import * as missionsInLocation from "./contracts/missionsInLocation"
+import * as sessions from "./contracts/sessions"
 import * as client from "./discord/client"
 import * as ipc from "./discord/ipc"
 import * as liveSplitClient from "./livesplit/liveSplitClient"
@@ -124,10 +124,6 @@ export default {
         ...profileHandler,
     },
     "@peacockproject/core/scoreHandler": { __esModule: true, ...scoreHandler },
-    "@peacockproject/core/sessionSerialization": {
-        __esModule: true,
-        ...sessionSerialization,
-    },
     "@peacockproject/core/smfSupport": { __esModule: true, ...smfSupport },
     "@peacockproject/core/utils": { __esModule: true, ...utils },
     "@peacockproject/core/webFeatures": { __esModule: true, ...webFeatures },
@@ -191,6 +187,10 @@ export default {
     "@peacockproject/core/contracts/missionsInLocation": {
         __esModule: true,
         ...missionsInLocation,
+    },
+    "@peacockproject/core/contracts/sessions": {
+        __esModule: true,
+        ...sessions,
     },
     "@peacockproject/core/discord/client": { __esModule: true, ...client },
     "@peacockproject/core/discord/ipc": { __esModule: true, ...ipc },

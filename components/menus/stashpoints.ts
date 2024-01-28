@@ -411,7 +411,7 @@ export function getSafehouseCategory(
             continue // I don't want to put this in that elif statement
         }
 
-        let category = safehouseData.SubCategories.find(
+        let category = safehouseData.SubCategories?.find(
             (cat) => cat.Category === item.Unlockable.Type,
         )
         let subcategory: SafehouseCategory | undefined
@@ -423,16 +423,16 @@ export function getSafehouseCategory(
                 IsLeaf: false,
                 Data: null,
             }
-            safehouseData.SubCategories.push(category)
+            safehouseData.SubCategories?.push(category)
         }
 
-        subcategory = category.SubCategories.find(
+        subcategory = category.SubCategories?.find(
             (cat) => cat.Category === item.Unlockable.Subtype,
         )
 
         if (!subcategory) {
             subcategory = {
-                Category: item.Unlockable.Subtype,
+                Category: item.Unlockable.Subtype!,
                 SubCategories: null,
                 IsLeaf: true,
                 Data: {
@@ -443,13 +443,14 @@ export function getSafehouseCategory(
                     HasMore: false,
                 },
             }
-            category.SubCategories.push(subcategory!)
+            category.SubCategories?.push(subcategory!)
         }
 
         subcategory!.Data?.Items.push({
             Item: item,
             ItemDetails: {
                 Capabilities: [],
+                // @ts-expect-error It just works. Types are probably wrong somewhere up the chain.
                 StatList: item.Unlockable.Properties.Gameplay
                     ? Object.entries(item.Unlockable.Properties.Gameplay).map(
                           ([key, value]) => ({
@@ -465,15 +466,15 @@ export function getSafehouseCategory(
         })
     }
 
-    for (const [id, category] of safehouseData.SubCategories.entries()) {
-        if (category.SubCategories.length === 1) {
+    for (const [id, category] of safehouseData.SubCategories?.entries() || []) {
+        if (category.SubCategories?.length === 1) {
             // if category only has one subcategory
-            safehouseData.SubCategories[id] = category.SubCategories[0] // flatten it
-            safehouseData.SubCategories[id].Category = category.Category // but keep the top category's name
+            safehouseData.SubCategories![id] = category.SubCategories[0] // flatten it
+            safehouseData.SubCategories![id].Category = category.Category // but keep the top category's name
         }
     }
 
-    if (safehouseData.SubCategories.length === 1) {
+    if (safehouseData.SubCategories?.length === 1) {
         // if root has only one subcategory
         safehouseData = safehouseData.SubCategories[0] // flatten it
     }

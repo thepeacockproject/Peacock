@@ -75,7 +75,9 @@ export class ProgressionService {
         if (dropIds.length > 0) {
             grantDrops(
                 userProfile.Id,
-                getUnlockablesById(dropIds, contractSession.gameVersion),
+                getUnlockablesById(dropIds, contractSession.gameVersion).filter(
+                    Boolean,
+                ) as Unlockable[],
             )
         }
 
@@ -90,7 +92,8 @@ export class ProgressionService {
         subPkgId?: string,
     ) {
         return subPkgId
-            ? userProfile.Extensions.progression.Locations[location][subPkgId]
+            ? // @ts-expect-error It is possible to index into an object with a string
+              userProfile.Extensions.progression.Locations[location][subPkgId]
             : userProfile.Extensions.progression.Locations[location]
     }
 
@@ -184,25 +187,29 @@ export class ProgressionService {
             if (masteryData) {
                 const previousLevel = locationData.Level
 
+                let newLocationXp = xpRequiredForLevel(maxLevel)
+
+                if (isEvergreenContract) {
+                    newLocationXp = xpRequiredForEvergreenLevel(maxLevel)
+                } else if (sniperUnlockable) {
+                    newLocationXp = xpRequiredForSniperLevel(maxLevel)
+                }
+
                 locationData.Xp = clampValue(
                     locationData.Xp + masteryXp + actionXp,
                     0,
-                    isEvergreenContract
-                        ? xpRequiredForEvergreenLevel(maxLevel)
-                        : sniperUnlockable
-                        ? xpRequiredForSniperLevel(maxLevel)
-                        : xpRequiredForLevel(maxLevel),
+                    newLocationXp,
                 )
 
-                locationData.Level = clampValue(
-                    isEvergreenContract
-                        ? evergreenLevelForXp(locationData.Xp)
-                        : sniperUnlockable
-                        ? sniperLevelForXp(locationData.Xp)
-                        : levelForXp(locationData.Xp),
-                    1,
-                    maxLevel,
-                )
+                let newLocationLevel = levelForXp(newLocationXp)
+
+                if (isEvergreenContract) {
+                    newLocationLevel = evergreenLevelForXp(newLocationXp)
+                } else if (sniperUnlockable) {
+                    newLocationLevel = sniperLevelForXp(newLocationXp)
+                }
+
+                locationData.Level = clampValue(newLocationLevel, 1, maxLevel)
 
                 // If mastery level has gone up, check if there are available drop rewards and award them
                 if (locationData.Level > previousLevel) {

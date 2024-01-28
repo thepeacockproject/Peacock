@@ -30,7 +30,26 @@ export type CalculateXpResult = {
     xp: number
 }
 
-export interface CalculateScoreResult {
+export type ScoreProgressionStats = {
+    LevelInfo: number[]
+    XP: number
+    Level: number
+    XPGain: number
+    Id?: string
+    Name?: string
+    Completion?: number
+    HideProgression?: boolean
+}
+
+export type ScoreProfileProgressionStats = {
+    LevelInfo: number[]
+    LevelInfoOffset: number
+    XP: number
+    Level: number
+    XPGain: number
+}
+
+export type CalculateScoreResult = {
     stars: number
     scoringHeadlines: ScoringHeadline[]
     awardedBonuses: ScoringBonus[]
@@ -41,7 +60,7 @@ export interface CalculateScoreResult {
     scoreWithBonus: number
 }
 
-export interface CalculateSniperScoreResult {
+export type CalculateSniperScoreResult = {
     FinalScore: number
     BaseScore: number
     TotalChallengeMultiplier: number
@@ -54,7 +73,7 @@ export interface CalculateSniperScoreResult {
     SilentAssassinMultiplier: number | undefined
 }
 
-export interface MissionEndChallenge {
+export type MissionEndChallenge = {
     ChallengeId: string
     ChallengeTags: string[]
     ChallengeName: string
@@ -66,7 +85,7 @@ export interface MissionEndChallenge {
     Drops?: string[]
 }
 
-export interface MissionEndSourceChallenge {
+export type MissionEndSourceChallenge = {
     ChallengeId: string
     ChallengeTags: string[]
     ChallengeName: string
@@ -114,34 +133,14 @@ export type ContractScore = {
     SilentAssassin: boolean
 }
 
-export interface MissionEndResult {
+export type MissionEndResult = {
     MissionReward: {
-        LocationProgression: {
-            LevelInfo: number[]
-            XP: number
-            Level: number
-            Completion: number
-            XPGain: number
-            HideProgression: boolean
-        }
-        ProfileProgression: {
-            LevelInfo: number[]
-            LevelInfoOffset: number
-            XP: number
-            Level: number
-            XPGain: number
-        }
+        LocationProgression: ScoreProgressionStats
+        ProfileProgression: ScoreProfileProgressionStats
         Challenges: MissionEndChallenge[]
         Drops: MissionEndDrop[]
         OpportunityRewards: unknown[] // ?
-        UnlockableProgression?: {
-            LevelInfo: number[]
-            XP: number
-            Level: number
-            XPGain: number
-            Id: string
-            Name: string
-        }
+        UnlockableProgression?: ScoreProgressionStats
         CompletionData: CompletionData
         ChallengeCompletion: ChallengeCompletion
         ContractChallengeCompletion: ChallengeCompletion

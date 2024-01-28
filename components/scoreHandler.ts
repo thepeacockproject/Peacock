@@ -989,7 +989,7 @@ export async function getMissionEndData(
             Id: completionData.Id,
             Level: completionData.Level,
             LevelInfo: locationLevelInfo,
-            Name: completionData.Name,
+            Name: completionData.Name!,
             XP: completionData.XP,
             XPGain:
                 completionData.Level === completionData.MaxLevel
@@ -997,6 +997,7 @@ export async function getMissionEndData(
                     : sniperScore.FinalScore,
         }
 
+        // @ts-expect-error should be fine (allegedly)
         userData.Extensions.progression.Locations[locationParentId][
             query.masteryUnlockableId!
         ].PreviouslySeenXp = completionData.XP

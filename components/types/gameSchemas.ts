@@ -173,3 +173,10 @@ export type LookupContractPublicIdQuery = {
 export type ResolveGamerTagsBody = {
     profileIds: string[]
 }
+
+/**
+ * Query for `/profiles/page/GetMasteryCompletionDataForUnlockable`.
+ */
+export type GetMasteryCompletionDataForUnlockableQuery = {
+    unlockableId: string
+}
