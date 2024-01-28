@@ -80,6 +80,7 @@ import {
     GetCompletionDataForLocationQuery,
     GetDestinationQuery,
     LeaderboardEntriesCommonQuery,
+    LookupContractPublicIdQuery,
     MasteryUnlockableQuery,
     MissionEndRequestQuery,
     PlanningQuery,
@@ -366,13 +367,16 @@ menuDataRouter.get(
             return
         }
 
+        let template: unknown | null = null
+
+        if (req.gameVersion === "h1") {
+            template = getConfig("LegacyPlanningTemplate", false)
+        } else if (req.gameVersion === "scpc") {
+            template = getConfig("FrankensteinPlanningTemplate", false)
+        }
+
         res.json({
-            template:
-                req.gameVersion === "h1"
-                    ? getConfig("LegacyPlanningTemplate", false)
-                    : req.gameVersion === "scpc"
-                    ? getConfig("FrankensteinPlanningTemplate", false)
-                    : null,
+            template,
             data: planningData,
         })
     },
@@ -542,7 +546,7 @@ menuDataRouter.get(
                 contractData,
                 req.jwt.unique_name,
                 req.gameVersion,
-            ),
+            )!,
         }
 
         res.json({
@@ -712,13 +716,8 @@ async function lookupContractPublicId(
 menuDataRouter.get(
     "/LookupContractPublicId",
     // @ts-expect-error Has jwt props.
-    async (
-        req: RequestWithJwt<{
-            publicid: string
-        }>,
-        res,
-    ) => {
-        if (!req.query.publicid || typeof req.query.publicid !== "string") {
+    async (req: RequestWithJwt<LookupContractPublicIdQuery>, res) => {
+        if (typeof req.query.publicid !== "string") {
             return res.status(400).send("no/invalid public id specified!")
         }
 
@@ -1404,6 +1403,11 @@ menuDataRouter.get(
     "/GetMasteryCompletionDataForLocation",
     // @ts-expect-error Has jwt props.
     (req: RequestWithJwt<GetCompletionDataForLocationQuery>, res) => {
+        if (!req.query.locationId) {
+            res.status(400).send("no location id")
+            return
+        }
+
         res.json(
             generateCompletionData(
                 req.query.locationId,

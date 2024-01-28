@@ -168,13 +168,11 @@ export function createSniperLoadouts(
                     Capabilities: [],
                     StatList: Object.keys(
                         curUnlockable.Properties.Gameplay,
-                    ).map((key) => {
-                        return {
-                            Name: key,
-                            // @ts-expect-error This will work.
-                            Ratio: curUnlockable.Properties.Gameplay[key],
-                        }
-                    }),
+                    ).map((key) => ({
+                        Name: key,
+                        // @ts-expect-error This will work.
+                        Ratio: curUnlockable.Properties.Gameplay[key],
+                    })),
                     PropertyTexts: [],
                 },
             })

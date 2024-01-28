@@ -21,6 +21,7 @@ import {
     ContractHistory,
     GameVersion,
     HitsCategoryCategory,
+    IHit,
 } from "../types/types"
 import {
     contractIdToHitObject,
@@ -513,7 +514,7 @@ export class HitsCategoryService {
                 Page: pageNumber,
                 HasMore: false,
             },
-            CurrentSubType: undefined,
+            CurrentSubType: "",
         }
 
         const hook = this.hitsCategories.for(category)
@@ -524,7 +525,7 @@ export class HitsCategoryService {
 
         const hitObjectList = hits
             .map((id) => contractIdToHitObject(id, gameVersion, userId))
-            .filter(Boolean)
+            .filter(Boolean) as IHit[]
 
         if (!this.paginationExempt.includes(category)) {
             const paginated = paginate(hitObjectList, this.hitsPerPage)

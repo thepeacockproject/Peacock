@@ -476,7 +476,8 @@ export async function getPlanningData(
     ) {
         const loadoutUnlockable = getUnlockableById(
             gameVersion === "h1"
-                ? sublocation?.Properties?.NormalLoadoutUnlock[
+                ? // @ts-expect-error This works.
+                  sublocation?.Properties?.NormalLoadoutUnlock[
                       contractData.Metadata.Difficulty ?? "normal"
                   ]
                 : sublocation?.Properties?.NormalLoadoutUnlock,
@@ -513,6 +514,8 @@ export async function getPlanningData(
 
     assert.ok(contractData, "no contract data at final - planning")
 
+    type Cast = keyof typeof limitedLoadoutUnlockLevelMap
+
     return {
         Contract: contractData,
         ElusiveContractState: "not_completed",
@@ -543,7 +546,8 @@ export async function getPlanningData(
                       .filter(
                           (item) =>
                               item.Unlockable.Properties.Difficulty ===
-                              contractData.Metadata.Difficulty,
+                              // we already know it's not undefined
+                              contractData!.Metadata.Difficulty,
                       )
                       .map((i) => i.Unlockable.Properties.RepositoryId)
                       .filter(Boolean) as string[]),
@@ -560,20 +564,21 @@ export async function getPlanningData(
                 : unlockedEntrances
                       .filter((unlockable) =>
                           entrancesInScene.includes(
-                              unlockable.Properties.RepositoryId,
+                              unlockable.Properties.RepositoryId || "",
                           ),
                       )
                       .filter(
                           (unlockable) =>
                               unlockable.Properties.Difficulty ===
-                              contractData.Metadata.Difficulty,
+                              // we already know it's not undefined
+                              contractData!.Metadata.Difficulty,
                       )
                       .sort(unlockOrderComparer),
         Location: sublocation,
         LoadoutData:
             contractData.Metadata.Type === "sniper" ? null : loadoutSlots,
         LimitedLoadoutUnlockLevel:
-            limitedLoadoutUnlockLevelMap[sublocation.Id] ?? 0,
+            limitedLoadoutUnlockLevelMap[sublocation.Id as Cast] ?? 0,
         CharacterLoadoutData:
             sniperLoadouts.length !== 0 ? sniperLoadouts : null,
         ChallengeData: {

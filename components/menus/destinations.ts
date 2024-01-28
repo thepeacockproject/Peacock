@@ -65,6 +65,19 @@ type GameFacingDestination = {
     Data?: LegacyData
 }
 
+type LocationMissionData = {
+    Location: Unlockable
+    SubLocation: Unlockable
+    Missions: IHit[]
+    SarajevoSixMissions: IHit[]
+    ElusiveMissions: IHit[]
+    EscalationMissions: IHit[]
+    SniperMissions: IHit[]
+    PlaceholderMissions: IHit[]
+    CampaignMissions: IHit[]
+    CompletionData: CompletionData
+}
+
 type GameDestination = {
     ChallengeData: {
         Children: CompiledChallengeTreeCategory[]
@@ -87,7 +100,7 @@ type GameDestination = {
             Completed: number
             Count: number
         }
-        SubLocationMissionsData: never[]
+        SubLocationMissionsData: LocationMissionData[]
     }
 }
 
@@ -403,14 +416,14 @@ export function getDestination(
     if (query.difficulty === "pro1") {
         type Cast = keyof typeof controller.missionsInLocations.pro1
 
-        const obj = {
+        const obj: LocationMissionData = {
             Location: locationData,
             SubLocation: locationData,
-            Missions: [
-                controller.missionsInLocations.pro1[LOCATION as Cast],
-            ].map((id) =>
-                contractIdToHitObject(id, gameVersion, jwt.unique_name),
-            ),
+            Missions: [controller.missionsInLocations.pro1[LOCATION as Cast]]
+                .map((id) =>
+                    contractIdToHitObject(id, gameVersion, jwt.unique_name),
+                )
+                .filter(Boolean) as IHit[],
             SarajevoSixMissions: [],
             ElusiveMissions: [],
             EscalationMissions: [],
@@ -499,6 +512,7 @@ export function getDestination(
                 ["elusive", "ElusiveMissions"],
             ],
             ...((gameVersion === "h1" &&
+                // @ts-expect-error Hack.
                 missionsInLocations.sarajevo["h2016enabled"]) ||
             gameVersion === "h3"
                 ? [["sarajevo", "SarajevoSixMissions"]]

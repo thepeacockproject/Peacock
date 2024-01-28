@@ -408,10 +408,11 @@ export class ChallengeService extends ChallengeRegistry {
     }
 
     /**
-     * Check if the challenge needs to be saved in the user's progression data
-     * i.e. challenges with scopes being "profile" or "hit".
+     * Check if the challenge needs to be saved in the user's progression data.
+     * Challenges with scopes "profile" or "hit".
+     *
      * @param challenge The challenge.
-     * @returns   Whether the challenge needs to be saved in the user's progression data.
+     * @returns Whether the challenge needs to be saved in the user's progression data.
      */
     needSaveProgression(challenge: RegistryChallenge): boolean {
         return (

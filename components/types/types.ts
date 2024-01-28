@@ -879,7 +879,7 @@ export type ContractGroupDefinition = {
     Order: string[]
 }
 
-export interface EscalationInfo {
+export type EscalationInfo = {
     Type?: MissionType
     InGroup?: string
     NextContractId?: string

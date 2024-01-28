@@ -52,7 +52,7 @@ import {
     createTimeLimit,
     TargetCreator,
 } from "../statemachines/contractCreation"
-import { createSniperLoadouts } from "../menus/sniper"
+import { createSniperLoadouts, SniperCharacter } from "../menus/sniper"
 import { GetForPlay2Body } from "../types/gameSchemas"
 import assert from "assert"
 import { getUserData } from "../databaseHandler"
@@ -85,7 +85,8 @@ contractRoutingRouter.post(
             req.jwt.unique_name,
             req.gameVersion,
             contractData,
-        )
+        ) as SniperCharacter[]
+
         const loadoutData = {
             CharacterLoadoutData:
                 sniperloadouts.length !== 0 ? sniperloadouts : null,
@@ -101,7 +102,7 @@ contractRoutingRouter.post(
                       req.gameVersion,
                   )
                 : {}),
-            ...loadoutData,
+            ...(loadoutData || {}),
             ...{
                 OpportunityData: getContractOpportunityData(req, contractData),
             },
