@@ -19,6 +19,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { UserProfile } from "../../components/types/types"
 import {
+    error406,
     handleOAuthToken,
     JWT_SECRET,
     OAuthTokenResponse,
@@ -43,6 +44,7 @@ describe("oauthToken", () => {
         .mockResolvedValue("")
     const loadUserData = vi
         .spyOn(databaseHandler, "loadUserData")
+        // @ts-expect-error This is okay.
         .mockResolvedValue(undefined)
     const getUserData = vi
         .spyOn(databaseHandler, "getUserData")
@@ -54,7 +56,7 @@ describe("oauthToken", () => {
         vi.clearAllMocks()
     })
 
-    it.skip("external_steam for hitman 3", async () => {
+    it("external_steam for hitman 3", async () => {
         vi.spyOn(axios, "post").mockImplementation((url) => {
             if (url === "https://auth.hitman.io/oauth/token") {
                 return getResolvingPromise({})
@@ -67,7 +69,7 @@ describe("oauthToken", () => {
                 })
             }
 
-            return undefined
+            return getResolvingPromise({})
         })
 
         const request = mockRequestWithJwt<never, any>()
@@ -100,7 +102,7 @@ describe("oauthToken", () => {
         expect((accessToken.payload as any).unique_name).toBe(pId)
     })
 
-    it.skip("external_epic for hitman 3", async () => {
+    it("external_epic for hitman 3", async () => {
         vi.spyOn(platformEntitlements, "getEpicEntitlements").mockResolvedValue(
             ["mock"],
         )
@@ -209,6 +211,6 @@ describe("oauthToken", () => {
 
         const res = await handleOAuthToken(request)
 
-        expect(res).toHaveBeenCalledWith(406)
+        expect(res).toEqual(error406)
     })
 })

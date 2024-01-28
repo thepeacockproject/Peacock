@@ -28,10 +28,11 @@ import {
 } from "./utils"
 import { json as jsonMiddleware } from "body-parser"
 import { getPlatformEntitlements } from "./platformEntitlements"
-import { newSession } from "./eventHandler"
+import { contractSessions, newSession } from "./eventHandler"
 import {
     ChallengeProgressionData,
     CompiledChallengeIngameData,
+    ContractSession,
     GameVersion,
     RequestWithJwt,
     SaveFile,
@@ -39,7 +40,13 @@ import {
     UserProfile,
 } from "./types/types"
 import { log, LogLevel } from "./loggingInterop"
-import { getUserData, writeUserData } from "./databaseHandler"
+import {
+    deleteContractSession,
+    getContractSession,
+    getUserData,
+    writeContractSession,
+    writeUserData,
+} from "./databaseHandler"
 import { randomUUID } from "crypto"
 import { getVersionedConfig } from "./configSwizzleManager"
 import { createInventory } from "./inventory"
@@ -52,7 +59,7 @@ import {
     inclusionDataCheck,
 } from "./candle/challengeHelpers"
 import { LoadSaveBody, ResolveGamerTagsBody } from "./types/gameSchemas"
-import { loadSession, saveSession } from "./contracts/sessions"
+import assert from "assert"
 
 const profileRouter = Router()
 
@@ -761,5 +768,128 @@ profileRouter.post(
         })
     },
 )
+
+export async function saveSession(
+    save: SaveFile,
+    userData: UserProfile,
+): Promise<void> {
+    const sessionId = save.ContractSessionId
+    const token = save.Value.LastEventToken
+    const slot = save.Value.Name
+
+    if (!contractSessions.has(sessionId)) {
+        throw new Error("the session does not exist in the server's memory", {
+            cause: "non-existent",
+        })
+    }
+
+    if (!userData.Extensions.Saves) {
+        userData.Extensions.Saves = {}
+    }
+
+    if (slot in userData.Extensions.Saves) {
+        const delta = save.TimeStamp - userData.Extensions.Saves[slot].Timestamp
+
+        if (delta === 0) {
+            throw new Error(
+                `the client is accessing /ProfileService/UpdateUserSaveFileTable with nothing updated.`,
+                { cause: "cause uninvestigated" },
+            )
+        } else if (delta < 0) {
+            throw new Error(`there is a newer save in slot ${slot}`, {
+                cause: "outdated",
+            })
+        } else {
+            // If we can delete the old save, then do it. If not, we can still proceed.
+            try {
+                await deleteContractSession(
+                    slot +
+                        "_" +
+                        userData.Extensions.Saves[slot].Token +
+                        "_" +
+                        userData.Extensions.Saves[slot].ContractSessionId,
+                )
+            } catch (e) {
+                log(
+                    LogLevel.DEBUG,
+                    `Failed to delete old ${slot} save. ${getErrorMessage(e)}.`,
+                )
+            }
+        }
+    }
+
+    await writeContractSession(
+        slot + "_" + token + "_" + sessionId,
+        contractSessions.get(sessionId)!,
+    )
+    log(
+        LogLevel.DEBUG,
+        `Saved contract to slot ${slot} with token = ${token}, session id = ${sessionId}, start time = ${
+            contractSessions.get(sessionId)!.timerStart
+        }.`,
+    )
+}
+
+export async function loadSession(
+    sessionId: string,
+    token: string,
+    userData: UserProfile,
+    sessionData?: ContractSession,
+): Promise<void> {
+    if (!sessionData) {
+        try {
+            // First, try the loading the session from the filesystem.
+            sessionData = await getContractSession(token + "_" + sessionId)
+        } catch (e) {
+            // Otherwise, see if we still have this session in memory.
+            // This may be the currently active session, but we need a fallback of some sorts in case a player disconnected.
+            if (contractSessions.has(sessionId)) {
+                sessionData = contractSessions.get(sessionId)
+            } else {
+                // Rethrow the error
+                throw e
+            }
+        }
+    }
+
+    assert.ok(sessionData, "should have session data")
+
+    // Update challenge progression with the user's latest progression data
+    for (const cid in sessionData.challengeContexts) {
+        // Make sure the ChallengeProgression is available, otherwise loading might fail!
+        userData.Extensions.ChallengeProgression[cid] ??= {
+            CurrentState: "Start",
+            State: {},
+            Completed: false,
+            Ticked: false,
+        }
+
+        const challenge = controller.challengeService.getChallengeById(
+            cid,
+            sessionData.gameVersion,
+        )
+
+        assert.ok(
+            challenge,
+            `session has context for unregistered challenge ${cid}`,
+        )
+
+        if (
+            !userData.Extensions.ChallengeProgression[cid].Completed &&
+            controller.challengeService.needSaveProgression(challenge)
+        ) {
+            sessionData.challengeContexts[cid].context =
+                userData.Extensions.ChallengeProgression[cid].State
+        }
+    }
+
+    contractSessions.set(sessionId, sessionData)
+    log(
+        LogLevel.DEBUG,
+        `Loaded contract with token = ${token}, session id = ${sessionId}, start time = ${
+            contractSessions.get(sessionId)!.timerStart
+        }.`,
+    )
+}
 
 export { profileRouter }

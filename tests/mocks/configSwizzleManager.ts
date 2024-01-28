@@ -18,12 +18,15 @@
 
 import * as configSwizzleManager from "../../components/configSwizzleManager"
 import { readFileSync } from "fs"
+import { vi } from "vitest"
 
 const originalFilePaths: Record<string, string> = {}
 
 Object.keys(configSwizzleManager.configs).forEach((config: string) => {
+    // @ts-expect-error It works.
     originalFilePaths[config] = <string>configSwizzleManager.configs[config]
 
+    // @ts-expect-error It works.
     configSwizzleManager.configs[config] = undefined
 })
 
@@ -34,20 +37,24 @@ export function loadConfig(config: string) {
 
     const contents = readFileSync(originalFilePaths[config], "utf-8")
 
+    // @ts-expect-error It works.
     configSwizzleManager.configs[config] = JSON.parse(contents)
 }
 
 export function setConfig(config: string, data: unknown) {
+    // @ts-expect-error It works.
     configSwizzleManager.configs[config] = data
 }
 
 const getConfigOriginal = configSwizzleManager.getConfig
 vi.spyOn(configSwizzleManager, "getConfig").mockImplementation(
     (config: string, clone: boolean) => {
+        // @ts-expect-error It works.
         if (!configSwizzleManager.configs[config]) {
             throw `Config '${config}' has not been loaded!`
         }
 
+        // @ts-expect-error It works.
         return getConfigOriginal(config, clone)
     },
 )
