@@ -330,7 +330,7 @@ export async function getPlanningData(
     let suit = getDefaultSuitFor(sublocation)
     let tool1 = "TOKEN_FIBERWIRE"
     let tool2 = "PROP_TOOL_COIN"
-    let briefcaseProp: string | undefined = undefined
+    let briefcaseContainedItemId: string | undefined = undefined
     let briefcaseId: string | undefined = undefined
 
     const dlForLocation =
@@ -359,11 +359,13 @@ export async function getPlanningData(
 
             briefcaseId = key
             // @ts-expect-error This will work.
-            briefcaseProp = dlForLocation[key]
+            briefcaseContainedItemId = dlForLocation[key]
         }
     }
 
-    const i = typedInv.find((item) => item.Unlockable.Id === briefcaseProp)
+    const briefcaseContainedItem = typedInv.find(
+        (item) => item.Unlockable.Id === briefcaseContainedItemId,
+    )
 
     const userCentric = generateUserCentric(contractData, userId, gameVersion)
 
@@ -442,19 +444,20 @@ export async function getPlanningData(
             SlotId: "6",
             Recommended: null,
         },
-        briefcaseId && {
-            SlotName: briefcaseProp,
-            SlotId: briefcaseId,
-            Recommended: {
-                item: {
-                    ...i,
-                    Properties: {},
+        briefcaseId &&
+            briefcaseContainedItem && {
+                SlotName: briefcaseContainedItemId,
+                SlotId: briefcaseId,
+                Recommended: {
+                    item: {
+                        ...briefcaseContainedItem,
+                        Properties: {},
+                    },
+                    type: briefcaseContainedItem.Unlockable.Id,
+                    owned: true,
                 },
-                type: i.Unlockable.Id,
-                owned: true,
+                IsContainer: true,
             },
-            IsContainer: true,
-        },
     ].filter(Boolean)
 
     /**
