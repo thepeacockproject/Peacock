@@ -19,7 +19,8 @@
         "webui": "yarn workspace @peacockproject/web-ui",
         "typedefs": "yarn workspace @peacockproject/core",
         "run-dev": "node packaging/devLoader.mjs",
-        "extract-challenge-data": "node packaging/extractChallengeData.mjs"
+        "extract-challenge-data": "node packaging/extractChallengeData.mjs",
+        "find-circular": "yarn dlx dpdm components/index.ts --exclude \"(components/types)|(node_modules)\" -T"
     },
     "prettier": {
         "semi": false,
@@ -27,7 +28,7 @@
         "trailingComma": "all"
     },
     "resolutions": {
-        "body-parser": "npm:@peacockproject/body-parser@npm:2.0.0-peacock.6",
+        "body-parser": "npm:@peacockproject/body-parser@npm:3.0.0-peacock.1",
         "debug": "^4.3.4",
         "http-errors": "patch:http-errors@npm:2.0.0#.yarn/patches/http-errors-npm-2.0.0-3f1c503428.patch",
         "iconv-lite": "patch:iconv-lite@npm:0.6.3#.yarn/patches/iconv-lite-npm-0.6.3-24b8aae27e.patch",
