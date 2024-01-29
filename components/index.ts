@@ -16,8 +16,6 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-// noinspection RequiredAttributes
-
 // load as soon as possible to prevent dependency issues
 import "./generatedPeacockRequireTable"
 
@@ -26,7 +24,6 @@ import { getFlag, loadFlags } from "./flags"
 
 loadFlags()
 
-import { setFlagsFromString } from "v8"
 import { program } from "commander"
 import express, { Request, Router } from "express"
 import http from "http"
@@ -66,7 +63,6 @@ import { contractRoutingRouter } from "./contracts/contractRouting"
 import { profileRouter } from "./profileHandler"
 import { menuDataRouter } from "./menuData"
 import { menuSystemPreRouter, menuSystemRouter } from "./menus/menuSystem"
-import { legacyMenuSystemRouter } from "./2016/legacyMenuSystem"
 import { _theLastYardbirdScpc, controller } from "./controller"
 import {
     STEAM_NAMESPACE_2016,
@@ -95,9 +91,6 @@ import { liveSplitManager } from "./livesplit/liveSplitManager"
 import { cheapLoadUserData } from "./databaseHandler"
 
 loadFlags()
-
-// welcome to the bleeding edge
-setFlagsFromString("--harmony")
 
 const host = process.env.HOST || "0.0.0.0"
 const port = process.env.PORT || 80
@@ -151,12 +144,13 @@ app.get("/", (_: Request, res) => {
         res.send(
             '<html lang="en">PEACOCK_DEV active, please run "yarn webui start" to start the web UI on port 3000 and access it there.</html>',
         )
-    } else {
-        const data = readFileSync("webui/dist/index.html").toString()
-
-        res.contentType("text/html")
-        res.send(data)
+        return
     }
+
+    const data = readFileSync("webui/dist/index.html").toString()
+
+    res.contentType("text/html")
+    res.send(data)
 })
 
 serveStatic.mime.define({ "application/javascript": ["js"] })
@@ -292,13 +286,13 @@ app.use(
             // @ts-expect-error Has jwt props.
             (req: RequestWithJwt, _, next) => {
                 req.serverVersion = req.params.serverVersion
-                req.gameVersion = req.serverVersion.startsWith("8")
-                    ? "h3"
-                    : req.serverVersion.startsWith("7")
-                    ? // prettier-ignore
-                      "h2"
-                    : // prettier-ignore
-                      "h1"
+                req.gameVersion = "h1"
+
+                if (req.serverVersion.startsWith("8")) {
+                    req.gameVersion = "h3"
+                } else if (req.serverVersion.startsWith("7")) {
+                    req.gameVersion = "h2"
+                }
 
                 if (req.serverVersion === "7.3.0") {
                     req.gameVersion = "scpc"
@@ -328,11 +322,13 @@ app.use(
                     return
             }
 
-            req.gameVersion = req.serverVersion.startsWith("8")
-                ? "h3"
-                : req.serverVersion.startsWith("7")
-                ? "h2"
-                : "h1"
+            req.gameVersion = "h1"
+
+            if (req.serverVersion.startsWith("8")) {
+                req.gameVersion = "h3"
+            } else if (req.serverVersion.startsWith("7")) {
+                req.gameVersion = "h2"
+            }
 
             if (req.jwt?.aud === "scpc-prod") {
                 req.gameVersion = "scpc"
@@ -454,7 +450,6 @@ app.post(
 const legacyRouter = Router()
 const primaryRouter = Router()
 
-legacyRouter.use("/resources-(\\d+-\\d+)/", legacyMenuSystemRouter)
 legacyRouter.use("/authentication/api/userchannel/", legacyProfileRouter)
 legacyRouter.use("/profiles/page/", legacyMenuDataRouter)
 legacyRouter.use(
@@ -531,7 +526,7 @@ app.all("*", (req, res) => {
 app.use(errorLoggingMiddleware)
 
 program.description(
-    "The Peacock Project is a HITMAN™ World of Assassination Trilogy server built for general use.",
+    "The Peacock Project is a HITMAN™ World of Assassination Trilogy server replacement.",
 )
 
 function startServer(options: { hmr: boolean; pluginDevHost: boolean }): void {
@@ -644,6 +639,7 @@ program
         void toolsMenu()
     })
 
+// noinspection RequiredAttributes
 program
     .command("pack")
     .argument("<input>", "input file to pack")
@@ -661,6 +657,7 @@ program
         log(LogLevel.INFO, `Packed "${input}" to "${outputPath}" successfully.`)
     })
 
+// noinspection RequiredAttributes
 program
     .command("unpack")
     .argument("<input>", "input file to unpack")

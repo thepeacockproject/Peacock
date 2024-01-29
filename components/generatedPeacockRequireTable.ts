@@ -42,7 +42,6 @@ import * as utils from "./utils"
 import * as webFeatures from "./webFeatures"
 import * as legacyContractHandler from "./2016/legacyContractHandler"
 import * as legacyMenuData from "./2016/legacyMenuData"
-import * as legacyMenuSystem from "./2016/legacyMenuSystem"
 import * as legacyProfileRouter from "./2016/legacyProfileRouter"
 import * as challengeHelpers from "./candle/challengeHelpers"
 import * as challengeService from "./candle/challengeService"
@@ -134,10 +133,6 @@ export default {
     "@peacockproject/core/2016/legacyMenuData": {
         __esModule: true,
         ...legacyMenuData,
-    },
-    "@peacockproject/core/2016/legacyMenuSystem": {
-        __esModule: true,
-        ...legacyMenuSystem,
     },
     "@peacockproject/core/2016/legacyProfileRouter": {
         __esModule: true,

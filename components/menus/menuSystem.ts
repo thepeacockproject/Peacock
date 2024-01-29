@@ -546,7 +546,9 @@ menuSystemRouter.get(
     "/dynamic_resources_pc_release_rpkg",
     // @ts-expect-error No type issue is actually here.
     async (req: RequestWithJwt, res) => {
-        const dynamicResourceName = `dynamic_resources_${req.gameVersion}.rpkg`
+        const dynamicResourceName = `dynamic_resources_${
+            req.gameVersion === "scpc" ? "h1" : req.gameVersion
+        }.rpkg`
         const dynamicResourcePath = join(
             PEACOCK_DEV ? process.cwd() : __dirname,
             "resources",
