@@ -406,33 +406,30 @@ export interface MissionStory {
 }
 
 export interface PlayerProfileView {
-    template: unknown
-    data: {
-        SubLocationData: {
-            ParentLocation: Unlockable
-            Location: Unlockable
-            CompletionData: CompletionData
-            ChallengeCategoryCompletion: ChallengeCategoryCompletion[]
-            ChallengeCompletion: ChallengeCompletion
-            OpportunityStatistics: OpportunityStatistics
-            LocationCompletionPercent: number
-        }[]
-        PlayerProfileXp: {
-            Total: number
-            Level: number
-            Seasons: {
-                Number: number
-                Locations: {
-                    LocationId: string
-                    Xp: number
-                    ActionXp: number
-                    LocationProgression?: {
-                        Level: number
-                        MaxLevel: number
-                    }
-                }[]
+    SubLocationData: {
+        ParentLocation: Unlockable
+        Location: Unlockable
+        CompletionData: CompletionData
+        ChallengeCategoryCompletion: ChallengeCategoryCompletion[]
+        ChallengeCompletion: ChallengeCompletion
+        OpportunityStatistics: OpportunityStatistics
+        LocationCompletionPercent: number
+    }[]
+    PlayerProfileXp: {
+        Total: number
+        Level: number
+        Seasons: {
+            Number: number
+            Locations: {
+                LocationId: string
+                Xp: number
+                ActionXp: number
+                LocationProgression?: {
+                    Level: number
+                    MaxLevel: number
+                }
             }[]
-        }
+        }[]
     }
 }
 

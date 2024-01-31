@@ -21,7 +21,6 @@ import { Response, Router } from "express"
 import {
     contractCreationTutorialId,
     getMaxProfileLevel,
-    isSniperLocation,
     isSuit,
     unlockOrderComparer,
     uuidRegex,
@@ -29,19 +28,12 @@ import {
 import { contractSessions, getSession } from "./eventHandler"
 import { getConfig, getVersionedConfig } from "./configSwizzleManager"
 import { controller } from "./controller"
-import {
-    createLocationsData,
-    getDestination,
-    getDestinationCompletion,
-} from "./menus/destinations"
+import { createLocationsData, getDestination } from "./menus/destinations"
 import type {
-    ChallengeCategoryCompletion,
     ContractSearchResult,
     GameVersion,
     HitsCategoryCategory,
     PeacockLocationsData,
-    PlayerProfileView,
-    ProgressionData,
     RequestWithJwt,
     SceneConfig,
     SelectEntranceOrPickupData,
@@ -99,6 +91,7 @@ import {
     getSafehouseCategory,
 } from "./menus/stashpoints"
 import { getHubData } from "./menus/hub"
+import { getPlayerProfileData } from "./menus/playerProfile"
 
 const menuDataRouter = Router()
 
@@ -142,7 +135,7 @@ menuDataRouter.get(
 
 // @ts-expect-error Jwt props.
 menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
-    const hubInfo = getHubData(req.gameVersion, req.jwt)
+    const hubInfo = getHubData(req.gameVersion, req.jwt.unique_name)
 
     let template: unknown
 
@@ -662,7 +655,11 @@ menuDataRouter.get(
             return
         }
 
-        const destination = getDestination(req.query, req.gameVersion, req.jwt)
+        const destination = getDestination(
+            req.query,
+            req.gameVersion,
+            req.jwt.unique_name,
+        )
 
         res.json({
             template:
@@ -797,7 +794,7 @@ menuDataRouter.get(
             template: getConfig("PlayNextTemplate", false),
             data: getGamePlayNextData(
                 req.query.contractId,
-                req.jwt,
+                req.jwt.unique_name,
                 req.gameVersion,
             ),
         })
@@ -1073,13 +1070,24 @@ menuDataRouter.get(
     "/DebriefingChallenges",
     // @ts-expect-error Has jwt props.
     (
-        req: RequestWithJwt<{
-            contractId: string
-        }>,
+        req: RequestWithJwt<
+            Partial<{
+                contractId: string
+            }>
+        >,
         res,
     ) => {
+        if (typeof req.query.contractId !== "string") {
+            res.status(400).send("invalid contractId")
+            return
+        }
+
         res.json({
-            template: getConfig("DebriefingChallengesTemplate", false),
+            template: getVersionedConfig(
+                "DebriefingChallengesTemplate",
+                req.gameVersion,
+                false,
+            ),
             data: {
                 ChallengeData: {
                     Children:
@@ -1253,114 +1261,10 @@ menuDataRouter.post(
 
 // @ts-expect-error Has jwt props.
 menuDataRouter.get("/PlayerProfile", (req: RequestWithJwt, res) => {
-    const playerProfilePage = getConfig<PlayerProfileView>(
-        "PlayerProfilePage",
-        true,
-    )
-
-    const locationData = getVersionedConfig<PeacockLocationsData>(
-        "LocationsData",
-        req.gameVersion,
-        false,
-    )
-
-    playerProfilePage.data.SubLocationData = []
-
-    for (const subLocationKey in locationData.children) {
-        // Ewww...
-        if (
-            subLocationKey === "LOCATION_ICA_FACILITY_ARRIVAL" ||
-            subLocationKey.includes("SNUG_")
-        ) {
-            continue
-        }
-
-        const subLocation = locationData.children[subLocationKey]
-        const parentLocation =
-            locationData.parents[subLocation.Properties.ParentLocation || ""]
-
-        const completionData = generateCompletionData(
-            subLocation.Id,
-            req.jwt.unique_name,
-            req.gameVersion,
-        )
-
-        // TODO: Make getDestinationCompletion do something like this.
-        const challenges = controller.challengeService.getChallengesForLocation(
-            subLocation.Id,
-            req.gameVersion,
-        )
-
-        const challengeCategoryCompletion: ChallengeCategoryCompletion[] = []
-
-        for (const challengeGroup in challenges) {
-            const challengeCompletion =
-                controller.challengeService.countTotalNCompletedChallenges(
-                    {
-                        challengeGroup: challenges[challengeGroup],
-                    },
-                    req.jwt.unique_name,
-                    req.gameVersion,
-                )
-
-            challengeCategoryCompletion.push({
-                Name: challenges[challengeGroup][0].CategoryName,
-                ...challengeCompletion,
-            })
-        }
-
-        const destinationCompletion = getDestinationCompletion(
-            parentLocation,
-            subLocation,
-            req.gameVersion,
-            req.jwt,
-        )
-
-        playerProfilePage.data.SubLocationData.push({
-            ParentLocation: parentLocation,
-            Location: subLocation,
-            CompletionData: completionData,
-            ChallengeCategoryCompletion: challengeCategoryCompletion,
-            ChallengeCompletion: destinationCompletion.ChallengeCompletion,
-            OpportunityStatistics: destinationCompletion.OpportunityStatistics,
-            LocationCompletionPercent:
-                destinationCompletion.LocationCompletionPercent,
-        })
-    }
-
-    const userProfile = getUserData(req.jwt.unique_name, req.gameVersion)
-    playerProfilePage.data.PlayerProfileXp.Total =
-        userProfile.Extensions.progression.PlayerProfileXP.Total
-    playerProfilePage.data.PlayerProfileXp.Level =
-        userProfile.Extensions.progression.PlayerProfileXP.ProfileLevel
-
-    const subLocationMap = new Map(
-        userProfile.Extensions.progression.PlayerProfileXP.Sublocations.map(
-            (obj) => [obj.Location, obj],
-        ),
-    )
-
-    for (const e of playerProfilePage.data.PlayerProfileXp.Seasons) {
-        for (const f of e.Locations) {
-            const subLocationData = subLocationMap.get(f.LocationId)
-
-            f.Xp = subLocationData?.Xp || 0
-            f.ActionXp = subLocationData?.ActionXp || 0
-
-            if (f.LocationProgression && !isSniperLocation(f.LocationId)) {
-                // We typecast below as it could be an object for subpackages.
-                // Checks before this ensure it isn't, but TS doesn't realise this.
-                f.LocationProgression.Level =
-                    (
-                        userProfile.Extensions.progression.Locations[
-                            f.LocationId
-                        ] as ProgressionData
-                    ).Level || 1
-            }
-        }
-    }
-
-    res.json(playerProfilePage)
+    res.json({
+        template: null,
+        data: getPlayerProfileData(req.gameVersion, req.jwt.unique_name),
+    })
 })
 
 menuDataRouter.get(

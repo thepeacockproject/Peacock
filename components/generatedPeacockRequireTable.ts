@@ -67,6 +67,7 @@ import * as hub from "./menus/hub"
 import * as imageHandler from "./menus/imageHandler"
 import * as menuSystem from "./menus/menuSystem"
 import * as planning from "./menus/planning"
+import * as playerProfile from "./menus/playerProfile"
 import * as playnext from "./menus/playnext"
 import * as sniper from "./menus/sniper"
 import * as stashpoints from "./menus/stashpoints"
@@ -216,6 +217,10 @@ export default {
         ...menuSystem,
     },
     "@peacockproject/core/menus/planning": { __esModule: true, ...planning },
+    "@peacockproject/core/menus/playerProfile": {
+        __esModule: true,
+        ...playerProfile,
+    },
     "@peacockproject/core/menus/playnext": { __esModule: true, ...playnext },
     "@peacockproject/core/menus/sniper": { __esModule: true, ...sniper },
     "@peacockproject/core/menus/stashpoints": {

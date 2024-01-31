@@ -24,7 +24,6 @@ import type {
     GameLocationsData,
     GameVersion,
     IHit,
-    JwtData,
     MissionStory,
     OpportunityStatistics,
     PeacockLocationsData,
@@ -108,14 +107,14 @@ export function getDestinationCompletion(
     parent: Unlockable,
     child: Unlockable | undefined,
     gameVersion: GameVersion,
-    jwt: JwtData,
+    userId: string,
 ) {
     const missionStories = getConfig<Record<string, MissionStory>>(
         "MissionStories",
         false,
     )
 
-    const userData = getUserData(jwt.unique_name, gameVersion)
+    const userData = getUserData(userId, gameVersion)
     const challenges = controller.challengeService.getGroupedChallengeLists(
         {
             type: ChallengeFilterType.ParentLocation,
@@ -184,11 +183,11 @@ export function getCompletionPercent(
  * Get the list of destinations used by the `/profiles/page/Destinations` endpoint.
  *
  * @param gameVersion
- * @param jwt
+ * @param userId The user ID.
  */
 export function getAllGameDestinations(
     gameVersion: GameVersion,
-    jwt: JwtData,
+    userId: string,
 ): GameFacingDestination[] {
     const result: GameFacingDestination[] = []
     const locations = getVersionedConfig<PeacockLocationsData>(
@@ -203,11 +202,11 @@ export function getAllGameDestinations(
             "UI_LOCATION_PARENT_" + destination.substring(16) + "_NAME"
 
         const template: GameFacingDestination = {
-            ...getDestinationCompletion(parent, undefined, gameVersion, jwt),
+            ...getDestinationCompletion(parent, undefined, gameVersion, userId),
             ...{
                 CompletionData: generateCompletionData(
                     destination,
-                    jwt.unique_name,
+                    userId,
                     gameVersion,
                 ),
             },
@@ -222,7 +221,7 @@ export function getAllGameDestinations(
                     ChallengeCompletion: template.ChallengeCompletion,
                     CompletionData: generateCompletionData(
                         destination,
-                        jwt.unique_name,
+                        userId,
                         gameVersion,
                         "mission",
                         "normal",
@@ -232,7 +231,7 @@ export function getAllGameDestinations(
                     ChallengeCompletion: template.ChallengeCompletion,
                     CompletionData: generateCompletionData(
                         destination,
-                        jwt.unique_name,
+                        userId,
                         gameVersion,
                         "mission",
                         "pro1",
@@ -325,12 +324,12 @@ export function createLocationsData(
  *
  * @param query
  * @param gameVersion
- * @param jwt
+ * @param userId
  */
 export function getDestination(
     query: GetDestinationQuery,
     gameVersion: GameVersion,
-    jwt: JwtData,
+    userId: string,
 ): GameDestination {
     const LOCATION = query.locationId
 
@@ -344,7 +343,7 @@ export function getDestination(
     const masteryData = controller.masteryService.getMasteryDataForDestination(
         query.locationId,
         gameVersion,
-        jwt.unique_name,
+        userId,
         query.difficulty,
     )
 
@@ -367,7 +366,7 @@ export function getDestination(
                 locationData,
                 undefined,
                 gameVersion,
-                jwt,
+                userId,
             ),
             ...{ SubLocationMissionsData: [] },
         },
@@ -376,14 +375,14 @@ export function getDestination(
                 controller.challengeService.getChallengeDataForDestination(
                     query.locationId,
                     gameVersion,
-                    jwt.unique_name,
+                    userId,
                 ),
         },
         MasteryData: resMasteryData,
     }
 
     if (gameVersion === "h1" && LOCATION !== "LOCATION_PARENT_ICA_FACILITY") {
-        const inventory = createInventory(jwt.unique_name, gameVersion)
+        const inventory = createInventory(userId, gameVersion)
 
         response.DifficultyData = {
             AvailableDifficultyModes: [
@@ -420,9 +419,7 @@ export function getDestination(
             Location: locationData,
             SubLocation: locationData,
             Missions: [controller.missionsInLocations.pro1[LOCATION as Cast]]
-                .map((id) =>
-                    contractIdToHitObject(id, gameVersion, jwt.unique_name),
-                )
+                .map((id) => contractIdToHitObject(id, gameVersion, userId))
                 .filter(Boolean) as IHit[],
             SarajevoSixMissions: [],
             ElusiveMissions: [],
@@ -432,7 +429,7 @@ export function getDestination(
             CampaignMissions: [],
             CompletionData: generateCompletionData(
                 sublocationsData[0].Id,
-                jwt.unique_name,
+                userId,
                 gameVersion,
             ),
         }
@@ -466,7 +463,7 @@ export function getDestination(
             const details = contractIdToHitObject(
                 escalation,
                 gameVersion,
-                jwt.unique_name,
+                userId,
             )
 
             if (details) {
@@ -483,7 +480,7 @@ export function getDestination(
             const hit = contractIdToHitObject(
                 sniperMission,
                 gameVersion,
-                jwt.unique_name,
+                userId,
             )
 
             if (hit) sniperMissions.push(hit)
@@ -499,11 +496,7 @@ export function getDestination(
             SniperMissions: sniperMissions,
             PlaceholderMissions: [],
             CampaignMissions: [],
-            CompletionData: generateCompletionData(
-                e.Id,
-                jwt.unique_name,
-                gameVersion,
-            ),
+            CompletionData: generateCompletionData(e.Id, userId, gameVersion),
         }
 
         const types = [
@@ -555,7 +548,7 @@ export function getDestination(
                     const mission = contractIdToHitObject(
                         c,
                         gameVersion,
-                        jwt.unique_name,
+                        userId,
                     )
 
                     // @ts-expect-error Yup.
