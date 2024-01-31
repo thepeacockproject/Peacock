@@ -222,7 +222,7 @@ export function generateUserCentric(
 
     let lastPlayed: string | undefined = undefined
 
-    if (played[id] && played[id].LastPlayedAt) {
+    if (played[id]?.LastPlayedAt) {
         lastPlayed = new Date(played[id].LastPlayedAt!).toISOString()
     }
 
@@ -386,8 +386,7 @@ export function mapObjectives(
         if (
             objective.SuccessEvent &&
             objective.SuccessEvent.EventName === "Kill" &&
-            objective.SuccessEvent.EventValues &&
-            objective.SuccessEvent.EventValues.RepositoryId
+            objective.SuccessEvent.EventValues?.RepositoryId
         ) {
             result.set(objective.Id, {
                 Type: "kill",

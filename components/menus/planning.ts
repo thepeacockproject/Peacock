@@ -340,10 +340,7 @@ export async function getPlanningData(
                   contractData.Metadata.Location
               ]
             : // new loadout profiles system
-              Object.hasOwn(
-                  currentLoadout.data,
-                  contractData.Metadata.Location,
-              ) && currentLoadout.data[contractData.Metadata.Location]
+              currentLoadout.data[contractData.Metadata.Location]
 
     if (dlForLocation) {
         pistol = dlForLocation["2"]!

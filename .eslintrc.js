@@ -44,6 +44,7 @@ module.exports = {
         ],
     },
     rules: {
+        "@typescript-eslint/prefer-optional-chain": "warn",
         "@typescript-eslint/explicit-module-boundary-types": "off",
         "@typescript-eslint/no-extra-semi": "off",
         "@typescript-eslint/no-non-null-assertion": "off",

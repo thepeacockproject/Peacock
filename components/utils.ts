@@ -432,12 +432,7 @@ export function castUserProfile(
 
     // Fix Extensions.gamepersistentdata.HitsFilterType.
     // None of the old profiles should have "MyPlaylist".
-    if (
-        !Object.hasOwn(
-            j.Extensions.gamepersistentdata.HitsFilterType,
-            "MyPlaylist",
-        )
-    ) {
+    if (j.Extensions.gamepersistentdata.HitsFilterType["MyPlaylist"]) {
         j.Extensions.gamepersistentdata.HitsFilterType = {
             MyHistory: "all",
             MyContracts: "all",

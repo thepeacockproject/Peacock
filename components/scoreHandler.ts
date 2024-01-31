@@ -97,7 +97,7 @@ export function calculateGlobalXp(
             gameVersion,
         )
 
-        if (!challenge || !challenge.Xp || !challenge.Tags.includes("global")) {
+        if (!challenge?.Xp || !challenge.Tags.includes("global")) {
             continue
         }
 

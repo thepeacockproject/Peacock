@@ -239,8 +239,13 @@ export const validateMission = (m: MissionManifest): boolean => {
         return false
     }
 
-    for (const prop of ["Id", "Title", "Location", "ScenePath"]) {
-        if (!Object.hasOwn(m.Metadata, prop)) {
+    for (const prop of <(keyof MissionManifest["Metadata"])[]>[
+        "Id",
+        "Title",
+        "Location",
+        "ScenePath",
+    ]) {
+        if (!m.Metadata[prop]) {
             log(LogLevel.ERROR, `Contract missing property Metadata.${prop}!`)
             return false
         }

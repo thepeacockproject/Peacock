@@ -310,6 +310,7 @@ export function getLegacyStashData(
                 return defaultLoadout[id as keyof typeof defaultLoadout]
             }
 
+            // eslint-disable-next-line @typescript-eslint/prefer-optional-chain -- it makes the code 10x less readable
             const forLocation = (userProfile.Extensions.defaultloadout || {})[
                 sublocation?.Properties?.ParentLocation || ""
             ]

@@ -31,7 +31,7 @@ import { randomUUID } from "crypto"
 import { getConfig } from "../configSwizzleManager"
 import { generateUserCentric } from "../contracts/dataGen"
 import { controller } from "../controller"
-import { MatchOverC2SEvent } from "../types/events"
+import { MatchOverC2SEvent, OpponentsC2sEvent } from "../types/events"
 
 /**
  * A multiplayer preset.
@@ -259,9 +259,7 @@ export function handleMultiplayerEvent(
             ghost.unnoticedKills += 1
             return true
         case "Opponents": {
-            const value = event.Value as {
-                ConnectedSessions: string[]
-            }
+            const value = (event as OpponentsC2sEvent).Value
 
             ghost.Opponents = value.ConnectedSessions
             return true

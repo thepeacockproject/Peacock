@@ -94,7 +94,7 @@ multiplayerMenuDataRouter.post(
     },
 )
 
-interface MultiplayerPresetsQuery {
+type MultiplayerPresetsQuery = {
     gamemode?: string
     disguiseUnlockableId?: string
 }

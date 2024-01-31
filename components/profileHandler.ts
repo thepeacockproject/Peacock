@@ -179,7 +179,9 @@ profileRouter.post(
         const userdata = getUserData(req.jwt.unique_name, req.gameVersion)
         const extensions = req.body.extensions.reduce(
             (acc: object, key: string) => {
-                if (Object.hasOwn(userdata.Extensions, key)) {
+                if (
+                    userdata.Extensions[key as keyof typeof userdata.Extensions]
+                ) {
                     // @ts-expect-error Ok.
                     acc[key] = userdata.Extensions[key]
                 }
