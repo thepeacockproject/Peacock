@@ -120,9 +120,8 @@ export class SMFSupport {
         const id = contractData.Metadata.Id
         const placeBefore = contractData.SMF?.destinations.placeBefore
         const placeAfter = contractData.SMF?.destinations.placeAfter
-        const inLocation = this.controller.missionsInLocations[
-            location
-        ] as string[]
+        const inLocation = (this.controller.missionsInLocations[location] ??
+            (this.controller.missionsInLocations[location] = [])) as string[]
 
         if (placeBefore) {
             const index = inLocation.indexOf(placeBefore)
