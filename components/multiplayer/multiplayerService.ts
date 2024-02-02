@@ -31,7 +31,7 @@ import { randomUUID } from "crypto"
 import { getConfig } from "../configSwizzleManager"
 import { generateUserCentric } from "../contracts/dataGen"
 import { controller } from "../controller"
-import { MatchOverC2SEvent } from "../types/events"
+import { MatchOverC2SEvent, OpponentsC2sEvent } from "../types/events"
 
 /**
  * A multiplayer preset.
@@ -89,6 +89,7 @@ const activeMatches: Map<string, MatchData> = new Map()
 multiplayerRouter.post(
     "/GetRequiredResourcesForPreset",
     jsonMiddleware(),
+    // @ts-expect-error Has JWT data.
     (req: RequestWithJwt, res) => {
         const allPresets = getConfig<MultiplayerPreset[]>(
             "MultiplayerPresets",
@@ -114,7 +115,7 @@ multiplayerRouter.post(
                     req.gameVersion,
                 ),
             )
-            .filter(Boolean)
+            .filter(Boolean) as UserCentricContract[]
 
         res.json(
             userCentrics.map((userCentric: UserCentricContract) => ({
@@ -132,6 +133,7 @@ multiplayerRouter.post(
 multiplayerRouter.post(
     "/RegisterToMatch",
     jsonMiddleware(),
+    // @ts-expect-error Has JWT data.
     (req: RequestWithJwt, res) => {
         // get a random contract from the list of possible ones in the selected preset
         const multiplayerPresets = getConfig<MultiplayerPreset[]>(
@@ -212,6 +214,7 @@ multiplayerRouter.post(
 multiplayerRouter.post(
     "/SetMatchData",
     jsonMiddleware(),
+    // @ts-expect-error Has JWT data.
     (req: RequestWithJwt, res) => {
         const match = activeMatches.get(req.body.matchId)
 
@@ -256,9 +259,7 @@ export function handleMultiplayerEvent(
             ghost.unnoticedKills += 1
             return true
         case "Opponents": {
-            const value = event.Value as {
-                ConnectedSessions: string[]
-            }
+            const value = (event as OpponentsC2sEvent).Value
 
             ghost.Opponents = value.ConnectedSessions
             return true

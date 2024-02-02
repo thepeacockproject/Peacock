@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type { ContractSession } from "./types/types"
+import { ContractSession } from "../types/types"
 
 /**
  * Changes a set to an array.
@@ -60,23 +60,28 @@ const SESSION_MAP_PROPS: (keyof ContractSession)[] = [
  * @param session The ContractSession.
  */
 export function serializeSession(session: ContractSession): unknown {
-    const o = {}
+    const o: Partial<ContractSession> = {}
+
+    type K = keyof ContractSession
 
     // obj clone
     for (const key of Object.keys(session)) {
-        if (session[key] instanceof Map) {
+        if (session[key as K] instanceof Map) {
+            // @ts-expect-error Type mismatch.
             o[key] = Array.from(
-                (session[key] as Map<string, unknown>).entries(),
+                (session[key as K] as Map<string, unknown>).entries(),
             )
             continue
         }
 
-        if (session[key] instanceof Set) {
+        if (session[key as K] instanceof Set) {
+            // @ts-expect-error Type mismatch.
             o[key] = normalizeSet(session[key])
             continue
         }
 
-        o[key] = session[key]
+        // @ts-expect-error Type mismatch.
+        o[key] = session[key as K]
     }
 
     return o
@@ -90,19 +95,22 @@ export function serializeSession(session: ContractSession): unknown {
 export function deserializeSession(
     saved: Record<string, unknown>,
 ): ContractSession {
-    const session = {}
+    const session: Partial<ContractSession> = {}
 
     // obj clone
     for (const key of Object.keys(saved)) {
+        // @ts-expect-error Type mismatch.
         session[key] = saved[key]
     }
 
     for (const collection of SESSION_SET_PROPS) {
+        // @ts-expect-error Type mismatch.
         session[collection] = new Set(session[collection])
     }
 
     for (const map of SESSION_MAP_PROPS) {
         if (Object.hasOwn(session, map)) {
+            // @ts-expect-error Type mismatch.
             session[map] = new Map(session[map])
         }
     }

@@ -74,6 +74,7 @@ await e.build({
         "process.env.ZEIT_BITBUCKET_COMMIT_SHA": "undefined",
         "process.env.VERCEL_GIT_COMMIT_SHA": "undefined",
         "process.env.ZEIT_GITLAB_COMMIT_SHA": "undefined",
+        "process.env.MSGPACKR_NATIVE_ACCELERATION_DISABLED": "true",
     },
     sourcemap: "external",
     plugins: [

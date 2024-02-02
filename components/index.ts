@@ -16,8 +16,6 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-// noinspection RequiredAttributes
-
 // load as soon as possible to prevent dependency issues
 import "./generatedPeacockRequireTable"
 
@@ -26,7 +24,6 @@ import { getFlag, loadFlags } from "./flags"
 
 loadFlags()
 
-import { setFlagsFromString } from "v8"
 import { program } from "commander"
 import express, { Request, Router } from "express"
 import http from "http"
@@ -41,7 +38,12 @@ import {
     ServerVer,
 } from "./utils"
 import { getConfig } from "./configSwizzleManager"
-import { handleOauthToken } from "./oauthToken"
+import {
+    error400,
+    error406,
+    handleOAuthToken,
+    OAuthTokenBody,
+} from "./oauthToken"
 import type {
     RequestWithJwt,
     S2CEventWithTimestamp,
@@ -61,7 +63,6 @@ import { contractRoutingRouter } from "./contracts/contractRouting"
 import { profileRouter } from "./profileHandler"
 import { menuDataRouter } from "./menuData"
 import { menuSystemPreRouter, menuSystemRouter } from "./menus/menuSystem"
-import { legacyMenuSystemRouter } from "./2016/legacyMenuSystem"
 import { _theLastYardbirdScpc, controller } from "./controller"
 import {
     STEAM_NAMESPACE_2016,
@@ -88,10 +89,8 @@ import { multiplayerMenuDataRouter } from "./multiplayer/multiplayerMenuData"
 import { pack, unpack } from "msgpackr"
 import { liveSplitManager } from "./livesplit/liveSplitManager"
 import { cheapLoadUserData } from "./databaseHandler"
-import { reportRouter } from "./contracts/reportRouting"
 
-// welcome to the bleeding edge
-setFlagsFromString("--harmony")
+loadFlags()
 
 const host = process.env.HOST || "0.0.0.0"
 const port = process.env.PORT || 80
@@ -145,12 +144,13 @@ app.get("/", (_: Request, res) => {
         res.send(
             '<html lang="en">PEACOCK_DEV active, please run "yarn webui start" to start the web UI on port 3000 and access it there.</html>',
         )
-    } else {
-        const data = readFileSync("webui/dist/index.html").toString()
-
-        res.contentType("text/html")
-        res.send(data)
+        return
     }
+
+    const data = readFileSync("webui/dist/index.html").toString()
+
+    res.contentType("text/html")
+    res.send(data)
 })
 
 serveStatic.mime.define({ "application/javascript": ["js"] })
@@ -169,6 +169,7 @@ if (getFlag("loadoutSaving") === "PROFILES") {
 
 app.get(
     "/config/:audience/:serverVersion(\\d+_\\d+_\\d+)",
+    // @ts-expect-error Has jwt props.
     (req: RequestWithJwt<{ issuer: string }>, res) => {
         const proto = req.protocol
         const config = getConfig(
@@ -177,11 +178,13 @@ app.get(
         ) as ServerConnectionConfig
         const serverhost = req.get("Host")
 
-        config.Versions[0].GAME_VER = req.params.serverVersion.startsWith("8")
-            ? `${ServerVer._Major}.${ServerVer._Minor}.${ServerVer._Build}`
-            : req.params.serverVersion.startsWith("7")
-            ? "7.17.0"
-            : "6.74.0"
+        config.Versions[0].GAME_VER = "6.74.0"
+
+        if (req.params.serverVersion.startsWith("8")) {
+            req.params.serverVersion = `${ServerVer._Major}.${ServerVer._Minor}.${ServerVer._Build}`
+        } else if (req.params.serverVersion.startsWith("7")) {
+            req.params.serverVersion = "7.17.0"
+        }
 
         if (req.params.serverVersion.startsWith("8")) {
             config.Versions[0].SERVER_VER.GlobalAuthentication.RequestedAudience =
@@ -229,7 +232,7 @@ app.get(
     },
 )
 
-app.get("/files/privacypolicy/hm3/privacypolicy_*.json", (req, res) => {
+app.get("/files/privacypolicy/hm3/privacypolicy_*.json", (_, res) => {
     res.set("Content-Type", "application/octet-stream")
     res.set("x-ms-meta-version", "20181001")
     res.send(getConfig("PrivacyPolicy", false))
@@ -238,6 +241,7 @@ app.get("/files/privacypolicy/hm3/privacypolicy_*.json", (req, res) => {
 app.post(
     "/api/metrics/*",
     jsonMiddleware({ limit: "10Mb" }),
+    // @ts-expect-error jwt props.
     (req: RequestWithJwt<never, S2CEventWithTimestamp[]>, res) => {
         for (const event of req.body) {
             controller.hooks.newMetricsEvent.call(event, req)
@@ -247,8 +251,26 @@ app.post(
     },
 )
 
-app.post("/oauth/token", urlencoded(), (req: RequestWithJwt, res) =>
-    handleOauthToken(req, res),
+app.post(
+    "/oauth/token",
+    urlencoded(),
+    // @ts-expect-error jwt props.
+    (req: RequestWithJwt<never, OAuthTokenBody>, res) => {
+        handleOAuthToken(req)
+            .then((token) => {
+                if (token === error400) {
+                    return res.status(400).send()
+                } else if (token === error406) {
+                    return res.status(406).send()
+                } else {
+                    return res.json(token)
+                }
+            })
+            .catch((err) => {
+                log(LogLevel.ERROR, err.message)
+                res.status(500).send()
+            })
+    },
 )
 
 app.get("/files/onlineconfig.json", (_, res) => {
@@ -263,15 +285,16 @@ app.use(
     Router()
         .use(
             "/resources-:serverVersion(\\d+-\\d+)/",
-            (req: RequestWithJwt, res, next) => {
+            // @ts-expect-error Has jwt props.
+            (req: RequestWithJwt, _, next) => {
                 req.serverVersion = req.params.serverVersion
-                req.gameVersion = req.serverVersion.startsWith("8")
-                    ? "h3"
-                    : req.serverVersion.startsWith("7")
-                    ? // prettier-ignore
-                      "h2"
-                    : // prettier-ignore
-                      "h1"
+                req.gameVersion = "h1"
+
+                if (req.serverVersion.startsWith("8")) {
+                    req.gameVersion = "h3"
+                } else if (req.serverVersion.startsWith("7")) {
+                    req.gameVersion = "h2"
+                }
 
                 if (req.serverVersion === "7.3.0") {
                     req.gameVersion = "scpc"
@@ -281,6 +304,7 @@ app.use(
             },
         )
         // we're fine with skipping to the next router if we don't have auth
+        // @ts-expect-error Has jwt props.
         .use(extractToken, (req: RequestWithJwt, res, next) => {
             switch (req.jwt?.pis) {
                 case "egp_io_interactive_hitman_the_complete_first_season":
@@ -300,11 +324,13 @@ app.use(
                     return
             }
 
-            req.gameVersion = req.serverVersion.startsWith("8")
-                ? "h3"
-                : req.serverVersion.startsWith("7")
-                ? "h2"
-                : "h1"
+            req.gameVersion = "h1"
+
+            if (req.serverVersion.startsWith("8")) {
+                req.gameVersion = "h3"
+            } else if (req.serverVersion.startsWith("7")) {
+                req.gameVersion = "h2"
+            }
 
             if (req.jwt?.aud === "scpc-prod") {
                 req.gameVersion = "scpc"
@@ -316,6 +342,7 @@ app.use(
 
 app.get(
     "/profiles/page//dashboard//Dashboard_Category_Sniper_Singleplayer/00000000-0000-0000-0000-000000000015/Contract/ff9f46cf-00bd-4c12-b887-eac491c3a96d",
+    // @ts-expect-error jwt props.
     (req: RequestWithJwt, res) => {
         res.json({
             template: getConfig("FrankensteinMmSpTemplate", false),
@@ -339,6 +366,7 @@ app.get(
 // We handle this for now, but it's not used. For the future though.
 app.get(
     "/profiles/page//dashboard//Dashboard_Category_Sniper_Multiplayer/00000000-0000-0000-0000-000000000015/Contract/ff9f46cf-00bd-4c12-b887-eac491c3a96d",
+    // @ts-expect-error jwt props.
     (req: RequestWithJwt, res) => {
         const template = getConfig("FrankensteinMmMpTemplate", false)
 
@@ -371,6 +399,7 @@ app.get(
 )
 
 if (PEACOCK_DEV) {
+    // @ts-expect-error Has jwt props.
     app.use(async (req: RequestWithJwt, _res, next): Promise<void> => {
         if (!req.jwt) {
             next()
@@ -397,6 +426,7 @@ function generateBlobConfig(req: RequestWithJwt) {
 
 app.get(
     "/authentication/api/configuration/Init?*",
+    // @ts-expect-error jwt props.
     extractToken,
     (req: RequestWithJwt, res) => {
         // configName=pc-prod&lockedContentDisabled=false&isFreePrologueUser=false&isIntroPackUser=false&isFullExperienceUser=false
@@ -413,6 +443,7 @@ app.get(
 
 app.post(
     "/authentication/api/userchannel/AuthenticationService/RenewBlobSignature",
+    // @ts-expect-error jwt props.
     (req: RequestWithJwt, res) => {
         res.json(generateBlobConfig(req))
     },
@@ -421,7 +452,6 @@ app.post(
 const legacyRouter = Router()
 const primaryRouter = Router()
 
-legacyRouter.use("/resources-(\\d+-\\d+)/", legacyMenuSystemRouter)
 legacyRouter.use("/authentication/api/userchannel/", legacyProfileRouter)
 legacyRouter.use("/profiles/page/", legacyMenuDataRouter)
 legacyRouter.use(
@@ -442,9 +472,12 @@ primaryRouter.use(
     "/authentication/api/userchannel/ContractsService/",
     contractRoutingRouter,
 )
-primaryRouter.use(
-    "/authentication/api/userchannel/ReportingService/",
-    reportRouter,
+primaryRouter.get(
+    "/authentication/api/userchannel/ReportingService/ReportContract",
+    (_, res) => {
+        // TODO
+        res.json({})
+    },
 )
 primaryRouter.use("/authentication/api/userchannel/", profileRouter)
 primaryRouter.use("/profiles/page", multiplayerMenuDataRouter)
@@ -454,6 +487,7 @@ primaryRouter.use("/resources-(\\d+-\\d+)/", menuSystemRouter)
 
 app.use(
     Router()
+        // @ts-expect-error Has jwt props.
         .use((req: RequestWithJwt, _, next) => {
             if (req.shouldCease) {
                 return next("router")
@@ -467,6 +501,7 @@ app.use(
         })
         .use(legacyRouter),
     Router()
+        // @ts-expect-error Has jwt props.
         .use((req: RequestWithJwt, _, next) => {
             if (req.shouldCease) {
                 return next("router")
@@ -493,28 +528,15 @@ app.all("*", (req, res) => {
 app.use(errorLoggingMiddleware)
 
 program.description(
-    "The Peacock Project is a HITMAN™ World of Assassination Trilogy server built for general use.",
+    "The Peacock Project is a HITMAN™ World of Assassination Trilogy server replacement.",
 )
 
-const PEECOCK_ART = picocolors.yellow(`
- ███████████  ██████████ ██████████   █████████     ███████      █████████  █████   ████
-░░███░░░░░███░░███░░░░░█░░███░░░░░█  ███░░░░░███  ███░░░░░███   ███░░░░░███░░███   ███░
- ░███    ░███ ░███  █ ░  ░███  █ ░  ███     ░░░  ███     ░░███ ███     ░░░  ░███  ███
- ░██████████  ░██████    ░██████   ░███         ░███      ░███░███          ░███████
- ░███░░░░░░   ░███░░█    ░███░░█   ░███         ░███      ░███░███          ░███░░███
- ░███         ░███ ░   █ ░███ ░   █░░███     ███░░███     ███ ░░███     ███ ░███ ░░███
- █████        ██████████ ██████████ ░░█████████  ░░░███████░   ░░█████████  █████ ░░████
-░░░░░        ░░░░░░░░░░ ░░░░░░░░░░   ░░░░░░░░░     ░░░░░░░      ░░░░░░░░░  ░░░░░   ░░░░
-`)
-
 function startServer(options: { hmr: boolean; pluginDevHost: boolean }): void {
-    checkForUpdates()
+    void checkForUpdates()
 
     if (!IS_LAUNCHER) {
         console.log(
-            Math.random() < 0.001
-                ? PEECOCK_ART
-                : picocolors.greenBright(`
+            picocolors.greenBright(`
  ███████████  ██████████   █████████     █████████     ███████      █████████  █████   ████
 ░░███░░░░░███░░███░░░░░█  ███░░░░░███   ███░░░░░███  ███░░░░░███   ███░░░░░███░░███   ███░
  ░███    ░███ ░███  █ ░  ░███    ░███  ███     ░░░  ███     ░░███ ███     ░░░  ░███  ███
@@ -576,7 +598,7 @@ function startServer(options: { hmr: boolean; pluginDevHost: boolean }): void {
     if (options.hmr) {
         log(LogLevel.DEBUG, "Experimental HMR enabled.")
 
-        setupHotListener("contracts", () => {
+        void setupHotListener("contracts", () => {
             log(LogLevel.INFO, "Detected a change in contracts! Re-indexing...")
             controller.index()
         })
@@ -584,7 +606,7 @@ function startServer(options: { hmr: boolean; pluginDevHost: boolean }): void {
 
     // once contracts directory is present, we are clear to boot
     loadouts.init()
-    controller.boot(options.pluginDevHost)
+    void controller.boot(options.pluginDevHost)
 
     const httpServer = http.createServer(app)
 
@@ -597,7 +619,7 @@ function startServer(options: { hmr: boolean; pluginDevHost: boolean }): void {
     }
 
     // initialize livesplit
-    liveSplitManager.init()
+    void liveSplitManager.init()
 }
 
 program.option(
@@ -616,9 +638,10 @@ program
     .command("tools")
     .description("open the tools UI")
     .action(() => {
-        toolsMenu()
+        void toolsMenu()
     })
 
+// noinspection RequiredAttributes
 program
     .command("pack")
     .argument("<input>", "input file to pack")
@@ -636,6 +659,7 @@ program
         log(LogLevel.INFO, `Packed "${input}" to "${outputPath}" successfully.`)
     })
 
+// noinspection RequiredAttributes
 program
     .command("unpack")
     .argument("<input>", "input file to unpack")

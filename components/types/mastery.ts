@@ -18,12 +18,9 @@
 
 import { CompletionData, GameVersion, Unlockable } from "./types"
 
-export interface MasteryDataTemplate {
-    template: unknown
-    data: {
-        Location: Unlockable
-        MasteryData: MasteryData[]
-    }
+export interface LocationMasteryData {
+    Location: Unlockable
+    MasteryData: MasteryData[]
 }
 
 export interface MasteryPackageDrop {
@@ -41,19 +38,27 @@ interface MasterySubPackage {
  * @since v7.0.0
  * The Id field has been renamed to LocationId to properly reflect what it is.
  *
- * Mastery packages may have Drops OR SubPackages, never the two.
+ * Mastery packages may have Drops OR SubPackages, never both.
  * This is to properly support sniper mastery by integrating it into the current system
  * and mastery on H2016 as it is separated by difficulty.
  *
  * Also, a GameVersions array has been added to support multi-version mastery.
  */
-export interface MasteryPackage {
+export type MasteryPackage = {
     LocationId: string
     GameVersions: GameVersion[]
     MaxLevel?: number
     HideProgression?: boolean
-    Drops?: MasteryPackageDrop[]
-    SubPackages?: MasterySubPackage[]
+} & (HasDrop | HasSubPackage)
+
+type HasDrop = {
+    Drops: MasteryPackageDrop[]
+    SubPackages?: never
+}
+
+type HasSubPackage = {
+    Drops?: never
+    SubPackages: MasterySubPackage[]
 }
 
 export interface MasteryData {

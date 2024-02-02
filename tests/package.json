@@ -3,12 +3,13 @@
     "type": "module",
     "private": true,
     "dependencies": {
-        "@vitest/ui": "^0.34.6",
+        "@vitest/ui": "^1.2.2",
         "vite": "^5.0.12",
-        "vitest": "^0.34.6"
+        "vitest": "^1.2.2"
     },
     "scripts": {
         "test:main": "vitest --run --config vitest.config.ts",
-        "test:ui": "vitest --config vitest.config.ts --ui"
+        "test:ui": "vitest --config vitest.config.ts --ui",
+        "typecheck-ws": "tsc --noEmit"
     }
 }

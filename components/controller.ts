@@ -188,8 +188,10 @@ function createPeacockRequire(pluginName: string): NodeRequire {
      * @param specifier The requested module.
      */
     const peacockRequire: NodeRequire = (specifier: string) => {
-        if (generatedPeacockRequireTable[specifier]) {
-            return generatedPeacockRequireTable[specifier]
+        type T = keyof typeof generatedPeacockRequireTable
+
+        if (generatedPeacockRequireTable[specifier as T]) {
+            return generatedPeacockRequireTable[specifier as T]
         }
 
         try {
@@ -237,14 +239,22 @@ export const validateMission = (m: MissionManifest): boolean => {
         return false
     }
 
-    for (const prop of ["Id", "Title", "Location", "ScenePath"]) {
-        if (!Object.hasOwn(m.Metadata, prop)) {
+    for (const prop of <(keyof MissionManifest["Metadata"])[]>[
+        "Id",
+        "Title",
+        "Location",
+        "ScenePath",
+    ]) {
+        if (!m.Metadata[prop]) {
             log(LogLevel.ERROR, `Contract missing property Metadata.${prop}!`)
             return false
         }
     }
 
-    for (const prop of ["Objectives", "Bricks"]) {
+    for (const prop of <(keyof MissionManifest["Data"])[]>[
+        "Objectives",
+        "Bricks",
+    ]) {
         if (!Object.hasOwn(m.Data, prop)) {
             log(LogLevel.ERROR, `Contract missing property Data.${prop}!`)
             return false
@@ -365,11 +375,11 @@ export class Controller {
      */
     public fetchedContracts: Map<string, MissionManifest> = new Map()
 
-    public challengeService: ChallengeService
-    public masteryService: MasteryService
+    public challengeService!: ChallengeService
+    public masteryService!: MasteryService
     escalationMappings: Map<string, Record<string, string>> = new Map()
-    public progressionService: ProgressionService
-    public smf: SMFSupport
+    public progressionService!: ProgressionService
+    public smf!: SMFSupport
     private _pubIdToContractId: Map<string, string> = new Map()
     /** Internal elusive target contracts - only accessible during bootstrap. */
     private _internalElusives: MissionManifest[] | undefined
@@ -444,12 +454,8 @@ export class Controller {
             this.hooks.challengesLoaded.call()
             this.hooks.masteryDataLoaded.call()
         } catch (e) {
-            log(
-                LogLevel.ERROR,
-                `Fatal error with challenge bootstrap: ${e}`,
-                "boot",
-            )
-            log(LogLevel.ERROR, e.stack)
+            log(LogLevel.ERROR, `Fatal error with challenge bootstrap`, "boot")
+            log(LogLevel.ERROR, e)
         }
     }
 
@@ -460,6 +466,11 @@ export class Controller {
             if (!contract) {
                 continue
             }
+
+            assert.ok(
+                contract.Metadata.GroupDefinition,
+                "arcade contract has no group definition",
+            )
 
             for (const lId of contract.Metadata.GroupDefinition.Order) {
                 const level = this.resolveContract(lId, false)
@@ -481,9 +492,10 @@ export class Controller {
         )
 
         for (const location of this.locationsWithETA) {
-            this.parentsWithETA.add(
-                locations.children[location].Properties.ParentLocation,
-            )
+            const pl = locations.children[location].Properties.ParentLocation
+            assert.ok(pl, "no parent location")
+
+            this.parentsWithETA.add(pl)
         }
     }
 
@@ -509,14 +521,7 @@ export class Controller {
             )
         }
 
-        if (this.contracts.has(this._pubIdToContractId.get(pubId)!)) {
-            return (
-                this.contracts.get(this._pubIdToContractId.get(pubId)!) ||
-                undefined
-            )
-        }
-
-        return undefined
+        return this.contracts.get(this._pubIdToContractId.get(pubId)!)
     }
 
     /**
@@ -546,6 +551,10 @@ export class Controller {
 
     private getGroupContract(json: MissionManifest) {
         if (escalationTypes.includes(json.Metadata.Type)) {
+            if (!json.Metadata.InGroup) {
+                return json
+            }
+
             return this.resolveContract(json.Metadata.InGroup) ?? json
         }
 
@@ -565,7 +574,7 @@ export class Controller {
      * @returns The mission manifest object, or undefined if it wasn't found.
      */
     public resolveContract(
-        id: string,
+        id: string | undefined,
         getGroup = false,
     ): MissionManifest | undefined {
         if (!id) {
@@ -650,11 +659,16 @@ export class Controller {
         this.addMission(groupContract)
         fixedLevels.forEach((level) => this.addMission(level))
 
-        this.missionsInLocations.escalations[locationId] ??= []
+        type K = keyof typeof this.missionsInLocations.escalations
 
-        this.missionsInLocations.escalations[locationId].push(
-            groupContract.Metadata.Id,
-        )
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        this.missionsInLocations.escalations[locationId as K] ??= <any>[]
+
+        const a = this.missionsInLocations.escalations[
+            locationId as K
+        ] as string[]
+
+        a.push(groupContract.Metadata.Id)
 
         this.scanForGroups()
     }
@@ -758,7 +772,6 @@ export class Controller {
                 }
             } catch (e) {
                 log(LogLevel.ERROR, `Failed to load contract ${i}!`)
-                log(LogLevel.ERROR, e.stack)
             }
         })
     }
@@ -1028,7 +1041,6 @@ export class Controller {
         let theExports
 
         try {
-            // eslint-disable-next-line prefer-const
             theExports = new Script(pluginContents, {
                 filename: pluginPath,
             }).runInContext(context)
@@ -1038,7 +1050,6 @@ export class Controller {
                 `Error while attempting to queue plugin ${pluginName} for loading!`,
             )
             log(LogLevel.ERROR, e)
-            log(LogLevel.ERROR, e.stack)
             return
         }
 
@@ -1057,7 +1068,6 @@ export class Controller {
         } catch (e) {
             log(LogLevel.ERROR, `Error while evaluating plugin ${pluginName}!`)
             log(LogLevel.ERROR, e)
-            log(LogLevel.ERROR, e.stack)
         }
     }
 
@@ -1185,7 +1195,7 @@ export function contractIdToHitObject(
         "LocationsData",
         gameVersion,
         false,
-    ).parents[subLocation?.Properties?.ParentLocation]
+    ).parents[subLocation?.Properties?.ParentLocation || ""]
 
     // failed to find the location, must be from a newer game
     if (!subLocation && ["h1", "h2", "scpc"].includes(gameVersion)) {

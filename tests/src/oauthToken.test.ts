@@ -18,7 +18,12 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { UserProfile } from "../../components/types/types"
-import { handleOauthToken, JWT_SECRET } from "../../components/oauthToken"
+import {
+    error406,
+    handleOAuthToken,
+    JWT_SECRET,
+    OAuthTokenResponse,
+} from "../../components/oauthToken"
 import { sign, verify } from "jsonwebtoken"
 import * as databaseHandler from "../../components/databaseHandler"
 import * as platformEntitlements from "../../components/platformEntitlements"
@@ -26,11 +31,9 @@ import axios from "axios"
 import { describe, expect, beforeEach, vi, it } from "vitest"
 
 import {
-    getMockCallArgument,
     getResolvingPromise,
     mockRequestWithJwt,
     mockRequestWithValidJwt,
-    mockResponse,
 } from "../helpers/testHelpers"
 
 describe("oauthToken", () => {
@@ -41,6 +44,7 @@ describe("oauthToken", () => {
         .mockResolvedValue("")
     const loadUserData = vi
         .spyOn(databaseHandler, "loadUserData")
+        // @ts-expect-error This is okay.
         .mockResolvedValue(undefined)
     const getUserData = vi
         .spyOn(databaseHandler, "getUserData")
@@ -65,10 +69,10 @@ describe("oauthToken", () => {
                 })
             }
 
-            return undefined
+            return getResolvingPromise({})
         })
 
-        const request = mockRequestWithJwt()
+        const request = mockRequestWithJwt<never, any>()
         request.body = {
             grant_type: "external_steam",
             steam_userid: "000000000047",
@@ -76,9 +80,7 @@ describe("oauthToken", () => {
             pId: pId,
         }
 
-        const response = mockResponse()
-
-        await handleOauthToken(request, response)
+        const res = await handleOAuthToken(request)
 
         expect(getExternalUserData).toHaveBeenCalledWith(
             "000000000047",
@@ -88,12 +90,15 @@ describe("oauthToken", () => {
         expect(loadUserData).toHaveBeenCalledWith(pId, "h3")
         expect(getUserData).toHaveBeenCalledWith(pId, "h3")
 
-        const jsonResponse = getMockCallArgument<any>(response.json, 0, 0)
-        const accessToken = verify(jsonResponse.access_token, JWT_SECRET, {
-            complete: true,
-        })
+        const accessToken = verify(
+            (res as OAuthTokenResponse).access_token,
+            JWT_SECRET,
+            {
+                complete: true,
+            },
+        )
 
-        expect(jsonResponse.token_type).toBe("bearer")
+        expect((res as OAuthTokenResponse).token_type).toBe("bearer")
         expect((accessToken.payload as any).unique_name).toBe(pId)
     })
 
@@ -102,7 +107,7 @@ describe("oauthToken", () => {
             ["mock"],
         )
 
-        const request = mockRequestWithJwt()
+        const request = mockRequestWithJwt<never, any>()
         request.body = {
             grant_type: "external_epic",
             epic_userid: "0123456789abcdef0123456789abcdef",
@@ -118,9 +123,7 @@ describe("oauthToken", () => {
             pId: pId,
         }
 
-        const response = mockResponse()
-
-        await handleOauthToken(request, response)
+        const res = await handleOAuthToken(request)
 
         expect(getExternalUserData).toHaveBeenCalledWith(
             "0123456789abcdef0123456789abcdef",
@@ -130,85 +133,84 @@ describe("oauthToken", () => {
         expect(loadUserData).toHaveBeenCalledWith(pId, "h3")
         expect(getUserData).toHaveBeenCalledWith(pId, "h3")
 
-        const jsonResponse = getMockCallArgument<any>(response.json, 0, 0)
-        const accessToken = verify(jsonResponse.access_token, JWT_SECRET, {
-            complete: true,
-        })
+        const accessToken = verify(
+            (res as OAuthTokenResponse).access_token,
+            JWT_SECRET,
+            {
+                complete: true,
+            },
+        )
 
-        expect(jsonResponse.token_type).toBe("bearer")
+        expect((res as OAuthTokenResponse).token_type).toBe("bearer")
         expect((accessToken.payload as any).unique_name).toBe(pId)
     })
 
     it("refresh_token - missing auth header", async () => {
-        const request = mockRequestWithJwt()
+        const request = mockRequestWithJwt<never, any>()
 
         request.body = {
             grant_type: "refresh_token",
         }
 
-        const respose = mockResponse()
-
-        let error: Error = undefined
+        let error: Error | undefined = undefined
 
         try {
-            await handleOauthToken(request, respose)
+            await handleOAuthToken(request)
         } catch (e) {
-            error = e
+            error = e as Error
         }
 
         expect(error).toBeInstanceOf(TypeError)
     })
 
     it("refresh_token - invalid auth header", async () => {
-        const request = mockRequestWithJwt()
+        const request = mockRequestWithJwt<never, any>()
         request.headers.authorization = "Bearer invalid"
 
         request.body = {
             grant_type: "refresh_token",
         }
 
-        const respose = mockResponse()
-
-        let error: Error = undefined
+        let error: Error | undefined = undefined
 
         try {
-            await handleOauthToken(request, respose)
+            await handleOAuthToken(request)
         } catch (e) {
-            error = e
+            error = e as Error
         }
 
         expect(error).toBeInstanceOf(TypeError)
     })
 
     it("refresh_token - valid auth header", async () => {
-        const request = mockRequestWithValidJwt(pId)
+        const request = mockRequestWithValidJwt<never>(pId)
 
         // NOTE: We don't care about the actual values
         request.body = {
             grant_type: "refresh_token",
         }
 
-        const response = mockResponse()
+        const res = await handleOAuthToken(request)
 
-        await handleOauthToken(request, response)
+        const accessToken = verify(
+            (res as OAuthTokenResponse).access_token,
+            JWT_SECRET,
+            {
+                complete: true,
+            },
+        )
 
-        const jsonResponse = getMockCallArgument<any>(response.json, 0, 0)
-        const accessToken = verify(jsonResponse.access_token, JWT_SECRET, {
-            complete: true,
-        })
-
-        expect(jsonResponse.token_type).toBe("bearer")
+        expect((res as OAuthTokenResponse).token_type).toBe("bearer")
         expect((accessToken.payload as any).unique_name).toBe(pId)
     })
 
     it("no grant_type", async () => {
-        const request = mockRequestWithJwt()
+        const request = mockRequestWithJwt<never, any>()
         request.body = {}
+        request.query = {} as never
 
-        const respose = mockResponse()
+        const res = await handleOAuthToken(request)
 
-        await handleOauthToken(request, respose)
-
-        expect(respose.status).toHaveBeenCalledWith(406)
+        expect(res).toEqual(error406)
     })
 })

@@ -21,17 +21,22 @@ import {
     getSubLocationByName,
 } from "../contracts/dataGen"
 import { log, LogLevel } from "../loggingInterop"
-import { getConfig, getVersionedConfig } from "../configSwizzleManager"
+import { getVersionedConfig } from "../configSwizzleManager"
 import { getUserData } from "../databaseHandler"
 import {
+    LocationMasteryData,
     MasteryData,
-    MasteryDataTemplate,
     MasteryDrop,
     MasteryPackage,
     MasteryPackageDrop,
     UnlockableMasteryData,
 } from "../types/mastery"
-import { CompletionData, GameVersion, Unlockable } from "../types/types"
+import {
+    CompletionData,
+    GameVersion,
+    ProgressionData,
+    Unlockable,
+} from "../types/types"
 import {
     clampValue,
     DEFAULT_MASTERY_MAXLEVEL,
@@ -42,6 +47,7 @@ import {
 } from "../utils"
 
 import { getUnlockablesById } from "../inventory"
+import assert from "assert"
 
 export class MasteryService {
     /**
@@ -150,22 +156,16 @@ export class MasteryService {
         )[0]
     }
 
-    // TODO: what do we want to do with this? We should prob remove the template part
-    //       to make this like the other routes, and more testable.
     getMasteryDataForLocation(
         locationId: string,
         gameVersion: GameVersion,
         userId: string,
-    ): MasteryDataTemplate {
-        const location: Unlockable =
+    ): LocationMasteryData {
+        const location =
             getSubLocationByName(locationId, gameVersion) ??
             getParentLocationByName(locationId, gameVersion)
 
-        const masteryDataTemplate: MasteryDataTemplate =
-            getConfig<MasteryDataTemplate>(
-                "MasteryDataForLocationTemplate",
-                false,
-            )
+        assert.ok(location, "cannot get mastery data for unknown location")
 
         const masteryData = this.getMasteryData(
             location.Properties.ParentLocation ?? location.Id,
@@ -174,11 +174,8 @@ export class MasteryService {
         )
 
         return {
-            template: masteryDataTemplate,
-            data: {
-                Location: location,
-                MasteryData: masteryData,
-            },
+            Location: location,
+            MasteryData: masteryData,
         }
     }
 
@@ -202,19 +199,12 @@ export class MasteryService {
         // Get the user profile
         const userProfile = getUserData(userId, gameVersion)
 
-        // @since v7.0.0 this has been commented out as the default profile should
-        // have all the required properties - AF
-        /* userProfile.Extensions.progression.Locations[locationParentId] ??= {
-            Xp: 0,
-            Level: 1,
-            PreviouslySeenXp: 0,
-        } */
+        const parent =
+            userProfile.Extensions.progression.Locations[locationParentId]
 
-        const completionData = subPackageId
-            ? userProfile.Extensions.progression.Locations[locationParentId][
-                  subPackageId
-              ]
-            : userProfile.Extensions.progression.Locations[locationParentId]
+        const completionData: ProgressionData = subPackageId
+            ? (parent[subPackageId as keyof typeof parent] as ProgressionData)
+            : (parent as ProgressionData)
 
         const nextLevel: number = clampValue(
             completionData.Level + 1,
@@ -279,7 +269,7 @@ export class MasteryService {
                   "SniperUnlockables",
                   gameVersion,
                   false,
-              ).find((unlockable) => unlockable.Id === subPackageId).Properties
+              ).find((unlockable) => unlockable.Id === subPackageId)?.Properties
                   .Name
             : undefined
 
@@ -297,11 +287,11 @@ export class MasteryService {
                     : xpRequiredForLevel,
                 subPackageId,
             ),
-            Id: isSniper ? subPackageId : masteryPkg.LocationId,
+            Id: isSniper ? subPackageId! : masteryPkg.LocationId,
             SubLocationId: isSniper ? "" : subLocationId,
             HideProgression: masteryPkg.HideProgression || false,
             IsLocationProgression: !isSniper,
-            Name: name,
+            Name: name!,
         }
     }
 
@@ -347,7 +337,7 @@ export class MasteryService {
         subPackageId?: string,
     ): MasteryData[] {
         // Get the mastery data
-        const masteryPkg: MasteryPackage = this.getMasteryPackage(
+        const masteryPkg: MasteryPackage | undefined = this.getMasteryPackage(
             locationParentId,
             gameVersion,
         )
@@ -389,15 +379,22 @@ export class MasteryService {
         }
 
         // Get all unlockables with matching Ids
-        const unlockableData: Unlockable[] = getUnlockablesById(
+        const unlockableData = getUnlockablesById(
             Array.from(dropIdSet),
             gameVersion,
         )
 
         // Put all unlockabkes in a map for quick lookup
-        const unlockableMap = new Map(
-            unlockableData.map((unlockable) => [unlockable.Id, unlockable]),
+        const mapped: [string, Unlockable][] = unlockableData.map(
+            (unlockable) => {
+                return [unlockable?.Id, unlockable] as unknown as [
+                    string,
+                    Unlockable,
+                ]
+            },
         )
+
+        const unlockableMap: Map<string, Unlockable> = new Map(mapped)
 
         const masteryData: MasteryData[] = []
 
@@ -418,17 +415,19 @@ export class MasteryService {
                     subPkg.Id,
                 )
 
-                masteryData.push({
-                    CompletionData: completionData,
-                    Drops: this.processDrops(
-                        completionData.Level,
-                        subPkg.Drops,
-                        unlockableMap,
-                    ),
-                    Unlockable: isSniper
-                        ? unlockableMap.get(subPkg.Id)
-                        : undefined,
-                })
+                if (completionData) {
+                    masteryData.push({
+                        CompletionData: completionData,
+                        Drops: this.processDrops(
+                            completionData.Level,
+                            subPkg.Drops,
+                            unlockableMap,
+                        ),
+                        Unlockable: isSniper
+                            ? unlockableMap.get(subPkg.Id)
+                            : undefined,
+                    })
+                }
             }
         } else {
             // All sniper locations are subpackages, so we don't need to add "sniper"
@@ -441,14 +440,16 @@ export class MasteryService {
                 locationParentId.includes("SNUG") ? "evergreen" : "mission",
             )
 
-            masteryData.push({
-                CompletionData: completionData,
-                Drops: this.processDrops(
-                    completionData.Level,
-                    masteryPkg.Drops,
-                    unlockableMap,
-                ),
-            })
+            if (completionData) {
+                masteryData.push({
+                    CompletionData: completionData,
+                    Drops: this.processDrops(
+                        completionData.Level,
+                        masteryPkg.Drops || [],
+                        unlockableMap,
+                    ),
+                })
+            }
         }
 
         return masteryData

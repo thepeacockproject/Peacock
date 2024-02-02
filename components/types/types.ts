@@ -19,7 +19,7 @@
 import type * as core from "express-serve-static-core"
 
 import type { IContractCreationPayload } from "../statemachines/contractCreation"
-import type { Request } from "express"
+import { Request } from "express"
 import {
     ChallengeContext,
     ProfileChallengeData,
@@ -29,6 +29,7 @@ import { SessionGhostModeDetails } from "../multiplayer/multiplayerService"
 import { IContextListener } from "../statemachines/contextListeners"
 import { ManifestScoringModule, ScoringModule } from "./scoring"
 import { Timer } from "@peacockproject/statemachine-parser"
+import { InventoryItem } from "../inventory"
 
 /**
  * A duration or relative point in time expressed in seconds.
@@ -274,7 +275,7 @@ export interface ContractSession {
      */
     evergreen?: {
         payout: number
-        scoringScreenEndState: string
+        scoringScreenEndState: string | null
         failed: boolean
     }
     /**
@@ -367,7 +368,7 @@ export interface S2CEventWithTimestamp<EventValue = unknown> {
  * A server to client push message. The message component is encoded JSON.
  */
 export interface PushMessage {
-    time: number | string
+    time: number | string | bigint
     message: string
 }
 
@@ -405,33 +406,30 @@ export interface MissionStory {
 }
 
 export interface PlayerProfileView {
-    template: unknown
-    data: {
-        SubLocationData: {
-            ParentLocation: Unlockable
-            Location: Unlockable
-            CompletionData: CompletionData
-            ChallengeCategoryCompletion: ChallengeCategoryCompletion[]
-            ChallengeCompletion: ChallengeCompletion
-            OpportunityStatistics: OpportunityStatistics
-            LocationCompletionPercent: number
-        }[]
-        PlayerProfileXp: {
-            Total: number
-            Level: number
-            Seasons: {
-                Number: number
-                Locations: {
-                    LocationId: string
-                    Xp: number
-                    ActionXp: number
-                    LocationProgression?: {
-                        Level: number
-                        MaxLevel: number
-                    }
-                }[]
+    SubLocationData: {
+        ParentLocation: Unlockable
+        Location: Unlockable
+        CompletionData: CompletionData
+        ChallengeCategoryCompletion: ChallengeCategoryCompletion[]
+        ChallengeCompletion: ChallengeCompletion
+        OpportunityStatistics: OpportunityStatistics
+        LocationCompletionPercent: number
+    }[]
+    PlayerProfileXp: {
+        Total: number
+        Level: number
+        Seasons: {
+            Number: number
+            Locations: {
+                LocationId: string
+                Xp: number
+                ActionXp: number
+                LocationProgression?: {
+                    Level: number
+                    MaxLevel: number
+                }
             }[]
-        }
+        }[]
     }
 }
 
@@ -878,7 +876,7 @@ export type ContractGroupDefinition = {
     Order: string[]
 }
 
-export interface EscalationInfo {
+export type EscalationInfo = {
     Type?: MissionType
     InGroup?: string
     NextContractId?: string
@@ -893,77 +891,76 @@ export interface EscalationInfo {
 export interface MissionManifestMetadata {
     Id: string
     Location: string
-    IsPublished?: boolean
-    CreationTimestamp?: string
-    CreatorUserId?: string
+    IsPublished?: boolean | null
+    CreationTimestamp?: string | null
+    CreatorUserId?: string | null
     Title: string
-    Description?: string
+    Description?: string | null
     BriefingVideo?:
         | string
         | {
               Mode: string
               VideoId: string
           }[]
-    DebriefingVideo?: string
+    DebriefingVideo?: string | null
     TileImage?:
         | string
         | {
               Mode: string
               Image: string
           }[]
-    CodeName_Hint?: string
+    CodeName_Hint?: string | null
     ScenePath: string
     Type: MissionType
-    Release?: string | object
-    RequiredUnlockable?: string
-    Drops?: string[]
-    Opportunities?: string[]
-    OpportunityData?: MissionStory[]
-    Entitlements: string[]
-    LastUpdate?: string
-    PublicId?: string
-    GroupObjectiveDisplayOrder?: GroupObjectiveDisplayOrderItem[]
-    GameVersion?: string
-    ServerVersion?: string
-    AllowNonTargetKills?: boolean
-    Difficulty?: "pro1" | string
-    CharacterSetup?: {
-        Mode: "singleplayer" | "multiplayer" | string
-        Characters: {
-            Name: string
-            Id: string
-            MandatoryLoadout?: string[]
-        }[]
-    }[]
-    CharacterLoadoutData?: {
-        Id: string
-        Loadout: unknown
-        CompletionData: CompletionData
-    }[]
-    SpawnSelectionType?: "random" | string
-    Gamemodes?: ("versus" | string)[]
-    Enginemodes?: ("singleplayer" | "multiplayer" | string)[]
+    Release?: string | object | null
+    RequiredUnlockable?: string | null
+    Drops?: string[] | null
+    Opportunities?: string[] | null
+    OpportunityData?: MissionStory[] | null
+    Entitlements: string[] | null
+    LastUpdate?: string | null
+    PublicId?: string | null
+    GroupObjectiveDisplayOrder?: GroupObjectiveDisplayOrderItem[] | null
+    GameVersion?: string | null
+    ServerVersion?: string | null
+    AllowNonTargetKills?: boolean | null
+    Difficulty?: "pro1" | string | null
+    CharacterSetup?:
+        | {
+              Mode: "singleplayer" | "multiplayer" | string
+              Characters: {
+                  Name: string
+                  Id: string
+                  MandatoryLoadout?: string[]
+              }[]
+          }[]
+        | null
+    CharacterLoadoutData?:
+        | {
+              Id: string
+              Loadout: unknown
+              CompletionData: CompletionData
+          }[]
+        | null
+    SpawnSelectionType?: "random" | string | null
+    Gamemodes?: ("versus" | string)[] | null
+    Enginemodes?: ("singleplayer" | "multiplayer" | string)[] | null
     EndConditions?: {
         PointLimit?: number
-    }
-    Subtype?: string
-    GroupTitle?: string
-    TargetExpiration?: number
-    TargetExpirationReduced?: number
-    TargetLifeTime?: number
-    NonTargetKillPenaltyEnabled?: boolean
-    NoticedTargetStreakPenaltyMax?: number
-    IsFeatured?: boolean
+    } | null
+    Subtype?: string | null
+    GroupTitle?: string | null
+    TargetExpiration?: number | null
+    TargetExpirationReduced?: number | null
+    TargetLifeTime?: number | null
+    NonTargetKillPenaltyEnabled?: boolean | null
+    NoticedTargetStreakPenaltyMax?: number | null
+    IsFeatured?: boolean | null
     // Begin escalation-exclusive properties
-    InGroup?: string
-    NextContractId?: string
-    GroupDefinition?: ContractGroupDefinition
-    GroupData?: {
-        Level: number
-        TotalLevels: number
-        Completed: boolean
-        FirstContractId: string
-    }
+    InGroup?: string | null
+    NextContractId?: string | null
+    GroupDefinition?: ContractGroupDefinition | null
+    GroupData?: EscalationInfo["GroupData"] | null
     // End escalation-exclusive properties
     /**
      * Useless property.
@@ -971,19 +968,19 @@ export interface MissionManifestMetadata {
      * @deprecated
      */
     readonly UserData?: unknown | null
-    IsVersus?: boolean
-    IsEvergreenSafehouse?: boolean
-    UseContractProgressionData?: boolean
-    CpdId?: string
+    IsVersus?: boolean | null
+    IsEvergreenSafehouse?: boolean | null
+    UseContractProgressionData?: boolean | null
+    CpdId?: string | null
     /**
      * Custom property used for Elusives (like official's year)
      * and Escalations (if it's 0, it is a Peacock escalation,
      * and OriginalSeason will exist for filtering).
      */
-    Season?: number
-    OriginalSeason?: number
+    Season?: number | null
+    OriginalSeason?: number | null
     // Used for sniper scoring
-    Modules?: ManifestScoringModule[]
+    Modules?: ManifestScoringModule[] | null
 }
 
 export interface GroupObjectiveDisplayOrderItem {
@@ -1039,7 +1036,7 @@ export interface MissionManifest {
         EnableExits?: {
             $eq?: (string | boolean)[]
         }
-        DevOnlyBricks?: string[]
+        DevOnlyBricks?: string[] | null
     }
     Metadata: MissionManifestMetadata
     readonly UserData?: Record<string, never> | never[]
@@ -1216,7 +1213,7 @@ export interface CompiledChallengeTreeData {
     CategoryName: string
     ChallengeProgress?: ChallengeTreeWaterfallState
     Completed: boolean
-    CompletionData: CompletionData
+    CompletionData?: CompletionData
     Description: string
     // A string array of at most one element ("easy", "normal", or "hard").
     // If empty, then the challenge should appear in sessions on any difficulty.
@@ -1276,6 +1273,7 @@ export interface ChallengeProgressionData {
     ProfileId: string
     Completed: boolean
     Ticked: boolean
+    ETag?: string
     State: Record<string, unknown>
     CompletedAt: Date | string | null
     MustBeSaved: boolean
@@ -1284,14 +1282,6 @@ export interface ChallengeProgressionData {
 export interface CompiledChallengeRuntimeData {
     Challenge: CompiledChallengeIngameData
     Progression: ChallengeProgressionData
-}
-
-export interface CompiledChallengeRewardData {
-    ChallengeId: string
-    ChallengeName: string
-    ChallengeDescription: string
-    ChallengeImageUrl: string
-    XPGain: number
 }
 
 export type LoadoutSavingMechanism = "PROFILES" | "LEGACY"
@@ -1322,7 +1312,7 @@ export interface IHit {
 /**
  * A video object.
  *
- * @see ICampaignVideo
+ * @see CampaignVideo
  * @see StoryData
  */
 export interface IVideo {
@@ -1346,7 +1336,7 @@ export interface IVideo {
  *
  * @see IHit
  */
-export type ICampaignMission = {
+export type CampaignMission = {
     Type: "Mission"
     Data: IHit
 }
@@ -1356,7 +1346,7 @@ export type ICampaignMission = {
  *
  * @see IVideo
  */
-export type ICampaignVideo = {
+export type CampaignVideo = {
     Type: "Video"
     Data: IVideo
 }
@@ -1373,7 +1363,7 @@ export interface RegistryChallenge extends SavedChallenge {
 /**
  * An element for the game's story data.
  */
-export type StoryData = ICampaignMission | ICampaignVideo
+export type StoryData = CampaignMission | CampaignVideo
 
 /**
  * A campaign object.
@@ -1415,7 +1405,7 @@ export interface Loadout {
  *
  * @see LoadoutFile
  */
-export interface LoadoutsGameVersion {
+export type LoadoutsGameVersion = {
     selected: string | null
     loadouts: Loadout[]
 }
@@ -1423,19 +1413,20 @@ export interface LoadoutsGameVersion {
 /**
  * The top-level format for the loadout profiles storage file.
  */
-export interface LoadoutFile {
-    h1: LoadoutsGameVersion
-    h2: LoadoutsGameVersion
-    h3: LoadoutsGameVersion
-}
+export type LoadoutFile = Record<
+    // game version but not scpc
+    Exclude<GameVersion, "scpc">,
+    LoadoutsGameVersion
+>
 
 /**
  * A function that generates a campaign mission object for use in the campaigns menu.
+ * Will throw if contract is not found.
  */
 export type GenSingleMissionFunc = (
     contractId: string,
     gameVersion: GameVersion,
-) => ICampaignMission
+) => CampaignMission
 
 /**
  * A function that generates a campaign video object for use in the campaigns menu.
@@ -1443,7 +1434,7 @@ export type GenSingleMissionFunc = (
 export type GenSingleVideoFunc = (
     videoId: string,
     gameVersion: GameVersion,
-) => ICampaignVideo
+) => CampaignVideo
 
 /**
  * A "hits category" is used to display lists of contracts in-game.
@@ -1486,16 +1477,25 @@ export interface PlayNextGetCampaignsHookReturn {
 
 export type SafehouseCategory = {
     Category: string
-    SubCategories: SafehouseCategory[]
+    SubCategories: SafehouseCategory[] | null
     IsLeaf: boolean
-    Data: null
-}
-
-export type SniperLoadout = {
-    ID: string
-    InstanceID: string
-    Unlockable: Unlockable[]
-    MainUnlockable: Unlockable
+    Data: null | {
+        Type: string
+        SubType: string | undefined
+        Items: {
+            Item: InventoryItem
+            ItemDetails: {
+                Capabilities: []
+                StatList: {
+                    Name: string
+                    Ratio: unknown
+                    PropertyTexts: []
+                }[]
+            }
+        }[]
+        Page: number
+        HasMore: boolean
+    }
 }
 
 /**

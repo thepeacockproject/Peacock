@@ -18,7 +18,6 @@
 
 import {
     ChallengeProgressionData,
-    CompiledChallengeRewardData,
     CompiledChallengeRuntimeData,
     InclusionData,
     MissionManifest,
@@ -27,19 +26,6 @@ import {
 import { SavedChallengeGroup } from "../types/challenges"
 import { controller } from "../controller"
 import { gameDifficulty, isSniperLocation } from "../utils"
-
-// TODO: unused?
-export function compileScoringChallenge(
-    challenge: RegistryChallenge,
-): CompiledChallengeRewardData {
-    return {
-        ChallengeId: challenge.Id,
-        ChallengeName: challenge.Name,
-        ChallengeDescription: challenge.Description,
-        ChallengeImageUrl: challenge.ImageName,
-        XPGain: challenge.Rewards?.MasteryXP || 0,
-    }
-}
 
 export function compileRuntimeChallenge(
     challenge: RegistryChallenge,
@@ -106,8 +92,8 @@ export type ChallengeFilterOptions =
  * @returns A boolean as the result.
  */
 export function inclusionDataCheck(
-    incData: InclusionData,
-    contract: MissionManifest,
+    incData: InclusionData | undefined,
+    contract: MissionManifest | undefined,
 ): boolean {
     if (!incData) return true
     if (!contract) return false
@@ -174,9 +160,9 @@ function isChallengeInContract(
                 : {
                       ...challenge.InclusionData,
                       ContractTypes:
-                          challenge.InclusionData.ContractTypes.filter(
+                          challenge.InclusionData?.ContractTypes?.filter(
                               (type) => type !== "tutorial",
-                          ),
+                          ) || [],
                   },
             contract,
         )
@@ -184,14 +170,15 @@ function isChallengeInContract(
 
     // Is this for the current contract or group contract?
     const isForContract = (challenge.InclusionData?.ContractIds || []).includes(
-        contract.Metadata.Id,
+        contract?.Metadata.Id || "",
     )
 
     // Is this for the current contract type?
     // As of v6.1.0, this is only used for ET challenges.
+    // We have to resolve the non-group contract, `contract` is the group contract
     const isForContractType = (
         challenge.InclusionData?.ContractTypes || []
-    ).includes(controller.resolveContract(contractId).Metadata.Type)
+    ).includes(controller.resolveContract(contractId)!.Metadata.Type)
 
     // Is this a location-wide challenge?
     // "location" is more widely used, but "parentlocation" is used in Ambrose and Berlin, as well as some "Discover XX" challenges.
@@ -287,7 +274,7 @@ export function filterChallenge(
  */
 export function mergeSavedChallengeGroups(
     g1: SavedChallengeGroup,
-    g2: SavedChallengeGroup,
+    g2?: SavedChallengeGroup,
 ): SavedChallengeGroup {
     return {
         ...g1,

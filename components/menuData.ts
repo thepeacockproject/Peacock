@@ -21,7 +21,6 @@ import { Response, Router } from "express"
 import {
     contractCreationTutorialId,
     getMaxProfileLevel,
-    isSniperLocation,
     isSuit,
     unlockOrderComparer,
     uuidRegex,
@@ -29,22 +28,15 @@ import {
 import { contractSessions, getSession } from "./eventHandler"
 import { getConfig, getVersionedConfig } from "./configSwizzleManager"
 import { controller } from "./controller"
-import {
-    createLocationsData,
-    getDestination,
-    getDestinationCompletion,
-} from "./menus/destinations"
+import { createLocationsData, getDestination } from "./menus/destinations"
 import type {
-    ChallengeCategoryCompletion,
-    SelectEntranceOrPickupData,
     ContractSearchResult,
     GameVersion,
     HitsCategoryCategory,
     PeacockLocationsData,
-    PlayerProfileView,
-    ProgressionData,
     RequestWithJwt,
     SceneConfig,
+    SelectEntranceOrPickupData,
     UserCentricContract,
 } from "./types/types"
 import {
@@ -79,7 +71,9 @@ import {
     DebriefingLeaderboardsQuery,
     GetCompletionDataForLocationQuery,
     GetDestinationQuery,
+    GetMasteryCompletionDataForUnlockableQuery,
     LeaderboardEntriesCommonQuery,
+    LookupContractPublicIdQuery,
     MasteryUnlockableQuery,
     MissionEndRequestQuery,
     PlanningQuery,
@@ -97,6 +91,7 @@ import {
     getSafehouseCategory,
 } from "./menus/stashpoints"
 import { getHubData } from "./menus/hub"
+import { getPlayerProfileData } from "./menus/playerProfile"
 
 const menuDataRouter = Router()
 
@@ -104,17 +99,18 @@ const menuDataRouter = Router()
 
 menuDataRouter.get(
     "/ChallengeLocation",
+    // @ts-expect-error Jwt props.
     (req: RequestWithJwt<ChallengeLocationQuery>, res) => {
-        if (typeof req.query.locationId !== "string") {
-            res.status(400).send("Invalid locationId")
-            return
-        }
-
         const location = getVersionedConfig<PeacockLocationsData>(
             "LocationsData",
             req.gameVersion,
             true,
         ).children[req.query.locationId]
+
+        if (!location) {
+            res.status(400).send("Invalid locationId")
+            return
+        }
 
         const data = {
             Name: location.DisplayNameLocKey,
@@ -137,17 +133,20 @@ menuDataRouter.get(
     },
 )
 
+// @ts-expect-error Jwt props.
 menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
-    const hubInfo = getHubData(req.gameVersion, req.jwt)
+    const hubInfo = getHubData(req.gameVersion, req.jwt.unique_name)
 
-    const template =
-        req.gameVersion === "h3"
-            ? null
-            : req.gameVersion === "h2"
-            ? null
-            : req.gameVersion === "scpc"
-            ? getConfig("FrankensteinHubTemplate", false)
-            : getConfig("LegacyHubTemplate", false)
+    let template: unknown
+
+    if (req.gameVersion === "h3" || req.gameVersion === "h2") {
+        template = null
+    } else {
+        template =
+            req.gameVersion === "scpc"
+                ? getConfig("FrankensteinHubTemplate", false)
+                : getConfig("LegacyHubTemplate", false)
+    }
 
     res.json({
         template,
@@ -155,6 +154,7 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
     })
 })
 
+// @ts-expect-error Jwt props.
 menuDataRouter.get("/SafehouseCategory", (req: RequestWithJwt, res) => {
     res.json({
         template:
@@ -165,6 +165,7 @@ menuDataRouter.get("/SafehouseCategory", (req: RequestWithJwt, res) => {
     })
 })
 
+// @ts-expect-error Jwt props.
 menuDataRouter.get("/Safehouse", (req: RequestWithJwt<SafehouseQuery>, res) => {
     const template = getConfig("LegacySafehouseTemplate", false)
 
@@ -184,6 +185,7 @@ menuDataRouter.get("/Safehouse", (req: RequestWithJwt<SafehouseQuery>, res) => {
     })
 })
 
+// @ts-expect-error Jwt props.
 menuDataRouter.get("/report", (req: RequestWithJwt, res) => {
     res.json({
         template: getVersionedConfig("ReportTemplate", req.gameVersion, false),
@@ -202,6 +204,7 @@ menuDataRouter.get("/report", (req: RequestWithJwt, res) => {
 // /stashpoint?contractid=5b5f8aa4-ecb4-4a0a-9aff-98aa1de43dcc&slotid=6&slotname=stashpoint6&stashpoint=28b03709-d1f0-4388-b207-f03611eafb64&allowlargeitems=true&allowcontainers=false
 menuDataRouter.get(
     "/stashpoint",
+    // @ts-expect-error Jwt props.
     (req: RequestWithJwt<StashpointQuery | StashpointQueryH2016>, res) => {
         function isValidModernQuery(
             query: StashpointQuery | StashpointQueryH2016,
@@ -214,7 +217,7 @@ menuDataRouter.get(
 
         if (["h1", "scpc"].includes(req.gameVersion)) {
             // H1 or SCPC
-            if (!uuidRegex.test(req.query.contractid)) {
+            if (!uuidRegex.test(req.query.contractid!)) {
                 res.status(400).send("contract id was not a uuid")
                 return
             }
@@ -264,15 +267,22 @@ menuDataRouter.get(
 
 menuDataRouter.get(
     "/missionrewards",
+    // @ts-expect-error Jwt props.
     (
         req: RequestWithJwt<{
             contractSessionId: string
         }>,
         res,
     ) => {
-        const { contractId } = getSession(req.jwt.unique_name)
-        const contractData = controller.resolveContract(contractId, true)
+        const s = getSession(req.jwt.unique_name)
 
+        if (!s) {
+            res.status(400).send("no session")
+            return
+        }
+
+        const { contractId } = s
+        const contractData = controller.resolveContract(contractId, true)
         const userData = getUserData(req.jwt.unique_name, req.gameVersion)
 
         res.json({
@@ -321,7 +331,7 @@ menuDataRouter.get(
                 LocationHideProgression: true,
                 Difficulty: "normal", // FIXME: is this right?
                 CompletionData: generateCompletionData(
-                    contractData.Metadata.Location,
+                    contractData?.Metadata.Location || "",
                     req.jwt.unique_name,
                     req.gameVersion,
                 ),
@@ -332,6 +342,7 @@ menuDataRouter.get(
 
 menuDataRouter.get(
     "/Planning",
+    // @ts-expect-error Jwt props.
     async (req: RequestWithJwt<PlanningQuery>, res) => {
         if (!req.query.contractid || !req.query.resetescalation) {
             res.status(400).send("invalid query")
@@ -341,7 +352,7 @@ menuDataRouter.get(
         const planningData = await getPlanningData(
             req.query.contractid,
             req.query.resetescalation === "true",
-            req.jwt,
+            req.jwt.unique_name,
             req.gameVersion,
         )
 
@@ -350,13 +361,16 @@ menuDataRouter.get(
             return
         }
 
+        let template: unknown | null = null
+
+        if (req.gameVersion === "h1") {
+            template = getConfig("LegacyPlanningTemplate", false)
+        } else if (req.gameVersion === "scpc") {
+            template = getConfig("FrankensteinPlanningTemplate", false)
+        }
+
         res.json({
-            template:
-                req.gameVersion === "h1"
-                    ? getConfig("LegacyPlanningTemplate", false)
-                    : req.gameVersion === "scpc"
-                    ? getConfig("FrankensteinPlanningTemplate", false)
-                    : null,
+            template,
             data: planningData,
         })
     },
@@ -364,6 +378,7 @@ menuDataRouter.get(
 
 menuDataRouter.get(
     "/selectagencypickup",
+    // @ts-expect-error Jwt props.
     (
         req: RequestWithJwt<{
             contractId: string
@@ -407,7 +422,7 @@ menuDataRouter.get(
                     contractData,
                     req.jwt.unique_name,
                     req.gameVersion,
-                ),
+                )!,
             }
 
             res.json({
@@ -440,14 +455,16 @@ menuDataRouter.get(
             Contract: contractData,
             OrderedUnlocks: unlockedAgencyPickups
                 .filter((unlockable) =>
-                    pickupsInScene.includes(unlockable.Properties.RepositoryId),
+                    pickupsInScene.includes(
+                        unlockable.Properties.RepositoryId || "",
+                    ),
                 )
                 .sort(unlockOrderComparer),
             UserCentric: generateUserCentric(
                 contractData,
                 req.jwt.unique_name,
                 req.gameVersion,
-            ),
+            )!,
         }
 
         res.json({
@@ -463,6 +480,7 @@ menuDataRouter.get(
 
 menuDataRouter.get(
     "/selectentrance",
+    // @ts-expect-error Jwt props.
     (
         req: RequestWithJwt<{
             contractId: string
@@ -522,7 +540,7 @@ menuDataRouter.get(
                 contractData,
                 req.jwt.unique_name,
                 req.gameVersion,
-            ),
+            )!,
         }
 
         res.json({
@@ -580,6 +598,12 @@ const missionEndRequest = async (
         return
     }
 
+    // prototype pollution prevention
+    if (/(__proto__|prototype|constructor)/.test(req.query.contractSessionId)) {
+        res.status(400).send("invalid session id")
+        return
+    }
+
     const missionEndOutput = await getMissionEndData(
         req.query,
         req.jwt,
@@ -613,21 +637,29 @@ const missionEndRequest = async (
     })
 }
 
+// @ts-expect-error Has jwt props.
 menuDataRouter.get("/missionend", missionEndRequest)
 
+// @ts-expect-error Has jwt props.
 menuDataRouter.get("/scoreoverviewandunlocks", missionEndRequest)
 
+// @ts-expect-error Has jwt props.
 menuDataRouter.get("/scoreoverview", missionEndRequest)
 
 menuDataRouter.get(
     "/Destination",
+    // @ts-expect-error Jwt props.
     (req: RequestWithJwt<GetDestinationQuery>, res) => {
         if (!req.query.locationId) {
             res.status(400).send("Invalid locationId")
             return
         }
 
-        const destination = getDestination(req.query, req.gameVersion, req.jwt)
+        const destination = getDestination(
+            req.query,
+            req.gameVersion,
+            req.jwt.unique_name,
+        )
 
         res.json({
             template:
@@ -681,13 +713,9 @@ async function lookupContractPublicId(
 
 menuDataRouter.get(
     "/LookupContractPublicId",
-    async (
-        req: RequestWithJwt<{
-            publicid: string
-        }>,
-        res,
-    ) => {
-        if (!req.query.publicid || typeof req.query.publicid !== "string") {
+    // @ts-expect-error Has jwt props.
+    async (req: RequestWithJwt<LookupContractPublicIdQuery>, res) => {
+        if (typeof req.query.publicid !== "string") {
             return res.status(400).send("no/invalid public id specified!")
         }
 
@@ -708,6 +736,7 @@ menuDataRouter.get(
 
 menuDataRouter.get(
     "/HitsCategory",
+    // @ts-expect-error Has jwt props.
     async (
         req: RequestWithJwt<{
             type: string
@@ -749,6 +778,7 @@ menuDataRouter.get(
 
 menuDataRouter.get(
     "/PlayNext",
+    // @ts-expect-error Has jwt props.
     (
         req: RequestWithJwt<{
             contractId: string
@@ -764,14 +794,14 @@ menuDataRouter.get(
             template: getConfig("PlayNextTemplate", false),
             data: getGamePlayNextData(
                 req.query.contractId,
-                req.jwt,
+                req.jwt.unique_name,
                 req.gameVersion,
             ),
         })
     },
 )
 
-menuDataRouter.get("/LeaderboardsView", (req, res) => {
+menuDataRouter.get("/LeaderboardsView", (_, res) => {
     res.json({
         template: getConfig("LeaderboardsViewTemplate", false),
         data: {
@@ -783,6 +813,7 @@ menuDataRouter.get("/LeaderboardsView", (req, res) => {
 
 menuDataRouter.get(
     "/LeaderboardEntries",
+    // @ts-expect-error Has jwt props.
     async (req: RequestWithJwt<LeaderboardEntriesCommonQuery>, res) => {
         if (!req.query.contractid) {
             res.status(400).send("no contract id!")
@@ -810,6 +841,7 @@ menuDataRouter.get(
 
 menuDataRouter.get(
     "/DebriefingLeaderboards",
+    // @ts-expect-error Has jwt props.
     async (req: RequestWithJwt<DebriefingLeaderboardsQuery>, res) => {
         if (!req.query.contractid) {
             res.status(400).send("no contract id!")
@@ -835,10 +867,12 @@ menuDataRouter.get(
     },
 )
 
+// @ts-expect-error Has jwt props.
 menuDataRouter.get("/Contracts", contractsModeHome)
 
 menuDataRouter.get(
     "/contractcreation/planning",
+    // @ts-expect-error Has jwt props.
     async (
         req: RequestWithJwt<{
             contractCreationIdOverwrite: string
@@ -858,7 +892,7 @@ menuDataRouter.get(
         const planningData = await getPlanningData(
             req.query.contractCreationIdOverwrite,
             false,
-            req.jwt,
+            req.jwt.unique_name,
             req.gameVersion,
         )
 
@@ -890,6 +924,7 @@ menuDataRouter.get(
     },
 )
 
+// @ts-expect-error Has jwt props.
 menuDataRouter.get("/contractsearchpage", (req: RequestWithJwt, res) => {
     const createContractTutorial = controller.resolveContract(
         contractCreationTutorialId,
@@ -920,6 +955,7 @@ menuDataRouter.get("/contractsearchpage", (req: RequestWithJwt, res) => {
 menuDataRouter.post(
     "/ContractSearch",
     jsonMiddleware(),
+    // @ts-expect-error Jwt props.
     async (
         req: RequestWithJwt<
             {
@@ -977,12 +1013,21 @@ menuDataRouter.post(
             }
         } else {
             // No plugins handle this. Getting search results from official
-            searchResult = await officialSearchContract(
+            searchResult = (await officialSearchContract(
                 req.jwt.unique_name,
                 req.gameVersion,
                 req.body,
                 0,
-            )
+            )) || {
+                Data: {
+                    Contracts: [],
+                    TotalCount: 0,
+                    Page: 0,
+                    ErrorReason: "",
+                    HasPrevious: false,
+                    HasMore: false,
+                },
+            }
         }
 
         res.json({
@@ -999,6 +1044,7 @@ menuDataRouter.post(
 menuDataRouter.post(
     "/ContractSearchPaginate",
     jsonMiddleware(),
+    // @ts-expect-error Has jwt props.
     async (
         req: RequestWithJwt<
             {
@@ -1022,14 +1068,26 @@ menuDataRouter.post(
 
 menuDataRouter.get(
     "/DebriefingChallenges",
+    // @ts-expect-error Has jwt props.
     (
-        req: RequestWithJwt<{
-            contractId: string
-        }>,
+        req: RequestWithJwt<
+            Partial<{
+                contractId: string
+            }>
+        >,
         res,
     ) => {
+        if (typeof req.query.contractId !== "string") {
+            res.status(400).send("invalid contractId")
+            return
+        }
+
         res.json({
-            template: getConfig("DebriefingChallengesTemplate", false),
+            template: getVersionedConfig(
+                "DebriefingChallengesTemplate",
+                req.gameVersion,
+                false,
+            ),
             data: {
                 ChallengeData: {
                     Children:
@@ -1044,6 +1102,7 @@ menuDataRouter.get(
     },
 )
 
+// @ts-expect-error Has jwt props.
 menuDataRouter.get("/contractcreation/create", (req: RequestWithJwt, res) => {
     let cUuid = randomUUID()
     const createContractReturnTemplate = getConfig(
@@ -1058,6 +1117,11 @@ menuDataRouter.get("/contractcreation/create", (req: RequestWithJwt, res) => {
     }
 
     const sesh = getSession(req.jwt.unique_name)
+
+    if (!sesh) {
+        res.status(400).send("no session")
+        return
+    }
 
     const one = "1"
     const two = `${random.int(10, 99)}`
@@ -1091,25 +1155,23 @@ menuDataRouter.get("/contractcreation/create", (req: RequestWithJwt, res) => {
                 Description: "UI_CONTRACTS_UGC_DESCRIPTION",
                 Targets: Array.from(sesh.kills)
                     .filter((kill) =>
-                        sesh.markedTargets.has(kill._RepositoryId),
+                        sesh.markedTargets.has(kill._RepositoryId || ""),
                     )
-                    .map((km) => {
-                        return {
-                            RepositoryId: km._RepositoryId,
-                            Selected: true,
-                            Weapon: {
-                                RepositoryId: km.KillItemRepositoryId,
-                                KillMethodBroad: km.KillMethodBroad,
-                                KillMethodStrict: km.KillMethodStrict,
-                                RequiredKillMethodType: 3,
-                            },
-                            Outfit: {
-                                RepositoryId: km.OutfitRepoId,
-                                Required: true,
-                                IsHitmanSuit: isSuit(km.OutfitRepoId),
-                            },
-                        }
-                    }),
+                    .map((km) => ({
+                        RepositoryId: km._RepositoryId,
+                        Selected: true,
+                        Weapon: {
+                            RepositoryId: km.KillItemRepositoryId,
+                            KillMethodBroad: km.KillMethodBroad,
+                            KillMethodStrict: km.KillMethodStrict,
+                            RequiredKillMethodType: 3,
+                        },
+                        Outfit: {
+                            RepositoryId: km.OutfitRepoId,
+                            Required: true,
+                            IsHitmanSuit: isSuit(km.OutfitRepoId),
+                        },
+                    })),
                 ContractConditions: complications(timeLimitStr),
                 PublishingDisabled:
                     sesh.contractId === contractCreationTutorialId,
@@ -1143,7 +1205,7 @@ const createLoadSaveMiddleware =
             template,
             data: {
                 Contracts: [] as UserCentricContract[],
-                PaymentEligiblity: {},
+                PaymentEligiblity: {} as Record<string, boolean>,
             },
         }
 
@@ -1186,144 +1248,46 @@ const createLoadSaveMiddleware =
 menuDataRouter.post(
     "/Load",
     jsonMiddleware(),
+    // @ts-expect-error Has jwt props.
     createLoadSaveMiddleware("LoadMenuTemplate"),
 )
 
 menuDataRouter.post(
     "/Save",
     jsonMiddleware(),
+    // @ts-expect-error Has jwt props.
     createLoadSaveMiddleware("SaveMenuTemplate"),
 )
 
+// @ts-expect-error Has jwt props.
 menuDataRouter.get("/PlayerProfile", (req: RequestWithJwt, res) => {
-    const playerProfilePage = getConfig<PlayerProfileView>(
-        "PlayerProfilePage",
-        true,
-    )
-
-    const locationData = getVersionedConfig<PeacockLocationsData>(
-        "LocationsData",
-        req.gameVersion,
-        false,
-    )
-
-    playerProfilePage.data.SubLocationData = []
-
-    for (const subLocationKey in locationData.children) {
-        // Ewww...
-        if (
-            subLocationKey === "LOCATION_ICA_FACILITY_ARRIVAL" ||
-            subLocationKey.includes("SNUG_")
-        ) {
-            continue
-        }
-
-        const subLocation = locationData.children[subLocationKey]
-        const parentLocation =
-            locationData.parents[subLocation.Properties.ParentLocation]
-
-        const completionData = generateCompletionData(
-            subLocation.Id,
-            req.jwt.unique_name,
-            req.gameVersion,
-        )
-
-        // TODO: Make getDestinationCompletion do something like this.
-        const challenges = controller.challengeService.getChallengesForLocation(
-            subLocation.Id,
-            req.gameVersion,
-        )
-
-        const challengeCategoryCompletion: ChallengeCategoryCompletion[] = []
-
-        for (const challengeGroup in challenges) {
-            const challengeCompletion =
-                controller.challengeService.countTotalNCompletedChallenges(
-                    {
-                        challengeGroup: challenges[challengeGroup],
-                    },
-                    req.jwt.unique_name,
-                    req.gameVersion,
-                )
-
-            challengeCategoryCompletion.push({
-                Name: challenges[challengeGroup][0].CategoryName,
-                ...challengeCompletion,
-            })
-        }
-
-        const destinationCompletion = getDestinationCompletion(
-            parentLocation,
-            subLocation,
-            req.gameVersion,
-            req.jwt,
-        )
-
-        playerProfilePage.data.SubLocationData.push({
-            ParentLocation: parentLocation,
-            Location: subLocation,
-            CompletionData: completionData,
-            ChallengeCategoryCompletion: challengeCategoryCompletion,
-            ChallengeCompletion: destinationCompletion.ChallengeCompletion,
-            OpportunityStatistics: destinationCompletion.OpportunityStatistics,
-            LocationCompletionPercent:
-                destinationCompletion.LocationCompletionPercent,
-        })
-    }
-
-    const userProfile = getUserData(req.jwt.unique_name, req.gameVersion)
-    playerProfilePage.data.PlayerProfileXp.Total =
-        userProfile.Extensions.progression.PlayerProfileXP.Total
-    playerProfilePage.data.PlayerProfileXp.Level =
-        userProfile.Extensions.progression.PlayerProfileXP.ProfileLevel
-
-    const subLocationMap = new Map(
-        userProfile.Extensions.progression.PlayerProfileXP.Sublocations.map(
-            (obj) => [obj.Location, obj],
-        ),
-    )
-
-    for (const e of playerProfilePage.data.PlayerProfileXp.Seasons) {
-        for (const f of e.Locations) {
-            const subLocationData = subLocationMap.get(f.LocationId)
-
-            f.Xp = subLocationData?.Xp || 0
-            f.ActionXp = subLocationData?.ActionXp || 0
-
-            if (f.LocationProgression && !isSniperLocation(f.LocationId)) {
-                // We typecast below as it could be an object for subpackages.
-                // Checks before this ensure it isn't, but TS doesn't realise this.
-                f.LocationProgression.Level =
-                    (
-                        userProfile.Extensions.progression.Locations[
-                            f.LocationId
-                        ] as ProgressionData
-                    ).Level || 1
-            }
-        }
-    }
-
-    res.json(playerProfilePage)
+    res.json({
+        template: null,
+        data: getPlayerProfileData(req.gameVersion, req.jwt.unique_name),
+    })
 })
 
 menuDataRouter.get(
     // who at IOI decided this was a good route name???!
     "/LookupContractDialogAddOrDeleteFromPlaylist",
+    // @ts-expect-error Has jwt props.
     withLookupDialog,
 )
 
 menuDataRouter.get(
-    // this one is sane Kappa
     "/contractplaylist/addordelete/:contractId",
+    // @ts-expect-error Has jwt props.
     directRoute,
 )
 
 menuDataRouter.post(
     "/contractplaylist/deletemultiple",
     jsonMiddleware(),
+    // @ts-expect-error Has jwt props.
     deleteMultiple,
 )
 
+// @ts-expect-error Has jwt props.
 menuDataRouter.get("/GetPlayerProfileXpData", (req: RequestWithJwt, res) => {
     const userData = getUserData(req.jwt.unique_name, req.gameVersion)
 
@@ -1342,7 +1306,13 @@ menuDataRouter.get("/GetPlayerProfileXpData", (req: RequestWithJwt, res) => {
 
 menuDataRouter.get(
     "/GetMasteryCompletionDataForLocation",
+    // @ts-expect-error Has jwt props.
     (req: RequestWithJwt<GetCompletionDataForLocationQuery>, res) => {
+        if (!req.query.locationId) {
+            res.status(400).send("no location id")
+            return
+        }
+
         res.json(
             generateCompletionData(
                 req.query.locationId,
@@ -1355,6 +1325,7 @@ menuDataRouter.get(
 
 menuDataRouter.get(
     "/MasteryUnlockable",
+    // @ts-expect-error Has jwt props.
     (req: RequestWithJwt<MasteryUnlockableQuery>, res) => {
         let masteryUnlockTemplate = getConfig(
             "MasteryUnlockablesTemplate",
@@ -1402,32 +1373,30 @@ menuDataRouter.get(
 
 menuDataRouter.get(
     "/MasteryDataForLocation",
+    // @ts-expect-error Has jwt props.
     (
         req: RequestWithJwt<{
             locationId: string
         }>,
         res,
     ) => {
-        res.json(
-            controller.masteryService.getMasteryDataForLocation(
+        res.json({
+            template: getConfig("MasteryDataForLocationTemplate", false),
+            data: controller.masteryService.getMasteryDataForLocation(
                 req.query.locationId,
                 req.gameVersion,
                 req.jwt.unique_name,
             ),
-        )
+        })
     },
 )
 
 menuDataRouter.get(
     "/GetMasteryCompletionDataForUnlockable",
-    (
-        req: RequestWithJwt<{
-            unlockableId: string
-        }>,
-        res,
-    ) => {
+    // @ts-expect-error Has jwt props.
+    (req: RequestWithJwt<GetMasteryCompletionDataForUnlockableQuery>, res) => {
         // We make this lookup table to quickly get it, there's no other quick way for it.
-        const unlockToLoc = {
+        const unlockToLoc: Record<string, string> = {
             FIREARMS_SC_HERO_SNIPER_HM: "LOCATION_PARENT_AUSTRIA",
             FIREARMS_SC_HERO_SNIPER_KNIGHT: "LOCATION_PARENT_AUSTRIA",
             FIREARMS_SC_HERO_SNIPER_STONE: "LOCATION_PARENT_AUSTRIA",

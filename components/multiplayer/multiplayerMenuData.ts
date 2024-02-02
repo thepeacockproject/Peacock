@@ -39,6 +39,7 @@ export const multiplayerMenuDataRouter = Router()
 
 multiplayerMenuDataRouter.post(
     "/multiplayermatchstatsready",
+    // @ts-expect-error Has JWT data.
     (req: RequestWithJwt<MissionEndRequestQuery>, res) => {
         res.json({
             template: null,
@@ -53,8 +54,11 @@ multiplayerMenuDataRouter.post(
 
 multiplayerMenuDataRouter.post(
     "/multiplayermatchstats",
+    // @ts-expect-error Has JWT data.
     (req: RequestWithJwt<MultiplayerMatchStatsQuery>, res) => {
-        const sessionDetails = contractSessions.get(req.query.contractSessionId)
+        const sessionDetails = contractSessions.get(
+            req.query.contractSessionId || "",
+        )
 
         if (!sessionDetails) {
             // contract session not found
@@ -90,16 +94,22 @@ multiplayerMenuDataRouter.post(
     },
 )
 
-interface MultiplayerPresetsQuery {
+type MultiplayerPresetsQuery = {
     gamemode?: string
     disguiseUnlockableId?: string
 }
 
 multiplayerMenuDataRouter.get(
     "/multiplayerpresets",
+    // @ts-expect-error Has JWT data.
     (req: RequestWithJwt<MultiplayerPresetsQuery>, res) => {
         if (req.query.gamemode !== "versus") {
-            res.status(401).send("unknown gamemode")
+            res.status(400).send("unknown gamemode")
+            return
+        }
+
+        if (!req.query.disguiseUnlockableId) {
+            res.status(400).send("no disguiseUnlockableId")
             return
         }
 
@@ -141,9 +151,16 @@ multiplayerMenuDataRouter.get(
 
 multiplayerMenuDataRouter.get(
     "/multiplayer",
+    // @ts-expect-error Has JWT data.
     (req: RequestWithJwt<MultiplayerQuery>, res) => {
         // /multiplayer?gamemode=versus&disguiseUnlockableId=TOKEN_OUTFIT_ELUSIVE_COMPLETE_15_SUIT
         if (req.query.gamemode !== "versus") {
+            res.status(400).send("unknown gamemode")
+            return
+        }
+
+        if (!req.query.disguiseUnlockableId) {
+            res.status(400).send("no disguiseUnlockableId")
             return
         }
 

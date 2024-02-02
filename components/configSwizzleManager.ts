@@ -291,7 +291,7 @@ export function getVersionedConfig<T = unknown>(
     }
 
     // if this is H2, but we don't have a h2 specific config, fall back to h3
-    if (gameVersion === "h2" && !Object.hasOwn(configs, `H2${config}`)) {
+    if (gameVersion === "h2" && !configs[`H2${config}`]) {
         return getConfig(config, clone)
     }
 

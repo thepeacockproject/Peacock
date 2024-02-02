@@ -174,8 +174,8 @@ export function setupScoring(
 
         if (name === "scoring") {
             const definition: ManifestScoringDefinition = deepmerge(
-                ...module.ScoringDefinitions,
-            )
+                ...(module.ScoringDefinitions || []),
+            ) as unknown as ManifestScoringDefinition
 
             let state = "Start"
             let context = definition.Context
@@ -200,15 +200,21 @@ export function setupScoring(
                 context = immediate.context
             }
 
+            // @ts-expect-error Type issue
             scoring.Definition = definition
+            // @ts-expect-error Type issue
             scoring.Context = context
+            // @ts-expect-error Type issue
             scoring.State = state
         } else {
+            // @ts-expect-error Type issue
             scoring.Settings[name] = module
+            // @ts-expect-error Type issue
             delete scoring.Settings[name]["Type"]
         }
     }
 
+    // @ts-expect-error Type issue
     session.scoring = scoring
 }
 
@@ -373,13 +379,13 @@ export function newSession(
 }
 
 export type SSE3Response = {
-    SavedTokens: string[]
-    NewEvents: ServerToClientEvent[]
+    SavedTokens: string[] | null
+    NewEvents: ServerToClientEvent[] | null
     NextPoll: number
 }
 
 export type SSE4Response = SSE3Response & {
-    PushMessages: string[]
+    PushMessages: string[] | null
 }
 
 export function saveAndSyncEvents(
@@ -410,7 +416,7 @@ export function saveAndSyncEvents(
     let pushMessages: string[] | undefined
 
     if ((userPushQueue = pushMessageQueue.get(userId))) {
-        userPushQueue = userPushQueue.filter((item) => item.time > lastPushDt)
+        userPushQueue = userPushQueue.filter((item) => item.time > lastPushDt!)
         pushMessageQueue.set(userId, userPushQueue)
 
         pushMessages = Array.from(userPushQueue, (item) => item.message)
@@ -430,20 +436,21 @@ export function saveAndSyncEvents(
           }
 }
 
+type SSE3Body = {
+    lastEventTicks: number | string
+    userId: string
+    values: ClientToServerEvent[]
+}
+
+type SSE4Body = SSE3Body & {
+    lastPushDt: number | string
+}
+
 eventRouter.post(
     "/SaveAndSynchronizeEvents3",
     jsonMiddleware({ limit: "10Mb" }),
-    (
-        req: RequestWithJwt<
-            unknown,
-            {
-                lastEventTicks: number | string
-                userId: string
-                values: ClientToServerEvent[]
-            }
-        >,
-        res,
-    ) => {
+    // @ts-expect-error Request has jwt props.
+    (req: RequestWithJwt<unknown, SSE3Body>, res) => {
         if (req.body.userId !== req.jwt.unique_name) {
             res.status(403).send() // Trying to save events for other user
             return
@@ -469,18 +476,8 @@ eventRouter.post(
 eventRouter.post(
     "/SaveAndSynchronizeEvents4",
     jsonMiddleware({ limit: "10Mb" }),
-    (
-        req: RequestWithJwt<
-            unknown,
-            {
-                lastPushDt: number | string
-                lastEventTicks: number | string
-                userId: string
-                values: ClientToServerEvent[]
-            }
-        >,
-        res,
-    ) => {
+    // @ts-expect-error Request has jwt props.
+    (req: RequestWithJwt<unknown, SSE4Body>, res) => {
         if (req.body.userId !== req.jwt.unique_name) {
             res.status(403).send() // Trying to save events for other user
             return
@@ -507,6 +504,7 @@ eventRouter.post(
 eventRouter.post(
     "/SaveEvents2",
     jsonMiddleware({ limit: "10Mb" }),
+    // @ts-expect-error Request has jwt props.
     (req: RequestWithJwt, res) => {
         if (req.jwt.unique_name !== req.body.userId) {
             res.status(403).send() // Trying to save events for other user
@@ -595,7 +593,7 @@ function contractFailed(
         ) {
             if (session.completedObjectives.size === 0) break arcadeFail
 
-            for (const obj of json.Data.Objectives) {
+            for (const obj of json.Data.Objectives || []) {
                 if (
                     session.completedObjectives.has(obj.Id) &&
                     obj.Category === "primary"
@@ -707,7 +705,9 @@ function saveEvents(
 
                 const val = handleEvent(
                     objectiveDefinition as never,
-                    objectiveContext,
+                    // SMP sucks. Sorry, not sorry.
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    objectiveContext as any,
                     event.Value,
                     {
                         eventName: event.Name,
@@ -734,7 +734,6 @@ function saveEvents(
                     "An error occurred while tracing C2S events, please report this!",
                 )
                 log(LogLevel.ERROR, e)
-                log(LogLevel.ERROR, e.stack)
             }
         }
 
@@ -744,7 +743,9 @@ function saveEvents(
 
             const val = handleEvent(
                 session.scoring.Definition as never,
-                scoringContext,
+                // SMP sucks. Sorry, not sorry.
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                scoringContext as any,
                 event.Value,
                 {
                     eventName: event.Name,
@@ -762,7 +763,10 @@ function saveEvents(
 
         controller.challengeService.onContractEvent(event, session)
 
-        if (event.Name.startsWith("ScoringScreenEndState_")) {
+        if (
+            event.Name.startsWith("ScoringScreenEndState_") &&
+            session.evergreen
+        ) {
             session.evergreen.scoringScreenEndState = event.Name
 
             processed.push(event.Name)
@@ -1010,7 +1014,10 @@ function saveEvents(
                     const areaId = (<AreaDiscoveredC2SEvent>event).Value
                         .RepositoryId
 
-                    const challengeId = getConfig("AreaMap", false)[areaId]
+                    const challengeId = getConfig<Record<string, string>>(
+                        "AreaMap",
+                        false,
+                    )[areaId]
                     const progress = userData.Extensions.ChallengeProgression
 
                     log(LogLevel.DEBUG, `Area discovered: ${areaId}`)
@@ -1044,16 +1051,22 @@ function saveEvents(
                 break
             // Evergreen
             case "CpdSet":
-                setCpd(
-                    event.Value as ContractProgressionData,
-                    userId,
-                    contract.Metadata.CpdId,
-                )
+                if (contract?.Metadata.CpdId) {
+                    setCpd(
+                        event.Value as ContractProgressionData,
+                        userId,
+                        contract.Metadata.CpdId,
+                    )
+                }
+
                 break
             case "Evergreen_Payout_Data":
-                session.evergreen.payout = (<Evergreen_Payout_DataC2SEvent>(
-                    event
-                )).Value.Total_Payout
+                if (session.evergreen) {
+                    session.evergreen.payout = (<Evergreen_Payout_DataC2SEvent>(
+                        event
+                    )).Value.Total_Payout
+                }
+
                 break
             case "MissionFailed_Event":
                 if (session.evergreen) {

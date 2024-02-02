@@ -33,6 +33,7 @@ const legacyContractRouter = Router()
 legacyContractRouter.post(
     "/GetForPlay",
     jsonMiddleware(),
+    // @ts-expect-error Has jwt props.
     (req: RequestWithJwt, res) => {
         if (!uuidRegex.test(req.body.id)) {
             res.status(400).end()
@@ -130,6 +131,7 @@ legacyContractRouter.post(
 legacyContractRouter.post(
     "/Start",
     jsonMiddleware(),
+    // @ts-expect-error Has jwt props.
     (req: RequestWithJwt, res) => {
         if (req.body.profileId !== req.jwt.unique_name) {
             res.status(400).end() // requested for different user id

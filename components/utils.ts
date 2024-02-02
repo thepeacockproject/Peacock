@@ -28,7 +28,7 @@ import type {
     Unlockable,
     UserProfile,
 } from "./types/types"
-import axios, { AxiosError } from "axios"
+import { AxiosError } from "axios"
 import { log, LogLevel } from "./loggingInterop"
 import { writeFileSync } from "fs"
 import { getFlag } from "./flags"
@@ -54,7 +54,7 @@ export const uuidRegex =
 
 export const contractTypes = ["featured", "usercreated"]
 
-export const versions: GameVersion[] = ["h1", "h2", "h3"]
+export const versions: Exclude<GameVersion, "scpc">[] = ["h1", "h2", "h3"]
 
 export const contractCreationTutorialId = "d7e2607c-6916-48e2-9588-976c7d8998bb"
 
@@ -71,10 +71,10 @@ export async function checkForUpdates(): Promise<void> {
     }
 
     try {
-        const res = await axios(
+        const res = await fetch(
             "https://backend.rdil.rocks/peacock/latest-version",
         )
-        const current = res.data
+        const current = parseInt(await res.text(), 10)
 
         if (PEACOCKVER < 0 && current < -PEACOCKVER) {
             log(
@@ -94,12 +94,15 @@ export async function checkForUpdates(): Promise<void> {
     }
 }
 
-export function getRemoteService(gameVersion: GameVersion): string {
-    return gameVersion === "h3"
-        ? "hm3-service"
-        : gameVersion === "h2"
-        ? "pc2-service"
-        : "pc-service"
+export function getRemoteService(gameVersion: GameVersion): string | undefined {
+    switch (gameVersion) {
+        case "h3":
+            return "hm3-service"
+        case "h2":
+            return "pc2-service"
+        default:
+            return "pc-service"
+    }
 }
 
 /**
@@ -306,6 +309,7 @@ function updateUserProfile(
 
                     if (gameVersion === "h1") {
                         // No sniper locations, but we add normal and pro1
+                        // @ts-expect-error I know what I'm doing.
                         obj[newKey] = {
                             // Data from previous profiles only contains normal and is the default.
                             normal: {
@@ -321,8 +325,10 @@ function updateUserProfile(
                         }
                     } else {
                         // We need to update sniper locations.
+                        // @ts-expect-error I know what I'm doing.
                         obj[newKey] = sniperLocs[newKey]
-                            ? sniperLocs[newKey].reduce((obj, uId) => {
+                            ? // @ts-expect-error I know what I'm doing.
+                              sniperLocs[newKey].reduce((obj, uId) => {
                                   obj[uId] = {
                                       Xp: 0,
                                       Level: 1,
@@ -344,7 +350,7 @@ function updateUserProfile(
                 {},
             )
 
-            // ts-expect-error Legacy property.
+            // @ts-expect-error Legacy property.
             delete profile.Extensions.progression["Unlockables"]
 
             profile.Version = 1
@@ -426,12 +432,7 @@ export function castUserProfile(
 
     // Fix Extensions.gamepersistentdata.HitsFilterType.
     // None of the old profiles should have "MyPlaylist".
-    if (
-        !Object.hasOwn(
-            j.Extensions.gamepersistentdata.HitsFilterType,
-            "MyPlaylist",
-        )
-    ) {
+    if (j.Extensions.gamepersistentdata.HitsFilterType["MyPlaylist"]) {
         j.Extensions.gamepersistentdata.HitsFilterType = {
             MyHistory: "all",
             MyContracts: "all",
@@ -520,15 +521,17 @@ export const defaultSuits = {
  * @returns The default suits that are attainable via challenges or mastery.
  */
 export function attainableDefaults(gameVersion: GameVersion): string[] {
-    return gameVersion === "h1"
-        ? []
-        : gameVersion === "h2"
-        ? ["TOKEN_OUTFIT_WET_SUIT"]
-        : [
-              "TOKEN_OUTFIT_GREENLAND_HERO_TRAININGSUIT",
-              "TOKEN_OUTFIT_WET_SUIT",
-              "TOKEN_OUTFIT_HERO_DUGONG_SUIT",
-          ]
+    if (gameVersion === "h1") {
+        return []
+    } else if (gameVersion === "h2") {
+        return ["TOKEN_OUTFIT_WET_SUIT"]
+    } else {
+        return [
+            "TOKEN_OUTFIT_GREENLAND_HERO_TRAININGSUIT",
+            "TOKEN_OUTFIT_WET_SUIT",
+            "TOKEN_OUTFIT_HERO_DUGONG_SUIT",
+        ]
+    }
 }
 
 /**
@@ -538,10 +541,11 @@ export function attainableDefaults(gameVersion: GameVersion): string[] {
  * @param subLocation The sub-location.
  * @returns The default suit for the given sub-location and parent location.
  */
-export function getDefaultSuitFor(subLocation: Unlockable): string | undefined {
+export function getDefaultSuitFor(subLocation: Unlockable): string {
+    type Cast = keyof typeof defaultSuits
     return (
-        defaultSuits[subLocation.Id] ||
-        defaultSuits[subLocation.Properties.ParentLocation] ||
+        defaultSuits[subLocation.Id as Cast] ||
+        defaultSuits[subLocation.Properties.ParentLocation as Cast] ||
         "TOKEN_OUTFIT_HITMANSUIT"
     )
 }

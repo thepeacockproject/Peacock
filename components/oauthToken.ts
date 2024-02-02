@@ -16,7 +16,6 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type { Response } from "express"
 import { decode, sign } from "jsonwebtoken"
 import { extractToken, uuidRegex } from "./utils"
 import type { GameVersion, RequestWithJwt, UserProfile } from "./types/types"
@@ -49,10 +48,37 @@ export const JWT_SECRET = PEACOCK_DEV
     ? "secret"
     : randomBytes(32).toString("hex")
 
-export async function handleOauthToken(
-    req: RequestWithJwt,
-    res: Response,
-): Promise<void> {
+export type OAuthTokenBody = {
+    grant_type: "external_steam" | "external_epic" | "refresh_token"
+    steam_userid?: string
+    epic_userid?: string
+    access_token: string
+    pId?: string
+    locale: string
+    rgn: string
+    gs: string
+    steam_appid: string
+}
+
+export type OAuthTokenResponse = {
+    access_token: string
+    token_type: "bearer" | string
+    expires_in: number
+    refresh_token: string
+}
+
+export const error400: unique symbol = Symbol("http400")
+export const error406: unique symbol = Symbol("http406")
+
+/**
+ * This is the code that handles the OAuth token request.
+ * We cannot do this without a request object because of the refresh token use case.
+ *
+ * @param req The request object.
+ */
+export async function handleOAuthToken(
+    req: RequestWithJwt<never, OAuthTokenBody>,
+): Promise<typeof error400 | typeof error406 | OAuthTokenResponse> {
     const isFrankenstein = req.body.gs === "scpc-prod"
 
     const signOptions = {
@@ -69,19 +95,17 @@ export async function handleOauthToken(
         external_appid: string
 
     if (req.body.grant_type === "external_steam") {
-        if (!/^\d{1,20}$/.test(req.body.steam_userid)) {
-            res.status(400).end() // invalid steam user id
-            return
+        if (!/^\d{1,20}$/.test(req.body.steam_userid || "")) {
+            return error400 // invalid steam user id
         }
 
         external_platform = "steam"
-        external_userid = req.body.steam_userid
+        external_userid = req.body.steam_userid || ""
         external_users_folder = "steamids"
         external_appid = req.body.steam_appid
     } else if (req.body.grant_type === "external_epic") {
-        if (!/^[\da-f]{32}$/.test(req.body.epic_userid)) {
-            res.status(400).end() // invalid epic user id
-            return
+        if (!/^[\da-f]{32}$/.test(req.body.epic_userid || "")) {
+            return error400 // invalid epic user id
         }
 
         const epic_token = decode(
@@ -92,25 +116,24 @@ export async function handleOauthToken(
         }
 
         if (!epic_token || !(epic_token.appid || epic_token.app)) {
-            res.status(400).end() // invalid epic access token
-            return
+            return error400 // invalid epic access token
         }
 
         external_appid = epic_token.appid || epic_token.app
         external_platform = "epic"
-        external_userid = req.body.epic_userid
+        external_userid = req.body.epic_userid || ""
         external_users_folder = "epicids"
     } else if (req.body.grant_type === "refresh_token") {
         // send back the token from the request (re-signed so the timestamps update)
         extractToken(req) // init req.jwt
         // remove signOptions from existing jwt
-        // ts-expect-error Non-optional, we're reassigning.
+        // @ts-expect-error Non-optional, we're reassigning.
         delete req.jwt.nbf // notBefore
-        // ts-expect-error Non-optional, we're reassigning.
+        // @ts-expect-error Non-optional, we're reassigning.
         delete req.jwt.exp // expiresIn
-        // ts-expect-error Non-optional, we're reassigning.
+        // @ts-expect-error Non-optional, we're reassigning.
         delete req.jwt.iss // issuer
-        // ts-expect-error Non-optional, we're reassigning.
+        // @ts-expect-error Non-optional, we're reassigning.
         delete req.jwt.aud // audience
 
         if (!isFrankenstein) {
@@ -126,35 +149,33 @@ export async function handleOauthToken(
             }
         }
 
-        res.json({
+        return {
             access_token: sign(req.jwt, JWT_SECRET, signOptions),
             token_type: "bearer",
             expires_in: 5000,
             refresh_token: randomUUID(),
-        })
-
-        return
+        }
     } else {
-        res.status(406).end() // unsupported auth method
-        return
+        return error406 // unsupported auth method
     }
 
     if (req.body.pId && !uuidRegex.test(req.body.pId)) {
-        res.status(400).end() // pId is not a GUID
-        return
+        return error406 // pId is not a GUID
     }
 
     const isHitman3 =
         external_appid === "fghi4567xQOCheZIin0pazB47qGUvZw4" ||
         external_appid === STEAM_NAMESPACE_2021
 
-    const gameVersion: GameVersion = isFrankenstein
-        ? "scpc"
-        : isHitman3
-        ? "h3"
-        : external_appid === STEAM_NAMESPACE_2018
-        ? "h2"
-        : "h1"
+    let gameVersion: GameVersion = "h1"
+
+    if (isFrankenstein) {
+        gameVersion = "scpc"
+    } else if (isHitman3) {
+        gameVersion = "h3"
+    } else if (external_appid === STEAM_NAMESPACE_2018) {
+        gameVersion = "h2"
+    }
 
     if (!req.body.pId) {
         // if no profile id supplied
@@ -184,7 +205,8 @@ export async function handleOauthToken(
                 await writeExternalUserData(
                     external_userid,
                     external_users_folder,
-                    req.body.pId,
+                    // we've already confirmed this will be there, and it's a GUID
+                    req.body.pId!,
                     gameVersion,
                 )
             })
@@ -227,9 +249,9 @@ export async function handleOauthToken(
         userData.LinkedAccounts[external_platform] = external_userid
 
         if (external_platform === "steam") {
-            userData.SteamId = req.body.steam_userid
+            userData.SteamId = req.body.steam_userid!
         } else if (external_platform === "epic") {
-            userData.EpicId = req.body.epic_userid
+            userData.EpicId = req.body.epic_userid!
         }
 
         if (Object.hasOwn(userData.Extensions, "inventory")) {
@@ -262,13 +284,13 @@ export async function handleOauthToken(
             if (external_platform === "epic") {
                 return await new EpicH3Strategy().get(
                     req.body.access_token,
-                    req.body.epic_userid,
+                    req.body.epic_userid!,
                 )
             } else if (external_platform === "steam") {
                 return await new IOIStrategy(
                     gameVersion,
                     STEAM_NAMESPACE_2021,
-                ).get(req.body.pId)
+                ).get(req.body.pId!)
             } else {
                 log(LogLevel.ERROR, "Unsupported platform.")
                 return []
@@ -316,10 +338,10 @@ export async function handleOauthToken(
 
     clearInventoryFor(req.body.pId)
 
-    res!.json({
+    return {
         access_token: sign(userinfo, JWT_SECRET, signOptions),
         token_type: "bearer",
         expires_in: 5000,
         refresh_token: randomUUID(),
-    })
+    }
 }

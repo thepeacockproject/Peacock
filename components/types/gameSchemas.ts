@@ -32,7 +32,7 @@ export type StashpointSlotName =
     | string
 
 /**
- * Query that the game sends for the stashpoint route.
+ * Query for `/profiles/page/stashpoint`.
  */
 export type StashpointQuery = Partial<{
     contractid: string
@@ -47,7 +47,7 @@ export type StashpointQuery = Partial<{
 }>
 
 /**
- * Query that the game sends for the stashpoint route in H2016.
+ * Query for `/profiles/page/stashpoint` (H2016 ONLY).
  *
  * @see StashpointQuery
  */
@@ -94,8 +94,7 @@ export type GetCompletionDataForLocationQuery = Partial<{
 }>
 
 /**
- * Body that the game sends for the
- * `/authentication/api/userchannel/ContractSessionsService/Load` route.
+ * Body for `/authentication/api/userchannel/ContractSessionsService/Load`.
  */
 export type LoadSaveBody = Partial<{
     saveToken: string
@@ -106,7 +105,7 @@ export type LoadSaveBody = Partial<{
 }>
 
 /**
- * Query params that `/profiles/page/Safehouse` gets.
+ * Query for `/profiles/page/Safehouse`.
  * Roughly the same as {@link SafehouseCategoryQuery} but this route is only for H1.
  */
 export type SafehouseQuery = {
@@ -114,7 +113,7 @@ export type SafehouseQuery = {
 }
 
 /**
- * Query params that `/profiles/page/SafehouseCategory` (used for Career > Inventory and possibly some of the H1 stuff) gets.
+ * Query for `/profiles/page/SafehouseCategory` (used for Career > Inventory and possibly some of the H1 stuff).
  */
 export type SafehouseCategoryQuery = {
     type?: string
@@ -122,7 +121,7 @@ export type SafehouseCategoryQuery = {
 }
 
 /**
- * Query params that `/profiles/page/Destination` gets.
+ * Query for `/profiles/page/Destination`.
  */
 export type GetDestinationQuery = {
     locationId: string
@@ -138,7 +137,7 @@ export type LeaderboardEntriesCommonQuery = {
 }
 
 /**
- * Query params that `/profiles/page/DebriefingLeaderboards` gets.
+ * Query for `/profiles/page/DebriefingLeaderboards`.
  * Because ofc it's different. Thanks IOI.
  */
 export type DebriefingLeaderboardsQuery = {
@@ -147,8 +146,37 @@ export type DebriefingLeaderboardsQuery = {
 }
 
 /**
- * Query params that `/profiles/page/ChallengeLocation` gets.
+ * Query for `/profiles/page/ChallengeLocation`.
  */
 export type ChallengeLocationQuery = {
     locationId: string
+}
+
+/**
+ * Body for `/authentication/api/userchannel/ReportingService/ReportContract`.
+ */
+export type ContractReportBody = {
+    contractId: string
+    reason: number
+}
+
+/**
+ * Query for `/profiles/page/LookupContractPublicId`.
+ */
+export type LookupContractPublicIdQuery = {
+    publicid: string
+}
+
+/**
+ * Body for `/authentication/api/userchannel/ProfileService/ResolveGamerTags`.
+ */
+export type ResolveGamerTagsBody = {
+    profileIds: string[]
+}
+
+/**
+ * Query for `/profiles/page/GetMasteryCompletionDataForUnlockable`.
+ */
+export type GetMasteryCompletionDataForUnlockableQuery = {
+    unlockableId: string
 }

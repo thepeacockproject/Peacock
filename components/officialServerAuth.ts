@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import axios, { AxiosResponse } from "axios"
+import axios, { AxiosError, AxiosResponse } from "axios"
 import type { Request } from "express"
 import { log, LogLevel } from "./loggingInterop"
 import { handleAxiosError } from "./utils"
@@ -106,7 +106,7 @@ export class OfficialServerAuth {
             this._refreshToken = r.refresh_token
             this.initialized = true
         } catch (e) {
-            handleAxiosError(e)
+            handleAxiosError(e as AxiosError)
 
             if (PEACOCK_DEV) {
                 log(

@@ -50,14 +50,7 @@ const defaultValue: LoadoutFile = {
  * A class for managing loadouts.
  */
 export class Loadouts {
-    private _loadouts: LoadoutFile
-
-    /**
-     * Creates a new instance of the class.
-     */
-    public constructor() {
-        this._loadouts = undefined
-    }
+    private _loadouts!: LoadoutFile
 
     /**
      * Get the loadouts data.
@@ -107,7 +100,10 @@ export class Loadouts {
             // if the selected value is null/undefined or is not length 0 or 21, it's not a valid id
             if (
                 !this._loadouts[gameVersion].selected ||
-                ![0, 21].includes(this._loadouts[gameVersion].selected.length)
+                // first condition ensures selected is truthy, but TS doesn't know
+                ![0, 21].includes(
+                    this._loadouts[gameVersion].selected?.length || -1,
+                )
             ) {
                 dirty = true
 
@@ -121,7 +117,7 @@ export class Loadouts {
             }
         }
 
-        if (dirty === true) {
+        if (dirty) {
             writeFileSync(LOADOUT_PROFILES_FILE, JSON.stringify(this._loadouts))
         }
     }
@@ -217,7 +213,7 @@ loadoutRouter.patch(
     async (
         req: Request<
             never,
-            string,
+            string | { error?: string; message?: string },
             { gameVersion: "h1" | "h2" | "h3"; id: string }
         >,
         res,

@@ -29,7 +29,8 @@ import {
 import { json as jsonMiddleware } from "body-parser"
 import { getPlatformEntitlements } from "./platformEntitlements"
 import { contractSessions, newSession } from "./eventHandler"
-import type {
+import {
+    ChallengeProgressionData,
     CompiledChallengeIngameData,
     ContractSession,
     GameVersion,
@@ -57,7 +58,8 @@ import {
     compileRuntimeChallenge,
     inclusionDataCheck,
 } from "./candle/challengeHelpers"
-import { LoadSaveBody } from "./types/gameSchemas"
+import { LoadSaveBody, ResolveGamerTagsBody } from "./types/gameSchemas"
+import assert from "assert"
 
 const profileRouter = Router()
 
@@ -109,8 +111,9 @@ export const fakePlayerRegistry: {
 
 profileRouter.post(
     "/AuthenticationService/GetBlobOfflineCacheDatabaseDiff",
+    // @ts-expect-error Has jwt props.
     (req: RequestWithJwt, res) => {
-        const configs = []
+        const configs: string[] = []
 
         menuSystemDatabase.hooks.getDatabaseDiff.call(configs, req.gameVersion)
 
@@ -118,19 +121,21 @@ profileRouter.post(
     },
 )
 
-profileRouter.post("/ProfileService/SetClientEntitlements", (req, res) => {
+profileRouter.post("/ProfileService/SetClientEntitlements", (_, res) => {
     res.json("null")
 })
 
 profileRouter.post(
     "/ProfileService/GetPlatformEntitlements",
     jsonMiddleware(),
+    // @ts-expect-error Jwt props.
     getPlatformEntitlements,
 )
 
 profileRouter.post(
     "/ProfileService/UpdateProfileStats",
     jsonMiddleware(),
+    // @ts-expect-error Has jwt props.
     (req: RequestWithJwt, res) => {
         if (req.jwt.unique_name !== req.body.id) {
             return res.status(403).end() // data submitted for different profile id
@@ -148,18 +153,19 @@ profileRouter.post(
 
 profileRouter.post(
     "/ProfileService/SynchronizeOfflineUnlockables",
-    (req, res) => {
+    (_, res) => {
         res.status(204).end()
     },
 )
 
-profileRouter.post("/ProfileService/GetUserConfig", (req, res) => {
+profileRouter.post("/ProfileService/GetUserConfig", (_, res) => {
     res.json({})
 })
 
 profileRouter.post(
     "/ProfileService/GetProfile",
     jsonMiddleware(),
+    // @ts-expect-error Has jwt props.
     (req: RequestWithJwt, res) => {
         if (req.body.id !== req.jwt.unique_name) {
             res.status(403).end() // data requested for different profile id
@@ -173,7 +179,10 @@ profileRouter.post(
         const userdata = getUserData(req.jwt.unique_name, req.gameVersion)
         const extensions = req.body.extensions.reduce(
             (acc: object, key: string) => {
-                if (Object.hasOwn(userdata.Extensions, key)) {
+                if (
+                    userdata.Extensions[key as keyof typeof userdata.Extensions]
+                ) {
+                    // @ts-expect-error Ok.
                     acc[key] = userdata.Extensions[key]
                 }
 
@@ -188,6 +197,7 @@ profileRouter.post(
 
 profileRouter.post(
     "/UnlockableService/GetInventory",
+    // @ts-expect-error Has jwt props.
     (req: RequestWithJwt, res) => {
         res.json(createInventory(req.jwt.unique_name, req.gameVersion))
     },
@@ -196,6 +206,7 @@ profileRouter.post(
 profileRouter.post(
     "/ProfileService/UpdateExtensions",
     jsonMiddleware(),
+    // @ts-expect-error jwt props.
     (
         req: RequestWithJwt<
             Record<string, never>,
@@ -213,6 +224,7 @@ profileRouter.post(
 
         for (const extension in req.body.extensionsData) {
             if (Object.hasOwn(req.body.extensionsData, extension)) {
+                // @ts-expect-error It's fine.
                 userdata.Extensions[extension] =
                     req.body.extensionsData[extension]
             }
@@ -226,6 +238,7 @@ profileRouter.post(
 profileRouter.post(
     "/ProfileService/SynchroniseGameStats",
     jsonMiddleware(),
+    // @ts-expect-error jwt props.
     (req: RequestWithJwt, res) => {
         if (req.body.profileId !== req.jwt.unique_name) {
             // data requested for different profile id
@@ -282,32 +295,6 @@ export async function resolveProfiles(
                     })
                 }
 
-                if (id === "a38faeaa-5b5b-4d7e-af90-329e98a26652") {
-                    log(
-                        LogLevel.WARN,
-                        "The game tried to resolve the PeacockProject account, which should no longer be used!",
-                    )
-
-                    return Promise.resolve({
-                        Id: "a38faeaa-5b5b-4d7e-af90-329e98a26652",
-                        LinkedAccounts: {
-                            dev: "PeacockProject",
-                        },
-                        Extensions: {},
-                        ETag: null,
-                        Gamertag: "PeacockProject",
-                        DevId: "PeacockProject",
-                        SteamId: null,
-                        StadiaId: null,
-                        EpicId: null,
-                        NintendoId: null,
-                        XboxLiveId: null,
-                        PSNAccountId: null,
-                        PSNOnlineId: null,
-                        Version: LATEST_PROFILE_VERSION,
-                    })
-                }
-
                 const fakePlayer = fakePlayerRegistry.getFromId(id)
 
                 if (fakePlayer) {
@@ -350,6 +337,7 @@ export async function resolveProfiles(
             }),
         )
     )
+        // @ts-expect-error This whole function is an exception handling clusterfunk and needs to be rewritten.
         .map((outcome: PromiseSettledResult<UserProfile>) => {
             if (outcome.status !== "fulfilled") {
                 if (outcome.reason.code === "ENOENT") {
@@ -387,6 +375,7 @@ export async function resolveProfiles(
 profileRouter.post(
     "/ProfileService/ResolveProfiles",
     jsonMiddleware(),
+    // @ts-expect-error Has jwt props.
     async (req: RequestWithJwt, res) => {
         res.json(await resolveProfiles(req.body.profileIDs, req.gameVersion))
     },
@@ -395,16 +384,22 @@ profileRouter.post(
 profileRouter.post(
     "/ProfileService/ResolveGamerTags",
     jsonMiddleware(),
-    async (req: RequestWithJwt, res) => {
+    // @ts-expect-error Has jwt props.
+    async (req: RequestWithJwt<never, ResolveGamerTagsBody>, res) => {
+        if (!Array.isArray(req.body.profileIds)) {
+            res.status(400).send("bad body")
+            return
+        }
+
         const profiles = (await resolveProfiles(
             req.body.profileIds,
             req.gameVersion,
         )) as UserProfile[]
 
         const result = {
-            steam: {},
-            epic: {},
-            dev: {},
+            steam: {} as Record<string, string>,
+            epic: {} as Record<string, string>,
+            dev: {} as Record<string, string>,
         }
 
         for (const profile of profiles) {
@@ -427,26 +422,27 @@ profileRouter.post(
     },
 )
 
-profileRouter.post("/ProfileService/GetFriendsCount", (req, res) =>
-    res.send("0"),
-)
+profileRouter.post("/ProfileService/GetFriendsCount", (_, res) => res.send("0"))
 
 profileRouter.post(
     "/GamePersistentDataService/GetData",
     jsonMiddleware(),
+    // @ts-expect-error Has jwt props.
     (req: RequestWithJwt, res) => {
         if (req.jwt.unique_name !== req.body.userId) {
             return res.status(403).end()
         }
 
         const userdata = getUserData(req.body.userId, req.gameVersion)
-        res.json(userdata.Extensions.gamepersistentdata[req.body.key])
+        type Cast = keyof typeof userdata.Extensions.gamepersistentdata
+        res.json(userdata.Extensions.gamepersistentdata[req.body.key as Cast])
     },
 )
 
 profileRouter.post(
     "/GamePersistentDataService/SaveData",
     jsonMiddleware(),
+    // @ts-expect-error jwt props.
     (req: RequestWithJwt, res) => {
         if (req.jwt.unique_name !== req.body.userId) {
             return res.status(403).end()
@@ -454,6 +450,7 @@ profileRouter.post(
 
         const userdata = getUserData(req.body.userId, req.gameVersion)
 
+        // @ts-expect-error This is fine.
         userdata.Extensions.gamepersistentdata[req.body.key] = req.body.data
         writeUserData(req.body.userId, req.gameVersion)
 
@@ -464,6 +461,7 @@ profileRouter.post(
 profileRouter.post(
     "/ChallengesService/GetActiveChallengesAndProgression",
     jsonMiddleware(),
+    // @ts-expect-error Has jwt props.
     (
         req: RequestWithJwt<
             Record<string, never>,
@@ -489,11 +487,14 @@ profileRouter.post(
             return res.json([])
         }
 
-        let challenges = getVersionedConfig<CompiledChallengeIngameData[]>(
-            "GlobalChallenges",
-            req.gameVersion,
-            true,
-        )
+        type CWP = {
+            Challenge: CompiledChallengeIngameData
+            Progression: ChallengeProgressionData | undefined
+        }
+
+        let challenges: CWP[] = getVersionedConfig<
+            CompiledChallengeIngameData[]
+        >("GlobalChallenges", req.gameVersion, true)
             .filter((val) => inclusionDataCheck(val.InclusionData, json))
             .map((item) => ({ Challenge: item, Progression: undefined }))
 
@@ -528,6 +529,7 @@ profileRouter.post(
             challenges.forEach((val) => {
                 // prettier-ignore
                 if (val.Challenge.Id === "b1a85feb-55af-4707-8271-b3522661c0b1") {
+                    // @ts-expect-error State machines impossible to type.
                     // prettier-ignore
                     val.Challenge.Definition!["States"]["Start"][
                         "CrowdNPC_Died"
@@ -580,6 +582,7 @@ profileRouter.post(
 profileRouter.post(
     "/HubPagesService/GetChallengeTreeFor",
     jsonMiddleware(),
+    // @ts-expect-error Has jwt props.
     (req: RequestWithJwt, res) => {
         res.json({
             Data: {
@@ -607,6 +610,7 @@ profileRouter.post(
 profileRouter.post(
     "/DefaultLoadoutService/Set",
     jsonMiddleware(),
+    // @ts-expect-error jwt props.
     async (req: RequestWithJwt, res) => {
         if (getFlag("loadoutSaving") === "PROFILES") {
             let loadout = loadouts.getLoadoutFor(req.gameVersion)
@@ -638,6 +642,7 @@ profileRouter.post(
 profileRouter.post(
     "/ProfileService/UpdateUserSaveFileTable",
     jsonMiddleware(),
+    // @ts-expect-error Has jwt props.
     async (req: RequestWithJwt<never, UpdateUserSaveFileTableBody>, res) => {
         if (req.body.clientSaveFileList.length > 0) {
             // We are saving to the SaveFile with the most recent timestamp.
@@ -681,7 +686,7 @@ profileRouter.post(
     },
 )
 
-function getErrorMessage(error: unknown) {
+export function getErrorMessage(error: unknown) {
     if (error instanceof Error) return error.message
     return String(error)
 }
@@ -691,7 +696,82 @@ function getErrorCause(error: unknown) {
     return String(error)
 }
 
-async function saveSession(
+profileRouter.post(
+    "/ContractSessionsService/Load",
+    jsonMiddleware(),
+    // @ts-expect-error Has jwt props.
+    async (req: RequestWithJwt<never, LoadSaveBody>, res) => {
+        const userData = getUserData(req.jwt.unique_name, req.gameVersion)
+
+        if (
+            !req.body.contractSessionId ||
+            !req.body.saveToken ||
+            !req.body.contractId
+        ) {
+            res.status(400).send("bad body")
+            return
+        }
+
+        try {
+            await loadSession(
+                req.body.contractSessionId,
+                req.body.saveToken,
+                userData,
+            )
+        } catch (e) {
+            log(
+                LogLevel.DEBUG,
+                `Failed to load contract with token = ${
+                    req.body.saveToken
+                }, session id = ${req.body.contractSessionId} because ${
+                    (e as Error)?.message
+                }`,
+            )
+            log(
+                LogLevel.WARN,
+                "No such save detected! Might be an official servers save.",
+            )
+
+            if (PEACOCK_DEV) {
+                log(
+                    LogLevel.DEBUG,
+                    `(Save-context: ${req.body.contractSessionId}; ${req.body.saveToken})`,
+                )
+            }
+
+            log(
+                LogLevel.WARN,
+                "Creating a fake session to avoid problems... scoring will not work!",
+            )
+
+            newSession(
+                req.body.contractSessionId,
+                req.body.contractId,
+                req.jwt.unique_name,
+                req.body.difficultyLevel!,
+                req.gameVersion,
+                false,
+            )
+        }
+
+        res.send(`"${req.body.contractSessionId}"`)
+    },
+)
+
+profileRouter.post(
+    "/ProfileService/GetSemLinkStatus",
+    jsonMiddleware(),
+    (_, res) => {
+        res.json({
+            IsConfirmed: true,
+            LinkedEmail: "mail@example.com",
+            IOIAccountId: nilUuid,
+            IOIAccountBaseUrl: "https://account.ioi.dk",
+        })
+    },
+)
+
+export async function saveSession(
     save: SaveFile,
     userData: UserProfile,
 ): Promise<void> {
@@ -747,69 +827,12 @@ async function saveSession(
     log(
         LogLevel.DEBUG,
         `Saved contract to slot ${slot} with token = ${token}, session id = ${sessionId}, start time = ${
-            contractSessions.get(sessionId).timerStart
+            contractSessions.get(sessionId)!.timerStart
         }.`,
     )
 }
 
-profileRouter.post(
-    "/ContractSessionsService/Load",
-    jsonMiddleware(),
-    async (req: RequestWithJwt<never, LoadSaveBody>, res) => {
-        const userData = getUserData(req.jwt.unique_name, req.gameVersion)
-
-        if (
-            !req.body.contractSessionId ||
-            !req.body.saveToken ||
-            !req.body.contractId
-        ) {
-            res.status(400).send("bad body")
-            return
-        }
-
-        try {
-            await loadSession(
-                req.body.contractSessionId,
-                req.body.saveToken,
-                userData,
-            )
-        } catch (e) {
-            log(
-                LogLevel.DEBUG,
-                `Failed to load contract with token = ${req.body.saveToken}, session id = ${req.body.contractSessionId} because ${e.message}`,
-            )
-            log(
-                LogLevel.WARN,
-                "No such save detected! Might be an official servers save.",
-            )
-
-            if (PEACOCK_DEV) {
-                log(
-                    LogLevel.DEBUG,
-                    `(Save-context: ${req.body.contractSessionId}; ${req.body.saveToken})`,
-                )
-            }
-
-            log(
-                LogLevel.WARN,
-                "Creating a fake session to avoid problems... scoring will not work!",
-            )
-
-            newSession(
-                req.body.contractSessionId,
-                req.body.contractId,
-                req.jwt.unique_name,
-                req.body.difficultyLevel!,
-                req.gameVersion,
-                false,
-            )
-        }
-
-        res.send(`"${req.body.contractSessionId}"`)
-    },
-)
-
-async function loadSession(
+export async function loadSession(
     sessionId: string,
     token: string,
     userData: UserProfile,
@@ -831,6 +854,8 @@ async function loadSession(
         }
     }
 
+    assert.ok(sessionData, "should have session data")
+
     // Update challenge progression with the user's latest progression data
     for (const cid in sessionData.challengeContexts) {
         // Make sure the ChallengeProgression is available, otherwise loading might fail!
@@ -846,6 +871,11 @@ async function loadSession(
             sessionData.gameVersion,
         )
 
+        assert.ok(
+            challenge,
+            `session has context for unregistered challenge ${cid}`,
+        )
+
         if (
             !userData.Extensions.ChallengeProgression[cid].Completed &&
             controller.challengeService.needSaveProgression(challenge)
@@ -859,22 +889,9 @@ async function loadSession(
     log(
         LogLevel.DEBUG,
         `Loaded contract with token = ${token}, session id = ${sessionId}, start time = ${
-            contractSessions.get(sessionId).timerStart
+            contractSessions.get(sessionId)!.timerStart
         }.`,
     )
 }
-
-profileRouter.post(
-    "/ProfileService/GetSemLinkStatus",
-    jsonMiddleware(),
-    (req, res) => {
-        res.json({
-            IsConfirmed: true,
-            LinkedEmail: "mail@example.com",
-            IOIAccountId: nilUuid,
-            IOIAccountBaseUrl: "https://account.ioi.dk",
-        })
-    },
-)
 
 export { profileRouter }

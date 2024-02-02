@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { existsSync, readFileSync, unlinkSync, writeFileSync } from "fs"
+import { existsSync, readFileSync, writeFileSync } from "fs"
 import type { Flags } from "./types/types"
 import { log, LogLevel } from "./loggingInterop"
 import { parse } from "js-ini"
@@ -123,7 +123,6 @@ const defaultFlags: Flags = {
     },
 }
 
-const OLD_FLAGS_FILE = "flags.json5"
 const NEW_FLAGS_FILE = "options.ini"
 
 /**
@@ -152,7 +151,10 @@ const makeFlagsIni = (
     Object.keys(defaultFlags)
         .map((flagId) => {
             return `; ${defaultFlags[flagId].desc}
-${flagId} = ${_flags[flagId]}`
+${flagId} = ${
+                // @ts-expect-error You know what, I don't care
+                _flags[flagId]
+            }`
         })
         .join("\n\n")
 
@@ -160,24 +162,11 @@ ${flagId} = ${_flags[flagId]}`
  * Loads all flags.
  */
 export function loadFlags(): void {
-    // somebody please, clean this method up, I hate it
-    if (existsSync(OLD_FLAGS_FILE)) {
-        log(
-            LogLevel.WARN,
-            "The flags file (flags.json5) has been revamped in the latest Peacock version, and we had to remove your settings.",
-        )
-        log(
-            LogLevel.INFO,
-            "You can take a look at the new options.ini file, which includes descriptions and more!",
-        )
-
-        unlinkSync(OLD_FLAGS_FILE)
-    }
-
     if (!existsSync(NEW_FLAGS_FILE)) {
         const allTheFlags = {}
 
         Object.keys(defaultFlags).forEach((f) => {
+            // @ts-expect-error You know what, I don't care
             allTheFlags[f] = defaultFlags[f].default
         })
 

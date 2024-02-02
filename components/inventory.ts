@@ -106,7 +106,7 @@ export function clearInventoryCache(): void {
 function filterUnlockedContent(
     userProfile: UserProfile,
     packagedUnlocks: Map<string, boolean>,
-    challengesUnlockables: object,
+    challengesUnlockables: Record<string, string>,
     gameVersion: GameVersion,
 ) {
     return function (
@@ -114,7 +114,7 @@ function filterUnlockedContent(
         unlockable: Unlockable,
     ) {
         let unlockableChallengeId: string
-        let unlockableMasteryData: UnlockableMasteryData
+        let unlockableMasteryData: UnlockableMasteryData | undefined
 
         // Handles unlockables that belong to a package or unlocked gear from evergreen
         if (packagedUnlocks.has(unlockable.Id)) {
@@ -123,7 +123,7 @@ function filterUnlockedContent(
 
         // Handles packages
         else if (unlockable.Type === "package") {
-            for (const pkgUnlockableId of unlockable.Properties.Unlocks) {
+            for (const pkgUnlockableId of unlockable.Properties.Unlocks || []) {
                 packagedUnlocks.set(pkgUnlockableId, true)
             }
 
@@ -199,7 +199,7 @@ function filterUnlockedContent(
  * @returns boolean
  */
 function filterAllowedContent(gameVersion: GameVersion, entP: string[]) {
-    return function (unlockContainer: {
+    return function (unlockContainer?: {
         InstanceId: string
         ProfileId: string
         Unlockable: Unlockable
@@ -474,20 +474,24 @@ function updateWithDefaultSuit(
     profileId: string,
     gameVersion: GameVersion,
     inv: InventoryItem[],
-    sublocation: Unlockable,
+    sublocation?: Unlockable,
 ): InventoryItem[] {
-    if (sublocation === undefined) {
+    if (!sublocation) {
         return inv
     }
-
-    // We need to add a suit, so need to copy the cache to prevent modifying it.
-    const newInv = [...inv]
 
     // Yes this is slow. We should organize the unlockables into a { [Id: string]: Unlockable } map.
     const locationSuit = getUnlockableById(
         getDefaultSuitFor(sublocation),
         gameVersion,
     )
+
+    if (!locationSuit) {
+        return inv
+    }
+
+    // We need to add a suit, so need to copy the cache to prevent modifying it.
+    const newInv = [...inv]
 
     // check if any inventoryItem's unlockable is the default suit for the sublocation
     if (newInv.every((i) => i.Unlockable.Id !== locationSuit.Id)) {
@@ -576,7 +580,7 @@ export function createInventory(
     // and location-wide default suits will be given afterwards.
     const defaults = Object.values(defaultSuits)
 
-    if ((getFlag("getDefaultSuits") as boolean) === false) {
+    if (!getFlag("getDefaultSuits")) {
         unlockables = unlockables.filter(
             (u) =>
                 !defaults.includes(u.Id) ||
@@ -584,8 +588,7 @@ export function createInventory(
         )
     }
 
-    // ts-expect-error It cannot be undefined.
-    const filtered: InventoryItem[] = unlockables
+    const filtered = unlockables
         .map((unlockable) => {
             if (brokenItems.includes(unlockable.Guid)) {
                 return undefined
@@ -601,7 +604,9 @@ export function createInventory(
             }
         })
         // filter again, this time removing legacy unlockables
-        .filter(filterAllowedContent(gameVersion, userProfile.Extensions.entP))
+        .filter(
+            filterAllowedContent(gameVersion, userProfile.Extensions.entP),
+        ) as InventoryItem[]
 
     for (const unlockable of filtered) {
         unlockable!.ProfileId = profileId
@@ -627,7 +632,7 @@ export function grantDrops(profileId: string, drops: Unlockable[]): void {
 
     inventoryUserCache.set(profileId, [
         ...new Set([
-            ...inventoryUserCache.get(profileId),
+            ...(inventoryUserCache.get(profileId) || []),
             ...inventoryItems.filter(
                 (invItem) => invItem.Unlockable.Type !== "evergreenmastery",
             ),

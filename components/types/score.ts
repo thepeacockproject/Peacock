@@ -25,12 +25,31 @@ import {
     Unlockable,
 } from "./types"
 
-export interface CalculateXpResult {
+export type CalculateXpResult = {
     completedChallenges: MissionEndChallenge[]
     xp: number
 }
 
-export interface CalculateScoreResult {
+export type ScoreProgressionStats = {
+    LevelInfo: number[]
+    XP: number
+    Level: number
+    XPGain: number
+    Id?: string
+    Name?: string
+    Completion?: number
+    HideProgression?: boolean
+}
+
+export type ScoreProfileProgressionStats = {
+    LevelInfo: number[]
+    LevelInfoOffset: number
+    XP: number
+    Level: number
+    XPGain: number
+}
+
+export type CalculateScoreResult = {
     stars: number
     scoringHeadlines: ScoringHeadline[]
     awardedBonuses: ScoringBonus[]
@@ -41,7 +60,7 @@ export interface CalculateScoreResult {
     scoreWithBonus: number
 }
 
-export interface CalculateSniperScoreResult {
+export type CalculateSniperScoreResult = {
     FinalScore: number
     BaseScore: number
     TotalChallengeMultiplier: number
@@ -50,11 +69,11 @@ export interface CalculateSniperScoreResult {
     TimeTaken: number
     TimeBonus: number
     SilentAssassin: boolean
-    SilentAssassinBonus: number
-    SilentAssassinMultiplier: number
+    SilentAssassinBonus: number | undefined
+    SilentAssassinMultiplier: number | undefined
 }
 
-export interface MissionEndChallenge {
+export type MissionEndChallenge = {
     ChallengeId: string
     ChallengeTags: string[]
     ChallengeName: string
@@ -66,7 +85,7 @@ export interface MissionEndChallenge {
     Drops?: string[]
 }
 
-export interface MissionEndSourceChallenge {
+export type MissionEndSourceChallenge = {
     ChallengeId: string
     ChallengeTags: string[]
     ChallengeName: string
@@ -77,12 +96,12 @@ export interface MissionEndSourceChallenge {
     IsActionReward: boolean
 }
 
-export interface MissionEndDrop {
+export type MissionEndDrop = {
     Unlockable: Unlockable
     SourceChallenge?: MissionEndSourceChallenge
 }
 
-export interface MissionEndAchievedMastery {
+export type MissionEndAchievedMastery = {
     score: number
     RatioParts: number
     RatioTotal: number
@@ -90,47 +109,38 @@ export interface MissionEndAchievedMastery {
     BaseScore: number
 }
 
-export interface MissionEndEvergreen {
+export type MissionEndEvergreen = {
     Payout: number
-    EndStateEventName?: string
+    EndStateEventName?: string | null
     PayoutsCompleted: MissionEndEvergreenPayout[]
     PayoutsFailed: MissionEndEvergreenPayout[]
 }
 
-export interface MissionEndEvergreenPayout {
+export type MissionEndEvergreenPayout = {
     Name: string
     Payout: number
     IsPrestige: boolean
 }
 
-export interface MissionEndResult {
+export type ContractScore = {
+    Total: number
+    AchievedMasteries: MissionEndAchievedMastery[]
+    AwardedBonuses: ScoringBonus[]
+    TotalNoMultipliers: number
+    TimeUsedSecs: Seconds
+    StarCount: number
+    FailedBonuses: ScoringBonus[]
+    SilentAssassin: boolean
+}
+
+export type MissionEndResult = {
     MissionReward: {
-        LocationProgression: {
-            LevelInfo: number[]
-            XP: number
-            Level: number
-            Completion: number
-            XPGain: number
-            HideProgression: boolean
-        }
-        ProfileProgression: {
-            LevelInfo: number[]
-            LevelInfoOffset: number
-            XP: number
-            Level: number
-            XPGain: number
-        }
+        LocationProgression: ScoreProgressionStats
+        ProfileProgression: ScoreProfileProgressionStats
         Challenges: MissionEndChallenge[]
         Drops: MissionEndDrop[]
         OpportunityRewards: unknown[] // ?
-        UnlockableProgression?: {
-            LevelInfo: number[]
-            XP: number
-            Level: number
-            XPGain: number
-            Id: string
-            Name: string
-        }
+        UnlockableProgression?: ScoreProgressionStats
         CompletionData: CompletionData
         ChallengeCompletion: ChallengeCompletion
         ContractChallengeCompletion: ChallengeCompletion
@@ -149,28 +159,8 @@ export interface MissionEndResult {
         ScoreDetails: {
             Headlines: ScoringHeadline[]
         }
-        ContractScore?: {
-            Total: number
-            AchievedMasteries: MissionEndAchievedMastery[]
-            AwardedBonuses: ScoringBonus[]
-            TotalNoMultipliers: number
-            TimeUsedSecs: Seconds
-            StarCount: number
-            FailedBonuses: ScoringBonus[]
-            SilentAssassin: boolean
-        }
-        SniperChallengeScore?: {
-            FinalScore: number
-            BaseScore: number
-            TotalChallengeMultiplier: number
-            BulletsMissed: number
-            BulletsMissedPenalty: number
-            TimeTaken: number
-            TimeBonus: number
-            SilentAssassin: boolean
-            SilentAssassinBonus: number
-            SilentAssassinMultiplier: number
-        }
+        ContractScore?: ContractScore
+        SniperChallengeScore?: CalculateSniperScoreResult
         SilentAssassin: boolean
         NewRank: number
         RankCount: number

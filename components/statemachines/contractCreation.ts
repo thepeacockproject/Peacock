@@ -42,7 +42,9 @@ export interface IContractCreationPayload {
  * The target creator API.
  */
 export class TargetCreator {
+    // @ts-expect-error TODO: type this
     private _targetSm
+    // @ts-expect-error TODO: type this
     private _outfitSm
     private _targetConds: undefined | unknown[] = undefined
 

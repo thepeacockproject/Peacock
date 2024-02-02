@@ -16,8 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type { NextFunction, Response } from "express"
-import type { RequestWithJwt } from "./types/types"
+import type { NextFunction, Request, Response } from "express"
 import picocolors from "picocolors"
 import winston from "winston"
 import "winston-daily-rotate-file"
@@ -135,6 +134,7 @@ if (consoleLogLevel !== LOG_LEVEL_NONE) {
 }
 
 const winstonLogLevel = {}
+// @ts-expect-error Type mismatch.
 Object.values(LogLevel).forEach((e, i) => (winstonLogLevel[e] = i))
 
 const logger = winston.createLogger({
@@ -255,13 +255,13 @@ export function log(
  * Express middleware that logs all requests and their details with the info log level.
  *
  * @param req The Express request object.
- * @param res The Express response object.
+ * @param _ The Express response object.
  * @param next The Express next function.
  * @see LogLevel.INFO
  */
 export function loggingMiddleware(
-    req: RequestWithJwt,
-    res: Response,
+    req: Request,
+    _: Response,
     next?: NextFunction,
 ): void {
     log(
@@ -273,7 +273,7 @@ export function loggingMiddleware(
 }
 
 export function requestLoggingMiddleware(
-    req: RequestWithJwt,
+    req: Request,
     res: Response,
     next?: NextFunction,
 ): void {
@@ -294,8 +294,8 @@ export function requestLoggingMiddleware(
 
 export function errorLoggingMiddleware(
     err: Error,
-    req: RequestWithJwt,
-    res: Response,
+    req: Request,
+    _: Response,
     next?: NextFunction,
 ): void {
     const debug = {

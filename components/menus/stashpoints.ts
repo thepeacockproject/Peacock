@@ -37,6 +37,7 @@ import { log, LogLevel } from "../loggingInterop"
 import { getUserData } from "../databaseHandler"
 import { getFlag } from "../flags"
 import { loadouts } from "../loadouts"
+import assert from "assert"
 
 /**
  * Algorithm to get the stashpoint items data for H2 and H3.
@@ -139,10 +140,13 @@ export function getModernStashData(
     const inventory = createInventory(
         userId,
         gameVersion,
-        getSubLocationByName(contractData?.Metadata.Location, gameVersion),
+        getSubLocationByName(
+            contractData?.Metadata.Location || "",
+            gameVersion,
+        ),
     )
 
-    if (query.slotname.endsWith(query.slotid!.toString())) {
+    if (query.slotname?.endsWith(query.slotid!.toString())) {
         query.slotname = query.slotname.slice(
             0,
             -query.slotid!.toString().length,
@@ -150,7 +154,7 @@ export function getModernStashData(
     }
 
     const stashData: ModernStashData = {
-        SlotId: query.slotid,
+        SlotId: query.slotid!,
         LoadoutItemsData: {
             SlotId: query.slotid,
             Items: getModernStashItemsData(
@@ -169,7 +173,7 @@ export function getModernStashData(
                 AllowContainers: query.allowcontainers, // ?? true
             },
         },
-        ShowSlotName: query.slotname,
+        ShowSlotName: query.slotname!,
     }
 
     if (contractData) {
@@ -256,6 +260,10 @@ export function getLegacyStashData(
     userId: string,
     gameVersion: GameVersion,
 ) {
+    if (!query.contractid || !query.slotname) {
+        return undefined
+    }
+
     const contractData = controller.resolveContract(query.contractid)
 
     if (!contractData) {
@@ -277,6 +285,8 @@ export function getLegacyStashData(
         gameVersion,
     )
 
+    assert.ok(sublocation, "Sublocation not found")
+
     const inventory = createInventory(userId, gameVersion, sublocation)
 
     const userCentricContract = generateUserCentric(
@@ -297,14 +307,17 @@ export function getLegacyStashData(
             const dl = userProfile.Extensions.defaultloadout
 
             if (!dl) {
-                return defaultLoadout[id]
+                return defaultLoadout[id as keyof typeof defaultLoadout]
             }
 
+            // eslint-disable-next-line @typescript-eslint/prefer-optional-chain -- it makes the code 10x less readable
             const forLocation = (userProfile.Extensions.defaultloadout || {})[
-                sublocation?.Properties?.ParentLocation
+                sublocation?.Properties?.ParentLocation || ""
             ]
 
-            return (forLocation || defaultLoadout)[id]
+            return (forLocation || defaultLoadout)[
+                id as keyof typeof defaultLoadout
+            ]
         } else {
             let dl = loadouts.getLoadoutFor("h1")
 
@@ -312,7 +325,8 @@ export function getLegacyStashData(
                 dl = loadouts.createDefault("h1")
             }
 
-            const forLocation = dl.data[sublocation?.Properties?.ParentLocation]
+            const forLocation =
+                dl.data[sublocation?.Properties?.ParentLocation || ""]
 
             return (forLocation || defaultLoadout)[id]
         }
@@ -329,7 +343,7 @@ export function getLegacyStashData(
             Recommended: getLoadoutItem(slotid)
                 ? {
                       item: getUnlockableById(
-                          getLoadoutItem(slotid),
+                          getLoadoutItem(slotid)!,
                           gameVersion,
                       ),
                       type: loadoutSlots[slotid],
@@ -348,7 +362,7 @@ export function getLegacyStashData(
                       }
                     : {},
         })),
-        Contract: userCentricContract.Contract,
+        Contract: userCentricContract?.Contract,
         ShowSlotName: query.slotname,
         UserCentric: userCentricContract,
     }
@@ -398,10 +412,10 @@ export function getSafehouseCategory(
             continue // I don't want to put this in that elif statement
         }
 
-        let category = safehouseData.SubCategories.find(
+        let category = safehouseData.SubCategories?.find(
             (cat) => cat.Category === item.Unlockable.Type,
         )
-        let subcategory
+        let subcategory: SafehouseCategory | undefined
 
         if (!category) {
             category = {
@@ -410,16 +424,16 @@ export function getSafehouseCategory(
                 IsLeaf: false,
                 Data: null,
             }
-            safehouseData.SubCategories.push(category)
+            safehouseData.SubCategories?.push(category)
         }
 
-        subcategory = category.SubCategories.find(
+        subcategory = category.SubCategories?.find(
             (cat) => cat.Category === item.Unlockable.Subtype,
         )
 
         if (!subcategory) {
             subcategory = {
-                Category: item.Unlockable.Subtype,
+                Category: item.Unlockable.Subtype!,
                 SubCategories: null,
                 IsLeaf: true,
                 Data: {
@@ -430,13 +444,14 @@ export function getSafehouseCategory(
                     HasMore: false,
                 },
             }
-            category.SubCategories.push(subcategory)
+            category.SubCategories?.push(subcategory!)
         }
 
-        subcategory.Data?.Items.push({
+        subcategory!.Data?.Items.push({
             Item: item,
             ItemDetails: {
                 Capabilities: [],
+                // @ts-expect-error It just works. Types are probably wrong somewhere up the chain.
                 StatList: item.Unlockable.Properties.Gameplay
                     ? Object.entries(item.Unlockable.Properties.Gameplay).map(
                           ([key, value]) => ({
@@ -452,15 +467,15 @@ export function getSafehouseCategory(
         })
     }
 
-    for (const [id, category] of safehouseData.SubCategories.entries()) {
-        if (category.SubCategories.length === 1) {
+    for (const [id, category] of safehouseData.SubCategories?.entries() || []) {
+        if (category.SubCategories?.length === 1) {
             // if category only has one subcategory
-            safehouseData.SubCategories[id] = category.SubCategories[0] // flatten it
-            safehouseData.SubCategories[id].Category = category.Category // but keep the top category's name
+            safehouseData.SubCategories![id] = category.SubCategories[0] // flatten it
+            safehouseData.SubCategories![id].Category = category.Category // but keep the top category's name
         }
     }
 
-    if (safehouseData.SubCategories.length === 1) {
+    if (safehouseData.SubCategories?.length === 1) {
         // if root has only one subcategory
         safehouseData = safehouseData.SubCategories[0] // flatten it
     }
