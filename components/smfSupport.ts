@@ -122,6 +122,7 @@ export class SMFSupport {
         const placeAfter = contractData.SMF?.destinations.placeAfter
         // @ts-expect-error I know what I'm doing.
         const inLocation = (this.controller.missionsInLocations[location] ??
+            // @ts-expect-error I know what I'm doing.
             (this.controller.missionsInLocations[location] = [])) as string[]
 
         if (placeBefore) {
