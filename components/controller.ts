@@ -521,10 +521,16 @@ export class Controller {
                                 .peacockIntegration === "undefined" ||
                             contractData.SMF.destinations.peacockIntegration
                         ) {
-                            if (contractData.SMF.destinations.placeBefore) {
+                            const missions =
                                 controller.missionsInLocations[
                                     contractData.Metadata.Location
-                                ].splice(
+                                ] ??
+                                (controller.missionsInLocations[
+                                    contractData.Metadata.Location
+                                ] = [])
+
+                            if (contractData.SMF.destinations.placeBefore) {
+                                missions.splice(
                                     controller.missionsInLocations[
                                         contractData.Metadata.Location
                                     ].indexOf(
@@ -537,9 +543,7 @@ export class Controller {
                             } else if (
                                 contractData.SMF.destinations.placeAfter
                             ) {
-                                controller.missionsInLocations[
-                                    contractData.Metadata.Location
-                                ].splice(
+                                missions.splice(
                                     controller.missionsInLocations[
                                         contractData.Metadata.Location
                                     ].indexOf(
@@ -550,9 +554,7 @@ export class Controller {
                                     contractData.Metadata.Id,
                                 )
                             } else {
-                                controller.missionsInLocations[
-                                    contractData.Metadata.Location
-                                ].push(contractData.Metadata.Id)
+                                missions.push(contractData.Metadata.Id)
                             }
                         }
                     }
