@@ -40,6 +40,7 @@ import { log, LogLevel } from "../loggingInterop"
 import { no2016 } from "../contracts/escalations/escalationService"
 import { missionsInLocations } from "../contracts/missionsInLocation"
 import assert from "assert"
+import { translateEntitlements } from "../ownership"
 
 type LegacyData = {
     [difficulty: string]: {
@@ -309,6 +310,10 @@ export function createLocationsData(
         }
 
         if (creationContract) {
+            creationContract.Metadata.Entitlements = translateEntitlements(
+                gameVersion,
+                creationContract.Metadata.Entitlements,
+            )
             toAdd.Contract = creationContract
         }
 

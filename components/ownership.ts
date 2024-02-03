@@ -303,7 +303,7 @@ export const brokenItems = [
  */
 export function translateEntitlements(
     newGameVersion: GameVersion,
-    entitlements: string[] | undefined,
+    entitlements: string[] | undefined | null,
 ): string[] {
     const newEntitlements: string[] = []
 
