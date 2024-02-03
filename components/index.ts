@@ -181,9 +181,9 @@ app.get(
         config.Versions[0].GAME_VER = "6.74.0"
 
         if (req.params.serverVersion.startsWith("8")) {
-            req.params.serverVersion = `${ServerVer._Major}.${ServerVer._Minor}.${ServerVer._Build}`
+            config.Versions[0].GAME_VER = `${ServerVer._Major}.${ServerVer._Minor}.${ServerVer._Build}`
         } else if (req.params.serverVersion.startsWith("7")) {
-            req.params.serverVersion = "7.17.0"
+            config.Versions[0].GAME_VER = "7.17.0"
         }
 
         if (req.params.serverVersion.startsWith("8")) {
