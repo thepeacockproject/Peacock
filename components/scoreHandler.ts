@@ -720,6 +720,7 @@ export async function getMissionEndData(
     // Calculate XP based on non-global challenges. Remember to add elusive challenges of the contract
     Object.values({
         ...locationChallenges,
+        ...contractChallenges,
         ...(Object.keys(contractChallenges).includes("elusive") && {
             elusive: contractChallenges.elusive,
         }),
