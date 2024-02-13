@@ -1,4 +1,6 @@
+#if WINDOWS
 using System.Security.Principal;
+#endif
 
 namespace HitmanPatcher
 {
@@ -14,9 +16,13 @@ namespace HitmanPatcher
 
         private static bool CheckForAdmin()
         {
+#if WINDOWS
             WindowsIdentity identity = WindowsIdentity.GetCurrent();
             WindowsPrincipal principal = new WindowsPrincipal(identity);
             return principal.IsInRole(WindowsBuiltInRole.Administrator);
+#else
+            return false;
+#endif
         }
     }
 }
