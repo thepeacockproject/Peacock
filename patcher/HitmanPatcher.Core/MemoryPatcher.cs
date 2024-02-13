@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -52,8 +52,10 @@ namespace HitmanPatcher
 			return result;
 		}
 
-		public static void PatchAllProcesses(ILoggingProvider logger, Options patchOptions)
-		{
+		public static bool PatchAllProcesses(ILoggingProvider logger, Options patchOptions)
+        {
+            bool patched = false;
+
 			IEnumerable<Process> hitmans = GetProcessesByName("HITMAN", "HITMAN2", "HITMAN3");
 			foreach (Process process in hitmans)
 			{
@@ -69,7 +71,7 @@ namespace HitmanPatcher
 						}
 						catch (Win32Exception ex)
 						{
-							if (ex.NativeErrorCode == 5 && !Program.HasAdmin)
+							if (ex.NativeErrorCode == 5 && !Compositions.HasAdmin)
 							{
 								logger.log(String.Format("Access denied, try running the patcher as admin."));
 								process.Dispose();
@@ -95,7 +97,9 @@ namespace HitmanPatcher
 							{
 								logger.log(String.Format("Injected server: {0}", patchOptions.CustomConfigDomain));
 							}
-						}
+
+                            patched = true;
+                        }
 						else
 						{
 							// else: process not yet ready for patching, try again next timer tick
@@ -114,7 +118,9 @@ namespace HitmanPatcher
 				}
 				process.Dispose();
 			}
-		}
+
+            return patched;
+        }
 
         public static bool Patch(Process process, Options patchOptions)
         {

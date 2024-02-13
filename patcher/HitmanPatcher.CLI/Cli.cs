@@ -30,24 +30,15 @@ namespace HitmanPatcher
 
         internal class CliOptions
         {
-            internal bool Headless { get; set; }
-
             internal string Domain { get; set; }
 
-            internal bool UseHttp { get; set; }
+            internal bool? UseHttp { get; set; }
 
-            internal bool OptionalDynRes { get; set; }
+            internal bool? OptionalDynRes { get; set; }
 
-            [SuppressMessage("ReSharper", "LocalizableElement")]
             internal static CliOptions FromArguments(string[] args)
             {
-                var options = new CliOptions
-                {
-                    Domain = "127.0.0.1",
-                    Headless = false,
-                    OptionalDynRes = true,
-                    UseHttp = true
-                };
+                var options = new CliOptions();
 
                 var i = 0;
 
@@ -63,9 +54,6 @@ namespace HitmanPatcher
                 {
                     switch (arg)
                     {
-                        case "--headless":
-                            options.Headless = true;
-                            break;
                         case "--optional-dynamic-resources":
                             options.OptionalDynRes = true;
                             break;
@@ -80,7 +68,6 @@ namespace HitmanPatcher
                             Console.WriteLine(CliLocale.HelpHeader);
                             Console.WriteLine("");
                             Console.WriteLine("Options:");
-                            Console.WriteLine($"  --headless : {CliLocale.HeadlessDescription}");
                             Console.WriteLine($"  --optional-dynamic-resources : {CliLocale.OptionalDynResDescription}");
                             Console.WriteLine($"  --domain <url> : {CliLocale.DomainDescription}");
                             Console.WriteLine($"  --use-http : {CliLocale.UseHttpDescription}");

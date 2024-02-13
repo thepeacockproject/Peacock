@@ -1,0 +1,55 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net8.0-windows</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>disable</Nullable>
+
+        <RootNamespace>HitmanPatcher</RootNamespace>
+
+        <Title>Peacock Patcher</Title>
+        <Description>Peacock's HITMAN™ World of Assassination trilogy game patcher.</Description>
+        <Company>The Peacock Project</Company>
+        <Product>Peacock Patcher</Product>
+        <Copyright>Copyright © 2020-2024 grappigegovert &amp; The Peacock Project</Copyright>
+        <UseWindowsForms>true</UseWindowsForms>
+        <ForceDesignerDPIUnaware>true</ForceDesignerDPIUnaware>
+        <ApplicationHighDpiMode>DpiUnawareGdiScaled</ApplicationHighDpiMode>
+        <ApplicationIcon>patcher.ico</ApplicationIcon>
+        <AssemblyVersion>8.0.0.0</AssemblyVersion>
+        <FileVersion>8.0.0.0</FileVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="System.Resources.Extensions" Version="8.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\HitmanPatcher.Core\HitmanPatcher.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Update="MainForm.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Update="OptionsForm.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Update="Properties\Resources.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Resources.resx</DependentUpon>
+        </Compile>
+        <Compile Update="TrayOptionsForm.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <EmbeddedResource Update="MainForm.resx">
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\Resources.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+    </ItemGroup>
+</Project>

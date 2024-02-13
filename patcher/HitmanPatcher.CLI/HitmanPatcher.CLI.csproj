@@ -1,15 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <OutputType>WinExe</OutputType>
-        <TargetFramework>net8.0-windows</TargetFramework>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>disable</Nullable>
+
+        <RootNamespace>HitmanPatcher</RootNamespace>
+
         <Title>Peacock Patcher</Title>
         <Description>Peacock's HITMAN™ World of Assassination trilogy game patcher.</Description>
         <Company>The Peacock Project</Company>
         <Product>Peacock Patcher</Product>
         <Copyright>Copyright © 2020-2024 grappigegovert &amp; The Peacock Project</Copyright>
-        <UseWindowsForms>true</UseWindowsForms>
         <ForceDesignerDPIUnaware>true</ForceDesignerDPIUnaware>
         <ApplicationHighDpiMode>DpiUnawareGdiScaled</ApplicationHighDpiMode>
         <ApplicationIcon>patcher.ico</ApplicationIcon>
@@ -18,27 +20,18 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="System.Resources.Extensions" Version="8.0.0" />
+        <ProjectReference Include="..\HitmanPatcher.Core\HitmanPatcher.Core.csproj" />
     </ItemGroup>
 
     <ItemGroup>
         <Compile Update="CliLocale.Designer.cs">
+            <DependentUpon>CliLocale.resx</DependentUpon>
             <DesignTime>True</DesignTime>
             <AutoGen>True</AutoGen>
-            <DependentUpon>CliLocale.resx</DependentUpon>
-        </Compile>
-        <Compile Update="Properties\Resources.Designer.cs">
-          <DesignTime>True</DesignTime>
-          <AutoGen>True</AutoGen>
-          <DependentUpon>Resources.resx</DependentUpon>
         </Compile>
         <EmbeddedResource Update="CliLocale.resx">
             <LastGenOutput>CliLocale.Designer.cs</LastGenOutput>
             <Generator>ResXFileCodeGenerator</Generator>
-        </EmbeddedResource>
-        <EmbeddedResource Update="Properties\Resources.resx">
-          <Generator>ResXFileCodeGenerator</Generator>
-          <LastGenOutput>Resources.Designer.cs</LastGenOutput>
         </EmbeddedResource>
     </ItemGroup>
 </Project>
