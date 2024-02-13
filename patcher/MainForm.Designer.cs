@@ -1,4 +1,4 @@
-﻿namespace HitmanPatcher
+namespace HitmanPatcher
 {
     partial class MainForm
     {

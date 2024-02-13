@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.IO;
 using System.Text;
+using Timer = System.Windows.Forms.Timer;
 
 namespace HitmanPatcher
 {

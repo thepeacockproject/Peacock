@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Security.Principal;
 using System.Windows.Forms;
 
@@ -39,6 +39,7 @@ namespace HitmanPatcher
             {
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
+                Application.SetHighDpiMode(HighDpiMode.SystemAware);
 
                 Application.Run(MainForm.GetInstance());
             }
