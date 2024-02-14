@@ -21,7 +21,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup .NET Core
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
@@ -53,13 +53,13 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: patcher-cli-linux-portable
-          path: patcher/Publish/Linux-Portable/PeacockPatcher.CLI.exe
+          path: patcher/Publish/Linux-Portable/PeacockPatcher.CLI
 
       - name: Upload patcher-cli-linux
         uses: actions/upload-artifact@v4
         with:
           name: patcher-cli-linux
-          path: patcher/Publish/Linux-x64/PeacockPatcher.CLI.exe
+          path: patcher/Publish/Linux-x64/PeacockPatcher.CLI
 
       - name: Upload patcher-ui-windows-portable
         uses: actions/upload-artifact@v4
