@@ -6,5 +6,8 @@
 
         <RootNamespace>HitmanPatcher</RootNamespace>
         <AssemblyName>PeacockPatcher.Core</AssemblyName>
+
+        <DefineConstants Condition=" '$(IsLinux)' == 'true' ">$(DefineConstants);LINUX</DefineConstants>
+        <NoWarn Condition=" '$(IsLinux)' != 'true' ">CA1416</NoWarn>
     </PropertyGroup>
 </Project>

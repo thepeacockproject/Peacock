@@ -1,4 +1,4 @@
-#if WINDOWS
+#if !LINUX
 using System.Security.Principal;
 #endif
 
@@ -16,12 +16,12 @@ namespace HitmanPatcher
 
         private static bool CheckForAdmin()
         {
-#if WINDOWS
+#if LINUX
+            return false;
+#else
             WindowsIdentity identity = WindowsIdentity.GetCurrent();
             WindowsPrincipal principal = new WindowsPrincipal(identity);
             return principal.IsInRole(WindowsBuiltInRole.Administrator);
-#else
-            return false;
 #endif
         }
     }

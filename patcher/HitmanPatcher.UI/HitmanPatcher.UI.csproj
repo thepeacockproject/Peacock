@@ -20,6 +20,8 @@
         <ApplicationIcon>patcher.ico</ApplicationIcon>
         <AssemblyVersion>8.0.0.0</AssemblyVersion>
         <FileVersion>8.0.0.0</FileVersion>
+
+        <DefineConstants Condition="'$(IsLinux)' == 'true'">$(DefineConstants);LINUX</DefineConstants>
     </PropertyGroup>
 
     <ItemGroup>

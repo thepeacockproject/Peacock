@@ -24,6 +24,7 @@ namespace HitmanPatcher
             settings.SaveToFile();
 
             Console.WriteLine("Settings:");
+            Console.WriteLine($"- File = {Path.GetFullPath(Settings.GetSavePath())}");
             Console.WriteLine($"- CustomConfigDomain = {settings.patchOptions.CustomConfigDomain}");
             Console.WriteLine($"- UseHttp = {settings.patchOptions.UseHttp}");
             Console.WriteLine($"- DisableForceDynamicResources = {settings.patchOptions.DisableForceOfflineOnFailedDynamicResources}");

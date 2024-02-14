@@ -29,24 +29,47 @@ jobs:
         run: |
           export DOTNET_NOLOGO=true
           export DOTNET_CLI_TELEMETRY_OPTOUT=true
-          dotnet publish patcher/HitmanPatcher.CLI/HitmanPatcher.CLI.csproj -r win-x64 -c Release -p:PublishTrimmed=True -p:PublishSingleFile=True --self-contained -p DebugType=none -p:EnableWindowsTargeting=True --nologo -o patcher/Publish/Windows-x64
-          dotnet publish patcher/HitmanPatcher.CLI/HitmanPatcher.CLI.csproj -r linux-x64 -c Release -p:PublishTrimmed=True -p:PublishSingleFile=True --self-contained -p DebugType=none --nologo -o patcher/Publish/Linux-x64
-          dotnet publish patcher/HitmanPatcher.UI/HitmanPatcher.UI.csproj -r win-x64 -c Release -p:PublishSingleFile=True --self-contained -p DebugType=none -p:EnableWindowsTargeting=True --nologo -o patcher/Publish/Windows-x64
+          cd patcher
+          dotnet publish HitmanPatcher.CLI/HitmanPatcher.CLI.csproj -r win-x64 -c Release -p:PublishSingleFile=True --no-self-contained -p DebugType=none -p:EnableWindowsTargeting=True -o Publish/Windows-Portable
+          dotnet publish HitmanPatcher.CLI/HitmanPatcher.CLI.csproj -r win-x64 -c Release -p:PublishTrimmed=True -p:PublishSingleFile=True --self-contained -p DebugType=none -p:EnableWindowsTargeting=True -o Publish/Windows-x64
+          dotnet publish HitmanPatcher.CLI/HitmanPatcher.CLI.csproj -r linux-x64 -c Release -p:PublishSingleFile=True --no-self-contained -p DebugType=none -p:IsLinux=true -o Publish/Linux-Portable
+          dotnet publish HitmanPatcher.CLI/HitmanPatcher.CLI.csproj -r linux-x64 -c Release -p:PublishTrimmed=True -p:PublishSingleFile=True --self-contained -p DebugType=none -p:IsLinux=true -o Publish/Linux-x64
+          dotnet publish HitmanPatcher.UI/HitmanPatcher.UI.csproj -r win-x64 -c Release -p:PublishSingleFile=True --no-self-contained -p DebugType=none -p:EnableWindowsTargeting=True -o Publish/Windows-Portable
+          dotnet publish HitmanPatcher.UI/HitmanPatcher.UI.csproj -r win-x64 -c Release -p:PublishSingleFile=True --self-contained -p DebugType=none -p:EnableWindowsTargeting=True -o Publish/Windows-x64
 
-      - name: Upload patcher-windows-cli
+      - name: Upload patcher-cli-windows-portable
         uses: actions/upload-artifact@v4
         with:
-          name: patcher-windows-cli
+          name: patcher-cli-windows-portable
+          path: patcher/Publish/Windows-Portable/PeacockPatcher.CLI.exe
+
+      - name: Upload patcher-cli-windows
+        uses: actions/upload-artifact@v4
+        with:
+          name: patcher-cli-windows
           path: patcher/Publish/Windows-x64/PeacockPatcher.CLI.exe
 
-      - name: Upload patcher-windows-ui
+      - name: Upload patcher-cli-linux-portable
         uses: actions/upload-artifact@v4
         with:
-          name: patcher-windows-ui
+          name: patcher-cli-linux-portable
+          path: patcher/Publish/Linux-Portable/PeacockPatcher.CLI.exe
+
+      - name: Upload patcher-cli-linux
+        uses: actions/upload-artifact@v4
+        with:
+          name: patcher-cli-linux
+          path: patcher/Publish/Linux-x64/PeacockPatcher.CLI.exe
+
+      - name: Upload patcher-ui-windows-portable
+        uses: actions/upload-artifact@v4
+        with:
+          name: patcher-ui-windows-portable
+          path: patcher/Publish/Windows-Portable/PeacockPatcher.UI.exe
+
+      - name: Upload patcher-ui-windows
+        uses: actions/upload-artifact@v4
+        with:
+          name: patcher-ui-windows
           path: patcher/Publish/Windows-x64/PeacockPatcher.UI.exe
 
-      - name: Upload patcher-linux-cli
-        uses: actions/upload-artifact@v4
-        with:
-          name: patcher-linux-cli
-          path: patcher/Publish/Linux-x64/PeacockPatcher.CLI.exe
