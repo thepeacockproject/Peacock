@@ -187,29 +187,25 @@ export class ProgressionService {
             if (masteryData) {
                 const previousLevel = locationData.Level
 
-                let newLocationXp = xpRequiredForLevel(maxLevel)
-
-                if (isEvergreenContract) {
-                    newLocationXp = xpRequiredForEvergreenLevel(maxLevel)
-                } else if (sniperUnlockable) {
-                    newLocationXp = xpRequiredForSniperLevel(maxLevel)
-                }
+                locationData.Level = clampValue(
+                    isEvergreenContract
+                        ? evergreenLevelForXp(locationData.Xp)
+                        : sniperUnlockable
+                        ? sniperLevelForXp(locationData.Xp)
+                        : levelForXp(locationData.Xp),
+                    1,
+                    maxLevel,
+                )
 
                 locationData.Xp = clampValue(
                     locationData.Xp + masteryXp + actionXp,
                     0,
-                    newLocationXp,
+                    isEvergreenContract
+                        ? xpRequiredForEvergreenLevel(maxLevel)
+                        : sniperUnlockable
+                        ? xpRequiredForSniperLevel(maxLevel)
+                        : xpRequiredForLevel(maxLevel),
                 )
-
-                let newLocationLevel = levelForXp(newLocationXp)
-
-                if (isEvergreenContract) {
-                    newLocationLevel = evergreenLevelForXp(newLocationXp)
-                } else if (sniperUnlockable) {
-                    newLocationLevel = sniperLevelForXp(newLocationXp)
-                }
-
-                locationData.Level = clampValue(newLocationLevel, 1, maxLevel)
 
                 // If mastery level has gone up, check if there are available drop rewards and award them
                 if (locationData.Level > previousLevel) {
