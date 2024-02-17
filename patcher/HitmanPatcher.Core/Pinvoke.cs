@@ -1,5 +1,14 @@
+using System.Runtime.InteropServices;
+
 namespace HitmanPatcher
 {
+    public class ProcessMetadata
+    {
+        public int PID { get; set; } 
+        public IntPtr BaseAddress { get; set; }
+        public long ModuleMemorySize { get; set; }
+    }
+
     //Source: https://docs.microsoft.com/en-us/windows/win32/memory/memory-protection-constants
     [Flags]
     public enum MemProtection : uint
@@ -29,6 +38,6 @@ namespace HitmanPatcher
 
     public static partial class Pinvoke
     {
-        //Do nothing
+        public static int LastError => Marshal.GetLastWin32Error();
     }
 }

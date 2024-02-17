@@ -53,6 +53,15 @@ namespace HitmanPatcher
         [DllImport("ntdll.dll")]
         private static extern int NtQueryInformationProcess(IntPtr hProcess, PROCESSINFOCLASS processInformationClass, out PROCESS_BASIC_INFORMATION processInformation, uint processInformationLength, out uint returnLength);
 
+        public static bool CheckForAdmin()
+        {
+            using var identity = WindowsIdentity.GetCurrent();
+
+            var principal = new WindowsPrincipal(identity);
+
+            return principal.IsInRole(WindowsBuiltInRole.Administrator);
+        }
+
         public static int GetProcessParentPid(Process process)
         {
             IntPtr hProcess = OpenProcess(
@@ -80,13 +89,14 @@ namespace HitmanPatcher
             return PEB.Reserved3.ToInt32(); // undocumented, but should hold the parent PID
         }
 
-        public static bool CheckForAdmin()
+        public static ProcessMetadata GetProcessMetadata(Process process)
         {
-            using var identity = WindowsIdentity.GetCurrent();
-
-            var principal = new WindowsPrincipal(identity);
-
-            return principal.IsInRole(WindowsBuiltInRole.Administrator);
+            return new ProcessMetadata
+            {
+                PID = process.Id,
+                BaseAddress = process.MainModule?.BaseAddress ?? IntPtr.Zero,
+                ModuleMemorySize = process.MainModule?.ModuleMemorySize ?? 0
+            };
         }
     }
 }

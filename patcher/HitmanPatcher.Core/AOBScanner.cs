@@ -4,13 +4,13 @@ namespace HitmanPatcher
 {
     internal static class AOBScanner
     {
-        public static bool TryGetHitmanVersionByScanning(Process process,
+        public static bool TryGetHitmanVersionByScanning(ProcessMetadata processMetadata,
             IntPtr hProcess, out HitmanVersion result)
         {
             Stopwatch bench = Stopwatch.StartNew();
 
-            IntPtr baseAddress = process.MainModule.BaseAddress;
-            byte[] exeData = new byte[process.MainModule.ModuleMemorySize];
+            IntPtr baseAddress = processMetadata.BaseAddress;
+            byte[] exeData = new byte[processMetadata.ModuleMemorySize];
             Pinvoke.ReadProcessMemory(hProcess, baseAddress, exeData,
                 (UIntPtr) exeData.Length,
                 out _); // fuck it, just read the whole thing

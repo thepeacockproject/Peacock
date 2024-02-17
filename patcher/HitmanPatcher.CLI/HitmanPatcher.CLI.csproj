@@ -22,8 +22,13 @@
         <FileVersion>8.0.0.0</FileVersion>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)' == 'Release - Linux' OR '$(Configuration)' == 'Debug - Linux'">
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug - Linux|AnyCPU'">
+        <DefineConstants>$(DefineConstants);LINUX;DEBUG</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release - Linux|AnyCPU'">
         <DefineConstants>$(DefineConstants);LINUX</DefineConstants>
+        <Optimize>True</Optimize>
     </PropertyGroup>
 
     <ItemGroup>
