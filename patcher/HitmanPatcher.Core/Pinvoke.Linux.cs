@@ -7,7 +7,9 @@ namespace HitmanPatcher;
 public static partial class Pinvoke
 {
     [StructLayout(LayoutKind.Sequential)]
+#pragma warning disable CS8981
     private unsafe struct iovec
+#pragma warning restore CS8981
     {
         public void* iov_base;
         public int iov_len;
@@ -31,7 +33,7 @@ public static partial class Pinvoke
     {
         var lines = File.ReadAllLines($"/proc/{process.Id}/maps");
 
-        var findProcess = Path.GetFileNameWithoutExtension(process.ProcessName).ToLower();
+        var findProcess = process.ProcessName.ToLower();
 
         var foundLines = lines.Where(x => x.ToLower().Contains(findProcess)).ToList();
 
@@ -249,7 +251,7 @@ public static partial class Pinvoke
     {
         //TODO: Retrieve "PPid" from "/proc/pid/status"
 
-        return process.Id;
+        return -1;
     }
 }
 #endif
