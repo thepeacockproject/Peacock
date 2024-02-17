@@ -1,13 +1,27 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFramework>netstandard2.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>disable</Nullable>
 
         <RootNamespace>HitmanPatcher</RootNamespace>
         <AssemblyName>PeacockPatcher.Core</AssemblyName>
 
-        <DefineConstants Condition=" '$(IsLinux)' == 'true' ">$(DefineConstants);LINUX</DefineConstants>
-        <NoWarn Condition=" '$(IsLinux)' != 'true' ">CA1416</NoWarn>
+        <Configurations>Debug;Release;Debug - Linux;Release - Linux</Configurations>
+
+        <LangVersion>latest</LangVersion>
     </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)' == 'Debug' OR '$(Configuration)' == 'Release'">
+        <NoWarn>CA1416</NoWarn>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)' == 'Debug - Linux' OR '$(Configuration)' == 'Release - Linux'">
+        <DefineConstants>$(DefineConstants);LINUX</DefineConstants>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+
+    <ItemGroup Condition="'$(Configuration)' == 'Debug' OR '$(Configuration)' == 'Release'">
+        <PackageReference Include="System.Security.Principal.Windows" Version="5.0.0" />
+    </ItemGroup>
 </Project>

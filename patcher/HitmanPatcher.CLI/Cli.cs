@@ -1,10 +1,3 @@
-using System;
-using System.Diagnostics.CodeAnalysis;
-#if !DEBUG
-using System.Linq;
-using System.Runtime.InteropServices;
-#endif
-
 namespace HitmanPatcher
 {
     internal static class Cli
@@ -13,17 +6,13 @@ namespace HitmanPatcher
         // in any mode outside debug (which is probably what it's being run in while in IDE),
         // we attach the console to the parent process
 
-        [DllImport("kernel32.dll", SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool AttachConsole(int dwProcessId);
-
         private const int ATTACH_PARENT_PROCESS = -1;
 
         internal static void EnsureConsole(string[] args)
         {
             if (args.Any(arg => arg.Contains("-")))
             {
-                AttachConsole(ATTACH_PARENT_PROCESS);
+                Pinvoke.AttachConsole(ATTACH_PARENT_PROCESS);
             }
         }
 #endif

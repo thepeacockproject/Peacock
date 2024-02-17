@@ -8,7 +8,6 @@ namespace HitmanPatcher
         [STAThread]
         private static void Main(string[] args)
         {
-            Compositions.Initialize();
             Compositions.Logger = new Cli.ConsoleLogger();
 
 #if !DEBUG

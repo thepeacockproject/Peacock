@@ -1,13 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>net8.0-windows</TargetFramework>
+        <TargetFrameworks>net461;net8.0-windows</TargetFrameworks>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>disable</Nullable>
 
         <RootNamespace>HitmanPatcher</RootNamespace>
-        <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
         <AssemblyName>PeacockPatcher.UI</AssemblyName>
+
+        <Configurations>Debug;Release</Configurations>
 
         <Title>Peacock Patcher</Title>
         <Description>Peacock's HITMAN™ World of Assassination trilogy game patcher.</Description>
@@ -21,12 +22,9 @@
         <AssemblyVersion>8.0.0.0</AssemblyVersion>
         <FileVersion>8.0.0.0</FileVersion>
 
-        <DefineConstants Condition="'$(IsLinux)' == 'true'">$(DefineConstants);LINUX</DefineConstants>
+        <LangVersion>latest</LangVersion>
+        <AutoGenerateBindingRedirects>True</AutoGenerateBindingRedirects>
     </PropertyGroup>
-
-    <ItemGroup>
-        <PackageReference Include="System.Resources.Extensions" Version="8.0.0" />
-    </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\HitmanPatcher.Core\HitmanPatcher.Core.csproj" />
