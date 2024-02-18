@@ -11,6 +11,10 @@ namespace HitmanPatcher
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+#if !LEGACY
+            Application.SetHighDpiMode(HighDpiMode.SystemAware);
+#endif
+            
             var mainForm = MainForm.GetInstance();
 
             Compositions.Logger = mainForm;

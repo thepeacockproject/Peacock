@@ -30,18 +30,20 @@ jobs:
           export DOTNET_NOLOGO=true
           export DOTNET_CLI_TELEMETRY_OPTOUT=true
           cd patcher
-          dotnet publish HitmanPatcher.CLI/HitmanPatcher.CLI.csproj -r win-x64 -c Release -p:PublishSingleFile=True --no-self-contained -p DebugType=none -p:EnableWindowsTargeting=True -o Publish/Windows-Portable
-          dotnet publish HitmanPatcher.CLI/HitmanPatcher.CLI.csproj -r win-x64 -c Release -p:PublishTrimmed=True -p:PublishSingleFile=True --self-contained -p DebugType=none -p:EnableWindowsTargeting=True -o Publish/Windows-x64
-          dotnet publish HitmanPatcher.CLI/HitmanPatcher.CLI.csproj -r linux-x64 -c Release -p:PublishSingleFile=True --no-self-contained -p DebugType=none -p:IsLinux=true -o Publish/Linux-Portable
-          dotnet publish HitmanPatcher.CLI/HitmanPatcher.CLI.csproj -r linux-x64 -c Release -p:PublishTrimmed=True -p:PublishSingleFile=True --self-contained -p DebugType=none -p:IsLinux=true -o Publish/Linux-x64
-          dotnet publish HitmanPatcher.UI/HitmanPatcher.UI.csproj -r win-x64 -c Release -p:PublishSingleFile=True --no-self-contained -p DebugType=none -p:EnableWindowsTargeting=True -o Publish/Windows-Portable
-          dotnet publish HitmanPatcher.UI/HitmanPatcher.UI.csproj -r win-x64 -c Release -p:PublishSingleFile=True --self-contained -p DebugType=none -p:EnableWindowsTargeting=True -o Publish/Windows-x64
+          dotnet publish HitmanPatcher.CLI/HitmanPatcher.CLI.csproj -c Release -p:PublishSingleFile=True --no-self-contained -p DebugType=none -p:EnableWindowsTargeting=True -o Publish/Windows-Portable
+          dotnet publish HitmanPatcher.CLI/HitmanPatcher.CLI.csproj -r win-x64 -c Release -f net8.0 -p:PublishTrimmed=True -p:PublishSingleFile=True --self-contained -p DebugType=none -p:EnableWindowsTargeting=True -o Publish/Windows-x64
+          dotnet publish HitmanPatcher.CLI/HitmanPatcher.CLI.csproj -r linux-x64 -c "Release - Linux" -p:PublishSingleFile=True --no-self-contained -p DebugType=none -p:IsLinux=true -o Publish/Linux-Portable
+          dotnet publish HitmanPatcher.CLI/HitmanPatcher.CLI.csproj -r linux-x64 -c "Release - Linux" -f net8.0 -p:PublishTrimmed=True -p:PublishSingleFile=True --self-contained -p DebugType=none -p:IsLinux=true -o Publish/Linux-x64
+          dotnet publish HitmanPatcher.UI/HitmanPatcher.UI.csproj -c Release -f net8.0-windows -p:PublishSingleFile=True --no-self-contained -p DebugType=none -p:EnableWindowsTargeting=True -o Publish/Windows-Portable
+          dotnet publish HitmanPatcher.UI/HitmanPatcher.UI.csproj -r win-x64 -c Release -f net8.0-windows -p:PublishSingleFile=True --self-contained -p DebugType=none -p:EnableWindowsTargeting=True -o Publish/Windows-x64
+          dotnet publish HitmanPatcher.CLI/HitmanPatcher.CLI.csproj -c Release -p DebugType=none -p:EnableWindowsTargeting=True -o Publish/Windows-Legacy -p:IsLegacy=True
+          dotnet publish HitmanPatcher.UI/HitmanPatcher.UI.csproj -c Release -p DebugType=none -p:EnableWindowsTargeting=True -o Publish/Windows-Legacy -p:IsLegacy=True
 
-      - name: Upload patcher-cli-windows-portable
+      - name: Upload patcher-windows-portable
         uses: actions/upload-artifact@v4
         with:
-          name: patcher-cli-windows-portable
-          path: patcher/Publish/Windows-Portable/PeacockPatcher.CLI.exe
+          name: patcher-windows-portable
+          path: patcher/Publish/Windows-Portable
 
       - name: Upload patcher-cli-windows
         uses: actions/upload-artifact@v4
@@ -49,27 +51,26 @@ jobs:
           name: patcher-cli-windows
           path: patcher/Publish/Windows-x64/PeacockPatcher.CLI.exe
 
-      - name: Upload patcher-cli-linux-portable
-        uses: actions/upload-artifact@v4
-        with:
-          name: patcher-cli-linux-portable
-          path: patcher/Publish/Linux-Portable/PeacockPatcher.CLI
-
-      - name: Upload patcher-cli-linux
-        uses: actions/upload-artifact@v4
-        with:
-          name: patcher-cli-linux
-          path: patcher/Publish/Linux-x64/PeacockPatcher.CLI
-
-      - name: Upload patcher-ui-windows-portable
-        uses: actions/upload-artifact@v4
-        with:
-          name: patcher-ui-windows-portable
-          path: patcher/Publish/Windows-Portable/PeacockPatcher.UI.exe
-
       - name: Upload patcher-ui-windows
         uses: actions/upload-artifact@v4
         with:
           name: patcher-ui-windows
           path: patcher/Publish/Windows-x64/PeacockPatcher.UI.exe
 
+      - name: Upload patcher-linux-portable
+        uses: actions/upload-artifact@v4
+        with:
+          name: patcher-linux-portable
+          path: patcher/Publish/Linux-Portable
+
+      - name: Upload patcher-linux
+        uses: actions/upload-artifact@v4
+        with:
+          name: patcher-linux
+          path: patcher/Publish/Linux-x64
+
+      - name: Upload patcher-windows-legacy
+        uses: actions/upload-artifact@v4
+        with:
+          name: patcher-windows-legacy
+          path: patcher/Publish/Windows-Legacy/ILRepack

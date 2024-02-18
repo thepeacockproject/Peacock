@@ -1,7 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFrameworks>net461;net8.0-windows</TargetFrameworks>
+        <TargetFramework>net8.0-windows</TargetFramework>
+        <TargetFramework Condition="'$(IsLegacy)' == 'True'">net46</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>disable</Nullable>
 
@@ -22,36 +23,43 @@
         <AssemblyVersion>8.0.0.0</AssemblyVersion>
         <FileVersion>8.0.0.0</FileVersion>
 
+        <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
+        <DefineConstants Condition="'$(IsLegacy)' == 'True'">$(DefineConstants);LEGACY</DefineConstants>
         <LangVersion>latest</LangVersion>
-        <AutoGenerateBindingRedirects>True</AutoGenerateBindingRedirects>
     </PropertyGroup>
+
+    <ItemGroup Condition="'$(IsLegacy)' == 'True'">
+        <PackageReference Include="ILRepack.Lib.MSBuild.Task" Version="2.0.26">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\HitmanPatcher.Core\HitmanPatcher.Core.csproj" />
     </ItemGroup>
 
     <ItemGroup>
+        <None Remove="App.config" Condition="'$(IsLegacy)' != 'True'"/>
+        <None Remove="Novikov_error.png" />
+        <None Remove="Novikov_standard.png" />
+        <None Remove="Novikov_success.png" />
+        <None Remove="patcher.ico" />
+        <EmbeddedResource Include="Novikov_error.png" />
+        <EmbeddedResource Include="Novikov_standard.png" />
+        <EmbeddedResource Include="Novikov_success.png" />
+        <EmbeddedResource Include="patcher.ico" />
+        <EmbeddedResource Remove="MainForm.resx" />
+        <EmbeddedResource Remove="OptionsForm.resx" />
+        <EmbeddedResource Remove="TrayOptionsForm.resx" />
         <Compile Update="MainForm.cs">
             <SubType>Form</SubType>
         </Compile>
         <Compile Update="OptionsForm.cs">
             <SubType>Form</SubType>
         </Compile>
-        <Compile Update="Properties\Resources.Designer.cs">
-            <DesignTime>True</DesignTime>
-            <AutoGen>True</AutoGen>
-            <DependentUpon>Resources.resx</DependentUpon>
-        </Compile>
         <Compile Update="TrayOptionsForm.cs">
             <SubType>Form</SubType>
         </Compile>
-        <EmbeddedResource Update="MainForm.resx">
-            <SubType>Designer</SubType>
-        </EmbeddedResource>
-        <EmbeddedResource Update="Properties\Resources.resx">
-            <Generator>ResXFileCodeGenerator</Generator>
-            <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-            <SubType>Designer</SubType>
-        </EmbeddedResource>
     </ItemGroup>
 </Project>

@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFrameworks>netstandard2.0;net8.0</TargetFrameworks>
+        <TargetFramework>net8.0</TargetFramework>
+        <TargetFramework Condition="'$(IsLegacy)' == 'True'">net46</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>disable</Nullable>
 
@@ -26,8 +27,4 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <Optimize>True</Optimize>
     </PropertyGroup>
-
-    <ItemGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU' OR '$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-        <PackageReference Include="System.Security.Principal.Windows" Version="5.0.0" />
-    </ItemGroup>
 </Project>
