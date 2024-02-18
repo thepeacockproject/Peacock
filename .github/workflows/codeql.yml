@@ -47,15 +47,12 @@ jobs:
       run: |
         export DOTNET_NOLOGO=true
         export DOTNET_CLI_TELEMETRY_OPTOUT=true
-        cd patcher
-          export DOTNET_NOLOGO=true
-          export DOTNET_CLI_TELEMETRY_OPTOUT=true
-          cd patcher
-          dotnet build HitmanPatcher.CLI/HitmanPatcher.CLI.csproj -c Release -p:EnableWindowsTargeting=True
-          dotnet build HitmanPatcher.UI/HitmanPatcher.UI.csproj -c Release -p:EnableWindowsTargeting=True
-          dotnet build HitmanPatcher.CLI/HitmanPatcher.CLI.csproj -r linux-x64 -c "Release - Linux" -p:IsLinux=true
-          dotnet build HitmanPatcher.CLI/HitmanPatcher.CLI.csproj -c Release -p:EnableWindowsTargeting=True -p:IsLegacy=True
-          dotnet build HitmanPatcher.UI/HitmanPatcher.UI.csproj -c Release -p:EnableWindowsTargeting=True -p:IsLegacy=True
+        cd $GITHUB_WORKSPACE/patcher
+        dotnet build HitmanPatcher.CLI/HitmanPatcher.CLI.csproj -c Release -p:EnableWindowsTargeting=True
+        dotnet build HitmanPatcher.UI/HitmanPatcher.UI.csproj -c Release -p:EnableWindowsTargeting=True
+        dotnet build HitmanPatcher.CLI/HitmanPatcher.CLI.csproj -r linux-x64 -c "Release - Linux" -p:IsLinux=true
+        dotnet build HitmanPatcher.CLI/HitmanPatcher.CLI.csproj -c Release -p:EnableWindowsTargeting=True -p:IsLegacy=True
+        dotnet build HitmanPatcher.UI/HitmanPatcher.UI.csproj -c Release -p:EnableWindowsTargeting=True -p:IsLegacy=True
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
