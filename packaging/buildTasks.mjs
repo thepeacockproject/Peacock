@@ -79,6 +79,7 @@ export async function generateRequireTable() {
     const prettierConfig = await prettier.resolveConfig()
     prettierConfig.parser = "babel"
 
+    // language=TypeScript
     const generatedPeacockRequireTableFile = prettier.format(
         `/*
 *     The Peacock Project - a HITMAN server replacement.
@@ -121,7 +122,7 @@ export async function packResources() {
 
     const start = Date.now()
 
-    const contracts = glob.sync("contractdata/**/*.json")
+    const contracts = await glob("contractdata/**/*.json")
     const b = []
     const el = []
 
