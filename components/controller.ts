@@ -1035,6 +1035,7 @@ export class Controller {
             module: { exports: {} },
             exports: {},
             process,
+            fetch,
             require: createPeacockRequire(pluginName),
         })
 
