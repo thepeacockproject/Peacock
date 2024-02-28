@@ -301,16 +301,6 @@ function filterAllowedContent(gameVersion: GameVersion, entP: string[]) {
             )
         }
 
-        /*
-        TODO: Fix this entitlement check (confirmed its broken with Blazer)
-        if (LEGACY_UNLOCKABLES.includes(id)) {
-            return (
-                e.includes("0b59243cb8aa420691b66be1ecbe68c0") ||
-                e.includes("1829593")
-            )
-        }
-         */
-
         if (SIN_GREED_UNLOCKABLES.includes(id)) {
             return (
                 e.includes("0e8632b4cdfb415e94291d97d727b98d") ||

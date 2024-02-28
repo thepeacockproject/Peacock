@@ -18,19 +18,6 @@
 
 import { ContractSession } from "../types/types"
 
-/**
- * Changes a set to an array.
- *
- * @param set The set.
- */
-export function normalizeSet<T>(set: Set<T>): T[] {
-    const l: T[] = []
-
-    set.forEach((i) => l.push(i))
-
-    return l
-}
-
 const SESSION_SET_PROPS: (keyof ContractSession)[] = [
     "targetKills",
     "npcKills",
@@ -76,7 +63,7 @@ export function serializeSession(session: ContractSession): unknown {
 
         if (session[key as K] instanceof Set) {
             // @ts-expect-error Type mismatch.
-            o[key] = normalizeSet(session[key])
+            o[key] = Array.from(session[key])
             continue
         }
 
@@ -109,7 +96,7 @@ export function deserializeSession(
     }
 
     for (const map of SESSION_MAP_PROPS) {
-        if (Object.hasOwn(session, map)) {
+        if (session[map]) {
             // @ts-expect-error Type mismatch.
             session[map] = new Map(session[map])
         }
