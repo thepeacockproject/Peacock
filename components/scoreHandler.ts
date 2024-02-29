@@ -173,12 +173,11 @@ export function calculateScore(
         {
             headline: "UI_SCORING_SUMMARY_NO_NOTICED_KILLS",
             bonusId: "NoWitnessedKillsBonus",
-            condition: [...contractSession.killsNoticedBy].every(
-                (witness) =>
-                    (gameVersion === "h1"
-                        ? true
-                        : contractSession.targetKills.has(witness)) ||
-                    contractSession.npcKills.has(witness),
+            condition: [...contractSession.killsNoticedBy].every((witness) =>
+                // (gameVersion === "h1"
+                //     ? true
+                //     : contractSession.targetKills.has(witness)) ||
+                contractSession.npcKills.has(witness),
             ),
         },
         {
