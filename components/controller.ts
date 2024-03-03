@@ -730,9 +730,7 @@ export class Controller {
         )
         await this.commitNewContract(contractData)
 
-        if (PEACOCK_DEV) {
-            log(LogLevel.DEBUG, `Saved contract to contracts/${pubId}.json`)
-        }
+        log(LogLevel.DEBUG, `Saved contract to contracts/${pubId}.json`)
 
         return contractData
     }

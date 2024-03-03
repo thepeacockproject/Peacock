@@ -732,13 +732,6 @@ profileRouter.post(
                 "No such save detected! Might be an official servers save.",
             )
 
-            if (PEACOCK_DEV) {
-                log(
-                    LogLevel.DEBUG,
-                    `(Save-context: ${req.body.contractSessionId}; ${req.body.saveToken})`,
-                )
-            }
-
             log(
                 LogLevel.WARN,
                 "Creating a fake session to avoid problems... scoring will not work!",

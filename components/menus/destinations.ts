@@ -409,9 +409,7 @@ export function getDestination(
         }
     }
 
-    if (PEACOCK_DEV) {
-        log(LogLevel.DEBUG, `Looking up locations details for ${LOCATION}.`)
-    }
+    log(LogLevel.DEBUG, `Looking up locations details for ${LOCATION}.`)
 
     const sublocationsData = Object.values(locData.children).filter(
         (subLocation) => subLocation.Properties.ParentLocation === LOCATION,

@@ -33,7 +33,7 @@ import {
 } from "./types/types"
 import { contractTypes, gameDifficulty, ServerVer } from "./utils"
 import { json as jsonMiddleware } from "body-parser"
-import { log, LogLevel } from "./loggingInterop"
+import { log, logDebug, LogLevel } from "./loggingInterop"
 import { getUserData, writeUserData } from "./databaseHandler"
 import { controller } from "./controller"
 import { swapToLocationStatus } from "./discordRp"
@@ -669,11 +669,9 @@ function saveEvents(
             session.contractId !== event.ContractId ||
             session.userId !== userId
         ) {
-            if (PEACOCK_DEV) {
-                log(LogLevel.DEBUG, "No session or session user ID mismatch!")
-                console.debug(session)
-                console.debug(event)
-            }
+            log(LogLevel.DEBUG, "No session or session user ID mismatch!")
+            logDebug(session)
+            logDebug(event)
 
             return // session does not exist or contractid/userid doesn't match
         }
@@ -717,7 +715,7 @@ function saveEvents(
                 )
 
                 if (val.state === "Failure") {
-                    if (PEACOCK_DEV && contractType !== "evergreen") {
+                    if (contractType !== "evergreen") {
                         log(LogLevel.DEBUG, `Objective failed: ${objectiveId}`)
                     }
 
@@ -1122,7 +1120,7 @@ function saveEvents(
         response.push(process.hrtime.bigint().toString())
     })
 
-    if (PEACOCK_DEV && processed.length > 0) {
+    if (processed.length > 0) {
         log(
             LogLevel.DEBUG,
             `Event summary: ${picocolors.gray(processed.join(", "))}`,
