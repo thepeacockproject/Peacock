@@ -213,6 +213,7 @@ export interface ContractSearchResult {
 export interface ContractSessionLastKill {
     timestamp?: Date | number
     repositoryIds?: RepositoryId[]
+    legacyIsUnnoticed?: boolean
 }
 
 /**

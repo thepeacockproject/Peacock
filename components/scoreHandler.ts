@@ -71,7 +71,7 @@ import {
     MissionEndResult,
 } from "./types/score"
 import { MasteryData } from "./types/mastery"
-import { createInventory, InventoryItem, getUnlockablesById } from "./inventory"
+import { createInventory, getUnlockablesById, InventoryItem } from "./inventory"
 import { calculatePlaystyle } from "./playStyles"
 import assert from "assert"
 
@@ -173,13 +173,14 @@ export function calculateScore(
         {
             headline: "UI_SCORING_SUMMARY_NO_NOTICED_KILLS",
             bonusId: "NoWitnessedKillsBonus",
-            condition: [...contractSession.killsNoticedBy].every(
-                (witness) =>
-                    (gameVersion === "h1"
-                        ? true
-                        : contractSession.targetKills.has(witness)) ||
-                    contractSession.npcKills.has(witness),
-            ),
+            condition:
+                gameVersion === "h1"
+                    ? contractSession.lastKill.legacyIsUnnoticed
+                    : [...contractSession.killsNoticedBy].every(
+                          (witness) =>
+                              contractSession.targetKills.has(witness) ||
+                              contractSession.npcKills.has(witness),
+                      ),
         },
         {
             headline: "UI_SCORING_SUMMARY_NO_BODIES_FOUND",
