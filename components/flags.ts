@@ -45,6 +45,10 @@ const defaultFlags: Flags = {
         desc: "[Gameplay] Show elusive targets in instinct like normal targets would appear on normal missions. (for speedrunners who are submitting to speedrun.com, just as a reminder, this tool is for practice only!)",
         default: false,
     },
+    legacyNoticedKillScoring: {
+        desc: '[Gameplay] In the HITMAN 2016 engine, if noticed kills should behave in the official way ("vanilla"), or how they were previously handled by Peacock ("sane")',
+        default: "vanilla",
+    },
     jokes: {
         desc: "[Services] The Peacock server window will tell you a joke on startup if this is set to true.",
         default: false,

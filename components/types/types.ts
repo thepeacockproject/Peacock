@@ -213,6 +213,11 @@ export interface ContractSearchResult {
 export interface ContractSessionLastKill {
     timestamp?: Date | number
     repositoryIds?: RepositoryId[]
+    /**
+     * If the last kill was unnoticed in H2016.
+     * See [this video](https://www.youtube.com/watch?v=4fMDqRZg3Ik) for an explanation on how it's supposed to work.
+     */
+    legacyIsUnnoticed?: boolean
 }
 
 /**
