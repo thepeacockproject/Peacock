@@ -132,6 +132,9 @@ export function calculateScore(
     contractData: MissionManifest,
     timeTotal: Seconds,
 ): CalculateScoreResult {
+    const noticedKillsAreVanilla =
+        getFlag("legacyNoticedKillScoring") === "vanilla"
+
     // Bonuses
     const bonuses = [
         {
@@ -174,7 +177,7 @@ export function calculateScore(
             headline: "UI_SCORING_SUMMARY_NO_NOTICED_KILLS",
             bonusId: "NoWitnessedKillsBonus",
             condition:
-                gameVersion === "h1"
+                gameVersion === "h1" && noticedKillsAreVanilla
                     ? contractSession.lastKill.legacyIsUnnoticed
                     : [...contractSession.killsNoticedBy].every(
                           (witness) =>
