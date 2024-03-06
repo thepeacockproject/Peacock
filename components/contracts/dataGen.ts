@@ -38,6 +38,7 @@ import {
     getUserEscalationProgress,
 } from "./escalations/escalationService"
 import { translateEntitlements } from "../ownership"
+import assert from "assert"
 
 // TODO: In the near future, this file should be cleaned up where possible.
 
@@ -123,19 +124,28 @@ export function generateCompletionData(
     let difficulty = undefined
 
     if (gameVersion === "h1") {
-        difficulty = getUserData(userId, gameVersion).Extensions
-            .gamepersistentdata.menudata.difficulty.destinations[
-            subLocation ? subLocation.Properties?.ParentLocation : subLocationId
-        ]
+        const userData = getUserData(userId, gameVersion)
+        difficulty =
+            userData.Extensions.gamepersistentdata.menudata.difficulty
+                .destinations[
+                subLocation
+                    ? subLocation.Properties?.ParentLocation || ""
+                    : subLocationId
+            ]
     }
 
     const locationId = subLocation
         ? subLocation.Properties?.ParentLocation
         : subLocationId
 
+    assert.ok(
+        locationId,
+        `Location ID is undefined for ${subLocationId} in ${gameVersion}!`,
+    )
+
     const completionData = controller.masteryService.getLocationCompletion(
         locationId,
-        subLocation?.Id,
+        subLocationId,
         gameVersion,
         userId,
         contractType,
@@ -153,7 +163,7 @@ export function generateCompletionData(
             Completion: 1.0,
             XpLeft: 0,
             Id: locationId,
-            SubLocationId: subLocation?.Id,
+            SubLocationId: subLocationId,
             HideProgression: true,
             IsLocationProgression: true,
             Name: null,
@@ -197,7 +207,7 @@ export function generateUserCentric(
         // fix h1/h2 entitlements
         contractData.Metadata.Entitlements = translateEntitlements(
             gameVersion,
-            contractData.Metadata.Entitlements,
+            contractData.Metadata.Entitlements || [],
         )
     }
 
@@ -209,6 +219,12 @@ export function generateUserCentric(
         userId,
         gameVersion,
     )
+
+    let lastPlayed: string | undefined = undefined
+
+    if (played[id]?.LastPlayedAt) {
+        lastPlayed = new Date(played[id].LastPlayedAt!).toISOString()
+    }
 
     const uc: UserCentricContract = {
         Contract: contractData,
@@ -222,10 +238,7 @@ export function generateUserCentric(
             LocationHideProgression: completionData.HideProgression,
             ElusiveContractState: "",
             IsFeatured: false,
-            LastPlayedAt:
-                played[id] === undefined
-                    ? undefined
-                    : new Date(played[id]?.LastPlayedAt).toISOString(),
+            LastPlayedAt: lastPlayed,
             // relevant for contracts
             // Favorite contracts
             PlaylistData: {
@@ -316,6 +329,7 @@ export function mapObjectives(
                         gameChangerProps.ObjectivesCategory = (() => {
                             let obj: MissionManifestObjective
 
+                            // @ts-expect-error State machines are impossible to type
                             for (obj of gameChangerProps.Objectives) {
                                 if (obj.Category === "primary") return "primary"
                                 if (obj.Category === "secondary")
@@ -362,11 +376,9 @@ export function mapObjectives(
                 objective.OnActive.IfInProgress.Visible === false) ||
             (objective.OnActive?.IfCompleted &&
                 objective.OnActive.IfCompleted.Visible === false &&
-                objective.Definition &&
-                objective.Definition.States &&
-                objective.Definition.States.Start &&
-                objective.Definition.States.Start["-"] &&
-                objective.Definition.States.Start["-"].Transition === "Success")
+                // @ts-expect-error State machines are impossible to type
+                objective.Definition?.States?.Start?.["-"]?.Transition ===
+                    "Success")
         ) {
             continue // do not show objectives with 'ForceShowOnLoadingScreen: false' or objectives that are not visible on start
         }
@@ -374,8 +386,7 @@ export function mapObjectives(
         if (
             objective.SuccessEvent &&
             objective.SuccessEvent.EventName === "Kill" &&
-            objective.SuccessEvent.EventValues &&
-            objective.SuccessEvent.EventValues.RepositoryId
+            objective.SuccessEvent.EventValues?.RepositoryId
         ) {
             result.set(objective.Id, {
                 Type: "kill",
@@ -396,6 +407,7 @@ export function mapObjectives(
                 objective.Definition?.Context?.Targets &&
                 (objective.Definition.Context.Targets as string[]).length === 1
             ) {
+                // @ts-expect-error State machines are impossible to type
                 id = objective.Definition.Context.Targets[0]
             }
 
@@ -437,10 +449,8 @@ export function mapObjectives(
             })
         } else if (
             objective.Type === "statemachine" &&
-            objective.Definition &&
-            objective.Definition.Context &&
-            objective.Definition.Context.Targets &&
-            (objective.Definition.Context.Targets as unknown[]).length === 1 &&
+            (objective.Definition?.Context?.Targets as unknown[])?.length ===
+                1 &&
             objective.HUDTemplate
         ) {
             // This objective will be displayed as a kill objective
@@ -457,6 +467,7 @@ export function mapObjectives(
             result.set(objective.Id, {
                 Type: "kill",
                 Properties: {
+                    // @ts-expect-error State machines are impossible to type
                     Id: objective.Definition.Context.Targets[0],
                     Conditions: Conditions,
                 },

@@ -23,6 +23,7 @@ import {
     InclusionData,
     MissionManifestObjective,
 } from "./types"
+import { gameDifficulty } from "../utils"
 
 export interface SavedChallenge {
     Id: string
@@ -45,7 +46,7 @@ export interface SavedChallenge {
     RuntimeType: "Hit" | string
     Xp: number
     XpModifier?: unknown
-    DifficultyLevels: string[]
+    DifficultyLevels: (keyof typeof gameDifficulty)[]
     Definition: MissionManifestObjective["Definition"] & {
         Scope: ContextScopedStorageLocation
         Repeatable?: {
@@ -93,7 +94,7 @@ export type ProfileChallengeData = {
 
 export type ChallengeContext = {
     context: unknown
-    state: string
+    state: string | undefined
     timers: Timer[]
     timesCompleted: number
 }

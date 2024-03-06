@@ -52,7 +52,7 @@ import {
     createTimeLimit,
     TargetCreator,
 } from "../statemachines/contractCreation"
-import { createSniperLoadouts } from "../menus/sniper"
+import { createSniperLoadouts, SniperCharacter } from "../menus/sniper"
 import { GetForPlay2Body } from "../types/gameSchemas"
 import assert from "assert"
 import { getUserData } from "../databaseHandler"
@@ -63,7 +63,8 @@ const contractRoutingRouter = Router()
 contractRoutingRouter.post(
     "/GetForPlay2",
     jsonMiddleware(),
-    async (req: RequestWithJwt<never, GetForPlay2Body>, res) => {
+    // @ts-expect-error Has jwt props.
+    (req: RequestWithJwt<never, GetForPlay2Body>, res) => {
         if (!req.body.id || !uuidRegex.test(req.body.id)) {
             res.status(400).end()
             return // user sent some nasty info
@@ -84,7 +85,8 @@ contractRoutingRouter.post(
             req.jwt.unique_name,
             req.gameVersion,
             contractData,
-        )
+        ) as SniperCharacter[]
+
         const loadoutData = {
             CharacterLoadoutData:
                 sniperloadouts.length !== 0 ? sniperloadouts : null,
@@ -100,7 +102,7 @@ contractRoutingRouter.post(
                       req.gameVersion,
                   )
                 : {}),
-            ...loadoutData,
+            ...(loadoutData || {}),
             ...{
                 OpportunityData: getContractOpportunityData(req, contractData),
             },
@@ -120,7 +122,7 @@ contractRoutingRouter.post(
                 .toString()}-${randomUUID()}`,
             ContractProgressionData: contractData.Metadata
                 .UseContractProgressionData
-                ? await getCpd(req.jwt.unique_name, contractData.Metadata.CpdId)
+                ? getCpd(req.jwt.unique_name, contractData.Metadata.CpdId!)
                 : null,
         }
 
@@ -158,6 +160,8 @@ contractRoutingRouter.post(
                 ) {
                     continue
                 }
+
+                assert.ok(gameChanger.Objectives, "gc has no objectives")
 
                 contractData.Data.GameChangerReferences.push(gameChanger)
                 contractData.Data.Bricks = [
@@ -228,6 +232,7 @@ contractRoutingRouter.post(
 contractRoutingRouter.post(
     "/CreateFromParams",
     jsonMiddleware(),
+    // @ts-expect-error Has jwt props.
     async (
         req: RequestWithJwt<Record<never, never>, CreateFromParamsBody>,
         res,
@@ -340,13 +345,20 @@ contractRoutingRouter.post(
 contractRoutingRouter.post(
     "/GetContractOpportunities",
     jsonMiddleware(),
+    // @ts-expect-error Has jwt props.
     (req: RequestWithJwt<never, { contractId: string }>, res) => {
         const contract = controller.resolveContract(req.body.contractId)
+
+        if (!contract) {
+            res.status(400).send("contract not found")
+            return
+        }
+
         res.json(getContractOpportunityData(req, contract))
     },
 )
 
-function getContractOpportunityData(
+export function getContractOpportunityData(
     req: RequestWithJwt,
     contract: MissionManifest,
 ): MissionStory[] {
@@ -366,6 +378,7 @@ function getContractOpportunityData(
             missionStories[ms].PreviouslyCompleted =
                 ms in userData.Extensions.opportunityprogression
             const current = fastClone(missionStories[ms])
+            // @ts-expect-error Deal with it.
             delete current.Location
             result.push(current)
         }

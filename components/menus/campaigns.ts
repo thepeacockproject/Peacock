@@ -21,8 +21,8 @@ import type {
     Campaign,
     GameVersion,
     GenSingleMissionFunc,
-    ICampaignMission,
-    ICampaignVideo,
+    CampaignMission,
+    CampaignVideo,
     IVideo,
     StoryData,
 } from "../types/types"
@@ -37,7 +37,7 @@ const genSingleMissionFactory = (userId: string): GenSingleMissionFunc => {
     return function genSingleMission(
         contractId: string,
         gameVersion: GameVersion,
-    ): ICampaignMission {
+    ): CampaignMission {
         assert.ok(
             contractId,
             "Plugin tried to generate mission with no contract ID",
@@ -51,11 +51,12 @@ const genSingleMissionFactory = (userId: string): GenSingleMissionFunc => {
 
         if (!actualContractData) {
             log(LogLevel.ERROR, `Failed to resolve contract ${contractId}!`)
+            assert.fail(`Failed to resolve contract ${contractId}! (campaign)`)
         }
 
         return {
             Type: "Mission",
-            Data: contractIdToHitObject(contractId, gameVersion, userId),
+            Data: contractIdToHitObject(contractId, gameVersion, userId)!,
         }
     }
 }
@@ -63,7 +64,7 @@ const genSingleMissionFactory = (userId: string): GenSingleMissionFunc => {
 function genSingleVideo(
     videoId: string,
     gameVersion: GameVersion,
-): ICampaignVideo {
+): CampaignVideo {
     const videos = getConfig<Record<string, IVideo>>("Videos", true) // we modify videos so we need to clone this
     const video = videos[videoId]
 

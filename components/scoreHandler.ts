@@ -48,7 +48,7 @@ import {
     getLevelCount,
 } from "./contracts/escalations/escalationService"
 import { getUserData, writeUserData } from "./databaseHandler"
-import axios from "axios"
+import axios, { AxiosError } from "axios"
 import { getFlag } from "./flags"
 import { log, LogLevel } from "./loggingInterop"
 import {
@@ -64,14 +64,16 @@ import {
     CalculateScoreResult,
     CalculateSniperScoreResult,
     CalculateXpResult,
+    ContractScore,
     MissionEndChallenge,
     MissionEndDrop,
     MissionEndEvergreen,
     MissionEndResult,
 } from "./types/score"
 import { MasteryData } from "./types/mastery"
-import { createInventory, InventoryItem, getUnlockablesById } from "./inventory"
+import { createInventory, getUnlockablesById, InventoryItem } from "./inventory"
 import { calculatePlaystyle } from "./playStyles"
+import assert from "assert"
 
 export function calculateGlobalXp(
     contractSession: ContractSession,
@@ -81,8 +83,10 @@ export function calculateGlobalXp(
     let totalXp = 0
 
     // TODO: Merge with the non-global challenges?
-    for (const challengeId of Object.keys(contractSession.challengeContexts)) {
-        const data = contractSession.challengeContexts[challengeId]
+    for (const challengeId of Object.keys(
+        contractSession.challengeContexts || {},
+    )) {
+        const data = contractSession.challengeContexts![challengeId]
 
         if (data.timesCompleted <= 0) {
             continue
@@ -93,7 +97,7 @@ export function calculateGlobalXp(
             gameVersion,
         )
 
-        if (!challenge || !challenge.Xp || !challenge.Tags.includes("global")) {
+        if (!challenge?.Xp || !challenge.Tags.includes("global")) {
             continue
         }
 
@@ -128,6 +132,9 @@ export function calculateScore(
     contractData: MissionManifest,
     timeTotal: Seconds,
 ): CalculateScoreResult {
+    const noticedKillsAreVanilla =
+        getFlag("legacyNoticedKillScoring") === "vanilla"
+
     // Bonuses
     const bonuses = [
         {
@@ -169,19 +176,20 @@ export function calculateScore(
         {
             headline: "UI_SCORING_SUMMARY_NO_NOTICED_KILLS",
             bonusId: "NoWitnessedKillsBonus",
-            condition: [...contractSession.killsNoticedBy].every(
-                (witness) =>
-                    (gameVersion === "h1"
-                        ? true
-                        : contractSession.targetKills.has(witness)) ||
-                    contractSession.npcKills.has(witness),
-            ),
+            condition:
+                gameVersion === "h1" && noticedKillsAreVanilla
+                    ? contractSession.lastKill.legacyIsUnnoticed
+                    : [...contractSession.killsNoticedBy].every(
+                          (witness) =>
+                              contractSession.targetKills.has(witness) ||
+                              contractSession.npcKills.has(witness),
+                      ),
         },
         {
             headline: "UI_SCORING_SUMMARY_NO_BODIES_FOUND",
             bonusId: "NoBodiesFound",
             condition:
-                contractSession.legacyHasBodyBeenFound === false &&
+                !contractSession.legacyHasBodyBeenFound &&
                 [...contractSession.bodiesFoundBy].every(
                     (witness) =>
                         (gameVersion === "h1"
@@ -386,7 +394,8 @@ export function calculateSniperScore(
         [480, 35000], // 35000 bonus score at 480 secs (8 min)
         [900, 0], // 0 bonus score at 900 secs (15 min)
     ]
-    let prevsecs: number, prevscore: number
+    let prevsecs: number = 0
+    let prevscore: number = 0
 
     for (const [secs, score] of scorePoints) {
         if (bonusTimeTotal > secs) {
@@ -414,36 +423,46 @@ export function calculateSniperScore(
         scoreTotal: 0,
     }
 
-    const baseScore = contractSession.scoring.Context["TotalScore"]
-    const challengeMultiplier = contractSession.scoring.Settings["challenges"][
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const baseScore = (contractSession.scoring?.Context as any)["TotalScore"]
+    // @ts-expect-error it's a number
+    const challengeMultiplier = contractSession.scoring?.Settings["challenges"][
         "Unlockables"
     ].reduce((acc, unlockable) => {
         const item = inventory.find((item) => item.Unlockable.Id === unlockable)
 
         if (item) {
+            // @ts-expect-error it's a number
             return acc + item.Unlockable.Properties["Multiplier"]
         }
 
         return acc
     }, 1.0)
+
+    assert(
+        typeof challengeMultiplier === "number",
+        "challengeMultiplier is falsey/NaN",
+    )
+
     const bulletsMissed = 0 // TODO? not sure if neccessary, the penalty is always 0 for inbuilt contracts
     const bulletsMissedPenalty =
         bulletsMissed *
-        contractSession.scoring.Settings["bulletsused"]["penalty"]
+        (contractSession.scoring?.Settings["bulletsused"]["penalty"] || 0)
     // Get SA status from global SA challenge for contracttype sniper
     const silentAssassin =
-        contractSession.challengeContexts[
+        contractSession.challengeContexts?.[
             "029c4971-0ddd-47ab-a568-17b007eec04e"
         ].state !== "Failure"
     const saBonus = silentAssassin
-        ? contractSession.scoring.Settings["silentassassin"]["score"]
+        ? contractSession.scoring?.Settings["silentassassin"]["score"]
         : 0
     const saMultiplier = silentAssassin
-        ? contractSession.scoring.Settings["silentassassin"]["multiplier"]
+        ? contractSession.scoring?.Settings["silentassassin"]["multiplier"]
         : 1.0
 
     const subTotalScore = baseScore + timeBonus + saBonus - bulletsMissedPenalty
     const totalScore = Math.round(
+        // @ts-expect-error it's a number
         subTotalScore * challengeMultiplier * saMultiplier,
     )
 
@@ -518,7 +537,7 @@ export async function getMissionEndData(
     gameVersion: GameVersion,
 ): Promise<MissionEndError | MissionEndResult> {
     // TODO: For this entire function, add support for 2016 difficulties
-    const sessionDetails = contractSessions.get(query.contractSessionId)
+    const sessionDetails = contractSessions.get(query.contractSessionId || "")
 
     if (!sessionDetails) {
         return {
@@ -625,6 +644,8 @@ export async function getMissionEndData(
         false,
     )
 
+    assert.ok(levelData, "contract not found")
+
     // Resolve the id of the parent location
     const subLocation = getSubLocationByName(
         levelData.Metadata.Location,
@@ -703,6 +724,7 @@ export async function getMissionEndData(
     // Calculate XP based on non-global challenges. Remember to add elusive challenges of the contract
     Object.values({
         ...locationChallenges,
+        ...contractChallenges,
         ...(Object.keys(contractChallenges).includes("elusive") && {
             elusive: contractChallenges.elusive,
         }),
@@ -777,9 +799,9 @@ export async function getMissionEndData(
     if (masteryData) {
         maxLevel =
             (query.masteryUnlockableId
-                ? masteryData.SubPackages.find(
+                ? masteryData.SubPackages?.find(
                       (subPkg) => subPkg.Id === query.masteryUnlockableId,
-                  ).MaxLevel
+                  )?.MaxLevel
                 : masteryData.MaxLevel) || DEFAULT_MASTERY_MAXLEVEL
 
         locationLevelInfo = Array.from({ length: maxLevel }, (_, i) => {
@@ -828,7 +850,8 @@ export async function getMissionEndData(
     )
 
     // Evergreen
-    const evergreenData: MissionEndEvergreen = <MissionEndEvergreen>{
+    const evergreenData: MissionEndEvergreen = {
+        Payout: 0,
         PayoutsCompleted: [],
         PayoutsFailed: [],
     }
@@ -846,14 +869,14 @@ export async function getMissionEndData(
         Object.keys(gameChangerProperties).forEach((e) => {
             const gameChanger = gameChangerProperties[e]
 
-            const conditionObjective = gameChanger.Objectives.find(
+            const conditionObjective = gameChanger.Objectives?.find(
                 (e) => e.Category === "condition",
             )
 
-            const secondaryObjective = gameChanger.Objectives.find(
+            const secondaryObjective = gameChanger.Objectives?.find(
                 (e) =>
                     e.Category === "secondary" &&
-                    e.Definition.Context["MyPayout"],
+                    e.Definition?.Context?.["MyPayout"],
             )
 
             if (
@@ -862,18 +885,20 @@ export async function getMissionEndData(
                 sessionDetails.objectiveStates.get(conditionObjective.Id) ===
                     "Success"
             ) {
+                type P = { MyPayout: string }
+
+                const context = sessionDetails.objectiveContexts.get(
+                    secondaryObjective.Id,
+                ) as P | undefined
+
                 const payoutObjective = {
                     Name: gameChanger.Name,
-                    Payout: parseInt(
-                        sessionDetails.objectiveContexts.get(
-                            secondaryObjective.Id,
-                        )["MyPayout"] || 0,
-                    ),
+                    Payout: parseInt(context?.["MyPayout"] || "0"),
                     IsPrestige: gameChanger.IsPrestigeObjective || false,
                 }
 
                 if (
-                    !sessionDetails.evergreen.failed &&
+                    !sessionDetails.evergreen?.failed &&
                     sessionDetails.objectiveStates.get(
                         secondaryObjective.Id,
                     ) === "Success"
@@ -888,7 +913,7 @@ export async function getMissionEndData(
 
         evergreenData.Payout = totalPayout
         evergreenData.EndStateEventName =
-            sessionDetails.evergreen.scoringScreenEndState
+            sessionDetails.evergreen?.scoringScreenEndState
 
         locationLevelInfo = EVERGREEN_LEVEL_INFO
 
@@ -909,14 +934,14 @@ export async function getMissionEndData(
         calculateScoreResult.silentAssassin = false
 
         // Overide the calculated score
-        calculateScoreResult.stars = undefined
+        calculateScoreResult.stars = 0
     }
 
     // Sniper
     let unlockableProgression = undefined
-    let sniperChallengeScore = undefined
+    let sniperChallengeScore: CalculateSniperScoreResult | undefined = undefined
 
-    let contractScore = {
+    let contractScore: ContractScore | undefined = {
         Total: calculateScoreResult.scoreWithBonus,
         AchievedMasteries: calculateScoreResult.achievedMasteries,
         AwardedBonuses: calculateScoreResult.awardedBonuses,
@@ -969,7 +994,7 @@ export async function getMissionEndData(
             Id: completionData.Id,
             Level: completionData.Level,
             LevelInfo: locationLevelInfo,
-            Name: completionData.Name,
+            Name: completionData.Name!,
             XP: completionData.XP,
             XPGain:
                 completionData.Level === completionData.MaxLevel
@@ -977,8 +1002,9 @@ export async function getMissionEndData(
                     : sniperScore.FinalScore,
         }
 
+        // @ts-expect-error should be fine (allegedly)
         userData.Extensions.progression.Locations[locationParentId][
-            query.masteryUnlockableId
+            query.masteryUnlockableId!
         ].PreviouslySeenXp = completionData.XP
 
         writeUserData(jwt.unique_name, gameVersion)
@@ -996,7 +1022,7 @@ export async function getMissionEndData(
         // Override the playstyle
         playstyle = undefined
 
-        calculateScoreResult.stars = undefined
+        calculateScoreResult.stars = 0
         calculateScoreResult.scoringHeadlines = headlines
     }
 
@@ -1009,7 +1035,7 @@ export async function getMissionEndData(
         const masteryData =
             controller.masteryService.getMasteryDataForSubPackage(
                 locationParentId,
-                query.masteryUnlockableId ?? undefined,
+                query.masteryUnlockableId!,
                 gameVersion,
                 jwt.unique_name,
             ) as MasteryData
@@ -1018,31 +1044,39 @@ export async function getMissionEndData(
             masteryDrops = masteryData.Drops.filter(
                 (e) =>
                     e.Level > oldLocationLevel && e.Level <= newLocationLevel,
-            ).map((e) => {
-                return {
-                    Unlockable: e.Unlockable,
-                }
-            })
+            ).map((e) => ({
+                Unlockable: e.Unlockable,
+            }))
         }
     }
 
     // Challenge Drops
     const challengeDrops: MissionEndDrop[] =
-        calculateXpResult.completedChallenges.reduce((acc, challenge) => {
-            if (challenge?.Drops?.length) {
-                const drops = getUnlockablesById(challenge.Drops, gameVersion)
-                delete challenge.Drops
+        calculateXpResult.completedChallenges.reduce(
+            (acc: MissionEndDrop[], challenge) => {
+                if (challenge?.Drops?.length) {
+                    const drops = getUnlockablesById(
+                        challenge.Drops,
+                        gameVersion,
+                    )
+                    delete challenge.Drops
 
-                for (const drop of drops) {
-                    acc.push({
-                        Unlockable: drop,
-                        SourceChallenge: challenge,
-                    })
+                    for (const drop of drops) {
+                        if (!drop) {
+                            continue
+                        }
+
+                        acc.push({
+                            Unlockable: drop,
+                            SourceChallenge: challenge,
+                        })
+                    }
                 }
-            }
 
-            return acc
-        }, [])
+                return acc
+            },
+            [],
+        )
 
     // Setup the result
     const result: MissionEndResult = {
@@ -1094,7 +1128,7 @@ export async function getMissionEndData(
             SniperChallengeScore: sniperChallengeScore,
             SilentAssassin:
                 contractScore?.SilentAssassin ||
-                sniperChallengeScore?.silentAssassin ||
+                sniperChallengeScore?.SilentAssassin ||
                 false,
             // TODO: Use data from the leaderboard?
             NewRank: 1,
@@ -1112,7 +1146,7 @@ export async function getMissionEndData(
     }
 
     // Finalize the response
-    if ((getFlag("autoSplitterForceSilentAssassin") as boolean) === true) {
+    if (getFlag("autoSplitterForceSilentAssassin")) {
         if (result.ScoreOverview.SilentAssassin) {
             await liveSplitManager.completeMission(timeTotal)
         } else {
@@ -1124,7 +1158,7 @@ export async function getMissionEndData(
 
     if (
         getFlag("leaderboards") === true &&
-        sessionDetails.compat === true &&
+        sessionDetails.compat &&
         contractData.Metadata.Type !== "vsrace" &&
         contractData.Metadata.Type !== "evergreen" &&
         // Disable sending sniper scores for now
@@ -1187,7 +1221,7 @@ export async function getMissionEndData(
                 },
             )
         } catch (e) {
-            handleAxiosError(e)
+            handleAxiosError(e as AxiosError)
             log(
                 LogLevel.WARN,
                 "Failed to commit leaderboards data! Either you or the server may be offline.",

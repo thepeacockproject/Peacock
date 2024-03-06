@@ -33,7 +33,7 @@ import {
 } from "./types/types"
 import { contractTypes, gameDifficulty, ServerVer } from "./utils"
 import { json as jsonMiddleware } from "body-parser"
-import { log, LogLevel } from "./loggingInterop"
+import { log, logDebug, LogLevel } from "./loggingInterop"
 import { getUserData, writeUserData } from "./databaseHandler"
 import { controller } from "./controller"
 import { swapToLocationStatus } from "./discordRp"
@@ -86,7 +86,6 @@ const pushMessageQueue = new Map<string, PushMessage[]>()
  * @param userId The push message's target user.
  * @param message The raw push message to send.
  * @see enqueueEvent
- * @author grappigegovert
  */
 export function enqueuePushMessage(userId: string, message: unknown): void {
     let userQueue
@@ -113,7 +112,6 @@ export function enqueuePushMessage(userId: string, message: unknown): void {
  *
  * @param session The contract session.
  * @param objective The objective object.
- * @author Reece Dunham
  */
 export function registerObjectiveListener(
     session: ContractSession,
@@ -174,8 +172,8 @@ export function setupScoring(
 
         if (name === "scoring") {
             const definition: ManifestScoringDefinition = deepmerge(
-                ...module.ScoringDefinitions,
-            )
+                ...(module.ScoringDefinitions || []),
+            ) as unknown as ManifestScoringDefinition
 
             let state = "Start"
             let context = definition.Context
@@ -200,15 +198,21 @@ export function setupScoring(
                 context = immediate.context
             }
 
+            // @ts-expect-error Type issue
             scoring.Definition = definition
+            // @ts-expect-error Type issue
             scoring.Context = context
+            // @ts-expect-error Type issue
             scoring.State = state
         } else {
+            // @ts-expect-error Type issue
             scoring.Settings[name] = module
+            // @ts-expect-error Type issue
             delete scoring.Settings[name]["Type"]
         }
     }
 
+    // @ts-expect-error Type issue
     session.scoring = scoring
 }
 
@@ -219,7 +223,6 @@ export function setupScoring(
  * @param userId The event's target user.
  * @param event The event to send.
  * @see enqueuePushMessage
- * @author grappigegovert
  */
 export function enqueueEvent(userId: string, event: ServerToClientEvent): void {
     let userQueue: S2CEventWithTimestamp[] | undefined
@@ -346,7 +349,9 @@ export function newSession(
         failedObjectives: new Set(),
         recording: PeacockCameraStatus.NotSpotted,
         lastAccident: 0,
-        lastKill: {},
+        lastKill: {
+            legacyIsUnnoticed: true,
+        },
         kills: new Set(),
         compat: doScoring,
         markedTargets: new Set(),
@@ -373,13 +378,13 @@ export function newSession(
 }
 
 export type SSE3Response = {
-    SavedTokens: string[]
-    NewEvents: ServerToClientEvent[]
+    SavedTokens: string[] | null
+    NewEvents: ServerToClientEvent[] | null
     NextPoll: number
 }
 
 export type SSE4Response = SSE3Response & {
-    PushMessages: string[]
+    PushMessages: string[] | null
 }
 
 export function saveAndSyncEvents(
@@ -410,7 +415,7 @@ export function saveAndSyncEvents(
     let pushMessages: string[] | undefined
 
     if ((userPushQueue = pushMessageQueue.get(userId))) {
-        userPushQueue = userPushQueue.filter((item) => item.time > lastPushDt)
+        userPushQueue = userPushQueue.filter((item) => item.time > lastPushDt!)
         pushMessageQueue.set(userId, userPushQueue)
 
         pushMessages = Array.from(userPushQueue, (item) => item.message)
@@ -430,20 +435,21 @@ export function saveAndSyncEvents(
           }
 }
 
+type SSE3Body = {
+    lastEventTicks: number | string
+    userId: string
+    values: ClientToServerEvent[]
+}
+
+type SSE4Body = SSE3Body & {
+    lastPushDt: number | string
+}
+
 eventRouter.post(
     "/SaveAndSynchronizeEvents3",
     jsonMiddleware({ limit: "10Mb" }),
-    (
-        req: RequestWithJwt<
-            unknown,
-            {
-                lastEventTicks: number | string
-                userId: string
-                values: ClientToServerEvent[]
-            }
-        >,
-        res,
-    ) => {
+    // @ts-expect-error Request has jwt props.
+    (req: RequestWithJwt<unknown, SSE3Body>, res) => {
         if (req.body.userId !== req.jwt.unique_name) {
             res.status(403).send() // Trying to save events for other user
             return
@@ -469,18 +475,8 @@ eventRouter.post(
 eventRouter.post(
     "/SaveAndSynchronizeEvents4",
     jsonMiddleware({ limit: "10Mb" }),
-    (
-        req: RequestWithJwt<
-            unknown,
-            {
-                lastPushDt: number | string
-                lastEventTicks: number | string
-                userId: string
-                values: ClientToServerEvent[]
-            }
-        >,
-        res,
-    ) => {
+    // @ts-expect-error Request has jwt props.
+    (req: RequestWithJwt<unknown, SSE4Body>, res) => {
         if (req.body.userId !== req.jwt.unique_name) {
             res.status(403).send() // Trying to save events for other user
             return
@@ -507,6 +503,7 @@ eventRouter.post(
 eventRouter.post(
     "/SaveEvents2",
     jsonMiddleware({ limit: "10Mb" }),
+    // @ts-expect-error Request has jwt props.
     (req: RequestWithJwt, res) => {
         if (req.jwt.unique_name !== req.body.userId) {
             res.status(403).send() // Trying to save events for other user
@@ -522,7 +519,6 @@ eventRouter.post(
  *
  * @param uId The user's ID.
  * @returns The ID for the user's active session.
- * @author Reece Dunham
  */
 export function getActiveSessionIdForUser(uId: string): string | undefined {
     return userIdToTempSession.get(uId)
@@ -533,7 +529,6 @@ export function getActiveSessionIdForUser(uId: string): string | undefined {
  *
  * @param uId The user's ID.
  * @returns The user's active contract session.
- * @author Reece Dunham
  */
 export function getSession(uId: string): ContractSession | undefined {
     const currentSession = getActiveSessionIdForUser(uId)
@@ -595,7 +590,7 @@ function contractFailed(
         ) {
             if (session.completedObjectives.size === 0) break arcadeFail
 
-            for (const obj of json.Data.Objectives) {
+            for (const obj of json.Data.Objectives || []) {
                 if (
                     session.completedObjectives.has(obj.Id) &&
                     obj.Category === "primary"
@@ -645,7 +640,8 @@ function saveEvents(
     const response: string[] = []
     const processed: string[] = []
     const userData = getUserData(userId, gameVersion)
-    events.forEach((event) => {
+
+    for (const event of events) {
         let session = contractSessions.get(event.ContractSessionId)
 
         if (!session) {
@@ -671,13 +667,11 @@ function saveEvents(
             session.contractId !== event.ContractId ||
             session.userId !== userId
         ) {
-            if (PEACOCK_DEV) {
-                log(LogLevel.DEBUG, "No session or session user ID mismatch!")
-                console.debug(session)
-                console.debug(event)
-            }
+            log(LogLevel.DEBUG, "No session or session user ID mismatch!")
+            logDebug(session)
+            logDebug(event)
 
-            return // session does not exist or contractid/userid doesn't match
+            continue // session does not exist or contractid/userid doesn't match
         }
 
         session.duration = event.Timestamp
@@ -707,7 +701,9 @@ function saveEvents(
 
                 const val = handleEvent(
                     objectiveDefinition as never,
-                    objectiveContext,
+                    // SMP sucks. Sorry, not sorry.
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    objectiveContext as any,
                     event.Value,
                     {
                         eventName: event.Name,
@@ -717,7 +713,7 @@ function saveEvents(
                 )
 
                 if (val.state === "Failure") {
-                    if (PEACOCK_DEV && contractType !== "evergreen") {
+                    if (contractType !== "evergreen") {
                         log(LogLevel.DEBUG, `Objective failed: ${objectiveId}`)
                     }
 
@@ -734,7 +730,6 @@ function saveEvents(
                     "An error occurred while tracing C2S events, please report this!",
                 )
                 log(LogLevel.ERROR, e)
-                log(LogLevel.ERROR, e.stack)
             }
         }
 
@@ -744,7 +739,9 @@ function saveEvents(
 
             const val = handleEvent(
                 session.scoring.Definition as never,
-                scoringContext,
+                // SMP sucks. Sorry, not sorry.
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                scoringContext as any,
                 event.Value,
                 {
                     eventName: event.Name,
@@ -762,13 +759,16 @@ function saveEvents(
 
         controller.challengeService.onContractEvent(event, session)
 
-        if (event.Name.startsWith("ScoringScreenEndState_")) {
+        if (
+            event.Name.startsWith("ScoringScreenEndState_") &&
+            session.evergreen
+        ) {
             session.evergreen.scoringScreenEndState = event.Name
 
             processed.push(event.Name)
             response.push(process.hrtime.bigint().toString())
 
-            return
+            continue
         }
 
         // these events are important but may be fired after the timer is over
@@ -786,14 +786,14 @@ function saveEvents(
         ) {
             // Do not handle events that occur after exiting the level
             response.push(process.hrtime.bigint().toString())
-            return
+            continue
         }
 
         if (handleMultiplayerEvent(event, session)) {
             processed.push(event.Name)
             response.push(process.hrtime.bigint().toString())
 
-            return
+            continue
         }
 
         switch (event.Name) {
@@ -804,6 +804,8 @@ function saveEvents(
                 )
                 break
             case "Kill": {
+                let couldCauseNoticedKill = true
+
                 const killValue = (event as KillC2SEvent).Value
 
                 if (session.firstKillTimestamp === undefined) {
@@ -817,6 +819,12 @@ function saveEvents(
                         timestamp: event.Timestamp,
                         repositoryIds: [killValue.RepositoryId],
                     }
+
+                    if (gameVersion === "h1" && killValue.Accident) {
+                        // this was an accident, can't be a noticed kill
+                        session.lastKill.legacyIsUnnoticed = true
+                        couldCauseNoticedKill = false
+                    }
                 }
 
                 if (killValue.KillContext === EDeathContext.eDC_NOT_HERO) {
@@ -826,13 +834,19 @@ function saveEvents(
                         `${killValue.RepositoryId} eliminated, 47 not responsible`,
                     )
                     response.push(process.hrtime.bigint().toString())
-                    return
+                    session.lastKill.legacyIsUnnoticed = true
+                    couldCauseNoticedKill = false
+                    continue
                 }
 
                 log(
                     LogLevel.DEBUG,
                     `Actor ${killValue.RepositoryId} eliminated.`,
                 )
+
+                if (couldCauseNoticedKill) {
+                    session.lastKill.legacyIsUnnoticed = false
+                }
 
                 if (killValue.IsTarget || contractType === "creation") {
                     const kill: RatingKill = {
@@ -855,6 +869,9 @@ function saveEvents(
 
                 break
             }
+            case "Unnoticed_Kill":
+                session.lastKill.legacyIsUnnoticed = true
+                break
             case "CrowdNPC_Died":
                 session.crowdNpcKills += 1
                 break
@@ -1010,7 +1027,10 @@ function saveEvents(
                     const areaId = (<AreaDiscoveredC2SEvent>event).Value
                         .RepositoryId
 
-                    const challengeId = getConfig("AreaMap", false)[areaId]
+                    const challengeId = getConfig<Record<string, string>>(
+                        "AreaMap",
+                        false,
+                    )[areaId]
                     const progress = userData.Extensions.ChallengeProgression
 
                     log(LogLevel.DEBUG, `Area discovered: ${areaId}`)
@@ -1044,16 +1064,22 @@ function saveEvents(
                 break
             // Evergreen
             case "CpdSet":
-                setCpd(
-                    event.Value as ContractProgressionData,
-                    userId,
-                    contract.Metadata.CpdId,
-                )
+                if (contract?.Metadata.CpdId) {
+                    setCpd(
+                        event.Value as ContractProgressionData,
+                        userId,
+                        contract.Metadata.CpdId,
+                    )
+                }
+
                 break
             case "Evergreen_Payout_Data":
-                session.evergreen.payout = (<Evergreen_Payout_DataC2SEvent>(
-                    event
-                )).Value.Total_Payout
+                if (session.evergreen) {
+                    session.evergreen.payout = (<Evergreen_Payout_DataC2SEvent>(
+                        event
+                    )).Value.Total_Payout
+                }
+
                 break
             case "MissionFailed_Event":
                 if (session.evergreen) {
@@ -1107,9 +1133,9 @@ function saveEvents(
         processed.push(event.Name)
 
         response.push(process.hrtime.bigint().toString())
-    })
+    }
 
-    if (PEACOCK_DEV && processed.length > 0) {
+    if (processed.length > 0) {
         log(
             LogLevel.DEBUG,
             `Event summary: ${picocolors.gray(processed.join(", "))}`,

@@ -44,11 +44,13 @@ module.exports = {
         ],
     },
     rules: {
+        "@typescript-eslint/prefer-optional-chain": "warn",
         "@typescript-eslint/explicit-module-boundary-types": "off",
         "@typescript-eslint/no-extra-semi": "off",
         "@typescript-eslint/no-non-null-assertion": "off",
         "@typescript-eslint/require-await": "warn",
         "@typescript-eslint/prefer-ts-expect-error": "error",
+        "no-nested-ternary": "warn",
         eqeqeq: "error",
         "no-duplicate-imports": "warn",
         "promise/always-return": "error",

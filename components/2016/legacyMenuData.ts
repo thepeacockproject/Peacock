@@ -25,36 +25,8 @@ import { getParentLocationByName } from "../contracts/dataGen"
 const legacyMenuDataRouter = Router()
 
 legacyMenuDataRouter.get(
-    "/debriefingchallenges",
-    (
-        req: RequestWithJwt<{ contractSessionId: string; contractId: string }>,
-        res,
-    ) => {
-        if (typeof req.query.contractId !== "string") {
-            res.status(400).send("invalid contractId")
-            return
-        }
-
-        // debriefingchallenges?contractSessionId=00000000000000-00000000-0000-0000-0000-000000000001&contractId=dd906289-7c32-427f-b689-98ae645b407f
-        res.json({
-            template: getConfig("LegacyDebriefingChallengesTemplate", false),
-            data: {
-                ChallengeData: {
-                    // FIXME: This may not work correctly; I don't know the actual format so I'm assuming challenge tree
-                    Children:
-                        controller.challengeService.getChallengeTreeForContract(
-                            req.query.contractId,
-                            req.gameVersion,
-                            req.jwt.unique_name,
-                        ),
-                },
-            },
-        })
-    },
-)
-
-legacyMenuDataRouter.get(
     "/MasteryLocation",
+    // @ts-expect-error Has jwt props.
     (req: RequestWithJwt<{ locationId: string; difficulty: string }>, res) => {
         const masteryData =
             controller.masteryService.getMasteryDataForDestination(

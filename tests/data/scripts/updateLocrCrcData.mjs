@@ -16,16 +16,19 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/* eslint-disable */
+import { pack } from "msgpackr"
+import { writeFile } from "node:fs/promises"
 
-/**
- * This file tricks WebStorm >= 2017.2 (and IntelliJ IDEA Ultimate) into doing
- * code completion properly for the plugin aliases.
- * This is a hacky workaround, but deal with it.
- */
+const lines = await fetch(
+    "https://raw.githubusercontent.com/glacier-modding/Hitman-l10n-Hashes/master/lines.json",
+)
+    .then((res) => res.json())
+    .catch(() => {
+        throw new Error("Failed to fetch lines.json")
+    })
 
-System.config({
-    paths: {
-        "@peacockproject/core/*": "./components/*",
-    },
+const outKeys = Object.keys(lines).map((key) => {
+    return parseInt(key, 16)
 })
+
+await writeFile("data/game-defined-locr-crc32s.msgpack", pack(outKeys))

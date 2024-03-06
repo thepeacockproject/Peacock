@@ -21,11 +21,11 @@ import { generateUserCentric } from "../contracts/dataGen"
 import { controller } from "../controller"
 import type {
     GameVersion,
-    JwtData,
     MissionStory,
     PlayNextCampaignDetails,
     UserCentricContract,
 } from "../types/types"
+import assert from "assert"
 
 /**
  * Main story campaign ordered mission IDs.
@@ -157,6 +157,8 @@ export function createMainOpportunityTile(
         false,
     )
 
+    assert.ok(contractData)
+
     return {
         CategoryType: "MainOpportunity",
         CategoryName: "UI_PLAYNEXT_MAINOPPORTUNITY_CATEGORY_NAME",
@@ -202,7 +204,7 @@ export type GameFacingPlayNextData = {
 
 export function getGamePlayNextData(
     contractId: string,
-    jwt: JwtData,
+    userId: string,
     gameVersion: GameVersion,
 ): GameFacingPlayNextData {
     const cats: PlayNextCategory[] = []
@@ -225,14 +227,9 @@ export function getGamePlayNextData(
 
         if (shouldContinue) {
             cats.push(
-                createPlayNextMission(
-                    jwt.unique_name,
-                    nextMissionId,
-                    gameVersion,
-                    {
-                        CampaignName: `UI_SEASON_${nextSeasonId}`,
-                    },
-                ),
+                createPlayNextMission(userId, nextMissionId, gameVersion, {
+                    CampaignName: `UI_SEASON_${nextSeasonId}`,
+                }),
             )
         }
 
@@ -244,7 +241,7 @@ export function getGamePlayNextData(
     if (pzIdIndex !== -1 && pzIdIndex !== orderedPZMissions.length - 1) {
         const nextMissionId = orderedPZMissions[pzIdIndex + 1]
         cats.push(
-            createPlayNextMission(jwt.unique_name, nextMissionId, gameVersion, {
+            createPlayNextMission(userId, nextMissionId, gameVersion, {
                 CampaignName: "UI_CONTRACT_CAMPAIGN_WHITE_SPIDER_TITLE",
                 ParentCampaignName: "UI_MENU_PAGE_SIDE_MISSIONS_TITLE",
             }),
@@ -255,7 +252,7 @@ export function getGamePlayNextData(
     if (contractId === "f1ba328f-e3dd-4ef8-bb26-0363499fdd95") {
         const nextMissionId = "0b616e62-af0c-495b-82e3-b778e82b5912"
         cats.push(
-            createPlayNextMission(jwt.unique_name, nextMissionId, gameVersion, {
+            createPlayNextMission(userId, nextMissionId, gameVersion, {
                 CampaignName: "UI_MENU_PAGE_SPECIAL_ASSIGNMENTS_TITLE",
                 ParentCampaignName: "UI_MENU_PAGE_SIDE_MISSIONS_TITLE",
             }),
@@ -274,7 +271,7 @@ export function getGamePlayNextData(
     if (pluginData) {
         if (pluginData.overrideIndex !== undefined) {
             cats[pluginData.overrideIndex] = createPlayNextMission(
-                jwt.unique_name,
+                userId,
                 pluginData.nextContractId,
                 gameVersion,
                 pluginData.campaignDetails,
@@ -282,7 +279,7 @@ export function getGamePlayNextData(
         } else {
             cats.push(
                 createPlayNextMission(
-                    jwt.unique_name,
+                    userId,
                     pluginData.nextContractId,
                     gameVersion,
                     pluginData.campaignDetails,
@@ -293,6 +290,6 @@ export function getGamePlayNextData(
 
     return {
         Categories: cats,
-        ProfileId: jwt.unique_name,
+        ProfileId: userId,
     }
 }

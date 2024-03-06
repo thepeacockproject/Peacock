@@ -16,7 +16,12 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type { GameVersion, JwtData, PeacockLocationsData } from "../types/types"
+import type {
+    CompletionData,
+    GameVersion,
+    PeacockLocationsData,
+    Unlockable,
+} from "../types/types"
 import { swapToBrowsingMenusStatus } from "../discordRp"
 import { getUserData } from "../databaseHandler"
 import { controller } from "../controller"
@@ -29,10 +34,32 @@ import {
 import { createLocationsData, getAllGameDestinations } from "./destinations"
 import { makeCampaigns } from "./campaigns"
 
-export function getHubData(gameVersion: GameVersion, jwt: JwtData) {
+type CareerEntry = {
+    Children: CareerEntryChild[]
+    Name: string
+    Location: Unlockable
+}
+
+type CareerEntryChild = {
+    IsLocked: boolean
+    Name: string
+    Image: string
+    Icon: string
+    CompletedChallengesCount: number
+    ChallengesCount: number
+    CategoryId: string
+    Description: string
+    Location: Unlockable
+    ImageLocked: string
+    RequiredResources: string[]
+    IsPack?: boolean
+    CompletionData: CompletionData
+}
+
+export function getHubData(gameVersion: GameVersion, userId: string) {
     swapToBrowsingMenusStatus(gameVersion)
 
-    const userdata = getUserData(jwt.unique_name, gameVersion)
+    const userdata = getUserData(userId, gameVersion)
 
     const contractCreationTutorial =
         gameVersion !== "scpc"
@@ -44,7 +71,7 @@ export function getHubData(gameVersion: GameVersion, jwt: JwtData) {
         gameVersion,
         true,
     )
-    const career =
+    const career: Record<string, CareerEntry> =
         gameVersion === "h3"
             ? {}
             : {
@@ -73,7 +100,7 @@ export function getHubData(gameVersion: GameVersion, jwt: JwtData) {
             controller.masteryService.getMasteryDataForDestination(
                 parent,
                 gameVersion,
-                jwt.unique_name,
+                userId,
             ).length
         ) {
             const completionData =
@@ -81,7 +108,7 @@ export function getHubData(gameVersion: GameVersion, jwt: JwtData) {
                     parent,
                     parent,
                     gameVersion,
-                    jwt.unique_name,
+                    userId,
                     parent.includes("SNUG") ? "evergreen" : "mission",
                     gameVersion === "h1" ? "normal" : undefined,
                 )
@@ -100,7 +127,7 @@ export function getHubData(gameVersion: GameVersion, jwt: JwtData) {
                                           parent,
                                           parent,
                                           gameVersion,
-                                          jwt.unique_name,
+                                          userId,
                                           parent.includes("SNUG")
                                               ? "evergreen"
                                               : "mission",
@@ -137,14 +164,14 @@ export function getHubData(gameVersion: GameVersion, jwt: JwtData) {
         const challengeCompletion =
             controller.challengeService.countTotalNCompletedChallenges(
                 challenges,
-                jwt.unique_name,
+                userId,
                 gameVersion,
             )
 
-        career[parent]?.Children.push({
-            IsLocked: location.Properties.IsLocked,
+        career[parent!]?.Children.push({
+            IsLocked: Boolean(location.Properties.IsLocked),
             Name: location.DisplayNameLocKey,
-            Image: location.Properties.Icon,
+            Image: location.Properties.Icon || "",
             Icon: location.Type, // should be "location" for all locations
             CompletedChallengesCount:
                 challengeCompletion.CompletedChallengesCount,
@@ -152,14 +179,10 @@ export function getHubData(gameVersion: GameVersion, jwt: JwtData) {
             CategoryId: child,
             Description: `UI_${child}_PRIMARY_DESC`,
             Location: location,
-            ImageLocked: location.Properties.LockedIcon,
-            RequiredResources: location.Properties.RequiredResources,
+            ImageLocked: location.Properties.LockedIcon || "",
+            RequiredResources: location.Properties.RequiredResources || [],
             IsPack: false, // should be false for all locations
-            CompletionData: generateCompletionData(
-                child,
-                jwt.unique_name,
-                gameVersion,
-            ),
+            CompletionData: generateCompletionData(child, userId, gameVersion),
         })
     }
 
@@ -176,10 +199,10 @@ export function getHubData(gameVersion: GameVersion, jwt: JwtData) {
             },
         },
         DashboardData: [],
-        DestinationsData: getAllGameDestinations(gameVersion, jwt),
+        DestinationsData: getAllGameDestinations(gameVersion, userId),
         CreateContractTutorial: generateUserCentric(
             contractCreationTutorial,
-            jwt.unique_name,
+            userId,
             gameVersion,
         ),
         LocationsData: createLocationsData(gameVersion, true),
@@ -189,7 +212,7 @@ export function getHubData(gameVersion: GameVersion, jwt: JwtData) {
             },
             MasteryData: masteryData,
         },
-        StoryData: makeCampaigns(gameVersion, jwt.unique_name),
+        StoryData: makeCampaigns(gameVersion, userId),
         FilterData: getVersionedConfig("FilterData", gameVersion, false),
         StoreData: getVersionedConfig("StoreData", gameVersion, false),
         IOIAccountStatus: {

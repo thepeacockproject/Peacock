@@ -138,9 +138,7 @@ export function getPlatformEntitlements(
     req: RequestWithJwt,
     res: Response,
 ): void {
-    if (PEACOCK_DEV) {
-        log(LogLevel.DEBUG, `Platform issuer: ${req.body.issuerId}`)
-    }
+    log(LogLevel.DEBUG, `Platform issuer: ${req.body.issuerId}`)
 
     const exts = getUserData(req.jwt.unique_name, req.gameVersion).Extensions
         .entP

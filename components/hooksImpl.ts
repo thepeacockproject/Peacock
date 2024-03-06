@@ -89,7 +89,7 @@ export interface Intercept<Params, Return> {
      * @param context The context object. Can be modified.
      * @param params The parameters that the taps will get. Can be modified.
      */
-    call(context, ...params: AsArray<Params>): void
+    call(context: unknown, ...params: AsArray<Params>): void | Promise<void>
 
     /**
      * A function called when the hook is tapped. Note that it will not be called when an interceptor is registered, since that doesn't count as a tap.
@@ -108,8 +108,8 @@ export interface Intercept<Params, Return> {
  * @see AsyncSeriesHook
  */
 export abstract class BaseImpl<Params, Return = void> {
-    protected _intercepts: Intercept<Params, Return>[]
-    protected _taps: Tap<Params, Return>[]
+    protected _intercepts!: Intercept<Params, Return>[]
+    protected _taps!: Tap<Params, Return>[]
 
     /**
      * Register an interceptor.

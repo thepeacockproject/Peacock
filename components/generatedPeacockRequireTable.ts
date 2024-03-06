@@ -37,13 +37,11 @@ import * as platformEntitlements from "./platformEntitlements"
 import * as playStyles from "./playStyles"
 import * as profileHandler from "./profileHandler"
 import * as scoreHandler from "./scoreHandler"
-import * as sessionSerialization from "./sessionSerialization"
 import * as smfSupport from "./smfSupport"
 import * as utils from "./utils"
 import * as webFeatures from "./webFeatures"
 import * as legacyContractHandler from "./2016/legacyContractHandler"
 import * as legacyMenuData from "./2016/legacyMenuData"
-import * as legacyMenuSystem from "./2016/legacyMenuSystem"
 import * as legacyProfileRouter from "./2016/legacyProfileRouter"
 import * as challengeHelpers from "./candle/challengeHelpers"
 import * as challengeService from "./candle/challengeService"
@@ -57,7 +55,7 @@ import * as elusiveTargets from "./contracts/elusiveTargets"
 import * as hitsCategoryService from "./contracts/hitsCategoryService"
 import * as leaderboards from "./contracts/leaderboards"
 import * as missionsInLocation from "./contracts/missionsInLocation"
-import * as reportRouting from "./contracts/reportRouting"
+import * as sessions from "./contracts/sessions"
 import * as client from "./discord/client"
 import * as ipc from "./discord/ipc"
 import * as liveSplitClient from "./livesplit/liveSplitClient"
@@ -69,6 +67,7 @@ import * as hub from "./menus/hub"
 import * as imageHandler from "./menus/imageHandler"
 import * as menuSystem from "./menus/menuSystem"
 import * as planning from "./menus/planning"
+import * as playerProfile from "./menus/playerProfile"
 import * as playnext from "./menus/playnext"
 import * as sniper from "./menus/sniper"
 import * as stashpoints from "./menus/stashpoints"
@@ -125,10 +124,6 @@ export default {
         ...profileHandler,
     },
     "@peacockproject/core/scoreHandler": { __esModule: true, ...scoreHandler },
-    "@peacockproject/core/sessionSerialization": {
-        __esModule: true,
-        ...sessionSerialization,
-    },
     "@peacockproject/core/smfSupport": { __esModule: true, ...smfSupport },
     "@peacockproject/core/utils": { __esModule: true, ...utils },
     "@peacockproject/core/webFeatures": { __esModule: true, ...webFeatures },
@@ -139,10 +134,6 @@ export default {
     "@peacockproject/core/2016/legacyMenuData": {
         __esModule: true,
         ...legacyMenuData,
-    },
-    "@peacockproject/core/2016/legacyMenuSystem": {
-        __esModule: true,
-        ...legacyMenuSystem,
     },
     "@peacockproject/core/2016/legacyProfileRouter": {
         __esModule: true,
@@ -193,9 +184,9 @@ export default {
         __esModule: true,
         ...missionsInLocation,
     },
-    "@peacockproject/core/contracts/reportRouting": {
+    "@peacockproject/core/contracts/sessions": {
         __esModule: true,
-        ...reportRouting,
+        ...sessions,
     },
     "@peacockproject/core/discord/client": { __esModule: true, ...client },
     "@peacockproject/core/discord/ipc": { __esModule: true, ...ipc },
@@ -226,6 +217,10 @@ export default {
         ...menuSystem,
     },
     "@peacockproject/core/menus/planning": { __esModule: true, ...planning },
+    "@peacockproject/core/menus/playerProfile": {
+        __esModule: true,
+        ...playerProfile,
+    },
     "@peacockproject/core/menus/playnext": { __esModule: true, ...playnext },
     "@peacockproject/core/menus/sniper": { __esModule: true, ...sniper },
     "@peacockproject/core/menus/stashpoints": {

@@ -38,6 +38,7 @@ const legacyProfileRouter = Router()
 legacyProfileRouter.post(
     "/ChallengesService/GetActiveChallenges",
     jsonMiddleware(),
+    // @ts-expect-error Has jwt props.
     (req: RequestWithJwt, res) => {
         if (!uuidRegex.test(req.body.contractId)) {
             return res.status(404).send("invalid contract")
@@ -93,7 +94,13 @@ legacyProfileRouter.post(
 legacyProfileRouter.post(
     "/ChallengesService/GetProgression",
     jsonMiddleware(),
+    // @ts-expect-error Has jwt props.
     (req: RequestWithJwt<never, LegacyGetProgressionBody>, res) => {
+        if (!Array.isArray(req.body.challengeids)) {
+            res.status(400).send("invalid body")
+            return
+        }
+
         const legacyGlobalChallenges = getConfig<CompiledChallengeIngameData[]>(
             "LegacyGlobalChallenges",
             false,
@@ -114,10 +121,11 @@ legacyProfileRouter.post(
                 MustBeSaved: false,
             }))
 
-        /*
         for (const challengeId of req.body.challengeids) {
-            const challenge =
-                controller.challengeService.getChallengeById(challengeId)
+            const challenge = controller.challengeService.getChallengeById(
+                challengeId,
+                "h1",
+            )
 
             if (!challenge) {
                 log(
@@ -128,7 +136,7 @@ legacyProfileRouter.post(
             }
 
             const progression =
-                controller.challengeService.getChallengeProgression(
+                controller.challengeService.getPersistentChallengeProgression(
                     req.jwt.unique_name,
                     challengeId,
                     req.gameVersion,
@@ -138,19 +146,16 @@ legacyProfileRouter.post(
                 ChallengeId: challengeId,
                 ProfileId: req.jwt.unique_name,
                 Completed: progression.Completed,
+                Ticked: progression.Ticked,
                 State: progression.State,
                 ETag: `W/"datetime'${encodeURIComponent(
                     new Date().toISOString(),
                 )}'"`,
                 CompletedAt: progression.CompletedAt,
-                MustBeSaved: false,
+                MustBeSaved: progression.MustBeSaved,
             })
         }
-         */
-        // TODO: atampy broke this - please fix
-        //      update(RD) nov 18 '22: fixed but still missing challenges in
-        //      2016 engine (e.g. showstopper is missing 9, 5 of which are the
-        //      classics I think, not sure about the other 4)
+        // TODO: HELP! Please DM rdil if you see this
 
         res.json(challenges)
     },

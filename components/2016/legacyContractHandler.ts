@@ -30,9 +30,58 @@ import { getPlayEscalationInfo } from "../contracts/escalations/escalationServic
 
 const legacyContractRouter = Router()
 
+/**
+ * This game changer was modified between H1 and H2 to add pacification tracking, but that crashes in H1, so we use the old version.
+ */
+const doNotGetSpottedH1: GameChanger = {
+    Id: "b48bb7f9-b630-48cb-a816-720ed7959319",
+    Name: "UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_DO_NOT_GET_SPOTTED_SECONDARY_NAME",
+    Description:
+        "UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_DO_NOT_GET_SPOTTED_SECONDARY_DESC",
+    Icon: "images/challenges/default_challenge_icon.png",
+    IsHidden: null,
+    TileImage:
+        "images/contractconditions/condition_contrac_do_not_be_spotted.jpg",
+    Resource: [],
+    Objectives: [
+        {
+            Id: "19bb5722-6a50-4bac-a6b9-339aa035d95d",
+            Category: "secondary",
+            OnActive: {},
+            BriefingText:
+                "$loc UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_DO_NOT_GET_SPOTTED_SECONDARY_OBJ",
+            HUDTemplate: {
+                display:
+                    "$loc UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_DO_NOT_GET_SPOTTED_SECONDARY_OBJ",
+            },
+            Type: "statemachine",
+            CombinedDisplayInHud: true,
+            Definition: {
+                Scope: "session",
+                States: {
+                    Start: {
+                        "-": {
+                            Transition: "Success",
+                        },
+                    },
+                    Success: {
+                        Spotted: {
+                            Transition: "Failure",
+                        },
+                        DisguiseBlown: {
+                            Transition: "Failure",
+                        },
+                    },
+                },
+            },
+        },
+    ],
+}
+
 legacyContractRouter.post(
     "/GetForPlay",
     jsonMiddleware(),
+    // @ts-expect-error Has jwt props.
     (req: RequestWithJwt, res) => {
         if (!uuidRegex.test(req.body.id)) {
             res.status(400).end()
@@ -83,7 +132,11 @@ legacyContractRouter.post(
             contractData.Data.GameChangerReferences = []
 
             for (const gameChangerId of contractData.Data.GameChangers) {
-                const gameChanger = gameChangerData[gameChangerId]
+                let gameChanger = gameChangerData[gameChangerId]
+
+                if (gameChangerId === "b48bb7f9-b630-48cb-a816-720ed7959319") {
+                    gameChanger = doNotGetSpottedH1
+                }
 
                 if (!gameChanger) {
                     log(
@@ -130,6 +183,7 @@ legacyContractRouter.post(
 legacyContractRouter.post(
     "/Start",
     jsonMiddleware(),
+    // @ts-expect-error Has jwt props.
     (req: RequestWithJwt, res) => {
         if (req.body.profileId !== req.jwt.unique_name) {
             res.status(400).end() // requested for different user id

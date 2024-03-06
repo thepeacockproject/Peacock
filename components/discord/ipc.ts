@@ -16,6 +16,10 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+// Vendor code - does not need type-checking.
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+
 import net from "net"
 import EventEmitter from "events"
 import axios from "axios"

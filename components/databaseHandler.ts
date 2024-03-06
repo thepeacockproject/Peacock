@@ -19,7 +19,7 @@
 import { readFile, writeFile } from "atomically"
 import { join } from "path"
 import type { ContractSession, GameVersion, UserProfile } from "./types/types"
-import { serializeSession, deserializeSession } from "./sessionSerialization"
+import { serializeSession, deserializeSession } from "./contracts/sessions"
 import { castUserProfile } from "./utils"
 import { log, LogLevel } from "./loggingInterop"
 import { unlink, readdir } from "fs/promises"

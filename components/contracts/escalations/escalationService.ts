@@ -26,7 +26,6 @@ import type {
 } from "../../types/types"
 import { getUserData } from "../../databaseHandler"
 import { log, LogLevel } from "../../loggingInterop"
-import assert from "assert"
 
 /**
  * Put a group id in here to hide it from the menus on 2016.
@@ -113,19 +112,25 @@ export function getLevelCount(
  * @param userId The current user's ID.
  * @param groupContractId The escalation's group contract ID.
  * @param gameVersion The game's version.
- * @returns The escalation play details.
+ * @returns The escalation play details, or an empty object if not applicable.
  */
 export function getPlayEscalationInfo(
     userId: string,
-    groupContractId: string,
+    groupContractId: string | undefined | null,
     gameVersion: GameVersion,
 ): EscalationInfo {
+    if (!groupContractId) {
+        return {}
+    }
+
     const userData = getUserData(userId, gameVersion)
 
     const p = getUserEscalationProgress(userData, groupContractId)
     const groupCt = controller.escalationMappings.get(groupContractId)
 
-    assert.ok(groupCt, `No escalation mapping for ${groupContractId}`)
+    if (!groupCt) {
+        return {}
+    }
 
     const totalLevelCount = getLevelCount(
         controller.resolveContract(groupContractId),
