@@ -1,0 +1,392 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "EnableExits": {
+            "$eq": [
+                "$fec9b2b8-19b8-450c-915b-f4b2c52b92d9",
+                "$c81e728d-9d4c-2f63-4f59-4501a83dc22d",
+                "$e5a57f4a-e5e3-b2a5-779d-a8f9b79a395b",
+                "Completed"
+            ]
+        },
+        "Entrances": [
+            "213d36c0-a6af-4533-90da-2c815f6ec927",
+            "57e5073f-b4e6-4717-a8db-cbc94cb51087"
+        ],
+        "Objectives": [
+            {
+                "Id": "fec9b2b8-19b8-450c-915b-f4b2c52b92d9",
+                "_comment": "----- Drown target 1 Julian -----",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_TUBEROSE_LVL2_TAR1_NAME"
+                },
+                "Type": "statemachine",
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "accident_drown",
+                        "HardCondition": true
+                    }
+                ],
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": [
+                            "4ac262f0-2ef8-4205-8c16-37f1c8c12b81"
+                        ]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "4ac262f0-2ef8-4205-8c16-37f1c8c12b81"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillMethodStrict",
+                                                    "accident_drown"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "4ac262f0-2ef8-4205-8c16-37f1c8c12b81"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "c81e728d-9d4c-2f63-4f59-4501a83dc22d",
+                "_comment": "----- Drown target2 a kitchen guy -----",
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_TUBEROSE_LVL2_TAR2_NAME"
+                },
+                "Type": "statemachine",
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "accident_drown",
+                        "HardCondition": true
+                    }
+                ],
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KilledActors": [],
+                        "Targets": [
+                            "d20d6e22-2ede-4e6d-b79c-25f225328f14"
+                        ]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "d20d6e22-2ede-4e6d-b79c-25f225328f14"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillMethodStrict",
+                                                    "accident_drown"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "d20d6e22-2ede-4e6d-b79c-25f225328f14"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Kill 5 Militia with Circumcision Knife or Amputation Knife",
+                "Id": "e5a57f4a-e5e3-b2a5-779d-a8f9b79a395b",
+                "Image": "images/contracts/escalation/contractescalation_tuberose_5militia.jpg",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "BriefingName": "$loc UI_PEACOCK_TUBEROSE_5_MILITIA_NAME",
+                "BriefingText": "$loc UI_PEACOCK_TUBEROSE_5_MILITIA_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_TUBEROSE_5_MILITIA_NAME"
+                },
+                "ForceShowOnLoadingScreen": true,
+                "DisplayAsKillObjective": false,
+                "Definition": {
+                    "ContextListeners": {
+                        "RemainingTargets": {
+                            "type": "target-counter",
+                            "header": "UI_PEACOCK_TARGETS_REMAINING",
+                            "deactivate": 0
+                        },
+                        "ForceUpdateCounters": {
+                            "type": "force-update",
+                            "target": "RemainingTargets"
+                        }
+                    },
+                    "Context": {
+                        "Scope": "hit",
+                        "ForceUpdateCounters": 0,
+                        "KillCounter": 0,
+                        "WrongMethodTargets": 0,
+                        "RemainingTargets": 5,
+                        "Targets": [
+                            "536c1a94-3537-4dac-b593-1a3cd3ec65a8",
+                            "4df0ce68-aec4-48a2-8469-a02de7d52ee9",
+                            "427e3109-2bd2-4453-91dc-8eef1203ea42",
+                            "5dcc84aa-0861-429d-93ad-d8f29693d5a4",
+                            "d95ca795-c9c5-4e15-9f89-333caeb2d413",
+                            "c7b9270b-7a28-45be-bc91-7df6bd19f9f3",
+                            "121b31f5-620c-46ed-8134-c6b2e0a0258f",
+                            "0e09b959-a198-4efd-b2c4-988583716dc0",
+                            "d598d898-889e-4d3e-8c5d-1f310a76fc7a",
+                            "b46396ee-cb0d-4619-ac3c-499419059b98"
+                        ]
+                    },
+                    "States": {
+                        "Start": {
+                            "-": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$.ForceUpdateCounters",
+                                            0
+                                        ]
+                                    },
+                                    "Actions": {
+                                        "$inc": "ForceUpdateCounters"
+                                    }
+                                }
+                            ],
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$inarray": {
+                                                    "in": "$.Targets",
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.RepositoryId"
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "$or": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillItemRepositoryId",
+                                                            "62c2ac2e-329e-4648-822a-e45a29a93cd0"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillItemRepositoryId",
+                                                            "e312a416-5b56-4cb5-8994-1d4bc82fbb84"
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Actions": {
+                                        "$dec": "RemainingTargets",
+                                        "$inc": "KillCounter",
+                                        "$remove": [
+                                            "$.Targets",
+                                            "$Value.RepositoryId"
+                                        ]
+                                    },
+                                    "Transition": "CheckCount"
+                                },
+                                {
+                                    "Condition": {
+                                        "$inarray": {
+                                            "in": "$.Targets",
+                                            "?": {
+                                                "$eq": [
+                                                    "$.#",
+                                                    "$Value.RepositoryId"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "Actions": {
+                                        "$inc": "WrongMethodTargets",
+                                        "$remove": [
+                                            "$.Targets",
+                                            "$Value.RepositoryId"
+                                        ]
+                                    },
+                                    "Transition": "CheckCount"
+                                }
+                            ]
+                        },
+                        "CheckCount": {
+                            "-": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$.RemainingTargets",
+                                            0
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$.WrongMethodTargets",
+                                            6
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                },
+                                {
+                                    "Transition": "Start"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Don't kill or Pacify Jackie Carrington -----",
+                "Image": "images/actors/actor_d6b753a7-7ece-4c4e-935b-d1815da8b5a6_0_0_0.jpg",
+                "Id": "7c360fb3-529e-43f3-9131-8c3534ad8739",
+                "ObjectiveType": "custom",
+                "DisplayAsKillObjective": false,
+                "IsHidden": false,
+                "BriefingName": "$loc UI_PEACOCK_TUBEROSE_CONTACT_NAME",
+                "BriefingText": "$loc UI_PEACOCK_TUBEROSE_CONTACT_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_TUBEROSE_CONTACT_DESC",
+                    "iconType": 17
+                },
+                "Category": "primary",
+                "Primary": true,
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "Targets": []
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "fd5e4b5f-ade1-4323-8622-823b48685b9f"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ],
+                            "Pacify": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "fd5e4b5f-ade1-4323-8622-823b48685b9f"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ],
+                            "exit_gate": [
+                                {
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [
+            "e37e5e2a-a39e-57d0-7b95-2d620a3d6165",
+            "f059f21c-912d-e96f-f05e-95977e959a9e"
+        ],
+        "GameChangerReferences": []
+    },
+    "Metadata": {
+        "Id": "f8a03722-a89c-0879-e893-82721383f025",
+        "IsPublished": true,
+        "TileImage": "images/contracts/escalation/contractescalation_tuberose.jpg",
+        "Title": "UI_PEACOCK_TUBEROSE2",
+        "Description": "UI_PEACOCK_ESCALATION_BANGKOK_DESC",
+        "Location": "LOCATION_BANGKOK_ZIKA",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/bangkok/scene_zika.entity",
+        "Type": "escalation",
+        "GroupObjectiveDisplayOrder": [
+            {
+                "Id": "fec9b2b8-19b8-450c-915b-f4b2c52b92d9",
+                "IsNew": true
+            },
+            {
+                "Id": "c81e728d-9d4c-2f63-4f59-4501a83dc22d",
+                "IsNew": true
+            },
+            {
+                "Id": "e5a57f4a-e5e3-b2a5-779d-a8f9b79a395b",
+                "IsNew": true
+            },
+            {
+                "Id": "e37e5e2a-a39e-57d0-7b95-2d620a3d6165",
+                "IsNew": true
+            },
+            {
+                "Id": "f059f21c-912d-e96f-f05e-95977e959a9e",
+                "IsNew": true
+            },
+            {
+                "Id": "7c360fb3-529e-43f3-9131-8c3534ad8739"
+            }
+        ],
+        "Entitlements": [
+            "H1_LEGACY_EXPANSION"
+        ],
+        "InGroup": "07c3c4e3-04d5-e089-3024-6d0733b24e16"
+    }
+}

@@ -1,0 +1,299 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "EnableExits": {
+            "$eq": [
+                "$77c8c9b6-eca1-11eb-9a03-0242ac130003",
+                "$2011b735-3e33-6083-3631-4002b720222b",
+                "Completed"
+            ]
+        },
+        "Entrances": [
+            "213d36c0-a6af-4533-90da-2c815f6ec927",
+            "3aa4388f-6f87-44a4-b3dc-ac015bf65264",
+            "3d59f7ff-11b5-4498-925d-d3a2ea148a4e",
+            "61f8efe4-7e9e-4add-b69e-bf40213209c2",
+            "83f4f967-71bb-48a1-bc53-1e472a9a1b3e",
+            "b33ae290-5ea1-4229-b41f-680a76d40320",
+            "c2302bad-8e77-4d72-88c2-36ac1ad8c1b4"
+        ],
+        "Objectives": [
+            {
+                "_comment": "----- Retrieve 2F keycards -----",
+                "Id": "77c8c9b6-eca1-11eb-9a03-0242ac130003",
+                "Image": "images/unlockables/item_perspective_a61d0f7d-f4dc-4fe2-a5c3-b90c71206642_0.jpg",
+                "ObjectiveType": "custom",
+                "BriefingName": "$loc UI_PEACOCK_TUBEROSE_KEYCARDS_NAME",
+                "BriefingText": "$loc UI_PEACOCK_TUBEROSE_KEYCARDS_DESC",
+                "DisplayAsKillObjective": false,
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_TUBEROSE_KEYCARDS_NAME",
+                    "iconType": 17
+                },
+                "Category": "primary",
+                "Primary": true,
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "MasterKeycardNumber": 0,
+                        "205_Keycard": false,
+                        "206_Keycard": false,
+                        "207_Keycard": false,
+                        "Targets": [
+                            "a61d0f7d-f4dc-4fe2-a5c3-b90c71206642",
+                            "e492898b-f1db-4321-98a2-da0ee0eb0a44",
+                            "e5a9424b-4aba-4334-b2a6-24f569a9e0bc"
+                        ]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "a61d0f7d-f4dc-4fe2-a5c3-b90c71206642"
+                                        ]
+                                    },
+                                    "Actions": {
+                                        "$set": [
+                                            "205_Keycard",
+                                            true
+                                        ]
+                                    },
+                                    "Transition": "Checkout"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "e492898b-f1db-4321-98a2-da0ee0eb0a44"
+                                        ]
+                                    },
+                                    "Actions": {
+                                        "$set": [
+                                            "206_Keycard",
+                                            true
+                                        ]
+                                    },
+                                    "Transition": "Checkout"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "e5a9424b-4aba-4334-b2a6-24f569a9e0bc"
+                                        ]
+                                    },
+                                    "Actions": {
+                                        "$set": [
+                                            "207_Keycard",
+                                            true
+                                        ]
+                                    },
+                                    "Transition": "Checkout"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "69f843a8-320d-47cf-ac96-e9ebba06415f"
+                                        ]
+                                    },
+                                    "Actions": {
+                                        "$inc": "MasterKeycardNumber"
+                                    },
+                                    "Transition": "Checkout"
+                                }
+                            ]
+                        },
+                        "Checkout": {
+                            "-": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$.205_Keycard",
+                                            "$.206_Keycard",
+                                            "$.207_Keycard",
+                                            true
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$.MasterKeycardNumber",
+                                            3
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Transition": "Start"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Disguise as a Hotel Staff and use Insecticide to sedate the hall -----",
+                "Id": "2011b735-3e33-6083-3631-4002b720222b",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "DisplayAsKillObjective": false,
+                "Image": "images/contracts/escalation/contractescalation_tuberose_staffinsecticide.jpg",
+                "IsHidden": false,
+                "BriefingName": "$loc UI_PEACOCK_TUBEROSE_DISINSECTION_NAME",
+                "BriefingText": "$loc UI_PEACOCK_TUBEROSE_DISINSECTION_HUD",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_TUBEROSE_DISINSECTION_HUD",
+                    "iconType": 17
+                },
+                "Definition": {
+                    "Scope": "hit",
+                    "States": {
+                        "Start": {
+                            "StartingSuit": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value",
+                                            "c96f9796-0194-47c6-836c-102473cc6c3c"
+                                        ]
+                                    },
+                                    "Transition": "AwaitingInsecticide"
+                                }
+                            ],
+                            "Disguise": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "c96f9796-0194-47c6-836c-102473cc6c3c"
+                                        ]
+                                    },
+                                    "Transition": "AwaitingInsecticide"
+                                }
+                            ],
+                            "setpieces": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "6322e7ea-9ef9-4f77-a873-97bcbdedfeee"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        },
+                        "AwaitingInsecticide": {
+                            "setpieces": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "6322e7ea-9ef9-4f77-a873-97bcbdedfeee"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Don't kill or Pacify Jackie Carrington -----",
+                "Image": "images/actors/actor_d6b753a7-7ece-4c4e-935b-d1815da8b5a6_0_0_0.jpg",
+                "Id": "7c360fb3-529e-43f3-9131-8c3534ad8739",
+                "ObjectiveType": "custom",
+                "DisplayAsKillObjective": false,
+                "IsHidden": false,
+                "BriefingName": "$loc UI_PEACOCK_TUBEROSE_CONTACT_NAME",
+                "BriefingText": "$loc UI_PEACOCK_TUBEROSE_CONTACT_HUD",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_TUBEROSE_CONTACT_HUD",
+                    "iconType": 17
+                },
+                "Category": "primary",
+                "Primary": true,
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "Targets": []
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "fd5e4b5f-ade1-4323-8622-823b48685b9f"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ],
+                            "Pacify": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "fd5e4b5f-ade1-4323-8622-823b48685b9f"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ],
+                            "exit_gate": [
+                                {
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [
+            "9a89c97d-532b-e8b2-6e34-312470321f2e"
+        ],
+        "GameChangerReferences": []
+    },
+    "Metadata": {
+        "Id": "3f2504e0-7929-745d-996a-a869134c252f",
+        "IsPublished": true,
+        "TileImage": "images/contracts/escalation/contractescalation_tuberose.jpg",
+        "Title": "UI_PEACOCK_TUBEROSE1",
+        "Description": "UI_PEACOCK_ESCALATION_BANGKOK_DESC",
+        "Location": "LOCATION_BANGKOK_ZIKA",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/bangkok/scene_zika.entity",
+        "Type": "escalation",
+        "GroupObjectiveDisplayOrder": [
+            {
+                "Id": "77c8c9b6-eca1-11eb-9a03-0242ac130003"
+            },
+            {
+                "Id": "7c360fb3-529e-43f3-9131-8c3534ad8739"
+            },
+            {
+                "Id": "2011b735-3e33-6083-3631-4002b720222b"
+            },
+            {
+                "Id": "9a89c97d-532b-e8b2-6e34-312470321f2e"
+            }
+        ],
+        "Entitlements": [
+            "H1_LEGACY_EXPANSION"
+        ],
+        "InGroup": "07c3c4e3-04d5-e089-3024-6d0733b24e16"
+    }
+}

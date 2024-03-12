@@ -1,0 +1,470 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Entrances": [
+            "213d36c0-a6af-4533-90da-2c815f6ec927",
+            "57e5073f-b4e6-4717-a8db-cbc94cb51087"
+        ],
+        "Objectives": [
+            {
+                "_comment": "----- Retrieve the Mine Disarm Device and put it in the leather briefcase -----",
+                "Id": "ad18abb2-ed6f-11eb-9a03-0242ac130003",
+                "Image": "images/contracts/escalation/contractescalation_tuberose_defuserinbriefcase.jpg",
+                "ObjectiveType": "custom",
+                "BriefingName": "$loc UI_PEACOCK_TRADITIONS_DETONATOR_AND_BRIEFCASE_NAME",
+                "BriefingText": "$loc UI_PEACOCK_TRADITIONS_DETONATOR_AND_BRIEFCASE_DESC",
+                "DisplayAsKillObjective": false,
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_TRADITIONS_DETONATOR_AND_BRIEFCASE_HUD",
+                    "iconType": 17
+                },
+                "Category": "primary",
+                "Primary": true,
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "Targets": [
+                            "30ae88f2-9f08-442a-a19a-64540d67ec93"
+                        ]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "30ae88f2-9f08-442a-a19a-64540d67ec93"
+                                        ]
+                                    },
+                                    "Transition": "defuser_got"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "97152c6c-4410-45ab-9e27-50150ce05f9b"
+                                        ]
+                                    },
+                                    "Transition": "empty_briefcase_got"
+                                }
+                            ]
+                        },
+                        "defuser_got": {
+                            "ItemPickedUp": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "97152c6c-4410-45ab-9e27-50150ce05f9b"
+                                        ]
+                                    },
+                                    "Transition": "defuser_and_emptybriefcase_got"
+                                }
+                            ],
+                            "ItemRemovedFromInventory": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "30ae88f2-9f08-442a-a19a-64540d67ec93"
+                                        ]
+                                    },
+                                    "Transition": "defuser_in_briefcase_out_hand"
+                                }
+                            ]
+                        },
+                        "empty_briefcase_got": {
+                            "ItemDropped": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "97152c6c-4410-45ab-9e27-50150ce05f9b"
+                                        ]
+                                    },
+                                    "Transition": "Start"
+                                }
+                            ],
+                            "ItemThrown": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "97152c6c-4410-45ab-9e27-50150ce05f9b"
+                                        ]
+                                    },
+                                    "Transition": "Start"
+                                }
+                            ],
+                            "ItemPickedUp": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "30ae88f2-9f08-442a-a19a-64540d67ec93"
+                                        ]
+                                    },
+                                    "Transition": "defuser_and_emptybriefcase_got"
+                                }
+                            ]
+                        },
+                        "defuser_and_emptybriefcase_got": {
+                            "ItemRemovedFromInventory": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "30ae88f2-9f08-442a-a19a-64540d67ec93"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ],
+                            "ItemDropped": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "97152c6c-4410-45ab-9e27-50150ce05f9b"
+                                        ]
+                                    },
+                                    "Transition": "defuser_got"
+                                }
+                            ],
+                            "ItemThrown": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "97152c6c-4410-45ab-9e27-50150ce05f9b"
+                                        ]
+                                    },
+                                    "Transition": "defuser_got"
+                                }
+                            ]
+                        },
+                        "defuser_in_briefcase_out_hand": {
+                            "ItemPickedUp": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "97152c6c-4410-45ab-9e27-50150ce05f9b"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "30ae88f2-9f08-442a-a19a-64540d67ec93"
+                                        ]
+                                    },
+                                    "Transition": "defuser_got"
+                                }
+                            ]
+                        },
+                        "Success": {
+                            "ItemDropped": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "97152c6c-4410-45ab-9e27-50150ce05f9b"
+                                        ]
+                                    },
+                                    "Transition": "defuser_in_briefcase_out_hand"
+                                }
+                            ],
+                            "ItemThrown": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "97152c6c-4410-45ab-9e27-50150ce05f9b"
+                                        ]
+                                    },
+                                    "Transition": "defuser_in_briefcase_out_hand"
+                                }
+                            ],
+                            "ItemPickedUp": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "30ae88f2-9f08-442a-a19a-64540d67ec93"
+                                        ]
+                                    },
+                                    "Transition": "defuser_and_emptybriefcase_got"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Erase the Recorder -----",
+                "Image": "images/contracts/escalation/contractescalation_tuberose_erasetherecorder.jpg",
+                "Id": "1b16413c-0e99-0419-690b-f9579e1f937c",
+                "ObjectiveType": "custom",
+                "DisplayAsKillObjective": false,
+                "IsHidden": false,
+                "BriefingName": "$loc UI_PEACOCK_TUBEROSE_ERASETHERECORDER_NAME",
+                "BriefingText": "$loc UI_PEACOCK_TUBEROSE_ERASETHERECORDER_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_TUBEROSE_ERASETHERECORDER_NAME",
+                    "iconType": 17
+                },
+                "Category": "primary",
+                "Primary": true,
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "Targets": []
+                    },
+                    "States": {
+                        "Start": {
+                            "SecuritySystemRecorder": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.event",
+                                            "erased"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$not": {
+                                            "$or": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "spotted"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "CameraDestroyed"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "erased"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- temporary Don't kill or Pacify Jackie Carrington -----",
+                "Image": "images/actors/actor_d6b753a7-7ece-4c4e-935b-d1815da8b5a6_0_0_0.jpg",
+                "Id": "37997e4f-1260-e830-4e30-00c914211265",
+                "ObjectiveType": "custom",
+                "DisplayAsKillObjective": false,
+                "IsHidden": false,
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "BriefingName": "$loc UI_PEACOCK_TUBEROSE_CONTACT_NAME",
+                "BriefingText": "$loc UI_PEACOCK_TUBEROSE_CONTACT_HUD",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_TUBEROSE_CONTACT_HUD",
+                    "iconType": 17
+                },
+                "Category": "primary",
+                "Primary": true,
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "Targets": []
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "fd5e4b5f-ade1-4323-8622-823b48685b9f"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ],
+                            "Pacify": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "fd5e4b5f-ade1-4323-8622-823b48685b9f"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ],
+                            "ObjectiveCompleted": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Id",
+                                            "$1b16413c-0e99-0419-690b-f9579e1f937c"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Activation": {
+                    "$eq": [
+                        "$1b16413c-0e99-0419-690b-f9579e1f937c",
+                        "Completed"
+                    ]
+                },
+                "_comment": "----- kill Jackie Carrington with Explosion-----",
+                "Image": "images/actors/actor_d6b753a7-7ece-4c4e-935b-d1815da8b5a6_0_0_0.jpg",
+                "Id": "7c360fb3-529e-43f3-9131-8c3534ad8739",
+                "ObjectiveType": "kill",
+                "DisplayAsKillObjective": true,
+                "IsHidden": false,
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_TUBEROSE_MASTERMIND_HUD"
+                },
+                "Category": "primary",
+                "Primary": true,
+                "Type": "statemachine",
+                "TargetConditions": [
+                    {
+                        "Type": "killmethod",
+                        "KillMethod": "explosion",
+                        "HardCondition": true
+                    }
+                ],
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "Targets": [
+                            "fd5e4b5f-ade1-4323-8622-823b48685b9f"
+                        ]
+                    },
+                    "States": {
+                        "Start": {
+                            "ObjectiveCompleted": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Id",
+                                            "$1b16413c-0e99-0419-690b-f9579e1f937c"
+                                        ]
+                                    },
+                                    "Transition": "AwaitingKill"
+                                }
+                            ]
+                        },
+                        "AwaitingKill": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "fd5e4b5f-ade1-4323-8622-823b48685b9f"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.Explosive",
+                                                    true
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "fd5e4b5f-ade1-4323-8622-823b48685b9f"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": [
+            "854abeb9-ccbe-4a71-b3c3-52f2f1447dab",
+            "f059f21c-912d-e96f-f05e-95977e959a9e",
+            "e37e5e2a-a39e-57d0-7b95-2d620a3d6165"
+        ],
+        "GameChangerReferences": []
+    },
+    "Metadata": {
+        "Id": "641fb153-25e1-3e3a-87d5-0f9429bd982a",
+        "IsPublished": true,
+        "TileImage": "images/contracts/escalation/contractescalation_tuberose.jpg",
+        "Title": "UI_PEACOCK_TUBEROSE3",
+        "Description": "UI_PEACOCK_ESCALATION_BANGKOK_DESC",
+        "Location": "LOCATION_BANGKOK_ZIKA",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/bangkok/scene_zika.entity",
+        "Type": "escalation",
+        "GroupObjectiveDisplayOrder": [
+            {
+                "Id": "ad18abb2-ed6f-11eb-9a03-0242ac130003",
+                "IsNew": true
+            },
+            {
+                "Id": "1b16413c-0e99-0419-690b-f9579e1f937c",
+                "IsNew": true
+            },
+            {
+                "Id": "7c360fb3-529e-43f3-9131-8c3534ad8739",
+                "IsNew": true
+            },
+            {
+                "Id": "854abeb9-ccbe-4a71-b3c3-52f2f1447dab",
+                "IsNew": true
+            },
+            {
+                "Id": "e37e5e2a-a39e-57d0-7b95-2d620a3d6165"
+            },
+            {
+                "Id": "f059f21c-912d-e96f-f05e-95977e959a9e"
+            },
+            {
+                "Id": "37997e4f-1260-e830-4e30-00c914211265"
+            }
+        ],
+        "Entitlements": [
+            "H1_LEGACY_EXPANSION"
+        ],
+        "InGroup": "07c3c4e3-04d5-e089-3024-6d0733b24e16"
+    }
+}
