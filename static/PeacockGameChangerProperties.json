@@ -383,5 +383,121 @@
                 }
             }
         ]
+    },
+    "9a89c97d-532b-e8b2-6e34-312470321f2e": {
+        "Name": "UI_PEACOCK_GAMECHANGERS_BANGKOK_TUBEROSE_FEWER_ENTRANCES_EXITS_TIER1_NAME",
+        "Description": "UI_PEACOCK_GAMECHANGERS_BANGKOK_TUBEROSE_FEWER_ENTRANCES_EXITS_TIER1_DESC",
+        "Icon": null,
+        "IsHidden": null,
+        "TileImage": "images/contracts/gamechangers/gamechanger_tuberose_fewerentrancesandexits_tier1.jpg",
+        "ObjectivesCategory": "primary",
+        "Resource": [],
+        "ExcludeFromScoring": true,
+        "Objectives": [
+            {
+                "Id": "a0b2f57a-537d-f01b-b71f-7046091e305b",
+                "Category": "primary",
+                "ObjectiveType": "condition",
+                "Exits": [
+                    "f227d7c6-6094-41ed-902f-b19a06513466",
+                    "1efc13bc-350f-4e16-b446-f42e2b8cce37"
+                ],
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "ExcludeFromScoring": true,
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "-": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "ShowBasedOnObjectives": null,
+        "IsPrestigeObjective": null
+    },
+    "f059f21c-912d-e96f-f05e-95977e959a9e": {
+        "Name": "UI_PEACOCK_GAMECHANGERS_BANGKOK_TUBEROSE_FEWER_ENTRANCES_EXITS_TIER2_NAME",
+        "Description": "UI_PEACOCK_GAMECHANGERS_BANGKOK_TUBEROSE_FEWER_ENTRANCES_EXITS_TIER2_DESC",
+        "Icon": null,
+        "IsHidden": null,
+        "TileImage": "images/contracts/gamechangers/gamechanger_tuberose_fewerentrancesandexits_tier2.jpg",
+        "ObjectivesCategory": "primary",
+        "Resource": [],
+        "ExcludeFromScoring": true,
+        "Objectives": [
+            {
+                "Id": "e37e5e2a-a39e-57d0-7b95-2d620a3d6165",
+                "Category": "primary",
+                "ObjectiveType": "condition",
+                "Exits": [
+                    "f227d7c6-6094-41ed-902f-b19a06513466"
+                ],
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "ExcludeFromScoring": true,
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "-": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "ShowBasedOnObjectives": null,
+        "IsPrestigeObjective": null
+    },
+    "e37e5e2a-a39e-57d0-7b95-2d620a3d6165": {
+        "Name": "UI_PEACOCK_GAMECHANGERS_BANGKOK_TUBEROSE_HARDCORE_NAME",
+        "Description": "UI_PEACOCK_GAMECHANGERS_BANGKOK_TUBEROSE_HARDCORE_DESC",
+        "Icon": null,
+        "IsHidden": null,
+        "TileImage": "images/contracts/gamechangers/gamechanger_tuberose_hardcore.jpg",
+        "ObjectivesCategory": "primary",
+        "Resource": [
+            "assembly:/_PRO/Scenes/Missions/Bangkok/difficulty_pro1_bangkok_tiger.brick"
+        ],
+        "Objectives": [
+            {
+                "Id": "2011b735-3e33-6083-3631-4002b720222b",
+                "Category": "primary",
+                "ObjectiveType": "condition",
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "ExcludeFromScoring": true,
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "-": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "ShowBasedOnObjectives": null,
+        "IsPrestigeObjective": null
     }
 }
