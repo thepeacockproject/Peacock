@@ -25,13 +25,33 @@
                     "HideProgression": false,
                     "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ARCADE",
                     "Icon": "arcademode",
-                    "LocationId": "LOCATION_PARENT_MIAMI",
+                    "LocationId": "LOCATION_MIAMI",
                     "ParentLocationId": "LOCATION_PARENT_MIAMI",
                     "Type": "contract",
                     "DifficultyLevels": [],
                     "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$ContractId",
+                                            "8e7e9f08-94c5-4667-ac8a-61aa15b74c0a"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["arcade", "hard"],
                     "InclusionData": {
-                        "ContractIds": ["de9788cc-b9c4-47fc-b5df-86451cd82c43"]
+                        "ContractIds": ["8e7e9f08-94c5-4667-ac8a-61aa15b74c0a"]
                     }
                 },
                 {
