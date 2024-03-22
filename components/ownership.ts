@@ -271,6 +271,13 @@ export const CONCRETEART_UNLOCKABLES = [
     "TOKEN_OUTFIT_HERO_CONCRETEART",
 ]
 
+export const SAMBUCA_UNLOCKABLES = [
+    "TOKEN_OUTFIT_REWARD_HERO_SB_PATCH_SUIT",
+    "PROP_EXPLOSIVE_PEN_SAMBUCA",
+    "PROP_GADGET_ROBOT_FLASH_SAMBUCA",
+    "PROP_MELEE_BLACK_PHONE_CORD_SAMBUCA",
+]
+
 export const brokenItems = [
     // duped dart gun (thanks IOI)
     "835ad050-6d19-4e94-80b1-f5cec9815ba3",
