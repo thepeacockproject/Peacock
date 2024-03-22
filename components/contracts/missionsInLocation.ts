@@ -290,6 +290,7 @@ export const missionsInLocations = {
             "dd68d30f-3900-415f-bb17-84681a2cd4fc",
             "9cbdb972-95df-4e0a-be77-7937ec6f2fb0",
         ],
+        LOCATION_MIAMI: ["de9788cc-b9c4-47fc-b5df-86451cd82c43"],
     },
     sniper: {
         LOCATION_AUSTRIA: ["ff9f46cf-00bd-4c12-b887-eac491c3a96d"],
