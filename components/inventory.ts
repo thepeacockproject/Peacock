@@ -27,6 +27,7 @@ import {
     H1_REQUIEM_UNLOCKABLES,
     H2_RACCOON_STINGRAY_UNLOCKABLES,
     MAKESHIFT_UNLOCKABLES,
+    SAMBUCA_UNLOCKABLES,
     SIN_ENVY_UNLOCKABLES,
     SIN_GLUTTONY_UNLOCKABLES,
     SIN_GREED_UNLOCKABLES,
@@ -63,6 +64,7 @@ const DELUXE_DATA = [
     ...SIN_WRATH_UNLOCKABLES,
     ...TRINITY_UNLOCKABLES,
     ...WINTERSPORTS_UNLOCKABLES,
+    ...SAMBUCA_UNLOCKABLES,
 ]
 
 /**
@@ -386,6 +388,13 @@ function filterAllowedContent(gameVersion: GameVersion, entP: string[]) {
             return (
                 e.includes("a1e9a63fa4f3425aa66b9b8fa3c9cc35") ||
                 e.includes("2184790")
+            )
+        }
+
+        if (SAMBUCA_UNLOCKABLES.includes(id)) {
+            return (
+                e.includes("9220c020262f420da06eb46a4b1ce86f") ||
+                e.includes("2828470")
             )
         }
 
