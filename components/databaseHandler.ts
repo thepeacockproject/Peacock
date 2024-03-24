@@ -21,18 +21,14 @@ import type { ContractSession, GameVersion, UserProfile } from "./types/types"
 import { deserializeSession, serializeSession } from "./contracts/sessions"
 import { castUserProfile } from "./utils"
 import { log, LogLevel } from "./loggingInterop"
-import { mkdir, readdir, unlink } from "fs/promises"
-import * as atomically from "atomically"
+import { mkdir, readdir, readFile, unlink, writeFile } from "fs/promises"
 import type * as nodeFs from "node:fs/promises"
 import { existsSync } from "fs"
-
-// read/write implementations from atomically package
-type AtomicallyReadWrite = Pick<typeof atomically, "writeFile" | "readFile">
 
 // unlink, mkdir, readdir from node:fs/promises
 type NodeUnlinkMkdirReaddir = Pick<
     typeof nodeFs,
-    "unlink" | "mkdir" | "readdir"
+    "unlink" | "mkdir" | "readdir" | "writeFile" | "readFile"
 >
 
 // custom exists function because node doesn't have an async version of existsSync
@@ -41,14 +37,12 @@ type ExistsPromise = {
 }
 
 /**
- * The fs implementation that this file uses.
+ * The fs implementation that this system uses.
  */
-export type DataStorageFs = AtomicallyReadWrite &
-    NodeUnlinkMkdirReaddir &
-    ExistsPromise
+export type DataStorageFs = NodeUnlinkMkdirReaddir & ExistsPromise
 
 /**
- * Handles the dispatching of user data in a very inefficient but safe way, avoiding partial writes.
+ * Handles the dispatching of user data in a way that avoids FS operations unless absolutely needed.
  */
 class AsyncUserDataGuard {
     /** @internal */
@@ -67,13 +61,12 @@ class AsyncUserDataGuard {
 
     /**
      * Get the fs implementation to use for file read/writes.
-     * Mainly for test purposes.
-     * It also uses atomic FS reads/writes to prevent issues with partial writes.
+     * Mainly for test purposes, but could also be used by plugins to make it use a real database.
      */
     getFs(): DataStorageFs {
         return {
-            writeFile: atomically.writeFile,
-            readFile: atomically.readFile,
+            writeFile,
+            readFile,
             unlink,
             mkdir,
             readdir,
@@ -84,6 +77,12 @@ class AsyncUserDataGuard {
         }
     }
 
+    /**
+     * Get a loaded user's profile.
+     * @param id The target user ID.
+     * @returns The profile, or undefined if they're not loaded.
+     * Profiles are loaded when they perform the auth handshake via the game.
+     */
     getProfile(id: string): UserProfile | undefined {
         return this.userData.get(id)
     }
@@ -107,7 +106,8 @@ class AsyncUserDataGuard {
     }
 
     /**
-     * Saves the profile details - called by the background thread.
+     * Saves any modifications to a given profile, called by a background scheduled task.
+     * @param id The user ID.
      */
     save(id: string) {
         this.dirtyProfiles.delete(id)
@@ -142,7 +142,7 @@ class AsyncUserDataGuard {
     }
 
     /**
-     * Immediately write all files to the disk.
+     * Immediately write all loaded profiles to the disk, even if no changes are pending.
      */
     async forceFlush() {
         const taskKeys = this.tasks.keys()
@@ -197,7 +197,7 @@ export function getUserData(
 }
 
 /**
- * Only attempt to load a user's profile if it hasn't been loaded yet
+ * Attempts to load a user's profile if it hasn't been loaded yet.
  *
  * @param userId The user's ID.
  * @param gameVersion The game's version.

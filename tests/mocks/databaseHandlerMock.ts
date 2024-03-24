@@ -20,7 +20,7 @@ import type { DataStorageFs } from "../../components/databaseHandler"
 import * as databaseHandler from "../../components/databaseHandler"
 import { expect, MockInstance, vi } from "vitest"
 import * as nodeFs from "fs"
-import { constants, Filename, npath } from "@yarnpkg/fslib"
+import { constants, Filename, npath, Path } from "@yarnpkg/fslib"
 import { mountMemoryDrive } from "@yarnpkg/libzip"
 
 /** TS fun stuff. */
@@ -52,7 +52,7 @@ export async function mockDatabaseFs(): Promise<MockedFsReturn> {
             itBetterBeABuffer(data)
 
             return await memoryDrive.writeFilePromise(
-                npath.toPortablePath(path),
+                npath.toPortablePath(path as Path),
                 data,
             )
         },
@@ -60,7 +60,7 @@ export async function mockDatabaseFs(): Promise<MockedFsReturn> {
         async readFile(path) {
             try {
                 return await memoryDrive.readFilePromise(
-                    npath.toPortablePath(path),
+                    npath.toPortablePath(path as Path),
                 )
             } catch (e) {
                 console.error(path)

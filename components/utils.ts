@@ -647,14 +647,14 @@ export function handleAxiosError(error: AxiosError): void {
     if (error.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
-        log(LogLevel.DEBUG, `code ${error.response.status}`)
+        log(LogLevel.DEBUG, `Request error: code ${error.response.status}`)
     } else if (error.request) {
         // The request was made but no response was received
         // `error.request` is an instance of http.ClientRequest
-        log(LogLevel.DEBUG, `bad fetch`)
+        log(LogLevel.DEBUG, `Request error: bad fetch`)
     } else {
         // Something happened in setting up the request that triggered an Error
-        log(LogLevel.DEBUG, `generic`)
+        log(LogLevel.DEBUG, `Request error: something went wrong`)
     }
 }
 

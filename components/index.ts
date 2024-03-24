@@ -529,7 +529,10 @@ program.description(
     "The Peacock Project is a HITMAN™ World of Assassination Trilogy server replacement.",
 )
 
-function startServer(options: { hmr: boolean; pluginDevHost: boolean }): void {
+async function startServer(options: {
+    hmr: boolean
+    pluginDevHost: boolean
+}): Promise<void> {
     void checkForUpdates()
 
     if (!IS_LAUNCHER) {
@@ -561,42 +564,42 @@ function startServer(options: { hmr: boolean; pluginDevHost: boolean }): void {
         )
     }
 
-    // make sure required folder structure is in place
-    setupFileStructure()
-        .then(() => {
-            if (options.hmr) {
-                void setupHotListener("contracts", () => {
-                    log(
-                        LogLevel.INFO,
-                        "Detected a change in contracts! Re-indexing...",
-                    )
-                    controller.index()
-                })
-            }
+    try {
+        // make sure required folder structure is in place
+        await setupFileStructure()
 
-            // once contracts directory is present, we are clear to boot
-            loadouts.init()
-            void controller.boot(options.pluginDevHost)
+        if (options.hmr) {
+            void setupHotListener("contracts", () => {
+                log(
+                    LogLevel.INFO,
+                    "Detected a change in contracts! Re-indexing...",
+                )
+                controller.index()
+            })
+        }
 
-            const httpServer = http.createServer(app)
+        // once contracts directory is present, we are clear to boot
+        await loadouts.init()
+        await controller.boot(options.pluginDevHost)
 
-            // @ts-expect-error Non-matching method sig
-            httpServer.listen(port, host)
-            log(LogLevel.INFO, "Server started.")
+        const httpServer = http.createServer(app)
 
-            if (getFlag("discordRp") === true) {
-                initRp()
-            }
+        // @ts-expect-error Non-matching method sig
+        httpServer.listen(port, host)
+        log(LogLevel.INFO, "Server started.")
 
-            // initialize livesplit
-            void liveSplitManager.init()
+        if (getFlag("discordRp") === true) {
+            initRp()
+        }
 
-            return
-        })
-        .catch((e) => {
-            log(LogLevel.ERROR, "Critical error during bootstrap!")
-            log(LogLevel.ERROR, e)
-        })
+        // initialize livesplit
+        await liveSplitManager.init()
+
+        return
+    } catch (e) {
+        log(LogLevel.ERROR, "Critical error during bootstrap!")
+        log(LogLevel.ERROR, e)
+    }
 }
 
 program.option(
@@ -611,12 +614,7 @@ program.option(
 )
 program.action(startServer)
 
-program
-    .command("tools")
-    .description("open the tools UI")
-    .action(() => {
-        void toolsMenu()
-    })
+program.command("tools").description("open the tools UI").action(toolsMenu)
 
 // noinspection RequiredAttributes
 program
