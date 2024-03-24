@@ -16,56 +16,115 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { readFile, writeFile } from "atomically"
 import { join } from "path"
 import type { ContractSession, GameVersion, UserProfile } from "./types/types"
-import { serializeSession, deserializeSession } from "./contracts/sessions"
+import { deserializeSession, serializeSession } from "./contracts/sessions"
 import { castUserProfile } from "./utils"
 import { log, LogLevel } from "./loggingInterop"
-import { unlink, readdir } from "fs/promises"
+import { mkdir, readdir, readFile, unlink, writeFile } from "fs/promises"
+import type * as nodeFs from "node:fs/promises"
+import { existsSync } from "fs"
+
+// unlink, mkdir, readdir from node:fs/promises
+type NodeUnlinkMkdirReaddir = Pick<
+    typeof nodeFs,
+    "unlink" | "mkdir" | "readdir" | "writeFile" | "readFile"
+>
+
+// custom exists function because node doesn't have an async version of existsSync
+type ExistsPromise = {
+    exists: (path: string) => Promise<boolean>
+}
 
 /**
- * Container for functions that handle file read/writes,
- * which could otherwise break if writing partial data.
+ * The fs implementation that this system uses.
+ */
+export type DataStorageFs = NodeUnlinkMkdirReaddir & ExistsPromise
+
+/**
+ * Handles the dispatching of user data in a way that avoids FS operations unless absolutely needed.
  */
 class AsyncUserDataGuard {
-    private readonly userData: Record<string, UserProfile> = {}
-    private readonly dirtyProfiles: Set<string> = new Set()
+    /** @internal */
+    readonly userData: Map<string, UserProfile> = new Map()
+    /** @internal */
+    readonly dirtyProfiles: Set<string> = new Set()
+    /**
+     * Internal list of background tasks that have been scheduled.
+     * The key is the versioned user ID.
+     * @internal
+     */
+    readonly tasks: Map<string, NodeJS.Timeout> = new Map()
 
-    getProfile(id: string): UserProfile {
-        return this.userData[id]
+    /** If true, none of the background tasks will attempt to write. */
+    #paused = false
+
+    /**
+     * Get the fs implementation to use for file read/writes.
+     * Mainly for test purposes, but could also be used by plugins to make it use a real database.
+     */
+    getFs(): DataStorageFs {
+        return {
+            writeFile,
+            readFile,
+            unlink,
+            mkdir,
+            readdir,
+            exists(path) {
+                // node's fs doesn't have a promise version of exists
+                return Promise.resolve(existsSync(path))
+            },
+        }
+    }
+
+    /**
+     * Get a loaded user's profile.
+     * @param id The target user ID.
+     * @returns The profile, or undefined if they're not loaded.
+     * Profiles are loaded when they perform the auth handshake via the game.
+     */
+    getProfile(id: string): UserProfile | undefined {
+        return this.userData.get(id)
     }
 
     addLoadedProfile(id: string, profile: UserProfile): void {
-        if (!this.userData[id]) {
-            setInterval(() => {
-                if (!this.dirtyProfiles.has(id)) {
+        if (!this.userData.has(id) && !this.tasks.has(id)) {
+            const interval = setInterval(() => {
+                if (!this.dirtyProfiles.has(id) || this.#paused) {
                     return
                 }
 
-                this.dirtyProfiles.delete(id)
+                this.save(id)
+            }, 3000)
 
-                this.write(id)
-                    .then(() => undefined)
-                    .catch((e) => {
-                        log(
-                            LogLevel.ERROR,
-                            `Failed to write user profile ${id}: ${e}`,
-                        )
-                    })
-            }, 3000).unref()
+            this.tasks.set(id, interval.unref())
         }
 
-        this.userData[id] = profile
+        this.userData.set(id, profile)
         // just in case
         this.dirtyProfiles.delete(id)
+    }
+
+    /**
+     * Saves any modifications to a given profile, called by a background scheduled task.
+     * @param id The user ID.
+     */
+    save(id: string) {
+        this.dirtyProfiles.delete(id)
+
+        this.write(id)
+            .then(() => undefined)
+            .catch((e) => {
+                log(LogLevel.ERROR, `Failed to write user profile ${id}: ${e}`)
+            })
     }
 
     markDirty(id: string): void {
         this.dirtyProfiles.add(id)
     }
 
-    private async write(versionedId: string): Promise<void> {
+    /** @internal */
+    async write(versionedId: string): Promise<void> {
         let path
 
         const [id, gameVersion] = versionedId.split(".")
@@ -76,24 +135,58 @@ class AsyncUserDataGuard {
             path = join("userdata", "users", `${id}.json`)
         }
 
-        await writeFile(path, JSON.stringify(this.getProfile(versionedId)))
+        await this.getFs().writeFile(
+            path,
+            JSON.stringify(this.getProfile(versionedId)),
+        )
+    }
+
+    /**
+     * Immediately write all loaded profiles to the disk, even if no changes are pending.
+     */
+    async forceFlush() {
+        const taskKeys = this.tasks.keys()
+        this.#paused = true
+
+        for (const id of taskKeys) {
+            this.dirtyProfiles.delete(id)
+            await this.write(id)
+        }
+
+        this.#paused = false
+    }
+
+    /**
+     * Unload all profiles without saving.
+     */
+    unloadAll() {
+        for (const id of this.tasks.keys()) {
+            clearInterval(this.tasks.get(id))
+            this.dirtyProfiles.delete(id)
+            this.userData.delete(id)
+        }
     }
 }
 
-const asyncGuard = new AsyncUserDataGuard()
+/**
+ * If you are touching this, you better know what you're doing.
+ */
+export const asyncGuard = new AsyncUserDataGuard()
 
 /**
  * Gets a user's profile data.
  *
  * @param userId The user's ID.
  * @param gameVersion The game's version.
- * @returns The user's profile
+ * @returns The user's profile, OR UNDEFINED if not loaded.
  */
 export function getUserData(
     userId: string,
     gameVersion: GameVersion,
 ): UserProfile {
-    const data = asyncGuard.getProfile(`${userId}.${gameVersion}`)
+    // TODO: consumers could have undefined returned - this function needs undefined
+    //       as part of it's signature, but that requires a lot of changes.
+    const data = asyncGuard.getProfile(`${userId}.${gameVersion}`)!
 
     // NOTE: ProfileLevel always starts at 1
     if (data?.Extensions?.progression?.PlayerProfileXP?.ProfileLevel === 0) {
@@ -104,7 +197,7 @@ export function getUserData(
 }
 
 /**
- * Only attempt to load a user's profile if it hasn't been loaded yet
+ * Attempts to load a user's profile if it hasn't been loaded yet.
  *
  * @param userId The user's ID.
  * @param gameVersion The game's version.
@@ -150,7 +243,7 @@ export async function loadUserData(
     }
 
     const userProfile = castUserProfile(
-        JSON.parse((await readFile(path)).toString()),
+        JSON.parse((await asyncGuard.getFs().readFile(path)).toString()),
         gameVersion,
         path,
     )
@@ -199,16 +292,18 @@ export async function getExternalUserData(
     externalFolder: string,
     gameVersion: GameVersion,
 ): Promise<string> {
+    const fs = asyncGuard.getFs()
+
     if (["scpc", "h1", "h2"].includes(gameVersion)) {
         return (
-            await readFile(
+            await fs.readFile(
                 join("userdata", gameVersion, externalFolder, `${userId}.json`),
             )
         ).toString()
     }
 
     return (
-        await readFile(join("userdata", externalFolder, `${userId}.json`))
+        await fs.readFile(join("userdata", externalFolder, `${userId}.json`))
     ).toString()
 }
 
@@ -226,14 +321,16 @@ export async function writeExternalUserData(
     userData: string,
     gameVersion: GameVersion,
 ): Promise<void> {
+    const fs = asyncGuard.getFs()
+
     if (["scpc", "h1", "h2"].includes(gameVersion)) {
-        return await writeFile(
+        return await fs.writeFile(
             join("userdata", gameVersion, externalFolder, `${userId}.json`),
             userData,
         )
     }
 
-    return await writeFile(
+    return await fs.writeFile(
         join("userdata", externalFolder, `${userId}.json`),
         userData,
     )
@@ -248,7 +345,8 @@ export async function writeExternalUserData(
 export async function getContractSession(
     identifier: string,
 ): Promise<ContractSession> {
-    const files = await readdir("contractSessions")
+    const fs = asyncGuard.getFs()
+    const files = await fs.readdir("contractSessions")
     const filtered = files.filter((fn) => fn.endsWith(`_${identifier}.json`))
 
     if (filtered.length === 0) {
@@ -256,10 +354,12 @@ export async function getContractSession(
     }
 
     // The filtered files have the same identifier, they are just stored at different slots
-    // So we can read any of them and it will be the same.
+    // So we can read any of them, and it will be the same.
     return deserializeSession(
         JSON.parse(
-            (await readFile(join("contractSessions", filtered[0]))).toString(),
+            (
+                await fs.readFile(join("contractSessions", filtered[0]))
+            ).toString(),
         ),
     )
 }
@@ -274,7 +374,9 @@ export async function writeContractSession(
     identifier: string,
     session: ContractSession,
 ): Promise<void> {
-    return await writeFile(
+    const fs = asyncGuard.getFs()
+
+    return await fs.writeFile(
         join("contractSessions", `${identifier}.json`),
         JSON.stringify(serializeSession(session)),
     )
@@ -287,5 +389,46 @@ export async function writeContractSession(
  * @throws ENOENT if the file is not found.
  */
 export async function deleteContractSession(fileName: string): Promise<void> {
-    return await unlink(join("contractSessions", `${fileName}.json`))
+    const fs = asyncGuard.getFs()
+
+    return await fs.unlink(join("contractSessions", `${fileName}.json`))
+}
+
+/**
+ * Sets up the required file structure for the server.
+ *
+ * @param joinFunc The path join function to use, defaulting to Node's. You may need to specify it if working in a VFS.
+ */
+export async function setupFileStructure(joinFunc = join) {
+    const fs = asyncGuard.getFs()
+
+    for (const dir of [
+        "contractSessions",
+        "plugins",
+        "userdata",
+        "contracts",
+        joinFunc("userdata", "epicids"),
+        joinFunc("userdata", "steamids"),
+        joinFunc("userdata", "users"),
+        joinFunc("userdata", "h1", "steamids"),
+        joinFunc("userdata", "h1", "epicids"),
+        joinFunc("userdata", "h1", "users"),
+        joinFunc("userdata", "h2", "steamids"),
+        joinFunc("userdata", "h2", "users"),
+        joinFunc("userdata", "scpc", "users"),
+        joinFunc("userdata", "scpc", "steamids"),
+        joinFunc("images", "actors"),
+        joinFunc("images", "contracts"),
+        joinFunc("images", "contracts", "elusive"),
+        joinFunc("images", "contracts", "escalation"),
+        joinFunc("images", "contracts", "featured"),
+        joinFunc("images", "unlockables_override"),
+    ]) {
+        if (await fs.exists(dir)) {
+            continue
+        }
+
+        log(LogLevel.DEBUG, `Creating missing directory ${dir}`)
+        await fs.mkdir(dir, { recursive: true })
+    }
 }
