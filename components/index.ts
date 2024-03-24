@@ -608,7 +608,7 @@ program.option(
 )
 program.option(
     "--plugin-dev-host",
-    "activate plugin development features - requires plugin dev workspace setupFileStructure",
+    "activate plugin development features - requires plugin dev workspace setup",
     getFlag("developmentPluginDevHost") as boolean,
 )
 program.action(startServer)
