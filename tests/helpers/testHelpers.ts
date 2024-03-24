@@ -19,8 +19,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type * as core from "express-serve-static-core"
 import { RequestWithJwt } from "../../components/types/types"
-import { Mock, vi, expect } from "vitest"
+import { expect, Mock, test, vi } from "vitest"
 import { sign } from "jsonwebtoken"
+import { mockDatabaseFs, MockedFsReturn } from "../mocks/databaseHandlerMock"
+import type { DataStorageFs } from "../../components/databaseHandler"
 
 export function asMock<T>(value: T): Mock {
     return value as Mock
@@ -97,3 +99,24 @@ export function getMockCallArgument<T>(
 
     return asMock(value).mock.calls[call][argument] as T
 }
+
+/**
+ * Vitest's `test` function, but `fakeFs` is available on the context object.
+ * Provides a temporary, in-memory, per-test, disposable file system.
+ */
+export const testWithFakeFs = test.extend<{
+    fakeFs: DataStorageFs
+    fakeFsData: MockedFsReturn
+}>({
+    fakeFs: async ({ fakeFsData }, use) => {
+        await use(fakeFsData.fsImpl)
+    },
+    // eslint-disable-next-line no-empty-pattern
+    fakeFsData: async ({}, use) => {
+        const dbFs = await mockDatabaseFs()
+
+        await use(dbFs)
+
+        dbFs.discard()
+    },
+})

@@ -21,9 +21,6 @@ import "./generatedPeacockRequireTable"
 
 // load flags as soon as possible
 import { getFlag, loadFlags } from "./flags"
-
-loadFlags()
-
 import { program } from "commander"
 import express, { Request, Router } from "express"
 import http from "http"
@@ -49,8 +46,7 @@ import type {
     S2CEventWithTimestamp,
     ServerConnectionConfig,
 } from "./types/types"
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs"
-import { join } from "path"
+import { readFileSync, writeFileSync } from "fs"
 import {
     errorLoggingMiddleware,
     log,
@@ -88,7 +84,9 @@ import { multiplayerRouter } from "./multiplayer/multiplayerService"
 import { multiplayerMenuDataRouter } from "./multiplayer/multiplayerMenuData"
 import { pack, unpack } from "msgpackr"
 import { liveSplitManager } from "./livesplit/liveSplitManager"
-import { cheapLoadUserData } from "./databaseHandler"
+import { cheapLoadUserData, setupFileStructure } from "./databaseHandler"
+
+loadFlags()
 
 loadFlags()
 
@@ -554,7 +552,6 @@ function startServer(options: { hmr: boolean; pluginDevHost: boolean }): void {
         `This is Peacock v${PEACOCKVERSTRING} (rev ${PEACOCKVER}), with Node v${process.versions.node}.`,
     )
 
-    // jokes lol
     if (getFlag("jokes") === true) {
         log(
             LogLevel.INFO,
@@ -565,61 +562,41 @@ function startServer(options: { hmr: boolean; pluginDevHost: boolean }): void {
     }
 
     // make sure required folder structure is in place
-    for (const dir of [
-        "contractSessions",
-        "plugins",
-        "userdata",
-        "contracts",
-        join("userdata", "epicids"),
-        join("userdata", "steamids"),
-        join("userdata", "users"),
-        join("userdata", "h1", "steamids"),
-        join("userdata", "h1", "epicids"),
-        join("userdata", "h1", "users"),
-        join("userdata", "h2", "steamids"),
-        join("userdata", "h2", "users"),
-        join("userdata", "scpc", "users"),
-        join("userdata", "scpc", "steamids"),
-        join("images", "actors"),
-        join("images", "contracts"),
-        join("images", "contracts", "elusive"),
-        join("images", "contracts", "escalation"),
-        join("images", "contracts", "featured"),
-        join("images", "unlockables_override"),
-    ]) {
-        if (existsSync(dir)) {
-            continue
-        }
+    setupFileStructure()
+        .then(() => {
+            if (options.hmr) {
+                void setupHotListener("contracts", () => {
+                    log(
+                        LogLevel.INFO,
+                        "Detected a change in contracts! Re-indexing...",
+                    )
+                    controller.index()
+                })
+            }
 
-        log(LogLevel.DEBUG, `Creating missing directory ${dir}`)
-        mkdirSync(dir, { recursive: true })
-    }
+            // once contracts directory is present, we are clear to boot
+            loadouts.init()
+            void controller.boot(options.pluginDevHost)
 
-    if (options.hmr) {
-        log(LogLevel.DEBUG, "Experimental HMR enabled.")
+            const httpServer = http.createServer(app)
 
-        void setupHotListener("contracts", () => {
-            log(LogLevel.INFO, "Detected a change in contracts! Re-indexing...")
-            controller.index()
+            // @ts-expect-error Non-matching method sig
+            httpServer.listen(port, host)
+            log(LogLevel.INFO, "Server started.")
+
+            if (getFlag("discordRp") === true) {
+                initRp()
+            }
+
+            // initialize livesplit
+            void liveSplitManager.init()
+
+            return
         })
-    }
-
-    // once contracts directory is present, we are clear to boot
-    loadouts.init()
-    void controller.boot(options.pluginDevHost)
-
-    const httpServer = http.createServer(app)
-
-    // @ts-expect-error Non-matching method sig
-    httpServer.listen(port, host)
-    log(LogLevel.INFO, "Server started.")
-
-    if (getFlag("discordRp") === true) {
-        initRp()
-    }
-
-    // initialize livesplit
-    void liveSplitManager.init()
+        .catch((e) => {
+            log(LogLevel.ERROR, "Critical error during bootstrap!")
+            log(LogLevel.ERROR, e)
+        })
 }
 
 program.option(
@@ -629,7 +606,7 @@ program.option(
 )
 program.option(
     "--plugin-dev-host",
-    "activate plugin development features - requires plugin dev workspace setup",
+    "activate plugin development features - requires plugin dev workspace setupFileStructure",
     getFlag("developmentPluginDevHost") as boolean,
 )
 program.action(startServer)

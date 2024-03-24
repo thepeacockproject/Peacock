@@ -285,7 +285,6 @@ export async function resolveProfiles(
                         Gamertag: null,
                         DevId: "IOI",
                         SteamId: null,
-                        StadiaId: null,
                         EpicId: null,
                         NintendoId: null,
                         XboxLiveId: null,
@@ -312,7 +311,6 @@ export async function resolveProfiles(
                             fakePlayer.platform === "steam"
                                 ? fakePlayer.platformId
                                 : null,
-                        StadiaId: null,
                         EpicId:
                             fakePlayer.platform === "epic"
                                 ? fakePlayer.platformId

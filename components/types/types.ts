@@ -560,7 +560,6 @@ export interface UserProfile {
     Gamertag: string
     DevId: string | null
     SteamId: string | null
-    StadiaId: string | null
     EpicId: string | null
     NintendoId: string | null
     XboxLiveId: string | null
