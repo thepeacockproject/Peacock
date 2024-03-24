@@ -21,6 +21,9 @@ import "./generatedPeacockRequireTable"
 
 // load flags as soon as possible
 import { getFlag, loadFlags } from "./flags"
+
+loadFlags()
+
 import { program } from "commander"
 import express, { Request, Router } from "express"
 import http from "http"
@@ -85,10 +88,6 @@ import { multiplayerMenuDataRouter } from "./multiplayer/multiplayerMenuData"
 import { pack, unpack } from "msgpackr"
 import { liveSplitManager } from "./livesplit/liveSplitManager"
 import { cheapLoadUserData, setupFileStructure } from "./databaseHandler"
-
-loadFlags()
-
-loadFlags()
 
 const host = process.env.HOST || "0.0.0.0"
 const port = process.env.PORT || 80
