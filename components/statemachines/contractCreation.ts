@@ -22,7 +22,7 @@ import { randomUUID } from "crypto"
 /**
  * The payload provided to the game for each target in the create menu route.
  */
-export interface IContractCreationPayload {
+export type ContractCreationNpcTargetPayload = {
     RepositoryId: string
     Selected: boolean
     Weapon: {
@@ -38,169 +38,127 @@ export interface IContractCreationPayload {
     }
 }
 
-/**
- * The target creator API.
- */
-export class TargetCreator {
-    // @ts-expect-error TODO: type this
-    private _targetSm
-    // @ts-expect-error TODO: type this
-    private _outfitSm
-    private _targetConds: undefined | unknown[] = undefined
-
-    /**
-     * The constructor.
-     *
-     * @param _params The contract creation payload.
-     */
-    public constructor(private readonly _params: IContractCreationPayload) {}
-
-    private _requireTargetConds(): void {
-        if (!this._targetConds || !Array.isArray(this._targetConds)) {
-            this._targetConds = []
-        }
-    }
-
-    private _bootstrapEntrySm(): void {
-        this._targetSm = {
-            Type: "statemachine",
-            Id: randomUUID(),
-            BriefingText: {
-                $loc: {
-                    key: "UI_CONTRACT_GENERAL_OBJ_KILL",
-                    data: `$($repository ${this._params.RepositoryId}).Name`,
-                },
+const createTargetKillObjective = (
+    params: ContractCreationNpcTargetPayload,
+): MissionManifestObjective => ({
+    Type: "statemachine",
+    Id: randomUUID(),
+    BriefingText: {
+        $loc: {
+            key: "UI_CONTRACT_GENERAL_OBJ_KILL",
+            data: `$($repository ${params.RepositoryId}).Name`,
+        },
+    },
+    HUDTemplate: {
+        display: {
+            $loc: {
+                key: "UI_CONTRACT_GENERAL_OBJ_KILL",
+                data: `$($repository ${params.RepositoryId}).Name`,
             },
-            HUDTemplate: {
-                display: {
-                    $loc: {
-                        key: "UI_CONTRACT_GENERAL_OBJ_KILL",
-                        data: `$($repository ${this._params.RepositoryId}).Name`,
+        },
+    },
+    Category: "primary",
+    Definition: {
+        Scope: "Hit",
+        Context: {
+            Targets: [params.RepositoryId],
+        },
+        States: {
+            Start: {
+                Kill: {
+                    Condition: {
+                        $eq: ["$Value.RepositoryId", params.RepositoryId],
                     },
+                    Transition: "Success",
                 },
             },
-            Category: "primary",
-            Definition: {
-                Scope: "Hit",
-                Context: {
-                    Targets: [this._params.RepositoryId],
-                },
-                States: {
-                    Start: {
-                        Kill: [
-                            // this is the base state machine, we don't have fail states
-                            {
-                                Condition: {
+        },
+    },
+})
+
+const createRequiredOutfitObjective = (
+    params: ContractCreationNpcTargetPayload,
+): MissionManifestObjective => ({
+    Type: "statemachine",
+    Id: randomUUID(),
+    Category: "secondary",
+    Definition: {
+        Scope: "Hit",
+        Context: {
+            Targets: [params.RepositoryId],
+        },
+        States: {
+            Start: {
+                Kill: [
+                    {
+                        Condition: {
+                            $and: [
+                                {
                                     $eq: [
                                         "$Value.RepositoryId",
-                                        this._params.RepositoryId,
+                                        params.RepositoryId,
                                     ],
                                 },
-                                Transition: "Success",
-                            },
-                        ],
+                                params.Outfit.IsHitmanSuit
+                                    ? {
+                                          $eq: [
+                                              "$Value.OutfitIsHitmanSuit",
+                                              true,
+                                          ],
+                                      }
+                                    : {
+                                          $eq: [
+                                              "$Value.OutfitRepositoryId",
+                                              params.Outfit.RepositoryId,
+                                          ],
+                                      },
+                            ],
+                        },
+                        Transition: "Success",
                     },
-                },
-            },
-        }
-    }
-
-    private _createOutfitSm(hmSuit: boolean): void {
-        this._requireTargetConds()
-
-        this._outfitSm = {
-            Type: "statemachine",
-            Id: randomUUID(),
-            Category: "secondary",
-            Definition: {
-                Scope: "Hit",
-                Context: {
-                    Targets: [this._params.RepositoryId],
-                },
-                States: {
-                    Start: {
-                        Kill: [
-                            {
-                                Condition: {
-                                    $and: [
-                                        {
-                                            $eq: [
-                                                "$Value.RepositoryId",
-                                                this._params.RepositoryId,
-                                            ],
-                                        },
-                                        hmSuit
-                                            ? {
-                                                  $eq: [
-                                                      "$Value.OutfitIsHitmanSuit",
-                                                      true,
-                                                  ],
-                                              }
-                                            : {
-                                                  $eq: [
-                                                      "$Value.OutfitRepositoryId",
-                                                      this._params.Outfit
-                                                          .RepositoryId,
-                                                  ],
-                                              },
-                                    ],
-                                },
-                                Transition: "Success",
-                            },
-                            {
-                                Condition: {
-                                    $eq: [
-                                        "$Value.RepositoryId",
-                                        this._params.RepositoryId,
-                                    ],
-                                },
-                                Transition: "Failure",
-                            },
-                        ],
+                    // state machines fall through to the next state if the condition is not met
+                    {
+                        Condition: {
+                            $eq: ["$Value.RepositoryId", params.RepositoryId],
+                        },
+                        Transition: "Failure",
                     },
-                },
+                ],
             },
-        }
+        },
+    },
+    TargetConditions: [],
+})
 
-        this._targetConds?.push({
-            Type: hmSuit ? "hitmansuit" : "disguise",
-            RepositoryId: this._params.Outfit.RepositoryId,
+export function createObjectivesForTarget(
+    params: ContractCreationNpcTargetPayload,
+): MissionManifestObjective[] {
+    const targetSm = createTargetKillObjective(params)
+
+    const objectives: MissionManifestObjective[] = [targetSm]
+
+    // if the required field is true, that means the user requested something OTHER than any disguise
+    if (params.Outfit.Required) {
+        const outfitSm = createRequiredOutfitObjective(params)
+
+        targetSm.TargetConditions!.push({
+            Type: params.Outfit.IsHitmanSuit ? "hitmansuit" : "disguise",
+            RepositoryId: params.Outfit.RepositoryId,
+            // for contract creation it's always optional, only escalations set hard fail conditions
             HardCondition: false,
-            ObjectiveId: this._outfitSm.Id,
-            // ioi moment
+            ObjectiveId: outfitSm.Id,
+            // "Amazing!" - Athena Savalas
             KillMethod: "",
         })
     }
 
-    /**
-     * Get the array of finalized state machines.
-     *
-     * @returns The state machines.
-     */
-    public build(): MissionManifestObjective[] {
-        this._bootstrapEntrySm()
+    // TODO: weapon objectives
 
-        if (this._params.Outfit.Required) {
-            // not any disguise
-            this._createOutfitSm(this._params.Outfit.IsHitmanSuit)
-        }
-
-        const values = [this._targetSm]
-
-        if (this._outfitSm) {
-            values.push(this._outfitSm)
-        }
-
-        if (this._targetConds && Array.isArray(this._targetConds)) {
-            this._targetSm.TargetConditions = this._targetConds
-        }
-
-        return values
-    }
+    return objectives
 }
 
 /**
- * The time limit creator API.
+ * Create a time limit objective.
  *
  * @param time The amount of time to use in seconds.
  * @param optional If the objective should be optional or not.
@@ -258,18 +216,14 @@ export function createTimeLimit(
             Scope: "session",
             States: {
                 Start: {
-                    IntroCutEnd: [
-                        {
-                            Transition: "TimerRunning",
-                        },
-                    ],
+                    IntroCutEnd: {
+                        Transition: "TimerRunning",
+                    },
                 },
                 TimerRunning: {
-                    exit_gate: [
-                        {
-                            Transition: "Success",
-                        },
-                    ],
+                    exit_gate: {
+                        Transition: "Success",
+                    },
                     $timer: [
                         {
                             Condition: {

@@ -23,7 +23,7 @@ import type {
     CompletionData,
     GameLocationsData,
     GameVersion,
-    IHit,
+    Hit,
     MissionStory,
     OpportunityStatistics,
     PeacockLocationsData,
@@ -68,13 +68,13 @@ type GameFacingDestination = {
 type LocationMissionData = {
     Location: Unlockable
     SubLocation: Unlockable
-    Missions: IHit[]
-    SarajevoSixMissions: IHit[]
-    ElusiveMissions: IHit[]
-    EscalationMissions: IHit[]
-    SniperMissions: IHit[]
-    PlaceholderMissions: IHit[]
-    CampaignMissions: IHit[]
+    Missions: Hit[]
+    SarajevoSixMissions: Hit[]
+    ElusiveMissions: Hit[]
+    EscalationMissions: Hit[]
+    SniperMissions: Hit[]
+    PlaceholderMissions: Hit[]
+    CampaignMissions: Hit[]
     CompletionData: CompletionData
 }
 
@@ -423,7 +423,7 @@ export function getDestination(
             SubLocation: locationData,
             Missions: [controller.missionsInLocations.pro1[LOCATION as Cast]]
                 .map((id) => contractIdToHitObject(id, gameVersion, userId))
-                .filter(Boolean) as IHit[],
+                .filter(Boolean) as Hit[],
             SarajevoSixMissions: [],
             ElusiveMissions: [],
             EscalationMissions: [],
@@ -445,7 +445,7 @@ export function getDestination(
     for (const e of sublocationsData) {
         log(LogLevel.DEBUG, `Looking up sublocation details for ${e.Id}`)
 
-        const escalations: IHit[] = []
+        const escalations: Hit[] = []
 
         type ECast = keyof typeof controller.missionsInLocations.escalations
         // every unique escalation from the sublocation
@@ -474,7 +474,7 @@ export function getDestination(
             }
         }
 
-        const sniperMissions: IHit[] = []
+        const sniperMissions: Hit[] = []
         type SCast = keyof typeof controller.missionsInLocations.sniper
 
         for (const sniperMission of controller.missionsInLocations.sniper[

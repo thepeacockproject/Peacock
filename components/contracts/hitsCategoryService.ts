@@ -21,7 +21,7 @@ import {
     ContractHistory,
     GameVersion,
     HitsCategoryCategory,
-    IHit,
+    Hit,
 } from "../types/types"
 import {
     contractIdToHitObject,
@@ -525,7 +525,7 @@ export class HitsCategoryService {
 
         const hitObjectList = hits
             .map((id) => contractIdToHitObject(id, gameVersion, userId))
-            .filter(Boolean) as IHit[]
+            .filter(Boolean) as Hit[]
 
         if (!this.paginationExempt.includes(category)) {
             const paginated = paginate(hitObjectList, this.hitsPerPage)

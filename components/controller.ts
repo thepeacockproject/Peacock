@@ -31,7 +31,7 @@ import type {
     GameVersion,
     GenSingleMissionFunc,
     GenSingleVideoFunc,
-    IHit,
+    Hit,
     MissionManifest,
     PeacockLocationsData,
     PlayNextGetCampaignsHookReturn,
@@ -1176,7 +1176,7 @@ export function contractIdToHitObject(
     contractId: string,
     gameVersion: GameVersion,
     userId: string,
-): IHit | undefined {
+): Hit | undefined {
     const contract = controller.resolveContract(contractId)
 
     if (!contract) {

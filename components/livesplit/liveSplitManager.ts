@@ -19,7 +19,7 @@
 import { LiveSplitClient, LiveSplitResult } from "./liveSplitClient"
 import { log, LogLevel } from "../loggingInterop"
 import { getAllCampaigns } from "../menus/campaigns"
-import { Campaign, GameVersion, IHit, Seconds, StoryData } from "../types/types"
+import { Campaign, GameVersion, Hit, Seconds, StoryData } from "../types/types"
 import { getFlag } from "../flags"
 import { controller } from "../controller"
 import { scenePathToRpAsset } from "../discordRp"
@@ -593,7 +593,7 @@ function getCampaignMissions(
     const campaignMissionIds = (campaignStoryData: StoryData[]): string[] => {
         return campaignStoryData
             .filter((data) => data.Type === "Mission")
-            .map((sd) => (sd.Data as IHit).Id)
+            .map((sd) => (sd.Data as Hit).Id)
     }
 
     // the trilogy is the only place where multiple campaigns are merged together
