@@ -4233,6 +4233,49 @@
                     "InclusionData": {
                         "ContractIds": ["ccbde3e2-67e7-4534-95ec-e9bd7ef65273"]
                     }
+                },
+                {
+                    "Id": "39f2336f-53a8-d30e-3a33-2500d882089d",
+                    "Name": "UI_PEACOCK_TUBEROSE",
+                    "ImageName": "images/contracts/escalation/contractescalation_tuberose.jpg",
+                    "Description": "UI_CHALLENGES_ESCLATION_COMPLETE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_BANGKOK_ZIKA",
+                    "ParentLocationId": "LOCATION_PARENT_BANGKOK",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$ContractId",
+                                            "641fb153-25e1-3e3a-87d5-0f9429bd982a"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["feats", "hard"],
+                    "InclusionData": {
+                        "ContractIds": ["07c3c4e3-04d5-e089-3024-6d0733b24e16"]
+                    }
                 }
             ]
         },
