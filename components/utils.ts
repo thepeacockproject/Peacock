@@ -181,14 +181,12 @@ export const EVERGREEN_LEVEL_INFO: number[] = [
 
 export function evergreenLevelForXp(xp: number): number {
     for (let i = 1; i < EVERGREEN_LEVEL_INFO.length; i++) {
-        if (xp >= EVERGREEN_LEVEL_INFO[i]) {
-            continue
+        if (xp < EVERGREEN_LEVEL_INFO[i]) {
+            return i
         }
-
-        return i
     }
 
-    return 1
+    return EVERGREEN_LEVEL_INFO.length
 }
 
 /**
@@ -209,14 +207,12 @@ export const SNIPER_LEVEL_INFO: number[] = [
 
 export function sniperLevelForXp(xp: number): number {
     for (let i = 1; i < SNIPER_LEVEL_INFO.length; i++) {
-        if (xp >= SNIPER_LEVEL_INFO[i]) {
-            continue
+        if (xp < SNIPER_LEVEL_INFO[i]) {
+            return i
         }
-
-        return i
     }
 
-    return 1
+    return SNIPER_LEVEL_INFO.length
 }
 
 /**
