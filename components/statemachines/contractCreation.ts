@@ -16,8 +16,9 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type { MissionManifestObjective } from "../types/types"
+import type { MissionManifestObjective, RepositoryId } from "../types/types"
 import { randomUUID } from "crypto"
+import assert from "assert"
 
 /**
  * The payload provided to the game for each target in the create menu route.
@@ -29,6 +30,7 @@ export type ContractCreationNpcTargetPayload = {
         RepositoryId: string
         KillMethodBroad: string
         KillMethodStrict: string
+        RequiredKillMethod: string
         RequiredKillMethodType: number
     }
     Outfit: {
@@ -130,6 +132,10 @@ const createRequiredOutfitObjective = (
     TargetConditions: [],
 })
 
+/**
+ * Create the target, weapon, and kill conditions for a contracts target.
+ * @param params The parameters from the request.
+ */
 export function createObjectivesForTarget(
     params: ContractCreationNpcTargetPayload,
 ): MissionManifestObjective[] {
@@ -152,9 +158,67 @@ export function createObjectivesForTarget(
         })
     }
 
-    // TODO: weapon objectives
+    if (params.Weapon.RequiredKillMethodType !== 0) {
+        const weaponSm = createWeaponObjective(
+            params.Weapon,
+            params.RepositoryId,
+        )
+
+        targetSm.TargetConditions!.push({
+            Type: "killmethod",
+            RepositoryId: params.Weapon.RepositoryId,
+            // for contract creation it's always optional, only escalations set hard fail conditions
+            HardCondition: false,
+            ObjectiveId: weaponSm.Id,
+            KillMethod: params.Weapon.RequiredKillMethod,
+        })
+    }
 
     return objectives
+}
+
+/**
+ * Create an objective for killing a target with a specific weapon.
+ * @param weapon The weapon details from the request.
+ * @param npcId The target NPC's repository ID.
+ */
+function createWeaponObjective(
+    weapon: Weapon,
+    npcId: RepositoryId,
+): MissionManifestObjective {
+    return {
+        Type: "statemachine",
+        Id: randomUUID(),
+        Category: "secondary",
+        Definition: {
+            Scope: "Hit",
+            Context: {
+                Targets: [npcId],
+            },
+            States: {
+                Start: {
+                    Kill: [
+                        {
+                            Condition: {
+                                $and: [
+                                    {
+                                        $eq: ["$Value.RepositoryId", npcId],
+                                    },
+                                    genStateMachineKillSuccessCondition(weapon),
+                                ],
+                            },
+                        },
+                        {
+                            Condition: {
+                                $eq: ["$Value.RepositoryId", npcId],
+                            },
+                            Transition: "Failure",
+                        },
+                    ],
+                },
+            },
+        },
+    }
 }
 
 /**
@@ -235,5 +299,152 @@ export function createTimeLimit(
                 },
             },
         },
+    }
+}
+
+/**
+ * These are all the possible ways to get a kill in contracts mode.
+ */
+export const enum ContractKillMethod {
+    Any,
+    AnyMelee,
+    ObjectMelee,
+    AnyThrown,
+    ObjectThrown,
+    Pistol,
+    PistolElimination,
+    Smg,
+    AssaultRifle,
+    Shotgun,
+    SniperRifle,
+    AnyPoison,
+    ConsumedPoison,
+    InjectedPoison,
+    AnyAccident,
+    ExplosiveDevice,
+    FiberWire,
+    UnarmedNeckSnap,
+}
+
+type Weapon = ContractCreationNpcTargetPayload["Weapon"]
+type KillSuccessStateCondition = unknown
+
+export function genStateMachineKillSuccessCondition(
+    weapon: Weapon,
+): KillSuccessStateCondition {
+    const km = weaponToKillMethod(weapon)
+
+    if (km === ContractKillMethod.PistolElimination) {
+        return {
+            $any: {
+                "?": {
+                    $or: [
+                        {
+                            $eq: ["$.#", "pistol"],
+                        },
+                        {
+                            $eq: ["$.#", "close_combat_pistol_elimination"],
+                        },
+                    ],
+                },
+                in: ["$Value.KillMethodBroad", "$Value.KillMethodStrict"],
+            },
+        }
+    }
+
+    if (km === ContractKillMethod.Pistol) {
+        return {
+            $any: {
+                "?": {
+                    $or: [
+                        {
+                            $eq: ["$.#", "pistol"],
+                        },
+                        {
+                            $eq: ["$.#", "close_combat_pistol_elimination"],
+                        },
+                    ],
+                },
+                in: ["$Value.KillMethodBroad", "$Value.KillMethodStrict"],
+            },
+        }
+    }
+
+    return {
+        $any: {
+            "?": {
+                $eq: ["$.#", weapon.RequiredKillMethod],
+            },
+            in: ["$Value.KillMethodBroad", "$Value.KillMethodStrict"],
+        },
+    }
+}
+
+/**
+ * Get the equivalent kill method from a weapon object.
+ * @param weapon The weapon's details.
+ */
+export function weaponToKillMethod(weapon: Weapon): ContractKillMethod {
+    const type = weapon.RequiredKillMethodType
+
+    if (type === 0) {
+        return ContractKillMethod.Any
+    }
+
+    switch (weapon.KillMethodBroad) {
+        case "pistol":
+            return ContractKillMethod.Pistol
+        case "smg":
+            return ContractKillMethod.Smg
+        case "sniperrifle":
+            return ContractKillMethod.SniperRifle
+        case "assaultrifle":
+            return ContractKillMethod.AssaultRifle
+        case "shotgun":
+            return ContractKillMethod.Shotgun
+        case "close_combat_pistol_elimination":
+            return ContractKillMethod.PistolElimination
+        case "fiberwire":
+            return ContractKillMethod.FiberWire
+        case "throw": {
+            return type === 1
+                ? ContractKillMethod.AnyThrown
+                : ContractKillMethod.ObjectThrown
+        }
+        case "melee_lethal": {
+            return type === 1
+                ? ContractKillMethod.AnyMelee
+                : ContractKillMethod.ObjectMelee
+        }
+        case "poison": {
+            if (weapon.KillMethodStrict === "consumed_poison" && type === 2) {
+                return ContractKillMethod.ConsumedPoison
+            }
+
+            if (
+                weapon.KillMethodStrict === "injected_poison" &&
+                weapon.RequiredKillMethodType === 2
+            ) {
+                return ContractKillMethod.InjectedPoison
+            }
+
+            assert(
+                type === 1,
+                `Unhandled poison: ${weapon.KillMethodStrict} ${type}`,
+            )
+
+            return ContractKillMethod.AnyPoison
+        }
+        case "unarmed":
+            return ContractKillMethod.UnarmedNeckSnap
+        case "accident":
+            return ContractKillMethod.AnyAccident
+        case "explosion":
+            return ContractKillMethod.ExplosiveDevice
+        default: {
+            assert.fail(
+                `Unhandled condition: ${weapon.KillMethodBroad} ${type}`,
+            )
+        }
     }
 }
