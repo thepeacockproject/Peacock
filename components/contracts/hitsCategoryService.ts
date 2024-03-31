@@ -37,7 +37,6 @@ import { fastClone, getRemoteService } from "../utils"
 import { orderedETAs } from "./elusiveTargetArcades"
 import { missionsInLocations } from "./missionsInLocation"
 import assert from "assert"
-import { writeFile } from "fs/promises"
 
 /**
  * The filters supported for HitsCategories.
