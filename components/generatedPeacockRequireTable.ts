@@ -19,7 +19,6 @@
 import * as configSwizzleManager from "./configSwizzleManager"
 import * as controller from "./controller"
 import * as databaseHandler from "./databaseHandler"
-import * as discordRp from "./discordRp"
 import * as entitlementStrategies from "./entitlementStrategies"
 import * as eventHandler from "./eventHandler"
 import * as evergreen from "./evergreen"
@@ -57,6 +56,7 @@ import * as leaderboards from "./contracts/leaderboards"
 import * as missionsInLocation from "./contracts/missionsInLocation"
 import * as sessions from "./contracts/sessions"
 import * as client from "./discord/client"
+import * as discordRp from "./discord/discordRp"
 import * as ipc from "./discord/ipc"
 import * as liveSplitClient from "./livesplit/liveSplitClient"
 import * as liveSplitManager from "./livesplit/liveSplitManager"
@@ -88,7 +88,6 @@ export default {
         __esModule: true,
         ...databaseHandler,
     },
-    "@peacockproject/core/discordRp": { __esModule: true, ...discordRp },
     "@peacockproject/core/entitlementStrategies": {
         __esModule: true,
         ...entitlementStrategies,
@@ -189,6 +188,10 @@ export default {
         ...sessions,
     },
     "@peacockproject/core/discord/client": { __esModule: true, ...client },
+    "@peacockproject/core/discord/discordRp": {
+        __esModule: true,
+        ...discordRp,
+    },
     "@peacockproject/core/discord/ipc": { __esModule: true, ...ipc },
     "@peacockproject/core/livesplit/liveSplitClient": {
         __esModule: true,

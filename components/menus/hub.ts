@@ -22,7 +22,7 @@ import type {
     PeacockLocationsData,
     Unlockable,
 } from "../types/types"
-import { swapToBrowsingMenusStatus } from "../discordRp"
+import { swapToBrowsingMenusStatus } from "../discord/discordRp"
 import { getUserData } from "../databaseHandler"
 import { controller } from "../controller"
 import { contractCreationTutorialId, getMaxProfileLevel } from "../utils"

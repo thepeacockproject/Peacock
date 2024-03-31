@@ -19,7 +19,7 @@
 import prompts from "prompts"
 import { log, LogLevel } from "./loggingInterop"
 import { readdir, writeFile } from "fs/promises"
-import { PEACOCKVER, PEACOCKVERSTRING } from "./utils"
+import { PEACOCKVERSTRING } from "./utils"
 import md5File from "md5-file"
 import { arch, cpus as cpuList, platform, version } from "os"
 import { Controller, isPlugin } from "./controller"
@@ -116,7 +116,6 @@ async function exportDebugInfo(): Promise<void> {
 
     const data = {
         version: PEACOCKVERSTRING,
-        ident: PEACOCKVER,
         presentConfigs: Object.keys(configs),
         chunkDigest: await md5File("chunk0.js"),
         patcherDigest: await md5File("PeacockPatcher.exe"),

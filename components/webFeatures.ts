@@ -18,12 +18,11 @@
 
 import { NextFunction, Request, Response, Router } from "express"
 import { getConfig } from "./configSwizzleManager"
-import { readFileSync } from "atomically"
+import { readdir, readFile } from "fs/promises"
 import { GameVersion, UserProfile } from "./types/types"
 import { join } from "path"
 import { uuidRegex, versions } from "./utils"
 import { getUserData, loadUserData, writeUserData } from "./databaseHandler"
-import { readdirSync } from "fs"
 import { controller } from "./controller"
 import { log, LogLevel } from "./loggingInterop"
 
@@ -86,7 +85,7 @@ webFeaturesRouter.get("/codenames", (_, res) => {
     res.json(getConfig("EscalationCodenames", false))
 })
 
-webFeaturesRouter.get("/local-users", (req: CommonRequest, res) => {
+webFeaturesRouter.get("/local-users", async (req: CommonRequest, res) => {
     if (!req.query.gv || !versions.includes(req.query.gv ?? null)) {
         res.json([])
         return
@@ -100,7 +99,7 @@ webFeaturesRouter.get("/local-users", (req: CommonRequest, res) => {
         dir = join("userdata", req.query.gv, "users")
     }
 
-    const files: string[] = readdirSync(dir).filter(
+    const files: string[] = (await readdir(dir)).filter(
         (name) => name !== "lop.json",
     )
 
@@ -108,7 +107,7 @@ webFeaturesRouter.get("/local-users", (req: CommonRequest, res) => {
 
     for (const file of files) {
         const read = JSON.parse(
-            readFileSync(join(dir, file)).toString(),
+            (await readFile(join(dir, file))).toString(),
         ) as UserProfile
 
         result.push({

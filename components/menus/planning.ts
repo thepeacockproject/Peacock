@@ -154,6 +154,8 @@ export async function getPlanningData(
         const escalationGroupId =
             contractData.Metadata.InGroup ?? contractData.Metadata.Id
 
+        controller.hooks.onEscalationReset.call(escalationGroupId)
+
         resetUserEscalationProgress(userData, escalationGroupId)
 
         writeUserData(userId, gameVersion)

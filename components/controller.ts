@@ -359,6 +359,7 @@ export class Controller {
             PlayNextGetCampaignsHookReturn | undefined
         >
         onMissionEnd: SyncHook<[/** session */ ContractSession]>
+        onEscalationReset: SyncHook<[/** groupId */ string]>
     }
     public configManager: typeof configManagerType = {
         getConfig,
@@ -402,6 +403,7 @@ export class Controller {
             getSearchResults: new AsyncSeriesHook(),
             getNextCampaignMission: new SyncBailHook(),
             onMissionEnd: new SyncHook(),
+            onEscalationReset: new SyncHook(),
         }
     }
 

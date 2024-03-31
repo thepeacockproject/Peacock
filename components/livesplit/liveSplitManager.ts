@@ -22,7 +22,7 @@ import { getAllCampaigns } from "../menus/campaigns"
 import { Campaign, GameVersion, IHit, Seconds, StoryData } from "../types/types"
 import { getFlag } from "../flags"
 import { controller } from "../controller"
-import { scenePathToRpAsset } from "../discordRp"
+import { scenePathToRpAsset } from "../discord/discordRp"
 import { LiveSplitTimeCalcEntry } from "../types/livesplit"
 import assert from "assert"
 
