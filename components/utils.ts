@@ -33,6 +33,7 @@ import { log, LogLevel } from "./loggingInterop"
 import { writeFileSync } from "fs"
 import { getFlag } from "./flags"
 import { getConfig, getVersionedConfig } from "./configSwizzleManager"
+import { compare } from "semver"
 
 /**
  * True if the server is being run by the launcher, false otherwise.
@@ -41,12 +42,11 @@ export const IS_LAUNCHER = process.env.IS_PEACOCK_LAUNCHER === "true"
 
 export const ServerVer: ServerVersion = {
     _Major: 8,
-    _Minor: 14,
+    _Minor: 15,
     _Build: 0,
     _Revision: 0,
 }
 
-export const PEACOCKVER = REV_IDENT
 export const PEACOCKVERSTRING = HUMAN_VERSION
 
 export const uuidRegex =
@@ -71,17 +71,22 @@ export async function checkForUpdates(): Promise<void> {
     }
 
     try {
-        const res = await fetch(
-            "https://backend.rdil.rocks/peacock/latest-version",
-        )
-        const current = parseInt(await res.text(), 10)
+        type VersionCheckResponse = { id: string; channel: string }
 
-        if (PEACOCKVER < 0 && current < -PEACOCKVER) {
+        const res = await fetch(
+            "https://backend.rdil.rocks/peacock/latest-version/data",
+        )
+        const data = (await res.json()) as VersionCheckResponse
+
+        const current = compare(PEACOCKVERSTRING, data.id)
+        const isNewer = current === 1
+
+        if (isNewer) {
             log(
                 LogLevel.INFO,
-                `Thank you for trying out this testing version of Peacock! Please report any bugs by posting in the #help channel on Discord or by submitting an issue on GitHub.`,
+                `You're ahead of the game! The latest version of Peacock (${data.id}) is older than this build`,
             )
-        } else if (PEACOCKVER > 0 && current === PEACOCKVER) {
+        } else if (current === 0) {
             log(LogLevel.DEBUG, "Peacock is up to date.")
         } else {
             log(
@@ -181,14 +186,12 @@ export const EVERGREEN_LEVEL_INFO: number[] = [
 
 export function evergreenLevelForXp(xp: number): number {
     for (let i = 1; i < EVERGREEN_LEVEL_INFO.length; i++) {
-        if (xp >= EVERGREEN_LEVEL_INFO[i]) {
-            continue
+        if (xp < EVERGREEN_LEVEL_INFO[i]) {
+            return i
         }
-
-        return i
     }
 
-    return 1
+    return EVERGREEN_LEVEL_INFO.length
 }
 
 /**
@@ -209,14 +212,12 @@ export const SNIPER_LEVEL_INFO: number[] = [
 
 export function sniperLevelForXp(xp: number): number {
     for (let i = 1; i < SNIPER_LEVEL_INFO.length; i++) {
-        if (xp >= SNIPER_LEVEL_INFO[i]) {
-            continue
+        if (xp < SNIPER_LEVEL_INFO[i]) {
+            return i
         }
-
-        return i
     }
 
-    return 1
+    return SNIPER_LEVEL_INFO.length
 }
 
 /**
@@ -647,14 +648,14 @@ export function handleAxiosError(error: AxiosError): void {
     if (error.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
-        log(LogLevel.DEBUG, `code ${error.response.status}`)
+        log(LogLevel.DEBUG, `Request error: code ${error.response.status}`)
     } else if (error.request) {
         // The request was made but no response was received
         // `error.request` is an instance of http.ClientRequest
-        log(LogLevel.DEBUG, `bad fetch`)
+        log(LogLevel.DEBUG, `Request error: bad fetch`)
     } else {
         // Something happened in setting up the request that triggered an Error
-        log(LogLevel.DEBUG, `generic`)
+        log(LogLevel.DEBUG, `Request error: something went wrong`)
     }
 }
 

@@ -18,7 +18,7 @@
 
 import { describe, expect, it } from "vitest"
 import { glob } from "fast-glob"
-import { readFile } from "atomically"
+import { readFile } from "fs/promises"
 import { MissionManifest } from "../../components/types/types"
 import { unpack } from "msgpackr"
 import { crc32 } from "@aws-crypto/crc32"
