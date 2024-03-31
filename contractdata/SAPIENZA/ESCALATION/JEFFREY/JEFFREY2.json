@@ -78,6 +78,65 @@
                         }
                     }
                 }
+            },
+            {
+                "_comment": "Liberation Guards",
+                "Id": "542a7e07-a948-49d2-b4ed-52b8f0f1927f",
+                "BriefingName": "$loc UI_PEACOCK_SATANTA_GUARDS_PLANNING",
+                "BriefingText": "$loc UI_PEACOCK_SATANTA_GUARDS_PLANNING_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_SATANTA_GUARDS_PLANNING_DESC"
+                },
+                "Image": "images/contracts/escalation/contractescalation_satanta_liberationguards.jpg",
+                "Type": "statemachine",
+                "Category": "primary",
+                "IsHidden": false,
+                "ObjectiveType": "custom",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "TargetsKilled": 0,
+                        "Targets": [
+                            "cc72b9c0-b73a-4e34-97ee-329ce22abaa6",
+                            "cc3290c0-d1b0-4706-a2a6-0e09ff34a4ad"
+                        ]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": {
+                                "Condition": {
+                                    "$or": [
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "cc72b9c0-b73a-4e34-97ee-329ce22abaa6"
+                                            ]
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "cc3290c0-d1b0-4706-a2a6-0e09ff34a4ad"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Actions": { "$inc": "TargetsKilled" },
+                                "Transition": "CheckCount"
+                            }
+                        },
+                        "CheckCount": {
+                            "-": [
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.TargetsKilled", 2]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                { "Transition": "Start" }
+                            ]
+                        }
+                    }
+                }
             }
         ],
         "Bricks": [
@@ -90,8 +149,7 @@
             "1c386bb9-aead-42c0-b604-ad560056ddf4",
             "c27f76ca-ed71-4b2d-9b9d-693875df830c",
             "c113315d-ffcc-4878-9e70-bb35aadf0211"
-        ],
-        "GameChangers": ["e47d6995-ba9a-4d13-b40a-84e104b84bb6"]
+        ]
     },
     "Metadata": {
         "Id": "4c41ac07-ad1d-47ff-a2db-3df85108b9b0",
@@ -105,9 +163,16 @@
         "InGroup": "0cceeecb-c8fe-42a4-aee4-d7b575f56a1b",
         "TileImage": "images/contracts/escalation/contractescalation_satanta.jpg",
         "GroupObjectiveDisplayOrder": [
-            { "Id": "e47d6995-ba9a-4d13-b40a-84e104b84bb6", "IsNew": true },
-            { "Id": "7a3650bb-68fd-4916-ae4d-40ed06990f70" },
-            { "Id": "6c64e36d-68b7-4ec3-9ac2-04d7bef865a7" }
+            {
+                "Id": "542a7e07-a948-49d2-b4ed-52b8f0f1927f",
+                "IsNew": true
+            },
+            {
+                "Id": "7a3650bb-68fd-4916-ae4d-40ed06990f70"
+            },
+            {
+                "Id": "6c64e36d-68b7-4ec3-9ac2-04d7bef865a7"
+            }
         ]
     }
 }
