@@ -37,6 +37,7 @@ import { fastClone, getRemoteService } from "../utils"
 import { orderedETAs } from "./elusiveTargetArcades"
 import { missionsInLocations } from "./missionsInLocation"
 import assert from "assert"
+import { writeFile } from "fs/promises"
 
 /**
  * The filters supported for HitsCategories.
@@ -325,6 +326,17 @@ export class HitsCategoryService {
             if (hit.UserCentricContract.Data.PlaylistData) {
                 hit.UserCentricContract.Data.PlaylistData.IsAdded =
                     favorites.includes(hit.Id)
+            }
+
+            // Save the contract
+            if (
+                !controller.contracts.has(
+                    hit.UserCentricContract.Contract.Metadata.Id,
+                )
+            ) {
+                await controller.commitNewContract(
+                    hit.UserCentricContract.Contract,
+                )
             }
         }
 
