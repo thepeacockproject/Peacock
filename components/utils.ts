@@ -73,19 +73,18 @@ export async function checkForUpdates(): Promise<void> {
     try {
         type VersionCheckResponse = { id: string; channel: string }
 
-        const res = await(
-            await fetch(
-                "https://backend.rdil.rocks/peacock/latest-version/data",
-            ),
-        ).json() as VersionCheckResponse
+        const res = await fetch(
+            "https://backend.rdil.rocks/peacock/latest-version/data",
+        )
+        const data = (await res.json()) as VersionCheckResponse
 
-        const current = compare(PEACOCKVERSTRING, res.id)
+        const current = compare(PEACOCKVERSTRING, data.id)
         const isNewer = current === 1
 
         if (isNewer) {
             log(
                 LogLevel.INFO,
-                `You're ahead of the game! The latest version of Peacock (${res.id}) is older than this build`,
+                `You're ahead of the game! The latest version of Peacock (${data.id}) is older than this build`,
             )
         } else if (current === 0) {
             log(LogLevel.DEBUG, "Peacock is up to date.")
