@@ -436,6 +436,16 @@ export class Controller {
         this._getETALocations()
         this.index()
 
+        try {
+            await this._loadResources()
+
+            this.hooks.challengesLoaded.call()
+            this.hooks.masteryDataLoaded.call()
+        } catch (e) {
+            log(LogLevel.ERROR, `Fatal error with challenge bootstrap`, "boot")
+            log(LogLevel.ERROR, e)
+        }
+
         const deployPath = SMFSupport.modFrameworkDataPath
 
         if (typeof deployPath === "string") {
@@ -449,16 +459,6 @@ export class Controller {
         }
 
         this.hooks.serverStart.call()
-
-        try {
-            await this._loadResources()
-
-            this.hooks.challengesLoaded.call()
-            this.hooks.masteryDataLoaded.call()
-        } catch (e) {
-            log(LogLevel.ERROR, `Fatal error with challenge bootstrap`, "boot")
-            log(LogLevel.ERROR, e)
-        }
     }
 
     private _getETALocations(): void {
