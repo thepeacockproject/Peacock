@@ -59,6 +59,41 @@ async function fetchDestination(axiosClient, locationId) {
 }
 
 /**
+ * @param {string} categoryId
+ * @returns {number}
+ */
+function getOrderIndex(categoryId) {
+    switch (categoryId) {
+        case "assassination":
+            return 0
+        case "discovery":
+            return 1
+        case "feats":
+            return 2
+        case "targets":
+            return 3
+        case "classic":
+            return 4
+        case "elusive":
+            return 5
+        case "arcade":
+            return 6
+        case "escalation_hm1":
+            return 7
+        case "escalation_hm2":
+            return 8
+        case "featured_hm1_hm2":
+            return 9
+        case "featured_hm3":
+            return 10
+        case "featured":
+            return 11
+        default:
+            return 100000
+    }
+}
+
+/**
  * @param {string} locationParent
  * @param {string} jwt
  * @param {string} gameVersion
@@ -146,6 +181,7 @@ async function extract(locationParent, jwt, gameVersion) {
             Icon: group.Icon,
             CategoryId: group.CategoryId,
             Description: group.Description,
+            OrderIndex: getOrderIndex(group.CategoryId),
             Challenges: challengeObjects,
         })
 

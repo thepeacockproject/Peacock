@@ -192,6 +192,10 @@ export abstract class ChallengeRegistry {
         return this.challenges[gameVersion].get(challengeId)
     }
 
+    removeChallenge(challengeId: string, gameVersion: GameVersion): boolean {
+        return this.challenges[gameVersion].delete(challengeId)
+    }
+
     /**
      * This method retrieves all the unlockables associated with the challenges for a given game version.
      * It iterates over all the challenges for the specified game version and for each challenge, it checks if there are any unlockables (Drops).
@@ -1170,7 +1174,7 @@ export class ChallengeService extends ChallengeRegistry {
             gameVersion,
         )
 
-        return entries
+        const groups = entries
             .map(([groupId, challenges], index) => {
                 const groupData = this.getGroupByIdLoc(
                     groupId,
@@ -1217,6 +1221,7 @@ export class ChallengeService extends ChallengeRegistry {
                     IsLocked: location.Properties.IsLocked || false,
                     ImageLocked: location.Properties.LockedIcon || "",
                     RequiredResources: location.Properties.RequiredResources!,
+                    OrderIndex: groupData.OrderIndex ?? 10000,
                     SwitchData: {
                         Data: {
                             Challenges: this.mapSwitchChallenges(
@@ -1253,6 +1258,10 @@ export class ChallengeService extends ChallengeRegistry {
                 }
             })
             .filter(Boolean) as CompiledChallengeTreeCategory[]
+
+        return groups.sort((a, b) => {
+            return a.OrderIndex - b.OrderIndex
+        })
     }
 
     compileRegistryChallengeTreeData(

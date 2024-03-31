@@ -1182,6 +1182,7 @@ export interface CompiledChallengeTreeCategory {
     Location: Unlockable
     Name: string
     RequiredResources: string[]
+    OrderIndex: number
     SwitchData: {
         Data: {
             CategoryData: CompiledChallengeTreeCategoryInfo

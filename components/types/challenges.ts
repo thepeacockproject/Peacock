@@ -68,6 +68,7 @@ export interface SavedChallengeGroup {
     Icon: string
     CategoryId: string
     Description: string
+    OrderIndex?: number
     Challenges: SavedChallenge[]
 }
 
