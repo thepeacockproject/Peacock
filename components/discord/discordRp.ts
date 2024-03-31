@@ -29,11 +29,7 @@ const processStartTime = Math.round(Date.now() / 1000)
 export function initRp(): void {
     for (const key of Object.keys(getConfig("Entrances", false))) {
         if (!scenePathToRpAsset(key, []) && PEACOCK_DEV) {
-            log(
-                LogLevel.DEBUG,
-                `WARNING missing scene ${key} for RP!`,
-                "discord",
-            )
+            log(LogLevel.WARN, `Missing scene ${key} for RP!`, "discord")
         }
     }
 
@@ -230,6 +226,10 @@ export function scenePathToRpAsset(
             return ["dartmoorgardenshow", "Dartmoor Garden Show", "Dartmoor"]
         case "assembly:/_pro/scenes/missions/ancestral/scene_ancestral_vesper.entity":
             return ["elusivevesper", "The Procurers", "Dartmoor"]
+        case "assembly:/_pro/scenes/missions/ancestral/scene_ancestral_harebell.entity":
+            return ["harebell", "The Sloth Depletion", "Dartmoor"]
+        case "assembly:/_pro/scenes/missions/ancestral/scene_hollyhock.entity":
+            return ["hollyhock", "The Wrath Termination", "Dartmoor"]
 
         // columbia
         case "assembly:/_pro/scenes/missions/colombia/mission_millipede/scene_millipede.entity":
@@ -263,6 +263,8 @@ export function scenePathToRpAsset(
             return ["berlinegghunt", "Berlin Egg Hunt", "Berlin"]
         case "assembly:/_pro/scenes/missions/edgy/mission_fox/scene_fox_tomorrowland.entity":
             return ["elusivetomorrowland", "The Drop", "Berlin"]
+        case "assembly:/_pro/scenes/missions/edgy/mission_fox/scene_ambrosia.entity":
+            return ["ambrosia", "The Lust Assignation", "Berlin"]
 
         // mendozer
         case "assembly:/_pro/scenes/missions/elegant/scene_llama_elusive_clerico.entity":
@@ -275,6 +277,8 @@ export function scenePathToRpAsset(
         case "assembly:/_pro/scenes/missions/elegant/scene_whitedryas_level2.entity":
         case "assembly:/_pro/scenes/missions/elegant/scene_whitedryas_level3.entity":
             return ["mendozafarewell", "The Farewell", "Mendoza"]
+        case "assembly:/_pro/scenes/missions/elegant/scene_frangipani.entity":
+            return ["frangipani", "The Envy Contention", "Mendoza"]
 
         // dubai
         case "assembly:/_pro/scenes/missions/golden/mission_gecko/scene_gecko_angelica.entity":
@@ -295,6 +299,8 @@ export function scenePathToRpAsset(
             return ["chongqingendofanera", "End Of An Era", "Chongqing"]
         case "assembly:/_pro/scenes/missions/wet/scene_rat_elusive_redsnapper.entity":
             return ["elusiveredsnapper", "The Rage", "Chongqing"]
+        case "assembly:/_pro/scenes/missions/wet/scene_wet_azalea.entity":
+            return ["azalea", "The Gluttony Gobble", "Chongqing"]
 
         // training
         case "assembly:/_pro/scenes/missions/thefacility/_scene_polarbear_005.entity":
@@ -371,6 +377,10 @@ export function scenePathToRpAsset(
             return ["austria", "The Last Yardbird", "Austria"]
         case "assembly:/_pro/scenes/missions/salty/mission_seagull/scene_seagull.entity":
             return ["hantuport", "The Pen and the Sword", "Hantu Port"]
+
+        // snug
+        case "assembly:/_pro/scenes/missions/snug/scene_vanilla.entity":
+            return ["snug", "Safehouse", "Safehouse"]
     }
 
     return undefined
