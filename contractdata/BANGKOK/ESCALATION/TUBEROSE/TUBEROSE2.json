@@ -34,9 +34,7 @@
                     "Scope": "session",
                     "Context": {
                         "KilledActors": [],
-                        "Targets": [
-                            "4ac262f0-2ef8-4205-8c16-37f1c8c12b81"
-                        ]
+                        "Targets": ["4ac262f0-2ef8-4205-8c16-37f1c8c12b81"]
                     },
                     "States": {
                         "Start": {
@@ -94,9 +92,7 @@
                     "Scope": "session",
                     "Context": {
                         "KilledActors": [],
-                        "Targets": [
-                            "d20d6e22-2ede-4e6d-b79c-25f225328f14"
-                        ]
+                        "Targets": ["d20d6e22-2ede-4e6d-b79c-25f225328f14"]
                     },
                     "States": {
                         "Start": {
@@ -184,10 +180,7 @@
                             "-": [
                                 {
                                     "Condition": {
-                                        "$eq": [
-                                            "$.ForceUpdateCounters",
-                                            0
-                                        ]
+                                        "$eq": ["$.ForceUpdateCounters", 0]
                                     },
                                     "Actions": {
                                         "$inc": "ForceUpdateCounters"
@@ -264,19 +257,13 @@
                             "-": [
                                 {
                                     "Condition": {
-                                        "$eq": [
-                                            "$.RemainingTargets",
-                                            0
-                                        ]
+                                        "$eq": ["$.RemainingTargets", 0]
                                     },
                                     "Transition": "Success"
                                 },
                                 {
                                     "Condition": {
-                                        "$eq": [
-                                            "$.WrongMethodTargets",
-                                            6
-                                        ]
+                                        "$eq": ["$.WrongMethodTargets", 6]
                                     },
                                     "Transition": "Failure"
                                 },
@@ -384,9 +371,7 @@
                 "Id": "7c360fb3-529e-43f3-9131-8c3534ad8739"
             }
         ],
-        "Entitlements": [
-            "H1_LEGACY_EXPANSION"
-        ],
+        "Entitlements": ["H1_LEGACY_EXPANSION"],
         "InGroup": "07c3c4e3-04d5-e089-3024-6d0733b24e16"
     }
 }
