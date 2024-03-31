@@ -16,28 +16,32 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { RPCClient } from "./discord/client"
-import { getConfig } from "./configSwizzleManager"
-import type { GameVersion, MissionType } from "./types/types"
-import { getFlag } from "./flags"
-import { log, LogLevel } from "./loggingInterop"
+import { RPCClient } from "./client"
+import { getConfig } from "../configSwizzleManager"
+import type { GameVersion, MissionType } from "../types/types"
+import { getFlag } from "../flags"
+import { log, LogLevel } from "../loggingInterop"
 
 let rpcClient: undefined | RPCClient
 /*@__NOINLINE__*/
 const processStartTime = Math.round(Date.now() / 1000)
 
 export function initRp(): void {
-    Object.keys(getConfig("Entrances", false)).forEach((key) => {
+    for (const key of Object.keys(getConfig("Entrances", false))) {
         if (!scenePathToRpAsset(key, []) && PEACOCK_DEV) {
-            log(LogLevel.DEBUG, `WARNING missing scene ${key} for RP!`)
+            log(
+                LogLevel.DEBUG,
+                `WARNING missing scene ${key} for RP!`,
+                "discord",
+            )
         }
-    })
+    }
 
     // creates a new rp client, pretty self-explanatory.
     rpcClient = new RPCClient()
 
     // connects to the Peacock discord developer app, which contains the images for the rp.
-    rpcClient.login({
+    void rpcClient.login({
         clientId: "846361353027584013",
     })
 
@@ -143,7 +147,7 @@ type BrickDataMap = Record<string, [string, string, string]>
 export function scenePathToRpAsset(
     scenePath: string,
     bricks: string[],
-): string[] | undefined {
+): [string, string, string] | undefined {
     const brickAssetsMap = getConfig<BrickDataMap>(
         "DiscordRichAssetsForBricks",
         false,
@@ -220,6 +224,7 @@ export function scenePathToRpAsset(
 
         // dartmoor
         case "assembly:/_pro/scenes/missions/ancestral/scene_bulldog.entity":
+        case "assembly:/_pro/scenes/missions/ancestral/scene_bulldog_fern.entity":
             return ["dartmoordeathoffamily", "Death in the Family", "Dartmoor"]
         case "assembly:/_pro/scenes/missions/ancestral/scene_smoothsnake.entity":
             return ["dartmoorgardenshow", "Dartmoor Garden Show", "Dartmoor"]

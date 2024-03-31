@@ -33,6 +33,7 @@ import { log, LogLevel } from "./loggingInterop"
 import { writeFileSync } from "fs"
 import { getFlag } from "./flags"
 import { getConfig, getVersionedConfig } from "./configSwizzleManager"
+import { compare } from "semver"
 
 /**
  * True if the server is being run by the launcher, false otherwise.
@@ -46,7 +47,6 @@ export const ServerVer: ServerVersion = {
     _Revision: 0,
 }
 
-export const PEACOCKVER = REV_IDENT
 export const PEACOCKVERSTRING = HUMAN_VERSION
 
 export const uuidRegex =
@@ -71,17 +71,23 @@ export async function checkForUpdates(): Promise<void> {
     }
 
     try {
-        const res = await fetch(
-            "https://backend.rdil.rocks/peacock/latest-version",
-        )
-        const current = parseInt(await res.text(), 10)
+        type VersionCheckResponse = { id: string; channel: string }
 
-        if (PEACOCKVER < 0 && current < -PEACOCKVER) {
+        const res = await(
+            await fetch(
+                "https://backend.rdil.rocks/peacock/latest-version/data",
+            ),
+        ).json() as VersionCheckResponse
+
+        const current = compare(PEACOCKVERSTRING, res.id)
+        const isNewer = current === 1
+
+        if (isNewer) {
             log(
                 LogLevel.INFO,
-                `Thank you for trying out this testing version of Peacock! Please report any bugs by posting in the #help channel on Discord or by submitting an issue on GitHub.`,
+                `You're ahead of the game! The latest version of Peacock (${res.id}) is older than this build`,
             )
-        } else if (PEACOCKVER > 0 && current === PEACOCKVER) {
+        } else if (current === 0) {
             log(LogLevel.DEBUG, "Peacock is up to date.")
         } else {
             log(

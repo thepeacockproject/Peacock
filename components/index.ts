@@ -33,7 +33,6 @@ import {
     handleAxiosError,
     IS_LAUNCHER,
     jokes,
-    PEACOCKVER,
     PEACOCKVERSTRING,
     ServerVer,
 } from "./utils"
@@ -72,7 +71,7 @@ import {
 import { legacyProfileRouter } from "./2016/legacyProfileRouter"
 import { legacyMenuDataRouter } from "./2016/legacyMenuData"
 import { legacyContractRouter } from "./2016/legacyContractHandler"
-import { initRp } from "./discordRp"
+import { initRp } from "./discord/discordRp"
 import random from "random"
 import { generateUserCentric } from "./contracts/dataGen"
 import { json as jsonMiddleware, urlencoded } from "body-parser"
@@ -551,7 +550,7 @@ async function startServer(options: {
 
     log(
         LogLevel.INFO,
-        `This is Peacock v${PEACOCKVERSTRING} (rev ${PEACOCKVER}), with Node v${process.versions.node}.`,
+        `This is Peacock v${PEACOCKVERSTRING} with Node v${process.versions.node}.`,
     )
 
     if (getFlag("jokes") === true) {
