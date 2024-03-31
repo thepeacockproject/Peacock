@@ -18,9 +18,7 @@
                 },
                 "Definition": {
                     "Context": {
-                        "Targets": [
-                            "885d3ac3-aff7-4dca-942b-fecbc3fc688a"
-                        ]
+                        "Targets": ["885d3ac3-aff7-4dca-942b-fecbc3fc688a"]
                     },
                     "Scope": "session",
                     "States": {
@@ -55,9 +53,7 @@
                 "Definition": {
                     "Scope": "session",
                     "Context": {
-                        "Targets": [
-                            "6981a514-1c41-4030-b8dd-08bd6ae8b4ab"
-                        ]
+                        "Targets": ["6981a514-1c41-4030-b8dd-08bd6ae8b4ab"]
                     },
                     "States": {
                         "Start": {
@@ -99,6 +95,7 @@
                 "Definition": {
                     "Scope": "session",
                     "Context": {
+                        "TargetsKilled": 0,
                         "Targets": [
                             "cc72b9c0-b73a-4e34-97ee-329ce22abaa6",
                             "cc3290c0-d1b0-4706-a2a6-0e09ff34a4ad"
@@ -134,34 +131,23 @@
                                             }
                                         ]
                                     },
-                                    "Transition": "OneDown"
+                                    "Actions": { "$inc": "TargetsKilled" },
+                                    "Transition": "CheckCount"
                                 },
                                 {
                                     "Condition": {
-                                        "$and": [
+                                        "$or": [
                                             {
-                                                "$or": [
-                                                    {
-                                                        "$eq": [
-                                                            "$Value.RepositoryId",
-                                                            "cc72b9c0-b73a-4e34-97ee-329ce22abaa6"
-                                                        ]
-                                                    },
-                                                    {
-                                                        "$eq": [
-                                                            "$Value.RepositoryId",
-                                                            "cc3290c0-d1b0-4706-a2a6-0e09ff34a4ad"
-                                                        ]
-                                                    }
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "cc72b9c0-b73a-4e34-97ee-329ce22abaa6"
                                                 ]
                                             },
                                             {
-                                                "$not": {
-                                                    "$eq": [
-                                                        "$Value.KillItemRepositoryId",
-                                                        "a2c56798-026f-4d0b-9480-de0d2525a119"
-                                                    ]
-                                                }
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "cc3290c0-d1b0-4706-a2a6-0e09ff34a4ad"
+                                                ]
                                             }
                                         ]
                                     },
@@ -169,67 +155,16 @@
                                 }
                             ]
                         },
-                        "OneDown": {
-                            "Kill": [
+                        "CheckCount": {
+                            "-": [
                                 {
                                     "Condition": {
-                                        "$and": [
-                                            {
-                                                "$or": [
-                                                    {
-                                                        "$eq": [
-                                                            "$Value.RepositoryId",
-                                                            "cc72b9c0-b73a-4e34-97ee-329ce22abaa6"
-                                                        ]
-                                                    },
-                                                    {
-                                                        "$eq": [
-                                                            "$Value.RepositoryId",
-                                                            "cc3290c0-d1b0-4706-a2a6-0e09ff34a4ad"
-                                                        ]
-                                                    }
-                                                ]
-                                            },
-                                            {
-                                                "$eq": [
-                                                    "$Value.KillItemRepositoryId",
-                                                    "a2c56798-026f-4d0b-9480-de0d2525a119"
-                                                ]
-                                            }
-                                        ]
+                                        "$eq": ["$.TargetsKilled", 2]
                                     },
                                     "Transition": "Success"
                                 },
                                 {
-                                    "Condition": {
-                                        "$and": [
-                                            {
-                                                "$or": [
-                                                    {
-                                                        "$eq": [
-                                                            "$Value.RepositoryId",
-                                                            "cc72b9c0-b73a-4e34-97ee-329ce22abaa6"
-                                                        ]
-                                                    },
-                                                    {
-                                                        "$eq": [
-                                                            "$Value.RepositoryId",
-                                                            "cc3290c0-d1b0-4706-a2a6-0e09ff34a4ad"
-                                                        ]
-                                                    }
-                                                ]
-                                            },
-                                            {
-                                                "$not": {
-                                                    "$eq": [
-                                                        "$Value.KillItemRepositoryId",
-                                                        "a2c56798-026f-4d0b-9480-de0d2525a119"
-                                                    ]
-                                                }
-                                            }
-                                        ]
-                                    },
-                                    "Transition": "Failure"
+                                    "Transition": "Start"
                                 }
                             ]
                         }
@@ -252,6 +187,7 @@
                 "Definition": {
                     "Scope": "session",
                     "Context": {
+                        "TargetsKilled": 0,
                         "Targets": [
                             "2bf8c4ca-c73b-4bad-b338-0cd1b797f305",
                             "8d5f03f0-f817-4f07-8c37-5faa032cf98c"
@@ -276,29 +212,20 @@
                                         }
                                     ]
                                 },
-                                "Transition": "OneDown"
+                                "Actions": { "$inc": "TargetsKilled" },
+                                "Transition": "CheckCount"
                             }
                         },
-                        "OneDown": {
-                            "Kill": {
-                                "Condition": {
-                                    "$or": [
-                                        {
-                                            "$eq": [
-                                                "$Value.RepositoryId",
-                                                "2bf8c4ca-c73b-4bad-b338-0cd1b797f305"
-                                            ]
-                                        },
-                                        {
-                                            "$eq": [
-                                                "$Value.RepositoryId",
-                                                "8d5f03f0-f817-4f07-8c37-5faa032cf98c"
-                                            ]
-                                        }
-                                    ]
+                        "CheckCount": {
+                            "-": [
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.TargetsKilled", 2]
+                                    },
+                                    "Transition": "Success"
                                 },
-                                "Transition": "Success"
-                            }
+                                { "Transition": "Start" }
+                            ]
                         }
                     }
                 }
@@ -323,9 +250,7 @@
         "Type": "escalation",
         "Location": "LOCATION_COASTALTOWN_EBOLA",
         "ScenePath": "assembly:/_PRO/Scenes/Missions/CoastalTown/scene_ebola.entity",
-        "Entitlements": [
-            "H1_LEGACY_EXPANSION"
-        ],
+        "Entitlements": ["H1_LEGACY_EXPANSION"],
         "PublicId": "041015549183",
         "InGroup": "0cceeecb-c8fe-42a4-aee4-d7b575f56a1b",
         "TileImage": "images/contracts/escalation/contractescalation_satanta.jpg",
