@@ -7,6 +7,18 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "Dev Tools (run-dev tools)",
+            "skipFiles": ["<node_internals>/**"],
+            "env": {
+                "NODE_TLS_REJECT_UNAUTHORIZED": "0"
+            },
+            "runtimeExecutable": "yarn",
+            "runtimeArgs": ["run-dev", "tools"],
+            "console": "integratedTerminal"
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "Dev Server (run-dev)",
             "skipFiles": ["<node_internals>/**"],
             "env": {
