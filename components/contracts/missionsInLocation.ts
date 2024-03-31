@@ -142,7 +142,7 @@ export const missionsInLocations = {
         LOCATION_HOKKAIDO_FLU: [],
         LOCATION_NEWZEALAND: [
             "e1e86206-d3f0-a819-e477-3d80e55e8a40",
-            "3efc73f9-33f0-4af6-9508-7208e6851394"
+            "3efc73f9-33f0-4af6-9508-7208e6851394",
         ],
         LOCATION_MIAMI: [
             "719ee044-4b05-4bd9-b2bb-75029f6d2a35",
