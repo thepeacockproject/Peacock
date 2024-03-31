@@ -66,15 +66,13 @@ export async function generateRequireTable() {
     const imports = []
     const requiresTable = []
 
-    files.forEach((e) => {
+    for (const e of files) {
         const variable = basename(e, ".ts")
         const importPath = e.replaceAll(sep, "/").replace(/\.ts$/, "")
 
         imports.push(`import * as ${variable} from "./${importPath}"`)
-        requiresTable.push(
-            `"@peacockproject/core/${importPath}": { __esModule: true, ...${variable}}`,
-        )
-    })
+        requiresTable.push(`"@peacockproject/core/${importPath}": ${variable}`)
+    }
 
     const prettierConfig = await prettier.resolveConfig()
     prettierConfig.parser = "babel"
