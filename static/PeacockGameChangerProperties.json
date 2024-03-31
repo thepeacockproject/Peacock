@@ -138,5 +138,73 @@
                 }
             }
         ]
+    },
+    "5e2a1492-a099-c696-529e-1e56171e352d": {
+        "Name": "UI_PEACOCK_GAMECHANGERS_NEWZEALAND_NOBODIESHIDDEN_NAME",
+        "Description": "UI_PEACOCK_GAMECHANGERS_NEWZEALAND_NOBODIESHIDDEN_DESC",
+        "Icon": null,
+        "IsHidden": null,
+        "TileImage": "images/contracts/gamechangers/gamechanger_newzealand_nobodieshidden.jpg",
+        "Resource": [],
+        "Objectives": [
+            {
+                "Id": "24117450-5b77-e077-e1f1-20236e5d347a",
+                "Category": "primary",
+                "Type": "statemachine",
+                "ObjectiveType": "condition",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_GAMECHANGERS_NEWZEALAND_NOBODIESHIDDEN_NAME",
+                    "iconType": 17
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "-": {
+                                "Transition": "Success"
+                            }
+                        },
+                        "Success": {
+                            "BodyHidden": {
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "c3fcd3d7-6192-e400-7dfb-4f0b6227b04c": {
+        "Name": "UI_PEACOCK_GAMECHANGERS_NEWZEALAND_CHANGEWEAPON_NAME",
+        "Description": "UI_PEACOCK_GAMECHANGERS_NEWZEALAND_CHANGEWEAPON_DESC",
+        "Icon": null,
+        "IsHidden": null,
+        "TileImage": "images/contracts/gamechangers/gamechanger_newzealand_changeweapon.jpg",
+        "ObjectivesCategory": "primary",
+        "Resource": [],
+        "Objectives": [
+            {
+                "Id": "8d969eef-6ec2-9a3a-98fe-8a5ec5f02895",
+                "Category": "primary",
+                "Type": "statemachine",
+                "ObjectiveType": "condition",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "-": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ]
     }
 }
