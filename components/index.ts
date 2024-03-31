@@ -33,7 +33,6 @@ import {
     handleAxiosError,
     IS_LAUNCHER,
     jokes,
-    PEACOCKVER,
     PEACOCKVERSTRING,
     ServerVer,
 } from "./utils"
@@ -49,8 +48,7 @@ import type {
     S2CEventWithTimestamp,
     ServerConnectionConfig,
 } from "./types/types"
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs"
-import { join } from "path"
+import { readFileSync, writeFileSync } from "fs"
 import {
     errorLoggingMiddleware,
     log,
@@ -73,7 +71,7 @@ import {
 import { legacyProfileRouter } from "./2016/legacyProfileRouter"
 import { legacyMenuDataRouter } from "./2016/legacyMenuData"
 import { legacyContractRouter } from "./2016/legacyContractHandler"
-import { initRp } from "./discordRp"
+import { initRp } from "./discord/discordRp"
 import random from "random"
 import { generateUserCentric } from "./contracts/dataGen"
 import { json as jsonMiddleware, urlencoded } from "body-parser"
@@ -88,9 +86,7 @@ import { multiplayerRouter } from "./multiplayer/multiplayerService"
 import { multiplayerMenuDataRouter } from "./multiplayer/multiplayerMenuData"
 import { pack, unpack } from "msgpackr"
 import { liveSplitManager } from "./livesplit/liveSplitManager"
-import { cheapLoadUserData } from "./databaseHandler"
-
-loadFlags()
+import { cheapLoadUserData, setupFileStructure } from "./databaseHandler"
 
 const host = process.env.HOST || "0.0.0.0"
 const port = process.env.PORT || 80
@@ -317,7 +313,7 @@ app.use(
                     break
                 case "fghi4567xQOCheZIin0pazB47qGUvZw4":
                 case STEAM_NAMESPACE_2021:
-                    req.serverVersion = "8-14"
+                    req.serverVersion = "8-15"
                     break
                 default:
                     res.status(400).json({ message: "no game data" })
@@ -508,7 +504,7 @@ app.use(
             }
 
             if (
-                ["6-74", "7-3", "7-17", "8-14"].includes(
+                ["6-74", "7-3", "7-17", "8-15"].includes(
                     <string>req.serverVersion,
                 )
             ) {
@@ -531,7 +527,10 @@ program.description(
     "The Peacock Project is a HITMAN™ World of Assassination Trilogy server replacement.",
 )
 
-function startServer(options: { hmr: boolean; pluginDevHost: boolean }): void {
+async function startServer(options: {
+    hmr: boolean
+    pluginDevHost: boolean
+}): Promise<void> {
     void checkForUpdates()
 
     if (!IS_LAUNCHER) {
@@ -551,10 +550,9 @@ function startServer(options: { hmr: boolean; pluginDevHost: boolean }): void {
 
     log(
         LogLevel.INFO,
-        `This is Peacock v${PEACOCKVERSTRING} (rev ${PEACOCKVER}), with Node v${process.versions.node}.`,
+        `This is Peacock v${PEACOCKVERSTRING} with Node v${process.versions.node}.`,
     )
 
-    // jokes lol
     if (getFlag("jokes") === true) {
         log(
             LogLevel.INFO,
@@ -564,62 +562,42 @@ function startServer(options: { hmr: boolean; pluginDevHost: boolean }): void {
         )
     }
 
-    // make sure required folder structure is in place
-    for (const dir of [
-        "contractSessions",
-        "plugins",
-        "userdata",
-        "contracts",
-        join("userdata", "epicids"),
-        join("userdata", "steamids"),
-        join("userdata", "users"),
-        join("userdata", "h1", "steamids"),
-        join("userdata", "h1", "epicids"),
-        join("userdata", "h1", "users"),
-        join("userdata", "h2", "steamids"),
-        join("userdata", "h2", "users"),
-        join("userdata", "scpc", "users"),
-        join("userdata", "scpc", "steamids"),
-        join("images", "actors"),
-        join("images", "contracts"),
-        join("images", "contracts", "elusive"),
-        join("images", "contracts", "escalation"),
-        join("images", "contracts", "featured"),
-        join("images", "unlockables_override"),
-    ]) {
-        if (existsSync(dir)) {
-            continue
+    try {
+        // make sure required folder structure is in place
+        await setupFileStructure()
+
+        if (options.hmr) {
+            void setupHotListener("contracts", () => {
+                log(
+                    LogLevel.INFO,
+                    "Detected a change in contracts! Re-indexing...",
+                )
+                controller.index()
+            })
         }
 
-        log(LogLevel.DEBUG, `Creating missing directory ${dir}`)
-        mkdirSync(dir, { recursive: true })
+        // once contracts directory is present, we are clear to boot
+        await loadouts.init()
+        await controller.boot(options.pluginDevHost)
+
+        const httpServer = http.createServer(app)
+
+        // @ts-expect-error Non-matching method sig
+        httpServer.listen(port, host)
+        log(LogLevel.INFO, "Server started.")
+
+        if (getFlag("discordRp") === true) {
+            initRp()
+        }
+
+        // initialize livesplit
+        await liveSplitManager.init()
+
+        return
+    } catch (e) {
+        log(LogLevel.ERROR, "Critical error during bootstrap!")
+        log(LogLevel.ERROR, e)
     }
-
-    if (options.hmr) {
-        log(LogLevel.DEBUG, "Experimental HMR enabled.")
-
-        void setupHotListener("contracts", () => {
-            log(LogLevel.INFO, "Detected a change in contracts! Re-indexing...")
-            controller.index()
-        })
-    }
-
-    // once contracts directory is present, we are clear to boot
-    loadouts.init()
-    void controller.boot(options.pluginDevHost)
-
-    const httpServer = http.createServer(app)
-
-    // @ts-expect-error Non-matching method sig
-    httpServer.listen(port, host)
-    log(LogLevel.INFO, "Server started.")
-
-    if (getFlag("discordRp") === true) {
-        initRp()
-    }
-
-    // initialize livesplit
-    void liveSplitManager.init()
 }
 
 program.option(
@@ -634,12 +612,7 @@ program.option(
 )
 program.action(startServer)
 
-program
-    .command("tools")
-    .description("open the tools UI")
-    .action(() => {
-        void toolsMenu()
-    })
+program.command("tools").description("open the tools UI").action(toolsMenu)
 
 // noinspection RequiredAttributes
 program

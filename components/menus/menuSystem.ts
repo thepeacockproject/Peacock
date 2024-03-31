@@ -21,7 +21,7 @@ import serveStatic from "serve-static"
 import { join } from "path"
 import md5File from "md5-file"
 import { getConfig } from "../configSwizzleManager"
-import { readFile } from "atomically"
+import { readFile } from "fs/promises"
 import { GameVersion, RequestWithJwt } from "../types/types"
 import { log, LogLevel } from "../loggingInterop"
 import { imageFetchingMiddleware } from "./imageHandler"
@@ -33,7 +33,7 @@ import { SyncBailHook, SyncHook } from "../hooksImpl"
 const menuSystemPreRouter = Router()
 const menuSystemRouter = Router()
 
-// /resources-8-14/
+// /resources-8-15/
 
 /**
  * A class for managing the menu system's fetched JSON data.

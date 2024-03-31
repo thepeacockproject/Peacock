@@ -1983,6 +1983,71 @@
                     }
                 },
                 {
+                    "Id": "7423cc98-31d0-4e91-943b-ceb62d0b595b",
+                    "Name": "UI_CHALLENGE_GRASSSNAKE_EGGHUNT_NAME",
+                    "ImageName": "images/contracts/escalation/ContractEscalation_Edgy_Grassnake_Egghunt.jpg",
+                    "Description": "UI_CHALLENGE_GRASSSNAKE_EGGHUNT_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": ["PROP_MELEE_BLUE_EASTEREGG_PACIFYGAS"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_EDGY",
+                    "ParentLocationId": "LOCATION_PARENT_EDGY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "BlueEgg": {
+                                    "Transition": "CheckKill"
+                                }
+                            },
+                            "CheckKill": {
+                                "$timer": {
+                                    "Condition": {
+                                        "$after": 15
+                                    },
+                                    "Transition": "Start"
+                                },
+                                "Pacify": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": ["$Value.IsTarget", true]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "Sedated"
+                                                        ]
+                                                    },
+                                                    "in": "$Value.DamageEvents"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["hard", "feats"],
+                    "InclusionData": {
+                        "ContractIds": ["9d88605f-6871-46a8-bd46-9804ea04fca9"]
+                    }
+                },
+                {
                     "Id": "a015ff25-f9e8-481e-ab60-203eb8ecac40",
                     "Name": "UI_CONTRACT_GRASSSNAKE_GROUP_TITLE",
                     "ImageName": "images/contracts/escalation/ContractEscalation_Edgy_Grasssnake.jpg",
@@ -2070,8 +2135,8 @@
                         "MasteryXP": 1000
                     },
                     "Drops": [
-                        "PROP_DEVICE_REMOTE_EXPLOSIVE_LUST",
-                        "FIREARMS_PISTOL_DARTGUN_BLINDING_LUST"
+                        "FIREARMS_PISTOL_DARTGUN_BLINDING_LUST",
+                        "PROP_DEVICE_REMOTE_EXPLOSIVE_LUST"
                     ],
                     "IsPlayable": true,
                     "IsLocked": false,
@@ -2312,8 +2377,8 @@
                         "MasteryXP": 1000
                     },
                     "Drops": [
-                        "PROP_MELEE_LEATHERBELT_ASYLUM",
-                        "FIREARMS_PISTOL_DARTGUN_SEDATIVE_ASYLUM"
+                        "FIREARMS_PISTOL_DARTGUN_SEDATIVE_ASYLUM",
+                        "PROP_MELEE_LEATHERBELT_ASYLUM"
                     ],
                     "IsPlayable": true,
                     "IsLocked": false,
