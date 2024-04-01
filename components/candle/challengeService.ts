@@ -193,7 +193,16 @@ export abstract class ChallengeRegistry {
     }
 
     removeChallenge(challengeId: string, gameVersion: GameVersion): boolean {
-        return this.challenges[gameVersion].delete(challengeId)
+        const challenge = this.challenges[gameVersion].get(challengeId)
+        if (!challenge) return false
+
+        return (
+            this.challenges[gameVersion].delete(challengeId) &&
+            this.groupContents[gameVersion]
+                .get(challenge.ParentLocationId)!
+                .get(challenge.inGroup!)!
+                .delete(challengeId)
+        )
     }
 
     /**
