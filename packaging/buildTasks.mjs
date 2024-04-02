@@ -17,7 +17,7 @@
  */
 
 import { existsSync } from "fs"
-import { join, basename, sep } from "path"
+import { basename, join, sep } from "path"
 import millis from "ms"
 import { mkdir, readdir, readFile, unlink, writeFile } from "fs/promises"
 import { createHash } from "crypto"
@@ -74,11 +74,15 @@ export async function generateRequireTable() {
         requiresTable.push(`"@peacockproject/core/${importPath}": ${variable}`)
     }
 
-    const prettierConfig = await prettier.resolveConfig()
-    prettierConfig.parser = "babel"
+    const prettierConfig = {
+        parser: "babel",
+        semi: false,
+        tabWidth: 4,
+        trailingComma: "all",
+    }
 
     // language=TypeScript
-    const generatedPeacockRequireTableFile = prettier.format(
+    const generatedPeacockRequireTableFile = await prettier.format(
         `/*
 *     The Peacock Project - a HITMAN server replacement.
 *     Copyright (C) 2021-2024 The Peacock Project Team
@@ -97,11 +101,11 @@ export async function generateRequireTable() {
 *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-${imports.join("\n")}
+        ${imports.join("\n")}
 
-export default {
-    ${requiresTable.join(",\n")}
-}`,
+        export default {
+            ${requiresTable.join(",\n")}
+        }`,
         prettierConfig,
     )
 
