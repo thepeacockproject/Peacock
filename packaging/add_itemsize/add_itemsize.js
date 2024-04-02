@@ -41,7 +41,9 @@ async function main() {
 
     // Something about how this is reading in the json also removes the decimal from whole numbers (e.g. 1.0 becomes 1)
     // See: allunlockables[i].Properties.Gameplay.damage for example
-    let allunlockables = require(`../../static/${gameprefix}allunlockables.json`)
+    let allunlockables = require(
+        `../../static/${gameprefix}allunlockables.json`,
+    )
 
     // Run on every chunk0patch file just in case
     for (let i = 0; i < chunk0patches.length; i++) {
@@ -128,4 +130,5 @@ async function main() {
         },
     )
 }
+
 main()

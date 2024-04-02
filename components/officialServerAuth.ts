@@ -26,7 +26,6 @@ import type { GameVersion } from "./types/types"
 
 /**
  * Creates the body for the authentication request (urlencoded format).
- *
  * @param params The parameters object.
  * @returns The urlencoded body.
  */
@@ -79,24 +78,24 @@ export class OfficialServerAuth {
 
     /**
      * Kick things off.
-     *
      * @param gameVersion The game version.
-     * @param gameAuthToken The token for the 3rd party game provider (steam or epic).
+     * @param gameAuthToken The token for the 3rd party game provider (Steam or Epic).
      */
     constructor(gameVersion: GameVersion, gameAuthToken: string) {
         this._gameAuthToken = gameAuthToken
-        this._headers =
-            gameVersion === "h1"
-                ? requestHeadersH1
-                : gameVersion === "h2"
-                ? requestHeadersH2
-                : requestHeadersH3
+        this._headers = requestHeadersH1
+
+        if (gameVersion === "h2") {
+            this._headers = requestHeadersH2
+        } else if (gameVersion === "h3") {
+            this._headers = requestHeadersH3
+        }
+
         this.initialized = false
     }
 
     /**
      * Authenticates the client with the official service the first time.
-     *
      * @param req The initial client request.
      */
     async _initiallyAuthenticate(req: Request): Promise<void> {
@@ -119,7 +118,6 @@ export class OfficialServerAuth {
 
     /**
      * Makes a request with the required context.
-     *
      * @param url The URL to fetch.
      * @param get If the request should be a GET (true), or POST (false).
      * @param body The request's body (defaults to {}).
@@ -181,7 +179,6 @@ export class OfficialServerAuth {
 
     /**
      * Authenticate for the first time.
-     *
      * @param req The request from the Hitman client connecting to Peacock.
      * @returns The token data fetched from the official servers.
      */

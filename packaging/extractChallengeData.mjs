@@ -282,8 +282,8 @@ function getUrlFromVersion(gameVersion) {
     return gameVersion === "h3"
         ? "hm3-service.hitman.io"
         : gameVersion === "h2"
-        ? "pc2-service.hitman.io"
-        : "pc-service.hitman.io"
+          ? "pc2-service.hitman.io"
+          : "pc-service.hitman.io"
 }
 
 class ExtractChallengeDataCommand extends Command {

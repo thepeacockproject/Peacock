@@ -193,16 +193,16 @@ export class ProgressionService {
                     isEvergreenContract
                         ? xpRequiredForEvergreenLevel(maxLevel)
                         : sniperUnlockable
-                        ? xpRequiredForSniperLevel(maxLevel)
-                        : xpRequiredForLevel(maxLevel),
+                          ? xpRequiredForSniperLevel(maxLevel)
+                          : xpRequiredForLevel(maxLevel),
                 )
 
                 locationData.Level = clampValue(
                     isEvergreenContract
                         ? evergreenLevelForXp(locationData.Xp)
                         : sniperUnlockable
-                        ? sniperLevelForXp(locationData.Xp)
-                        : levelForXp(locationData.Xp),
+                          ? sniperLevelForXp(locationData.Xp)
+                          : levelForXp(locationData.Xp),
                     1,
                     maxLevel,
                 )
