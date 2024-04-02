@@ -86,7 +86,12 @@ webFeaturesRouter.get("/codenames", (_, res) => {
 })
 
 webFeaturesRouter.get("/local-users", async (req: CommonRequest, res) => {
-    if (!req.query.gv || !versions.includes(req.query.gv ?? null)) {
+    // Validate that gv is h1, h2, or h3
+    function validateGv(gv: unknown): gv is "h1" | "h2" | "h3" {
+        return versions.includes(gv as Exclude<GameVersion, "scpc">)
+    }
+
+    if (!validateGv(req.query.gv)) {
         res.json([])
         return
     }

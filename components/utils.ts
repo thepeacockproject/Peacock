@@ -54,6 +54,9 @@ export const uuidRegex =
 
 export const contractTypes = ["featured", "usercreated"]
 
+/**
+ * A list of game versions, except scpc.
+ */
 export const versions: Exclude<GameVersion, "scpc">[] = ["h1", "h2", "h3"]
 
 export const contractCreationTutorialId = "d7e2607c-6916-48e2-9588-976c7d8998bb"
