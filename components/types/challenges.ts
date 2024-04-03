@@ -80,7 +80,7 @@ export interface ChallengePackage {
          * The parent location.
          */
         Location: string
-        GameVersion: GameVersion
+        GameVersions: GameVersion[]
     }
 }
 

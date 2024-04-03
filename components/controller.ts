@@ -825,7 +825,6 @@ export class Controller {
     /**
      * Get all global challenges and register a simplified version of them.
      * @param gameVersion A GameVersion object representing the version of the game.
-     *
      */
     private registerGlobalChallenges(gameVersion: GameVersion) {
         const regGlobalChallenges: RegistryChallenge[] = getVersionedConfig<
@@ -856,7 +855,7 @@ export class Controller {
             ],
             meta: {
                 Location: "GLOBAL",
-                GameVersion: gameVersion,
+                GameVersions: [gameVersion],
             },
         })
     }
@@ -914,20 +913,22 @@ export class Controller {
     }
 
     private _handleChallengeResources(data: ChallengePackage): void {
-        for (const group of data.groups) {
-            this.challengeService.registerGroup(
-                group,
-                data.meta.Location,
-                data.meta.GameVersion,
-            )
-
-            for (const challenge of group.Challenges) {
-                this.challengeService.registerChallenge(
-                    challenge,
-                    group.CategoryId,
+        for (const version of data.meta.GameVersions) {
+            for (const group of data.groups) {
+                this.challengeService.registerGroup(
+                    group,
                     data.meta.Location,
-                    data.meta.GameVersion,
+                    version,
                 )
+
+                for (const challenge of group.Challenges) {
+                    this.challengeService.registerChallenge(
+                        challenge,
+                        group.CategoryId,
+                        data.meta.Location,
+                        version,
+                    )
+                }
             }
         }
     }
