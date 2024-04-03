@@ -104,7 +104,7 @@ export async function checkForUpdates(): Promise<void> {
     }
 }
 
-export { compare } from "semver"
+export * from "semver"
 
 export function getRemoteService(gameVersion: GameVersion): string | undefined {
     switch (gameVersion) {
