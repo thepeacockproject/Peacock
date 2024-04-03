@@ -87,20 +87,24 @@ export async function checkForUpdates(): Promise<void> {
         if (isNewer) {
             log(
                 LogLevel.INFO,
-                `You're ahead of the game! The latest version of Peacock (${data.id}) is older than this build`,
+                `You're ahead of the latest release! The latest version of Peacock (${data.id}) is older than this build.`,
+                "updates",
             )
         } else if (current === 0) {
-            log(LogLevel.DEBUG, "Peacock is up to date.")
+            log(LogLevel.DEBUG, "Peacock is up to date.", "updates")
         } else {
             log(
                 LogLevel.WARN,
                 `Peacock is out-of-date! Check the Discord for the latest release.`,
+                "updates",
             )
         }
     } catch (e) {
-        log(LogLevel.WARN, "Failed to check for updates!")
+        log(LogLevel.WARN, "Failed to check for updates!", "updates")
     }
 }
+
+export { compare } from "semver"
 
 export function getRemoteService(gameVersion: GameVersion): string | undefined {
     switch (gameVersion) {
