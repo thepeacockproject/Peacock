@@ -269,7 +269,7 @@ async function extract(locationParent, jwt, gameVersion) {
         {
             meta: {
                 Location: locationParent,
-                GameVersion: gameVersion,
+                GameVersions: [gameVersion],
             },
             groups,
         },

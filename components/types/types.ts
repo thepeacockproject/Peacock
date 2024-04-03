@@ -1174,12 +1174,12 @@ export interface CompiledChallengeTreeCategory {
     CategoryId: string
     ChallengesCount: number
     CompletedChallengesCount: number
-    CompletionData: CompletionData
+    CompletionData: CompletionData | Record<string, never>
     Icon: string
     Image: string
     ImageLocked?: string
     IsLocked: boolean
-    Location: Unlockable
+    Location: Unlockable | null
     Name: string
     RequiredResources: string[]
     OrderIndex: number
@@ -1187,7 +1187,7 @@ export interface CompiledChallengeTreeCategory {
         Data: {
             CategoryData: CompiledChallengeTreeCategoryInfo
             Challenges: CompiledChallengeTreeData[]
-            CompletionData: CompletionData
+            CompletionData: CompletionData | Record<string, never>
             HasNext: boolean
             HasPrevious: boolean
             NextCategoryIcon?: string
@@ -1235,6 +1235,7 @@ export interface CompiledChallengeTreeData {
     LocationId: string
     Name: string
     ParentLocationId: string
+    OrderIndex: number
     Rewards: {
         MasteryXP?: number
     }

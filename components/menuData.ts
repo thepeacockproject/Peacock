@@ -101,22 +101,26 @@ menuDataRouter.get(
     "/ChallengeLocation",
     // @ts-expect-error Jwt props.
     (req: RequestWithJwt<ChallengeLocationQuery>, res) => {
+        const pack =
+            controller.challengeService.challengePacks[req.query.locationId]
+
         const location = getVersionedConfig<PeacockLocationsData>(
             "LocationsData",
             req.gameVersion,
             true,
         ).children[req.query.locationId]
 
-        if (!location) {
+        if (!pack && !location) {
             res.status(400).send("Invalid locationId")
             return
         }
 
         const data = {
-            Name: location.DisplayNameLocKey,
+            Name: pack ? pack.Name : location.DisplayNameLocKey,
             Location: location,
-            Children: controller.challengeService.getChallengeDataForLocation(
-                req.query.locationId,
+            Children: controller.challengeService.getChallengeDataForCategory(
+                pack ? req.query.locationId : null,
+                pack ? undefined : location,
                 req.gameVersion,
                 req.jwt.unique_name,
             ),
