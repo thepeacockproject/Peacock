@@ -4207,6 +4207,126 @@
                     }
                 }
             ]
+        },
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_CHEESECAKE",
+            "Image": "images/challenges/categories/packcheesecake/tile.jpg",
+            "Icon": "challenge_category_feats",
+            "CategoryId": "cheesecake-pack",
+            "Description": "",
+            "OrderIndex": 10000,
+            "Challenges": [
+                {
+                    "Id": "c098a7cf-8c49-02ce-475e-20beaed99712",
+                    "Name": "CHALLENGEPACK_CHEESECAKE_DUBAIPANPACIFY_NAME",
+                    "ImageName": "images/challenges/categories/packcheesecake/cheesecake_dubaipanpacify.png",
+                    "Description": "CHALLENGEPACK_CHEESECAKE_DUBAIPANPACIFY_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_CHEESECAKE",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_GOLDEN",
+                    "ParentLocationId": "LOCATION_PARENT_GOLDEN",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 100003,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "Constants": {
+                            "Goal": 2
+                        },
+                        "Context": {
+                            "PacifiedTargets": 0
+                        },
+                        "States": {
+                            "Start": {
+                                "setpieces": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "fbfa76d6-9f9b-40dd-869a-2b3fc2361ce5"
+                                        ]
+                                    },
+                                    "Transition": "MeetingRoomLocked"
+                                }
+                            },
+                            "MeetingRoomLocked": {
+                                "Pacify": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$or": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "bd0689d6-07b4-4757-b8ee-cac19f1c9e16"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "9571d196-8d67-4d94-8dad-6e2d970d7a91"
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "bce6ce09-6ead-4d72-8438-2c7780770e70"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Actions": {
+                                        "$inc": "PacifiedTargets"
+                                    },
+                                    "Transition": "CheckCount"
+                                }
+                            },
+                            "CheckCount": {
+                                "-": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$.PacifiedTargets",
+                                                "$.Goal"
+                                            ]
+                                        },
+                                        "Transition": "AwaitingContractEnd"
+                                    },
+                                    {
+                                        "Transition": "MeetingRoomLocked"
+                                    }
+                                ]
+                            },
+                            "AwaitingContractEnd": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": [
+                        "cheesecake-pack",
+                        "story",
+                        "live",
+                        "medium"
+                    ],
+                    "InclusionData": {
+                        "ContractIds": [
+                            "7d85f2b0-80ca-49be-a2b7-d56f67faf252"
+                        ]
+                    }
+                }
+            ]
         }
     ]
 }

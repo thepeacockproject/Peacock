@@ -11457,6 +11457,76 @@
                     }
                 }
             ]
+        },
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_CHEESECAKE",
+            "Image": "images/challenges/categories/packcheesecake/tile.jpg",
+            "Icon": "challenge_category_feats",
+            "CategoryId": "cheesecake-pack",
+            "Description": "",
+            "OrderIndex": 10000,
+            "Challenges": [
+                {
+                    "Id": "0570b6e5-3c27-e715-042a-59313b0a0916",
+                    "Name": "CHALLENGEPACK_CHEESECAKE_SAPIENZACLEAVERKILL_NAME",
+                    "ImageName": "images/challenges/categories/packcheesecake/cheesecake_sapienzacleaverkill.png",
+                    "Description": "CHALLENGEPACK_CHEESECAKE_SAPIENZACLEAVERKILL_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_CHEESECAKE",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_COASTALTOWN",
+                    "ParentLocationId": "LOCATION_PARENT_COASTALTOWN",
+                    "Type": "parentlocation",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 100001,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.IsTarget",
+                                                    true
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "10601c6b-1f65-44ed-92a1-bf843f023d3f"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "1bbf0ed5-0515-4599-a4c9-454ce59cff44"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": [
+                        "cheesecake-pack",
+                        "story",
+                        "live",
+                        "medium"
+                    ]
+                }
+            ]
         }
     ]
 }

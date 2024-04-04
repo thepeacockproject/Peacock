@@ -6611,6 +6611,112 @@
                     "Tags": ["argon-pack", "story", "live", "medium"]
                 }
             ]
+        },
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_CHEESECAKE",
+            "Image": "images/challenges/categories/packcheesecake/tile.jpg",
+            "Icon": "challenge_category_feats",
+            "CategoryId": "cheesecake-pack",
+            "Description": "",
+            "OrderIndex": 10000,
+            "Challenges": [
+                {
+                    "Id": "15dfb94e-72cc-9f43-5281-a0f7e5180f24",
+                    "Name": "CHALLENGEPACK_CHEESECAKE_WHITTLETONBONEPACIFY_NAME",
+                    "ImageName": "images/challenges/categories/packcheesecake/cheesecake_whittletonbonepacify.png",
+                    "Description": "CHALLENGEPACK_CHEESECAKE_WHITTLETONBONEPACIFY_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_CHEESECAKE",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_NORTHAMERICA",
+                    "ParentLocationId": "LOCATION_PARENT_NORTHAMERICA",
+                    "Type": "parentlocation",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 100002,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "Constants": {
+                            "Goal": 2
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal"
+                            }
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "States": {
+                            "Start": {
+                                "Pacify": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$or": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "672a7a52-a08a-45cd-a061-ced6a7b8d8c4"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "b8f0bf6c-4826-4de2-a785-2d139967e09c"
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "acc9d7b8-80f1-4bb0-ba81-3a69b09e0543"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Actions": {
+                                        "$inc": "Count"
+                                    },
+                                    "Transition": "CheckCount"
+                                }
+                            },
+                            "CheckCount": {
+                                "-": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$.Count",
+                                                "$.Goal"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Transition": "Start"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": [
+                        "cheesecake-pack",
+                        "story",
+                        "live",
+                        "medium"
+                    ]
+                }
+            ]
         }
     ]
 }
