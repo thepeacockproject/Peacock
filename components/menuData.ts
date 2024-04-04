@@ -101,8 +101,9 @@ menuDataRouter.get(
     "/ChallengeLocation",
     // @ts-expect-error Jwt props.
     (req: RequestWithJwt<ChallengeLocationQuery>, res) => {
-        const pack =
-            controller.challengeService.challengePacks[req.query.locationId]
+        const pack = controller.challengeService.challengePacks.get(
+            req.query.locationId,
+        )
 
         const location = getVersionedConfig<PeacockLocationsData>(
             "LocationsData",

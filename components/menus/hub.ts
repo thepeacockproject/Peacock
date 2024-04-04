@@ -63,7 +63,7 @@ function generateCareerEntryChild(
     categoryId: string,
     completionData?: CompletionData,
 ): CareerEntryChild {
-    const pack = controller.challengeService.challengePacks[categoryId]
+    const pack = controller.challengeService.challengePacks.get(categoryId)
 
     return {
         IsLocked: Boolean(location.Properties.IsLocked),
@@ -100,9 +100,10 @@ export function getHubData(gameVersion: GameVersion, userId: string) {
 
     const career: Record<string, CareerEntry> = {}
 
-    for (const [id, pack] of Object.entries(
-        controller.challengeService.challengePacks,
-    )) {
+    for (const [
+        id,
+        pack,
+    ] of controller.challengeService.challengePacks.entries()) {
         if (!pack.GameVersions.includes(gameVersion)) continue
 
         career[id] = {

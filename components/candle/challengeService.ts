@@ -153,22 +153,28 @@ export abstract class ChallengeRegistry {
 
     protected constructor(protected readonly controller: Controller) {}
 
-    public challengePacks: { [key: string]: ChallengePack } = {
-        "argentum-pack": {
-            Name: "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_ARGENTUM",
-            Description: "",
-            GameVersions: ["h3"],
-            Image: "images/challenges/categories/packargentum/tile.jpg",
-            Icon: "challenge_category_feats",
-        },
-        "argon-pack": {
-            Name: "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_ARGON",
-            Description: "",
-            GameVersions: ["h3"],
-            Image: "images/challenges/categories/packargon/tile.jpg",
-            Icon: "challenge_category_feats",
-        },
-    }
+    public challengePacks: Map<string, ChallengePack> = new Map([
+        [
+            "argentum-pack",
+            {
+                Name: "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_ARGENTUM",
+                Description: "",
+                GameVersions: ["h3"],
+                Image: "images/challenges/categories/packargentum/tile.jpg",
+                Icon: "challenge_category_feats",
+            },
+        ],
+        [
+            "argon-pack",
+            {
+                Name: "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_ARGON",
+                Description: "",
+                GameVersions: ["h3"],
+                Image: "images/challenges/categories/packargon/tile.jpg",
+                Icon: "challenge_category_feats",
+            },
+        ],
+    ])
 
     registerChallenge(
         challenge: RegistryChallenge,
@@ -637,7 +643,7 @@ export class ChallengeService extends ChallengeRegistry {
         let challenges: [string, RegistryChallenge[]][] = []
 
         // Challenge packs ignore the filter
-        if (location in this.challengePacks) {
+        if (this.challengePacks.has(location)) {
             challenges.push([
                 location,
                 this.getChallengesForGroup(location, gameVersion)[location],
