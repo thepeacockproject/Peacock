@@ -57,6 +57,7 @@ export async function generateRequireTable() {
         ignore: [
             "tools.ts",
             "index.ts",
+            "controller.ts",
             "generatedPeacockRequireTable.ts",
             "types/globals.d.ts",
             "types/*.ts",
