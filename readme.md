@@ -1,3 +1,7 @@
+# Archive Branch: v5
+
+This is the branch for the v5 release series, which is no longer being updated. This is here only for historical purposes, and you should use a newer version if available.
+
 # The Peacock Project
 
 [![Discord](https://img.shields.io/discord/826809653181808651?label=Discord&logo=discord&logoColor=white&style=for-the-badge)](https://discord.gg/peacock)
