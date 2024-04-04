@@ -80,7 +80,7 @@ export type MultiplayerMatchStatsQuery = Partial<{
     contractSessionId: string
 }>
 
-export type LegacyGetProgressionBody = Partial<{
+export type GetChallengeProgressionBody = Partial<{
     profileid: string
     challengeids: string[]
 }>
