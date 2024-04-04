@@ -58,7 +58,11 @@ import {
     compileRuntimeChallenge,
     inclusionDataCheck,
 } from "./candle/challengeHelpers"
-import { LoadSaveBody, ResolveGamerTagsBody } from "./types/gameSchemas"
+import {
+    GetChallengeProgressionBody,
+    LoadSaveBody,
+    ResolveGamerTagsBody,
+} from "./types/gameSchemas"
 import assert from "assert"
 
 const profileRouter = Router()
@@ -571,6 +575,54 @@ profileRouter.post(
                     challenge.Progression,
                 )
             }
+        }
+
+        res.json(challenges)
+    },
+)
+
+profileRouter.post(
+    "/ChallengesService/GetProgression",
+    jsonMiddleware(),
+    // @ts-expect-error Has jwt props.
+    (req: RequestWithJwt<never, GetChallengeProgressionBody>, res) => {
+        if (!Array.isArray(req.body.challengeids)) {
+            res.status(400).send("invalid body")
+            return
+        }
+
+        if (req.jwt.unique_name !== req.body.profileid) {
+            res.status(403).send("unauthorised")
+            return
+        }
+
+        const challenges: ChallengeProgressionData[] = []
+
+        for (const challengeId of req.body.challengeids) {
+            const challenge = controller.challengeService.getChallengeById(
+                challengeId,
+                req.gameVersion,
+            )
+
+            if (!challenge) {
+                log(LogLevel.ERROR, `Unknown challenge in CSGP: ${challengeId}`)
+                continue
+            }
+
+            const progression =
+                controller.challengeService.getPersistentChallengeProgression(
+                    req.jwt.unique_name,
+                    challengeId,
+                    req.gameVersion,
+                )
+
+            challenges.push({
+                ChallengeId: challengeId,
+                ProfileId: req.jwt.unique_name,
+                State: progression.State,
+                CompletedAt: progression.CompletedAt,
+                Completed: progression.Completed,
+            })
         }
 
         res.json(challenges)
