@@ -568,7 +568,7 @@ export class ChallengeService extends ChallengeRegistry {
     }
 
     /**
-     * This is a helper function for @see getGroupedChallengeLists. It is not expected to be used elsewhere.
+     * This is a helper function for {@link getGroupedChallengeLists}. It is not expected to be used elsewhere.
      *
      * Filter all challenges in a parent location using a given filter, sort them into groups,
      * and write them into the `challenges` array provided.
