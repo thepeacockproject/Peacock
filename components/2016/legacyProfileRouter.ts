@@ -29,7 +29,7 @@ import { controller } from "../controller"
 import { json as jsonMiddleware } from "body-parser"
 import { uuidRegex } from "../utils"
 import { compileRuntimeChallenge } from "../candle/challengeHelpers"
-import { LegacyGetProgressionBody } from "../types/gameSchemas"
+import { GetChallengeProgressionBody } from "../types/gameSchemas"
 
 const legacyProfileRouter = Router()
 
@@ -95,7 +95,7 @@ legacyProfileRouter.post(
     "/ChallengesService/GetProgression",
     jsonMiddleware(),
     // @ts-expect-error Has jwt props.
-    (req: RequestWithJwt<never, LegacyGetProgressionBody>, res) => {
+    (req: RequestWithJwt<never, GetChallengeProgressionBody>, res) => {
         if (!Array.isArray(req.body.challengeids)) {
             res.status(400).send("invalid body")
             return
