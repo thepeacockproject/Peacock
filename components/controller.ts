@@ -408,6 +408,34 @@ export class Controller {
     }
 
     /**
+     * You should use {@link smf.modIsInstalled} instead!
+     *
+     * Returns whether a mod is UNAVAILABLE.
+     *
+     * @param modId The mod's ID.
+     * @returns If the mod is unavailable. You should probably abort initialization if true is returned. Also returns true if the `overrideFrameworkChecks` flag is set.
+     * @deprecated since v5.5.0, use `!controller.smf.modIsInstalled`
+     */
+    public addClientSideModDependency(modId: string): boolean {
+        log(LogLevel.WARN, "controller.addClientSideModDependency is deprecated, use !controller.smf.modIsInstalled instead!", "plugins")
+        return getFlag('overrideFrameworkChecks') === true || !this.smf.modIsInstalled(modId)
+    }
+
+    /**
+     * You should use {@link smf.modIsInstalled} instead!
+     * 
+     * Returns whether a mod is available and installed.
+     *
+     * @param modId The mod's ID.
+     * @returns If the mod is available (or the `overrideFrameworkChecks` flag is set). You should probably abort initialisation if false is returned.
+     * @deprecated since v7.0.0, use `controller.smf.modIsInstalled`
+     */
+    public modIsInstalled(modId: string): boolean {
+        log(LogLevel.WARN, "controller.modIsInstalled is deprecated, use controller.smf.modIsInstalled instead!", "plugins")
+        return this.smf.modIsInstalled(modId)
+    }
+
+    /**
      * Starts the service and loads in all contracts.
      *
      * @throws {Error} If all hope is lost. (In theory, this should never happen)
