@@ -3903,68 +3903,6 @@
                     }
                 }
             ]
-        },
-        {
-            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_CHEESECAKE",
-            "Image": "images/challenges/categories/packcheesecake/tile.jpg",
-            "Icon": "challenge_category_feats",
-            "CategoryId": "cheesecake-pack",
-            "Description": "",
-            "OrderIndex": 10000,
-            "Challenges": [
-                {
-                    "Id": "b5386255-0e7e-2bd7-6c28-c1096d4902c5",
-                    "Name": "CHALLENGEPACK_CHEESECAKE_SGAILBARBEQUE_NAME",
-                    "ImageName": "images/challenges/categories/packcheesecake/cheesecake_sgailbarbeque.jpg",
-                    "Description": "CHALLENGEPACK_CHEESECAKE_SGAILBARBEQUE_DESC",
-                    "Rewards": {
-                        "MasteryXP": 4000
-                    },
-                    "Drops": [],
-                    "IsPlayable": true,
-                    "IsLocked": false,
-                    "HideProgression": false,
-                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_CHEESECAKE",
-                    "Icon": "challenge_category_feats",
-                    "LocationId": "LOCATION_NORTHSEA",
-                    "ParentLocationId": "LOCATION_PARENT_NORTHSEA",
-                    "Type": "contract",
-                    "DifficultyLevels": [],
-                    "OrderIndex": 100004,
-                    "XpModifier": {},
-                    "RuntimeType": "Hit",
-                    "Definition": {
-                        "Scope": "session",
-                        "States": {
-                            "Start": {
-                                "Kill": {
-                                    "Condition": {
-                                        "$and": [
-                                            {
-                                                "$eq": [
-                                                    "$Value.RepositoryId",
-                                                    "04387b7a-25fa-4dec-baa0-eeff1d36ab11"
-                                                ]
-                                            },
-                                            {
-                                                "$eq": [
-                                                    "$Value.KillMethodStrict",
-                                                    "accident_burn"
-                                                ]
-                                            }
-                                        ]
-                                    },
-                                    "Transition": "Success"
-                                }
-                            }
-                        }
-                    },
-                    "Tags": ["cheesecake-pack", "story", "live", "medium"],
-                    "InclusionData": {
-                        "ContractIds": ["0d225edf-40cd-4f20-a30f-b62a373801d3"]
-                    }
-                }
-            ]
         }
     ]
 }
