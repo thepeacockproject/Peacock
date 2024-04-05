@@ -3122,12 +3122,6 @@
                     "RuntimeType": "Hit",
                     "Definition": {
                         "Scope": "session",
-                        "Constants": {
-                            "Goal": 2
-                        },
-                        "Context": {
-                            "TargetsKilled": 0
-                        },
                         "States": {
                             "Start": {
                                 "Kill": [
@@ -3148,10 +3142,7 @@
                                                 }
                                             ]
                                         },
-                                        "Actions": {
-                                            "$inc": "$.TargetsKilled"
-                                        },
-                                        "Transition": "CheckCount"
+                                        "Transition": "SmithDown"
                                     },
                                     {
                                         "Condition": {
@@ -3170,23 +3161,51 @@
                                                 }
                                             ]
                                         },
-                                        "Actions": {
-                                            "$inc": "$.TargetsKilled"
-                                        },
-                                        "Transition": "CheckCount"
+                                        "Transition": "MateDown"
                                     }
                                 ]
                             },
-                            "CheckCount": {
-                                "-": [
-                                    {
-                                        "Condition": {
-                                            "$eq": ["$.TargetsKilled", "$.Goal"]
-                                        },
-                                        "Transition": "CheckShower"
+                            "SmithDown": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "9454339d-8f29-4ae6-97f4-96523a48bf08"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "58a036dc-79d4-4d64-8bf5-3faafa3cfead"
+                                                ]
+                                            }
+                                        ]
                                     },
-                                    { "Transition": "Start" }
-                                ]
+                                    "Transition": "CheckShower"
+                                }
+                            },
+                            "MateDown": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "1312f620-bf61-4b7f-8f5c-ea4e07763a98"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillMethodStrict",
+                                                    "accident_burn"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "CheckShower"
+                                }
                             },
                             "CheckShower": {
                                 "setpieces": {
