@@ -2,13 +2,15 @@ name: Localisation
 
 on:
   push:
-    branches: ["v*"]
+    branches: ["master"]
+    tags: ["v*"]
     paths: ["resources/locale.json", ".github/workflows/locale.yml"]
   workflow_dispatch:
 
 jobs:
   rebuild-locale:
     name: Rebuild Localisation
+    if: !startsWith(github.ref, 'refs/tags/')
     runs-on: windows-latest
 
     steps:
@@ -17,13 +19,6 @@ jobs:
         with:
           token: ${{ secrets.PEACOCKBOT_TOKEN }}
           path: "./Peacock"
-
-      - name: Checkout Peacock Strings
-        uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.PEACOCKBOT_TOKEN }}
-          repository: thepeacockproject/peacock-strings
-          path: "./PeacockStrings"
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -84,6 +79,74 @@ jobs:
           author_name: PeacockBot
           author_email: admin@thepeacockproject.org
           message: "[skip ci] Update locale packages"
+
+  update-mod:
+    name: Update Mod
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Peacock
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PEACOCKBOT_TOKEN }}
+          path: "./Peacock"
+
+      - name: Checkout Peacock Strings
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PEACOCKBOT_TOKEN }}
+          repository: thepeacockproject/peacock-strings
+          path: "./PeacockStrings"
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: "./Peacock/.nvmrc"
+          cache: "yarn"
+          cache-dependency-path: "./Peacock/yarn.lock"
+
+      - name: Install Packages
+        run: |
+          cd Peacock
+          yarn install --immutable
+
+      #- name: Download ResourceLib
+      #  uses: robinraju/release-downloader@v1.7
+      #  with:
+      #    repository: "OrfeasZ/ZHMTools"
+      #    latest: true
+      #    fileName: "ResourceLib-win-x64.zip"
+      #    out-file-path: "Peacock/resources"
+
+      - name: Download RPKG-CLI
+        id: rpkgcli
+        uses: robinraju/release-downloader@v1.9
+        with:
+          repository: "glacier-modding/RPKG-Tool"
+          latest: true
+          fileName: "rpkg_*-cli.zip"
+          out-file-path: "Peacock/resources"
+
+      - name: Download HMLanguageTools
+        id: hmlt
+        uses: robinraju/release-downloader@v1.9
+        with:
+          repository: "AnthonyFuller/TonyTools"
+          latest: true
+          fileName: "TonyTools.zip"
+          out-file-path: "Peacock/resources"
+
+      - name: Unzip dependencies
+        run: |
+          cd Peacock/resources
+          7z x ${{ fromJson(steps.rpkgcli.outputs.downloaded_files)[0] }}
+          7z x ${{ fromJson(steps.hmlt.outputs.downloaded_files)[0] }}
+
+      - name: Rebuild Locale Packages
+        run: |
+          cd Peacock
+          yarn rebuild-locale
 
       - name: Copy peacockstrings.locr.json
         run: |
