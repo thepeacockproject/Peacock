@@ -16,7 +16,6 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { existsSync, readFileSync, writeFileSync } from "fs"
 import type {
     GameVersion,
     Loadout,
@@ -25,9 +24,10 @@ import type {
 } from "./types/types"
 import { Request, Router } from "express"
 import { json as jsonMiddleware } from "body-parser"
-import { writeFile } from "atomically"
+import { writeFile } from "fs/promises"
 import { nanoid } from "nanoid"
 import { versions } from "./utils"
+import { asyncGuard } from "./databaseHandler"
 
 const LOADOUT_PROFILES_FILE = "userdata/users/lop.json"
 
@@ -50,47 +50,33 @@ const defaultValue: LoadoutFile = {
  * A class for managing loadouts.
  */
 export class Loadouts {
-    private _loadouts!: LoadoutFile
-
-    /**
-     * Get the loadouts data.
-     *
-     * @returns The loadouts data.
-     */
-    public get loadouts(): LoadoutFile {
-        return this._loadouts
-    }
-
-    /**
-     * Mutate the current LoadoutFile object.
-     *
-     * @internal Intended for internal use only.
-     * @param newValue The object after the mutation.
-     */
-    set loadouts(newValue: LoadoutFile) {
-        this._loadouts = newValue
-    }
+    loadouts!: LoadoutFile
 
     /**
      * Initializes the loadouts manager.
      */
-    public init(): void {
-        if (!existsSync(LOADOUT_PROFILES_FILE)) {
-            this._loadouts = defaultValue
+    async init(): Promise<void> {
+        const fs = asyncGuard.getFs()
 
-            writeFileSync(LOADOUT_PROFILES_FILE, JSON.stringify(defaultValue))
+        if (!(await fs.exists(LOADOUT_PROFILES_FILE))) {
+            this.loadouts = defaultValue
+
+            await fs.writeFile(
+                LOADOUT_PROFILES_FILE,
+                JSON.stringify(defaultValue),
+            )
             return
         }
 
-        this._loadouts = JSON.parse(
-            readFileSync(LOADOUT_PROFILES_FILE).toString(),
+        this.loadouts = JSON.parse(
+            (await fs.readFile(LOADOUT_PROFILES_FILE)).toString(),
         )
 
         let dirty = false
 
         // make sure they all have IDs
         for (const gameVersion of versions) {
-            for (const loadout of this._loadouts[gameVersion].loadouts) {
+            for (const loadout of this.loadouts[gameVersion].loadouts) {
                 if (!loadout.id) {
                     dirty = true
                     loadout.id = nanoid()
@@ -99,26 +85,28 @@ export class Loadouts {
 
             // if the selected value is null/undefined or is not length 0 or 21, it's not a valid id
             if (
-                !this._loadouts[gameVersion].selected ||
+                !this.loadouts[gameVersion].selected ||
                 // first condition ensures selected is truthy, but TS doesn't know
                 ![0, 21].includes(
-                    this._loadouts[gameVersion].selected?.length || -1,
+                    this.loadouts[gameVersion].selected?.length || -1,
                 )
             ) {
                 dirty = true
 
                 // long story short: find a loadout with a name matching the selected value,
                 // and if found, set selected to the id
-                this._loadouts[gameVersion].selected =
-                    this._loadouts[gameVersion].loadouts.find(
-                        (lo) =>
-                            lo.name === this._loadouts[gameVersion].selected,
+                this.loadouts[gameVersion].selected =
+                    this.loadouts[gameVersion].loadouts.find(
+                        (lo) => lo.name === this.loadouts[gameVersion].selected,
                     )?.id || ""
             }
         }
 
         if (dirty) {
-            writeFileSync(LOADOUT_PROFILES_FILE, JSON.stringify(this._loadouts))
+            await writeFile(
+                LOADOUT_PROFILES_FILE,
+                JSON.stringify(this.loadouts),
+            )
         }
     }
 
@@ -129,7 +117,7 @@ export class Loadouts {
      * @param name The optional name for the new loadout set, defaults to "Unnamed loadout set".
      * @returns The Loadout object.
      */
-    public createDefault(
+    createDefault(
         gameVersion: GameVersion,
         name = "Unnamed loadout set",
     ): Loadout {
@@ -143,8 +131,8 @@ export class Loadouts {
             data: {},
         }
 
-        this._loadouts[gameVersion].loadouts.push(l)
-        this._loadouts[gameVersion].selected = l.id
+        this.loadouts[gameVersion].loadouts.push(l)
+        this.loadouts[gameVersion].selected = l.id
 
         return l
     }
@@ -155,12 +143,12 @@ export class Loadouts {
      * @param gameVersion The game version.
      * @returns The loadout profile or undefined if one isn't selected or none exist.
      */
-    public getLoadoutFor(gameVersion: GameVersion): Loadout | undefined {
+    getLoadoutFor(gameVersion: GameVersion): Loadout | undefined {
         if (gameVersion === "scpc") {
             gameVersion = "h1"
         }
 
-        const theLoadouts = this._loadouts[gameVersion] as LoadoutsGameVersion
+        const theLoadouts = this.loadouts[gameVersion] as LoadoutsGameVersion
         return theLoadouts.loadouts.find((s) => s.id === theLoadouts.selected)
     }
 
@@ -168,12 +156,13 @@ export class Loadouts {
      * Saves the loadout data to the Peacock userdata/users folder.
      */
     public async save(): Promise<void> {
-        await writeFile(LOADOUT_PROFILES_FILE, JSON.stringify(this._loadouts))
+        await writeFile(LOADOUT_PROFILES_FILE, JSON.stringify(this.loadouts))
     }
 }
 
 /**
  * A synthetic default bind to the global Loadouts instance.
+ * @todo Move this somewhere that makes more sense with a dependency injection model.
  */
 export const loadouts = new Loadouts()
 

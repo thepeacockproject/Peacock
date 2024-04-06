@@ -64,7 +64,10 @@ export class EpicH3Strategy extends EntitlementStrategy {
 export class IOIStrategy extends EntitlementStrategy {
     private readonly _remoteService: string
 
-    constructor(gameVersion: GameVersion, private readonly issuerId: string) {
+    constructor(
+        gameVersion: GameVersion,
+        private readonly issuerId: string,
+    ) {
         super()
         this.issuerId = issuerId
         this._remoteService = getRemoteService(gameVersion)!

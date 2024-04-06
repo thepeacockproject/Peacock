@@ -1,7 +1,7 @@
 {
     "meta": {
         "Location": "LOCATION_PARENT_NEWZEALAND",
-        "GameVersion": "h2"
+        "GameVersions": ["h2"]
     },
     "groups": [
         {
@@ -10,6 +10,7 @@
             "Icon": "challenge_category_assassination",
             "CategoryId": "assassination",
             "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_SIGNATUREKILL",
+            "OrderIndex": 0,
             "Challenges": [
                 {
                     "Id": "21ba022b-968f-4a75-a69d-e016bc481e1f",
@@ -550,6 +551,7 @@
             "Icon": "challenge_category_discovery",
             "CategoryId": "discovery",
             "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_EXPLORATION",
+            "OrderIndex": 1,
             "Challenges": [
                 {
                     "Id": "8d72168f-539b-4e98-b4ba-fb75bc7214a5",
@@ -720,6 +722,7 @@
             "Icon": "challenge_category_feats",
             "CategoryId": "feats",
             "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_COMMUNITY",
+            "OrderIndex": 2,
             "Challenges": [
                 {
                     "Id": "3400b27a-2380-4e92-bbfd-fb3d1deeed28",
@@ -977,6 +980,48 @@
                     }
                 },
                 {
+                    "Id": "b046f27d-752c-8299-bbe9-1cbc85b7812a",
+                    "Name": "UI_PEACOCK_YULANIA",
+                    "ImageName": "images/contracts/escalation/contractescalation_yulania.jpg",
+                    "Description": "UI_CHALLENGES_ESCLATION_COMPLETE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_NEWZEALAND",
+                    "ParentLocationId": "LOCATION_PARENT_NEWZEALAND",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$ContractId",
+                                            "21232f29-296f-555a-b642-c99bf068506e"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["feats", "hard"],
+                    "InclusionData": {
+                        "ContractIds": ["e1e86206-d3f0-a819-e477-3d80e55e8a40"]
+                    }
+                },
+                {
                     "Id": "db2c3ede-a272-4c92-beab-504007dbb855",
                     "Name": "UI_CHALLENGES_NEWZEALAND_POOL_PUSH_NAME",
                     "ImageName": "images/challenges/NewZealand/Pool_push.jpg",
@@ -1098,6 +1143,7 @@
             "Icon": "challenge_category_targets",
             "CategoryId": "targets",
             "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_PROFESSIONAL",
+            "OrderIndex": 3,
             "Challenges": [
                 {
                     "Id": "8383982b-9a99-407f-a5b0-f6757e40ae6f",
@@ -1148,6 +1194,7 @@
             "Icon": "profile",
             "CategoryId": "classic",
             "Description": "",
+            "OrderIndex": 4,
             "Challenges": [
                 {
                     "Id": "1648d41a-b45d-4811-a220-42718217e8ab",
@@ -4321,6 +4368,7 @@
             "Icon": "challenge_category_feats",
             "CategoryId": "oxygen-pack",
             "Description": "",
+            "OrderIndex": 10000,
             "Challenges": [
                 {
                     "Id": "5012d3aa-5d28-4b7b-83aa-d388862bc3b9",
@@ -4739,6 +4787,7 @@
             "Icon": "challenge_category_feats",
             "CategoryId": "nitrogen-pack",
             "Description": "",
+            "OrderIndex": 10000,
             "Challenges": [
                 {
                     "Id": "0f5f5a0f-fc01-4b10-9c15-e4089c431fd2",

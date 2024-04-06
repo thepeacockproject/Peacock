@@ -1,0 +1,173 @@
+{
+    "Data": {
+        "EnableExits": {
+            "$eq": ["Completed", "$5746a594-6f00-0b80-3e02-7397624515d4"]
+        },
+        "Objectives": [
+            {
+                "_comment": "----- trigger: start the game -----",
+                "Id": "121573e4-975a-0756-a8e0-f3055e219590",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": true,
+                "Image": "images/actors/sheep_gather_intel.jpg",
+                "BriefingName": "$loc UI_PEACOCK_YULANIA_STARTTHEGAME_NAME",
+                "BriefingText": "$loc UI_PEACOCK_YULANIA_STARTTHEGAME_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_YULANIA_STARTTHEGAME_NAME",
+                    "iconType": 17
+                },
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "-": [
+                                {
+                                    "Transition": "InCountdown"
+                                }
+                            ]
+                        },
+                        "InCountdown": {
+                            "setpieces": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "ac126d23-58a6-42cf-916d-599867411612"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Activation": {
+                    "$eq": [
+                        "$121573e4-975a-0756-a8e0-f3055e219590",
+                        "Completed"
+                    ]
+                },
+                "_comment": "----- target 1: snipe the bodyguard captain -----",
+                "Id": "5746a594-6f00-0b80-3e02-7397624515d4",
+                "Category": "primary",
+                "Type": "statemachine",
+                "ObjectiveType": "kill",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_YULANIA_CAPTAIN"
+                },
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "08022e2c-4954-4b63-b632-3ac50d018292",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "killmethod",
+                        "HardCondition": true,
+                        "KillMethod": "sniperrifle"
+                    }
+                ],
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["d37dbe48-0cd8-480d-9d61-28fe8057d3e1"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "d37dbe48-0cd8-480d-9d61-28fe8057d3e1"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitIsHitmanSuit",
+                                                    true
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillMethodBroad",
+                                                    "sniperrifle"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "d37dbe48-0cd8-480d-9d61-28fe8057d3e1"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Entrances": ["40e5cc64-9aba-4f1a-9d37-a2e558e118b6"],
+        "MandatoryLoadout": [
+            {
+                "Id": "CHAR_Sheep_Hero_StartingOutfit_M_PRO109553",
+                "Properties": {
+                    "LoadoutSlot": "disguise",
+                    "RepositoryId": "08022e2c-4954-4b63-b632-3ac50d018292"
+                }
+            },
+            {
+                "Id": "(Sniper) Jaeger Tuatara",
+                "Properties": {
+                    "LoadoutSlot": "weapon",
+                    "RepositoryId": "081f8265-63db-4759-96a3-5186caf59f62"
+                }
+            }
+        ],
+        "GameChangers": [
+            "5e2a1492-a099-c696-529e-1e56171e352d",
+            "3db72bb5-63d6-47fe-9332-d7ea3c195e06"
+        ],
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/sheep/difficulty_hard_newzealand_sheep.brick"
+        ]
+    },
+    "Metadata": {
+        "Title": "UI_PEACOCK_YULANIA1",
+        "Description": "",
+        "Entitlements": ["H2_LEGACY_STANDARD"],
+        "ScenePath": "assembly:/_pro/scenes/missions/sheep/scene_sheep.entity",
+        "Location": "LOCATION_NEWZEALAND",
+        "IsPublished": true,
+        "CreatorUserId": "7e4192f0-4a95-7575-f979-1e11f9945061",
+        "Type": "escalation",
+        "Id": "7915a9b1-6035-d5e1-445a-0b5e3c0e3f12",
+        "PublicId": "165627655427",
+        "TileImage": "images/contracts/escalation/contractescalation_yulania.jpg",
+        "InGroup": "e1e86206-d3f0-a819-e477-3d80e55e8a40",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "121573e4-975a-0756-a8e0-f3055e219590" },
+            { "Id": "5746a594-6f00-0b80-3e02-7397624515d4" },
+            { "Id": "5e2a1492-a099-c696-529e-1e56171e352d" },
+            { "Id": "3db72bb5-63d6-47fe-9332-d7ea3c195e06" }
+        ],
+        "CreationTimestamp": "2024-03-13T15:32:25.692Z"
+    },
+    "UserData": {}
+}

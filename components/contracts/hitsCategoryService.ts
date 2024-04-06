@@ -326,6 +326,17 @@ export class HitsCategoryService {
                 hit.UserCentricContract.Data.PlaylistData.IsAdded =
                     favorites.includes(hit.Id)
             }
+
+            // Save the contract
+            if (
+                !controller.contracts.has(
+                    hit.UserCentricContract.Contract.Metadata.Id,
+                )
+            ) {
+                await controller.commitNewContract(
+                    hit.UserCentricContract.Contract,
+                )
+            }
         }
 
         return resp.data.data

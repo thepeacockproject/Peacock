@@ -1,7 +1,7 @@
 {
     "meta": {
         "Location": "LOCATION_PARENT_TRAPPED",
-        "GameVersion": "h3"
+        "GameVersions": ["h3"]
     },
     "groups": [
         {
@@ -10,6 +10,7 @@
             "Icon": "challenge_category_assassination",
             "CategoryId": "assassination",
             "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_SIGNATUREKILL",
+            "OrderIndex": 0,
             "Challenges": [
                 {
                     "Id": "3d0ff5c3-6e51-4827-951f-d45d8d21b3ea",
@@ -101,6 +102,7 @@
             "Icon": "challenge_category_discovery",
             "CategoryId": "discovery",
             "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_EXPLORATION",
+            "OrderIndex": 1,
             "Challenges": [
                 {
                     "Id": "18636f91-e1a9-4091-935c-adbf6cc3de55",
@@ -587,6 +589,7 @@
             "Icon": "challenge_category_feats",
             "CategoryId": "feats",
             "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_COMMUNITY",
+            "OrderIndex": 2,
             "Challenges": [
                 {
                     "Id": "22070cef-2ecb-4a65-ab16-cb4bfd63785e",
@@ -676,8 +679,8 @@
                         "MasteryXP": 1000
                     },
                     "Drops": [
-                        "PROP_MELEE_KATANA_WHITE_NINJA",
-                        "FIREARMS_SNIPER_SIEGER_300_WHITE_NINJA"
+                        "FIREARMS_SNIPER_SIEGER_300_WHITE_NINJA",
+                        "PROP_MELEE_KATANA_WHITE_NINJA"
                     ],
                     "IsPlayable": true,
                     "IsLocked": false,
@@ -1146,6 +1149,7 @@
             "Icon": "challenge_category_targets",
             "CategoryId": "targets",
             "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_PROFESSIONAL",
+            "OrderIndex": 3,
             "Challenges": [
                 {
                     "Id": "3210fa62-67a5-4e1f-ba50-02c451d47875",
@@ -1200,6 +1204,7 @@
             "Icon": "profile",
             "CategoryId": "classic",
             "Description": "",
+            "OrderIndex": 4,
             "Challenges": [
                 {
                     "Id": "92643706-6f98-4b1c-9700-ee4819aaadb4",
@@ -1720,6 +1725,145 @@
                         }
                     },
                     "Tags": ["story", "hard", "suitonly", "classic"],
+                    "InclusionData": {
+                        "ContractIds": ["a3e19d55-64a6-4282-bb3c-d18c3f3e6e29"]
+                    }
+                }
+            ]
+        },
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_ARGENTUM",
+            "Image": "images/challenges/categories/packargentum/tile.jpg",
+            "Icon": "challenge_category_feats",
+            "CategoryId": "argentum-pack",
+            "Description": "",
+            "OrderIndex": 100000,
+            "Challenges": [
+                {
+                    "Id": "1bcab2a7-626e-4bf2-a9af-7adb823cdd4a",
+                    "Name": "CHALLENGEPACK_ARGENTUM_WOLVERINEFINISHER_NAME",
+                    "ImageName": "images/challenges/Categories/PackArgentum/Argentum_WolverineFinisher.jpg",
+                    "Description": "CHALLENGEPACK_ARGENTUM_WOLVERINEFINISHER_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_ARGENTUM",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_TRAPPED",
+                    "ParentLocationId": "LOCATION_PARENT_TRAPPED",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 100005,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 47
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal"
+                            }
+                        },
+                        "Context": {
+                            "Count": 0,
+                            "Targets": [
+                                "006bff27-d8b9-480e-9308-fac9a447d038",
+                                "0f8fd017-f30f-48aa-bb95-f0eed8f99eb0",
+                                "1063ec04-ae7f-47ce-9f67-e3ed87b910fb",
+                                "10a1344f-25b5-4d9b-99df-cc1a3e132701",
+                                "16bc3b56-63a5-48fd-beab-d4d2adf13b29",
+                                "17aa42ce-9de5-42c3-a0d7-42650aeb5ccb",
+                                "28a8ac36-edba-4b02-81f9-4d8e85a6e37c",
+                                "29f7350c-f28d-4756-b03b-8158806c1a19",
+                                "2db48fc3-1f43-4681-82b4-26289c7373bc",
+                                "3354e12a-3e7b-4693-bb63-a73d12a682e3",
+                                "49c4b42b-773d-416a-a48d-5cb7f6254290",
+                                "4c549646-3605-406a-8eb6-a56da52045a1",
+                                "56ba1725-4d2b-4ba0-9842-79457af2eca3",
+                                "5a62d8d2-1208-4f11-b95d-8f6cb11cd02b",
+                                "5b82b41f-f95e-4403-919c-6a67522fc94e",
+                                "606d9bbb-76b7-4e0f-a24f-e5b7a1257313",
+                                "6504cb26-c5d0-4c99-9aa2-7df9d18c5201",
+                                "6c232a4d-cd64-42d8-a78f-e0570dae7cd2",
+                                "6ecd7f77-bebc-4f7a-939d-7e16f4b678b1",
+                                "71854eb2-8e6c-4d19-83d2-fbdc7879bf6f",
+                                "759c67d0-18e2-49b2-a417-5daa9a450819",
+                                "796b0ee9-9261-4e55-ab6f-5a4c53f86e4e",
+                                "7bba60be-4b86-4a3c-be67-3937ab982ef2",
+                                "8255c9aa-1a59-4750-89f1-46542207e00d",
+                                "82615a87-f968-4be8-82d9-eb8089ad92ee",
+                                "8d6aebab-d94a-4adf-8770-5985a3809ece",
+                                "9830d3c6-93e3-49c8-b0c8-abdf3dc018ce",
+                                "a0766e5c-fadb-4900-8cb1-c776b56fabf5",
+                                "a3570e03-43f8-46ae-896a-e0a5803cfb6f",
+                                "a6f7e9f3-e25c-48c6-8f0b-755a2e864123",
+                                "aaafb8c3-8697-4121-8c97-1ec2c3502742",
+                                "b3840fb0-e732-4f35-b858-fc4bed036e46",
+                                "bb3efb54-cb83-4c63-adda-12b7da545a77",
+                                "bb7b6b31-adce-4a50-91fe-7447128b874b",
+                                "bbfbf4da-e6e1-4f14-b2ee-9325f9615408",
+                                "bdf572b3-7e6e-46f6-98b6-887ec99804de",
+                                "c2dcbadf-4101-4172-b458-0f02b9145c0b",
+                                "c7840085-c12a-4438-b032-f54bbe006030",
+                                "cd6e9ee7-282c-49fa-a537-1802b4749e2c",
+                                "ce95c773-3153-4909-a356-16f071297582",
+                                "ced15cfa-21f7-4078-9ee7-f8b3ef1b1b59",
+                                "cf3c9e6e-4e3c-43dd-a663-897ffaa165f2",
+                                "d47a96d9-91cb-42cf-8193-6bccc74a775e",
+                                "d4fea004-6a7d-409f-bf4b-b229ca3cb355",
+                                "dca83dc1-c96e-4b75-b252-8abddd08617d",
+                                "f423f166-ed6d-4c3b-8d55-cd1c8a8b84ac",
+                                "38e6e74d-fe56-4ae8-8194-d5ec44c4d335"
+                            ]
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "WolverineFinisherActive": {
+                                    "Transition": "ChallengeActive"
+                                }
+                            },
+                            "ChallengeActive": {
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$inarray": {
+                                                "in": "$.Targets",
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$Value.RepositoryId"
+                                                    ]
+                                                }
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "AllKilled"
+                                    }
+                                ]
+                            },
+                            "AllKilled": {
+                                "EndingTriggered": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["argentum-pack", "story", "live", "hard"],
                     "InclusionData": {
                         "ContractIds": ["a3e19d55-64a6-4282-bb3c-d18c3f3e6e29"]
                     }

@@ -1,7 +1,7 @@
 {
     "meta": {
         "Location": "GLOBAL_ARCADE_CHALLENGES",
-        "GameVersion": "h3"
+        "GameVersions": ["h3"]
     },
     "groups": [
         {
@@ -10,7 +10,51 @@
             "Icon": "arcademode",
             "CategoryId": "arcade",
             "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_ARCADE",
+            "OrderIndex": 6,
             "Challenges": [
+                {
+                    "Id": "9e91db0f-8b9e-469c-bed0-163404ec1eff",
+                    "Name": "UI_ANISESTAR_COMPLETION_CHALLENGE_NAME",
+                    "ImageName": "images/contracts/arcade/Arcade_AniseStar_Group.jpg",
+                    "Description": "UI_ANISESTAR_COMPLETION_CHALLENGE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ARCADE",
+                    "Icon": "arcademode",
+                    "LocationId": "LOCATION_MIAMI",
+                    "ParentLocationId": "LOCATION_PARENT_MIAMI",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$ContractId",
+                                            "8e7e9f08-94c5-4667-ac8a-61aa15b74c0a"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["arcade", "hard"],
+                    "InclusionData": {
+                        "ContractIds": ["de9788cc-b9c4-47fc-b5df-86451cd82c43"]
+                    }
+                },
                 {
                     "Id": "d00653ca-d00d-4b30-bff9-3c03c358adc8",
                     "Name": "UI_APPLE_COMPLETION_CHALLENGE_NAME",

@@ -1,0 +1,335 @@
+{
+    "Data": {
+        "EnableExits": {
+            "$eq": [
+                "Completed",
+                "$5746a594-6f00-0b80-3e02-7397624515d4",
+                "$663b1363-0335-25d5-f02f-91a52c1a125d",
+                "$4e050a96-a53e-0997-c1b8-1633009d631a"
+            ]
+        },
+        "Objectives": [
+            {
+                "_comment": "----- target 1: snipe the bodyguard captain -----",
+                "Id": "5746a594-6f00-0b80-3e02-7397624515d4",
+                "Category": "primary",
+                "Type": "statemachine",
+                "ObjectiveType": "kill",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_YULANIA_CAPTAIN"
+                },
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "08022e2c-4954-4b63-b632-3ac50d018292",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "killmethod",
+                        "HardCondition": true,
+                        "KillMethod": "sniperrifle"
+                    }
+                ],
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["d37dbe48-0cd8-480d-9d61-28fe8057d3e1"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "d37dbe48-0cd8-480d-9d61-28fe8057d3e1"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitIsHitmanSuit",
+                                                    true
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillMethodBroad",
+                                                    "sniperrifle"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "d37dbe48-0cd8-480d-9d61-28fe8057d3e1"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- target 2: far bodyguard A -----",
+                "Id": "663b1363-0335-25d5-f02f-91a52c1a125d",
+                "Category": "primary",
+                "Type": "statemachine",
+                "ObjectiveType": "kill",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_YULANIA_TAR1"
+                },
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "08022e2c-4954-4b63-b632-3ac50d018292",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "killmethod",
+                        "HardCondition": true,
+                        "KillMethod": "sniperrifle"
+                    }
+                ],
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["4e98437d-49e2-4cbd-a081-6c3f34c7797d"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "4e98437d-49e2-4cbd-a081-6c3f34c7797d"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitIsHitmanSuit",
+                                                    true
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillMethodBroad",
+                                                    "sniperrifle"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "4e98437d-49e2-4cbd-a081-6c3f34c7797d"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- target 3: far bodyguard B -----",
+                "Id": "4e050a96-a53e-0997-c1b8-1633009d631a",
+                "Category": "primary",
+                "Type": "statemachine",
+                "ObjectiveType": "kill",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_YULANIA_TAR2"
+                },
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "08022e2c-4954-4b63-b632-3ac50d018292",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "killmethod",
+                        "HardCondition": true,
+                        "KillMethod": "sniperrifle"
+                    }
+                ],
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["c8c6979e-2b8b-48cc-b405-7f1138b88e8c"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "c8c6979e-2b8b-48cc-b405-7f1138b88e8c"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitIsHitmanSuit",
+                                                    true
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillMethodBroad",
+                                                    "sniperrifle"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "c8c6979e-2b8b-48cc-b405-7f1138b88e8c"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- target 4: rooftop bodyguard  -----",
+                "Id": "d8578edf-8e56-8afc-4f8e-88bc9b7d659a",
+                "Category": "primary",
+                "Type": "statemachine",
+                "ObjectiveType": "kill",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_YULANIA_TAR3"
+                },
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "08022e2c-4954-4b63-b632-3ac50d018292",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "killmethod",
+                        "HardCondition": true,
+                        "KillMethod": "sniperrifle"
+                    }
+                ],
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["6024f334-d840-4418-b3b0-12a2870150c4"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "6024f334-d840-4418-b3b0-12a2870150c4"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitIsHitmanSuit",
+                                                    true
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillMethodBroad",
+                                                    "sniperrifle"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "6024f334-d840-4418-b3b0-12a2870150c4"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Entrances": ["40e5cc64-9aba-4f1a-9d37-a2e558e118b6"],
+        "MandatoryLoadout": [
+            {
+                "Id": "CHAR_Sheep_Hero_StartingOutfit_M_PRO109553",
+                "Properties": {
+                    "LoadoutSlot": "disguise",
+                    "RepositoryId": "08022e2c-4954-4b63-b632-3ac50d018292"
+                }
+            },
+            {
+                "Id": "(Sniper) Jaeger Tuatara",
+                "Properties": {
+                    "LoadoutSlot": "weapon",
+                    "RepositoryId": "081f8265-63db-4759-96a3-5186caf59f62"
+                }
+            }
+        ],
+        "GameChangers": [
+            "5e2a1492-a099-c696-529e-1e56171e352d",
+            "3db72bb5-63d6-47fe-9332-d7ea3c195e06"
+        ],
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/sheep/override_skipintro.brick",
+            "assembly:/_pro/scenes/missions/sheep/difficulty_hard_newzealand_sheep.brick"
+        ]
+    },
+    "Metadata": {
+        "Title": "UI_PEACOCK_YULANIA2",
+        "Description": "",
+        "Entitlements": ["H2_LEGACY_STANDARD"],
+        "ScenePath": "assembly:/_pro/scenes/missions/sheep/scene_sheep.entity",
+        "Location": "LOCATION_NEWZEALAND",
+        "IsPublished": true,
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Type": "escalation",
+        "Id": "934a904e-1b17-4e84-c0e0-4f90799a031b",
+        "PublicId": "165627655427",
+        "TileImage": "images/contracts/escalation/contractescalation_yulania.jpg",
+        "InGroup": "e1e86206-d3f0-a819-e477-3d80e55e8a40",
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "663b1363-0335-25d5-f02f-91a52c1a125d", "IsNew": true },
+            { "Id": "4e050a96-a53e-0997-c1b8-1633009d631a", "IsNew": true },
+            { "Id": "d8578edf-8e56-8afc-4f8e-88bc9b7d659a", "IsNew": true },
+            { "Id": "5746a594-6f00-0b80-3e02-7397624515d4" },
+            { "Id": "5e2a1492-a099-c696-529e-1e56171e352d" },
+            { "Id": "3db72bb5-63d6-47fe-9332-d7ea3c195e06" }
+        ],
+        "CreationTimestamp": "2024-03-13T15:32:25.692Z"
+    },
+    "UserData": {}
+}

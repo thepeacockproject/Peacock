@@ -93,8 +93,8 @@ legacyContractRouter.post(
             req.body.id === "42bac555-bbb9-429d-a8ce-f1ffdf94211c"
                 ? _legacyBull
                 : req.body.id === "ff9f46cf-00bd-4c12-b887-eac491c3a96d"
-                ? _theLastYardbirdScpc
-                : controller.resolveContract(req.body.id)
+                  ? _theLastYardbirdScpc
+                  : controller.resolveContract(req.body.id)
 
         if (!contractData) {
             log(

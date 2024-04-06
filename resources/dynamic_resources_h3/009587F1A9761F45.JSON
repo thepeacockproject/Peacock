@@ -1,0 +1,331 @@
+{
+    "controller": "list",
+    "view": "menu3.containers.ListContainer",
+    "row": 1,
+    "direction": "vertical",
+    "data": {
+        "direction": "vertical"
+    },
+    "children": [
+        {
+            "$switch $arg ContractType": [
+                {
+                    "case": "arcade",
+                    "return": {
+                        "selectable": false,
+                        "pressable": false
+                    }
+                },
+                {
+                    "case": "escalation",
+                    "return": {
+                        "selectable": false,
+                        "pressable": false
+                    }
+                },
+                {
+                    "case": "placeholder",
+                    "return": {
+                        "selectable": false,
+                        "pressable": false
+                    }
+                },
+                {
+                    "case": "sniper",
+                    "return": {
+                        "selectable": false,
+                        "pressable": false
+                    }
+                },
+                {
+                    "default": {
+                        "view": {
+                            "$include": "common/data/debriefing_failed_buttonswitch.json"
+                        },
+                        "nrows": 0.75,
+                        "ncols": 2,
+                        "data": {
+                            "showningame": {
+                                "$if $arg _isingame": {
+                                    "$then": true,
+                                    "$else": false
+                                }
+                            },
+                            "title": "$loc UI_MENU_PAGE_DEBRIEFING_LOAD",
+                            "icon": "load"
+                        },
+                        "actions": {
+                            "select": {
+                                "replace-children": {
+                                    "target": "headline_container",
+                                    "children": [
+                                        {
+                                            "view": "menu3.basic.HeadlineElement",
+                                            "selectable": false,
+                                            "pressable": false,
+                                            "data": {
+                                                "header": "$expand $arg Reasons",
+                                                "title": "$loc UI_MENU_PAGE_FAILURE_HEADER",
+                                                "largetitle": true
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            "deselect": {
+                                "replace-children": {
+                                    "target": "headline_container",
+                                    "children": []
+                                }
+                            },
+                            "accept": {
+                                "show-background-layers": {
+                                    "showMenuDarkBackdrop": true
+                                },
+                                "link": {
+                                    "page": "loadpage",
+                                    "args": {
+                                        "url": "load",
+                                        "args": {
+                                            "saveorload": "load"
+                                        },
+                                        "saveorload": "load",
+                                        "mainmenu": true,
+                                        "reloadonchange": true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "$switch $arg ContractType": [
+                {
+                    "case": "arcade",
+                    "return": {
+                        "selectable": false,
+                        "pressable": false
+                    }
+                },
+                {
+                    "case": "placeholder",
+                    "return": {
+                        "selectable": false,
+                        "pressable": false
+                    }
+                },
+                {
+                    "default": {
+                        "view": {
+                            "$include": "common/data/debriefing_failed_buttonswitch.json"
+                        },
+                        "nrows": 0.75,
+                        "ncols": 2,
+                        "data": {
+                            "showningame": {
+                                "$if $arg _isingame": {
+                                    "$then": true,
+                                    "$else": false
+                                }
+                            },
+                            "title": "$loc UI_MENU_PAGE_DEBRIEFING_REPLAY",
+                            "icon": "replay"
+                        },
+                        "actions": {
+                            "select": {
+                                "replace-children": {
+                                    "target": "headline_container",
+                                    "children": [
+                                        {
+                                            "view": "menu3.basic.HeadlineElement",
+                                            "selectable": false,
+                                            "pressable": false,
+                                            "data": {
+                                                "header": "$expand $arg Reasons",
+                                                "title": "$loc UI_MENU_PAGE_FAILURE_HEADER",
+                                                "largetitle": true
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            "deselect": {
+                                "replace-children": {
+                                    "target": "headline_container",
+                                    "children": []
+                                }
+                            },
+                            "accept": {
+                                "$if $eqs ($arg ContractType,placeholder)": {
+                                    "$then": {
+                                        "$setup": {
+                                            "$set AutoStart": true,
+                                            "$in": {
+                                                "$include": "ingame/replanplaceholder.json"
+                                            }
+                                        }
+                                    },
+                                    "$else": {
+                                        "restart-level": {}
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "$switch $arg ContractType": [
+                {
+                    "case": "arcade",
+                    "return": {
+                        "selectable": false,
+                        "pressable": false
+                    }
+                },
+                {
+                    "case": "tutorial",
+                    "return": {
+                        "selectable": false,
+                        "pressable": false
+                    }
+                },
+                {
+                    "default": {
+                        "$switch $arg ContractLocation": [
+                            {
+                                "case": "LOCATION_ICA_FACILITY",
+                                "return": {
+                                    "selectable": false,
+                                    "pressable": false
+                                }
+                            },
+                            {
+                                "default": {
+                                    "view": {
+                                        "$include": "common/data/debriefing_failed_buttonswitch.json"
+                                    },
+                                    "nrows": 0.75,
+                                    "ncols": 2,
+                                    "data": {
+                                        "showningame": {
+                                            "$if $arg _isingame": {
+                                                "$then": true,
+                                                "$else": false
+                                            }
+                                        },
+                                        "title": "$loc UI_MENU_PAGE_DEBRIEFING_PLANNING",
+                                        "icon": "planning"
+                                    },
+                                    "actions": {
+                                        "select": {
+                                            "replace-children": {
+                                                "target": "headline_container",
+                                                "children": [
+                                                    {
+                                                        "view": "menu3.basic.HeadlineElement",
+                                                        "selectable": false,
+                                                        "pressable": false,
+                                                        "data": {
+                                                            "header": "$expand $arg Reasons",
+                                                            "title": "$loc UI_MENU_PAGE_FAILURE_HEADER",
+                                                            "largetitle": true
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        "deselect": {
+                                            "replace-children": {
+                                                "target": "headline_container",
+                                                "children": []
+                                            }
+                                        },
+                                        "accept": {
+                                            "$if $eqs ($arg ContractType,placeholder)": {
+                                                "$then": {
+                                                    "$setup": {
+                                                        "$set AutoStart": false,
+                                                        "$in": {
+                                                            "$include": "ingame/replanplaceholder.json"
+                                                        }
+                                                    }
+                                                },
+                                                "$else": {
+                                                    "replan-level": {}
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "view": {
+                "$include": "common/data/debriefing_failed_buttonswitch.json"
+            },
+            "data": {
+                "showningame": {
+                    "$if $arg _isingame": {
+                        "$then": true,
+                        "$else": false
+                    }
+                },
+                "title": "$loc UI_MENU_PAGE_DEBRIEFING_NEXT",
+                "icon": "exit"
+            },
+            "actions": {
+                "select": {
+                    "replace-children": {
+                        "target": "headline_container",
+                        "children": [
+                            {
+                                "view": "menu3.basic.HeadlineElement",
+                                "selectable": false,
+                                "pressable": false,
+                                "data": {
+                                    "header": "$expand $arg Reasons",
+                                    "title": "$loc UI_MENU_PAGE_FAILURE_HEADER",
+                                    "largetitle": true
+                                }
+                            }
+                        ]
+                    }
+                },
+                "deselect": {
+                    "replace-children": {
+                        "target": "headline_container",
+                        "children": []
+                    }
+                },
+                "accept": {
+                    "$if $eqs ($arg EngineMode,multiplayer)": {
+                        "$then": {
+                            "$setup": {
+                                "$set Trigger": "on-exit",
+                                "$in": {
+                                    "$include": "common/modals/quitmultiplayersession.json"
+                                }
+                            }
+                        },
+                        "$else": {
+                            "trigger-action": {
+                                "name": "on-exit"
+                            }
+                        }
+                    }
+                },
+                "on-exit": {
+                    "exit-to-main-menu": {}
+                }
+            }
+        }
+    ]
+}

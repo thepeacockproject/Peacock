@@ -408,6 +408,45 @@ export class Controller {
     }
 
     /**
+     * You should use {@link smf.modIsInstalled} instead!
+     *
+     * Returns whether a mod is UNAVAILABLE.
+     *
+     * @param modId The mod's ID.
+     * @returns If the mod is unavailable. You should probably abort initialization if true is returned. Also returns true if the `overrideFrameworkChecks` flag is set.
+     * @deprecated since v5.5.0, use `!controller.smf.modIsInstalled`
+     */
+    public addClientSideModDependency(modId: string): boolean {
+        log(
+            LogLevel.WARN,
+            "controller.addClientSideModDependency is deprecated, use !controller.smf.modIsInstalled instead!",
+            "plugins",
+        )
+        return (
+            getFlag("overrideFrameworkChecks") === true ||
+            !this.smf.modIsInstalled(modId)
+        )
+    }
+
+    /**
+     * You should use {@link smf.modIsInstalled} instead!
+     *
+     * Returns whether a mod is available and installed.
+     *
+     * @param modId The mod's ID.
+     * @returns If the mod is available (or the `overrideFrameworkChecks` flag is set). You should probably abort initialisation if false is returned.
+     * @deprecated since v7.0.0, use `controller.smf.modIsInstalled`
+     */
+    public modIsInstalled(modId: string): boolean {
+        log(
+            LogLevel.WARN,
+            "controller.modIsInstalled is deprecated, use controller.smf.modIsInstalled instead!",
+            "plugins",
+        )
+        return this.smf.modIsInstalled(modId)
+    }
+
+    /**
      * Starts the service and loads in all contracts.
      *
      * @throws {Error} If all hope is lost. (In theory, this should never happen)
@@ -436,6 +475,16 @@ export class Controller {
         this._getETALocations()
         this.index()
 
+        try {
+            await this._loadResources()
+
+            this.hooks.challengesLoaded.call()
+            this.hooks.masteryDataLoaded.call()
+        } catch (e) {
+            log(LogLevel.ERROR, `Fatal error with challenge bootstrap`, "boot")
+            log(LogLevel.ERROR, e)
+        }
+
         const deployPath = SMFSupport.modFrameworkDataPath
 
         if (typeof deployPath === "string") {
@@ -449,16 +498,6 @@ export class Controller {
         }
 
         this.hooks.serverStart.call()
-
-        try {
-            await this._loadResources()
-
-            this.hooks.challengesLoaded.call()
-            this.hooks.masteryDataLoaded.call()
-        } catch (e) {
-            log(LogLevel.ERROR, `Fatal error with challenge bootstrap`, "boot")
-            log(LogLevel.ERROR, e)
-        }
     }
 
     private _getETALocations(): void {
@@ -825,7 +864,6 @@ export class Controller {
     /**
      * Get all global challenges and register a simplified version of them.
      * @param gameVersion A GameVersion object representing the version of the game.
-     *
      */
     private registerGlobalChallenges(gameVersion: GameVersion) {
         const regGlobalChallenges: RegistryChallenge[] = getVersionedConfig<
@@ -856,7 +894,7 @@ export class Controller {
             ],
             meta: {
                 Location: "GLOBAL",
-                GameVersion: gameVersion,
+                GameVersions: [gameVersion],
             },
         })
     }
@@ -914,20 +952,22 @@ export class Controller {
     }
 
     private _handleChallengeResources(data: ChallengePackage): void {
-        for (const group of data.groups) {
-            this.challengeService.registerGroup(
-                group,
-                data.meta.Location,
-                data.meta.GameVersion,
-            )
-
-            for (const challenge of group.Challenges) {
-                this.challengeService.registerChallenge(
-                    challenge,
-                    group.CategoryId,
+        for (const version of data.meta.GameVersions) {
+            for (const group of data.groups) {
+                this.challengeService.registerGroup(
+                    group,
                     data.meta.Location,
-                    data.meta.GameVersion,
+                    version,
                 )
+
+                for (const challenge of group.Challenges) {
+                    this.challengeService.registerChallenge(
+                        challenge,
+                        group.CategoryId,
+                        data.meta.Location,
+                        version,
+                    )
+                }
             }
         }
     }

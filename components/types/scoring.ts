@@ -43,10 +43,9 @@ export type ScoringHeadline = {
     scoreTotal: number
 }
 
-export type ManifestScoringModule =
-    | ScoringModule & {
-          Type: string
-      }
+export type ManifestScoringModule = ScoringModule & {
+    Type: string
+}
 
 export type ManifestScoringDefinition = {
     ContextListeners?: null | Record<string, IContextListener<never>>

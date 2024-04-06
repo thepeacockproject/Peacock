@@ -79,6 +79,14 @@ type GroupIndexedChallengeLists = {
     [groupId: string]: RegistryChallenge[]
 }
 
+export type ChallengePack = {
+    Name: string
+    Description: string
+    GameVersions: GameVersion[]
+    Image: string
+    Icon: string
+}
+
 /**
  * A base class providing challenge registration support.
  */
@@ -99,7 +107,7 @@ export abstract class ChallengeRegistry {
     /**
      * @Key1 Game version.
      * @Key2 The parent location Id.
-     * @Key3 The group Id.
+     * @Key3 The group's categoryId.
      * @Value A `SavedChallengeGroup` object.
      */
     protected groups: Record<
@@ -144,6 +152,29 @@ export abstract class ChallengeRegistry {
     }
 
     protected constructor(protected readonly controller: Controller) {}
+
+    public challengePacks: Map<string, ChallengePack> = new Map([
+        [
+            "argentum-pack",
+            {
+                Name: "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_ARGENTUM",
+                Description: "",
+                GameVersions: ["h3"],
+                Image: "images/challenges/categories/packargentum/tile.jpg",
+                Icon: "challenge_category_feats",
+            },
+        ],
+        [
+            "argon-pack",
+            {
+                Name: "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_ARGON",
+                Description: "",
+                GameVersions: ["h3"],
+                Image: "images/challenges/categories/packargon/tile.jpg",
+                Icon: "challenge_category_feats",
+            },
+        ],
+    ])
 
     registerChallenge(
         challenge: RegistryChallenge,
@@ -190,6 +221,19 @@ export abstract class ChallengeRegistry {
         gameVersion: GameVersion,
     ): RegistryChallenge | undefined {
         return this.challenges[gameVersion].get(challengeId)
+    }
+
+    removeChallenge(challengeId: string, gameVersion: GameVersion): boolean {
+        const challenge = this.challenges[gameVersion].get(challengeId)
+        if (!challenge) return false
+
+        return (
+            this.challenges[gameVersion].delete(challengeId) &&
+            this.groupContents[gameVersion]
+                .get(challenge.ParentLocationId)!
+                .get(challenge.inGroup!)!
+                .delete(challengeId)
+        )
     }
 
     /**
@@ -284,6 +328,17 @@ export abstract class ChallengeRegistry {
         }
 
         return mainGroup
+    }
+
+    public getChallengesForGroup(
+        groupId: string,
+        gameVersion: GameVersion,
+    ): GroupIndexedChallengeLists {
+        return {
+            [groupId]: Array.from(this.challenges[gameVersion].values()).filter(
+                (value) => value.inGroup === groupId,
+            ),
+        }
     }
 
     public getGroupContentByIdLoc(
@@ -513,7 +568,7 @@ export class ChallengeService extends ChallengeRegistry {
     }
 
     /**
-     * This is a helper function for @see getGroupedChallengeLists. It is not expected to be used elsewhere.
+     * This is a helper function for {@link getGroupedChallengeLists}. It is not expected to be used elsewhere.
      *
      * Filter all challenges in a parent location using a given filter, sort them into groups,
      * and write them into the `challenges` array provided.
@@ -587,37 +642,48 @@ export class ChallengeService extends ChallengeRegistry {
     ): GroupIndexedChallengeLists {
         let challenges: [string, RegistryChallenge[]][] = []
 
-        this.getGroupedChallengesByLoc(
-            filter,
-            location,
-            challenges,
-            gameVersion,
-        )
-
-        if (filter.type === ChallengeFilterType.Contract && filter.isFeatured) {
+        // Challenge packs ignore the filter
+        if (this.challengePacks.has(location)) {
+            challenges.push([
+                location,
+                this.getChallengesForGroup(location, gameVersion)[location],
+            ])
+        } else {
             this.getGroupedChallengesByLoc(
                 filter,
-                "GLOBAL_FEATURED_CHALLENGES",
+                location,
                 challenges,
                 gameVersion,
             )
-        }
 
-        this.getGroupedChallengesByLoc(
-            filter,
-            "GLOBAL_ARCADE_CHALLENGES",
-            challenges,
-            gameVersion,
-        )
+            if (
+                filter.type === ChallengeFilterType.Contract &&
+                filter.isFeatured
+            ) {
+                this.getGroupedChallengesByLoc(
+                    filter,
+                    "GLOBAL_FEATURED_CHALLENGES",
+                    challenges,
+                    gameVersion,
+                )
+            }
 
-        // H2 & H1 have the escalation challenges in "feats"
-        if (gameVersion === "h3") {
             this.getGroupedChallengesByLoc(
                 filter,
-                "GLOBAL_ESCALATION_CHALLENGES",
+                "GLOBAL_ARCADE_CHALLENGES",
                 challenges,
                 gameVersion,
             )
+
+            // H2 & H1 have the escalation challenges in "feats"
+            if (gameVersion === "h3") {
+                this.getGroupedChallengesByLoc(
+                    filter,
+                    "GLOBAL_ESCALATION_CHALLENGES",
+                    challenges,
+                    gameVersion,
+                )
+            }
         }
 
         // remove empty groups
@@ -989,6 +1055,7 @@ export class ChallengeService extends ChallengeRegistry {
             forContract,
             userId,
             gameVersion,
+            false,
             subLocation,
         )
     }
@@ -999,18 +1066,20 @@ export class ChallengeService extends ChallengeRegistry {
         gameVersion: GameVersion,
         compiler: Compiler,
     ): CompiledChallengeTreeData[] {
-        return challenges.map((challengeData) => {
-            return compiler(
-                challengeData,
-                this.getPersistentChallengeProgression(
-                    userId,
-                    challengeData.Id,
+        return challenges
+            .map((challengeData) => {
+                return compiler(
+                    challengeData,
+                    this.getPersistentChallengeProgression(
+                        userId,
+                        challengeData.Id,
+                        gameVersion,
+                    ),
                     gameVersion,
-                ),
-                gameVersion,
-                userId,
-            )
-        })
+                    userId,
+                )
+            })
+            .sort((a, b) => a.OrderIndex - b.OrderIndex)
     }
 
     private getChallengeDependencyData(
@@ -1103,43 +1172,27 @@ export class ChallengeService extends ChallengeRegistry {
             forLocation,
             userId,
             gameVersion,
-            locationData,
             true,
+            locationData,
         )
     }
 
-    getChallengeDataForLocation(
-        locationId: string,
+    getChallengeDataForCategory(
+        categoryId: string | null,
+        location: Unlockable | undefined,
         gameVersion: GameVersion,
         userId: string,
     ): CompiledChallengeTreeCategory[] {
-        const locationsData = getVersionedConfig<PeacockLocationsData>(
-            "LocationsData",
-            gameVersion,
-            false,
-        )
-
-        const locationData = locationsData.children[locationId]
-
-        if (!locationData) {
-            log(
-                LogLevel.WARN,
-                `Failed to get location data in CSERV [${locationId}]`,
-            )
-            return []
-        }
-
-        const forLocation = this.getChallengesForLocation(
-            locationId,
-            gameVersion,
-        )
+        const challenges = location
+            ? this.getChallengesForLocation(location.Id, gameVersion)
+            : this.getChallengesForGroup(categoryId!, gameVersion)
 
         return this.reBatchIntoSwitchedData(
-            forLocation,
+            challenges,
             userId,
             gameVersion,
-            locationData,
             true,
+            location,
         )
     }
 
@@ -1148,33 +1201,35 @@ export class ChallengeService extends ChallengeRegistry {
      * @param challengeLists The challenge lists to use.
      * @param userId The id of the user.
      * @param gameVersion The current game version.
-     * @param location A location as an `Unlockable`. Might be a parent location or a sublocation, depending on `isDestination`.
      * @param isDestination Will also get escalation challenges if set to true.
+     * @param location A location as an `Unlockable`. If challengeLists contains all challenges of a challenge pack, this parameter should be "undefined". Otherwise, it might be a parent location or a sublocation, depending on `isDestination`.
      * @returns An array of `CompiledChallengeTreeCategory` objects.
      */
     private reBatchIntoSwitchedData(
         challengeLists: GroupIndexedChallengeLists,
         userId: string,
         gameVersion: GameVersion,
-        location: Unlockable,
-        isDestination = false,
+        isDestination: boolean,
+        location?: Unlockable,
     ): CompiledChallengeTreeCategory[] {
         const entries = Object.entries(challengeLists)
         const compiler = isDestination
             ? this.compileRegistryDestinationChallengeData.bind(this)
             : this.compileRegistryChallengeTreeData.bind(this)
 
-        const completion = generateCompletionData(
-            location?.Id,
-            userId,
-            gameVersion,
-        )
+        const completion = location
+            ? generateCompletionData(location?.Id, userId, gameVersion)
+            : {}
 
-        return entries
+        const groups = entries
             .map(([groupId, challenges], index) => {
+                if (challenges.length === 0) {
+                    return undefined
+                }
+
                 const groupData = this.getGroupByIdLoc(
                     groupId,
-                    location.Properties.ParentLocation ?? location.Id,
+                    challenges[0].ParentLocationId,
                     gameVersion,
                 )
 
@@ -1191,16 +1246,20 @@ export class ChallengeService extends ChallengeRegistry {
                         ),
                 )
 
-                const lastGroup = this.getGroupByIdLoc(
-                    Object.keys(challengeLists)[index - 1],
-                    location.Properties.ParentLocation ?? location.Id,
-                    gameVersion,
-                )
-                const nextGroup = this.getGroupByIdLoc(
-                    Object.keys(challengeLists)[index + 1],
-                    location.Properties.ParentLocation ?? location.Id,
-                    gameVersion,
-                )
+                const lastGroup = location
+                    ? this.getGroupByIdLoc(
+                          Object.keys(challengeLists)[index - 1],
+                          location.Properties.ParentLocation ?? location.Id,
+                          gameVersion,
+                      )
+                    : undefined
+                const nextGroup = location
+                    ? this.getGroupByIdLoc(
+                          Object.keys(challengeLists)[index + 1],
+                          location.Properties.ParentLocation ?? location.Id,
+                          gameVersion,
+                      )
+                    : undefined
 
                 return {
                     Name: groupData.Name,
@@ -1214,9 +1273,11 @@ export class ChallengeService extends ChallengeRegistry {
                     ).length,
                     CompletionData: completion,
                     Location: location,
-                    IsLocked: location.Properties.IsLocked || false,
-                    ImageLocked: location.Properties.LockedIcon || "",
-                    RequiredResources: location.Properties.RequiredResources!,
+                    IsLocked: location?.Properties.IsLocked || false,
+                    ImageLocked: location?.Properties.LockedIcon || "",
+                    RequiredResources:
+                        location?.Properties.RequiredResources || [],
+                    OrderIndex: groupData.OrderIndex ?? 10000,
                     SwitchData: {
                         Data: {
                             Challenges: this.mapSwitchChallenges(
@@ -1253,6 +1314,10 @@ export class ChallengeService extends ChallengeRegistry {
                 }
             })
             .filter(Boolean) as CompiledChallengeTreeCategory[]
+
+        return groups.sort((a, b) => {
+            return a.OrderIndex - b.OrderIndex
+        })
     }
 
     compileRegistryChallengeTreeData(
@@ -1297,6 +1362,7 @@ export class ChallengeService extends ChallengeRegistry {
                 userId,
                 gameVersion,
             ),
+            OrderIndex: challenge.OrderIndex ?? 10000,
             DifficultyLevels: challenge.DifficultyLevels ?? [],
             // Only include CompletionData if ParentLocationId is not an empty string
             ...(challenge.ParentLocationId !== "" && {

@@ -47,6 +47,7 @@ export interface SavedChallenge {
     Xp: number
     XpModifier?: unknown
     DifficultyLevels: (keyof typeof gameDifficulty)[]
+    OrderIndex: number
     Definition: MissionManifestObjective["Definition"] & {
         Scope: ContextScopedStorageLocation
         Repeatable?: {
@@ -68,6 +69,7 @@ export interface SavedChallengeGroup {
     Icon: string
     CategoryId: string
     Description: string
+    OrderIndex?: number
     Challenges: SavedChallenge[]
 }
 
@@ -78,7 +80,7 @@ export interface ChallengePackage {
          * The parent location.
          */
         Location: string
-        GameVersion: GameVersion
+        GameVersions: GameVersion[]
     }
 }
 

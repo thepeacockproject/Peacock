@@ -9,11 +9,17 @@
             "actionlabel": "$loc UI_BUTTON_PROMPTS_ACTION_BACK"
         }
     ],
-    "background": { "url": "$res $.Location.Properties.Icon" },
-    "onpageclosed": { "set-mastery-data": {} },
+    "background": {
+        "url": "$res $.Location.Properties.Icon"
+    },
+    "onpageclosed": {
+        "set-mastery-data": {}
+    },
     "body": {
         "controller": "list",
-        "data": { "direction": "vertical" },
+        "data": {
+            "direction": "vertical"
+        },
         "children": [
             {
                 "controller": "group",
@@ -28,7 +34,10 @@
                     "view": "menu3.basic.HeadlineElement"
                 }
             },
-            { "controller": "list", "id": "category_container" },
+            {
+                "controller": "list",
+                "id": "category_container"
+            },
             {
                 "controller": "category",
                 "container": "category_container",
@@ -49,7 +58,9 @@
                     }
                 },
                 "children": {
-                    "$setpageargs": { "DifficultyLevelUnlocked": true },
+                    "$setpageargs": {
+                        "DifficultyLevelUnlocked": true
+                    },
                     "view": "menu3.basic.CategoryElement",
                     "id": "$formatstring challengelocation_difficulty_normal_tab",
                     "data": {

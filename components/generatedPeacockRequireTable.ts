@@ -19,7 +19,6 @@
 import * as configSwizzleManager from "./configSwizzleManager"
 import * as controller from "./controller"
 import * as databaseHandler from "./databaseHandler"
-import * as discordRp from "./discordRp"
 import * as entitlementStrategies from "./entitlementStrategies"
 import * as eventHandler from "./eventHandler"
 import * as evergreen from "./evergreen"
@@ -57,6 +56,7 @@ import * as leaderboards from "./contracts/leaderboards"
 import * as missionsInLocation from "./contracts/missionsInLocation"
 import * as sessions from "./contracts/sessions"
 import * as client from "./discord/client"
+import * as discordRp from "./discord/discordRp"
 import * as ipc from "./discord/ipc"
 import * as liveSplitClient from "./livesplit/liveSplitClient"
 import * as liveSplitManager from "./livesplit/liveSplitManager"
@@ -79,176 +79,66 @@ import * as contractCreation from "./statemachines/contractCreation"
 import * as escalationService from "./contracts/escalations/escalationService"
 
 export default {
-    "@peacockproject/core/configSwizzleManager": {
-        __esModule: true,
-        ...configSwizzleManager,
-    },
-    "@peacockproject/core/controller": { __esModule: true, ...controller },
-    "@peacockproject/core/databaseHandler": {
-        __esModule: true,
-        ...databaseHandler,
-    },
-    "@peacockproject/core/discordRp": { __esModule: true, ...discordRp },
-    "@peacockproject/core/entitlementStrategies": {
-        __esModule: true,
-        ...entitlementStrategies,
-    },
-    "@peacockproject/core/eventHandler": { __esModule: true, ...eventHandler },
-    "@peacockproject/core/evergreen": { __esModule: true, ...evergreen },
-    "@peacockproject/core/flags": { __esModule: true, ...flags },
-    "@peacockproject/core/hooksImpl": { __esModule: true, ...hooksImpl },
-    "@peacockproject/core/hotReloadService": {
-        __esModule: true,
-        ...hotReloadService,
-    },
-    "@peacockproject/core/inventory": { __esModule: true, ...inventory },
-    "@peacockproject/core/loadouts": { __esModule: true, ...loadouts },
-    "@peacockproject/core/loggingInterop": {
-        __esModule: true,
-        ...loggingInterop,
-    },
-    "@peacockproject/core/menuData": { __esModule: true, ...menuData },
-    "@peacockproject/core/oauthToken": { __esModule: true, ...oauthToken },
-    "@peacockproject/core/officialServerAuth": {
-        __esModule: true,
-        ...officialServerAuth,
-    },
-    "@peacockproject/core/ownership": { __esModule: true, ...ownership },
-    "@peacockproject/core/platformEntitlements": {
-        __esModule: true,
-        ...platformEntitlements,
-    },
-    "@peacockproject/core/playStyles": { __esModule: true, ...playStyles },
-    "@peacockproject/core/profileHandler": {
-        __esModule: true,
-        ...profileHandler,
-    },
-    "@peacockproject/core/scoreHandler": { __esModule: true, ...scoreHandler },
-    "@peacockproject/core/smfSupport": { __esModule: true, ...smfSupport },
-    "@peacockproject/core/utils": { __esModule: true, ...utils },
-    "@peacockproject/core/webFeatures": { __esModule: true, ...webFeatures },
-    "@peacockproject/core/2016/legacyContractHandler": {
-        __esModule: true,
-        ...legacyContractHandler,
-    },
-    "@peacockproject/core/2016/legacyMenuData": {
-        __esModule: true,
-        ...legacyMenuData,
-    },
-    "@peacockproject/core/2016/legacyProfileRouter": {
-        __esModule: true,
-        ...legacyProfileRouter,
-    },
-    "@peacockproject/core/candle/challengeHelpers": {
-        __esModule: true,
-        ...challengeHelpers,
-    },
-    "@peacockproject/core/candle/challengeService": {
-        __esModule: true,
-        ...challengeService,
-    },
-    "@peacockproject/core/candle/masteryService": {
-        __esModule: true,
-        ...masteryService,
-    },
-    "@peacockproject/core/candle/progressionService": {
-        __esModule: true,
-        ...progressionService,
-    },
-    "@peacockproject/core/contracts/contractRouting": {
-        __esModule: true,
-        ...contractRouting,
-    },
-    "@peacockproject/core/contracts/contractsModeRouting": {
-        __esModule: true,
-        ...contractsModeRouting,
-    },
-    "@peacockproject/core/contracts/dataGen": { __esModule: true, ...dataGen },
-    "@peacockproject/core/contracts/elusiveTargetArcades": {
-        __esModule: true,
-        ...elusiveTargetArcades,
-    },
-    "@peacockproject/core/contracts/elusiveTargets": {
-        __esModule: true,
-        ...elusiveTargets,
-    },
-    "@peacockproject/core/contracts/hitsCategoryService": {
-        __esModule: true,
-        ...hitsCategoryService,
-    },
-    "@peacockproject/core/contracts/leaderboards": {
-        __esModule: true,
-        ...leaderboards,
-    },
-    "@peacockproject/core/contracts/missionsInLocation": {
-        __esModule: true,
-        ...missionsInLocation,
-    },
-    "@peacockproject/core/contracts/sessions": {
-        __esModule: true,
-        ...sessions,
-    },
-    "@peacockproject/core/discord/client": { __esModule: true, ...client },
-    "@peacockproject/core/discord/ipc": { __esModule: true, ...ipc },
-    "@peacockproject/core/livesplit/liveSplitClient": {
-        __esModule: true,
-        ...liveSplitClient,
-    },
-    "@peacockproject/core/livesplit/liveSplitManager": {
-        __esModule: true,
-        ...liveSplitManager,
-    },
-    "@peacockproject/core/menus/campaigns": { __esModule: true, ...campaigns },
-    "@peacockproject/core/menus/destinations": {
-        __esModule: true,
-        ...destinations,
-    },
-    "@peacockproject/core/menus/favoriteContracts": {
-        __esModule: true,
-        ...favoriteContracts,
-    },
-    "@peacockproject/core/menus/hub": { __esModule: true, ...hub },
-    "@peacockproject/core/menus/imageHandler": {
-        __esModule: true,
-        ...imageHandler,
-    },
-    "@peacockproject/core/menus/menuSystem": {
-        __esModule: true,
-        ...menuSystem,
-    },
-    "@peacockproject/core/menus/planning": { __esModule: true, ...planning },
-    "@peacockproject/core/menus/playerProfile": {
-        __esModule: true,
-        ...playerProfile,
-    },
-    "@peacockproject/core/menus/playnext": { __esModule: true, ...playnext },
-    "@peacockproject/core/menus/sniper": { __esModule: true, ...sniper },
-    "@peacockproject/core/menus/stashpoints": {
-        __esModule: true,
-        ...stashpoints,
-    },
-    "@peacockproject/core/multiplayer/multiplayerMenuData": {
-        __esModule: true,
-        ...multiplayerMenuData,
-    },
-    "@peacockproject/core/multiplayer/multiplayerService": {
-        __esModule: true,
-        ...multiplayerService,
-    },
-    "@peacockproject/core/multiplayer/multiplayerUtils": {
-        __esModule: true,
-        ...multiplayerUtils,
-    },
-    "@peacockproject/core/statemachines/contextListeners": {
-        __esModule: true,
-        ...contextListeners,
-    },
-    "@peacockproject/core/statemachines/contractCreation": {
-        __esModule: true,
-        ...contractCreation,
-    },
-    "@peacockproject/core/contracts/escalations/escalationService": {
-        __esModule: true,
-        ...escalationService,
-    },
+    "@peacockproject/core/configSwizzleManager": configSwizzleManager,
+    "@peacockproject/core/controller": controller,
+    "@peacockproject/core/databaseHandler": databaseHandler,
+    "@peacockproject/core/entitlementStrategies": entitlementStrategies,
+    "@peacockproject/core/eventHandler": eventHandler,
+    "@peacockproject/core/evergreen": evergreen,
+    "@peacockproject/core/flags": flags,
+    "@peacockproject/core/hooksImpl": hooksImpl,
+    "@peacockproject/core/hotReloadService": hotReloadService,
+    "@peacockproject/core/inventory": inventory,
+    "@peacockproject/core/loadouts": loadouts,
+    "@peacockproject/core/loggingInterop": loggingInterop,
+    "@peacockproject/core/menuData": menuData,
+    "@peacockproject/core/oauthToken": oauthToken,
+    "@peacockproject/core/officialServerAuth": officialServerAuth,
+    "@peacockproject/core/ownership": ownership,
+    "@peacockproject/core/platformEntitlements": platformEntitlements,
+    "@peacockproject/core/playStyles": playStyles,
+    "@peacockproject/core/profileHandler": profileHandler,
+    "@peacockproject/core/scoreHandler": scoreHandler,
+    "@peacockproject/core/smfSupport": smfSupport,
+    "@peacockproject/core/utils": utils,
+    "@peacockproject/core/webFeatures": webFeatures,
+    "@peacockproject/core/2016/legacyContractHandler": legacyContractHandler,
+    "@peacockproject/core/2016/legacyMenuData": legacyMenuData,
+    "@peacockproject/core/2016/legacyProfileRouter": legacyProfileRouter,
+    "@peacockproject/core/candle/challengeHelpers": challengeHelpers,
+    "@peacockproject/core/candle/challengeService": challengeService,
+    "@peacockproject/core/candle/masteryService": masteryService,
+    "@peacockproject/core/candle/progressionService": progressionService,
+    "@peacockproject/core/contracts/contractRouting": contractRouting,
+    "@peacockproject/core/contracts/contractsModeRouting": contractsModeRouting,
+    "@peacockproject/core/contracts/dataGen": dataGen,
+    "@peacockproject/core/contracts/elusiveTargetArcades": elusiveTargetArcades,
+    "@peacockproject/core/contracts/elusiveTargets": elusiveTargets,
+    "@peacockproject/core/contracts/hitsCategoryService": hitsCategoryService,
+    "@peacockproject/core/contracts/leaderboards": leaderboards,
+    "@peacockproject/core/contracts/missionsInLocation": missionsInLocation,
+    "@peacockproject/core/contracts/sessions": sessions,
+    "@peacockproject/core/discord/client": client,
+    "@peacockproject/core/discord/discordRp": discordRp,
+    "@peacockproject/core/discord/ipc": ipc,
+    "@peacockproject/core/livesplit/liveSplitClient": liveSplitClient,
+    "@peacockproject/core/livesplit/liveSplitManager": liveSplitManager,
+    "@peacockproject/core/menus/campaigns": campaigns,
+    "@peacockproject/core/menus/destinations": destinations,
+    "@peacockproject/core/menus/favoriteContracts": favoriteContracts,
+    "@peacockproject/core/menus/hub": hub,
+    "@peacockproject/core/menus/imageHandler": imageHandler,
+    "@peacockproject/core/menus/menuSystem": menuSystem,
+    "@peacockproject/core/menus/planning": planning,
+    "@peacockproject/core/menus/playerProfile": playerProfile,
+    "@peacockproject/core/menus/playnext": playnext,
+    "@peacockproject/core/menus/sniper": sniper,
+    "@peacockproject/core/menus/stashpoints": stashpoints,
+    "@peacockproject/core/multiplayer/multiplayerMenuData": multiplayerMenuData,
+    "@peacockproject/core/multiplayer/multiplayerService": multiplayerService,
+    "@peacockproject/core/multiplayer/multiplayerUtils": multiplayerUtils,
+    "@peacockproject/core/statemachines/contextListeners": contextListeners,
+    "@peacockproject/core/statemachines/contractCreation": contractCreation,
+    "@peacockproject/core/contracts/escalations/escalationService":
+        escalationService,
 }

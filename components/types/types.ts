@@ -565,7 +565,6 @@ export type UserProfile = {
     Gamertag: string
     DevId: string | null
     SteamId: string | null
-    StadiaId: string | null
     EpicId: string | null
     NintendoId: string | null
     XboxLiveId: string | null
@@ -1190,19 +1189,20 @@ export type CompiledChallengeTreeCategory = {
     CategoryId: string
     ChallengesCount: number
     CompletedChallengesCount: number
-    CompletionData: CompletionData
+    CompletionData: CompletionData | Record<string, never>
     Icon: string
     Image: string
     ImageLocked?: string
     IsLocked: boolean
-    Location: Unlockable
+    Location: Unlockable | null
     Name: string
     RequiredResources: string[]
+    OrderIndex: number
     SwitchData: {
         Data: {
             CategoryData: CompiledChallengeTreeCategoryInfo
             Challenges: CompiledChallengeTreeData[]
-            CompletionData: CompletionData
+            CompletionData: CompletionData | Record<string, never>
             HasNext: boolean
             HasPrevious: boolean
             NextCategoryIcon?: string
@@ -1250,6 +1250,7 @@ export type CompiledChallengeTreeData = {
     LocationId: string
     Name: string
     ParentLocationId: string
+    OrderIndex: number
     Rewards: {
         MasteryXP?: number
     }
@@ -1292,11 +1293,11 @@ export type ChallengeProgressionData = {
     ChallengeId: string
     ProfileId: string
     Completed: boolean
-    Ticked: boolean
+    Ticked?: boolean
     ETag?: string
     State: Record<string, unknown>
     CompletedAt: Date | string | null
-    MustBeSaved: boolean
+    MustBeSaved?: boolean
 }
 
 export interface CompiledChallengeRuntimeData {

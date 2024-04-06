@@ -1,7 +1,7 @@
 {
     "meta": {
         "Location": "LOCATION_PARENT_NEWZEALAND",
-        "GameVersion": "h3"
+        "GameVersions": ["h3"]
     },
     "groups": [
         {
@@ -10,6 +10,7 @@
             "Icon": "challenge_category_assassination",
             "CategoryId": "assassination",
             "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_SIGNATUREKILL",
+            "OrderIndex": 0,
             "Challenges": [
                 {
                     "Id": "21ba022b-968f-4a75-a69d-e016bc481e1f",
@@ -1146,6 +1147,7 @@
             "Icon": "challenge_category_discovery",
             "CategoryId": "discovery",
             "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_EXPLORATION",
+            "OrderIndex": 1,
             "Challenges": [
                 {
                     "Id": "8d72168f-539b-4e98-b4ba-fb75bc7214a5",
@@ -1402,6 +1404,7 @@
             "Icon": "challenge_category_feats",
             "CategoryId": "feats",
             "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_COMMUNITY",
+            "OrderIndex": 2,
             "Challenges": [
                 {
                     "Id": "3400b27a-2380-4e92-bbfd-fb3d1deeed28",
@@ -2075,6 +2078,48 @@
                     "InclusionData": {
                         "ContractIds": ["3efc73f9-33f0-4af6-9508-7208e6851394"]
                     }
+                },
+                {
+                    "Id": "b046f27d-752c-8299-bbe9-1cbc85b7812a",
+                    "Name": "UI_PEACOCK_YULANIA",
+                    "ImageName": "images/contracts/escalation/contractescalation_yulania.jpg",
+                    "Description": "UI_CHALLENGES_ESCLATION_COMPLETE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_NEWZEALAND",
+                    "ParentLocationId": "LOCATION_PARENT_NEWZEALAND",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$ContractId",
+                                            "21232f29-296f-555a-b642-c99bf068506e"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["feats", "hard"],
+                    "InclusionData": {
+                        "ContractIds": ["e1e86206-d3f0-a819-e477-3d80e55e8a40"]
+                    }
                 }
             ]
         },
@@ -2084,6 +2129,7 @@
             "Icon": "challenge_category_targets",
             "CategoryId": "targets",
             "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_PROFESSIONAL",
+            "OrderIndex": 3,
             "Challenges": [
                 {
                     "Id": "8383982b-9a99-407f-a5b0-f6757e40ae6f",
@@ -2135,6 +2181,7 @@
             "Icon": "profile",
             "CategoryId": "classic",
             "Description": "",
+            "OrderIndex": 4,
             "Challenges": [
                 {
                     "Id": "17fdac23-9554-4714-9853-bc8c0ff905fc",
@@ -2998,6 +3045,7 @@
             "Icon": "elusive",
             "CategoryId": "elusive",
             "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_ELUSIVE",
+            "OrderIndex": 5,
             "Challenges": [
                 {
                     "Id": "92e1d006-e274-4880-a275-14f8bd4bb9bd",

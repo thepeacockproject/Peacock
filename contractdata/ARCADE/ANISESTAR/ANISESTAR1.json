@@ -1,0 +1,99 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "Id": "c2b3f8e3-0eaf-41b3-8b8c-3cf012a1d0bc",
+                "Primary": true,
+                "IsHidden": true,
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "63283fb2-a653-486d-a505-e471efbc8c54"
+                    }
+                }
+            },
+            {
+                "_comment": "----- Eliminate Faba with a Pen -----",
+                "Id": "2428f45d-51f2-4043-9d9f-237ee856ccd8",
+                "Primary": false,
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": true,
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": true
+                    }
+                },
+                "Image": "images/challenges/elusive_target/et_sambuca_started_pen.jpg",
+                "BriefingName": "$loc UI_CONTRACT_ANISESTAR_PENKILL_NAME",
+                "BriefingText": "$loc UI_CONTRACT_ANISESTAR_PENKILL_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_ANISESTAR_PENKILL_NAME",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "display": {
+                        "iconType": 17
+                    },
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "Faba_Pen_Fail": {
+                                "Transition": "Failure"
+                            },
+                            "Faba_Pen_Completed": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "Entrances": ["f1de2373-eebe-4448-808a-8c2764b2c931"],
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/miami/mission_sambuca.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/miami/vr_overrides_flamingo.brick",
+                    "assembly:/_PRO/scenes/missions/miami/vr_overrides_ps4perf.brick",
+                    "assembly:/_pro/scenes/missions/miami/vr_overrides_sambuca.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/miami/vr_overrides_flamingo.brick",
+                    "assembly:/_pro/scenes/missions/miami/vr_overrides_sambuca.brick"
+                ]
+            }
+        ],
+        "GameChangers": []
+    },
+    "Metadata": {
+        "Id": "a07b7a11-f318-4905-9826-4fc10505bef6",
+        "Title": "UI_CONTRACT_ANISESTAR_LEVEL01_NAME",
+        "CodeName_Hint": "Arcade AniseStar Sambuca",
+        "Description": "UI_CONTRACT_SAMBUCA_DESC",
+        "BriefingVideo": "briefing_sambuca",
+        "DebriefingVideo": "debriefing_sambuca",
+        "ScenePath": "assembly:/_pro/scenes/missions/miami/scene_et_sambuca.entity",
+        "TileImage": "images/contracts/elusive/046_sambuca/Title.jpg",
+        "InGroup": "de9788cc-b9c4-47fc-b5df-86451cd82c43",
+        "Location": "LOCATION_MIAMI",
+        "IsPublished": true,
+        "LastUpdate": "2024-02-02T12:00:00.441Z",
+        "CreationTimestamp": "2024-03-22T10:54:18.9583011Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Type": "arcade",
+        "Release": "3.180.0 Arcade",
+        "Entitlements": ["H3_ET_SAMBUCA"],
+        "PublicId": "011002667847"
+    }
+}

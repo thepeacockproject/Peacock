@@ -283,8 +283,8 @@ export class MasteryService {
                 contractType === "sniper"
                     ? xpRequiredForSniperLevel
                     : contractType === "evergreen"
-                    ? xpRequiredForEvergreenLevel
-                    : xpRequiredForLevel,
+                      ? xpRequiredForEvergreenLevel
+                      : xpRequiredForLevel,
                 subPackageId,
             ),
             Id: isSniper ? subPackageId! : masteryPkg.LocationId,
@@ -410,8 +410,8 @@ export class MasteryService {
                     isSniper
                         ? "sniper"
                         : locationParentId.includes("SNUG")
-                        ? "evergreen"
-                        : "mission",
+                          ? "evergreen"
+                          : "mission",
                     subPkg.Id,
                 )
 

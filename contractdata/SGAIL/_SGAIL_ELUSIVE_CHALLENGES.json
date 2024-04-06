@@ -1,0 +1,606 @@
+{
+    "meta": {
+        "Location": "LOCATION_PARENT_NORTHSEA",
+        "GameVersions": ["h2", "h3"]
+    },
+    "groups": [
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+            "Image": "images/challenges/categories/elusive/tile.jpg",
+            "Icon": "elusive",
+            "CategoryId": "elusive",
+            "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_ELUSIVE",
+            "OrderIndex": 5,
+            "Challenges": [
+                {
+                    "Id": "10e2a267-433e-4f80-b624-11c76833f9bf",
+                    "Name": "UI_CHALLENGES_ET_GOLDENDOUBLET_TARGETDOWN_NAME",
+                    "ImageName": "images/challenges/elusive_target/et_goldendoublet_targetdown.jpg",
+                    "Description": "UI_CHALLENGES_ET_GOLDENDOUBLET_TARGETDOWN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+                    "Icon": "elusive",
+                    "LocationId": "LOCATION_NORTHSEA",
+                    "ParentLocationId": "LOCATION_PARENT_NORTHSEA",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$eq": ["$Value.IsTarget", true]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "elusive"],
+                    "InclusionData": {
+                        "ContractIds": ["263eca3d-d25d-40ce-ba0a-48a221cd0b9e"]
+                    }
+                },
+                {
+                    "Id": "6860fed5-96af-4658-8637-ae958e71b040",
+                    "Name": "UI_CHALLENGES_ET_GOLDENDOUBLET_SILENT_ASSASSIN_NAME",
+                    "ImageName": "images/challenges/elusive_target/et_goldendoublet_silentassassin.jpg",
+                    "Description": "UI_CHALLENGES_ET_GOLDENDOUBLET_SILENT_ASSASSIN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+                    "Icon": "elusive",
+                    "LocationId": "LOCATION_NORTHSEA",
+                    "ParentLocationId": "LOCATION_PARENT_NORTHSEA",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "Witnesses": [],
+                            "KilledTargets": [],
+                            "RecordingDestroyed": true,
+                            "LastAccidentTime": 0
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    true,
+                                                    "$.RecordingDestroyed"
+                                                ]
+                                            },
+                                            {
+                                                "$all": {
+                                                    "in": "$.Witnesses",
+                                                    "?": {
+                                                        "$any": {
+                                                            "in": "$.KilledTargets",
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "$.##"
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "AccidentBodyFound": {
+                                    "$set": ["LastAccidentTime", "$Timestamp"]
+                                },
+                                "Witnesses": {
+                                    "Condition": {
+                                        "$any": {
+                                            "in": "$Value",
+                                            "?": {
+                                                "$pushunique": [
+                                                    "Witnesses",
+                                                    "$.#"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                "Spotted": {
+                                    "Condition": {
+                                        "$any": {
+                                            "in": "$Value",
+                                            "?": {
+                                                "$pushunique": [
+                                                    "Witnesses",
+                                                    "$.#"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$Value.KillContext",
+                                                            1
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.KillContext",
+                                                        1
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "KilledTargets",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$Value.IsTarget", true]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "KilledTargets",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "CrowdNPC_Died": {
+                                    "Transition": "Failure"
+                                },
+                                "MurderedBodySeen": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.IsWitnessTarget",
+                                                true
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Witnesses",
+                                                "$Value.Witness"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsWitnessTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$.LastAccidentTime",
+                                                            "$Timestamp"
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ],
+                                "SecuritySystemRecorder": [
+                                    {
+                                        "Actions": {
+                                            "$set": [
+                                                "RecordingDestroyed",
+                                                false
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$eq": ["$Value.event", "spotted"]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["RecordingDestroyed", true]
+                                        },
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "erased"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "destroyed"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "hard", "elusive"],
+                    "InclusionData": {
+                        "ContractIds": ["263eca3d-d25d-40ce-ba0a-48a221cd0b9e"]
+                    }
+                },
+                {
+                    "Id": "cc4e642f-4257-4a72-9f0a-84d040124f79",
+                    "Name": "UI_CHALLENGES_ET_SKITTLEBOMB_TARGETDOWN_NAME",
+                    "ImageName": "images/challenges/elusive_target/et_skittlebomb_targetdown.jpg",
+                    "Description": "UI_CHALLENGES_ET_SKITTLEBOMB_TARGETDOWN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+                    "Icon": "elusive",
+                    "LocationId": "LOCATION_NORTHSEA",
+                    "ParentLocationId": "LOCATION_PARENT_NORTHSEA",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$eq": ["$Value.IsTarget", true]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "elusive"],
+                    "InclusionData": {
+                        "ContractIds": ["cbc86bed-51ce-4699-89d4-0ded8f200cbc"]
+                    }
+                },
+                {
+                    "Id": "67240666-0c1f-4ebf-979f-399bb70ab8f6",
+                    "Name": "UI_CHALLENGES_ET_SKITTLEBOMB_SILENT_ASSASSIN_NAME",
+                    "ImageName": "images/challenges/elusive_target/et_skittlebomb_silentassassin.jpg",
+                    "Description": "UI_CHALLENGES_ET_SKITTLEBOMB_SILENT_ASSASSIN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+                    "Icon": "elusive",
+                    "LocationId": "LOCATION_NORTHSEA",
+                    "ParentLocationId": "LOCATION_PARENT_NORTHSEA",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "Witnesses": [],
+                            "KilledTargets": [],
+                            "RecordingDestroyed": true,
+                            "LastAccidentTime": 0
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    true,
+                                                    "$.RecordingDestroyed"
+                                                ]
+                                            },
+                                            {
+                                                "$all": {
+                                                    "in": "$.Witnesses",
+                                                    "?": {
+                                                        "$any": {
+                                                            "in": "$.KilledTargets",
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "$.##"
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "AccidentBodyFound": {
+                                    "$set": ["LastAccidentTime", "$Timestamp"]
+                                },
+                                "Witnesses": {
+                                    "Condition": {
+                                        "$any": {
+                                            "in": "$Value",
+                                            "?": {
+                                                "$pushunique": [
+                                                    "Witnesses",
+                                                    "$.#"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                "Spotted": {
+                                    "Condition": {
+                                        "$any": {
+                                            "in": "$Value",
+                                            "?": {
+                                                "$pushunique": [
+                                                    "Witnesses",
+                                                    "$.#"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$Value.KillContext",
+                                                            1
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.KillContext",
+                                                        1
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "KilledTargets",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$Value.IsTarget", true]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "KilledTargets",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "CrowdNPC_Died": {
+                                    "Transition": "Failure"
+                                },
+                                "MurderedBodySeen": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.IsWitnessTarget",
+                                                true
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Witnesses",
+                                                "$Value.Witness"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsWitnessTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$.LastAccidentTime",
+                                                            "$Timestamp"
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ],
+                                "SecuritySystemRecorder": [
+                                    {
+                                        "Actions": {
+                                            "$set": [
+                                                "RecordingDestroyed",
+                                                false
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$eq": ["$Value.event", "spotted"]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["RecordingDestroyed", true]
+                                        },
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "erased"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "destroyed"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "hard", "elusive"],
+                    "InclusionData": {
+                        "ContractIds": ["cbc86bed-51ce-4699-89d4-0ded8f200cbc"]
+                    }
+                },
+                {
+                    "Id": "ba8cd104-b198-41e3-acba-f560f396dd97",
+                    "Name": "UI_CHALLENGES_ELUSIVE_TARGET_NORTHSEA_NAME",
+                    "ImageName": "images/challenges/profile_challenges/elusive_target_magpie.jpg",
+                    "Description": "UI_CHALLENGES_ELUSIVE_TARGET_NORTHSEA_DESC",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "Drops": ["TOKEN_OUTFIT_MAGPIE_ELUSIVE_SUIT"],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+                    "Icon": "elusive",
+                    "LocationId": "LOCATION_NORTHSEA",
+                    "ParentLocationId": "LOCATION_PARENT_NORTHSEA",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractStart": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.ContractType",
+                                            "elusive"
+                                        ]
+                                    },
+                                    "Transition": "State_ValidContract"
+                                }
+                            },
+                            "State_ValidContract": {
+                                "ContractEnd": [
+                                    {
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "elusive"],
+                    "InclusionData": {
+                        "ContractTypes": ["elusive"]
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -26,7 +26,7 @@ const require = createRequire(import.meta.url)
 await generateRequireTable()
 await packResources()
 
-const { version, revisionIdent } = require("../package.json")
+const { version } = require("../package.json")
 
 const jsonAsCompressedTextPlugin = {
     name: "jsonAsCompressedTextPlugin",
@@ -61,7 +61,6 @@ await e.build({
     define: {
         PEACOCK_DEV: "false",
         HUMAN_VERSION: `"${version}"`,
-        REV_IDENT: `${revisionIdent}`,
         "process.env.DEBUG_MIME": "false",
         "process.env.TESTING_TAR_FAKE_PLATFORM": "undefined",
         "process.env.__TESTING_MKDIRP_PLATFORM__": "undefined",

@@ -17,12 +17,13 @@
  */
 
 import type {
+    ChallengeCompletion,
     CompletionData,
     GameVersion,
     PeacockLocationsData,
     Unlockable,
 } from "../types/types"
-import { swapToBrowsingMenusStatus } from "../discordRp"
+import { swapToBrowsingMenusStatus } from "../discord/discordRp"
 import { getUserData } from "../databaseHandler"
 import { controller } from "../controller"
 import { contractCreationTutorialId, getMaxProfileLevel } from "../utils"
@@ -53,7 +54,32 @@ type CareerEntryChild = {
     ImageLocked: string
     RequiredResources: string[]
     IsPack?: boolean
-    CompletionData: CompletionData
+    CompletionData: CompletionData | Record<string, never>
+}
+
+function generateCareerEntryChild(
+    location: Unlockable,
+    completion: ChallengeCompletion,
+    categoryId: string,
+    completionData?: CompletionData,
+): CareerEntryChild {
+    const pack = controller.challengeService.challengePacks.get(categoryId)
+
+    return {
+        IsLocked: Boolean(location.Properties.IsLocked),
+        Name: pack ? pack.Name : location.DisplayNameLocKey,
+        Image: pack ? pack.Image : location.Properties.Icon || "",
+        Icon: pack ? pack.Icon : location.Type,
+        CompletedChallengesCount: completion.CompletedChallengesCount,
+        ChallengesCount: completion.ChallengesCount,
+        CategoryId: categoryId,
+        Description: pack ? pack.Description : `UI_${categoryId}_PRIMARY_DESC`,
+        Location: location,
+        ImageLocked: location.Properties.LockedIcon || "",
+        RequiredResources: location.Properties.RequiredResources || [],
+        IsPack: pack !== undefined,
+        CompletionData: completionData || {},
+    }
 }
 
 export function getHubData(gameVersion: GameVersion, userId: string) {
@@ -71,18 +97,34 @@ export function getHubData(gameVersion: GameVersion, userId: string) {
         gameVersion,
         true,
     )
-    const career: Record<string, CareerEntry> =
-        gameVersion === "h3"
-            ? {}
-            : {
-                  // TODO: Add data on elusive challenges. They are only shown on the Career->Challenges page for H1 and H2. They are not supported by Peacock as of v6.0.0.
-                  ELUSIVES_UNSUPPORTED: {
-                      Children: [],
-                      Name: "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
-                      Location:
-                          locations.parents["LOCATION_PARENT_ICA_FACILITY"],
-                  },
-              }
+
+    const career: Record<string, CareerEntry> = {}
+
+    for (const [
+        id,
+        pack,
+    ] of controller.challengeService.challengePacks.entries()) {
+        if (!pack.GameVersions.includes(gameVersion)) continue
+
+        career[id] = {
+            Children: [
+                generateCareerEntryChild(
+                    locations.parents["LOCATION_PARENT_ICA_FACILITY"],
+                    controller.challengeService.countTotalNCompletedChallenges(
+                        controller.challengeService.getChallengesForGroup(
+                            id,
+                            gameVersion,
+                        ),
+                        userId,
+                        gameVersion,
+                    ),
+                    id,
+                ),
+            ],
+            Name: pack.Name,
+            Location: locations.parents["LOCATION_PARENT_ICA_FACILITY"],
+        }
+    }
 
     const masteryData = []
 
@@ -168,22 +210,14 @@ export function getHubData(gameVersion: GameVersion, userId: string) {
                 gameVersion,
             )
 
-        career[parent!]?.Children.push({
-            IsLocked: Boolean(location.Properties.IsLocked),
-            Name: location.DisplayNameLocKey,
-            Image: location.Properties.Icon || "",
-            Icon: location.Type, // should be "location" for all locations
-            CompletedChallengesCount:
-                challengeCompletion.CompletedChallengesCount,
-            ChallengesCount: challengeCompletion.ChallengesCount,
-            CategoryId: child,
-            Description: `UI_${child}_PRIMARY_DESC`,
-            Location: location,
-            ImageLocked: location.Properties.LockedIcon || "",
-            RequiredResources: location.Properties.RequiredResources || [],
-            IsPack: false, // should be false for all locations
-            CompletionData: generateCompletionData(child, userId, gameVersion),
-        })
+        career[parent!]?.Children.push(
+            generateCareerEntryChild(
+                location,
+                challengeCompletion,
+                child,
+                generateCompletionData(child, userId, gameVersion),
+            ),
+        )
     }
 
     return {

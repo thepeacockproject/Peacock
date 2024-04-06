@@ -59,6 +59,41 @@ async function fetchDestination(axiosClient, locationId) {
 }
 
 /**
+ * @param {string} categoryId
+ * @returns {number}
+ */
+function getOrderIndex(categoryId) {
+    switch (categoryId) {
+        case "assassination":
+            return 0
+        case "discovery":
+            return 1
+        case "feats":
+            return 2
+        case "targets":
+            return 3
+        case "classic":
+            return 4
+        case "elusive":
+            return 5
+        case "arcade":
+            return 6
+        case "escalation_hm1":
+            return 7
+        case "escalation_hm2":
+            return 8
+        case "featured_hm1_hm2":
+            return 9
+        case "featured_hm3":
+            return 10
+        case "featured":
+            return 11
+        default:
+            return 100000
+    }
+}
+
+/**
  * @param {string} locationParent
  * @param {string} jwt
  * @param {string} gameVersion
@@ -71,7 +106,7 @@ async function extract(locationParent, jwt, gameVersion) {
             "User-Agent": "G2 Http/1.0 (Windows NT 10.0; DX12/1; d3d12/1)",
             "Content-Type": "application/json",
             Accept: "application/json, text/*, image/*, application/json",
-            Version: gameVersion === "h1" ? "6.74.0" : "8.14.0",
+            Version: gameVersion === "h1" ? "6.74.0" : "8.15.0",
             Authorization: `bearer ${jwt}`,
         },
     })
@@ -146,6 +181,7 @@ async function extract(locationParent, jwt, gameVersion) {
             Icon: group.Icon,
             CategoryId: group.CategoryId,
             Description: group.Description,
+            OrderIndex: getOrderIndex(group.CategoryId),
             Challenges: challengeObjects,
         })
 
@@ -233,7 +269,7 @@ async function extract(locationParent, jwt, gameVersion) {
         {
             meta: {
                 Location: locationParent,
-                GameVersion: gameVersion,
+                GameVersions: [gameVersion],
             },
             groups,
         },
@@ -246,8 +282,8 @@ function getUrlFromVersion(gameVersion) {
     return gameVersion === "h3"
         ? "hm3-service.hitman.io"
         : gameVersion === "h2"
-        ? "pc2-service.hitman.io"
-        : "pc-service.hitman.io"
+          ? "pc2-service.hitman.io"
+          : "pc-service.hitman.io"
 }
 
 class ExtractChallengeDataCommand extends Command {

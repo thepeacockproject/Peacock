@@ -1,249 +1,4 @@
 {
-    "e47d6995-ba9a-4d13-b40a-84e104b84bb6": {
-        "Name": "UI_PEACOCK_SATANTA_GUARDS_PLANNING",
-        "Description": "UI_PEACOCK_SATANTA_GUARDS_PLANNING_DESC",
-        "TileImage": "images/contracts/escalation/contractescalation_satanta_liberationguards.jpg",
-        "Icon": null,
-        "ObjectivesCategory": "primary",
-        "IsHidden": null,
-        "Resource": [],
-        "Objectives": [
-            {
-                "_comment": "Liberation Guards",
-                "Id": "542a7e07-a948-49d2-b4ed-52b8f0f1927f",
-                "Type": "statemachine",
-                "Category": "primary",
-                "IsHidden": false,
-                "ObjectiveType": "custom",
-                "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_SATANTA_GUARDS_PLANNING_DESC"
-                },
-                "Definition": {
-                    "Scope": "session",
-                    "Context": {
-                        "Targets": [
-                            "cc72b9c0-b73a-4e34-97ee-329ce22abaa6",
-                            "cc3290c0-d1b0-4706-a2a6-0e09ff34a4ad"
-                        ]
-                    },
-                    "States": {
-                        "Start": {
-                            "Kill": {
-                                "Condition": {
-                                    "$or": [
-                                        {
-                                            "$eq": [
-                                                "$Value.RepositoryId",
-                                                "cc72b9c0-b73a-4e34-97ee-329ce22abaa6"
-                                            ]
-                                        },
-                                        {
-                                            "$eq": [
-                                                "$Value.RepositoryId",
-                                                "cc3290c0-d1b0-4706-a2a6-0e09ff34a4ad"
-                                            ]
-                                        }
-                                    ]
-                                },
-                                "Transition": "OneDown"
-                            }
-                        },
-                        "OneDown": {
-                            "Kill": {
-                                "Condition": {
-                                    "$or": [
-                                        {
-                                            "$eq": [
-                                                "$Value.RepositoryId",
-                                                "cc72b9c0-b73a-4e34-97ee-329ce22abaa6"
-                                            ]
-                                        },
-                                        {
-                                            "$eq": [
-                                                "$Value.RepositoryId",
-                                                "cc3290c0-d1b0-4706-a2a6-0e09ff34a4ad"
-                                            ]
-                                        }
-                                    ]
-                                },
-                                "Transition": "Success"
-                            }
-                        }
-                    }
-                }
-            }
-        ]
-    },
-    "fa65efde-247a-418b-bb92-988adf032773": {
-        "Name": "UI_PEACOCK_SATANTA_GUARDS_PLANNING",
-        "Description": "UI_PEACOCK_SATANTA_GUARDS_PLANNING_DESC2",
-        "TileImage": "images/contracts/escalation/contractescalation_satanta_liberationguards.jpg",
-        "Icon": null,
-        "ObjectivesCategory": "primary",
-        "IsHidden": null,
-        "Resource": [],
-        "Objectives": [
-            {
-                "_comment": "Liberation Guards",
-                "Id": "542a7e07-a948-49d2-b4ed-52b8f0f1927f",
-                "Type": "statemachine",
-                "Category": "primary",
-                "IsHidden": false,
-                "ObjectiveType": "custom",
-                "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_SATANTA_GUARDS_PLANNING_DESC2"
-                },
-                "Definition": {
-                    "Scope": "session",
-                    "Context": {
-                        "Targets": [
-                            "cc72b9c0-b73a-4e34-97ee-329ce22abaa6",
-                            "cc3290c0-d1b0-4706-a2a6-0e09ff34a4ad"
-                        ]
-                    },
-                    "States": {
-                        "Start": {
-                            "Kill": {
-                                "Condition": {
-                                    "$and": [
-                                        {
-                                            "$or": [
-                                                {
-                                                    "$eq": [
-                                                        "$Value.RepositoryId",
-                                                        "cc72b9c0-b73a-4e34-97ee-329ce22abaa6"
-                                                    ]
-                                                },
-                                                {
-                                                    "$eq": [
-                                                        "$Value.RepositoryId",
-                                                        "cc3290c0-d1b0-4706-a2a6-0e09ff34a4ad"
-                                                    ]
-                                                }
-                                            ]
-                                        },
-                                        {
-                                            "$eq": [
-                                                "$Value.KillItemRepositoryId",
-                                                "a2c56798-026f-4d0b-9480-de0d2525a119"
-                                            ]
-                                        }
-                                    ]
-                                },
-                                "Transition": "OneDown"
-                            }
-                        },
-                        "OneDown": {
-                            "Kill": {
-                                "Condition": {
-                                    "$and": [
-                                        {
-                                            "$or": [
-                                                {
-                                                    "$eq": [
-                                                        "$Value.RepositoryId",
-                                                        "cc72b9c0-b73a-4e34-97ee-329ce22abaa6"
-                                                    ]
-                                                },
-                                                {
-                                                    "$eq": [
-                                                        "$Value.RepositoryId",
-                                                        "cc3290c0-d1b0-4706-a2a6-0e09ff34a4ad"
-                                                    ]
-                                                }
-                                            ]
-                                        },
-                                        {
-                                            "$eq": [
-                                                "$Value.KillItemRepositoryId",
-                                                "a2c56798-026f-4d0b-9480-de0d2525a119"
-                                            ]
-                                        }
-                                    ]
-                                },
-                                "Transition": "Success"
-                            }
-                        }
-                    }
-                }
-            }
-        ]
-    },
-    "1f23082c-2d1f-4dcf-b45f-0a9eb39ed441": {
-        "Name": "UI_PEACOCK_SATANTA_COUPLE",
-        "Description": "UI_PEACOCK_SATANTA_COUPLE_DESC",
-        "TileImage": "images/contracts/escalation/contractescalation_satanta_cafecouple.jpg",
-        "Icon": null,
-        "ObjectivesCategory": "primary",
-        "IsHidden": null,
-        "Resource": [],
-        "Objectives": [
-            {
-                "_comment": "Couple",
-                "Id": "542a7e07-a948-49d2-b4ed-52b8f0f1927f",
-                "Type": "statemachine",
-                "Category": "primary",
-                "IsHidden": false,
-                "ObjectiveType": "custom",
-                "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_SATANTA_COUPLE_DESC"
-                },
-                "Definition": {
-                    "Scope": "session",
-                    "Context": {
-                        "Targets": [
-                            "2bf8c4ca-c73b-4bad-b338-0cd1b797f305",
-                            "8d5f03f0-f817-4f07-8c37-5faa032cf98c"
-                        ]
-                    },
-                    "States": {
-                        "Start": {
-                            "Kill": {
-                                "Condition": {
-                                    "$or": [
-                                        {
-                                            "$eq": [
-                                                "$Value.RepositoryId",
-                                                "2bf8c4ca-c73b-4bad-b338-0cd1b797f305"
-                                            ]
-                                        },
-                                        {
-                                            "$eq": [
-                                                "$Value.RepositoryId",
-                                                "8d5f03f0-f817-4f07-8c37-5faa032cf98c"
-                                            ]
-                                        }
-                                    ]
-                                },
-                                "Transition": "OneDown"
-                            }
-                        },
-                        "OneDown": {
-                            "Kill": {
-                                "Condition": {
-                                    "$or": [
-                                        {
-                                            "$eq": [
-                                                "$Value.RepositoryId",
-                                                "2bf8c4ca-c73b-4bad-b338-0cd1b797f305"
-                                            ]
-                                        },
-                                        {
-                                            "$eq": [
-                                                "$Value.RepositoryId",
-                                                "8d5f03f0-f817-4f07-8c37-5faa032cf98c"
-                                            ]
-                                        }
-                                    ]
-                                },
-                                "Transition": "Success"
-                            }
-                        }
-                    }
-                }
-            }
-        ]
-    },
     "7138fd16-4d15-4cca-816b-958e2f3a8164": {
         "Name": "UI_PEACOCK_YANNINI_WHEREAMI",
         "Description": "UI_PEACOCK_YANNINI_WHEREAMI_DETAILS",
@@ -377,6 +132,74 @@
                                     "$dec": "AmountToKill"
                                 },
                                 "Transition": "CheckCount"
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "5e2a1492-a099-c696-529e-1e56171e352d": {
+        "Name": "UI_PEACOCK_GAMECHANGERS_NEWZEALAND_NOBODIESHIDDEN_NAME",
+        "Description": "UI_PEACOCK_GAMECHANGERS_NEWZEALAND_NOBODIESHIDDEN_DESC",
+        "Icon": null,
+        "IsHidden": null,
+        "TileImage": "images/contracts/gamechangers/gamechanger_newzealand_nobodieshidden.jpg",
+        "Resource": [],
+        "Objectives": [
+            {
+                "Id": "24117450-5b77-e077-e1f1-20236e5d347a",
+                "Category": "primary",
+                "Type": "statemachine",
+                "ObjectiveType": "condition",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_GAMECHANGERS_NEWZEALAND_NOBODIESHIDDEN_NAME",
+                    "iconType": 17
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "-": {
+                                "Transition": "Success"
+                            }
+                        },
+                        "Success": {
+                            "BodyHidden": {
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "c3fcd3d7-6192-e400-7dfb-4f0b6227b04c": {
+        "Name": "UI_PEACOCK_GAMECHANGERS_NEWZEALAND_CHANGEWEAPON_NAME",
+        "Description": "UI_PEACOCK_GAMECHANGERS_NEWZEALAND_CHANGEWEAPON_DESC",
+        "Icon": null,
+        "IsHidden": null,
+        "TileImage": "images/contracts/gamechangers/gamechanger_newzealand_changeweapon.jpg",
+        "ObjectivesCategory": "primary",
+        "Resource": [],
+        "Objectives": [
+            {
+                "Id": "8d969eef-6ec2-9a3a-98fe-8a5ec5f02895",
+                "Category": "primary",
+                "Type": "statemachine",
+                "ObjectiveType": "condition",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "-": {
+                                "Transition": "Success"
                             }
                         }
                     }

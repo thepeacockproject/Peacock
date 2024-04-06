@@ -1,7 +1,7 @@
 {
     "meta": {
         "Location": "LOCATION_PARENT_MIAMI",
-        "GameVersion": "h3"
+        "GameVersions": ["h3"]
     },
     "groups": [
         {
@@ -10,6 +10,7 @@
             "Icon": "challenge_category_assassination",
             "CategoryId": "assassination",
             "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_SIGNATUREKILL",
+            "OrderIndex": 0,
             "Challenges": [
                 {
                     "Id": "033e0565-15a3-46eb-acbf-6b4f8f0792a8",
@@ -2085,6 +2086,7 @@
             "Icon": "challenge_category_discovery",
             "CategoryId": "discovery",
             "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_EXPLORATION",
+            "OrderIndex": 1,
             "Challenges": [
                 {
                     "Id": "4e12b107-7674-4207-b648-19a518a7d832",
@@ -3252,6 +3254,7 @@
             "Icon": "challenge_category_feats",
             "CategoryId": "feats",
             "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_COMMUNITY",
+            "OrderIndex": 2,
             "Challenges": [
                 {
                     "Id": "3341d698-496a-4953-8973-dc58b148a56d",
@@ -4486,6 +4489,7 @@
             "Icon": "challenge_category_targets",
             "CategoryId": "targets",
             "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_PROFESSIONAL",
+            "OrderIndex": 3,
             "Challenges": [
                 {
                     "Id": "71e573a2-a5c5-4e6c-b469-2a8086c12b5a",
@@ -4621,6 +4625,7 @@
             "Icon": "profile",
             "CategoryId": "classic",
             "Description": "",
+            "OrderIndex": 4,
             "Challenges": [
                 {
                     "Id": "22455fef-0fec-4e83-a9c6-65a0f44633e2",
@@ -6338,593 +6343,39 @@
             "Icon": "elusive",
             "CategoryId": "elusive",
             "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_ELUSIVE",
+            "OrderIndex": 5,
             "Challenges": [
                 {
                     "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
-                    "Definition": {
-                        "Context": {},
-                        "Scope": "session",
-                        "States": {
-                            "Start": {
-                                "Kill": {
-                                    "Condition": {
-                                        "$eq": ["$Value.IsTarget", true]
-                                    },
-                                    "Transition": "Success"
-                                }
-                            }
-                        }
-                    },
-                    "Description": "UI_CHALLENGES_ET_SAMBUCA_TARGETDOWN_DESC",
-                    "DifficultyLevels": [],
-                    "Drops": [],
-                    "HideProgression": false,
+                    "Id": "cbfb5e85-b93a-4030-be5f-4ec28c14335e",
+                    "Name": "UI_CHALLENGES_ET_SAMBUCA3_CONTRACT_STARTED_NAME",
+                    "Type": "Hit",
                     "Icon": "elusive",
-                    "Id": "d64736bf-2796-4365-b23e-e14303dde23b",
-                    "ImageName": "images/challenges/elusive_target/et_sambuca_targetdown.jpg",
-                    "InclusionData": {
-                        "ContractIds": ["06a58b66-56f4-45c3-ba1b-d03998212289"]
-                    },
-                    "IsLocked": false,
-                    "IsPlayable": false,
-                    "LocationId": "LOCATION_MIAMI",
-                    "Name": "UI_CHALLENGES_ET_SAMBUCA_TARGETDOWN_NAME",
-                    "OrderIndex": 10000,
-                    "ParentLocationId": "LOCATION_PARENT_MIAMI",
-                    "Rewards": {
-                        "MasteryXP": 2000
-                    },
-                    "RuntimeType": "Hit",
-                    "Tags": ["story", "medium", "elusive"],
-                    "Type": "contract",
-                    "XpModifier": {}
-                },
-                {
-                    "Id": "4e525882-fd1d-40bb-b721-4d43c35150c9",
-                    "Name": "UI_CHALLENGES_ET_SAMBUCA_SILENT_ASSASSIN_NAME",
-                    "ImageName": "images/challenges/elusive_target/et_sambuca_silentassassin.jpg",
-                    "Description": "UI_CHALLENGES_ET_SAMBUCA_SILENT_ASSASSIN_DESC",
-                    "Rewards": {
-                        "MasteryXP": 4000
-                    },
-                    "Drops": [],
-                    "Definition": {
-                        "Context": {
-                            "Witnesses": [],
-                            "KilledTargets": [],
-                            "RecordingDestroyed": true,
-                            "LastAccidentTime": 0
-                        },
-                        "Scope": "session",
-                        "States": {
-                            "Start": {
-                                "ContractEnd": {
-                                    "Condition": {
-                                        "$and": [
-                                            {
-                                                "$eq": [
-                                                    true,
-                                                    "$.RecordingDestroyed"
-                                                ]
-                                            },
-                                            {
-                                                "$all": {
-                                                    "in": "$.Witnesses",
-                                                    "?": {
-                                                        "$any": {
-                                                            "in": "$.KilledTargets",
-                                                            "?": {
-                                                                "$eq": [
-                                                                    "$.#",
-                                                                    "$.##"
-                                                                ]
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        ]
-                                    },
-                                    "Transition": "Success"
-                                },
-                                "AccidentBodyFound": {
-                                    "$set": ["LastAccidentTime", "$Timestamp"]
-                                },
-                                "Witnesses": {
-                                    "Condition": {
-                                        "$any": {
-                                            "in": "$Value",
-                                            "?": {
-                                                "$pushunique": [
-                                                    "Witnesses",
-                                                    "$.#"
-                                                ]
-                                            }
-                                        }
-                                    }
-                                },
-                                "Spotted": {
-                                    "Condition": {
-                                        "$any": {
-                                            "in": "$Value",
-                                            "?": {
-                                                "$pushunique": [
-                                                    "Witnesses",
-                                                    "$.#"
-                                                ]
-                                            }
-                                        }
-                                    }
-                                },
-                                "Kill": [
-                                    {
-                                        "Condition": {
-                                            "$and": [
-                                                {
-                                                    "$eq": [
-                                                        "$Value.IsTarget",
-                                                        false
-                                                    ]
-                                                },
-                                                {
-                                                    "$not": {
-                                                        "$eq": [
-                                                            "$Value.KillContext",
-                                                            1
-                                                        ]
-                                                    }
-                                                }
-                                            ]
-                                        },
-                                        "Transition": "Failure"
-                                    },
-                                    {
-                                        "Condition": {
-                                            "$and": [
-                                                {
-                                                    "$eq": [
-                                                        "$Value.IsTarget",
-                                                        false
-                                                    ]
-                                                },
-                                                {
-                                                    "$eq": [
-                                                        "$Value.KillContext",
-                                                        1
-                                                    ]
-                                                }
-                                            ]
-                                        },
-                                        "Actions": {
-                                            "$pushunique": [
-                                                "KilledTargets",
-                                                "$Value.RepositoryId"
-                                            ]
-                                        }
-                                    },
-                                    {
-                                        "Condition": {
-                                            "$eq": ["$Value.IsTarget", true]
-                                        },
-                                        "Actions": {
-                                            "$pushunique": [
-                                                "KilledTargets",
-                                                "$Value.RepositoryId"
-                                            ]
-                                        }
-                                    }
-                                ],
-                                "CrowdNPC_Died": {
-                                    "Transition": "Failure"
-                                },
-                                "MurderedBodySeen": [
-                                    {
-                                        "Condition": {
-                                            "$eq": [
-                                                "$Value.IsWitnessTarget",
-                                                true
-                                            ]
-                                        },
-                                        "Actions": {
-                                            "$pushunique": [
-                                                "Witnesses",
-                                                "$Value.Witness"
-                                            ]
-                                        }
-                                    },
-                                    {
-                                        "Condition": {
-                                            "$and": [
-                                                {
-                                                    "$eq": [
-                                                        "$Value.IsWitnessTarget",
-                                                        false
-                                                    ]
-                                                },
-                                                {
-                                                    "$not": {
-                                                        "$eq": [
-                                                            "$.LastAccidentTime",
-                                                            "$Timestamp"
-                                                        ]
-                                                    }
-                                                }
-                                            ]
-                                        },
-                                        "Transition": "Failure"
-                                    }
-                                ],
-                                "SecuritySystemRecorder": [
-                                    {
-                                        "Actions": {
-                                            "$set": [
-                                                "RecordingDestroyed",
-                                                false
-                                            ]
-                                        },
-                                        "Condition": {
-                                            "$eq": ["$Value.event", "spotted"]
-                                        }
-                                    },
-                                    {
-                                        "Actions": {
-                                            "$set": ["RecordingDestroyed", true]
-                                        },
-                                        "Condition": {
-                                            "$or": [
-                                                {
-                                                    "$eq": [
-                                                        "$Value.event",
-                                                        "erased"
-                                                    ]
-                                                },
-                                                {
-                                                    "$eq": [
-                                                        "$Value.event",
-                                                        "destroyed"
-                                                    ]
-                                                }
-                                            ]
-                                        }
-                                    }
-                                ]
-                            }
-                        }
-                    },
-                    "IsPlayable": false,
-                    "IsLocked": false,
-                    "HideProgression": false,
-                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
-                    "Icon": "elusive",
-                    "LocationId": "LOCATION_MIAMI",
-                    "ParentLocationId": "LOCATION_PARENT_MIAMI",
-                    "Type": "contract",
-                    "DifficultyLevels": [],
-                    "OrderIndex": 10000,
-                    "XpModifier": {},
-                    "RuntimeType": "Hit",
-                    "Tags": ["story", "hard", "elusive"],
-                    "InclusionData": {
-                        "ContractIds": ["06a58b66-56f4-45c3-ba1b-d03998212289"]
-                    }
-                },
-                {
-                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
-                    "Definition": {
-                        "Context": {},
-                        "Scope": "session",
-                        "States": {
-                            "Start": {
-                                "Kill": {
-                                    "Condition": {
-                                        "$eq": ["$Value.IsTarget", true]
-                                    },
-                                    "Transition": "Success"
-                                }
-                            }
-                        }
-                    },
-                    "Description": "UI_CHALLENGES_ET_SAMBUCA2_TARGETDOWN_DESC",
-                    "DifficultyLevels": [],
-                    "Drops": [],
-                    "HideProgression": false,
-                    "Icon": "elusive",
-                    "Id": "cf799051-47ee-46fa-b957-6989533fc4e8",
-                    "ImageName": "images/challenges/elusive_target/et_sambuca2_targetdown.jpg",
-                    "InclusionData": {
-                        "ContractIds": ["ecf353e8-3dd8-4958-b255-f963926aea51"]
-                    },
-                    "IsLocked": false,
-                    "IsPlayable": false,
-                    "LocationId": "LOCATION_MIAMI",
-                    "Name": "UI_CHALLENGES_ET_SAMBUCA2_TARGETDOWN_NAME",
-                    "OrderIndex": 10000,
-                    "ParentLocationId": "LOCATION_PARENT_MIAMI",
-                    "Rewards": {
-                        "MasteryXP": 2000
-                    },
-                    "RuntimeType": "Hit",
-                    "Tags": ["story", "medium", "elusive"],
-                    "Type": "contract",
-                    "XpModifier": {}
-                },
-                {
-                    "Id": "a10c02c8-86b1-4565-b691-3142e8a27cd6",
-                    "Name": "UI_CHALLENGES_ET_SAMBUCA2_SILENT_ASSASSIN_NAME",
-                    "ImageName": "images/challenges/elusive_target/et_sambuca2_silentassassin.jpg",
-                    "Description": "UI_CHALLENGES_ET_SAMBUCA2_SILENT_ASSASSIN_DESC",
-                    "Rewards": {
-                        "MasteryXP": 4000
-                    },
-                    "Drops": [],
-                    "Definition": {
-                        "Context": {
-                            "Witnesses": [],
-                            "KilledTargets": [],
-                            "RecordingDestroyed": true,
-                            "LastAccidentTime": 0
-                        },
-                        "Scope": "session",
-                        "States": {
-                            "Start": {
-                                "ContractEnd": {
-                                    "Condition": {
-                                        "$and": [
-                                            {
-                                                "$eq": [
-                                                    true,
-                                                    "$.RecordingDestroyed"
-                                                ]
-                                            },
-                                            {
-                                                "$all": {
-                                                    "in": "$.Witnesses",
-                                                    "?": {
-                                                        "$any": {
-                                                            "in": "$.KilledTargets",
-                                                            "?": {
-                                                                "$eq": [
-                                                                    "$.#",
-                                                                    "$.##"
-                                                                ]
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        ]
-                                    },
-                                    "Transition": "Success"
-                                },
-                                "AccidentBodyFound": {
-                                    "$set": ["LastAccidentTime", "$Timestamp"]
-                                },
-                                "Witnesses": {
-                                    "Condition": {
-                                        "$any": {
-                                            "in": "$Value",
-                                            "?": {
-                                                "$pushunique": [
-                                                    "Witnesses",
-                                                    "$.#"
-                                                ]
-                                            }
-                                        }
-                                    }
-                                },
-                                "Spotted": {
-                                    "Condition": {
-                                        "$any": {
-                                            "in": "$Value",
-                                            "?": {
-                                                "$pushunique": [
-                                                    "Witnesses",
-                                                    "$.#"
-                                                ]
-                                            }
-                                        }
-                                    }
-                                },
-                                "Kill": [
-                                    {
-                                        "Condition": {
-                                            "$and": [
-                                                {
-                                                    "$eq": [
-                                                        "$Value.IsTarget",
-                                                        false
-                                                    ]
-                                                },
-                                                {
-                                                    "$not": {
-                                                        "$eq": [
-                                                            "$Value.KillContext",
-                                                            1
-                                                        ]
-                                                    }
-                                                }
-                                            ]
-                                        },
-                                        "Transition": "Failure"
-                                    },
-                                    {
-                                        "Condition": {
-                                            "$and": [
-                                                {
-                                                    "$eq": [
-                                                        "$Value.IsTarget",
-                                                        false
-                                                    ]
-                                                },
-                                                {
-                                                    "$eq": [
-                                                        "$Value.KillContext",
-                                                        1
-                                                    ]
-                                                }
-                                            ]
-                                        },
-                                        "Actions": {
-                                            "$pushunique": [
-                                                "KilledTargets",
-                                                "$Value.RepositoryId"
-                                            ]
-                                        }
-                                    },
-                                    {
-                                        "Condition": {
-                                            "$eq": ["$Value.IsTarget", true]
-                                        },
-                                        "Actions": {
-                                            "$pushunique": [
-                                                "KilledTargets",
-                                                "$Value.RepositoryId"
-                                            ]
-                                        }
-                                    }
-                                ],
-                                "CrowdNPC_Died": {
-                                    "Transition": "Failure"
-                                },
-                                "MurderedBodySeen": [
-                                    {
-                                        "Condition": {
-                                            "$eq": [
-                                                "$Value.IsWitnessTarget",
-                                                true
-                                            ]
-                                        },
-                                        "Actions": {
-                                            "$pushunique": [
-                                                "Witnesses",
-                                                "$Value.Witness"
-                                            ]
-                                        }
-                                    },
-                                    {
-                                        "Condition": {
-                                            "$and": [
-                                                {
-                                                    "$eq": [
-                                                        "$Value.IsWitnessTarget",
-                                                        false
-                                                    ]
-                                                },
-                                                {
-                                                    "$not": {
-                                                        "$eq": [
-                                                            "$.LastAccidentTime",
-                                                            "$Timestamp"
-                                                        ]
-                                                    }
-                                                }
-                                            ]
-                                        },
-                                        "Transition": "Failure"
-                                    }
-                                ],
-                                "SecuritySystemRecorder": [
-                                    {
-                                        "Actions": {
-                                            "$set": [
-                                                "RecordingDestroyed",
-                                                false
-                                            ]
-                                        },
-                                        "Condition": {
-                                            "$eq": ["$Value.event", "spotted"]
-                                        }
-                                    },
-                                    {
-                                        "Actions": {
-                                            "$set": ["RecordingDestroyed", true]
-                                        },
-                                        "Condition": {
-                                            "$or": [
-                                                {
-                                                    "$eq": [
-                                                        "$Value.event",
-                                                        "erased"
-                                                    ]
-                                                },
-                                                {
-                                                    "$eq": [
-                                                        "$Value.event",
-                                                        "destroyed"
-                                                    ]
-                                                }
-                                            ]
-                                        }
-                                    }
-                                ]
-                            }
-                        }
-                    },
-                    "IsPlayable": false,
-                    "IsLocked": false,
-                    "HideProgression": false,
-                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
-                    "Icon": "elusive",
-                    "LocationId": "LOCATION_MIAMI",
-                    "ParentLocationId": "LOCATION_PARENT_MIAMI",
-                    "Type": "contract",
-                    "DifficultyLevels": [],
-                    "OrderIndex": 10000,
-                    "XpModifier": {},
-                    "RuntimeType": "Hit",
-                    "Tags": ["story", "hard", "elusive"],
-                    "InclusionData": {
-                        "ContractIds": ["ecf353e8-3dd8-4958-b255-f963926aea51"]
-                    }
-                },
-                {
-                    "Id": "85162cf4-0929-4541-9247-08a8c8a717b1",
-                    "Name": "UI_CHALLENGES_ELUSIVE_TARGET_MIAMI_NAME",
-                    "ImageName": "images/challenges/profile_challenges/elusive_target_flamingo.jpg",
-                    "Description": "UI_CHALLENGES_ELUSIVE_TARGET_MIAMI_DESC",
-                    "Rewards": {
-                        "MasteryXP": 2000
-                    },
-                    "Drops": [],
-                    "IsPlayable": false,
-                    "IsLocked": false,
-                    "HideProgression": false,
-                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
-                    "Icon": "elusive",
-                    "LocationId": "LOCATION_MIAMI",
-                    "ParentLocationId": "LOCATION_PARENT_MIAMI",
-                    "Type": "contract",
-                    "DifficultyLevels": [],
-                    "OrderIndex": 10000,
-                    "XpModifier": {},
-                    "RuntimeType": "Hit",
+                    "Description": "UI_CHALLENGES_ET_SAMBUCA3_CONTRACT_STARTED_DESC",
+                    "ImageName": "images/challenges/elusive_target/et_sambuca3_started.jpg",
                     "Definition": {
                         "Context": {},
                         "Scope": "session",
                         "States": {
                             "Start": {
                                 "ContractStart": {
-                                    "Condition": {
-                                        "$eq": [
-                                            "$Value.ContractType",
-                                            "elusive"
-                                        ]
-                                    },
-                                    "Transition": "State_ValidContract"
+                                    "Transition": "Success"
                                 }
-                            },
-                            "State_ValidContract": {
-                                "ContractEnd": [
-                                    {
-                                        "Transition": "Success"
-                                    }
-                                ]
                             }
                         }
                     },
                     "Tags": ["story", "elusive"],
+                    "Drops": ["TOKEN_OUTFIT_REWARD_HERO_SB_SUIT"],
+                    "LastModified": "2024-03-21T11:18:33.3044658",
+                    "Rewards": {
+                        "MasteryXP": 0
+                    },
+                    "PlayableSince": null,
+                    "PlayableUntil": null,
+                    "OrderIndex": 10000,
+                    "ParentLocationId": "LOCATION_PARENT_MIAMI",
                     "InclusionData": {
-                        "ContractTypes": ["elusive"]
+                        "ContractIds": ["ecf353e8-3dd8-4958-b255-f963926aea51"]
                     }
                 }
             ]

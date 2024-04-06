@@ -27,6 +27,7 @@ import {
     H1_REQUIEM_UNLOCKABLES,
     H2_RACCOON_STINGRAY_UNLOCKABLES,
     MAKESHIFT_UNLOCKABLES,
+    SAMBUCA_UNLOCKABLES,
     SIN_ENVY_UNLOCKABLES,
     SIN_GLUTTONY_UNLOCKABLES,
     SIN_GREED_UNLOCKABLES,
@@ -34,6 +35,7 @@ import {
     SIN_PRIDE_UNLOCKABLES,
     SIN_SLOTH_UNLOCKABLES,
     SIN_WRATH_UNLOCKABLES,
+    SMART_CASUAL_UNLOCKABLES,
     TRINITY_UNLOCKABLES,
     WINTERSPORTS_UNLOCKABLES,
 } from "./ownership"
@@ -63,6 +65,7 @@ const DELUXE_DATA = [
     ...SIN_WRATH_UNLOCKABLES,
     ...TRINITY_UNLOCKABLES,
     ...WINTERSPORTS_UNLOCKABLES,
+    ...SAMBUCA_UNLOCKABLES,
 ]
 
 /**
@@ -250,6 +253,15 @@ function filterAllowedContent(gameVersion: GameVersion, entP: string[]) {
                 )
             }
 
+            if (SMART_CASUAL_UNLOCKABLES.includes(id)) {
+                return (
+                    e.includes("6408de14f7dc46b9a33adcf6cbc4d159") ||
+                    e.includes("afa4b921503f43339c360d4b53910791") ||
+                    e.includes("84a1a6fda4fb48afbb78ee9b2addd475") || // WoA Deluxe
+                    e.includes("1829590")
+                )
+            }
+
             if (H1_REQUIEM_UNLOCKABLES.includes(id)) {
                 return (
                     e.includes("e698e1a4b63947b0bc9349a5ae2dc015") ||
@@ -300,16 +312,6 @@ function filterAllowedContent(gameVersion: GameVersion, entP: string[]) {
                 e.includes("1829591")
             )
         }
-
-        /*
-        TODO: Fix this entitlement check (confirmed its broken with Blazer)
-        if (LEGACY_UNLOCKABLES.includes(id)) {
-            return (
-                e.includes("0b59243cb8aa420691b66be1ecbe68c0") ||
-                e.includes("1829593")
-            )
-        }
-         */
 
         if (SIN_GREED_UNLOCKABLES.includes(id)) {
             return (
@@ -374,7 +376,6 @@ function filterAllowedContent(gameVersion: GameVersion, entP: string[]) {
             )
         }
 
-        // The following two must be confirmed, epic entitlements may be in the wrong order! - AF
         if (MAKESHIFT_UNLOCKABLES.includes(id)) {
             return (
                 e.includes("08d2bc4d20754191b6c488541d2b4fa1") ||
@@ -386,6 +387,13 @@ function filterAllowedContent(gameVersion: GameVersion, entP: string[]) {
             return (
                 e.includes("a1e9a63fa4f3425aa66b9b8fa3c9cc35") ||
                 e.includes("2184790")
+            )
+        }
+
+        if (SAMBUCA_UNLOCKABLES.includes(id)) {
+            return (
+                e.includes("9220c020262f420da06eb46a4b1ce86f") ||
+                e.includes("2828470")
             )
         }
 
