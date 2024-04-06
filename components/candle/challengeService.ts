@@ -155,6 +155,16 @@ export abstract class ChallengeRegistry {
 
     public challengePacks: Map<string, ChallengePack> = new Map([
         [
+            "cheesecake-pack",
+            {
+                Name: "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_CHEESECAKE",
+                Description: "",
+                GameVersions: ["h3"],
+                Image: "images/challenges/categories/packcheesecake/tile.jpg",
+                Icon: "challenge_category_feats",
+            },
+        ],
+        [
             "argentum-pack",
             {
                 Name: "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_ARGENTUM",
@@ -171,16 +181,6 @@ export abstract class ChallengeRegistry {
                 Description: "",
                 GameVersions: ["h3"],
                 Image: "images/challenges/categories/packargon/tile.jpg",
-                Icon: "challenge_category_feats",
-            },
-        ],
-        [
-            "cheesecake-pack",
-            {
-                Name: "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_CHEESECAKE",
-                Description: "",
-                GameVersions: ["h3"],
-                Image: "images/challenges/categories/packcheesecake/tile.jpg",
                 Icon: "challenge_category_feats",
             },
         ],
