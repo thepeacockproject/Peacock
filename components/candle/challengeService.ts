@@ -174,6 +174,16 @@ export abstract class ChallengeRegistry {
                 Icon: "challenge_category_feats",
             },
         ],
+        [
+            "cheesecake-pack",
+            {
+                Name: "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_CHEESECAKE",
+                Description: "",
+                GameVersions: ["h3"],
+                Image: "images/challenges/categories/packcheesecake/tile.jpg",
+                Icon: "challenge_category_feats",
+            },
+        ],
     ])
 
     registerChallenge(

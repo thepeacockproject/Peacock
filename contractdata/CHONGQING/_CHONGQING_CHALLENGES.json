@@ -4392,6 +4392,85 @@
                     "Tags": ["argentum-pack", "story", "live", "easy"]
                 }
             ]
+        },
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_CHEESECAKE",
+            "Image": "images/challenges/categories/packcheesecake/tile.jpg",
+            "Icon": "challenge_category_feats",
+            "CategoryId": "cheesecake-pack",
+            "Description": "",
+            "OrderIndex": 10000,
+            "Challenges": [
+                {
+                    "Id": "eff06c02-2410-4226-1abc-076a2e71ee97",
+                    "Name": "UI_PEACOCK_CHALLENGEPACK_CHEESECAKE_CHONGQINGMARINATE_NAME",
+                    "ImageName": "images/challenges/categories/packcheesecake/cheesecake_chongqingmarinate.jpg",
+                    "Description": "UI_PEACOCK_CHALLENGEPACK_CHEESECAKE_CHONGQINGMARINATE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_CHEESECAKE",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_WET",
+                    "ParentLocationId": "LOCATION_PARENT_WET",
+                    "Type": "parentlocation",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 100003,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "Context": { "PoisonedTargets": [] },
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": ["$Value.IsTarget", true]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillClass",
+                                                    "poison"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Actions": {
+                                        "$pushunique": [
+                                            "PoisonedTargets",
+                                            "$Value.RepositoryId"
+                                        ]
+                                    },
+                                    "Transition": "CheckDumpInOcean"
+                                }
+                            },
+                            "CheckDumpInOcean": {
+                                "DumpInOcean": {
+                                    "Condition": {
+                                        "$inarray": {
+                                            "in": "$.PoisonedTargets",
+                                            "?": {
+                                                "$eq": [
+                                                    "$.#",
+                                                    "$Value.RepositoryId"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["cheesecake-pack", "story", "live", "medium"]
+                }
+            ]
         }
     ]
 }
