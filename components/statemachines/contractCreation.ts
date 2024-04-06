@@ -40,7 +40,10 @@ export type ContractCreationNpcTargetPayload = {
     }
 }
 
-const createTargetKillObjective = (
+/**
+ * @internal
+ */
+export const createTargetKillObjective = (
     params: ContractCreationNpcTargetPayload,
 ): MissionManifestObjective => ({
     Type: "statemachine",
@@ -78,7 +81,10 @@ const createTargetKillObjective = (
     },
 })
 
-const createRequiredOutfitObjective = (
+/**
+ * @internal
+ */
+export const createRequiredOutfitObjective = (
     params: ContractCreationNpcTargetPayload,
 ): MissionManifestObjective => ({
     Type: "statemachine",
@@ -223,7 +229,6 @@ function createWeaponObjective(
 
 /**
  * Create a time limit objective.
- *
  * @param time The amount of time to use in seconds.
  * @param optional If the objective should be optional or not.
  * @returns The generated state machine.

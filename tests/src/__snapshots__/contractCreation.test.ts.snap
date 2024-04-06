@@ -1,0 +1,164 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`state machines > can use createTargetKillObjective 1`] = `
+{
+  "BriefingText": {
+    "$loc": {
+      "data": "$($repository b69187a0-0860-403f-9616-981127fef877).Name",
+      "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+    },
+  },
+  "Category": "primary",
+  "Definition": {
+    "Context": {
+      "Targets": [
+        "b69187a0-0860-403f-9616-981127fef877",
+      ],
+    },
+    "Scope": "Hit",
+    "States": {
+      "Start": {
+        "Kill": {
+          "Condition": {
+            "$eq": [
+              "$Value.RepositoryId",
+              "b69187a0-0860-403f-9616-981127fef877",
+            ],
+          },
+          "Transition": "Success",
+        },
+      },
+    },
+  },
+  "HUDTemplate": {
+    "display": {
+      "$loc": {
+        "data": "$($repository b69187a0-0860-403f-9616-981127fef877).Name",
+        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+      },
+    },
+  },
+  "Id": "b647710d-66d9-4453-81eb-ab315b551b28",
+  "Type": "statemachine",
+}
+`;
+
+exports[`time limits > can create a mandatory time limit 1`] = `
+{
+  "BriefingName": "$loc UI_CONTRACT_UGC_TIME_LIMIT_NAME",
+  "BriefingText": {
+    "$loc": {
+      "data": "$formatstring 05:46",
+      "key": "UI_CONTRACT_UGC_TIME_LIMIT_PRIMARY_DESC",
+    },
+  },
+  "Category": "primary",
+  "CombinedDisplayInHud": true,
+  "Definition": {
+    "Scope": "session",
+    "States": {
+      "Start": {
+        "IntroCutEnd": {
+          "Transition": "TimerRunning",
+        },
+      },
+      "TimerRunning": {
+        "$timer": [
+          {
+            "Condition": {
+              "$after": 346,
+            },
+            "Transition": "Failure",
+          },
+        ],
+        "exit_gate": {
+          "Transition": "Success",
+        },
+      },
+    },
+  },
+  "HUDTemplate": {
+    "display": {
+      "$loc": {
+        "data": "$formatstring 05:46",
+        "key": "UI_CONTRACT_UGC_TIME_LIMIT_PRIMARY_DESC",
+      },
+    },
+  },
+  "Id": "1a596216-381e-4592-9798-26f156973942",
+  "Image": "images/contractconditions/condition_contrac_time_limit.jpg",
+  "LongBriefingText": {
+    "$loc": {
+      "data": "$formatstring 05:46",
+      "key": "UI_CONTRACT_UGC_TIME_LIMIT_PRIMARY_DESC",
+    },
+  },
+  "ObjectiveType": "custom",
+  "OnActive": {
+    "IfInProgress": {
+      "State": "Completed",
+    },
+  },
+  "Type": "statemachine",
+}
+`;
+
+exports[`time limits > can create an optional time limit 1`] = `
+{
+  "BriefingName": "$loc UI_CONTRACT_UGC_TIME_LIMIT_NAME",
+  "BriefingText": {
+    "$loc": {
+      "data": "$formatstring 01:31",
+      "key": "UI_CONTRACT_UGC_TIME_LIMIT_SECONDARY_DESC",
+    },
+  },
+  "Category": "secondary",
+  "CombinedDisplayInHud": true,
+  "Definition": {
+    "Scope": "session",
+    "States": {
+      "Start": {
+        "IntroCutEnd": {
+          "Transition": "TimerRunning",
+        },
+      },
+      "TimerRunning": {
+        "$timer": [
+          {
+            "Condition": {
+              "$after": 91,
+            },
+            "Transition": "Failure",
+          },
+        ],
+        "exit_gate": {
+          "Transition": "Success",
+        },
+      },
+    },
+  },
+  "HUDTemplate": {
+    "display": {
+      "$loc": {
+        "data": "$formatstring 01:31",
+        "key": "UI_CONTRACT_UGC_TIME_LIMIT_SECONDARY_DESC",
+      },
+    },
+  },
+  "Id": "1a596216-381e-4592-9798-26f156973942",
+  "Image": "images/contractconditions/condition_contrac_time_limit.jpg",
+  "LongBriefingText": {
+    "$loc": {
+      "data": "$formatstring 01:31",
+      "key": "UI_CONTRACT_UGC_TIME_LIMIT_SECONDARY_DESC",
+    },
+  },
+  "ObjectiveType": "custom",
+  "OnActive": {
+    "IfInProgress": {
+      "State": "Completed",
+    },
+  },
+  "Type": "statemachine",
+}
+`;
