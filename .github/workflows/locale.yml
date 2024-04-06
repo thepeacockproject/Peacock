@@ -10,7 +10,7 @@ on:
 jobs:
   rebuild-locale:
     name: Rebuild Localisation
-    if: !startsWith(github.ref, 'refs/tags/')
+    if: ${{ !startsWith(github.ref, 'refs/tags/') }}
     runs-on: windows-latest
 
     steps:
