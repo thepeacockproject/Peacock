@@ -417,13 +417,20 @@ export class Controller {
      * @deprecated since v5.5.0, use `!controller.smf.modIsInstalled`
      */
     public addClientSideModDependency(modId: string): boolean {
-        log(LogLevel.WARN, "controller.addClientSideModDependency is deprecated, use !controller.smf.modIsInstalled instead!", "plugins")
-        return getFlag('overrideFrameworkChecks') === true || !this.smf.modIsInstalled(modId)
+        log(
+            LogLevel.WARN,
+            "controller.addClientSideModDependency is deprecated, use !controller.smf.modIsInstalled instead!",
+            "plugins",
+        )
+        return (
+            getFlag("overrideFrameworkChecks") === true ||
+            !this.smf.modIsInstalled(modId)
+        )
     }
 
     /**
      * You should use {@link smf.modIsInstalled} instead!
-     * 
+     *
      * Returns whether a mod is available and installed.
      *
      * @param modId The mod's ID.
@@ -431,7 +438,11 @@ export class Controller {
      * @deprecated since v7.0.0, use `controller.smf.modIsInstalled`
      */
     public modIsInstalled(modId: string): boolean {
-        log(LogLevel.WARN, "controller.modIsInstalled is deprecated, use controller.smf.modIsInstalled instead!", "plugins")
+        log(
+            LogLevel.WARN,
+            "controller.modIsInstalled is deprecated, use controller.smf.modIsInstalled instead!",
+            "plugins",
+        )
         return this.smf.modIsInstalled(modId)
     }
 
