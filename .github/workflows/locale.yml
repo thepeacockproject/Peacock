@@ -2,7 +2,7 @@ name: Localisation
 
 on:
   push:
-    branches: ["master"]
+    branches: ["master", "v*"]
     tags: ["v*"]
     paths: ["resources/locale.json", ".github/workflows/locale.yml"]
   workflow_dispatch:
@@ -10,7 +10,7 @@ on:
 jobs:
   rebuild-locale:
     name: Rebuild Localisation
-    if: ${{ !startsWith(github.ref, 'refs/tags/') }}
+    if: ${{ !startsWith(github.ref, 'refs/tags/') && endsWith(github.ref, 'master') }}
     runs-on: windows-latest
 
     steps:
