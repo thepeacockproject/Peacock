@@ -1,0 +1,106 @@
+{
+    "Data": {
+        "Entrances": [
+            "f8ff0b17-b9f5-41ce-b7b1-db8bf6c47f4a",
+            "370b4106-96f2-4a04-9bc6-029b86b301aa",
+            "6c943798-8ca7-42cc-861a-becdb32017da",
+            "e5c0d1a4-72b0-4cc0-857d-8bb155ea09f4",
+            "bd0cc571-e4a3-41f1-9b9b-608cdecc09c1",
+            "1d3a5b4a-5573-4e2d-8a98-d1c881cbd13e",
+            "53ce9bb6-ef1c-4f17-8951-5b501fb941d4"
+        ],
+        "Objectives": [
+            {
+                "Type": "statemachine",
+                "Id": "4966895f-f640-4967-abf5-2ab90c9f4a50",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository 7d80843a-66d4-4d46-a914-08f96773e2fd).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_ANTHURIUM_TAR1"
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": [
+                            "7d80843a-66d4-4d46-a914-08f96773e2fd"
+                        ]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "7d80843a-66d4-4d46-a914-08f96773e2fd"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "ee25fc91-e42e-4044-99b4-b3c4206d250d"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "7d80843a-66d4-4d46-a914-08f96773e2fd"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "ee25fc91-e42e-4044-99b4-b3c4206d250d",
+                        "HardCondition": true,
+                        "KillMethod": ""
+                    }
+                ]
+            }
+        ],
+        "GameChangers": [],
+        "Bricks": []
+    },
+    "Metadata": {
+        "Title": "UI_PEACOCK_ANTHURIUM1",
+        "Description": "",
+        "Entitlements": [
+            "H1_LEGACY_STANDARD"
+        ],
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Colorado_2/_scene_bull.entity",
+        "Location": "LOCATION_COLORADO",
+        "IsPublished": true,
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "GameVersion": "8.14.0.0",
+        "ServerVersion": "8.14.0.0",
+        "Type": "escalation",
+        "Id": "b1fe399f-8617-f4da-b425-e1c397d12c48",
+        "PublicId": "166655852161",
+        "TileImage": "images/contracts/escsalation/contractescalation_anthurium.jpg",
+        "GroupObjectiveDisplayOrder": [
+            {
+                "Id": "4966895f-f640-4967-abf5-2ab90c9f4a50"
+            }
+        ],
+        "InGroup": "a35a7469-e74c-d1b1-a377-6b0016add67d",
+        "CreationTimestamp": "2024-04-06T13:38:42.057Z"
+    },
+    "UserData": {}
+}
