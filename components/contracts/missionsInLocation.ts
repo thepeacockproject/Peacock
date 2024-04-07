@@ -127,6 +127,7 @@ export const missionsInLocations = {
         ],
         LOCATION_BANGKOK_ZIKA: [],
         LOCATION_COLORADO: [
+            "a35a7469-e74c-d1b1-a377-6b0016add67d",
             "e6f4d3a4-9a33-4bd9-b761-da297069cf8c",
             "c5d88e8c-437b-476b-afe2-d94aa4293502",
             "4186dd23-1cfc-4ba0-9863-9f19f7cba249",
