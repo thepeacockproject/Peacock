@@ -6032,7 +6032,7 @@
             "Icon": "challenge_category_feats",
             "CategoryId": "argentum-pack",
             "Description": "",
-            "OrderIndex": 100000,
+            "OrderIndex": 6.5,
             "Challenges": [
                 {
                     "Id": "86e11742-f0e6-4594-b914-9ab0d8f7ab1b",
@@ -6087,6 +6087,75 @@
                         }
                     },
                     "Tags": ["argentum-pack", "story", "live", "medium"]
+                }
+            ]
+        },
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_CHEESECAKE",
+            "Image": "images/challenges/categories/packcheesecake/tile.jpg",
+            "Icon": "challenge_category_feats",
+            "CategoryId": "cheesecake-pack",
+            "Description": "",
+            "OrderIndex": 10000,
+            "Challenges": [
+                {
+                    "Id": "15dfb94e-72cc-9f43-5281-a0f7e5180f24",
+                    "Name": "UI_PEACOCK_CHALLENGEPACK_CHEESECAKE_SANTAFORTUNABONEPACIFY_NAME",
+                    "ImageName": "images/challenges/categories/packcheesecake/cheesecake_santafortunabonepacify.jpg",
+                    "Description": "UI_PEACOCK_CHALLENGEPACK_CHEESECAKE_SANTAFORTUNABONEPACIFY_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_CHEESECAKE",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_COLOMBIA",
+                    "ParentLocationId": "LOCATION_PARENT_COLOMBIA",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 100002,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Pacify": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "1e8bbf5a-473e-4b00-b58a-4706f13e497b"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "acc9d7b8-80f1-4bb0-ba81-3a69b09e0543"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "CheckCompletion"
+                                }
+                            },
+                            "CheckCompletion": {
+                                "ContractEnd": [
+                                    {
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["cheesecake-pack", "story", "live", "medium"],
+                    "InclusionData": {
+                        "ContractIds": ["179563a4-727a-4072-b354-c9fff4e8bff0"]
+                    }
                 }
             ]
         }

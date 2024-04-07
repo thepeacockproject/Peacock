@@ -3052,7 +3052,7 @@
             "Icon": "challenge_category_feats",
             "CategoryId": "argon-pack",
             "Description": "",
-            "OrderIndex": 10000,
+            "OrderIndex": 6.6,
             "Challenges": [
                 {
                     "Id": "0409d6ed-bb3b-4628-a9d4-90cbfb7c1793",
@@ -3088,6 +3088,142 @@
                         }
                     },
                     "Tags": ["argon-pack", "story", "live", "medium"]
+                }
+            ]
+        },
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_CHEESECAKE",
+            "Image": "images/challenges/categories/packcheesecake/tile.jpg",
+            "Icon": "challenge_category_feats",
+            "CategoryId": "cheesecake-pack",
+            "Description": "",
+            "OrderIndex": 6.1,
+            "Challenges": [
+                {
+                    "Id": "b5386255-0e7e-2bd7-6c28-c1096d4902c5",
+                    "Name": "UI_PEACOCK_CHALLENGEPACK_CHEESECAKE_AMBROSEHOOK_NAME",
+                    "ImageName": "images/challenges/categories/packcheesecake/cheesecake_ambrosehook.jpg",
+                    "Description": "UI_PEACOCK_CHALLENGEPACK_CHEESECAKE_AMBROSEHOOK_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": ["PROP_MELEE_BUTCHERS_MEATHOOK"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_CHEESECAKE",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "parentlocation",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 100004,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.RepositoryId",
+                                                        "1312f620-bf61-4b7f-8f5c-ea4e07763a98"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.KillMethodStrict",
+                                                        "accident_burn"
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "SmithDown"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.RepositoryId",
+                                                        "9454339d-8f29-4ae6-97f4-96523a48bf08"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.KillItemRepositoryId",
+                                                        "58a036dc-79d4-4d64-8bf5-3faafa3cfead"
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "MateDown"
+                                    }
+                                ]
+                            },
+                            "SmithDown": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "9454339d-8f29-4ae6-97f4-96523a48bf08"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "58a036dc-79d4-4d64-8bf5-3faafa3cfead"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "CheckShower"
+                                }
+                            },
+                            "MateDown": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "1312f620-bf61-4b7f-8f5c-ea4e07763a98"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillMethodStrict",
+                                                    "accident_burn"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "CheckShower"
+                                }
+                            },
+                            "CheckShower": {
+                                "setpieces": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "168b0d90-2b0b-44ec-98fb-bc728cfbc12b"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["cheesecake-pack", "story", "live", "medium"],
+                    "InclusionData": {
+                        "ContractIds": ["b2aac100-dfc7-4f85-b9cd-528114436f6c"]
+                    }
                 }
             ]
         }

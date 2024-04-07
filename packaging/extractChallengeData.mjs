@@ -88,6 +88,10 @@ function getOrderIndex(categoryId) {
             return 10
         case "featured":
             return 11
+        case "argentum-pack":
+            return 6.5
+        case "argon-pack":
+            return 6.6
         default:
             return 100000
     }
