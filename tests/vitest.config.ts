@@ -35,6 +35,11 @@ function dontLoadJsonPlugin() {
                 return null
             }
 
+            // trying to resolve test-exclusive data, which can safely be resolved normally
+            if (id.includes("/testData/")) {
+                return null
+            }
+
             const filePath = path.join(path.dirname(importer), id)
 
             return `${resolvedIdPrefix}${filePath}${ignoreExtension}`
