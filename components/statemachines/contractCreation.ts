@@ -141,11 +141,17 @@ export const createRequiredOutfitObjective = (
 /**
  * Create the target, weapon, and kill conditions for a contracts target.
  * @param params The parameters from the request.
+ * @param customIds Custom objective IDs for testing purposes.
  */
 export function createObjectivesForTarget(
     params: ContractCreationNpcTargetPayload,
+    customIds?: { base: string; kill: string; outfit: string },
 ): MissionManifestObjective[] {
     const targetSm = createTargetKillObjective(params)
+
+    if (customIds?.base) {
+        targetSm.Id = customIds.base
+    }
 
     const objectives: MissionManifestObjective[] = [targetSm]
 
@@ -153,7 +159,13 @@ export function createObjectivesForTarget(
     if (params.Outfit.Required) {
         const outfitSm = createRequiredOutfitObjective(params)
 
-        targetSm.TargetConditions!.push({
+        if (customIds?.outfit) {
+            outfitSm.Id = customIds.outfit
+        }
+
+        targetSm.TargetConditions ??= []
+
+        targetSm.TargetConditions.push({
             Type: params.Outfit.IsHitmanSuit ? "hitmansuit" : "disguise",
             RepositoryId: params.Outfit.RepositoryId,
             // for contract creation it's always optional, only escalations set hard fail conditions
@@ -162,6 +174,8 @@ export function createObjectivesForTarget(
             // "Amazing!" - Athena Savalas
             KillMethod: "",
         })
+
+        objectives.push(outfitSm)
     }
 
     if (params.Weapon.RequiredKillMethodType !== 0) {
@@ -170,7 +184,13 @@ export function createObjectivesForTarget(
             params.RepositoryId,
         )
 
-        targetSm.TargetConditions!.push({
+        if (customIds?.kill) {
+            weaponSm.Id = customIds.kill
+        }
+
+        targetSm.TargetConditions ??= []
+
+        targetSm.TargetConditions.push({
             Type: "killmethod",
             RepositoryId: params.Weapon.RepositoryId,
             // for contract creation it's always optional, only escalations set hard fail conditions
@@ -178,6 +198,8 @@ export function createObjectivesForTarget(
             ObjectiveId: weaponSm.Id,
             KillMethod: params.Weapon.RequiredKillMethod,
         })
+
+        objectives.push(weaponSm)
     }
 
     return objectives
@@ -444,7 +466,7 @@ export function weaponToKillMethod(weapon: Weapon): ContractKillMethod {
             return ContractKillMethod.UnarmedNeckSnap
         case "accident":
             return ContractKillMethod.AnyAccident
-        case "explosion":
+        case "explosive":
             return ContractKillMethod.ExplosiveDevice
         default: {
             assert.fail(
