@@ -27,9 +27,3 @@ declare let PEACOCK_DEV: boolean
  * Injected during the build process.
  */
 declare let HUMAN_VERSION: string
-
-/**
- * The revision identifier for the global version.
- * Injected during the build process.
- */
-declare let REV_IDENT: number
