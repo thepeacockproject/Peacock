@@ -16,15 +16,14 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { describe, it, expect } from "vitest"
+import { describe, expect, it } from "vitest"
 
 describe("vitest", () => {
     /**
      * This test will verify if globals are configured correctly
      */
     it("globals", () => {
-        const result =
-            !PEACOCK_DEV && HUMAN_VERSION === "test" && REV_IDENT === 1
+        const result = !PEACOCK_DEV && HUMAN_VERSION === "test"
 
         expect(result).toBe(true)
     })

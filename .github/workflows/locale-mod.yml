@@ -1,14 +1,13 @@
-name: Localisation
+name: Update Localisation Mod
 
 on:
   push:
-    branches: ["master"]
-    paths: ["resources/locale.json", ".github/workflows/locale.yml"]
+    tags: ["v*"]
   workflow_dispatch:
 
 jobs:
-  rebuild-locale:
-    name: Rebuild Localisation
+  update-mod:
+    name: Update Mod
     runs-on: windows-latest
 
     steps:
@@ -18,13 +17,20 @@ jobs:
           token: ${{ secrets.PEACOCKBOT_TOKEN }}
           path: "./Peacock"
 
+      - name: Checkout Peacock Strings
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PEACOCKBOT_TOKEN }}
+          repository: thepeacockproject/peacock-strings
+          path: "./PeacockStrings"
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version-file: "./Peacock/.nvmrc"
           cache: "yarn"
           cache-dependency-path: "./Peacock/yarn.lock"
-      
+
       - name: Install Packages
         run: |
           cd Peacock
@@ -67,13 +73,15 @@ jobs:
           cd Peacock
           yarn rebuild-locale
 
-      - name: Push updated RPKG files
+      - name: Copy peacockstrings.locr.json
+        run: |
+          copy ./Peacock/resources/peacockstrings.locr.json ./PeacockStrings/content/chunk0/peacockstrings.locr.json
+
+      - name: Push updated Peacock LOCR
         uses: EndBug/add-and-commit@v9
         with:
-          cwd: "./Peacock"
-          add: |
-            resources/dynamic_resources_h2.rpkg
-            resources/dynamic_resources_h3.rpkg
+          cwd: "./PeacockStrings"
+          add: content/chunk0/peacockstrings.locr.json
           author_name: PeacockBot
           author_email: admin@thepeacockproject.org
-          message: "[skip ci] Update locale packages"
+          message: "enhancement: update strings"

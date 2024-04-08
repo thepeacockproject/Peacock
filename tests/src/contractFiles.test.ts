@@ -50,7 +50,7 @@ function parseLocString(locString: string | LocWrap) {
 
 // this is a list of all the crc32s that the game defines for localization
 const gameCrcs: number[] = unpack(
-    await readFile("data/game-defined-locr-crc32s.msgpack"),
+    await readFile("testData/game-defined-locr-crc32s.msgpack"),
 )
 
 function getCrc(str: string) {

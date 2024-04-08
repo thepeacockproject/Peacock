@@ -28,11 +28,10 @@ const require = createRequire(import.meta.url)
 await generateRequireTable()
 await packResources()
 
-const { version, revisionIdent } = require("../package.json")
+const { version } = require("../package.json")
 
 global.PEACOCK_DEV = true
 global.HUMAN_VERSION = version
-global.REV_IDENT = revisionIdent
 
 process.env.DEBUG = "peacock"
 process.env.LOG_MAX_FILES = ""
