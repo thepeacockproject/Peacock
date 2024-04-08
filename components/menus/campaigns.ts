@@ -23,7 +23,7 @@ import type {
     GenSingleMissionFunc,
     CampaignMission,
     CampaignVideo,
-    IVideo,
+    Video,
     StoryData,
 } from "../types/types"
 import { log, LogLevel } from "../loggingInterop"
@@ -65,7 +65,7 @@ function genSingleVideo(
     videoId: string,
     gameVersion: GameVersion,
 ): CampaignVideo {
-    const videos = getConfig<Record<string, IVideo>>("Videos", true) // we modify videos so we need to clone this
+    const videos = getConfig<Record<string, Video>>("Videos", true) // we modify videos so we need to clone this
     const video = videos[videoId]
 
     switch (gameVersion) {
