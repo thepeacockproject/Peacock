@@ -242,9 +242,9 @@ export class HitsCategoryService {
                     for (const id of escalations) {
                         const contract = controller.resolveContract(id)
 
-                        if (!contract) {
-                            continue
-                        }
+                        if (!contract) continue
+
+                        if (contract.Metadata.Season === -1) continue
 
                         const isPeacock = contract.Metadata.Season === 0
                         const season = isPeacock
