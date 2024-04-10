@@ -19,12 +19,18 @@
 import { NextFunction, Request, Response, Router } from "express"
 import { getConfig } from "./configSwizzleManager"
 import { readdir, readFile } from "fs/promises"
-import { GameVersion, UserProfile } from "./types/types"
+import {
+    ChallengeProgressionData,
+    GameVersion,
+    UserProfile,
+} from "./types/types"
 import { join } from "path"
-import { uuidRegex, versions } from "./utils"
+import { getRemoteService, uuidRegex, versions } from "./utils"
 import { getUserData, loadUserData, writeUserData } from "./databaseHandler"
 import { controller } from "./controller"
 import { log, LogLevel } from "./loggingInterop"
+import { userAuths } from "./officialServerAuth"
+import { AxiosError } from "axios"
 
 const webFeaturesRouter = Router()
 
@@ -214,6 +220,72 @@ webFeaturesRouter.get(
         const d = getUserData(req.query.user, req.query.gv)
 
         res.json(d.Extensions.PeacockEscalations)
+    },
+)
+
+webFeaturesRouter.post(
+    "/sync-progress",
+    commonValidationMiddleware,
+    async (req: CommonRequest, res) => {
+        const remoteService = getRemoteService(req.query.gv)
+        const auth = userAuths.get(req.query.user)
+
+        if (!auth) {
+            formErrorMessage(
+                res,
+                "Failed to get official authentication data. Please connect to Peacock first.",
+            )
+            return
+        }
+
+        const userdata = getUserData(req.query.user, req.query.gv)
+
+        try {
+            const challengeProgression = await auth._useService<
+                ChallengeProgressionData[]
+            >(
+                `https://${remoteService}.hitman.io/authentication/api/userchannel/ChallengesService/GetProgression`,
+                false,
+                {
+                    profileid: req.query.user,
+                    challengeids: controller.challengeService.getChallengeIds(
+                        req.query.gv,
+                    ),
+                },
+            )
+
+            userdata.Extensions.ChallengeProgression = Object.fromEntries(
+                challengeProgression.data.map((data) => {
+                    return [
+                        data.ChallengeId,
+                        {
+                            Ticked: data.Completed,
+                            Completed: data.Completed,
+                            CurrentState:
+                                (data.State["CurrentState"] as string) ??
+                                "Start",
+                            State: data.State,
+                        },
+                    ]
+                }),
+            )
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                formErrorMessage(
+                    res,
+                    `Failed to sync official data: got ${error.response?.status} ${error.response?.statusText}.`,
+                )
+                return
+            } else {
+                formErrorMessage(
+                    res,
+                    `Failed to sync official data: got ${JSON.stringify(error)}.`,
+                )
+                return
+            }
+        }
+
+        res.json(userdata)
     },
 )
 
