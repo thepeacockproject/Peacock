@@ -95,6 +95,19 @@ import { getPlayerProfileData } from "./menus/playerProfile"
 
 const menuDataRouter = Router()
 
+// We make this lookup table to quickly get it, there's no other quick way for it.
+export const SNIPER_UNLOCK_TO_LOCATION: Record<string, string> = {
+    FIREARMS_SC_HERO_SNIPER_HM: "LOCATION_PARENT_AUSTRIA",
+    FIREARMS_SC_HERO_SNIPER_KNIGHT: "LOCATION_PARENT_AUSTRIA",
+    FIREARMS_SC_HERO_SNIPER_STONE: "LOCATION_PARENT_AUSTRIA",
+    FIREARMS_SC_SEAGULL_HM: "LOCATION_PARENT_SALTY",
+    FIREARMS_SC_SEAGULL_KNIGHT: "LOCATION_PARENT_SALTY",
+    FIREARMS_SC_SEAGULL_STONE: "LOCATION_PARENT_SALTY",
+    FIREARMS_SC_FALCON_HM: "LOCATION_PARENT_CAGED",
+    FIREARMS_SC_FALCON_KNIGHT: "LOCATION_PARENT_CAGED",
+    FIREARMS_SC_FALCON_STONE: "LOCATION_PARENT_CAGED",
+}
+
 // /profiles/page/
 
 menuDataRouter.get(
@@ -1400,25 +1413,12 @@ menuDataRouter.get(
     "/GetMasteryCompletionDataForUnlockable",
     // @ts-expect-error Has jwt props.
     (req: RequestWithJwt<GetMasteryCompletionDataForUnlockableQuery>, res) => {
-        // We make this lookup table to quickly get it, there's no other quick way for it.
-        const unlockToLoc: Record<string, string> = {
-            FIREARMS_SC_HERO_SNIPER_HM: "LOCATION_PARENT_AUSTRIA",
-            FIREARMS_SC_HERO_SNIPER_KNIGHT: "LOCATION_PARENT_AUSTRIA",
-            FIREARMS_SC_HERO_SNIPER_STONE: "LOCATION_PARENT_AUSTRIA",
-            FIREARMS_SC_SEAGULL_HM: "LOCATION_PARENT_SALTY",
-            FIREARMS_SC_SEAGULL_KNIGHT: "LOCATION_PARENT_SALTY",
-            FIREARMS_SC_SEAGULL_STONE: "LOCATION_PARENT_SALTY",
-            FIREARMS_SC_FALCON_HM: "LOCATION_PARENT_CAGED",
-            FIREARMS_SC_FALCON_KNIGHT: "LOCATION_PARENT_CAGED",
-            FIREARMS_SC_FALCON_STONE: "LOCATION_PARENT_CAGED",
-        }
-
         res.json({
             template: null,
             data: {
                 CompletionData: controller.masteryService.getLocationCompletion(
-                    unlockToLoc[req.query.unlockableId],
-                    unlockToLoc[req.query.unlockableId],
+                    SNIPER_UNLOCK_TO_LOCATION[req.query.unlockableId],
+                    SNIPER_UNLOCK_TO_LOCATION[req.query.unlockableId],
                     req.gameVersion,
                     req.jwt.unique_name,
                     "sniper",

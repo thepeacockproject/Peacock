@@ -22,15 +22,37 @@ import { readdir, readFile } from "fs/promises"
 import {
     ChallengeProgressionData,
     GameVersion,
+    ProgressionData,
     UserProfile,
 } from "./types/types"
 import { join } from "path"
-import { getRemoteService, uuidRegex, versions } from "./utils"
+import {
+    getRemoteService,
+    isSniperLocation,
+    levelForXp,
+    uuidRegex,
+    versions,
+} from "./utils"
 import { getUserData, loadUserData, writeUserData } from "./databaseHandler"
 import { controller } from "./controller"
 import { log, LogLevel } from "./loggingInterop"
 import { userAuths } from "./officialServerAuth"
 import { AxiosError } from "axios"
+import { SNIPER_UNLOCK_TO_LOCATION } from "./menuData"
+
+type OfficialProfileResponse = UserProfile & {
+    Extensions: {
+        progression: {
+            Unlockables: {
+                [unlockableId: string]: ProgressionData
+            }
+        }
+    }
+}
+
+type SubPackageData = {
+    [id: string]: ProgressionData
+}
 
 const webFeaturesRouter = Router()
 
@@ -223,6 +245,26 @@ webFeaturesRouter.get(
     },
 )
 
+webFeaturesRouter.get(
+    "/sync-progress",
+    commonValidationMiddleware,
+    async (req: CommonRequest, res) => {
+        try {
+            await loadUserData(req.query.user, req.query.gv)
+        } catch (e) {
+            formErrorMessage(res, "Failed to load user data.")
+            return
+        }
+
+        const d = getUserData(req.query.user, req.query.gv)
+
+        res.json({
+            success: true,
+            lastOfficialSync: d.Extensions.LastOfficialSync,
+        })
+    },
+)
+
 webFeaturesRouter.post(
     "/sync-progress",
     commonValidationMiddleware,
@@ -269,6 +311,86 @@ webFeaturesRouter.post(
                     ]
                 }),
             )
+
+            const exts = await auth._useService<OfficialProfileResponse>(
+                `https://${remoteService}.hitman.io/authentication/api/userchannel/ProfileService/GetProfile`,
+                false,
+                {
+                    id: req.query.user,
+                    extensions: [
+                        "achievements",
+                        "friends",
+                        "gameclient",
+                        "gamepersistentdata",
+                        "opportunityprogression",
+                        "progression",
+                    ],
+                },
+            )
+
+            userdata.Extensions.progression.PlayerProfileXP = {
+                ...userdata.Extensions.progression.PlayerProfileXP,
+                Total: exts.data.Extensions.progression.PlayerProfileXP.Total,
+                ProfileLevel: levelForXp(
+                    exts.data.Extensions.progression.PlayerProfileXP.Total,
+                ),
+                Sublocations:
+                    exts.data.Extensions.progression.PlayerProfileXP.Sublocations.filter(
+                        (value) => {
+                            return !value.Location.startsWith("LOCATION_SNUG_")
+                        },
+                    ),
+            }
+
+            userdata.Extensions.gamepersistentdata =
+                exts.data.Extensions.gamepersistentdata
+
+            userdata.Extensions.opportunityprogression = Object.fromEntries(
+                Object.keys(exts.data.Extensions.opportunityprogression).map(
+                    (value) => [value, true],
+                ),
+            )
+
+            userdata.Extensions.achievements = exts.data.Extensions.achievements
+
+            for (const [locId, data] of Object.entries(
+                exts.data.Extensions.progression.Locations,
+            )) {
+                const location = (
+                    locId.startsWith("location_parent")
+                        ? locId
+                        : locId.replace("location_", "location_parent_")
+                ).toUpperCase()
+
+                if (isSniperLocation(location)) continue
+
+                userdata.Extensions.progression.Locations[location] = {
+                    Xp: data.Xp as number,
+                    Level: data.Level as number,
+                    PreviouslySeenXp: data.PreviouslySeenXp as number,
+                }
+            }
+
+            for (const [unlockId, data] of Object.entries(
+                exts.data.Extensions.progression.Unlockables,
+            )) {
+                const unlockableId = unlockId.toUpperCase()
+
+                if (!(unlockableId in SNIPER_UNLOCK_TO_LOCATION)) continue
+                ;(
+                    userdata.Extensions.progression.Locations[
+                        SNIPER_UNLOCK_TO_LOCATION[unlockableId]
+                    ] as SubPackageData
+                )[unlockableId] = {
+                    Xp: data.Xp,
+                    Level: data.Level,
+                    PreviouslySeenXp: data.PreviouslySeenXp,
+                }
+            }
+
+            userdata.Extensions.LastOfficialSync = new Date().toISOString()
+
+            writeUserData(req.query.user, req.query.gv)
         } catch (error) {
             if (error instanceof AxiosError) {
                 formErrorMessage(
@@ -285,7 +407,9 @@ webFeaturesRouter.post(
             }
         }
 
-        res.json(userdata)
+        res.json({
+            success: true,
+        })
     },
 )
 

@@ -560,6 +560,7 @@ export type UserProfile = {
             [opportunityId: RepositoryId]: boolean
         }
         CPD: CPDStore
+        LastOfficialSync: Date | string | null
     }
     ETag: string | null
     Gamertag: string

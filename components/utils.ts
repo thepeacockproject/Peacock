@@ -66,7 +66,7 @@ export const contractCreationTutorialId = "d7e2607c-6916-48e2-9588-976c7d8998bb"
  *
  * See docs/USER_PROFILES.md for more.
  */
-export const LATEST_PROFILE_VERSION = 1
+export const LATEST_PROFILE_VERSION = 2
 
 export async function checkForUpdates(): Promise<void> {
     if (getFlag("updateChecking") === false) {
@@ -249,7 +249,6 @@ export function clampValue(value: number, min: number, max: number) {
  *
  * @param profile The user profile to update
  * @param gameVersion The game version
- * @returns The updated user profile.
  */
 function updateUserProfile(
     profile: UserProfile,
@@ -266,6 +265,15 @@ function updateUserProfile(
         case LATEST_PROFILE_VERSION:
             // This profile updated to the latest version, we're done.
             return
+        case 1: {
+            /* ////// VERSION 2 ////// */
+
+            profile.Extensions.LastOfficialSync = null
+
+            profile.Version = 2
+
+            return updateUserProfile(profile, gameVersion)
+        }
         default: {
             // Check that the profile version is indeed undefined. If it isn't,
             // we've forgotten to add a version to the switch.
