@@ -749,3 +749,26 @@ export function isSuit(repoId: string): boolean {
         ? suitsToTypeMap[repoId] !== "disguise"
         : false
 }
+
+type SublocationMap = {
+    [parentId: string]: string[]
+}
+
+export function getSublocations(gameVersion: GameVersion): SublocationMap {
+    const sublocations: SublocationMap = {}
+    const locations = getVersionedConfig<PeacockLocationsData>(
+        "LocationsData",
+        gameVersion,
+        true,
+    )
+
+    for (const child of Object.values(locations.children)) {
+        if (!child.Properties.ParentLocation) continue
+
+        sublocations[child.Properties.ParentLocation] ??= []
+
+        sublocations[child.Properties.ParentLocation].push(child.Id)
+    }
+
+    return sublocations
+}

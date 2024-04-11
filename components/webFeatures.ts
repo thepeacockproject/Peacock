@@ -30,6 +30,7 @@ import {
 import { join } from "path"
 import {
     getRemoteService,
+    getSublocations,
     isSniperLocation,
     levelForXp,
     uuidRegex,
@@ -404,6 +405,7 @@ webFeaturesRouter.post(
                         "gamepersistentdata",
                         "opportunityprogression",
                         "progression",
+                        "defaultloadout",
                     ],
                 },
             )
@@ -457,6 +459,19 @@ webFeaturesRouter.post(
 
             userdata.Extensions.gamepersistentdata =
                 exts.data.Extensions.gamepersistentdata
+
+            const sublocations = getSublocations(req.query.gv)
+            userdata.Extensions.defaultloadout ??= {}
+
+            if (exts.data.Extensions.defaultloadout) {
+                for (const [parent, loadout] of Object.entries(
+                    exts.data.Extensions.defaultloadout,
+                )) {
+                    for (const child of sublocations[parent]) {
+                        userdata.Extensions.defaultloadout[child] = loadout
+                    }
+                }
+            }
 
             userdata.Extensions.achievements = exts.data.Extensions.achievements
 
