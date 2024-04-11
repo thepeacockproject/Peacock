@@ -17,46 +17,41 @@
  */
 
 import * as React from "react"
+import { Link } from "react-router-dom"
 
-export interface NavbarProps {
-    page: string
-    setPage: React.Dispatch<React.SetStateAction<string>>
-}
-
-export function Navbar(props: NavbarProps): React.ReactElement {
+export function Navbar(): React.ReactElement {
     return (
         <nav className="navbar">
             <div className="navbar__inner">
                 <div className="navbar__items">
-                    <a
-                        className="navbar__brand"
-                        href="#"
-                        onClick={() => props.setPage("")}
-                    >
+                    <Link className="navbar__brand" to="/">
                         Peacock
-                    </a>
-                    <a
+                    </Link>
+                    <Link
                         className="navbar__item navbar__link"
-                        href="#"
-                        onClick={() => props.setPage("loadouts")}
+                        to="/ui/loadouts"
                     >
                         Loadout Profiles
-                    </a>
-                    <a
+                    </Link>
+                    <Link
                         className="navbar__item navbar__link"
-                        href="#"
-                        onClick={() => props.setPage("escalations")}
+                        to="/ui/escalations"
                     >
                         Escalation Level Picker
-                    </a>
+                    </Link>
+                    <Link
+                        className="navbar__item navbar__link"
+                        to="/ui/transfer"
+                    >
+                        Progress Transfer
+                    </Link>
                     {WEBUI_IS_DEV ? (
-                        <a
+                        <Link
                             className="navbar__item navbar__link"
-                            href="#"
-                            onClick={() => props.setPage("devtools")}
+                            to="/ui/devtools"
                         >
                             Dev Tools
-                        </a>
+                        </Link>
                     ) : null}
                 </div>
             </div>
