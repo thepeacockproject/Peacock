@@ -20,11 +20,11 @@ import * as React from "react"
 import { Hero } from "../components/Hero"
 import useSWR from "swr"
 import { baseURL, fetcher, IUser } from "../utils"
-import { SelectUser } from "../SelectUser"
+import { SelectUser } from "../components/SelectUser"
 import { GameVersionTabs } from "../components/GameVersionTabs"
 import { EscalationLevelPicker } from "../EscalationLevelPicker"
 
-export interface CodenameMeta {
+export type CodenameMeta = {
     [location: string]: {
         readonly codename: string
         readonly name: string
