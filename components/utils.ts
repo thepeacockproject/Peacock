@@ -759,7 +759,7 @@ export function getSublocations(gameVersion: GameVersion): SublocationMap {
     const locations = getVersionedConfig<PeacockLocationsData>(
         "LocationsData",
         gameVersion,
-        true,
+        false,
     )
 
     for (const child of Object.values(locations.children)) {
