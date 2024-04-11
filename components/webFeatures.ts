@@ -311,7 +311,7 @@ async function getAllHitsCategory(
     remoteService: string,
     category: string,
 ): Promise<EscalationData> {
-    let data: EscalationData = {
+    const data: EscalationData = {
         PeacockEscalations: {},
         PeacockCompletedEscalations: [],
     }
