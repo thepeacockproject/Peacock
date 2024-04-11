@@ -21,7 +21,6 @@ import { getConfig } from "./configSwizzleManager"
 import { readdir, readFile } from "fs/promises"
 import {
     ChallengeProgressionData,
-    CPDStore,
     GameVersion,
     HitsCategoryCategory,
     OfficialSublocation,
@@ -518,7 +517,10 @@ webFeaturesRouter.post(
             )
 
             const freelancerSession = await auth._useService<{
-                ContractProgressionData: CPDStore
+                ContractProgressionData: Record<
+                    string,
+                    string | number | boolean
+                >
             }>(
                 `https://${remoteService}.hitman.io/authentication/api/userchannel/ContractsService/GetForPlay2`,
                 false,
@@ -531,11 +533,7 @@ webFeaturesRouter.post(
             )
 
             userdata.Extensions.CPD["f8ec92c2-4fa2-471e-ae08-545480c746ee"] =
-                freelancerSession.data
-                    .ContractProgressionData as unknown as Record<
-                    string,
-                    string | number | boolean
-                >
+                freelancerSession.data.ContractProgressionData
 
             userdata.Extensions.LastOfficialSync = new Date().toISOString()
 
