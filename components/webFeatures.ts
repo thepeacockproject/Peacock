@@ -22,6 +22,7 @@ import { readdir, readFile } from "fs/promises"
 import {
     ChallengeProgressionData,
     GameVersion,
+    HitsCategoryCategory,
     OfficialSublocation,
     ProgressionData,
     UserProfile,
@@ -37,7 +38,7 @@ import {
 import { getUserData, loadUserData, writeUserData } from "./databaseHandler"
 import { controller } from "./controller"
 import { log, LogLevel } from "./loggingInterop"
-import { userAuths } from "./officialServerAuth"
+import { OfficialServerAuth, userAuths } from "./officialServerAuth"
 import { AxiosError } from "axios"
 import { SNIPER_UNLOCK_TO_LOCATION } from "./menuData"
 
@@ -266,6 +267,82 @@ webFeaturesRouter.get(
     },
 )
 
+type EscalationData = {
+    PeacockEscalations: {
+        [escalationId: string]: number
+    }
+    PeacockCompletedEscalations: string[]
+}
+
+type OfficialHitsCategory = {
+    data: HitsCategoryCategory
+}
+
+async function getHitsCategory(
+    auth: OfficialServerAuth,
+    remoteService: string,
+    category: string,
+    page: number,
+): Promise<[results: EscalationData, hasMore: boolean]> {
+    const data: EscalationData = {
+        PeacockEscalations: {},
+        PeacockCompletedEscalations: [],
+    }
+
+    const hits = await auth._useService<OfficialHitsCategory>(
+        `https://${remoteService}.hitman.io/profiles/page/HitsCategory?page=${page}&type=${category}&mode=dataonly`,
+        true,
+    )
+
+    for (const hit of hits.data.data.Data.Hits) {
+        data.PeacockEscalations[hit.Id] =
+            hit.UserCentricContract.Data.EscalationCompletedLevels! + 1
+
+        if (hit.UserCentricContract.Data.EscalationCompleted)
+            data.PeacockCompletedEscalations.push(hit.Id)
+    }
+
+    return [data, hits.data.data.Data.HasMore]
+}
+
+async function getAllHitsCategory(
+    auth: OfficialServerAuth,
+    remoteService: string,
+    category: string,
+): Promise<EscalationData> {
+    let data: EscalationData = {
+        PeacockEscalations: {},
+        PeacockCompletedEscalations: [],
+    }
+
+    let page = 0
+    let hasMore = true
+
+    while (hasMore) {
+        const [results, more] = await getHitsCategory(
+            auth,
+            remoteService,
+            category,
+            page,
+        )
+
+        data.PeacockEscalations = {
+            ...data.PeacockEscalations,
+            ...results.PeacockEscalations,
+        }
+
+        data.PeacockCompletedEscalations = [
+            ...data.PeacockCompletedEscalations,
+            ...results.PeacockCompletedEscalations,
+        ]
+
+        page++
+        hasMore = more
+    }
+
+    return data
+}
+
 webFeaturesRouter.post(
     "/sync-progress",
     commonValidationMiddleware,
@@ -398,7 +475,37 @@ webFeaturesRouter.post(
                 }
             }
 
-            //  //
+            // Escalation & Arcade Progression //
+            const escalations = await getAllHitsCategory(
+                auth,
+                remoteService!,
+                "ContractAttack",
+            )
+            const arcade = await getAllHitsCategory(
+                auth,
+                remoteService!,
+                "Arcade",
+            )
+
+            userdata.Extensions.PeacockEscalations = {
+                ...userdata.Extensions.PeacockEscalations,
+                ...escalations.PeacockEscalations,
+                ...arcade.PeacockEscalations,
+            }
+
+            userdata.Extensions.PeacockCompletedEscalations = [
+                ...userdata.Extensions.PeacockCompletedEscalations,
+                ...escalations.PeacockCompletedEscalations,
+                ...arcade.PeacockCompletedEscalations,
+            ]
+
+            for (const id of userdata.Extensions.PeacockCompletedEscalations) {
+                userdata.Extensions.PeacockPlayedContracts[id] = {
+                    LastPlayedAt: new Date().getTime(),
+                    Completed: true,
+                    IsEscalation: true,
+                }
+            }
 
             // Freelancer Progression //
             // TODO: Try and see if there is a less intensive way to do this
