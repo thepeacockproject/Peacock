@@ -482,11 +482,13 @@ webFeaturesRouter.post(
                 remoteService!,
                 "ContractAttack",
             )
-            const arcade = await getAllHitsCategory(
-                auth,
-                remoteService!,
-                "Arcade",
-            )
+            const arcade =
+                req.query.gv === "h3"
+                    ? await getAllHitsCategory(auth, remoteService!, "Arcade")
+                    : {
+                          PeacockEscalations: {},
+                          PeacockCompletedEscalations: [],
+                      }
 
             userdata.Extensions.PeacockEscalations = {
                 ...userdata.Extensions.PeacockEscalations,
@@ -511,29 +513,32 @@ webFeaturesRouter.post(
             // Freelancer Progression //
             // TODO: Try and see if there is a less intensive way to do this
             // GetForPlay2 is quite intensive on IOI's side as it starts a session
-            await auth._useService(
-                `https://${remoteService}.hitman.io/authentication/api/configuration/Init?configName=pc-prod&lockedContentDisabled=false&isFreePrologueUser=false&isIntroPackUser=false&isFullExperienceUser=true`,
-                true,
-            )
+            if (req.query.gv === "h3") {
+                await auth._useService(
+                    `https://${remoteService}.hitman.io/authentication/api/configuration/Init?configName=pc-prod&lockedContentDisabled=false&isFreePrologueUser=false&isIntroPackUser=false&isFullExperienceUser=true`,
+                    true,
+                )
 
-            const freelancerSession = await auth._useService<{
-                ContractProgressionData: Record<
-                    string,
-                    string | number | boolean
-                >
-            }>(
-                `https://${remoteService}.hitman.io/authentication/api/userchannel/ContractsService/GetForPlay2`,
-                false,
-                {
-                    id: "f8ec92c2-4fa2-471e-ae08-545480c746ee",
-                    locationId: "",
-                    extraGameChangerIds: [],
-                    difficultyLevel: 0,
-                },
-            )
+                const freelancerSession = await auth._useService<{
+                    ContractProgressionData: Record<
+                        string,
+                        string | number | boolean
+                    >
+                }>(
+                    `https://${remoteService}.hitman.io/authentication/api/userchannel/ContractsService/GetForPlay2`,
+                    false,
+                    {
+                        id: "f8ec92c2-4fa2-471e-ae08-545480c746ee",
+                        locationId: "",
+                        extraGameChangerIds: [],
+                        difficultyLevel: 0,
+                    },
+                )
 
-            userdata.Extensions.CPD["f8ec92c2-4fa2-471e-ae08-545480c746ee"] =
-                freelancerSession.data.ContractProgressionData
+                userdata.Extensions.CPD[
+                    "f8ec92c2-4fa2-471e-ae08-545480c746ee"
+                ] = freelancerSession.data.ContractProgressionData
+            }
 
             userdata.Extensions.LastOfficialSync = new Date().toISOString()
 
