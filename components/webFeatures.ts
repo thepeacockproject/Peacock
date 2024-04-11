@@ -408,35 +408,55 @@ webFeaturesRouter.post(
                 },
             )
 
-            const sublocations = exts.data.Extensions.progression
-                .PlayerProfileXP
-                .Sublocations as unknown as OfficialSublocation[]
+            if (req.query.gv !== "h1") {
+                const sublocations = exts.data.Extensions.progression
+                    .PlayerProfileXP
+                    .Sublocations as unknown as OfficialSublocation[]
 
-            userdata.Extensions.progression.PlayerProfileXP = {
-                ...userdata.Extensions.progression.PlayerProfileXP,
-                Total: exts.data.Extensions.progression.PlayerProfileXP.Total,
-                ProfileLevel: levelForXp(
-                    exts.data.Extensions.progression.PlayerProfileXP.Total,
-                ),
-                Sublocations: Object.fromEntries(
-                    sublocations.map((value) => [
-                        value.Location,
-                        {
-                            Xp: value.Xp,
-                            ActionXp: value.ActionXp,
-                        },
-                    ]),
-                ),
+                userdata.Extensions.progression.PlayerProfileXP = {
+                    ...userdata.Extensions.progression.PlayerProfileXP,
+                    Total: exts.data.Extensions.progression.PlayerProfileXP
+                        .Total,
+                    ProfileLevel: levelForXp(
+                        exts.data.Extensions.progression.PlayerProfileXP.Total,
+                    ),
+                    Sublocations: Object.fromEntries(
+                        sublocations.map((value) => [
+                            value.Location,
+                            {
+                                Xp: value.Xp,
+                                ActionXp: value.ActionXp,
+                            },
+                        ]),
+                    ),
+                }
+
+                userdata.Extensions.opportunityprogression = Object.fromEntries(
+                    Object.keys(
+                        exts.data.Extensions.opportunityprogression,
+                    ).map((value) => [value, true]),
+                )
+
+                for (const [unlockId, data] of Object.entries(
+                    exts.data.Extensions.progression.Unlockables,
+                )) {
+                    const unlockableId = unlockId.toUpperCase()
+
+                    if (!(unlockableId in SNIPER_UNLOCK_TO_LOCATION)) continue
+                    ;(
+                        userdata.Extensions.progression.Locations[
+                            SNIPER_UNLOCK_TO_LOCATION[unlockableId]
+                        ] as SubPackageData
+                    )[unlockableId] = {
+                        Xp: data.Xp,
+                        Level: data.Level,
+                        PreviouslySeenXp: data.PreviouslySeenXp,
+                    }
+                }
             }
 
             userdata.Extensions.gamepersistentdata =
                 exts.data.Extensions.gamepersistentdata
-
-            userdata.Extensions.opportunityprogression = Object.fromEntries(
-                Object.keys(exts.data.Extensions.opportunityprogression).map(
-                    (value) => [value, true],
-                ),
-            )
 
             userdata.Extensions.achievements = exts.data.Extensions.achievements
 
@@ -451,27 +471,30 @@ webFeaturesRouter.post(
 
                 if (isSniperLocation(location)) continue
 
-                userdata.Extensions.progression.Locations[location] = {
-                    Xp: data.Xp as number,
-                    Level: data.Level as number,
-                    PreviouslySeenXp: data.PreviouslySeenXp as number,
-                }
-            }
+                if (req.query.gv === "h1") {
+                    const parent = location.endsWith("PRO1")
+                        ? location.substring(0, location.length - 5)
+                        : location
 
-            for (const [unlockId, data] of Object.entries(
-                exts.data.Extensions.progression.Unlockables,
-            )) {
-                const unlockableId = unlockId.toUpperCase()
+                    const packageId: string = location.endsWith("PRO1")
+                        ? "pro1"
+                        : "normal"
 
-                if (!(unlockableId in SNIPER_UNLOCK_TO_LOCATION)) continue
-                ;(
-                    userdata.Extensions.progression.Locations[
-                        SNIPER_UNLOCK_TO_LOCATION[unlockableId]
-                    ] as SubPackageData
-                )[unlockableId] = {
-                    Xp: data.Xp,
-                    Level: data.Level,
-                    PreviouslySeenXp: data.PreviouslySeenXp,
+                    ;(
+                        userdata.Extensions.progression.Locations[
+                            parent
+                        ] as SubPackageData
+                    )[packageId] = {
+                        Xp: data.Xp as number,
+                        Level: data.Level as number,
+                        PreviouslySeenXp: data.Xp as number,
+                    }
+                } else {
+                    userdata.Extensions.progression.Locations[location] = {
+                        Xp: data.Xp as number,
+                        Level: data.Level as number,
+                        PreviouslySeenXp: data.PreviouslySeenXp as number,
+                    }
                 }
             }
 
