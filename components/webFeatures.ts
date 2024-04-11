@@ -21,6 +21,7 @@ import { getConfig } from "./configSwizzleManager"
 import { readdir, readFile } from "fs/promises"
 import {
     ChallengeProgressionData,
+    CPDStore,
     GameVersion,
     HitsCategoryCategory,
     OfficialSublocation,
@@ -510,6 +511,30 @@ webFeaturesRouter.post(
             // Freelancer Progression //
             // TODO: Try and see if there is a less intensive way to do this
             // GetForPlay2 is quite intensive on IOI's side as it starts a session
+            await auth._useService(
+                `https://${remoteService}.hitman.io/authentication/api/configuration/Init?configName=pc-prod&lockedContentDisabled=false&isFreePrologueUser=false&isIntroPackUser=false&isFullExperienceUser=true`,
+                true,
+            )
+
+            const freelancerSession = await auth._useService<{
+                ContractProgressionData: CPDStore
+            }>(
+                `https://${remoteService}.hitman.io/authentication/api/userchannel/ContractsService/GetForPlay2`,
+                false,
+                {
+                    id: "f8ec92c2-4fa2-471e-ae08-545480c746ee",
+                    locationId: "",
+                    extraGameChangerIds: [],
+                    difficultyLevel: 0,
+                },
+            )
+
+            userdata.Extensions.CPD["f8ec92c2-4fa2-471e-ae08-545480c746ee"] =
+                freelancerSession.data
+                    .ContractProgressionData as unknown as Record<
+                    string,
+                    string | number | boolean
+                >
 
             userdata.Extensions.LastOfficialSync = new Date().toISOString()
 
