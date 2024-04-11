@@ -377,24 +377,21 @@ webFeaturesRouter.post(
                 },
             )
 
-            userdata.Extensions.ChallengeProgression = {
-                ...userdata.Extensions.ChallengeProgression,
-                ...Object.fromEntries(
-                    challengeProgression.data.map((data) => {
-                        return [
-                            data.ChallengeId,
-                            {
-                                Ticked: data.Completed,
-                                Completed: data.Completed,
-                                CurrentState:
-                                    (data.State["CurrentState"] as string) ??
-                                    "Start",
-                                State: data.State,
-                            },
-                        ]
-                    }),
-                ),
-            }
+            userdata.Extensions.ChallengeProgression = Object.fromEntries(
+                challengeProgression.data.map((data) => {
+                    return [
+                        data.ChallengeId,
+                        {
+                            Ticked: data.Completed,
+                            Completed: data.Completed,
+                            CurrentState:
+                                (data.State["CurrentState"] as string) ??
+                                "Start",
+                            State: data.State,
+                        },
+                    ]
+                }),
+            )
 
             // Profile Progression //
             const exts = await auth._useService<OfficialProfileResponse>(
