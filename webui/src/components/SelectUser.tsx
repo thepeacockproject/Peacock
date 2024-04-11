@@ -17,7 +17,7 @@
  */
 
 import * as React from "react"
-import { IUser } from "./utils"
+import { IUser } from "../utils"
 
 export interface SelectUserProps {
     users: IUser[]
