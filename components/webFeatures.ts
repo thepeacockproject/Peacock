@@ -340,7 +340,6 @@ async function getAllHitsCategory(
         hasMore = more
     }
 
-    log(LogLevel.SILLY, `${page}`)
     return data
 }
 
