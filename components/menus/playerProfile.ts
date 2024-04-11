@@ -115,15 +115,12 @@ export function getPlayerProfileData(
     playerProfilePage.PlayerProfileXp.Level =
         userProfile.Extensions.progression.PlayerProfileXP.ProfileLevel
 
-    const subLocationMap = new Map(
-        userProfile.Extensions.progression.PlayerProfileXP.Sublocations.map(
-            (obj) => [obj.Location, obj],
-        ),
-    )
+    const subLocationMap =
+        userProfile.Extensions.progression.PlayerProfileXP.Sublocations
 
     for (const season of playerProfilePage.PlayerProfileXp.Seasons) {
         for (const location of season.Locations) {
-            const subLocationData = subLocationMap.get(location.LocationId)
+            const subLocationData = subLocationMap[location.LocationId]
 
             location.Xp = subLocationData?.Xp || 0
             location.ActionXp = subLocationData?.ActionXp || 0

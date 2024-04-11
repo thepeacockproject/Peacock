@@ -28,4 +28,5 @@ Version 1 introduced the profile versioning system. The changes are:
 
 Version 2 introduced support for syncing official progress to Peacock. The changes are:
 
--   `u.Extension.LastOfficialSync` has been added which records a date and time of the last official sync.
+-   `u.Extensions.LastOfficialSync` has been added which records a date and time of the last official sync.
+-   `u.Extensions.progression.PlayerProfileXp.Sublocations` has been changed to an object.

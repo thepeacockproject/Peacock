@@ -21,6 +21,7 @@ import type { NextFunction, Response } from "express"
 import type {
     GameVersion,
     MissionManifestObjective,
+    OfficialSublocation,
     PeacockLocationsData,
     RepositoryId,
     RequestWithJwt,
@@ -267,6 +268,20 @@ function updateUserProfile(
             return
         case 1: {
             /* ////// VERSION 2 ////// */
+
+            const sublocations = profile.Extensions.progression.PlayerProfileXP
+                .Sublocations as unknown as OfficialSublocation[]
+
+            profile.Extensions.progression.PlayerProfileXP.Sublocations =
+                Object.fromEntries(
+                    sublocations.map((value) => [
+                        value.Location,
+                        {
+                            Xp: value.Xp,
+                            ActionXp: value.ActionXp,
+                        },
+                    ]),
+                )
 
             profile.Extensions.LastOfficialSync = null
 

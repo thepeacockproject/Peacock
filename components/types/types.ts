@@ -511,10 +511,11 @@ export type UserProfile = {
                  */
                 Total: number
                 Sublocations: {
-                    Location: string
-                    Xp: number
-                    ActionXp: number
-                }[]
+                    [location: string]: {
+                        Xp: number
+                        ActionXp: number
+                    }
+                }
             }
             /**
              * If the mastery location has subpackages and not drops, it will
@@ -1572,4 +1573,10 @@ export type SMFLastDeploy = {
         blobs?: Record<string, string>
         peacockPlugins?: string[]
     }
+}
+
+export type OfficialSublocation = {
+    Location: string
+    Xp: number
+    ActionXp: number
 }

@@ -22,6 +22,7 @@ import { readdir, readFile } from "fs/promises"
 import {
     ChallengeProgressionData,
     GameVersion,
+    OfficialSublocation,
     ProgressionData,
     UserProfile,
 } from "./types/types"
@@ -283,6 +284,7 @@ webFeaturesRouter.post(
         const userdata = getUserData(req.query.user, req.query.gv)
 
         try {
+            // Challenge Progression //
             const challengeProgression = await auth._useService<
                 ChallengeProgressionData[]
             >(
@@ -312,6 +314,7 @@ webFeaturesRouter.post(
                 }),
             )
 
+            // Profile Progression //
             const exts = await auth._useService<OfficialProfileResponse>(
                 `https://${remoteService}.hitman.io/authentication/api/userchannel/ProfileService/GetProfile`,
                 false,
@@ -328,18 +331,25 @@ webFeaturesRouter.post(
                 },
             )
 
+            const sublocations = exts.data.Extensions.progression
+                .PlayerProfileXP
+                .Sublocations as unknown as OfficialSublocation[]
+
             userdata.Extensions.progression.PlayerProfileXP = {
                 ...userdata.Extensions.progression.PlayerProfileXP,
                 Total: exts.data.Extensions.progression.PlayerProfileXP.Total,
                 ProfileLevel: levelForXp(
                     exts.data.Extensions.progression.PlayerProfileXP.Total,
                 ),
-                Sublocations:
-                    exts.data.Extensions.progression.PlayerProfileXP.Sublocations.filter(
-                        (value) => {
-                            return !value.Location.startsWith("LOCATION_SNUG_")
+                Sublocations: Object.fromEntries(
+                    sublocations.map((value) => [
+                        value.Location,
+                        {
+                            Xp: value.Xp,
+                            ActionXp: value.ActionXp,
                         },
-                    ),
+                    ]),
+                ),
             }
 
             userdata.Extensions.gamepersistentdata =
@@ -387,6 +397,12 @@ webFeaturesRouter.post(
                     PreviouslySeenXp: data.PreviouslySeenXp,
                 }
             }
+
+            //  //
+
+            // Freelancer Progression //
+            // TODO: Try and see if there is a less intensive way to do this
+            // GetForPlay2 is quite intensive on IOI's side as it starts a session
 
             userdata.Extensions.LastOfficialSync = new Date().toISOString()
 
