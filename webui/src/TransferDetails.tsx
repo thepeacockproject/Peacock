@@ -63,7 +63,7 @@ export function TransferDetails({ user, gv }: TransferDetailsProps) {
                 {},
                 {
                     params: {
-                        gameVersion: gv,
+                        gv,
                         user: user.id,
                     },
                 },
