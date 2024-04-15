@@ -139,9 +139,21 @@ webFeaturesRouter.get("/local-users", async (req: CommonRequest, res) => {
         (name) => name !== "lop.json",
     )
 
-    const result = []
+    /**
+     * Sync this type with `webui/src/utils`!
+     */
+    type BasicUser = Readonly<{
+        id: string
+        name: string
+        platform: string
+        lastOfficialSync: string | null
+    }>
+
+    const result: BasicUser[] = []
 
     for (const file of files) {
+        if (file === "lop.json") continue
+
         const read = JSON.parse(
             (await readFile(join(dir, file))).toString(),
         ) as UserProfile
@@ -150,6 +162,8 @@ webFeaturesRouter.get("/local-users", async (req: CommonRequest, res) => {
             id: read.Id,
             name: read.Gamertag,
             platform: read.EpicId ? "Epic" : "Steam",
+            lastOfficialSync:
+                read.Extensions.LastOfficialSync?.toString() || null,
         })
     }
 
@@ -248,26 +262,6 @@ webFeaturesRouter.get(
     },
 )
 
-webFeaturesRouter.get(
-    "/sync-progress",
-    commonValidationMiddleware,
-    async (req: CommonRequest, res) => {
-        try {
-            await loadUserData(req.query.user, req.query.gv)
-        } catch (e) {
-            formErrorMessage(res, "Failed to load user data.")
-            return
-        }
-
-        const d = getUserData(req.query.user, req.query.gv)
-
-        res.json({
-            success: true,
-            lastOfficialSync: d.Extensions.LastOfficialSync,
-        })
-    },
-)
-
 type EscalationData = {
     PeacockEscalations: {
         [escalationId: string]: number
@@ -362,7 +356,7 @@ webFeaturesRouter.post(
         const userdata = getUserData(req.query.user, req.query.gv)
 
         try {
-            // Challenge Progression //
+            // Challenge Progression
             const challengeProgression = await auth._useService<
                 ChallengeProgressionData[]
             >(
@@ -392,7 +386,7 @@ webFeaturesRouter.post(
                 }),
             )
 
-            // Profile Progression //
+            // Profile Progression
             const exts = await auth._useService<OfficialProfileResponse>(
                 `https://${remoteService}.hitman.io/authentication/api/userchannel/ProfileService/GetProfile`,
                 false,
@@ -513,12 +507,13 @@ webFeaturesRouter.post(
                 }
             }
 
-            // Escalation & Arcade Progression //
+            // Escalation & Arcade Progression
             const escalations = await getAllHitsCategory(
                 auth,
                 remoteService!,
                 "ContractAttack",
             )
+
             const arcade =
                 req.query.gv === "h3"
                     ? await getAllHitsCategory(auth, remoteService!, "Arcade")
@@ -547,7 +542,7 @@ webFeaturesRouter.post(
                 }
             }
 
-            // Freelancer Progression //
+            // Freelancer Progression
             // TODO: Try and see if there is a less intensive way to do this
             // GetForPlay2 is quite intensive on IOI's side as it starts a session
             if (req.query.gv === "h3") {

@@ -52,7 +52,6 @@ export function LoadoutsForGameVersion({
     }
 
     // note: putting these 2 consts together make intellij and prettier conflict each other
-    // @ts-expect-error fake news
     const theGameVer = data[`h${gameVersion}`] as LoadoutsGameVersion
 
     const loadoutsForVersion: Loadout[] = theGameVer.loadouts
@@ -62,7 +61,6 @@ export function LoadoutsForGameVersion({
             <nav className="pagination-nav">
                 {loadoutsForVersion.map((loadout) => {
                     const isActive =
-                        // @ts-expect-error also fake news
                         data[`h${gameVersion}`].selected === loadout.id
 
                     return (

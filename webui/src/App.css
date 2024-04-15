@@ -114,3 +114,33 @@ body {
 .pagination-nav__item:first-child .pagination-nav__label::before {
     content: "" !important;
 }
+
+/* RADIX DIALOG */
+.AlertDialogOverlay {
+    position: fixed;
+}
+
+.AlertDialogContent {
+    background: white;
+    border: solid 2px black;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90vw;
+    max-width: 640px;
+    max-height: 85vh;
+    padding: 25px;
+}
+
+.AlertDialogTitle {
+    margin: 0 0 1rem;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.AlertDialogDescription {
+    margin-bottom: 20px;
+    font-size: 16px;
+    line-height: 1.5;
+}
