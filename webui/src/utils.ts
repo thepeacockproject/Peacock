@@ -55,11 +55,12 @@ export interface Loadout {
     }
 }
 
-export interface IUser {
-    readonly id: string
-    readonly name: string
-    readonly platform: string
-}
+export type BasicUser = Readonly<{
+    id: string
+    name: string
+    platform: string
+    lastOfficialSync: string | null
+}>
 
 export interface LoadoutsGameVersion {
     selected: string
