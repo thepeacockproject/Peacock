@@ -21,9 +21,6 @@ import "./generatedPeacockRequireTable"
 
 // load flags as soon as possible
 import { getFlag, loadFlags } from "./flags"
-
-loadFlags()
-
 import { program } from "commander"
 import express, { Request, Router } from "express"
 import http from "http"
@@ -88,6 +85,8 @@ import { pack, unpack } from "msgpackr"
 import { liveSplitManager } from "./livesplit/liveSplitManager"
 import { cheapLoadUserData, setupFileStructure } from "./databaseHandler"
 
+loadFlags()
+
 const host = process.env.HOST || "0.0.0.0"
 const port = process.env.PORT || 80
 
@@ -110,6 +109,10 @@ function uncaught(error: Error): void {
         log(
             LogLevel.ERROR,
             `  - Your user account doesn't have permission (firewall can block it)`,
+        )
+        log(
+            LogLevel.INFO,
+            `Check this wiki page: https://thepeacockproject.org/wiki/troubleshooting/fix-port-in-use for steps on how to fix this!`,
         )
         process.exit(1)
     }
