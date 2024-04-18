@@ -31,4 +31,4 @@ const outKeys = Object.keys(lines).map((key) => {
     return parseInt(key, 16)
 })
 
-await writeFile("data/game-defined-locr-crc32s.msgpack", pack(outKeys))
+await writeFile("testData/game-defined-locr-crc32s.msgpack", pack(outKeys))
