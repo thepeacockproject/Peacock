@@ -21,6 +21,7 @@ import "infima/dist/css/default/default.css"
 import "./App.css"
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import { DevToolsPage } from "./pages/DevToolsPage"
+import { TransferPage } from "./pages/TransferPage"
 import { LoadoutPage } from "./pages/LoadoutPage"
 import { RootPage } from "./pages/RootPage"
 import { Home } from "./pages/Home"
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
                       element: <DevToolsPage />,
                   }
                 : null!,
+            {	
+                path: "ui/transfer",	
+                element: <TransferPage />,	
+            },
             {
                 path: "ui/loadouts",
                 element: <LoadoutPage />,
