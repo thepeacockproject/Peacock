@@ -60,6 +60,7 @@ export async function generateRequireTable() {
             "generatedPeacockRequireTable.ts",
             "types/globals.d.ts",
             "types/*.ts",
+            "cli.ts",
         ],
     })
 

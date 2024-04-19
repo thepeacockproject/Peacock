@@ -46,7 +46,7 @@ const jsonAsCompressedTextPlugin = {
 }
 
 await e.build({
-    entryPoints: ["components/index.ts"],
+    entryPoints: ["components/cli.ts"],
     bundle: true,
     logLevel: "info",
     outfile: "chunk0.js",

@@ -18,7 +18,7 @@
 
 import type * as core from "express-serve-static-core"
 
-import type { IContractCreationPayload } from "../statemachines/contractCreation"
+import type { ContractCreationNpcTargetPayload } from "../statemachines/contractCreation"
 import { Request } from "express"
 import {
     ChallengeContext,
@@ -1146,7 +1146,7 @@ export interface GameLocationsData {
 /**
  * The body sent with the CreateFromParams request from the game during the final phase of contract creation.
  *
- * @see IContractCreationPayload
+ * @see ContractCreationNpcTargetPayload
  */
 export interface CreateFromParamsBody {
     creationData: {
@@ -1154,7 +1154,7 @@ export interface CreateFromParamsBody {
         Description: string
         ContractId: string
         ContractPublicId: string
-        Targets: IContractCreationPayload[]
+        Targets: ContractCreationNpcTargetPayload[]
         ContractConditionIds: string[]
     }
 }
