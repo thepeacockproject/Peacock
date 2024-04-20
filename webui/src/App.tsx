@@ -42,9 +42,9 @@ const router = createBrowserRouter([
                       element: <DevToolsPage />,
                   }
                 : null!,
-            {	
-                path: "ui/transfer",	
-                element: <TransferPage />,	
+            {
+                path: "ui/transfer",
+                element: <TransferPage />,
             },
             {
                 path: "ui/loadouts",
