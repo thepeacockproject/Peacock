@@ -233,6 +233,10 @@ export abstract class ChallengeRegistry {
         return this.challenges[gameVersion].get(challengeId)
     }
 
+    getChallengeIds(gameVersion: GameVersion): string[] {
+        return Array.from(this.challenges[gameVersion].keys())
+    }
+
     removeChallenge(challengeId: string, gameVersion: GameVersion): boolean {
         const challenge = this.challenges[gameVersion].get(challengeId)
         if (!challenge) return false

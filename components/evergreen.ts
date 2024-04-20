@@ -22,6 +22,10 @@ import { ContractProgressionData } from "./types/types"
 import { getFlag } from "./flags"
 import { EVERGREEN_LEVEL_INFO } from "./utils"
 
+type DefaultCpdConfigs = {
+    [cpdId: string]: ContractProgressionData
+}
+
 export function setCpd(
     data: ContractProgressionData,
     uID: string,
@@ -42,15 +46,22 @@ export function getCpd(uID: string, cpdID: string): ContractProgressionData {
 
     if (!Object.keys(userData.Extensions.CPD).includes(cpdID)) {
         const defaultCPD = getConfig(
-            "DefaultCpdConfig",
+            "DefaultCpdConfigs",
             false,
-        ) as ContractProgressionData
+        ) as DefaultCpdConfigs
 
-        setCpd(defaultCPD, uID, cpdID)
+        setCpd(
+            Object.keys(defaultCPD).includes(cpdID) ? defaultCPD[cpdID] : {},
+            uID,
+            cpdID,
+        )
     }
 
     // NOTE: Override the EvergreenLevel with the latest Mastery Level
-    if (getFlag("gameplayUnlockAllFreelancerMasteries")) {
+    if (
+        getFlag("gameplayUnlockAllFreelancerMasteries") &&
+        cpdID === "f8ec92c2-4fa2-471e-ae08-545480c746ee"
+    ) {
         userData.Extensions.CPD[cpdID]["EvergreenLevel"] =
             EVERGREEN_LEVEL_INFO.length
     }
