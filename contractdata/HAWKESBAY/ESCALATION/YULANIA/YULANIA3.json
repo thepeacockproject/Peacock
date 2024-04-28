@@ -272,6 +272,73 @@
                         }
                     }
                 }
+            },{
+                "_comment": "----- target 5: far bodyguard C -----",
+                "Id": "2599eb20-d012-f7fe-65c5-c42b0a2df6d8",
+                "Category": "primary",
+                "Type": "statemachine",
+                "ObjectiveType": "kill",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_YULANIA_TAR4"
+                },
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "08022e2c-4954-4b63-b632-3ac50d018292",
+                        "HardCondition": true
+                    },
+                    {
+                        "Type": "killmethod",
+                        "HardCondition": true,
+                        "KillMethod": "sniperrifle"
+                    }
+                ],
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["3b1bffed-bbcf-446e-8824-5855f9df7714"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "3b1bffed-bbcf-446e-8824-5855f9df7714"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitIsHitmanSuit",
+                                                    true
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillMethodBroad",
+                                                    "sniperrifle"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "3b1bffed-bbcf-446e-8824-5855f9df7714"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
             }
         ],
         "Entrances": ["40e5cc64-9aba-4f1a-9d37-a2e558e118b6"],
@@ -328,6 +395,9 @@
             },
             {
                 "Id": "d8578edf-8e56-8afc-4f8e-88bc9b7d659a"
+            },
+            {
+                "Id": "2599eb20-d012-f7fe-65c5-c42b0a2df6d8"
             },
             {
                 "Id": "5746a594-6f00-0b80-3e02-7397624515d4"
