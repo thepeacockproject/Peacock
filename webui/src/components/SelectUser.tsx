@@ -17,10 +17,10 @@
  */
 
 import * as React from "react"
-import { IUser } from "./utils"
+import { BasicUser } from "../utils"
 
 export interface SelectUserProps {
-    users: IUser[]
+    users: BasicUser[]
     setUser: React.Dispatch<React.SetStateAction<string | undefined>>
 }
 

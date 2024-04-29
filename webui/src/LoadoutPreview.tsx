@@ -26,7 +26,7 @@ export interface LoadoutPreviewProps {
 function adjustCase(input: string): string {
     return input
         .split(" ")
-        .map((i) => `${i[0].toUpperCase()}${i.substr(1).toLowerCase()}`)
+        .map((i) => `${i[0].toUpperCase()}${i.substring(1).toLowerCase()}`)
         .join(" ")
 }
 

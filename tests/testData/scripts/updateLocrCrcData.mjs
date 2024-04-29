@@ -16,17 +16,19 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { describe, expect, it } from "vitest"
+import { pack } from "msgpackr"
+import { writeFile } from "node:fs/promises"
 
-describe("vitest", () => {
-    /**
-     * This test will verify if globals are configured correctly
-     */
-    it("globals", () => {
-        const result = !PEACOCK_DEV && HUMAN_VERSION === "test"
-
-        expect(result).toBe(true)
+const lines = await fetch(
+    "https://raw.githubusercontent.com/glacier-modding/Hitman-l10n-Hashes/master/lines.json",
+)
+    .then((res) => res.json())
+    .catch(() => {
+        throw new Error("Failed to fetch lines.json")
     })
+
+const outKeys = Object.keys(lines).map((key) => {
+    return parseInt(key, 16)
 })
 
-export {}
+await writeFile("testData/game-defined-locr-crc32s.msgpack", pack(outKeys))

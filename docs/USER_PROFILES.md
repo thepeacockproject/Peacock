@@ -23,3 +23,10 @@ Version 1 introduced the profile versioning system. The changes are:
     -   Sniper locations now have their unlockables contained inside the location.
 -   Unused properties were removed from locations in `u.Extensions.progression.Locations`.
 -   `u.Extensions.progression.Unlockables` has been removed.
+
+## Version 2
+
+Version 2 introduced support for syncing official progress to Peacock. The changes are:
+
+-   `u.Extensions.LastOfficialSync` has been added which records a date and time of the last official sync.
+-   `u.Extensions.progression.PlayerProfileXp.Sublocations` has been changed to an object.

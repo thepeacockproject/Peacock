@@ -240,22 +240,14 @@ export class ProgressionService {
         // Update the SubLocation data
         const profileData = userProfile.Extensions.progression.PlayerProfileXP
 
-        let foundSubLocation = profileData.Sublocations.find(
-            (e) => e.Location === parentLocationId,
-        )
-
-        if (!foundSubLocation) {
-            foundSubLocation = {
-                Location: parentLocationId,
-                Xp: 0,
-                ActionXp: 0,
-            }
-
-            profileData.Sublocations.push(foundSubLocation)
+        profileData.Sublocations[contract.Metadata.Location] ??= {
+            Xp: 0,
+            ActionXp: 0,
         }
 
-        foundSubLocation.Xp += masteryXp
-        foundSubLocation.ActionXp += actionXp
+        profileData.Sublocations[contract.Metadata.Location].Xp += masteryXp
+        profileData.Sublocations[contract.Metadata.Location].ActionXp +=
+            actionXp
 
         return true
     }

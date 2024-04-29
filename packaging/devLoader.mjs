@@ -28,11 +28,10 @@ const require = createRequire(import.meta.url)
 await generateRequireTable()
 await packResources()
 
-const { version, revisionIdent } = require("../package.json")
+const { version } = require("../package.json")
 
 global.PEACOCK_DEV = true
 global.HUMAN_VERSION = version
-global.REV_IDENT = revisionIdent
 
 process.env.DEBUG = "peacock"
 process.env.LOG_MAX_FILES = ""
@@ -50,11 +49,9 @@ const { register } = require("esbuild-register/dist/node")
 register()
 
 const resolveTextFile = function (module, path) {
-    const content = readFileSync(path).toString()
-
-    module.exports = content
+    module.exports = readFileSync(path).toString()
 }
 
 Module._extensions[".json"] = resolveTextFile
 
-require("../components/index.ts")
+require("../components/cli.ts")

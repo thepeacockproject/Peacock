@@ -19,12 +19,43 @@
 import { NextFunction, Request, Response, Router } from "express"
 import { getConfig } from "./configSwizzleManager"
 import { readdir, readFile } from "fs/promises"
-import { GameVersion, UserProfile } from "./types/types"
+import {
+    ChallengeProgressionData,
+    GameVersion,
+    HitsCategoryCategory,
+    OfficialSublocation,
+    ProgressionData,
+    UserProfile,
+} from "./types/types"
 import { join } from "path"
-import { uuidRegex, versions } from "./utils"
+import {
+    getRemoteService,
+    getSublocations,
+    isSniperLocation,
+    levelForXp,
+    uuidRegex,
+    versions,
+} from "./utils"
 import { getUserData, loadUserData, writeUserData } from "./databaseHandler"
 import { controller } from "./controller"
 import { log, LogLevel } from "./loggingInterop"
+import { OfficialServerAuth, userAuths } from "./officialServerAuth"
+import { AxiosError } from "axios"
+import { SNIPER_UNLOCK_TO_LOCATION } from "./menuData"
+
+type OfficialProfileResponse = UserProfile & {
+    Extensions: {
+        progression: {
+            Unlockables: {
+                [unlockableId: string]: ProgressionData
+            }
+        }
+    }
+}
+
+type SubPackageData = {
+    [id: string]: ProgressionData
+}
 
 const webFeaturesRouter = Router()
 
@@ -108,9 +139,21 @@ webFeaturesRouter.get("/local-users", async (req: CommonRequest, res) => {
         (name) => name !== "lop.json",
     )
 
-    const result = []
+    /**
+     * Sync this type with `webui/src/utils`!
+     */
+    type BasicUser = Readonly<{
+        id: string
+        name: string
+        platform: string
+        lastOfficialSync: string | null
+    }>
+
+    const result: BasicUser[] = []
 
     for (const file of files) {
+        if (file === "lop.json") continue
+
         const read = JSON.parse(
             (await readFile(join(dir, file))).toString(),
         ) as UserProfile
@@ -119,6 +162,8 @@ webFeaturesRouter.get("/local-users", async (req: CommonRequest, res) => {
             id: read.Id,
             name: read.Gamertag,
             platform: read.EpicId ? "Epic" : "Steam",
+            lastOfficialSync:
+                read.Extensions.LastOfficialSync?.toString() || null,
         })
     }
 
@@ -214,6 +259,341 @@ webFeaturesRouter.get(
         const d = getUserData(req.query.user, req.query.gv)
 
         res.json(d.Extensions.PeacockEscalations)
+    },
+)
+
+type EscalationData = {
+    PeacockEscalations: {
+        [escalationId: string]: number
+    }
+    PeacockCompletedEscalations: string[]
+}
+
+type OfficialHitsCategory = {
+    data: HitsCategoryCategory
+}
+
+async function getHitsCategory(
+    auth: OfficialServerAuth,
+    remoteService: string,
+    category: string,
+    page: number,
+): Promise<[results: EscalationData, hasMore: boolean]> {
+    const data: EscalationData = {
+        PeacockEscalations: {},
+        PeacockCompletedEscalations: [],
+    }
+
+    const hits = await auth._useService<OfficialHitsCategory>(
+        `https://${remoteService}.hitman.io/profiles/page/HitsCategory?page=${page}&type=${category}&mode=dataonly`,
+        true,
+    )
+
+    for (const hit of hits.data.data.Data.Hits) {
+        data.PeacockEscalations[hit.Id] =
+            hit.UserCentricContract.Data.EscalationCompletedLevels! + 1
+
+        if (hit.UserCentricContract.Data.EscalationCompleted)
+            data.PeacockCompletedEscalations.push(hit.Id)
+    }
+
+    return [data, hits.data.data.Data.HasMore]
+}
+
+async function getAllHitsCategory(
+    auth: OfficialServerAuth,
+    remoteService: string,
+    category: string,
+): Promise<EscalationData> {
+    const data: EscalationData = {
+        PeacockEscalations: {},
+        PeacockCompletedEscalations: [],
+    }
+
+    let page = 0
+    let hasMore = true
+
+    while (hasMore) {
+        const [results, more] = await getHitsCategory(
+            auth,
+            remoteService,
+            category,
+            page,
+        )
+
+        data.PeacockEscalations = {
+            ...data.PeacockEscalations,
+            ...results.PeacockEscalations,
+        }
+
+        data.PeacockCompletedEscalations = [
+            ...data.PeacockCompletedEscalations,
+            ...results.PeacockCompletedEscalations,
+        ]
+
+        page++
+        hasMore = more
+    }
+
+    return data
+}
+
+webFeaturesRouter.post(
+    "/sync-progress",
+    commonValidationMiddleware,
+    async (req: CommonRequest, res) => {
+        const remoteService = getRemoteService(req.query.gv)
+        const auth = userAuths.get(req.query.user)
+
+        if (!auth) {
+            formErrorMessage(
+                res,
+                "Failed to get official authentication data. Please connect to Peacock first.",
+            )
+            return
+        }
+
+        const userdata = getUserData(req.query.user, req.query.gv)
+
+        try {
+            // Challenge Progression
+            const challengeProgression = await auth._useService<
+                ChallengeProgressionData[]
+            >(
+                `https://${remoteService}.hitman.io/authentication/api/userchannel/ChallengesService/GetProgression`,
+                false,
+                {
+                    profileid: req.query.user,
+                    challengeids: controller.challengeService.getChallengeIds(
+                        req.query.gv,
+                    ),
+                },
+            )
+
+            userdata.Extensions.ChallengeProgression = Object.fromEntries(
+                challengeProgression.data.map((data) => {
+                    return [
+                        data.ChallengeId,
+                        {
+                            Ticked: data.Completed,
+                            Completed: data.Completed,
+                            CurrentState:
+                                (data.State["CurrentState"] as string) ??
+                                "Start",
+                            State: data.State,
+                        },
+                    ]
+                }),
+            )
+
+            // Profile Progression
+            const exts = await auth._useService<OfficialProfileResponse>(
+                `https://${remoteService}.hitman.io/authentication/api/userchannel/ProfileService/GetProfile`,
+                false,
+                {
+                    id: req.query.user,
+                    extensions: [
+                        "achievements",
+                        "friends",
+                        "gameclient",
+                        "gamepersistentdata",
+                        "opportunityprogression",
+                        "progression",
+                        "defaultloadout",
+                    ],
+                },
+            )
+
+            if (req.query.gv !== "h1") {
+                const sublocations = exts.data.Extensions.progression
+                    .PlayerProfileXP
+                    .Sublocations as unknown as OfficialSublocation[]
+
+                userdata.Extensions.progression.PlayerProfileXP = {
+                    ...userdata.Extensions.progression.PlayerProfileXP,
+                    Total: exts.data.Extensions.progression.PlayerProfileXP
+                        .Total,
+                    ProfileLevel: levelForXp(
+                        exts.data.Extensions.progression.PlayerProfileXP.Total,
+                    ),
+                    Sublocations: Object.fromEntries(
+                        sublocations.map((value) => [
+                            value.Location,
+                            {
+                                Xp: value.Xp,
+                                ActionXp: value.ActionXp,
+                            },
+                        ]),
+                    ),
+                }
+
+                userdata.Extensions.opportunityprogression = Object.fromEntries(
+                    Object.keys(
+                        exts.data.Extensions.opportunityprogression,
+                    ).map((value) => [value, true]),
+                )
+
+                for (const [unlockId, data] of Object.entries(
+                    exts.data.Extensions.progression.Unlockables ?? {},
+                )) {
+                    const unlockableId = unlockId.toUpperCase()
+
+                    if (!(unlockableId in SNIPER_UNLOCK_TO_LOCATION)) continue
+                    ;(
+                        userdata.Extensions.progression.Locations[
+                            SNIPER_UNLOCK_TO_LOCATION[unlockableId]
+                        ] as SubPackageData
+                    )[unlockableId] = {
+                        Xp: data.Xp,
+                        Level: data.Level,
+                        PreviouslySeenXp: data.PreviouslySeenXp,
+                    }
+                }
+            }
+
+            userdata.Extensions.gamepersistentdata =
+                exts.data.Extensions.gamepersistentdata
+
+            const sublocations = getSublocations(req.query.gv)
+            userdata.Extensions.defaultloadout ??= {}
+
+            if (exts.data.Extensions.defaultloadout) {
+                for (const [parent, loadout] of Object.entries(
+                    exts.data.Extensions.defaultloadout,
+                )) {
+                    for (const child of sublocations[parent]) {
+                        userdata.Extensions.defaultloadout[child] = loadout
+                    }
+                }
+            }
+
+            userdata.Extensions.achievements = exts.data.Extensions.achievements
+
+            for (const [locId, data] of Object.entries(
+                exts.data.Extensions.progression.Locations,
+            )) {
+                const location = (
+                    locId.startsWith("location_parent")
+                        ? locId
+                        : locId.replace("location_", "location_parent_")
+                ).toUpperCase()
+
+                if (isSniperLocation(location)) continue
+
+                if (req.query.gv === "h1") {
+                    const parent = location.endsWith("PRO1")
+                        ? location.substring(0, location.length - 5)
+                        : location
+
+                    const packageId: string = location.endsWith("PRO1")
+                        ? "pro1"
+                        : "normal"
+
+                    ;(
+                        userdata.Extensions.progression.Locations[
+                            parent
+                        ] as SubPackageData
+                    )[packageId] = {
+                        Xp: data.Xp as number,
+                        Level: data.Level as number,
+                        PreviouslySeenXp: data.Xp as number,
+                    }
+                } else {
+                    userdata.Extensions.progression.Locations[location] = {
+                        Xp: data.Xp as number,
+                        Level: data.Level as number,
+                        PreviouslySeenXp: data.PreviouslySeenXp as number,
+                    }
+                }
+            }
+
+            // Escalation & Arcade Progression
+            const escalations = await getAllHitsCategory(
+                auth,
+                remoteService!,
+                "ContractAttack",
+            )
+
+            const arcade =
+                req.query.gv === "h3"
+                    ? await getAllHitsCategory(auth, remoteService!, "Arcade")
+                    : {
+                          PeacockEscalations: {},
+                          PeacockCompletedEscalations: [],
+                      }
+
+            userdata.Extensions.PeacockEscalations = {
+                ...userdata.Extensions.PeacockEscalations,
+                ...escalations.PeacockEscalations,
+                ...arcade.PeacockEscalations,
+            }
+
+            userdata.Extensions.PeacockCompletedEscalations = [
+                ...userdata.Extensions.PeacockCompletedEscalations,
+                ...escalations.PeacockCompletedEscalations,
+                ...arcade.PeacockCompletedEscalations,
+            ]
+
+            for (const id of userdata.Extensions.PeacockCompletedEscalations) {
+                userdata.Extensions.PeacockPlayedContracts[id] = {
+                    LastPlayedAt: new Date().getTime(),
+                    Completed: true,
+                    IsEscalation: true,
+                }
+            }
+
+            // Freelancer Progression
+            // TODO: Try and see if there is a less intensive way to do this
+            // GetForPlay2 is quite intensive on IOI's side as it starts a session
+            if (req.query.gv === "h3") {
+                await auth._useService(
+                    `https://${remoteService}.hitman.io/authentication/api/configuration/Init?configName=pc-prod&lockedContentDisabled=false&isFreePrologueUser=false&isIntroPackUser=false&isFullExperienceUser=true`,
+                    true,
+                )
+
+                const freelancerSession = await auth._useService<{
+                    ContractProgressionData: Record<
+                        string,
+                        string | number | boolean
+                    >
+                }>(
+                    `https://${remoteService}.hitman.io/authentication/api/userchannel/ContractsService/GetForPlay2`,
+                    false,
+                    {
+                        id: "f8ec92c2-4fa2-471e-ae08-545480c746ee",
+                        locationId: "",
+                        extraGameChangerIds: [],
+                        difficultyLevel: 0,
+                    },
+                )
+
+                userdata.Extensions.CPD[
+                    "f8ec92c2-4fa2-471e-ae08-545480c746ee"
+                ] = freelancerSession.data.ContractProgressionData
+            }
+
+            userdata.Extensions.LastOfficialSync = new Date().toISOString()
+
+            writeUserData(req.query.user, req.query.gv)
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                formErrorMessage(
+                    res,
+                    `Failed to sync official data: got ${error.response?.status} ${error.response?.statusText}.`,
+                )
+                return
+            } else {
+                formErrorMessage(
+                    res,
+                    `Failed to sync official data: got ${JSON.stringify(error)}.`,
+                )
+                return
+            }
+        }
+
+        res.json({
+            success: true,
+        })
     },
 )
 

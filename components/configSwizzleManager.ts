@@ -108,7 +108,7 @@ import MultiplayerPresets from "../static/MultiplayerPresets.json"
 import LobbySlimTemplate from "../static/LobbySlimTemplate.json"
 import MasteryDataForLocationTemplate from "../static/MasteryDataForLocationTemplate.json"
 import LegacyMasteryLocationTemplate from "../static/LegacyMasteryLocationTemplate.json"
-import DefaultCpdConfig from "../static/DefaultCpdConfig.json"
+import DefaultCpdConfigs from "../static/DefaultCpdConfigs.json"
 import EvergreenGameChangerProperties from "../static/EvergreenGameChangerProperties.json"
 import AreaMap from "../static/AreaMap.json"
 import ArcadePageTemplate from "../static/ArcadePageTemplate.json"
@@ -217,7 +217,7 @@ const configs = {
     LobbySlimTemplate,
     MasteryDataForLocationTemplate,
     LegacyMasteryLocationTemplate,
-    DefaultCpdConfig,
+    DefaultCpdConfigs,
     EvergreenGameChangerProperties,
     AreaMap,
     ArcadePageTemplate,

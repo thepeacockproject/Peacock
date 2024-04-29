@@ -18,7 +18,7 @@
 
 import type * as core from "express-serve-static-core"
 
-import type { IContractCreationPayload } from "../statemachines/contractCreation"
+import type { ContractCreationNpcTargetPayload } from "../statemachines/contractCreation"
 import { Request } from "express"
 import {
     ChallengeContext,
@@ -192,7 +192,7 @@ export type MissionType =
 /**
  * The data acquired when using the "contract search" functionality.
  */
-export interface ContractSearchResult {
+export type ContractSearchResult = {
     Data: {
         Contracts: {
             UserCentricContract: UserCentricContract
@@ -210,7 +210,7 @@ export interface ContractSearchResult {
  *
  * @see ContractSession
  */
-export interface ContractSessionLastKill {
+export type ContractSessionLastKill = {
     timestamp?: Date | number
     repositoryIds?: RepositoryId[]
     /**
@@ -333,7 +333,7 @@ export interface SaveFile {
  *
  * @see SaveFile
  */
-export interface UpdateUserSaveFileTableBody {
+export type UpdateUserSaveFileTableBody = {
     clientSaveFileList: SaveFile[]
     deletedSaveFileList: SaveFile[]
 }
@@ -341,12 +341,12 @@ export interface UpdateUserSaveFileTableBody {
 /**
  * The Hitman server version in object form.
  */
-export interface ServerVersion {
-    readonly _Major: number
-    readonly _Minor: number
-    readonly _Build: number
-    readonly _Revision: number
-}
+export type ServerVersion = Readonly<{
+    _Major: number
+    _Minor: number
+    _Build: number
+    _Revision: number
+}>
 
 /**
  * An event sent from the game client to the server.
@@ -372,7 +372,7 @@ export interface S2CEventWithTimestamp<EventValue = unknown> {
 /**
  * A server to client push message. The message component is encoded JSON.
  */
-export interface PushMessage {
+export type PushMessage = {
     time: number | string | bigint
     message: string
 }
@@ -398,7 +398,7 @@ export interface ServerToClientEvent<EventValue = unknown> {
     Origin?: string | null
 }
 
-export interface MissionStory {
+export type MissionStory = {
     CommonRepositoryId: RepositoryId
     PreviouslyCompleted: boolean
     IsMainOpportunity: boolean
@@ -410,7 +410,7 @@ export interface MissionStory {
     Image: string
 }
 
-export interface PlayerProfileView {
+export type PlayerProfileView = {
     SubLocationData: {
         ParentLocation: Unlockable
         Location: Unlockable
@@ -438,34 +438,34 @@ export interface PlayerProfileView {
     }
 }
 
-export interface ChallengeCompletion {
+export type ChallengeCompletion = {
     ChallengesCount: number
     CompletedChallengesCount: number
     CompletionPercent?: number
 }
 
-export interface ChallengeCategoryCompletion extends ChallengeCompletion {
+export type ChallengeCategoryCompletion = ChallengeCompletion & {
     Name: string
 }
 
-export interface OpportunityStatistics {
+export type OpportunityStatistics = {
     Count: number
     Completed: number
 }
 
-export interface ContractHistory {
+export type ContractHistory = {
     LastPlayedAt?: number
     Completed?: boolean
     IsEscalation?: boolean
 }
 
-export interface ProgressionData {
+export type ProgressionData = {
     Xp: number
     Level: number
     PreviouslySeenXp: number
 }
 
-export interface UserProfile {
+export type UserProfile = {
     Id: string
     LinkedAccounts: {
         dev?: string
@@ -511,10 +511,11 @@ export interface UserProfile {
                  */
                 Total: number
                 Sublocations: {
-                    Location: string
-                    Xp: number
-                    ActionXp: number
-                }[]
+                    [location: string]: {
+                        Xp: number
+                        ActionXp: number
+                    }
+                }
             }
             /**
              * If the mastery location has subpackages and not drops, it will
@@ -560,6 +561,7 @@ export interface UserProfile {
             [opportunityId: RepositoryId]: boolean
         }
         CPD: CPDStore
+        LastOfficialSync: Date | string | null
     }
     ETag: string | null
     Gamertag: string
@@ -576,7 +578,7 @@ export interface UserProfile {
     Version: number
 }
 
-export interface RatingKill {
+export type RatingKill = {
     IsHeadshot: boolean
     KillClass: string
     KillItemCategory: string
@@ -592,7 +594,7 @@ export interface RatingKill {
     OutfitRepoId: string
 }
 
-export interface NamespaceEntitlementEpic {
+export type NamespaceEntitlementEpic = {
     namespace: string
     itemId: string
     owned: boolean
@@ -601,7 +603,7 @@ export interface NamespaceEntitlementEpic {
 /**
  * An unlockable item.
  */
-export interface Unlockable {
+export type Unlockable = {
     Id: string
     DisplayNameLocKey: string
     GameAsset: string | null
@@ -706,14 +708,14 @@ export interface Unlockable {
     Rarity?: string | null
 }
 
-export interface ItemGameplay {
+export type ItemGameplay = {
     range?: number
     damage?: number
     clipsize?: number
     rateoffire?: number
 }
 
-export interface CompletionData {
+export type CompletionData = {
     Level: number
     MaxLevel: number
     XP: number
@@ -727,7 +729,7 @@ export interface CompletionData {
     Name: string | null
 }
 
-export interface UserCentricContract {
+export type UserCentricContract = {
     Contract: MissionManifest
     Data: {
         IsLocked: boolean
@@ -759,12 +761,27 @@ export interface UserCentricContract {
     }
 }
 
-export interface TargetCondition {
-    Type: string
+export type TargetCondition = {
+    /**
+     * The target condition type. This can be one of the following:
+     * - `killmethod` - A way to kill the target.
+     * - `hitmansuit` - Specifies the outfit must be any suit that you can start a level with which (but not a disguise).
+     * - `disguise` - Specifies the outfit must be a specific disguise.
+     */
+    Type: "killmethod" | "hitmansuit" | "disguise"
     RepositoryId?: RepositoryId
+    /**
+     * If the game should display the objective as optional or not.
+     */
     HardCondition?: boolean
+    /**
+     * The objective ID that this condition is tied to. When specified, the game can mark the condition with a check mark or X in the F1 menu.
+     */
     ObjectiveId?: string
-    KillMethod?: string
+    /**
+     * For outfit requirements, this is just an empty string. For kill methods, this is the kill method.
+     */
+    KillMethod: "" | string
 }
 
 /**
@@ -785,7 +802,7 @@ export interface HUDTemplate {
 /**
  * Data structure for a mission manifest's `Data.VR` bricks property.
  */
-export interface VRQualityDefinition {
+export type VRQualityDefinition = {
     Quality: string
     Bricks: string[]
 }
@@ -987,7 +1004,7 @@ export interface MissionManifestMetadata {
     Modules?: ManifestScoringModule[] | null
 }
 
-export interface GroupObjectiveDisplayOrderItem {
+export type GroupObjectiveDisplayOrderItem = {
     Id: string
     IsNew?: boolean
 }
@@ -1064,7 +1081,7 @@ export interface MissionManifest {
  * A configuration that tells the game where it should connect to.
  * This config is the first thing that the game asks for when logging in.
  */
-export interface ServerConnectionConfig {
+export type ServerConnectionConfig = {
     Versions: {
         Name: string
         GAME_VER: string
@@ -1097,7 +1114,7 @@ export interface ServerConnectionConfig {
  *
  * @see GameLocationsData
  */
-export interface PeacockLocationsData {
+export type PeacockLocationsData = {
     /**
      * The parent locations.
      */
@@ -1129,7 +1146,7 @@ export interface GameLocationsData {
 /**
  * The body sent with the CreateFromParams request from the game during the final phase of contract creation.
  *
- * @see IContractCreationPayload
+ * @see ContractCreationNpcTargetPayload
  */
 export interface CreateFromParamsBody {
     creationData: {
@@ -1137,12 +1154,12 @@ export interface CreateFromParamsBody {
         Description: string
         ContractId: string
         ContractPublicId: string
-        Targets: IContractCreationPayload[]
+        Targets: ContractCreationNpcTargetPayload[]
         ContractConditionIds: string[]
     }
 }
 
-export interface SelectEntranceOrPickupData {
+export type SelectEntranceOrPickupData = {
     Unlocked: string[]
     Contract: MissionManifest
     OrderedUnlocks: Unlockable[]
@@ -1154,7 +1171,7 @@ export type CompiledIoiStatemachine = unknown
 /**
  * The `ChallengeProgress` data for a `challengetree` context listener.
  */
-export interface ChallengeProgressCTreeContextListener {
+export type ChallengeProgressCTreeContextListener = {
     total: number
     completed: string[] | readonly string[]
     missing: number
@@ -1165,12 +1182,12 @@ export interface ChallengeProgressCTreeContextListener {
 /**
  * The `ChallengeProgress` data for a `challengecount` context listener.
  */
-export interface ChallengeProgressCCountContextListener {
+export type ChallengeProgressCCountContextListener = {
     total: number
     count: number
 }
 
-export interface CompiledChallengeTreeCategory {
+export type CompiledChallengeTreeCategory = {
     CategoryId: string
     ChallengesCount: number
     CompletedChallengesCount: number
@@ -1197,7 +1214,7 @@ export interface CompiledChallengeTreeCategory {
     }
 }
 
-export interface CompiledChallengeTreeCategoryInfo {
+export type CompiledChallengeTreeCategoryInfo = {
     Name: string
     Image: string
     Icon: string
@@ -1214,7 +1231,7 @@ export type ChallengeTreeWaterfallState =
     | ChallengeProgressCCountContextListener
     | null
 
-export interface CompiledChallengeTreeData {
+export type CompiledChallengeTreeData = {
     CategoryName: string
     ChallengeProgress?: ChallengeTreeWaterfallState
     Completed: boolean
@@ -1250,7 +1267,7 @@ export interface InclusionData {
     GameModes?: string[]
 }
 
-export interface CompiledChallengeIngameData {
+export type CompiledChallengeIngameData = {
     Id: string
     GroupId?: string
     Name: string
@@ -1274,7 +1291,7 @@ export interface CompiledChallengeIngameData {
 /**
  * Game-facing challenge progression data.
  */
-export interface ChallengeProgressionData {
+export type ChallengeProgressionData = {
     ChallengeId: string
     ProfileId: string
     Completed: boolean
@@ -1301,7 +1318,7 @@ export type Flags = Record<
 /**
  * A "hit" object.
  */
-export interface IHit {
+export type Hit = {
     Id: string
     UserCentricContract: UserCentricContract
     Location: Unlockable
@@ -1321,7 +1338,7 @@ export interface IHit {
  * @see CampaignVideo
  * @see StoryData
  */
-export interface IVideo {
+export type Video = {
     VideoTitle: string
     VideoHeader: string
     VideoId: string
@@ -1340,21 +1357,21 @@ export interface IVideo {
 /**
  * A campaign mission item.
  *
- * @see IHit
+ * @see Hit
  */
 export type CampaignMission = {
     Type: "Mission"
-    Data: IHit
+    Data: Hit
 }
 
 /**
  * A campaign video item.
  *
- * @see IVideo
+ * @see Video
  */
 export type CampaignVideo = {
     Type: "Video"
-    Data: IVideo
+    Data: Video
 }
 
 export interface RegistryChallenge extends SavedChallenge {
@@ -1374,7 +1391,7 @@ export type StoryData = CampaignMission | CampaignVideo
 /**
  * A campaign object.
  */
-export interface Campaign {
+export type Campaign = {
     Name: string
     Image: string
     Type: MissionType | string
@@ -1389,7 +1406,7 @@ export interface Campaign {
 /**
  * A loadout.
  */
-export interface Loadout {
+export type Loadout = {
     /**
      * Random ID.
      *
@@ -1445,25 +1462,25 @@ export type GenSingleVideoFunc = (
 /**
  * A "hits category" is used to display lists of contracts in-game.
  *
- * @see IHit
+ * @see Hit
  */
-export interface HitsCategoryCategory {
+export type HitsCategoryCategory = {
     Category: string
     Data: {
         Type: string
-        Hits: IHit[]
+        Hits: Hit[]
         Page: number
         HasMore: boolean
     }
     CurrentSubType: string
 }
 
-export interface PlayNextCampaignDetails {
+export type PlayNextCampaignDetails = {
     CampaignName: string
     ParentCampaignName?: string
 }
 
-export interface PlayNextGetCampaignsHookReturn {
+export type PlayNextGetCampaignsHookReturn = {
     /**
      * The UUID of the next contract in the campaign.
      */
@@ -1534,7 +1551,7 @@ export type CPDStore = Record<string, Record<string, string | number | boolean>>
 export type ContractProgressionData = Record<string, string | number | boolean>
 
 /** SMF's lastDeploy.json */
-export interface SMFLastDeploy {
+export type SMFLastDeploy = {
     runtimePath: string
     retailPath: string
     skipIntro: boolean
@@ -1556,4 +1573,10 @@ export interface SMFLastDeploy {
         blobs?: Record<string, string>
         peacockPlugins?: string[]
     }
+}
+
+export type OfficialSublocation = {
+    Location: string
+    Xp: number
+    ActionXp: number
 }
