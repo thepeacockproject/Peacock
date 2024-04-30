@@ -235,6 +235,7 @@ function createWeaponObjective(
                                     genStateMachineKillSuccessCondition(weapon),
                                 ],
                             },
+                            Transition: "Success",
                         },
                         {
                             Condition: {

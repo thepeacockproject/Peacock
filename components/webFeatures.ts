@@ -434,7 +434,7 @@ webFeaturesRouter.post(
                 )
 
                 for (const [unlockId, data] of Object.entries(
-                    exts.data.Extensions.progression.Unlockables,
+                    exts.data.Extensions.progression.Unlockables ?? {},
                 )) {
                     const unlockableId = unlockId.toUpperCase()
 
