@@ -21,6 +21,9 @@ import "./generatedPeacockRequireTable"
 
 // load flags as soon as possible
 import { getFlag, loadFlags } from "./flags"
+
+loadFlags()
+
 import { program } from "commander"
 import { toolsMenu } from "./tools"
 import { readFileSync, writeFileSync } from "fs"
@@ -29,8 +32,6 @@ import { log, LogLevel } from "./loggingInterop"
 import { startServer } from "./index"
 import { PEACOCKVERSTRING } from "./utils"
 import * as process from "node:process"
-
-loadFlags()
 
 program.description(
     "The Peacock Project is a HITMAN™ World of Assassination Trilogy server replacement.",
