@@ -467,6 +467,12 @@ webFeaturesRouter.post(
             userdata.Extensions.gamepersistentdata =
                 exts.data.Extensions.gamepersistentdata || {}
 
+            userdata.Extensions.gamepersistentdata.HitsFilterType ??= {
+                MyHistory: "all",
+                MyContracts: "all",
+                MyPlaylist: "all",
+            }
+
             const sublocations = getSublocations(req.query.gv)
             userdata.Extensions.defaultloadout ??= {}
 
