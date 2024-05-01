@@ -64,9 +64,9 @@ if (PEACOCK_DEV) {
         res.set("Access-Control-Allow-Origin", "*")
         res.set(
             "Access-Control-Allow-Methods",
-            "GET,HEAD,PUT,PATCH,POST,DELETE",
+            "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
         )
-        res.set("Access-Control-Allow-Headers", "Content-Type")
+        res.set("Access-Control-Allow-Headers", "content-type")
         next()
     })
 }
@@ -357,6 +357,8 @@ webFeaturesRouter.post(
 
         try {
             // Challenge Progression
+            log(LogLevel.DEBUG, "Getting challenge progression...")
+
             const challengeProgression = await auth._useService<
                 ChallengeProgressionData[]
             >(
@@ -387,6 +389,8 @@ webFeaturesRouter.post(
             )
 
             // Profile Progression
+            log(LogLevel.DEBUG, "Getting profile progression...")
+
             const exts = await auth._useService<OfficialProfileResponse>(
                 `https://${remoteService}.hitman.io/authentication/api/userchannel/ProfileService/GetProfile`,
                 false,
@@ -405,6 +409,8 @@ webFeaturesRouter.post(
             )
 
             if (req.query.gv !== "h1") {
+                log(LogLevel.DEBUG, "Processing PlayerProfileXP...")
+
                 const sublocations = exts.data.Extensions.progression
                     .PlayerProfileXP
                     .Sublocations as unknown as OfficialSublocation[]
@@ -427,32 +433,39 @@ webFeaturesRouter.post(
                     ),
                 }
 
+                log(LogLevel.DEBUG, "Processing opportunity progression...")
+
                 userdata.Extensions.opportunityprogression = Object.fromEntries(
                     Object.keys(
-                        exts.data.Extensions.opportunityprogression,
+                        exts.data.Extensions.opportunityprogression || {},
                     ).map((value) => [value, true]),
                 )
 
-                for (const [unlockId, data] of Object.entries(
-                    exts.data.Extensions.progression.Unlockables ?? {},
-                )) {
-                    const unlockableId = unlockId.toUpperCase()
+                if (exts.data.Extensions.progression.Unlockables) {
+                    log(LogLevel.DEBUG, "Processing unlockables...")
 
-                    if (!(unlockableId in SNIPER_UNLOCK_TO_LOCATION)) continue
-                    ;(
-                        userdata.Extensions.progression.Locations[
-                            SNIPER_UNLOCK_TO_LOCATION[unlockableId]
-                        ] as SubPackageData
-                    )[unlockableId] = {
-                        Xp: data.Xp,
-                        Level: data.Level,
-                        PreviouslySeenXp: data.PreviouslySeenXp,
+                    for (const [unlockId, data] of Object.entries(
+                        exts.data.Extensions.progression.Unlockables,
+                    )) {
+                        const unlockableId = unlockId.toUpperCase()
+
+                        if (!(unlockableId in SNIPER_UNLOCK_TO_LOCATION))
+                            continue
+                        ;(
+                            userdata.Extensions.progression.Locations[
+                                SNIPER_UNLOCK_TO_LOCATION[unlockableId]
+                            ] as SubPackageData
+                        )[unlockableId] = {
+                            Xp: data.Xp,
+                            Level: data.Level,
+                            PreviouslySeenXp: data.PreviouslySeenXp,
+                        }
                     }
                 }
             }
 
             userdata.Extensions.gamepersistentdata =
-                exts.data.Extensions.gamepersistentdata
+                exts.data.Extensions.gamepersistentdata || {}
 
             const sublocations = getSublocations(req.query.gv)
             userdata.Extensions.defaultloadout ??= {}
@@ -467,7 +480,8 @@ webFeaturesRouter.post(
                 }
             }
 
-            userdata.Extensions.achievements = exts.data.Extensions.achievements
+            userdata.Extensions.achievements =
+                exts.data.Extensions.achievements || []
 
             for (const [locId, data] of Object.entries(
                 exts.data.Extensions.progression.Locations,
@@ -508,6 +522,11 @@ webFeaturesRouter.post(
             }
 
             // Escalation & Arcade Progression
+            log(
+                LogLevel.DEBUG,
+                `Getting escalation${req.query.gv === "h3" ? " & arcade" : ""} progression...`,
+            )
+
             const escalations = await getAllHitsCategory(
                 auth,
                 remoteService!,
@@ -546,6 +565,8 @@ webFeaturesRouter.post(
             // TODO: Try and see if there is a less intensive way to do this
             // GetForPlay2 is quite intensive on IOI's side as it starts a session
             if (req.query.gv === "h3") {
+                log(LogLevel.DEBUG, "Getting freelancer progression...")
+
                 await auth._useService(
                     `https://${remoteService}.hitman.io/authentication/api/configuration/Init?configName=pc-prod&lockedContentDisabled=false&isFreePrologueUser=false&isIntroPackUser=false&isFullExperienceUser=true`,
                     true,
