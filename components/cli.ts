@@ -30,11 +30,14 @@ import { readFileSync, writeFileSync } from "fs"
 import { pack, unpack } from "msgpackr"
 import { log, LogLevel } from "./loggingInterop"
 import { startServer } from "./index"
+import { PEACOCKVERSTRING } from "./utils"
+import * as process from "node:process"
 
 program.description(
     "The Peacock Project is a HITMAN™ World of Assassination Trilogy server replacement.",
 )
 
+program.option("-v, --version", "print the version number and exit")
 program.option(
     "--hmr",
     "enable experimental hot reloading of contracts",
@@ -45,9 +48,22 @@ program.option(
     "activate plugin development features - requires plugin dev workspace setup",
     getFlag("developmentPluginDevHost") as boolean,
 )
-program.action(startServer)
+program.action(
+    (options: { hmr: boolean; pluginDevHost: boolean; version: boolean }) => {
+        if (options.version) {
+            console.log(`Peacock ${PEACOCKVERSTRING}`)
+            return process.exit()
+        }
 
-program.command("tools").description("open the tools UI").action(toolsMenu)
+        return startServer(options)
+    },
+)
+
+program
+    .command("tools")
+    .description("open the tools UI")
+    .option("-s, --skip", "Skip encrypting the debug profile", false)
+    .action(toolsMenu)
 
 // noinspection RequiredAttributes
 program
