@@ -59,7 +59,11 @@ program.action(
     },
 )
 
-program.command("tools").description("open the tools UI").action(toolsMenu)
+program
+    .command("tools")
+    .description("open the tools UI")
+    .option("-s, --skip", "Skip encrypting the debug profile", false)
+    .action(toolsMenu)
 
 // noinspection RequiredAttributes
 program
