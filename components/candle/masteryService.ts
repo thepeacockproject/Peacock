@@ -21,7 +21,7 @@ import {
     getSubLocationByName,
 } from "../contracts/dataGen"
 import { log, LogLevel } from "../loggingInterop"
-import { getVersionedConfig } from "../configSwizzleManager"
+import { getConfig } from "../configSwizzleManager"
 import { getUserData } from "../databaseHandler"
 import {
     LocationMasteryData,
@@ -265,12 +265,9 @@ export class MasteryService {
 
         // TODO: Refactor this into the new inventory system?
         const name = isSniper
-            ? getVersionedConfig<Unlockable[]>(
-                  "SniperUnlockables",
-                  gameVersion,
-                  false,
-              ).find((unlockable) => unlockable.Id === subPackageId)?.Properties
-                  .Name
+            ? getConfig<Unlockable[]>("SniperUnlockables", false).find(
+                  (unlockable) => unlockable.Id === subPackageId,
+              )?.Properties.Name
             : undefined
 
         return {
