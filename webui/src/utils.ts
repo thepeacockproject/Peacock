@@ -17,7 +17,7 @@
  */
 
 import axios from "axios"
-import type { Fetcher } from "swr"
+import type { SWRConfiguration } from "swr"
 
 type AxiosMethod = "get" | "post" | "patch" | "put"
 
@@ -30,8 +30,10 @@ export const axiosClient = axios.create({
     baseURL,
 })
 
-export const fetcher: Fetcher = (url: string, method: AxiosMethod = "get") =>
-    axios[method](url).then((res) => res.data)
+export const fetcher: SWRConfiguration = {
+    fetcher: (url: string, method: AxiosMethod = "get") =>
+        axios[method](url).then((res) => res.data),
+}
 
 /**
  * Shared type with @peacockproject/core.
@@ -53,11 +55,12 @@ export interface Loadout {
     }
 }
 
-export interface IUser {
-    readonly id: string
-    readonly name: string
-    readonly platform: string
-}
+export type BasicUser = Readonly<{
+    id: string
+    name: string
+    platform: string
+    lastOfficialSync: string | null
+}>
 
 export interface LoadoutsGameVersion {
     selected: string

@@ -16,19 +16,21 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type { MissionManifestObjective } from "../types/types"
+import type { MissionManifestObjective, RepositoryId } from "../types/types"
 import { randomUUID } from "crypto"
+import assert from "assert"
 
 /**
  * The payload provided to the game for each target in the create menu route.
  */
-export interface IContractCreationPayload {
+export type ContractCreationNpcTargetPayload = {
     RepositoryId: string
     Selected: boolean
     Weapon: {
         RepositoryId: string
         KillMethodBroad: string
         KillMethodStrict: string
+        RequiredKillMethod: string
         RequiredKillMethodType: number
     }
     Outfit: {
@@ -39,169 +41,217 @@ export interface IContractCreationPayload {
 }
 
 /**
- * The target creator API.
+ * @internal
  */
-export class TargetCreator {
-    // @ts-expect-error TODO: type this
-    private _targetSm
-    // @ts-expect-error TODO: type this
-    private _outfitSm
-    private _targetConds: undefined | unknown[] = undefined
-
-    /**
-     * The constructor.
-     *
-     * @param _params The contract creation payload.
-     */
-    public constructor(private readonly _params: IContractCreationPayload) {}
-
-    private _requireTargetConds(): void {
-        if (!this._targetConds || !Array.isArray(this._targetConds)) {
-            this._targetConds = []
-        }
-    }
-
-    private _bootstrapEntrySm(): void {
-        this._targetSm = {
-            Type: "statemachine",
-            Id: randomUUID(),
-            BriefingText: {
-                $loc: {
-                    key: "UI_CONTRACT_GENERAL_OBJ_KILL",
-                    data: `$($repository ${this._params.RepositoryId}).Name`,
-                },
+export const createTargetKillObjective = (
+    params: ContractCreationNpcTargetPayload,
+): MissionManifestObjective => ({
+    Type: "statemachine",
+    Id: randomUUID(),
+    BriefingText: {
+        $loc: {
+            key: "UI_CONTRACT_GENERAL_OBJ_KILL",
+            data: `$($repository ${params.RepositoryId}).Name`,
+        },
+    },
+    HUDTemplate: {
+        display: {
+            $loc: {
+                key: "UI_CONTRACT_GENERAL_OBJ_KILL",
+                data: `$($repository ${params.RepositoryId}).Name`,
             },
-            HUDTemplate: {
-                display: {
-                    $loc: {
-                        key: "UI_CONTRACT_GENERAL_OBJ_KILL",
-                        data: `$($repository ${this._params.RepositoryId}).Name`,
+        },
+    },
+    Category: "primary",
+    Definition: {
+        Scope: "Hit",
+        Context: {
+            Targets: [params.RepositoryId],
+        },
+        States: {
+            Start: {
+                Kill: {
+                    Condition: {
+                        $eq: ["$Value.RepositoryId", params.RepositoryId],
                     },
+                    Transition: "Success",
                 },
             },
-            Category: "primary",
-            Definition: {
-                Scope: "Hit",
-                Context: {
-                    Targets: [this._params.RepositoryId],
-                },
-                States: {
-                    Start: {
-                        Kill: [
-                            // this is the base state machine, we don't have fail states
-                            {
-                                Condition: {
+        },
+    },
+})
+
+/**
+ * @internal
+ */
+export const createRequiredOutfitObjective = (
+    params: ContractCreationNpcTargetPayload,
+): MissionManifestObjective => ({
+    Type: "statemachine",
+    Id: randomUUID(),
+    Category: "secondary",
+    Definition: {
+        Scope: "Hit",
+        Context: {
+            Targets: [params.RepositoryId],
+        },
+        States: {
+            Start: {
+                Kill: [
+                    {
+                        Condition: {
+                            $and: [
+                                {
                                     $eq: [
                                         "$Value.RepositoryId",
-                                        this._params.RepositoryId,
+                                        params.RepositoryId,
                                     ],
                                 },
-                                Transition: "Success",
-                            },
-                        ],
+                                params.Outfit.IsHitmanSuit
+                                    ? {
+                                          $eq: [
+                                              "$Value.OutfitIsHitmanSuit",
+                                              true,
+                                          ],
+                                      }
+                                    : {
+                                          $eq: [
+                                              "$Value.OutfitRepositoryId",
+                                              params.Outfit.RepositoryId,
+                                          ],
+                                      },
+                            ],
+                        },
+                        Transition: "Success",
                     },
-                },
+                    // state machines fall through to the next state if the condition is not met
+                    {
+                        Condition: {
+                            $eq: ["$Value.RepositoryId", params.RepositoryId],
+                        },
+                        Transition: "Failure",
+                    },
+                ],
             },
-        }
+        },
+    },
+    TargetConditions: [],
+})
+
+/**
+ * Create the target, weapon, and kill conditions for a contracts target.
+ * @param params The parameters from the request.
+ * @param customIds Custom objective IDs for testing purposes.
+ */
+export function createObjectivesForTarget(
+    params: ContractCreationNpcTargetPayload,
+    customIds?: { base: string; kill: string; outfit: string },
+): MissionManifestObjective[] {
+    const targetSm = createTargetKillObjective(params)
+
+    if (customIds?.base) {
+        targetSm.Id = customIds.base
     }
 
-    private _createOutfitSm(hmSuit: boolean): void {
-        this._requireTargetConds()
+    const objectives: MissionManifestObjective[] = [targetSm]
 
-        this._outfitSm = {
-            Type: "statemachine",
-            Id: randomUUID(),
-            Category: "secondary",
-            Definition: {
-                Scope: "Hit",
-                Context: {
-                    Targets: [this._params.RepositoryId],
-                },
-                States: {
-                    Start: {
-                        Kill: [
-                            {
-                                Condition: {
-                                    $and: [
-                                        {
-                                            $eq: [
-                                                "$Value.RepositoryId",
-                                                this._params.RepositoryId,
-                                            ],
-                                        },
-                                        hmSuit
-                                            ? {
-                                                  $eq: [
-                                                      "$Value.OutfitIsHitmanSuit",
-                                                      true,
-                                                  ],
-                                              }
-                                            : {
-                                                  $eq: [
-                                                      "$Value.OutfitRepositoryId",
-                                                      this._params.Outfit
-                                                          .RepositoryId,
-                                                  ],
-                                              },
-                                    ],
-                                },
-                                Transition: "Success",
-                            },
-                            {
-                                Condition: {
-                                    $eq: [
-                                        "$Value.RepositoryId",
-                                        this._params.RepositoryId,
-                                    ],
-                                },
-                                Transition: "Failure",
-                            },
-                        ],
-                    },
-                },
-            },
+    // if the required field is true, that means the user requested something OTHER than any disguise
+    if (params.Outfit.Required) {
+        const outfitSm = createRequiredOutfitObjective(params)
+
+        if (customIds?.outfit) {
+            outfitSm.Id = customIds.outfit
         }
 
-        this._targetConds?.push({
-            Type: hmSuit ? "hitmansuit" : "disguise",
-            RepositoryId: this._params.Outfit.RepositoryId,
+        targetSm.TargetConditions ??= []
+
+        targetSm.TargetConditions.push({
+            Type: params.Outfit.IsHitmanSuit ? "hitmansuit" : "disguise",
+            RepositoryId: params.Outfit.RepositoryId,
+            // for contract creation it's always optional, only escalations set hard fail conditions
             HardCondition: false,
-            ObjectiveId: this._outfitSm.Id,
-            // ioi moment
+            ObjectiveId: outfitSm.Id,
+            // "Amazing!" - Athena Savalas
             KillMethod: "",
         })
+
+        objectives.push(outfitSm)
     }
 
-    /**
-     * Get the array of finalized state machines.
-     *
-     * @returns The state machines.
-     */
-    public build(): MissionManifestObjective[] {
-        this._bootstrapEntrySm()
+    if (params.Weapon.RequiredKillMethodType !== 0) {
+        const weaponSm = createWeaponObjective(
+            params.Weapon,
+            params.RepositoryId,
+        )
 
-        if (this._params.Outfit.Required) {
-            // not any disguise
-            this._createOutfitSm(this._params.Outfit.IsHitmanSuit)
+        if (customIds?.kill) {
+            weaponSm.Id = customIds.kill
         }
 
-        const values = [this._targetSm]
+        targetSm.TargetConditions ??= []
 
-        if (this._outfitSm) {
-            values.push(this._outfitSm)
-        }
+        targetSm.TargetConditions.push({
+            Type: "killmethod",
+            RepositoryId: params.Weapon.RepositoryId,
+            // for contract creation it's always optional, only escalations set hard fail conditions
+            HardCondition: false,
+            ObjectiveId: weaponSm.Id,
+            KillMethod: params.Weapon.RequiredKillMethod,
+        })
 
-        if (this._targetConds && Array.isArray(this._targetConds)) {
-            this._targetSm.TargetConditions = this._targetConds
-        }
+        objectives.push(weaponSm)
+    }
 
-        return values
+    return objectives
+}
+
+/**
+ * Create an objective for killing a target with a specific weapon.
+ * @param weapon The weapon details from the request.
+ * @param npcId The target NPC's repository ID.
+ */
+function createWeaponObjective(
+    weapon: Weapon,
+    npcId: RepositoryId,
+): MissionManifestObjective {
+    return {
+        Type: "statemachine",
+        Id: randomUUID(),
+        Category: "secondary",
+        Definition: {
+            Scope: "Hit",
+            Context: {
+                Targets: [npcId],
+            },
+            States: {
+                Start: {
+                    Kill: [
+                        {
+                            Condition: {
+                                $and: [
+                                    {
+                                        $eq: ["$Value.RepositoryId", npcId],
+                                    },
+                                    genStateMachineKillSuccessCondition(weapon),
+                                ],
+                            },
+                            Transition: "Success",
+                        },
+                        {
+                            Condition: {
+                                $eq: ["$Value.RepositoryId", npcId],
+                            },
+                            Transition: "Failure",
+                        },
+                    ],
+                },
+            },
+        },
     }
 }
 
 /**
- * The time limit creator API.
- *
+ * Create a time limit objective.
  * @param time The amount of time to use in seconds.
  * @param optional If the objective should be optional or not.
  * @returns The generated state machine.
@@ -258,18 +308,14 @@ export function createTimeLimit(
             Scope: "session",
             States: {
                 Start: {
-                    IntroCutEnd: [
-                        {
-                            Transition: "TimerRunning",
-                        },
-                    ],
+                    IntroCutEnd: {
+                        Transition: "TimerRunning",
+                    },
                 },
                 TimerRunning: {
-                    exit_gate: [
-                        {
-                            Transition: "Success",
-                        },
-                    ],
+                    exit_gate: {
+                        Transition: "Success",
+                    },
                     $timer: [
                         {
                             Condition: {
@@ -281,5 +327,152 @@ export function createTimeLimit(
                 },
             },
         },
+    }
+}
+
+/**
+ * These are all the possible ways to get a kill in contracts mode.
+ */
+export const enum ContractKillMethod {
+    Any,
+    AnyMelee,
+    ObjectMelee,
+    AnyThrown,
+    ObjectThrown,
+    Pistol,
+    PistolElimination,
+    Smg,
+    AssaultRifle,
+    Shotgun,
+    SniperRifle,
+    AnyPoison,
+    ConsumedPoison,
+    InjectedPoison,
+    AnyAccident,
+    ExplosiveDevice,
+    FiberWire,
+    UnarmedNeckSnap,
+}
+
+type Weapon = ContractCreationNpcTargetPayload["Weapon"]
+type KillSuccessStateCondition = unknown
+
+export function genStateMachineKillSuccessCondition(
+    weapon: Weapon,
+): KillSuccessStateCondition {
+    const km = weaponToKillMethod(weapon)
+
+    if (km === ContractKillMethod.PistolElimination) {
+        return {
+            $any: {
+                "?": {
+                    $or: [
+                        {
+                            $eq: ["$.#", "pistol"],
+                        },
+                        {
+                            $eq: ["$.#", "close_combat_pistol_elimination"],
+                        },
+                    ],
+                },
+                in: ["$Value.KillMethodBroad", "$Value.KillMethodStrict"],
+            },
+        }
+    }
+
+    if (km === ContractKillMethod.Pistol) {
+        return {
+            $any: {
+                "?": {
+                    $or: [
+                        {
+                            $eq: ["$.#", "pistol"],
+                        },
+                        {
+                            $eq: ["$.#", "close_combat_pistol_elimination"],
+                        },
+                    ],
+                },
+                in: ["$Value.KillMethodBroad", "$Value.KillMethodStrict"],
+            },
+        }
+    }
+
+    return {
+        $any: {
+            "?": {
+                $eq: ["$.#", weapon.RequiredKillMethod],
+            },
+            in: ["$Value.KillMethodBroad", "$Value.KillMethodStrict"],
+        },
+    }
+}
+
+/**
+ * Get the equivalent kill method from a weapon object.
+ * @param weapon The weapon's details.
+ */
+export function weaponToKillMethod(weapon: Weapon): ContractKillMethod {
+    const type = weapon.RequiredKillMethodType
+
+    if (type === 0) {
+        return ContractKillMethod.Any
+    }
+
+    switch (weapon.KillMethodBroad) {
+        case "pistol":
+            return ContractKillMethod.Pistol
+        case "smg":
+            return ContractKillMethod.Smg
+        case "sniperrifle":
+            return ContractKillMethod.SniperRifle
+        case "assaultrifle":
+            return ContractKillMethod.AssaultRifle
+        case "shotgun":
+            return ContractKillMethod.Shotgun
+        case "close_combat_pistol_elimination":
+            return ContractKillMethod.PistolElimination
+        case "fiberwire":
+            return ContractKillMethod.FiberWire
+        case "throw": {
+            return type === 1
+                ? ContractKillMethod.AnyThrown
+                : ContractKillMethod.ObjectThrown
+        }
+        case "melee_lethal": {
+            return type === 1
+                ? ContractKillMethod.AnyMelee
+                : ContractKillMethod.ObjectMelee
+        }
+        case "poison": {
+            if (weapon.KillMethodStrict === "consumed_poison" && type === 2) {
+                return ContractKillMethod.ConsumedPoison
+            }
+
+            if (
+                weapon.KillMethodStrict === "injected_poison" &&
+                weapon.RequiredKillMethodType === 2
+            ) {
+                return ContractKillMethod.InjectedPoison
+            }
+
+            assert(
+                type === 1,
+                `Unhandled poison: ${weapon.KillMethodStrict} ${type}`,
+            )
+
+            return ContractKillMethod.AnyPoison
+        }
+        case "unarmed":
+            return ContractKillMethod.UnarmedNeckSnap
+        case "accident":
+            return ContractKillMethod.AnyAccident
+        case "explosive":
+            return ContractKillMethod.ExplosiveDevice
+        default: {
+            assert.fail(
+                `Unhandled condition: ${weapon.KillMethodBroad} ${type}`,
+            )
+        }
     }
 }

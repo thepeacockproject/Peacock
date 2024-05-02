@@ -21,6 +21,7 @@ import type { NextFunction, Response } from "express"
 import type {
     GameVersion,
     MissionManifestObjective,
+    OfficialSublocation,
     PeacockLocationsData,
     RepositoryId,
     RequestWithJwt,
@@ -66,7 +67,7 @@ export const contractCreationTutorialId = "d7e2607c-6916-48e2-9588-976c7d8998bb"
  *
  * See docs/USER_PROFILES.md for more.
  */
-export const LATEST_PROFILE_VERSION = 1
+export const LATEST_PROFILE_VERSION = 2
 
 export async function checkForUpdates(): Promise<void> {
     if (getFlag("updateChecking") === false) {
@@ -249,7 +250,6 @@ export function clampValue(value: number, min: number, max: number) {
  *
  * @param profile The user profile to update
  * @param gameVersion The game version
- * @returns The updated user profile.
  */
 function updateUserProfile(
     profile: UserProfile,
@@ -266,6 +266,29 @@ function updateUserProfile(
         case LATEST_PROFILE_VERSION:
             // This profile updated to the latest version, we're done.
             return
+        case 1: {
+            /* ////// VERSION 2 ////// */
+
+            const sublocations = profile.Extensions.progression.PlayerProfileXP
+                .Sublocations as unknown as OfficialSublocation[]
+
+            profile.Extensions.progression.PlayerProfileXP.Sublocations =
+                Object.fromEntries(
+                    sublocations.map((value) => [
+                        value.Location,
+                        {
+                            Xp: value.Xp,
+                            ActionXp: value.ActionXp,
+                        },
+                    ]),
+                )
+
+            profile.Extensions.LastOfficialSync = null
+
+            profile.Version = 2
+
+            return updateUserProfile(profile, gameVersion)
+        }
         default: {
             // Check that the profile version is indeed undefined. If it isn't,
             // we've forgotten to add a version to the switch.
@@ -725,4 +748,27 @@ export function isSuit(repoId: string): boolean {
     return suitsToTypeMap[repoId]
         ? suitsToTypeMap[repoId] !== "disguise"
         : false
+}
+
+type SublocationMap = {
+    [parentId: string]: string[]
+}
+
+export function getSublocations(gameVersion: GameVersion): SublocationMap {
+    const sublocations: SublocationMap = {}
+    const locations = getVersionedConfig<PeacockLocationsData>(
+        "LocationsData",
+        gameVersion,
+        false,
+    )
+
+    for (const child of Object.values(locations.children)) {
+        if (!child.Properties.ParentLocation) continue
+
+        sublocations[child.Properties.ParentLocation] ??= []
+
+        sublocations[child.Properties.ParentLocation].push(child.Id)
+    }
+
+    return sublocations
 }

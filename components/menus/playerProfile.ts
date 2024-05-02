@@ -30,6 +30,13 @@ import { getDestinationCompletion } from "./destinations"
 import { getUserData } from "../databaseHandler"
 import { isSniperLocation } from "../utils"
 
+type XpData = {
+    [location: string]: {
+        Xp: number
+        ActionXp: number
+    }
+}
+
 export function getPlayerProfileData(
     gameVersion: GameVersion,
     userId: string,
@@ -47,7 +54,27 @@ export function getPlayerProfileData(
 
     playerProfilePage.SubLocationData = []
 
+    const userProfile = getUserData(userId, gameVersion)
+    const subLocationMap =
+        userProfile.Extensions.progression.PlayerProfileXP.Sublocations
+    const xpData: XpData = {}
+
     for (const subLocationKey in locationData.children) {
+        const subLocation = locationData.children[subLocationKey]
+        const parentLocation =
+            locationData.parents[subLocation.Properties.ParentLocation || ""]
+
+        // We find all sublocations and add their XP for the season data
+        const subLocationData = subLocationMap[subLocationKey]
+
+        xpData[parentLocation.Id] ??= {
+            Xp: 0,
+            ActionXp: 0,
+        }
+
+        xpData[parentLocation.Id].Xp += subLocationData?.Xp ?? 0
+        xpData[parentLocation.Id].ActionXp += subLocationData?.ActionXp ?? 0
+
         // Ewww...
         if (
             subLocationKey === "LOCATION_ICA_FACILITY_ARRIVAL" ||
@@ -55,10 +82,6 @@ export function getPlayerProfileData(
         ) {
             continue
         }
-
-        const subLocation = locationData.children[subLocationKey]
-        const parentLocation =
-            locationData.parents[subLocation.Properties.ParentLocation || ""]
 
         const completionData = generateCompletionData(
             subLocation.Id,
@@ -109,24 +132,17 @@ export function getPlayerProfileData(
         })
     }
 
-    const userProfile = getUserData(userId, gameVersion)
     playerProfilePage.PlayerProfileXp.Total =
         userProfile.Extensions.progression.PlayerProfileXP.Total
     playerProfilePage.PlayerProfileXp.Level =
         userProfile.Extensions.progression.PlayerProfileXP.ProfileLevel
 
-    const subLocationMap = new Map(
-        userProfile.Extensions.progression.PlayerProfileXP.Sublocations.map(
-            (obj) => [obj.Location, obj],
-        ),
-    )
-
     for (const season of playerProfilePage.PlayerProfileXp.Seasons) {
         for (const location of season.Locations) {
-            const subLocationData = subLocationMap.get(location.LocationId)
+            const locationData = xpData[location.LocationId]
 
-            location.Xp = subLocationData?.Xp || 0
-            location.ActionXp = subLocationData?.ActionXp || 0
+            location.Xp = locationData?.Xp || 0
+            location.ActionXp = locationData?.ActionXp || 0
 
             if (
                 location.LocationProgression &&

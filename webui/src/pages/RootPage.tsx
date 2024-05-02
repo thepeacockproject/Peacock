@@ -16,19 +16,18 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { pack } from "msgpackr"
-import { writeFile } from "node:fs/promises"
+import * as React from "react"
+import { Navbar } from "../components/Navbar"
+import { Outlet } from "react-router-dom"
 
-const lines = await fetch(
-    "https://raw.githubusercontent.com/glacier-modding/Hitman-l10n-Hashes/master/lines.json",
-)
-    .then((res) => res.json())
-    .catch(() => {
-        throw new Error("Failed to fetch lines.json")
-    })
+export function RootPage() {
+    return (
+        <>
+            <header>
+                <Navbar />
+            </header>
 
-const outKeys = Object.keys(lines).map((key) => {
-    return parseInt(key, 16)
-})
-
-await writeFile("testData/game-defined-locr-crc32s.msgpack", pack(outKeys))
+            <Outlet />
+        </>
+    )
+}

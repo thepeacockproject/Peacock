@@ -49,11 +49,9 @@ const { register } = require("esbuild-register/dist/node")
 register()
 
 const resolveTextFile = function (module, path) {
-    const content = readFileSync(path).toString()
-
-    module.exports = content
+    module.exports = readFileSync(path).toString()
 }
 
 Module._extensions[".json"] = resolveTextFile
 
-require("../components/index.ts")
+require("../components/cli.ts")

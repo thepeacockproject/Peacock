@@ -33,6 +33,8 @@ import picocolors from "picocolors"
 import { Filename, npath, PortablePath, ppath, xfs } from "@yarnpkg/fslib"
 import { makeEmptyArchive, ZipFS } from "@yarnpkg/libzip"
 import { configs } from "./configSwizzleManager"
+import * as crypto from "node:crypto"
+import * as fs from "node:fs"
 
 const IMAGE_PACK_REPO = "thepeacockproject/ImagePack"
 
@@ -45,7 +47,7 @@ const modFrameworkDataPath: string | false =
         )) ||
     false
 
-export async function toolsMenu() {
+export async function toolsMenu(options: { skip: boolean }) {
     const init = await prompts({
         name: "actions",
         message: "Select actions:",
@@ -72,7 +74,7 @@ export async function toolsMenu() {
 
     switch (init.actions) {
         case "debug":
-            await exportDebugInfo()
+            await exportDebugInfo(options.skip)
             break
         case "download-images":
             await downloadImagePack()
@@ -93,7 +95,7 @@ async function copyIntoZip(zip: ZipFS, path: string): Promise<void> {
     })
 }
 
-async function exportDebugInfo(): Promise<void> {
+async function exportDebugInfo(skipEncrypt: boolean): Promise<void> {
     const cpus = cpuList().map((cpu, index) => ({
         core: index + 1,
         ...cpu,
@@ -150,6 +152,76 @@ async function exportDebugInfo(): Promise<void> {
     await copyIntoZip(zip, "contracts")
 
     zip.saveAndClose()
+
+    encrypt: if (!skipEncrypt) {
+        const publicKey = crypto.createPublicKey(
+            "-----BEGIN PUBLIC KEY-----\n" +
+                "MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAupOzd1PiMy8M+hWRwt3J\n" +
+                "/fZPExUwRVlGTd4goZSfrZO2NfXjCzkfTvAIWe8ItU88oUsbfcMu/iQ7JqtoeMdc\n" +
+                "yd4/hA0Glnc10fREnFJrJTEhetzrv1PUXx8uSYzkfj6L8eO8UO6W/faomYdNontQ\n" +
+                "F3CEBUvYHXRo31D7ubQKiAXExDLybWCZXDV4f0HL1vaTR0gjB7tCfq5D9jpdaBR5\n" +
+                "sQPX2RSexUJE4dn5t4Gkbl8G9CaSEwPaBIAhcHnY8BkrNb16cNTp24AUqeKC1AMI\n" +
+                "e1xgOLjkx0EG+43dGX48lP8oRAixyemA6QDcAwufPPxuCbAVNMN7+NpTEaky2j+U\n" +
+                "Gay80XtTOAbsW8kgRVUJnw6CbaHvvmDUL19q7rGAe8dOgCiatE1HWpxPCZX8KBrw\n" +
+                "iCIEmPzftqqulqwmfh1Uf7ZWvdb9ugYhp9wce0cGX1Lb6uO4gd+GAJsgyGHa/ny9\n" +
+                "Y8nqGHpiCcBXMgZ8ggSQXQlLpJGmGfkxNyw8RRM1uiBBU9y9QxhcghAhkkS814a0\n" +
+                "F3UAISYursYS337uhm54qvLNKDIHqaOpZHh23El092zQYJlZbCZn5WZiTtBum1Us\n" +
+                "XvG7eLb7Tulqnk90p0SRhQeIt2zGnb49Zq+ixP9YJX7LK3xm+JJ9j6/1oKJbrdBL\n" +
+                "1ppbcSy1RGsiYbPT3ohZ59sCAwEAAQ==\n" +
+                "-----END PUBLIC KEY-----",
+        )
+
+        const options: {
+            algorithm: string
+            key: Buffer | string
+            iv: Buffer | string
+        } = {
+            algorithm: "aes-256-cbc",
+            key: crypto.randomBytes(32),
+            iv: crypto.randomBytes(16),
+        }
+
+        const cipher = crypto.createCipheriv(
+            options.algorithm,
+            options.key,
+            options.iv,
+        )
+
+        options.key = options.key.toString("base64")
+        options.iv = options.iv.toString("base64")
+
+        const buffer = fs.readFileSync("DEBUG_PROFILE.zip")
+        const encrypted = Buffer.concat([cipher.update(buffer), cipher.final()])
+
+        if (!encrypted) {
+            log(LogLevel.WARN, "Failed to encrypt debug profile!")
+            break encrypt
+        }
+
+        fs.rmSync("DEBUG_PROFILE.zip")
+
+        const zipFile = ppath.resolve(ppath.cwd(), "DEBUG_PROFILE.zip")
+
+        // we'll start by creating an empty zip file
+        await writeFile(npath.fromPortablePath(zipFile), makeEmptyArchive())
+
+        const zip = new ZipFS(zipFile, { create: true })
+
+        await zip.writeFilePromise(
+            zip.resolve("DEBUG_PROFILE.peacock" as Filename),
+            encrypted,
+        )
+
+        await zip.writeFilePromise(
+            zip.resolve("key" as Filename),
+            crypto.publicEncrypt(
+                publicKey,
+                Buffer.from(JSON.stringify(options)),
+            ),
+        )
+
+        zip.saveAndClose()
+    }
 
     log(
         LogLevel.INFO,

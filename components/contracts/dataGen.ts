@@ -755,6 +755,84 @@ const noPacifications = {
     ],
 }
 
+const hideAllBodies = {
+    IsCompleted: true,
+    ContractConditionType: "PrimarySecondary",
+    Primary: [
+        {
+            Type: "gamechanger",
+            Properties: {
+                Id: "c2da52c5-ff3e-41cd-a175-4ed9267f6c95",
+                Name: "UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_HIDE_ALL_BODIES_PRIMARY_NAME",
+                Description:
+                    "UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_HIDE_ALL_BODIES_PRIMARY_DESC",
+                LongDescription:
+                    "UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_HIDE_ALL_BODIES_PRIMARY_DESC",
+                TileImage:
+                    "images/contractconditions/condition_contrac_hide_all_bodies.jpg",
+                Icon: "images/challenges/default_challenge_icon.png",
+                ObjectivesCategory: "primary",
+            },
+        },
+    ],
+    Secondary: [
+        {
+            Type: "gamechanger",
+            Properties: {
+                Id: "a77cf01e-ab02-4b1c-a4bd-a37fb8be1114",
+                Name: "UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_HIDE_ALL_BODIES_SECONDARY_NAME",
+                Description:
+                    "UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_HIDE_ALL_BODIES_SECONDARY_DESC",
+                LongDescription:
+                    "UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_HIDE_ALL_BODIES_SECONDARY_DESC",
+                TileImage:
+                    "images/contractconditions/condition_contrac_hide_all_bodies.jpg",
+                Icon: "images/challenges/default_challenge_icon.png",
+                ObjectivesCategory: "secondary",
+            },
+        },
+    ],
+}
+
+const doNotGetSpotted = {
+    IsCompleted: true,
+    ContractConditionType: "PrimarySecondary",
+    Primary: [
+        {
+            Type: "gamechanger",
+            Properties: {
+                Id: "9f409781-0a06-4748-b08d-784e78c6d481",
+                Name: "UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_DO_NOT_GET_SPOTTED_PRIMARY_NAME",
+                Description:
+                    "UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_DO_NOT_GET_SPOTTED_PRIMARY_DESC",
+                LongDescription:
+                    "UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_DO_NOT_GET_SPOTTED_PRIMARY_DESC",
+                TileImage:
+                    "images/contractconditions/condition_contrac_do_not_be_spotted.jpg",
+                Icon: "images/challenges/default_challenge_icon.png",
+                ObjectivesCategory: "primary",
+            },
+        },
+    ],
+    Secondary: [
+        {
+            Type: "gamechanger",
+            Properties: {
+                Id: "a77cf01e-ab02-4b1c-a4bd-a37fb8be1114",
+                Name: "UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_DO_NOT_GET_SPOTTED_SECONDARY_NAME",
+                Description:
+                    "UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_DO_NOT_GET_SPOTTED_SECONDARY_DESC",
+                LongDescription:
+                    "UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_DO_NOT_GET_SPOTTED_SECONDARY_DESC",
+                TileImage:
+                    "images/contractconditions/condition_contrac_do_not_be_spotted.jpg",
+                Icon: "images/challenges/default_challenge_icon.png",
+                ObjectivesCategory: "secondary",
+            },
+        },
+    ],
+}
+
 export function complications(timeString: string) {
     return [
         {
@@ -831,87 +909,7 @@ export function complications(timeString: string) {
         noMissedShots,
         headshotsOnly,
         targetsOnly,
+        hideAllBodies,
+        doNotGetSpotted,
     ]
 }
-
-/*
-const PISTOL_ELIM = {
-    $any: {
-        "?": {
-            $or: [
-                {
-                    $eq: ["$.#", "pistol"],
-                },
-                {
-                    $eq: ["$.#", "close_combat_pistol_elimination"],
-                },
-            ],
-        },
-        in: ["$Value.KillMethodBroad", "$Value.KillMethodStrict"],
-    },
-}
-
-export class StateMachineGenerationContext {
-    public createKillMethodStateMachine(): void {
-        this.weaponTargetStateMachine = {
-            _comment: `Eliminate ${this.targetId} using weapon`,
-            Type: "statemachine",
-            Id: this.weaponTargetStateMachineId,
-            Category: "secondary",
-            Definition: {
-                Scope: "Hit",
-                Context: {
-                    Targets: [this.targetId],
-                },
-                States: {
-                    Start: {
-                        Kill: [
-                            {
-                                Condition: {
-                                    $and: [
-                                        {
-                                            $eq: [
-                                                "$Value.RepositoryId",
-                                                this.targetId,
-                                            ],
-                                        },
-                                        {
-                                            $eq: [
-                                                "$Value.KillMethodStrict",
-                                                this.genContextParams
-                                                    .KillMethodStrict,
-                                            ],
-                                        },
-                                    ],
-                                },
-                                Transition: "Success",
-                            },
-                            {
-                                Condition: {
-                                    $eq: ["$Value.RepositoryId", this.targetId],
-                                },
-                                Transition: "Failure",
-                            },
-                        ],
-                    },
-                },
-            },
-        }
-    }
-
-    private kmConditions(killMethodBroad) {
-        switch (killMethodBroad) {
-            case "pistol":
-                return PISTOL_ELIM
-            default:
-                // weapon
-                return {
-                    $eq: [
-                        "$Value.KillMethodStrict",
-                        this.genContextParams.KillMethodStrict,
-                    ],
-                }
-        }
-    }
-}
- */

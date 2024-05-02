@@ -49,8 +49,8 @@ import {
 import { log, LogLevel } from "../loggingInterop"
 import { randomUUID } from "crypto"
 import {
+    createObjectivesForTarget,
     createTimeLimit,
-    TargetCreator,
 } from "../statemachines/contractCreation"
 import { createSniperLoadouts, SniperCharacter } from "../menus/sniper"
 import { GetForPlay2Body } from "../types/gameSchemas"
@@ -277,13 +277,13 @@ contractRoutingRouter.post(
             return
         }
 
-        req.body.creationData.Targets.forEach((target) => {
+        for (const target of req.body.creationData.Targets) {
             if (!target.Selected) {
-                return
+                continue
             }
 
-            objectives.push(...new TargetCreator(target).build())
-        })
+            objectives.push(...createObjectivesForTarget(target))
+        }
 
         req.body.creationData.ContractConditionIds.forEach(
             (contractConditionId) => {

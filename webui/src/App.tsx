@@ -19,24 +19,53 @@
 import * as React from "react"
 import "infima/dist/css/default/default.css"
 import "./App.css"
-import { Navbar } from "./components/Navbar"
+import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import { DevToolsPage } from "./pages/DevToolsPage"
+import { TransferPage } from "./pages/TransferPage"
 import { LoadoutPage } from "./pages/LoadoutPage"
+import { RootPage } from "./pages/RootPage"
 import { Home } from "./pages/Home"
 import { EscalationLevelPage } from "./pages/EscalationLevelPage"
-import { DevToolsPage } from "./pages/DevToolsPage"
+
+const router = createBrowserRouter([
+    {
+        path: "/",
+        element: <RootPage />,
+        children: [
+            {
+                path: "",
+                element: <Home />,
+            },
+            WEBUI_IS_DEV
+                ? {
+                      path: "ui/devtools",
+                      element: <DevToolsPage />,
+                  }
+                : null!,
+            {
+                path: "ui/transfer",
+                element: <TransferPage />,
+            },
+            {
+                path: "ui/loadouts",
+                element: <LoadoutPage />,
+            },
+            {
+                path: "ui/escalations",
+                element: <EscalationLevelPage />,
+            },
+            {
+                path: "*",
+                element: (
+                    <h1 style={{ marginTop: "4rem", textAlign: "center" }}>
+                        Not Found
+                    </h1>
+                ),
+            },
+        ].filter(Boolean),
+    },
+])
 
 export function App(): React.ReactElement {
-    const [page, setPage] = React.useState<string>("")
-
-    return (
-        <>
-            <header>
-                <Navbar page={page} setPage={setPage} />
-            </header>
-            {!page || page === "" ? <Home /> : null}
-            {page === "loadouts" && <LoadoutPage />}
-            {page === "escalations" && <EscalationLevelPage />}
-            {WEBUI_IS_DEV && page === "devtools" && <DevToolsPage />}
-        </>
-    )
+    return <RouterProvider router={router} />
 }
