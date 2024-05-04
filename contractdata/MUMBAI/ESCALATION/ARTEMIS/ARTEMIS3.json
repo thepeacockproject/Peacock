@@ -1,0 +1,270 @@
+{
+    "Data": {
+        "EnableExits": {
+            "$eq": [
+                "Completed",
+                "$c51603b3-e08a-36cb-f00e-63e02b9e5e0a",
+                "$733ebb42-f27a-4c2e-3e93-49a3966e3611",
+                "$a516ae6b-ccb5-53f9-9220-4916a7522e4f"
+            ]
+        },
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "Type": "statemachine",
+                "Id": "c51603b3-e08a-36cb-f00e-63e02b9e5e0a",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_ARTEMIS_TAR1_CONDITION_NAME"
+                },
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "e9e143e1-f5a6-40a5-af56-947cbf32e20a",
+                        "HardCondition": true,
+                        "ObjectiveId": "",
+                        "KillMethod": ""
+                    }
+                ],
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "Targets": ["80051c02-e026-40fe-970a-7b7aaa62302c"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "80051c02-e026-40fe-970a-7b7aaa62302c"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "e9e143e1-f5a6-40a5-af56-947cbf32e20a"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "80051c02-e026-40fe-970a-7b7aaa62302c"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "733ebb42-f27a-4c2e-3e93-49a3966e3611",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_ARTEMIS_TAR2_CONDITION_NAME"
+                },
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "e9e143e1-f5a6-40a5-af56-947cbf32e20a",
+                        "HardCondition": true,
+                        "ObjectiveId": "",
+                        "KillMethod": ""
+                    }
+                ],
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "Targets": ["332280ad-3b31-4913-99f1-794a4a46b98b"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "332280ad-3b31-4913-99f1-794a4a46b98b"
+                                                ]
+                                            },
+
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "e9e143e1-f5a6-40a5-af56-947cbf32e20a"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "332280ad-3b31-4913-99f1-794a4a46b98b"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "a516ae6b-ccb5-53f9-9220-4916a7522e4f",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_ARTEMIS_TAR3_CONDITION_NAME"
+                },
+                "Category": "primary",
+                "TargetConditions": [
+                    {
+                        "Type": "disguise",
+                        "RepositoryId": "e9e143e1-f5a6-40a5-af56-947cbf32e20a",
+                        "HardCondition": true,
+                        "ObjectiveId": "",
+                        "KillMethod": ""
+                    }
+                ],
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "Targets": ["72aa012a-d74d-493f-8b84-397b95efd385"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "72aa012a-d74d-493f-8b84-397b95efd385"
+                                                ]
+                                            },
+
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "e9e143e1-f5a6-40a5-af56-947cbf32e20a"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "72aa012a-d74d-493f-8b84-397b95efd385"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "00deb548-dae5-312b-a86e-400965b98e57",
+                "Image": "images/contracts/escalation/contractescalation_artemis_khatavanga.jpg",
+                "BriefingName": "$loc UI_PEACOCK_ARTEMIS_KHATAVANGA_NAME",
+                "BriefingText": "$loc UI_PEACOCK_ARTEMIS_KHATAVANGA_NAME",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_ARTEMIS_KHATAVANGA_NAME"
+                },
+                "ObjectiveType": "custom",
+                "Category": "primary",
+                "ForceShowOnLoadingScreen": true,
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "Targets": ["40e96ed0-7668-4d65-b88a-f44bfff5f537"]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "40e96ed0-7668-4d65-b88a-f44bfff5f537"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "GameChangers": [
+            "36bd0cd1-ec01-b9e3-dcd8-08242823cafe",
+            "484d5cf9-0f31-50e0-0192-d057633e9305",
+            "0cf5e693-35ec-457e-a004-da4672b90376"
+        ],
+        "Bricks": []
+    },
+    "Metadata": {
+        "Title": "UI_PEACOCK_ARTEMIS3",
+        "Description": "",
+        "Entitlements": ["H2_LEGACY_STANDARD"],
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Mumbai/scene_mongoose.entity",
+        "Location": "LOCATION_MUMBAI",
+        "IsPublished": true,
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "GameVersion": "8.15.0.0",
+        "ServerVersion": "8.15.0.0",
+        "Type": "escalation",
+        "Id": "6260472f-19d1-4292-904c-5c26b1f8ea4e",
+        "PublicId": "166149848423",
+        "TileImage": "images/contracts/escalation/contractescalation_artemis.jpg",
+        "GroupObjectiveDisplayOrder": [
+            {
+                "Id": "0cf5e693-35ec-457e-a004-da4672b90376",
+                "IsNew": true
+            },
+            {
+                "Id": "733ebb42-f27a-4c2e-3e93-49a3966e3611"
+            },
+            {
+                "Id": "a516ae6b-ccb5-53f9-9220-4916a7522e4f"
+            },
+            {
+                "Id": "484d5cf9-0f31-50e0-0192-d057633e9305"
+            },
+            {
+                "Id": "c51603b3-e08a-36cb-f00e-63e02b9e5e0a"
+            },
+            {
+                "Id": "00deb548-dae5-312b-a86e-400965b98e57"
+            },
+            {
+                "Id": "36bd0cd1-ec01-b9e3-dcd8-08242823cafe"
+            }
+        ],
+        "InGroup": "b4c961a0-42da-b4cc-b92a-763977de914c",
+        "CreationTimestamp": "2024-04-08T12:29:31.554Z"
+    },
+    "UserData": {}
+}
