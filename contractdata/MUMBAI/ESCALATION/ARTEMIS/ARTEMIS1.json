@@ -1,0 +1,105 @@
+{
+    "Data": {
+        "EnableExits": {
+            "$eq": ["Completed", "$c51603b3-e08a-36cb-f00e-63e02b9e5e0a"]
+        },
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "Type": "statemachine",
+                "Id": "c51603b3-e08a-36cb-f00e-63e02b9e5e0a",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_ARTEMIS_TAR1_NAME"
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "Targets": ["80051c02-e026-40fe-970a-7b7aaa62302c"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "80051c02-e026-40fe-970a-7b7aaa62302c"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "00deb548-dae5-312b-a86e-400965b98e57",
+                "Image": "images/contracts/escalation/contractescalation_artemis_khatavanga.jpg",
+                "BriefingName": "$loc UI_PEACOCK_ARTEMIS_KHATAVANGA_NAME",
+                "BriefingText": "$loc UI_PEACOCK_ARTEMIS_KHATAVANGA_NAME",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_ARTEMIS_KHATAVANGA_NAME"
+                },
+                "ObjectiveType": "custom",
+                "Category": "primary",
+                "ForceShowOnLoadingScreen": true,
+                "ExcludeFromScoring": false,
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "Targets": ["40e96ed0-7668-4d65-b88a-f44bfff5f537"]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "40e96ed0-7668-4d65-b88a-f44bfff5f537"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "GameChangers": ["36bd0cd1-ec01-b9e3-dcd8-08242823cafe"],
+        "Bricks": []
+    },
+    "Metadata": {
+        "Title": "UI_PEACOCK_ARTEMIS1",
+        "Description": "",
+        "Entitlements": ["H2_LEGACY_STANDARD"],
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Mumbai/scene_mongoose.entity",
+        "Location": "LOCATION_MUMBAI",
+        "IsPublished": true,
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "GameVersion": "8.15.0.0",
+        "ServerVersion": "8.15.0.0",
+        "Type": "escalation",
+        "Id": "e47b7659-23f7-d6b9-ae27-d0f0e8943dbd",
+        "PublicId": "166149848423",
+        "TileImage": "images/contracts/escalation/contractescalation_artemis.jpg",
+        "GroupObjectiveDisplayOrder": [
+            {
+                "Id": "c51603b3-e08a-36cb-f00e-63e02b9e5e0a"
+            },
+            {
+                "Id": "00deb548-dae5-312b-a86e-400965b98e57"
+            },
+            {
+                "Id": "36bd0cd1-ec01-b9e3-dcd8-08242823cafe"
+            }
+        ],
+        "InGroup": "b4c961a0-42da-b4cc-b92a-763977de914c",
+        "CreationTimestamp": "2024-04-08T12:29:31.554Z"
+    },
+    "UserData": {}
+}
