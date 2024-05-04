@@ -294,5 +294,37 @@
                 }
             }
         ]
+    },
+    "297f1367-a233-8304-7ef8-50ed1298619f": {
+        "Name": "UI_PEACOCK_GAMECHANGERS_MUMBAI_ARTEMIS_EXIT_NAME",
+        "Description": "UI_PEACOCK_GAMECHANGERS_MUMBAI_ARTEMIS_EXIT_DESC",
+        "Icon": "images/challenges/default_challenge_icon.png",
+        "IsHidden": null,
+        "TileImage": "images/challenges/Mumbai/Hideout_Exit.jpg",
+        "Resource": [],
+        "Objectives": [
+            {
+                "Id": "3c59ca7b-04ed-3d78-3fb6-54810d1651c4",
+                "Category": "condition",
+                "Exits": ["1aa8a4a5-1c8f-4145-a87b-16b13817f6e5"],
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "BriefingText": "",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "-": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ]
     }
 }
