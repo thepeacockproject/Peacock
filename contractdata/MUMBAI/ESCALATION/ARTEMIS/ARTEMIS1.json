@@ -1,0 +1,119 @@
+{
+    "Data": {
+        "EnableExits": {
+            "$eq": ["Completed", "$c51603b3-e08a-36cb-f00e-63e02b9e5e0a"]
+        },
+        "Entrances": [
+            "a95703cb-091b-4d05-a2ee-3a70ade13590",
+            "f4659b56-65c3-4f4f-8f20-11d09af2f2d2",
+            "8b1c3ba0-9c91-4b3e-96f9-7d3c8632b7c2",
+            "51145d77-882e-4be0-a471-73704497aa8b",
+            "86a3857f-dad7-45ac-818b-d933e5c8dfd9",
+            "774b7dec-ce57-4318-9dbd-f6d7fa39ef1d",
+            "37af536b-3f36-49ed-986a-9d55f4481ed4",
+            "5e6a6e2c-ee2c-40a7-9de5-d7fb8fbd8dcd",
+            "f1bb66b5-b446-4a00-a951-af7310e28566",
+            "724b24ef-e87f-4060-b7ed-5c315fb0f29f",
+            "cc3ebf7d-0fcf-40bc-9b55-1e2426e66edd",
+            "0e33bbeb-2c77-419a-be0c-ce9c3627d543"
+        ],
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "Type": "statemachine",
+                "Id": "c51603b3-e08a-36cb-f00e-63e02b9e5e0a",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_ARTEMIS_TAR1_NAME"
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "Targets": ["80051c02-e026-40fe-970a-7b7aaa62302c"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "80051c02-e026-40fe-970a-7b7aaa62302c"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "00deb548-dae5-312b-a86e-400965b98e57",
+                "Image": "images/contracts/escalation/contractescalation_artemis_khatavanga.jpg",
+                "BriefingName": "$loc UI_PEACOCK_ARTEMIS_KHATAVANGA_NAME",
+                "BriefingText": "$loc UI_PEACOCK_ARTEMIS_KHATAVANGA_NAME",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_ARTEMIS_KHATAVANGA_NAME"
+                },
+                "ObjectiveType": "custom",
+                "Category": "primary",
+                "ForceShowOnLoadingScreen": true,
+                "ExcludeFromScoring": false,
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "Targets": ["40e96ed0-7668-4d65-b88a-f44bfff5f537"]
+                    },
+                    "States": {
+                        "Start": {
+                            "ItemPickedUp": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "40e96ed0-7668-4d65-b88a-f44bfff5f537"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "GameChangers": ["36bd0cd1-ec01-b9e3-dcd8-08242823cafe"],
+        "Bricks": []
+    },
+    "Metadata": {
+        "Title": "UI_PEACOCK_ARTEMIS1",
+        "Description": "",
+        "Entitlements": ["H2_LEGACY_STANDARD"],
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/Mumbai/scene_mongoose.entity",
+        "Location": "LOCATION_MUMBAI",
+        "IsPublished": true,
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "GameVersion": "8.15.0.0",
+        "ServerVersion": "8.15.0.0",
+        "Type": "escalation",
+        "Id": "e47b7659-23f7-d6b9-ae27-d0f0e8943dbd",
+        "PublicId": "166149848423",
+        "TileImage": "images/contracts/escalation/contractescalation_artemis.jpg",
+        "GroupObjectiveDisplayOrder": [
+            {
+                "Id": "c51603b3-e08a-36cb-f00e-63e02b9e5e0a"
+            },
+            {
+                "Id": "00deb548-dae5-312b-a86e-400965b98e57"
+            },
+            {
+                "Id": "36bd0cd1-ec01-b9e3-dcd8-08242823cafe"
+            }
+        ],
+        "InGroup": "b4c961a0-42da-b4cc-b92a-763977de914c",
+        "CreationTimestamp": "2024-04-08T12:29:31.554Z"
+    },
+    "UserData": {}
+}
