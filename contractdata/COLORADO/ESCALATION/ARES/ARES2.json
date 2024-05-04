@@ -20,7 +20,7 @@
                     }
                 },
                 "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_ANTHURIUM_TAR1"
+                    "display": "$loc UI_PEACOCK_ARES_TAR1"
                 },
                 "Category": "primary",
                 "Definition": {
@@ -71,6 +71,68 @@
                         "KillMethod": ""
                     }
                 ]
+            },
+            {
+                "Type": "statemachine",
+                "Id": "f7efa670-a305-4d6c-84ee-8060653c37f2",
+                "BriefingText": {
+                    "$loc": {
+                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
+                        "data": "$($repository bd17a855-0bf7-48a1-abab-ddb5c08fcdfc).Name"
+                    }
+                },
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_ARES_TAR2"
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["bd17a855-0bf7-48a1-abab-ddb5c08fcdfc"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "bd17a855-0bf7-48a1-abab-ddb5c08fcdfc"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "a8a0c154-c36f-413e-8f29-b83a1b7a22f0"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "bd17a855-0bf7-48a1-abab-ddb5c08fcdfc"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "TargetConditions": [
+                    {
+                        "Type": "weapon",
+                        "RepositoryId": "a8a0c154-c36f-413e-8f29-b83a1b7a22f0",
+                        "HardCondition": true,
+                        "KillMethod": "accident_explosion"
+                    }
+                ]
             }
         ],
         "GameChangers": [],
@@ -78,7 +140,7 @@
         "EnableSaving": false
     },
     "Metadata": {
-        "Title": "UI_PEACOCK_ANTHURIUM1",
+        "Title": "UI_PEACOCK_ARES2",
         "Description": "",
         "Entitlements": ["H1_LEGACY_STANDARD"],
         "ScenePath": "assembly:/_PRO/Scenes/Missions/Colorado_2/_scene_bull.entity",
@@ -88,10 +150,14 @@
         "GameVersion": "8.14.0.0",
         "ServerVersion": "8.14.0.0",
         "Type": "escalation",
-        "Id": "b1fe399f-8617-f4da-b425-e1c397d12c48",
+        "Id": "fe0ae510-c920-2090-dd06-cd53e249a401",
         "PublicId": "166655852161",
-        "TileImage": "images/contracts/escsalation/contractescalation_anthurium.jpg",
+        "TileImage": "images/contracts/escsalation/contractescalation_ares.jpg",
         "GroupObjectiveDisplayOrder": [
+            {
+                "Id": "f7efa670-a305-4d6c-84ee-8060653c37f2",
+                "IsNew": true
+            },
             {
                 "Id": "4966895f-f640-4967-abf5-2ab90c9f4a50"
             }
