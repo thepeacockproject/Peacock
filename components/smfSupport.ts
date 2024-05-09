@@ -105,7 +105,7 @@ export class SMFSupport {
         )) {
             if (contractData.SMF?.destinations?.peacockIntegration !== false) {
                 this.controller.addMission(contractData)
-    
+
                 if (contractData.SMF?.destinations?.addToDestinations) {
                     this.handleDestination(contractData)
                 }
