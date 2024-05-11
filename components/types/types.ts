@@ -1378,9 +1378,19 @@ export interface RegistryChallenge extends SavedChallenge {
     /**
      * Warning: this property is INTERNAL and should NOT BE SPECIFIED by API users.
      *
+     * The parent challenge group this challenge belongs to.
+     *
      * @internal
      */
     inGroup?: string
+    /**
+     * Warning: this property is INTERNAL and should NOT BE SPECIFIED by API users.
+     *
+     * The location ID this challenge belongs to, may mismatch ParentLocationId field.
+     *
+     * @internal
+     */
+    inLocation?: string
 }
 
 /**
