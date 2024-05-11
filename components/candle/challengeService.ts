@@ -87,6 +87,17 @@ export type ChallengePack = {
     Icon: string
 }
 
+export type GlobalChallengeGroup = {
+    groupId: string
+    location: string
+    gameVersions: GameVersion[]
+    /**
+     * If set, this global challenge group will be visible in all locations,
+     * regardless if this group has challenges in that location or not.
+     */
+    allLocations: boolean
+}
+
 /**
  * A base class providing challenge registration support.
  */
@@ -185,6 +196,12 @@ export abstract class ChallengeRegistry {
             },
         ],
     ])
+
+    /**
+     * The list of user-made challenge groups that span multiple locations
+     * and should merge their global type challenges merged with location challenges.
+     */
+    public globalGroups: Map<string, GlobalChallengeGroup> = new Map();
 
     registerChallenge(
         challenge: RegistryChallenge,
@@ -341,6 +358,21 @@ export abstract class ChallengeRegistry {
                 gameGroups.get("GLOBAL_ELUSIVES_CHALLENGES")?.get(groupId),
             )
         }
+        
+        const globalGroup = this.globalGroups.get(groupId)
+        
+        if (globalGroup && globalGroup.gameVersions.includes(gameVersion)) {
+            const globalGroupChallenges = gameGroups.get(globalGroup.location)?.get(globalGroup.groupId)
+            
+            if (!mainGroup) {
+                return globalGroupChallenges
+            }
+            
+            return mergeSavedChallengeGroups(
+                mainGroup,
+                globalGroupChallenges,
+            )
+        }
 
         return mainGroup
     }
@@ -402,6 +434,15 @@ export abstract class ChallengeRegistry {
                 ...(gameChalGC
                     .get("GLOBAL_ELUSIVES_CHALLENGES")
                     ?.get(groupId) ?? []),
+            ])
+        }
+        
+        const globalGroup = this.globalGroups.get(groupId);
+        
+        if (globalGroup && globalGroup.location === location && globalGroup.gameVersions.includes(gameVersion)) {
+            return new Set([
+                ...(gameChalGC.get(location)?.get(groupId) ?? []),
+                ...(gameChalGC.get(globalGroup.location)?.get(groupId) ?? []),
             ])
         }
 
@@ -698,6 +739,22 @@ export class ChallengeService extends ChallengeRegistry {
                     challenges,
                     gameVersion,
                 )
+            }
+            
+            for (const globalGroup of this.globalGroups.values()) {
+                if (
+                    globalGroup.allLocations &&
+                    globalGroup.gameVersions.includes(gameVersion) &&
+                    this.groups[gameVersion].get(location)?.get(globalGroup.groupId) === undefined
+                ) {
+                    this.getGroupedChallengesByLoc(
+                        filter,
+                        globalGroup.location,
+                        challenges,
+                        gameVersion
+                    )
+                }
+                
             }
         }
 
