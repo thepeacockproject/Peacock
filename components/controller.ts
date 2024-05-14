@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { existsSync, readdirSync, readFileSync } from "fs"
+import { existsSync } from "fs"
 import { readdir, readFile, writeFile } from "fs/promises"
 import { join } from "path"
 import {
@@ -77,6 +77,7 @@ import generatedPeacockRequireTable from "./generatedPeacockRequireTable"
 import { escalationTypes } from "./contracts/escalations/escalationService"
 import { orderedETAs } from "./contracts/elusiveTargetArcades"
 import { SMFSupport } from "./smfSupport"
+import { glob } from "fast-glob"
 
 /**
  * An array of string arrays that contains the IDs of the featured contracts.
@@ -464,7 +465,7 @@ export class Controller {
 
         this._addElusiveTargets()
         this._getETALocations()
-        this.index()
+        await this.index()
 
         try {
             await this._loadResources()
@@ -577,7 +578,7 @@ export class Controller {
 
         await writeFile(name, j)
 
-        this.index()
+        await this.index()
         return manifest
     }
 
@@ -772,24 +773,21 @@ export class Controller {
      *
      * @internal
      */
-    index(): void {
+    async index(): Promise<void> {
         this.contracts.clear()
         this._pubIdToContractId.clear()
 
-        const contracts = readdirSync("contracts")
-        contracts.forEach((i) => {
-            if (!isContractFile(i)) {
-                return
-            }
+        const contracts = await glob("contracts/**/*.{json,ocre}")
 
+        for (const i of contracts) {
             try {
                 const f = parse(
-                    readFileSync(join("contracts", i)).toString(),
+                    (await readFile(join("contracts", i))).toString(),
                 ) as MissionManifest
 
                 if (!validateMission(f)) {
                     log(LogLevel.ERROR, `Skipped loading ${i} due to an error!`)
-                    return
+                    continue
                 }
 
                 this.contracts.set(f.Metadata.Id, f)
@@ -803,7 +801,7 @@ export class Controller {
             } catch (e) {
                 log(LogLevel.ERROR, `Failed to load contract ${i}!`)
             }
-        })
+        }
     }
 
     /**
@@ -1168,16 +1166,6 @@ export class Controller {
             "scanGroups",
         )
     }
-}
-
-/**
- * Returns if the specified file is a OpenContracts contract file.
- *
- * @param name The file's name.
- * @returns If the specified file is an OCRE.
- */
-export function isContractFile(name: string): boolean {
-    return name.endsWith(".ocre") || name.endsWith(".json")
 }
 
 /**
