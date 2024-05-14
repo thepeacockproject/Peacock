@@ -467,7 +467,13 @@ export class ChallengeService extends ChallengeRegistry {
          * - challenge: The challenge.
          * - gameVersion: The game version.
          */
-        onChallengeCompleted: SyncHook<[string, RegistryChallenge, GameVersion]>
+        onChallengeCompleted: SyncHook<
+            [
+                userId: string,
+                challenge: RegistryChallenge,
+                gameVersion: GameVersion,
+            ]
+        >
     }
 
     constructor(controller: Controller) {

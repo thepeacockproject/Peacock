@@ -316,50 +316,41 @@ export class Controller {
         masteryDataLoaded: SyncHook<[]>
         newEvent: SyncHook<
             [
-                /** event */ ClientToServerEvent,
-                /** details */ {
+                event: ClientToServerEvent,
+                details: {
                     gameVersion: GameVersion
                     userId: string
                 },
-                /** session */ ContractSession,
+                session: ContractSession,
             ]
         >
         newMetricsEvent: SyncHook<
             [
-                /** event */ S2CEventWithTimestamp,
-                /** request */ RequestWithJwt<never, S2CEventWithTimestamp[]>,
+                event: S2CEventWithTimestamp,
+                request: RequestWithJwt<never, S2CEventWithTimestamp[]>,
             ]
         >
         getContractManifest: SyncBailHook<
-            // prettier-ignore
-            [
-                /** contractId */ string
-            ],
+            [contractId: string],
             MissionManifest | undefined
         >
         contributeCampaigns: SyncHook<
             [
-                /** campaigns */ Campaign[],
-                /** genSingleMissionFunc */ GenSingleMissionFunc,
-                /** genSingleVideoFunc */ GenSingleVideoFunc,
-                /** gameVersion */ GameVersion,
+                campaigns: Campaign[],
+                genSingleMissionFunc: GenSingleMissionFunc,
+                genSingleVideoFunc: GenSingleVideoFunc,
+                gameVersion: GameVersion,
             ]
         >
-        // prettier-ignore
-        getSearchResults: AsyncSeriesHook<[
-            /** query */ string[],
-            /** contractIds */ string[]
-        ]>
+        getSearchResults: AsyncSeriesHook<
+            [query: string[], contractIds: string[]]
+        >
         getNextCampaignMission: SyncBailHook<
-            // prettier-ignore
-            [
-                /** contractId */ string,
-                /** gameVersion */ GameVersion
-            ],
+            [contractId: string, gameVersion: GameVersion],
             PlayNextGetCampaignsHookReturn | undefined
         >
-        onMissionEnd: SyncHook<[/** session */ ContractSession]>
-        onEscalationReset: SyncHook<[/** groupId */ string]>
+        onMissionEnd: SyncHook<[session: ContractSession]>
+        onEscalationReset: SyncHook<[groupId: string]>
     }
     public configManager: typeof configManagerType = {
         getConfig,
