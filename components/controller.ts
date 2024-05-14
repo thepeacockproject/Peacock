@@ -736,7 +736,8 @@ export class Controller {
             } else {
                 log(
                     LogLevel.WARN,
-                    `Failed to download from HITMAP servers. Trying official servers instead...`,
+                    `Failed to download from HITMAPS servers. Trying official servers instead...`,
+                    "contracts",
                 )
             }
         }
@@ -782,11 +783,15 @@ export class Controller {
         for (const i of contracts) {
             try {
                 const f = parse(
-                    (await readFile(join("contracts", i))).toString(),
+                    (await readFile(i)).toString(),
                 ) as MissionManifest
 
                 if (!validateMission(f)) {
-                    log(LogLevel.ERROR, `Skipped loading ${i} due to an error!`)
+                    log(
+                        LogLevel.ERROR,
+                        `Contract ${i} failed validation!`,
+                        "contracts",
+                    )
                     continue
                 }
 
@@ -799,7 +804,12 @@ export class Controller {
                     )
                 }
             } catch (e) {
-                log(LogLevel.ERROR, `Failed to load contract ${i}!`)
+                log(
+                    LogLevel.ERROR,
+                    `Failed to load contract ${i}!`,
+                    "contracts",
+                )
+                log(LogLevel.DEBUG, e, "contracts")
             }
         }
     }
