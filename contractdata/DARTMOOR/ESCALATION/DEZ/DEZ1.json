@@ -21,7 +21,7 @@
                     "Scope": "session",
                     "States": {
                         "Start": {
-                            "AmbientChanged": { "Transition": "Success" }
+                            "-": { "Transition": "Success" }
                         }
                     }
                 }
@@ -44,9 +44,7 @@
                 "Definition": {
                     "Scope": "session",
                     "States": {
-                        "Start": {
-                            "AmbientChanged": { "Transition": "Success" }
-                        },
+                        "Start": { "-": { "Transition": "Success" } },
                         "Success": {
                             "Disguise": { "Transition": "PleaseDoFail" }
                         },
@@ -195,6 +193,12 @@
         "ScenePath": "assembly:/_pro/scenes/missions/Ancestral/scene_bulldog.entity",
         "InGroup": "78628e05-93ce-4f87-8a17-b910d32df51f",
         "TileImage": "images/contracts/escalation/contractescalation_rosebush.jpg",
-        "Entitlements": ["LOCATION_ANCESTRAL"]
+        "Entitlements": ["LOCATION_ANCESTRAL"],
+        "GroupObjectiveDisplayOrder": [
+            { "Id": "1b6a050f-162e-4038-898f-859c5c956a7b" },
+            { "Id": "bca06014-1580-4837-916a-95bc9f64d76a" },
+            { "Id": "6cb73180-4426-4281-a7bb-840f4917640a" },
+            { "Id": "0cf80053-183c-4a6f-8024-bd3e982129f6" }
+        ]
     }
 }
