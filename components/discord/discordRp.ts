@@ -57,7 +57,8 @@ export function swapToBrowsingMenusStatus(gameVersion: GameVersion): void {
         rpcClient?.setActivity({
             details: `Playing HITMAN™ ${gameVersion
                 .substring(1)
-                .replace("1", "(2016)")}`,
+                .replace("1", "(2016)")
+                .replace("3", "WoA")}`,
             largeImageKey: gameVersion,
             largeImageText: "Browsing Menus",
             smallImageKey: "peacock",

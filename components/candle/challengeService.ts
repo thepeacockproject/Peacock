@@ -194,6 +194,7 @@ export abstract class ChallengeRegistry {
     ): void {
         const gameChallenges = this.groupContents[gameVersion]
         challenge.inGroup = groupId
+        challenge.inLocation = location
         this.challenges[gameVersion].set(challenge.Id, challenge)
 
         if (!gameChallenges.has(location)) {
@@ -244,7 +245,7 @@ export abstract class ChallengeRegistry {
         return (
             this.challenges[gameVersion].delete(challengeId) &&
             this.groupContents[gameVersion]
-                .get(challenge.ParentLocationId)!
+                .get(challenge.inLocation!)!
                 .get(challenge.inGroup!)!
                 .delete(challengeId)
         )
@@ -466,7 +467,13 @@ export class ChallengeService extends ChallengeRegistry {
          * - challenge: The challenge.
          * - gameVersion: The game version.
          */
-        onChallengeCompleted: SyncHook<[string, RegistryChallenge, GameVersion]>
+        onChallengeCompleted: SyncHook<
+            [
+                userId: string,
+                challenge: RegistryChallenge,
+                gameVersion: GameVersion,
+            ]
+        >
     }
 
     constructor(controller: Controller) {
@@ -1243,7 +1250,7 @@ export class ChallengeService extends ChallengeRegistry {
 
                 const groupData = this.getGroupByIdLoc(
                     groupId,
-                    challenges[0].ParentLocationId,
+                    challenges[0].inLocation!,
                     gameVersion,
                 )
 

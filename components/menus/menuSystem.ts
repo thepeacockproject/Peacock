@@ -52,9 +52,7 @@ export class MenuSystemDatabase {
          * for instance, `/menusystem/data/testing.json`.
          * - gameVersion: The game's version.
          */
-        getDatabaseDiff: SyncHook<
-            [/** configs */ string[], /** gameVersion */ GameVersion]
-        >
+        getDatabaseDiff: SyncHook<[configs: string[], gameVersion: GameVersion]>
 
         /**
          * A hook for getting the requested configuration.
@@ -66,7 +64,7 @@ export class MenuSystemDatabase {
          * Returns: The file as an object.
          */
         getConfig: SyncBailHook<
-            [/** configName */ string, /** gameVersion */ GameVersion],
+            [configName: string, gameVersion: GameVersion],
             unknown
         >
     }

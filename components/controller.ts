@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { existsSync, readdirSync, readFileSync } from "fs"
+import { existsSync } from "fs"
 import { readdir, readFile, writeFile } from "fs/promises"
 import { join } from "path"
 import {
@@ -77,6 +77,7 @@ import generatedPeacockRequireTable from "./generatedPeacockRequireTable"
 import { escalationTypes } from "./contracts/escalations/escalationService"
 import { orderedETAs } from "./contracts/elusiveTargetArcades"
 import { SMFSupport } from "./smfSupport"
+import { glob } from "fast-glob"
 
 /**
  * An array of string arrays that contains the IDs of the featured contracts.
@@ -316,50 +317,41 @@ export class Controller {
         masteryDataLoaded: SyncHook<[]>
         newEvent: SyncHook<
             [
-                /** event */ ClientToServerEvent,
-                /** details */ {
+                event: ClientToServerEvent,
+                details: {
                     gameVersion: GameVersion
                     userId: string
                 },
-                /** session */ ContractSession,
+                session: ContractSession,
             ]
         >
         newMetricsEvent: SyncHook<
             [
-                /** event */ S2CEventWithTimestamp,
-                /** request */ RequestWithJwt<never, S2CEventWithTimestamp[]>,
+                event: S2CEventWithTimestamp,
+                request: RequestWithJwt<never, S2CEventWithTimestamp[]>,
             ]
         >
         getContractManifest: SyncBailHook<
-            // prettier-ignore
-            [
-                /** contractId */ string
-            ],
+            [contractId: string],
             MissionManifest | undefined
         >
         contributeCampaigns: SyncHook<
             [
-                /** campaigns */ Campaign[],
-                /** genSingleMissionFunc */ GenSingleMissionFunc,
-                /** genSingleVideoFunc */ GenSingleVideoFunc,
-                /** gameVersion */ GameVersion,
+                campaigns: Campaign[],
+                genSingleMissionFunc: GenSingleMissionFunc,
+                genSingleVideoFunc: GenSingleVideoFunc,
+                gameVersion: GameVersion,
             ]
         >
-        // prettier-ignore
-        getSearchResults: AsyncSeriesHook<[
-            /** query */ string[],
-            /** contractIds */ string[]
-        ]>
+        getSearchResults: AsyncSeriesHook<
+            [query: string[], contractIds: string[]]
+        >
         getNextCampaignMission: SyncBailHook<
-            // prettier-ignore
-            [
-                /** contractId */ string,
-                /** gameVersion */ GameVersion
-            ],
+            [contractId: string, gameVersion: GameVersion],
             PlayNextGetCampaignsHookReturn | undefined
         >
-        onMissionEnd: SyncHook<[/** session */ ContractSession]>
-        onEscalationReset: SyncHook<[/** groupId */ string]>
+        onMissionEnd: SyncHook<[session: ContractSession]>
+        onEscalationReset: SyncHook<[groupId: string]>
     }
     public configManager: typeof configManagerType = {
         getConfig,
@@ -473,7 +465,7 @@ export class Controller {
 
         this._addElusiveTargets()
         this._getETALocations()
-        this.index()
+        await this.index()
 
         try {
             await this._loadResources()
@@ -586,7 +578,7 @@ export class Controller {
 
         await writeFile(name, j)
 
-        this.index()
+        await this.index()
         return manifest
     }
 
@@ -744,7 +736,8 @@ export class Controller {
             } else {
                 log(
                     LogLevel.WARN,
-                    `Failed to download from HITMAP servers. Trying official servers instead...`,
+                    `Failed to download from HITMAPS servers. Trying official servers instead...`,
+                    "contracts",
                 )
             }
         }
@@ -781,24 +774,25 @@ export class Controller {
      *
      * @internal
      */
-    index(): void {
+    async index(): Promise<void> {
         this.contracts.clear()
         this._pubIdToContractId.clear()
 
-        const contracts = readdirSync("contracts")
-        contracts.forEach((i) => {
-            if (!isContractFile(i)) {
-                return
-            }
+        const contracts = await glob("contracts/**/*.{json,ocre}")
 
+        for (const i of contracts) {
             try {
                 const f = parse(
-                    readFileSync(join("contracts", i)).toString(),
+                    (await readFile(i)).toString(),
                 ) as MissionManifest
 
                 if (!validateMission(f)) {
-                    log(LogLevel.ERROR, `Skipped loading ${i} due to an error!`)
-                    return
+                    log(
+                        LogLevel.ERROR,
+                        `Contract ${i} failed validation!`,
+                        "contracts",
+                    )
+                    continue
                 }
 
                 this.contracts.set(f.Metadata.Id, f)
@@ -810,9 +804,14 @@ export class Controller {
                     )
                 }
             } catch (e) {
-                log(LogLevel.ERROR, `Failed to load contract ${i}!`)
+                log(
+                    LogLevel.ERROR,
+                    `Failed to load contract ${i}!`,
+                    "contracts",
+                )
+                log(LogLevel.DEBUG, e, "contracts")
             }
-        })
+        }
     }
 
     /**
@@ -1177,16 +1176,6 @@ export class Controller {
             "scanGroups",
         )
     }
-}
-
-/**
- * Returns if the specified file is a OpenContracts contract file.
- *
- * @param name The file's name.
- * @returns If the specified file is an OCRE.
- */
-export function isContractFile(name: string): boolean {
-    return name.endsWith(".ocre") || name.endsWith(".json")
 }
 
 /**

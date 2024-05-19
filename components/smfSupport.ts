@@ -103,12 +103,10 @@ export class SMFSupport {
         for (const contractData of Object.values(
             lastServerSideData.contracts,
         )) {
-            this.controller.addMission(contractData)
+            if (contractData.SMF?.destinations?.peacockIntegration !== false) {
+                this.controller.addMission(contractData)
 
-            if (contractData.SMF?.destinations?.addToDestinations) {
-                if (
-                    contractData.SMF.destinations.peacockIntegration !== false
-                ) {
+                if (contractData.SMF?.destinations?.addToDestinations) {
                     this.handleDestination(contractData)
                 }
             }
