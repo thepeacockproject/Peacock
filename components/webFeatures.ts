@@ -67,6 +67,7 @@ if (PEACOCK_DEV) {
             "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
         )
         res.set("Access-Control-Allow-Headers", "content-type")
+        res.set("Content-Type", "application/json")
         next()
     })
 }
@@ -374,17 +375,26 @@ webFeaturesRouter.post(
 
             userdata.Extensions.ChallengeProgression = Object.fromEntries(
                 challengeProgression.data.map((data) => {
-                    return [
-                        data.ChallengeId,
-                        {
-                            Ticked: data.Completed,
-                            Completed: data.Completed,
-                            CurrentState:
-                                (data.State["CurrentState"] as string) ??
-                                "Start",
-                            State: data.State,
-                        },
-                    ]
+                    const dataObject = {
+                        Ticked: data.Completed,
+                        Completed: data.Completed,
+                        CurrentState:
+                            (data.State["CurrentState"] as string) ?? "Start",
+                        State: data.State,
+                    }
+
+                    if (Object.keys(data.State).length < 1) {
+                        const peacockChallenge =
+                            controller.challengeService.getChallengeById(
+                                data.ChallengeId,
+                                req.query.gv as Exclude<GameVersion, "scpc">,
+                            )
+
+                        dataObject.State =
+                            peacockChallenge?.Definition.Context || {}
+                    }
+
+                    return [data.ChallengeId, dataObject]
                 }),
             )
 
