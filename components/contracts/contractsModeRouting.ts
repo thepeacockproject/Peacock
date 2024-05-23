@@ -92,6 +92,11 @@ export async function officialSearchContract(
         filters,
     )
 
+    for (const contract of resp.data.data.Data.Contracts) {
+        const contractData = contract.UserCentricContract.Contract
+        controller.fetchedContracts.set(contractData.Metadata.Id, contractData)
+    }
+
     preserveContracts(
         resp.data.data.Data.Contracts.map(
             (c) => c.UserCentricContract.Contract.Metadata.PublicId,
