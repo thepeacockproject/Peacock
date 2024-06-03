@@ -1106,8 +1106,13 @@ export class Controller {
 
             await (plugin as (controller: Controller) => Promise<void>)(this)
         } catch (e) {
-            log(LogLevel.ERROR, `Error while evaluating plugin ${pluginName}!`)
-            log(LogLevel.ERROR, e)
+            log(
+                LogLevel.ERROR,
+                `Error while evaluating plugin ${pluginName}!`,
+                "plugins",
+            )
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            log(LogLevel.ERROR, (e as any)?.stack ?? e, "plugins")
         }
     }
 
