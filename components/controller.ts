@@ -959,14 +959,12 @@ export class Controller {
                     version,
                 )
 
-                for (const challenge of group.Challenges) {
-                    this.challengeService.registerChallenge(
-                        challenge,
-                        group.CategoryId,
-                        data.meta.Location,
-                        version,
-                    )
-                }
+                this.challengeService.registerChallengeList(
+                    group.Challenges,
+                    group.CategoryId,
+                    data.meta.Location,
+                    version,
+                )
             }
         }
     }
