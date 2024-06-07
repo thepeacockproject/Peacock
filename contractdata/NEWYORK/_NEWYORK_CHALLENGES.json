@@ -70,6 +70,60 @@
                     }
                 },
                 {
+                    "Id": "81c97c70-7d5b-4ff0-b9a6-7fc2879f157f",
+                    "Name": "UI_CHALLENGES_RACCOON_ATHENA_ROBBER_NAME",
+                    "ImageName": "images/challenges/Greedy/athena_robber.jpg",
+                    "Description": "UI_CHALLENGES_RACCOON_ATHENA_ROBBER_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [
+                        "FIREARMS_HERO_SHOTGUN_BARTOLI_12G_SAWED_OFF_GOLDEN"
+                    ],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_GREEDY",
+                    "ParentLocationId": "LOCATION_PARENT_GREEDY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "ad93e268-3d6e-4aba-bec0-607cb5451ac7"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "8598ae82-53ac-43ba-9f43-30140d6ba7ee"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["7a03a97d-238c-48bd-bda0-e5f279569cce"]
+                    }
+                },
+                {
                     "Id": "8e2e80cd-52d1-49e8-9dc6-7b8b41bb7b8e",
                     "Name": "UI_CHALLENGES_RACCOON_ATHENA_MIRROR_NAME",
                     "ImageName": "images/challenges/Greedy/athena_mirror.jpg",
