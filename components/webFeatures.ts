@@ -636,6 +636,7 @@ webFeaturesRouter.post(
                         progressionObj.State.AreaIDs.push(areaRepoId)
                     }
                 }
+
                 if (progressionObj.State.AreaIDs.length === 5) {
                     progressionObj.Ticked = progressionObj.Completed = true
                     progressionObj.CurrentState = "Success"
