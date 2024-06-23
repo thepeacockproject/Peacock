@@ -1050,8 +1050,12 @@ export class ChallengeService extends ChallengeRegistry {
                 )
             }
         } catch (e) {
-            log(LogLevel.ERROR, `Error while handling challenge ${challengeId}:`)
-            log(LogLevel.ERROR, (e as Error).stack ?? e);
+            log(
+                LogLevel.ERROR,
+                `Error while handling challenge ${challengeId}:`,
+                "ChallengeService",
+            )
+            log(LogLevel.ERROR, (e as Error).stack ?? e, "ChallengeService")
         }
     }
 
