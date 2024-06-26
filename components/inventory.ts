@@ -631,6 +631,11 @@ export function grantDrops(profileId: string, drops: Unlockable[]): void {
         assert.fail(`User ${profileId} does not have an inventory??!`)
     }
 
+    if (!getFlag("enableMasteryProgression")) {
+        // mastery is disabled, everything is already unlocked, don't double-unlock
+        return
+    }
+
     const inventoryItems: InventoryItem[] = drops.map((unlockable) => ({
         InstanceId: unlockable.Guid,
         ProfileId: profileId,
