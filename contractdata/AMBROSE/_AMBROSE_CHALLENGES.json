@@ -1951,6 +1951,56 @@
                     "Tags": ["story", "medium", "feats"]
                 },
                 {
+                    "Id": "aec85d3a-fee0-47b7-b1da-89090943463d",
+                    "Name": "UI_CHALLENGES_DUGONG_ROTTENFRUIT_NAME",
+                    "ImageName": "images/challenges/Rocky/Rocky_RottenFruit.jpg",
+                    "Description": "UI_CHALLENGES_DUGONG_ROTTENFRUIT_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": ["PROP_MELEE_DURIAN_EMETICGAS"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "parentlocation",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Actorsick": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.actor_R_ID",
+                                                    "666521d2-1efe-4d0a-b7f7-2afeb08262b6"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.item_R_ID",
+                                                    "72cb6124-36eb-4c25-8da0-78d4c5fac459"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "feats"]
+                },
+                {
                     "Id": "ca9e885d-dd71-4609-8ec9-adc73a791b4b",
                     "Name": "UI_CHALLENGES_DUGONG_HAPPYSLAPPING_NAME",
                     "ImageName": "images/challenges/Rocky/Rocky_Slap5.jpg",
