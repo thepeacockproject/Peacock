@@ -27,6 +27,7 @@ import {
     ProgressionData,
     UserProfile,
 } from "./types/types"
+import { ProfileChallengeData } from "./types/challenges"
 import { join } from "path"
 import {
     getRemoteService,
@@ -607,6 +608,43 @@ webFeaturesRouter.post(
                 userdata.Extensions.CPD[
                     "f8ec92c2-4fa2-471e-ae08-545480c746ee"
                 ] = freelancerSession.data.ContractProgressionData
+            }
+
+            // Set progress for Peacock-exclusive challenges
+            // _FACILITY_CHALLENGES.json - 2546d4f7-191c-4858-840f-321d31aed410 - "Discover the yacht"
+            {
+                const progressionObj: ProfileChallengeData = {
+                    Ticked: false,
+                    Completed: false,
+                    CurrentState: "Start",
+                    State: {
+                        AreaIDs: [],
+                    },
+                }
+
+                for (const areaRepoId of [
+                    "0a4513e4-338c-4328-ad72-82c1b5ff2a73", // AD_YACHT_BAR
+                    "705c3917-9f3d-4444-a268-41e74bc8e4ad", // AD_YACHT_OFFICE
+                    "7cfd6202-b3fb-4c9f-b3c2-c892b8031901", // AD_YACHT_KITCHEN
+                    "ba0fe890-9feb-4991-82f8-5daf7aff3380", // AD_YACHT_BRIDGE
+                    "fa7b2877-3159-454a-82d3-422a0dd7e5da", // AD_YACHT_GARAGE
+                ]) {
+                    if (
+                        userdata.Extensions.gamepersistentdata
+                            ?.PersistentBool?.[areaRepoId]
+                    ) {
+                        progressionObj.State.AreaIDs.push(areaRepoId)
+                    }
+                }
+
+                if (progressionObj.State.AreaIDs.length === 5) {
+                    progressionObj.Ticked = progressionObj.Completed = true
+                    progressionObj.CurrentState = "Success"
+                }
+
+                userdata.Extensions.ChallengeProgression[
+                    "2546d4f7-191c-4858-840f-321d31aed410"
+                ] = progressionObj
             }
 
             userdata.Extensions.LastOfficialSync = new Date().toISOString()

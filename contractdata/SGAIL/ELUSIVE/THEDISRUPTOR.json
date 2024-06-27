@@ -1,0 +1,224 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Objectives": [
+            {
+                "Id": "c12bb13e-f20d-406f-be39-bcab179ea3d5",
+                "Primary": true,
+                "IsHidden": true,
+                "BriefingName": "$loc UI_CONTRACT_PENICILLIN_OBJECTIVE_QUINN_NAME",
+                "BriefingText": "$loc UI_CONTRACT_PENICILLIN_OBJECTIVE_QUINN_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_PENICILLIN_OBJECTIVE_QUINN_NAME",
+                    "iconType": 17
+                },
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "531a270c-67a1-41a1-8dfd-c84a4e8ee127"
+                    }
+                }
+            },
+            {
+                "_comment": "----- [HIDDEN] Pen Escaped -----",
+                "Id": "a50652e6-eccb-4491-97ea-d03ca15b11a0",
+                "Primary": true,
+                "ObjectiveType": "custom",
+                "ForceShowOnLoadingScreen": false,
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    }
+                },
+                "Image": "images/challenges/elusive_target/et_penicillin_started.jpg",
+                "BriefingName": "$loc UI_CONTRACT_PENICILLIN_OBJECTIVE_PEN_FAIL",
+                "BriefingText": "$loc UI_CONTRACT_PENICILLIN_OBJECTIVE_PEN_FAIL",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_PENICILLIN_OBJECTIVE_QUINN_NAME",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "display": {
+                        "iconType": 17
+                    },
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "Pen_Escaped": {
+                                "Transition": "Failure"
+                            },
+                            "Pen_Done": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Do Not Eliminate Tim Quinn [Optional] -----",
+                "Id": "f965e220-bfe0-4b2f-8c47-40472dedfbd6",
+                "Category": "secondary",
+                "ForceShowOnLoadingScreen": true,
+                "IsHidden": false,
+                "ObjectiveType": "custom",
+                "Image": "images/contracts/elusive/s3_penicillin/objective2.jpg",
+                "BriefingName": "$loc UI_CONTRACT_PENICILLIN_OBJECTIVE_QUINN_NAME",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_PENICILLIN_OBJECTIVE_QUINN_NAME",
+                    "iconType": 17
+                },
+                "BriefingText": "$loc UI_CONTRACT_PENICILLIN_OBJECTIVE_QUINN_DESC",
+                "Type": "statemachine",
+                "ExcludeFromScoring": false,
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "ContractEnd": {
+                                "Transition": "Success"
+                            },
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "4addab15-2ea0-4868-aaed-f544fe05e62b"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Id": "03834afc-9aae-4a2a-803d-e60363ca1c3c",
+                "Type": "statemachine",
+                "Category": "condition",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": true
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    }
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "TargetEscapeStarted": {
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "Activation": {
+                    "$eq": ["$03834afc-9aae-4a2a-803d-e60363ca1c3c", "Failed"]
+                },
+                "HUDTemplate": {
+                    "display": "$loc EGAME_TEXT_SL_TARGET_ESCAPING"
+                },
+                "Id": "f92b9623-6cb5-44cb-b9a2-bf483a3bfe1d",
+                "Scope": "session",
+                "Type": "statemachine",
+                "Category": "secondary",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": true
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Definition": {
+                    "ContextListeners": {
+                        "Timeout": {
+                            "type": "custom",
+                            "HUDTemplate": {
+                                "display": {
+                                    "$loc": {
+                                        "key": "UI_CONTRACT_HAWK_TIMER_TIMED_OUT",
+                                        "iconType": 17,
+                                        "data": []
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "Context": {
+                        "Timeout": 1
+                    },
+                    "States": {
+                        "Start": {
+                            "BeginTimer": {
+                                "Transition": "TimerRunning"
+                            }
+                        },
+                        "TimerRunning": {
+                            "$timer": {
+                                "Condition": {
+                                    "$after": 70
+                                },
+                                "Actions": {
+                                    "$dec": "Timeout"
+                                },
+                                "Transition": "Failure"
+                            },
+                            "EndTimer": {
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "GameChangers": []
+    },
+    "Metadata": {
+        "Id": "d4a5f21f-3e4d-4226-9769-0fbe2a5e8639",
+        "CodeName_Hint": "Penicillin",
+        "Release": "3.190.x Elusive",
+        "Type": "elusive",
+        "Title": "UI_CONTRACT_PENICILLIN_TITLE",
+        "Description": "UI_CONTRACT_PENICILLIN_DESC",
+        "BriefingVideo": "briefing_penicillin",
+        "DebriefingVideo": "debriefing_penicillin",
+        "IsDebriefingVideoSkippable": false,
+        "ScenePath": "assembly:/_pro/scenes/missions/theark/scene_penicillin.entity",
+        "TileImage": "images/contracts/elusive/S3_Penicillin/Title.jpg",
+        "Location": "LOCATION_NORTHSEA",
+        "IsPublished": true,
+        "Season": 3,
+        "LastUpdate": "2015-03-10T12:00:00.441Z",
+        "CreationTimestamp": "2024-06-27T11:54:42.5164222Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Entitlements": ["H2_LEGACY_STANDARD"],
+        "PublicId": "021529920647"
+    },
+    "UserData": {}
+}
