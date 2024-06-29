@@ -25,6 +25,8 @@ namespace HitmanPatcher
 
             internal bool? OptionalDynRes { get; set; }
 
+            internal bool? KeepScanning { get; set; }
+
             internal static CliOptions FromArguments(string[] args)
             {
                 var options = new CliOptions();
@@ -53,6 +55,9 @@ namespace HitmanPatcher
                         case "--use-http":
                             options.UseHttp = true;
                             break;
+                        case "--keep-scanning":
+                            options.KeepScanning = true;
+                            break;
                         case "--help":
                             Console.WriteLine(CliLocale.HelpHeader);
                             Console.WriteLine("");
@@ -60,6 +65,7 @@ namespace HitmanPatcher
                             Console.WriteLine($"  --optional-dynamic-resources : {CliLocale.OptionalDynResDescription}");
                             Console.WriteLine($"  --domain <url> : {CliLocale.DomainDescription}");
                             Console.WriteLine($"  --use-http : {CliLocale.UseHttpDescription}");
+                            Console.WriteLine($"  --keep-scanning : {CliLocale.KeepScanning}");
                             Environment.Exit(0);
                             break;
                     }

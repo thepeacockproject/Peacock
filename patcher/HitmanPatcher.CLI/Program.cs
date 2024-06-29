@@ -29,20 +29,20 @@ namespace HitmanPatcher
             Console.WriteLine($"- DisableForceDynamicResources = {settings.patchOptions.DisableForceOfflineOnFailedDynamicResources}");
             Console.WriteLine();
 
-            bool result = false;
+            // Set the active values
+            settings.patchOptions.CustomConfigDomain = o.Domain ?? settings.patchOptions.CustomConfigDomain;
+            settings.patchOptions.DisableForceOfflineOnFailedDynamicResources = o.OptionalDynRes ?? settings.patchOptions.DisableForceOfflineOnFailedDynamicResources;
+            settings.patchOptions.UseHttp = o.UseHttp ?? settings.patchOptions.UseHttp;
 
-            while(!result)
+            var keepScanning = o.KeepScanning ?? false;
+
+            while (true)
             {
-                result = MemoryPatcher.PatchAllProcesses(Compositions.Logger, settings.patchOptions with
-                {
-                    CustomConfigDomain = o.Domain ?? settings.patchOptions.CustomConfigDomain,
-                    DisableForceOfflineOnFailedDynamicResources = o.OptionalDynRes ?? settings.patchOptions.DisableForceOfflineOnFailedDynamicResources,
-                    UseHttp = o.UseHttp ?? settings.patchOptions.UseHttp
-                });
+                var result = MemoryPatcher.PatchAllProcesses(Compositions.Logger, settings.patchOptions);
 
-                if (result)
+                if (result && !keepScanning)
                 {
-                    continue;
+                    break;
                 }
 
                 Console.WriteLine("Waiting...");

@@ -79,20 +79,20 @@ namespace HitmanPatcher {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If the patcher should be run without the GUI..
-        /// </summary>
-        internal static string HeadlessDescription {
-            get {
-                return ResourceManager.GetString("HeadlessDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Peacock Patcher CLI - Copyright (c) 2020-2024 grappigegovert &amp; The Peacock Project.
         /// </summary>
         internal static string HelpHeader {
             get {
                 return ResourceManager.GetString("HelpHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If the patcher should keep scanning for processes after patching..
+        /// </summary>
+        internal static string KeepScanning {
+            get {
+                return ResourceManager.GetString("KeepScanning", resourceCulture);
             }
         }
         
