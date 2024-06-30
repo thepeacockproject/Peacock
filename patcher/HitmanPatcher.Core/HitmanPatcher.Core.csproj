@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <TargetFramework Condition="'$(IsLegacy)' == 'True'">net46</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>disable</Nullable>
+
+        <RootNamespace>HitmanPatcher</RootNamespace>
+        <AssemblyName>PeacockPatcher.Core</AssemblyName>
+
+        <Configurations>Debug;Release;Debug - Linux;Release - Linux</Configurations>
+
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU' OR '$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+        <NoWarn>CA1416</NoWarn>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug - Linux|AnyCPU'">
+        <DefineConstants>$(DefineConstants);LINUX;DEBUG</DefineConstants>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release - Linux|AnyCPU'">
+        <DefineConstants>$(DefineConstants);LINUX</DefineConstants>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <Optimize>True</Optimize>
+    </PropertyGroup>
+</Project>

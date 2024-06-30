@@ -1,0 +1,59 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+        <TargetFramework Condition="'$(IsLegacy)' == 'True'">net46</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>disable</Nullable>
+
+        <RootNamespace>HitmanPatcher</RootNamespace>
+        <AssemblyName>PeacockPatcher.CLI</AssemblyName>
+
+        <Configurations>Debug;Release;Debug - Linux;Release - Linux</Configurations>
+
+        <Title>Peacock Patcher</Title>
+        <Description>Peacock's HITMAN™ World of Assassination trilogy game patcher.</Description>
+        <Company>The Peacock Project</Company>
+        <Product>Peacock Patcher</Product>
+        <Copyright>Copyright © 2020-2024 grappigegovert &amp; The Peacock Project</Copyright>
+        <ForceDesignerDPIUnaware>true</ForceDesignerDPIUnaware>
+        <ApplicationHighDpiMode>DpiUnawareGdiScaled</ApplicationHighDpiMode>
+        <ApplicationIcon>patcher.ico</ApplicationIcon>
+        <AssemblyVersion>8.0.0.0</AssemblyVersion>
+        <FileVersion>8.0.0.0</FileVersion>
+
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug - Linux|AnyCPU'">
+        <DefineConstants>$(DefineConstants);LINUX;DEBUG</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release - Linux|AnyCPU'">
+        <DefineConstants>$(DefineConstants);LINUX</DefineConstants>
+        <Optimize>True</Optimize>
+    </PropertyGroup>
+
+    <ItemGroup Condition="'$(IsLegacy)' == 'True'">
+        <PackageReference Include="ILRepack.Lib.MSBuild.Task" Version="2.0.26">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\HitmanPatcher.Core\HitmanPatcher.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Update="CliLocale.Designer.cs">
+            <DependentUpon>CliLocale.resx</DependentUpon>
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+        </Compile>
+        <EmbeddedResource Update="CliLocale.resx">
+            <LastGenOutput>CliLocale.Designer.cs</LastGenOutput>
+            <Generator>ResXFileCodeGenerator</Generator>
+        </EmbeddedResource>
+    </ItemGroup>
+</Project>
