@@ -13,6 +13,49 @@
             "OrderIndex": 6,
             "Challenges": [
                 {
+                    "Id": "9a37f599-c7be-3ab1-910a-4dd28fb1c82e",
+                    "Name": "UI_PEACOCK_AMBERGRIS_COMPLETED_NAME",
+                    "ImageName": "images/contracts/arcade/Arcade_Ambergris_Group.jpg",
+                    "Description": "UI_PEACOCK_AMBERGRIS_COMPLETED_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": ["PROP_CONTAINER_SUITCASE_ICA_T"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ARCADE",
+                    "Icon": "arcademode",
+                    "LocationId": "LOCATION_NORTHAMERICA",
+                    "ParentLocationId": "LOCATION_PARENT_NORTHAMERICA",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$ContractId",
+                                            "27977fd9-732a-18b7-d986-a416ffbc19d5"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["arcade", "hard"],
+                    "InclusionData": {
+                        "ContractIds": ["27e54c45-d5e8-fe2e-6f6c-f3e3d8239f46"]
+                    }
+                },
+                {
                     "Id": "da1c6998-52e5-433b-81e8-879d6da87f91",
                     "Name": "UI_COFFEEFRUIT_COMPLETION_CHALLENGE_NAME",
                     "ImageName": "images/contracts/arcade/Arcade_CoffeeFruit_Group.jpg",
