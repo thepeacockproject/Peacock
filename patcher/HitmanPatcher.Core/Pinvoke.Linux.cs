@@ -1,6 +1,7 @@
 #if LINUX
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 
 namespace HitmanPatcher;
 
@@ -29,37 +30,22 @@ public static partial class Pinvoke
     [DllImport("libc", SetLastError = true)]
     private static extern unsafe int process_vm_readv(int pid, iovec* local_iov, ulong liovcnt, iovec* remote_iov, ulong riovcnt, ulong flags);
 
+    private static readonly Regex _modulePathRegex = new Regex("\\/.*?$", RegexOptions.Compiled);
+
     public static ProcessMetadata GetProcessMetadata(Process process)
     {
         var lines = File.ReadAllLines($"/proc/{process.Id}/maps");
 
         var findProcess = process.ProcessName.ToLower();
-
-        var foundLines = lines.Where(x => x.ToLower().Contains(findProcess)).ToList();
-
-        long baseAddressStart = long.MaxValue;
-        long baseAddressEnd = 0;
-
-        foreach (var line in foundLines)
-        {
-            var splittedLine = line.Split(' ');
-            var addressStartEnd = splittedLine[0].Split('-');
-
-            Compositions.Logger.log(addressStartEnd[0]);
-            Compositions.Logger.log(addressStartEnd[1]);
-
-            baseAddressStart = Math.Min(baseAddressStart, Convert.ToInt64(addressStartEnd[0], 16));
-            baseAddressEnd = Math.Max(baseAddressEnd, Convert.ToInt64(addressStartEnd[1], 16));
-        }
-
-        IntPtr baseAddress = new IntPtr(baseAddressStart);
-        var moduleMemorySize = baseAddressEnd - baseAddressStart;
+        var foundModule = lines.First(x => x.Contains(findProcess, StringComparison.CurrentCultureIgnoreCase));
+        var foundModulePath = _modulePathRegex.Match(foundModule).Value;
+        var (baseAddress, imageSize) = GetImageSizeFromPE(foundModulePath);
 
         return new ProcessMetadata
         {
             PID = process.Id,
-            BaseAddress = baseAddress,
-            ModuleMemorySize = moduleMemorySize
+            BaseAddress = new IntPtr((long) baseAddress),
+            ModuleMemorySize = imageSize
         };
     }
 
@@ -252,6 +238,49 @@ public static partial class Pinvoke
         //TODO: Retrieve "PPid" from "/proc/pid/status"
 
         return -1;
+    }
+
+    private static (ulong, uint) GetImageSizeFromPE(string modulePath) 
+    {
+        using var module = File.OpenRead(modulePath);
+        using var reader = new BinaryReader(module);
+
+        //Validate DOS Header (MZ)
+        var dosHeader = reader.ReadUInt16();
+
+        if(dosHeader != 0x5A4D) {
+            return (0, 0);
+        }
+
+        //Skip to PE offset
+        reader.BaseStream.Seek(0x3A, SeekOrigin.Current);
+        var peOffset = reader.ReadInt32();
+
+        //Validate PE Header (PE\0\0)
+        reader.BaseStream.Seek(peOffset, SeekOrigin.Begin);
+        var peHeader = reader.ReadUInt32();
+
+        if(peHeader != 0x00004550) {
+            return (0, 0); 
+        }
+
+        //Validate PE Type (PE32+)
+        reader.BaseStream.Seek(20, SeekOrigin.Current);
+        var peType = reader.ReadUInt16();
+
+        if(peType != 0x020B) {
+            return (0, 0);
+        }
+
+        //Skip to base address
+        reader.BaseStream.Seek(22, SeekOrigin.Current);
+        var baseAddress = reader.ReadUInt64();
+
+        //Skip to image size
+        reader.BaseStream.Seek(24, SeekOrigin.Current);
+        var imageSize = reader.ReadUInt32();
+
+        return (baseAddress, imageSize);
     }
 }
 #endif
