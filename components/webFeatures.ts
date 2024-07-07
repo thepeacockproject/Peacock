@@ -581,7 +581,13 @@ webFeaturesRouter.post(
             // Freelancer Progression
             // TODO: Try and see if there is a less intensive way to do this
             // GetForPlay2 is quite intensive on IOI's side as it starts a session
-            if (req.query.gv === "h3") {
+            if (
+                req.query.gv === "h3" &&
+                (userdata.Extensions.entP.includes(
+                    "06d4d61bbb774ca99c1661bee04fbde0",
+                ) ||
+                    userdata.Extensions.entP.includes("1829605"))
+            ) {
                 log(LogLevel.DEBUG, "Getting freelancer progression...")
 
                 await auth._useService(
