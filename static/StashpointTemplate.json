@@ -435,12 +435,6 @@
                                                                                 },
                                                                                 "do": {
                                                                                     "$if ": {
-                                                                                        "$condition": {
-                                                                                            "$or": [
-                                                                                                "$not $eqs ($.Item.Unlockable.Id,TOKEN_OUTFIT_WET_SUIT)",
-                                                                                                "$not $eqs ($arg location,LOCATION_NEWZEALAND)"
-                                                                                            ]
-                                                                                        },
                                                                                         "$then": {
                                                                                             "$mergeobjects": [
                                                                                                 {
