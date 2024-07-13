@@ -17,7 +17,7 @@
  */
 
 import { Playstyle } from "./types/scoring"
-import { RatingKill } from "./types/types"
+import { ContractSession, RatingKill } from "./types/types"
 import { getConfig } from "./configSwizzleManager"
 
 /**
@@ -29,7 +29,7 @@ import { getConfig } from "./configSwizzleManager"
  */
 // TODO: This could use an update with more playstyles
 export function calculatePlaystyle(
-    session: Partial<{ kills: Set<RatingKill> }>,
+    session: Partial<{ kills: Set<RatingKill>, witnesses: Set<ContractSession> }>,
 ): Playstyle[] {
     const playstylesCopy = getConfig("Playstyles", true) as Playstyle[]
 
@@ -86,6 +86,9 @@ export function calculatePlaystyle(
 
             if (k.KillMethodStrict === "fiberwire") {
                 playstylesCopy[13].Score += 6000
+                if (session.witnesses && session.witnesses.size > 0) {
+                    playstylesCopy[20].Score += 6000;
+                }
             }
 
             if (k.KillMethodBroad === "unarmed") {
