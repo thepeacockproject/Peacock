@@ -1,24 +1,10 @@
 {
     "Data": {
-        "Entrances": [
-            "f8ff0b17-b9f5-41ce-b7b1-db8bf6c47f4a",
-            "370b4106-96f2-4a04-9bc6-029b86b301aa",
-            "6c943798-8ca7-42cc-861a-becdb32017da",
-            "e5c0d1a4-72b0-4cc0-857d-8bb155ea09f4",
-            "bd0cc571-e4a3-41f1-9b9b-608cdecc09c1",
-            "1d3a5b4a-5573-4e2d-8a98-d1c881cbd13e",
-            "53ce9bb6-ef1c-4f17-8951-5b501fb941d4"
-        ],
         "Objectives": [
             {
                 "Type": "statemachine",
                 "Id": "4966895f-f640-4967-abf5-2ab90c9f4a50",
-                "BriefingText": {
-                    "$loc": {
-                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
-                        "data": "$($repository 7d80843a-66d4-4d46-a914-08f96773e2fd).Name"
-                    }
-                },
+                "BriefingText": "$loc UI_PEACOCK_ARES_TAR1",
                 "HUDTemplate": {
                     "display": "$loc UI_PEACOCK_ARES_TAR1"
                 },
@@ -75,12 +61,7 @@
             {
                 "Type": "statemachine",
                 "Id": "f7efa670-a305-4d6c-84ee-8060653c37f2",
-                "BriefingText": {
-                    "$loc": {
-                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
-                        "data": "$($repository bd17a855-0bf7-48a1-abab-ddb5c08fcdfc).Name"
-                    }
-                },
+                "BriefingText": "$loc UI_PEACOCK_ARES_TAR2",
                 "HUDTemplate": {
                     "display": "$loc UI_PEACOCK_ARES_TAR2"
                 },
@@ -136,16 +117,8 @@
             },
             {
                 "Type": "statemachine",
-                "Id": "e9966653-cc32-dad3-d3e2-67acede10a16",
-                "BriefingText": {
-                    "$loc": {
-                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
-                        "data": "$($repository 126935a7-7aec-4b67-afd6-9427813df3b8).Name"
-                    }
-                },
-                "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_ARES_TAR3"
-                },
+                "Id": "f29f1966-a355-fedf-63f5-a891afbdb7b9",
+                "BriefingText": "$loc UI_PEACOCK_ARES_TAR3",
                 "Category": "primary",
                 "Definition": {
                     "Scope": "Hit",
@@ -162,9 +135,24 @@
                                     ]
                                 },
                                 "Transition": "CheckExplosion"
+                            },
+                            "Kill": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "126935a7-7aec-4b67-afd6-9427813df3b8"
+                                    ]
+                                },
+                                "Transition": "Failure"
                             }
                         },
                         "CheckExplosion": {
+                            "$timer": {
+                                "Condition": {
+                                    "$after": 5
+                                },
+                                "Transition": "Start"
+                            },
                             "setpieces": {
                                 "Condition": {
                                     "$eq": [
@@ -178,10 +166,40 @@
                         "CheckKill": {
                             "$timer": {
                                 "Condition": {
-                                    "$after": 1
+                                    "$after": 5
                                 },
                                 "Transition": "Start"
                             },
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "126935a7-7aec-4b67-afd6-9427813df3b8"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "e9966653-cc32-dad3-d3e2-67acede10a16",
+                "BriefingText": "$loc UI_PEACOCK_ARES_TAR3",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_ARES_TAR3"
+                },
+                "Category": "primary",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["126935a7-7aec-4b67-afd6-9427813df3b8"]
+                    },
+                    "States": {
+                        "Start": {
                             "Kill": [
                                 {
                                     "Condition": {
@@ -206,7 +224,7 @@
                 ]
             }
         ],
-        "GameChangers": ["978107b4-2be2-14fc-1b37-6180a38b5b64"],
+        "GameChangers": [],
         "Bricks": [],
         "EnableSaving": false
     },
@@ -226,7 +244,6 @@
         "TileImage": "images/contracts/escsalation/contractescalation_ares.jpg",
         "GroupObjectiveDisplayOrder": [
             { "Id": "e9966653-cc32-dad3-d3e2-67acede10a16", "IsNew": true },
-            { "Id": "978107b4-2be2-14fc-1b37-6180a38b5b64", "IsNew": true },
             { "Id": "f7efa670-a305-4d6c-84ee-8060653c37f2" },
             { "Id": "4966895f-f640-4967-abf5-2ab90c9f4a50" }
         ],
