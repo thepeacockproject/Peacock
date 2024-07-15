@@ -340,29 +340,10 @@
                 "actions": {
                     "accept": [
                         {
-                            "set-menu-context": {
-                                "value": {
-                                    "onpageopened": {
-                                        "set-selected": {
-                                            "target": "PLANNING_BUTTON_PLAY"
-                                        },
-                                        "trigger-input": {
-                                            "action": "accept"
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        {
                             "link": {
-                                "page": "planning",
+                                "page": "gamemode_evergreen",
                                 "args": {
-                                    "url": "planning",
-                                    "args": {
-                                        "contractid": "f8ec92c2-4fa2-471e-ae08-545480c746ee",
-                                        "resetescalation": false
-                                    },
-                                    "contractid": "f8ec92c2-4fa2-471e-ae08-545480c746ee"
+                                    "locationId": "LOCATION_PARENT_SNUG"
                                 }
                             }
                         }
@@ -388,15 +369,6 @@
                         "replace-children": {
                             "target": "headline_container",
                             "children": []
-                        }
-                    },
-                    "actiony": {
-                        "prompt_label": "$loc UI_PEACOCK_GO_TO_DESTINATION",
-                        "link": {
-                            "page": "gamemode_evergreen",
-                            "args": {
-                                "locationId": "LOCATION_PARENT_SNUG"
-                            }
                         }
                     }
                 }
