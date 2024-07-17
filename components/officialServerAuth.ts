@@ -95,7 +95,7 @@ export class OfficialServerAuth {
     }
 
     /**
-     * Authenticates the client with the official service the first time.
+     * Authenticates the client with the official service for the first time.
      * @param req The initial client request.
      */
     async _initiallyAuthenticate(req: Request): Promise<void> {
