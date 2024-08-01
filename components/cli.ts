@@ -60,6 +60,11 @@ program.action(
 )
 
 program
+    .command("noop")
+    .description("generate file structure and exit")
+    .action(() => process.exit())
+
+program
     .command("tools")
     .description("open the tools UI")
     .option("-s, --skip", "Skip encrypting the debug profile", false)
