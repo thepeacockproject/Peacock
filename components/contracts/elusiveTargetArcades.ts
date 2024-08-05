@@ -17,7 +17,6 @@
  */
 
 export const orderedETAs = [
-    "27e54c45-d5e8-fe2e-6f6c-f3e3d8239f46",
     "797e204a-ef3d-463b-a386-57df0fe29b8f",
     "b1fb40d7-c013-4c9f-bb8a-8782e980b11a",
     "de9788cc-b9c4-47fc-b5df-86451cd82c43",

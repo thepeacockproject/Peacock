@@ -1786,6 +1786,102 @@
                     }
                 },
                 {
+                    "Id": "63dbcd69-6a3b-44b7-82bf-30039fe0926c",
+                    "Name": "UI_CHALLENGES_OCTOPUS_SPORTS_NAME",
+                    "ImageName": "images/challenges/sapienza/octopus_SportsClub.jpg",
+                    "Description": "UI_CHALLENGES_OCTOPUS_SPORTS_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": ["PROP_EXPLOSIVE_ICA_IMPACT"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_COASTALTOWN",
+                    "ParentLocationId": "LOCATION_PARENT_COASTALTOWN",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 2
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "type": "challengecounter",
+                                "count": "$.Count",
+                                "total": "$.Goal"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.RepositoryId",
+                                                        "0dfaea51-3c36-4722-9eff-f1e7ef139878"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.KillItemRepositoryId",
+                                                        "8b7c3ec6-c072-4a21-a323-0f8751028052"
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.RepositoryId",
+                                                        "94ab740b-b30f-4086-9aea-5c9c0de28456"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.KillItemRepositoryId",
+                                                        "c95c55aa-34e5-42bd-bf27-32be3978b269"
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "hard", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["00000000-0000-0000-0000-000000000600"]
+                    }
+                },
+                {
                     "Id": "7021c868-63cd-4ef1-80db-4255433072e6",
                     "Name": "UI_CHALLENGES_OCTOPUS_SIGN_FRANCESCA_DROWN_NAME",
                     "ImageName": "images/challenges/sapienza/octopus_sign_francesca_drown.jpg",
@@ -6783,7 +6879,7 @@
                                     "Condition": {
                                         "$eq": [
                                             "$Value.RepositoryId",
-                                            "249659f3-8989-4ffc-b727-4902e954605f"
+                                            "8fd339e1-ea06-4aee-bd65-0c89b34e4e7e"
                                         ]
                                     },
                                     "Transition": "Disguise_on"

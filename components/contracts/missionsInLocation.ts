@@ -285,7 +285,6 @@ export const missionsInLocations = {
         ],
         LOCATION_NEWZEALAND: ["39cc0603-4348-4dbf-9bd3-733cadf2913c"],
         LOCATION_NORTHAMERICA: [
-            "27e54c45-d5e8-fe2e-6f6c-f3e3d8239f46",
             "5081776a-86b6-4935-a83e-631a65ba8ee8",
             "cab4293f-e359-419d-aa6f-83d91a158cf5",
         ],
