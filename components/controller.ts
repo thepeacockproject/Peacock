@@ -65,8 +65,6 @@ import { ChallengeService } from "./candle/challengeService"
 import { getFlag } from "./flags"
 import { unpack } from "msgpackr"
 import { ChallengePackage, SavedChallengeGroup } from "./types/challenges"
-import { promisify } from "util"
-import { brotliDecompress } from "zlib"
 import assert from "assert"
 import { Response } from "express"
 import { ChallengeFilterType } from "./candle/challengeHelpers"
@@ -1115,17 +1113,15 @@ export class Controller {
     }
 
     private async _loadInternalContracts(): Promise<void> {
-        const decompress = promisify(brotliDecompress)
-
         const buf = await readFile(
             join(
                 PEACOCK_DEV ? process.cwd() : __dirname,
                 "resources",
-                "contracts.br",
+                "contracts.prp",
             ),
         )
 
-        const decompressed = JSON.parse((await decompress(buf)).toString()) as {
+        const decompressed = unpack(buf) as {
             b: MissionManifest[]
             el: MissionManifest[]
         }

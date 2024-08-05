@@ -586,6 +586,6 @@ export async function startServer(options: {
         return
     } catch (e) {
         log(LogLevel.ERROR, "Critical error during bootstrap!")
-        log(LogLevel.ERROR, e)
+        log(LogLevel.ERROR, (e as Error)?.stack ?? e)
     }
 }
