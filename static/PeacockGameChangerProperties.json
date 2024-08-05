@@ -297,42 +297,42 @@
                     "display": "$loc UI_PEACOCK_GAMECHANGERS_GLOBAL_HEADKILLONLY_NAME",
                     "iconType": 17
                 },
-              "Definition": {
-                  "Scope": "session",
-                  "States": {
-                      "Start": {
-                          "-": {
-                            "Transition": "Success"
-                          }
-                      },
-                      "Success": {
-                          "Kill": {
-                              "Condition": {
-                                  "$and": [
-                                      {
-                                          "$eq": ["$Value.IsTarget", true]
-                                      },
-                                      {
-                                          "$not": {
-                                              "$or": [
-                                                  {
-                                                      "$eq": [
-                                                          "$Value.KillMethodBroad",
-                                                          "throw"
-                                                      ]
-                                                  },
-                                                  {
-                                                      "$eq": [
-                                                          "$Value.IsHeadshot",
-                                                          true
-                                                      ]
-                                                  }
-                                              ]
-                                          }
-                                      }
-                                  ]
-                              },
-                              "Transition": "Failure"
+                "Definition": {
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "-": {
+                                "Transition": "Success"
+                            }
+                        },
+                        "Success": {
+                            "Kill": {
+                                "Condition": {
+                                    "$and": [
+                                        {
+                                            "$eq": ["$Value.IsTarget", true]
+                                        },
+                                        {
+                                            "$not": {
+                                                "$or": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillMethodBroad",
+                                                            "throw"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.IsHeadshot",
+                                                            true
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                },
+                                "Transition": "Failure"
                             }
                         }
                     }
