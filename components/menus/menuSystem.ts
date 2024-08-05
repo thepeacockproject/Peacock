@@ -33,7 +33,7 @@ import { SyncBailHook, SyncHook } from "../hooksImpl"
 const menuSystemPreRouter = Router()
 const menuSystemRouter = Router()
 
-// /resources-8-15/
+// /resources-8-16/
 
 /**
  * A class for managing the menu system's fetched JSON data.
@@ -52,9 +52,7 @@ export class MenuSystemDatabase {
          * for instance, `/menusystem/data/testing.json`.
          * - gameVersion: The game's version.
          */
-        getDatabaseDiff: SyncHook<
-            [/** configs */ string[], /** gameVersion */ GameVersion]
-        >
+        getDatabaseDiff: SyncHook<[configs: string[], gameVersion: GameVersion]>
 
         /**
          * A hook for getting the requested configuration.
@@ -66,7 +64,7 @@ export class MenuSystemDatabase {
          * Returns: The file as an object.
          */
         getConfig: SyncBailHook<
-            [/** configName */ string, /** gameVersion */ GameVersion],
+            [configName: string, gameVersion: GameVersion],
             unknown
         >
     }

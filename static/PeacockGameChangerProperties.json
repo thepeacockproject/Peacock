@@ -278,5 +278,68 @@
                 }
             }
         ]
+    },
+    "98223196-71ea-60c3-962c-b856ee8cc2e7": {
+        "Name": "UI_PEACOCK_GAMECHANGERS_GLOBAL_HEADKILLONLY_NAME",
+        "Description": "UI_PEACOCK_GAMECHANGERS_GLOBAL_HEADKILLONLY_DESC",
+        "Icon": null,
+        "IsHidden": null,
+        "TileImage": "images/contractconditions/condition_contrac_headshots_only.jpg",
+        "ObjectivesCategory": "primary",
+        "Resource": [],
+        "Objectives": [
+            {
+                "Id": "0b4e7a06-c544-987a-e0bd-8f6ad23406a4",
+                "Category": "secondary",
+                "AllowEtRestartOnSuccess": true,
+                "BriefingText": "$loc UI_PEACOCK_GAMECHANGERS_GLOBAL_HEADKILLONLY_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_GAMECHANGERS_GLOBAL_HEADKILLONLY_NAME",
+                    "iconType": 17
+                },
+              "Definition": {
+                  "Scope": "session",
+                  "States": {
+                      "Start": {
+                          "-": {
+                            "Transition": "Success"
+                          }
+                      },
+                      "Success": {
+                          "Kill": {
+                              "Condition": {
+                                  "$and": [
+                                      {
+                                          "$eq": ["$Value.IsTarget", true]
+                                      },
+                                      {
+                                          "$not": {
+                                              "$or": [
+                                                  {
+                                                      "$eq": [
+                                                          "$Value.KillMethodBroad",
+                                                          "throw"
+                                                      ]
+                                                  },
+                                                  {
+                                                      "$eq": [
+                                                          "$Value.IsHeadshot",
+                                                          true
+                                                      ]
+                                                  }
+                                              ]
+                                          }
+                                      }
+                                  ]
+                              },
+                              "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "ShowBasedOnObjectives": null,
+        "IsPrestigeObjective": null
     }
 }

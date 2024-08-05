@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { existsSync, readdirSync, readFileSync } from "fs"
+import { existsSync } from "fs"
 import { readdir, readFile, writeFile } from "fs/promises"
 import { join } from "path"
 import {
@@ -65,8 +65,6 @@ import { ChallengeService } from "./candle/challengeService"
 import { getFlag } from "./flags"
 import { unpack } from "msgpackr"
 import { ChallengePackage, SavedChallengeGroup } from "./types/challenges"
-import { promisify } from "util"
-import { brotliDecompress } from "zlib"
 import assert from "assert"
 import { Response } from "express"
 import { ChallengeFilterType } from "./candle/challengeHelpers"
@@ -77,6 +75,7 @@ import generatedPeacockRequireTable from "./generatedPeacockRequireTable"
 import { escalationTypes } from "./contracts/escalations/escalationService"
 import { orderedETAs } from "./contracts/elusiveTargetArcades"
 import { SMFSupport } from "./smfSupport"
+import { glob } from "fast-glob"
 
 /**
  * An array of string arrays that contains the IDs of the featured contracts.
@@ -291,6 +290,11 @@ function registerInternals(contracts: MissionManifest[]): void {
                         "elusive/arcade has no objectives",
                     )
                     c.Data.Objectives = c.Data.Objectives.map((obj) => {
+                        // for moscowmule, cosmopolitan, etc.
+                        if (obj.Type === "statemachine" && obj.IsHidden) {
+                            obj.IsHidden = false
+                        }
+
                         if (obj.SuccessEvent?.EventName === "Kill") {
                             obj.IsHidden = false
                         }
@@ -316,50 +320,41 @@ export class Controller {
         masteryDataLoaded: SyncHook<[]>
         newEvent: SyncHook<
             [
-                /** event */ ClientToServerEvent,
-                /** details */ {
+                event: ClientToServerEvent,
+                details: {
                     gameVersion: GameVersion
                     userId: string
                 },
-                /** session */ ContractSession,
+                session: ContractSession,
             ]
         >
         newMetricsEvent: SyncHook<
             [
-                /** event */ S2CEventWithTimestamp,
-                /** request */ RequestWithJwt<never, S2CEventWithTimestamp[]>,
+                event: S2CEventWithTimestamp,
+                request: RequestWithJwt<never, S2CEventWithTimestamp[]>,
             ]
         >
         getContractManifest: SyncBailHook<
-            // prettier-ignore
-            [
-                /** contractId */ string
-            ],
+            [contractId: string],
             MissionManifest | undefined
         >
         contributeCampaigns: SyncHook<
             [
-                /** campaigns */ Campaign[],
-                /** genSingleMissionFunc */ GenSingleMissionFunc,
-                /** genSingleVideoFunc */ GenSingleVideoFunc,
-                /** gameVersion */ GameVersion,
+                campaigns: Campaign[],
+                genSingleMissionFunc: GenSingleMissionFunc,
+                genSingleVideoFunc: GenSingleVideoFunc,
+                gameVersion: GameVersion,
             ]
         >
-        // prettier-ignore
-        getSearchResults: AsyncSeriesHook<[
-            /** query */ string[],
-            /** contractIds */ string[]
-        ]>
+        getSearchResults: AsyncSeriesHook<
+            [query: string[], contractIds: string[]]
+        >
         getNextCampaignMission: SyncBailHook<
-            // prettier-ignore
-            [
-                /** contractId */ string,
-                /** gameVersion */ GameVersion
-            ],
+            [contractId: string, gameVersion: GameVersion],
             PlayNextGetCampaignsHookReturn | undefined
         >
-        onMissionEnd: SyncHook<[/** session */ ContractSession]>
-        onEscalationReset: SyncHook<[/** groupId */ string]>
+        onMissionEnd: SyncHook<[session: ContractSession]>
+        onEscalationReset: SyncHook<[groupId: string]>
     }
     public configManager: typeof configManagerType = {
         getConfig,
@@ -473,7 +468,7 @@ export class Controller {
 
         this._addElusiveTargets()
         this._getETALocations()
-        this.index()
+        await this.index()
 
         try {
             await this._loadResources()
@@ -586,7 +581,7 @@ export class Controller {
 
         await writeFile(name, j)
 
-        this.index()
+        await this.index()
         return manifest
     }
 
@@ -744,7 +739,8 @@ export class Controller {
             } else {
                 log(
                     LogLevel.WARN,
-                    `Failed to download from HITMAP servers. Trying official servers instead...`,
+                    `Failed to download from HITMAPS servers. Trying official servers instead...`,
+                    "contracts",
                 )
             }
         }
@@ -781,24 +777,25 @@ export class Controller {
      *
      * @internal
      */
-    index(): void {
+    async index(): Promise<void> {
         this.contracts.clear()
         this._pubIdToContractId.clear()
 
-        const contracts = readdirSync("contracts")
-        contracts.forEach((i) => {
-            if (!isContractFile(i)) {
-                return
-            }
+        const contracts = await glob("contracts/**/*.{json,ocre}")
 
+        for (const i of contracts) {
             try {
                 const f = parse(
-                    readFileSync(join("contracts", i)).toString(),
+                    (await readFile(i)).toString(),
                 ) as MissionManifest
 
                 if (!validateMission(f)) {
-                    log(LogLevel.ERROR, `Skipped loading ${i} due to an error!`)
-                    return
+                    log(
+                        LogLevel.ERROR,
+                        `Contract ${i} failed validation!`,
+                        "contracts",
+                    )
+                    continue
                 }
 
                 this.contracts.set(f.Metadata.Id, f)
@@ -810,9 +807,14 @@ export class Controller {
                     )
                 }
             } catch (e) {
-                log(LogLevel.ERROR, `Failed to load contract ${i}!`)
+                log(
+                    LogLevel.ERROR,
+                    `Failed to load contract ${i}!`,
+                    "contracts",
+                )
+                log(LogLevel.DEBUG, e, "contracts")
             }
-        })
+        }
     }
 
     /**
@@ -960,14 +962,12 @@ export class Controller {
                     version,
                 )
 
-                for (const challenge of group.Challenges) {
-                    this.challengeService.registerChallenge(
-                        challenge,
-                        group.CategoryId,
-                        data.meta.Location,
-                        version,
-                    )
-                }
+                this.challengeService.registerChallengeList(
+                    group.Challenges,
+                    group.CategoryId,
+                    data.meta.Location,
+                    version,
+                )
             }
         }
     }
@@ -1107,23 +1107,26 @@ export class Controller {
 
             await (plugin as (controller: Controller) => Promise<void>)(this)
         } catch (e) {
-            log(LogLevel.ERROR, `Error while evaluating plugin ${pluginName}!`)
-            log(LogLevel.ERROR, e)
+            log(
+                LogLevel.ERROR,
+                `Error while evaluating plugin ${pluginName}!`,
+                "plugins",
+            )
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            log(LogLevel.ERROR, (e as any)?.stack ?? e, "plugins")
         }
     }
 
     private async _loadInternalContracts(): Promise<void> {
-        const decompress = promisify(brotliDecompress)
-
         const buf = await readFile(
             join(
                 PEACOCK_DEV ? process.cwd() : __dirname,
                 "resources",
-                "contracts.br",
+                "contracts.prp",
             ),
         )
 
-        const decompressed = JSON.parse((await decompress(buf)).toString()) as {
+        const decompressed = unpack(buf) as {
             b: MissionManifest[]
             el: MissionManifest[]
         }
@@ -1177,16 +1180,6 @@ export class Controller {
             "scanGroups",
         )
     }
-}
-
-/**
- * Returns if the specified file is a OpenContracts contract file.
- *
- * @param name The file's name.
- * @returns If the specified file is an OCRE.
- */
-export function isContractFile(name: string): boolean {
-    return name.endsWith(".ocre") || name.endsWith(".json")
 }
 
 /**

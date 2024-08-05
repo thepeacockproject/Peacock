@@ -83,6 +83,8 @@ export const H3_EPIC_ENTITLEMENTS = [
     "28455871cd0d4ffab52f557cc012ea5e",
     // SAMBUCA:
     "9220c020262f420da06eb46a4b1ce86f",
+    // PENICILLIN
+    "6cdf07da030d4f66acd50eaf3cd234c7",
 ]
 
 export const H2_STEAM_ENTITLEMENTS = [

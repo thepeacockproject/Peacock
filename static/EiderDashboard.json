@@ -338,35 +338,47 @@
                     "image": "$res images/livetile/tile_gamemode_evergreen.jpg"
                 },
                 "actions": {
-                    "accept": [
-                        {
-                            "set-menu-context": {
-                                "value": {
-                                    "onpageopened": {
-                                        "set-selected": {
-                                            "target": "PLANNING_BUTTON_PLAY"
-                                        },
-                                        "trigger-input": {
-                                            "action": "accept"
+                    "accept": {
+                        "$if $ispackageowned locationGolden": {
+                            "$then": [
+                                {
+                                    "set-menu-context": {
+                                        "value": {
+                                            "onpageopened": {
+                                                "set-selected": {
+                                                    "target": "PLANNING_BUTTON_PLAY"
+                                                },
+                                                "trigger-input": {
+                                                    "action": "accept"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "link": {
+                                        "page": "planning",
+                                        "args": {
+                                            "url": "planning",
+                                            "args": {
+                                                "contractid": "f8ec92c2-4fa2-471e-ae08-545480c746ee",
+                                                "resetescalation": false
+                                            },
+                                            "contractid": "f8ec92c2-4fa2-471e-ae08-545480c746ee"
                                         }
                                     }
                                 }
-                            }
-                        },
-                        {
-                            "link": {
-                                "page": "planning",
-                                "args": {
-                                    "url": "planning",
+                            ],
+                            "$else": {
+                                "link": {
+                                    "page": "gamemode_evergreen",
                                     "args": {
-                                        "contractid": "f8ec92c2-4fa2-471e-ae08-545480c746ee",
-                                        "resetescalation": false
-                                    },
-                                    "contractid": "f8ec92c2-4fa2-471e-ae08-545480c746ee"
+                                        "locationId": "LOCATION_PARENT_SNUG"
+                                    }
                                 }
                             }
                         }
-                    ],
+                    },
                     "select": {
                         "replace-children": {
                             "target": "headline_container",

@@ -247,6 +247,7 @@ export const missionsInLocations = {
             "07bc9bbf-7cba-4cdf-92bb-3ab57f09b1cc",
             "09a40d33-4820-454b-89af-a10e0b8d3e08",
             "74278853-5990-4058-8972-1f10ad12b6d8",
+            "b1fb40d7-c013-4c9f-bb8a-8782e980b11a",
         ],
         LOCATION_COLOMBIA: ["90121ee0-0431-4a97-9bc8-8a7e2ca30d65"],
         LOCATION_ANCESTRAL_BULLDOG: [
