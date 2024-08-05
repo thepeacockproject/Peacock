@@ -359,7 +359,11 @@ webFeaturesRouter.post(
 
         try {
             // Challenge Progression
-            log(LogLevel.DEBUG, "Getting challenge progression...")
+            log(
+                LogLevel.DEBUG,
+                "Getting challenge progression...",
+                "progressionTransfer",
+            )
 
             const challengeProgression = await auth._useService<
                 ChallengeProgressionData[]
@@ -400,7 +404,11 @@ webFeaturesRouter.post(
             )
 
             // Profile Progression
-            log(LogLevel.DEBUG, "Getting profile progression...")
+            log(
+                LogLevel.DEBUG,
+                "Getting profile progression...",
+                "progressionTransfer",
+            )
 
             const exts = await auth._useService<OfficialProfileResponse>(
                 `https://${remoteService}.hitman.io/authentication/api/userchannel/ProfileService/GetProfile`,
@@ -420,7 +428,11 @@ webFeaturesRouter.post(
             )
 
             if (req.query.gv !== "h1") {
-                log(LogLevel.DEBUG, "Processing PlayerProfileXP...")
+                log(
+                    LogLevel.DEBUG,
+                    "Processing PlayerProfileXP...",
+                    "progressionTransfer",
+                )
 
                 const sublocations = exts.data.Extensions.progression
                     .PlayerProfileXP
@@ -444,7 +456,11 @@ webFeaturesRouter.post(
                     ),
                 }
 
-                log(LogLevel.DEBUG, "Processing opportunity progression...")
+                log(
+                    LogLevel.DEBUG,
+                    "Processing opportunity progression...",
+                    "progressionTransfer",
+                )
 
                 userdata.Extensions.opportunityprogression = Object.fromEntries(
                     Object.keys(
@@ -453,7 +469,11 @@ webFeaturesRouter.post(
                 )
 
                 if (exts.data.Extensions.progression.Unlockables) {
-                    log(LogLevel.DEBUG, "Processing unlockables...")
+                    log(
+                        LogLevel.DEBUG,
+                        "Processing unlockables...",
+                        "progressionTransfer",
+                    )
 
                     for (const [unlockId, data] of Object.entries(
                         exts.data.Extensions.progression.Unlockables,
@@ -542,6 +562,7 @@ webFeaturesRouter.post(
             log(
                 LogLevel.DEBUG,
                 `Getting escalation${req.query.gv === "h3" ? " & arcade" : ""} progression...`,
+                "progressionTransfer",
             )
 
             const escalations = await getAllHitsCategory(
@@ -588,7 +609,11 @@ webFeaturesRouter.post(
                 ) ||
                     userdata.Extensions.entP.includes("1829605"))
             ) {
-                log(LogLevel.DEBUG, "Getting freelancer progression...")
+                log(
+                    LogLevel.DEBUG,
+                    "Getting freelancer progression...",
+                    "progressionTransfer",
+                )
 
                 await auth._useService(
                     `https://${remoteService}.hitman.io/authentication/api/configuration/Init?configName=pc-prod&lockedContentDisabled=false&isFreePrologueUser=false&isIntroPackUser=false&isFullExperienceUser=true`,
@@ -658,12 +683,24 @@ webFeaturesRouter.post(
             writeUserData(req.query.user, req.query.gv)
         } catch (error) {
             if (error instanceof AxiosError) {
+                const req = error.request?._currentRequest ?? error.request
+                const reqUrl = req && `${req.protocol}//${req.host}${req.path}`
+                log(
+                    LogLevel.DEBUG,
+                    `Failed to sync official data: got ${error.code}: ${error.response?.status} ${error.response?.statusText} for url ${reqUrl}`,
+                    "progressionTransfer",
+                )
                 formErrorMessage(
                     res,
                     `Failed to sync official data: got ${error.response?.status} ${error.response?.statusText}.`,
                 )
                 return
             } else {
+                log(
+                    LogLevel.DEBUG,
+                    `Failed to sync official data: ${JSON.stringify(error)}.`,
+                    "progressionTransfer",
+                )
                 formErrorMessage(
                     res,
                     `Failed to sync official data: got ${JSON.stringify(error)}.`,
