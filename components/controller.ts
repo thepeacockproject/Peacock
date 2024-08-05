@@ -290,6 +290,11 @@ function registerInternals(contracts: MissionManifest[]): void {
                         "elusive/arcade has no objectives",
                     )
                     c.Data.Objectives = c.Data.Objectives.map((obj) => {
+                        // for moscowmule, cosmopolitan, etc.
+                        if (obj.Type === "statemachine" && obj.IsHidden) {
+                            obj.IsHidden = false
+                        }
+
                         if (obj.SuccessEvent?.EventName === "Kill") {
                             obj.IsHidden = false
                         }
