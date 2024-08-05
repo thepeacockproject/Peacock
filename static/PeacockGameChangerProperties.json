@@ -207,55 +207,6 @@
             }
         ]
     },
-    "36bd0cd1-ec01-b9e3-dcd8-08242823cafe": {
-        "Name": "UI_PEACOCK_GAMECHANGERS_MUMBAI_ARTEMIS_SECUREVIP_NAME",
-        "Description": "UI_PEACOCK_GAMECHANGERS_MUMBAI_ARTEMIS_SECUREVIP_DESC",
-        "TileImage": "images/actors/actor_6c5d4bd8-d237-4558-bf46-292f649966d4_10_0_0.jpg",
-        "Icon": "images/challenges/default_challenge_icon.png",
-        "ObjectivesCategory": "primary",
-        "IsHidden": null,
-        "Resource": [],
-        "Objectives": [
-            {
-                "ObjectiveType": "condition",
-                "Type": "statemachine",
-                "Id": "8de0d570-98f9-4243-857d-240417db6edb",
-                "BriefingText": "$loc UI_PEACOCK_GAMECHANGERS_MUMBAI_ARTEMIS_SECUREVIP_NAME",
-                "ForceShowOnLoadingScreen": true,
-                "ExcludeFromScoring": false,
-                "Category": "primary",
-                "Definition": {
-                    "Scope": "session",
-                    "Context": {
-                        "Allies": ["1f5e40b5-775f-4a4b-8c91-0f9fe59b2001"]
-                    },
-                    "States": {
-                        "Start": {
-                            "exit_gate": { "Transition": "Success" },
-                            "Pacify": {
-                                "Condition": {
-                                    "$eq": [
-                                        "$Value.RepositoryId",
-                                        "1f5e40b5-775f-4a4b-8c91-0f9fe59b2001"
-                                    ]
-                                },
-                                "Transition": "Failure"
-                            },
-                            "Kill": {
-                                "Condition": {
-                                    "$eq": [
-                                        "$Value.RepositoryId",
-                                        "1f5e40b5-775f-4a4b-8c91-0f9fe59b2001"
-                                    ]
-                                },
-                                "Transition": "Failure"
-                            }
-                        }
-                    }
-                }
-            }
-        ]
-    },
     "484d5cf9-0f31-50e0-0192-d057633e9305": {
         "Name": "UI_GAMECHANGERS_GLOBAL_NO_AGILITY_NAME",
         "Description": "UI_PEACOCK_GAMECHANGERS_MUMBAI_ARTEMIS_AGILITY_DESC",
@@ -297,8 +248,8 @@
         ]
     },
     "297f1367-a233-8304-7ef8-50ed1298619f": {
-        "Name": "UI_PEACOCK_GAMECHANGERS_MUMBAI_ARTEMIS_EXIT_NAME",
-        "Description": "UI_PEACOCK_GAMECHANGERS_MUMBAI_ARTEMIS_EXIT_DESC",
+        "Name": "UI_PEACOCK_GAMECHANGERS_MUMBAI_ARTEMIS_HIDEOUT_EXIT_NAME",
+        "Description": "UI_PEACOCK_GAMECHANGERS_MUMBAI_ARTEMIS_HIDEOUT_EXIT_DESC",
         "Icon": "images/challenges/default_challenge_icon.png",
         "IsHidden": null,
         "TileImage": "images/challenges/Mumbai/Hideout_Exit.jpg",
@@ -313,7 +264,7 @@
                         "Visible": false
                     }
                 },
-                "BriefingText": "",
+                "BriefingText": "$loc UI_PEACOCK_GAMECHANGERS_MUMBAI_ARTEMIS_HIDEOUT_EXIT_DESC",
                 "Type": "statemachine",
                 "Definition": {
                     "Scope": "session",
