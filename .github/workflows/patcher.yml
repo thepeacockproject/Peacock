@@ -8,23 +8,69 @@ on:
     branches: [ "v*", "master" ]
     paths: [ "patcher/**/*" ]
 
+env:
+  DOTNET_VERSION: 8.x
+
 jobs:
   build:
     name: Build Patcher
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v2
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: Build Patcher
-        run: msbuild.exe patcher\HitmanPatcher.sln -t:Build -p:Configuration=Release -p:Platform=x64 -m
+        run: |
+          export DOTNET_NOLOGO=true
+          export DOTNET_CLI_TELEMETRY_OPTOUT=true
+          cd patcher
+          dotnet publish HitmanPatcher.CLI/HitmanPatcher.CLI.csproj -c Release -p:PublishSingleFile=True --no-self-contained -p DebugType=none -p:EnableWindowsTargeting=True -o Publish/Windows-Portable
+          dotnet publish HitmanPatcher.CLI/HitmanPatcher.CLI.csproj -r win-x64 -c Release -f net8.0 -p:PublishTrimmed=True -p:PublishSingleFile=True --self-contained -p DebugType=none -p:EnableWindowsTargeting=True -o Publish/Windows-x64
+          dotnet publish HitmanPatcher.CLI/HitmanPatcher.CLI.csproj -r linux-x64 -c "Release - Linux" -p:PublishSingleFile=True --no-self-contained -p DebugType=none -p:IsLinux=true -o Publish/Linux-Portable
+          dotnet publish HitmanPatcher.CLI/HitmanPatcher.CLI.csproj -r linux-x64 -c "Release - Linux" -f net8.0 -p:PublishTrimmed=True -p:PublishSingleFile=True --self-contained -p DebugType=none -p:IsLinux=true -o Publish/Linux-x64
+          dotnet publish HitmanPatcher.UI/HitmanPatcher.UI.csproj -c Release -p:PublishSingleFile=True --no-self-contained -p DebugType=none -p:EnableWindowsTargeting=True -o Publish/Windows-Portable
+          dotnet publish HitmanPatcher.UI/HitmanPatcher.UI.csproj -r win-x64 -c Release -p:PublishSingleFile=True --self-contained -p DebugType=none -p:EnableWindowsTargeting=True -o Publish/Windows-x64
+          dotnet publish HitmanPatcher.CLI/HitmanPatcher.CLI.csproj -c Release -p DebugType=none -p:EnableWindowsTargeting=True -o Publish/Windows-Legacy -p:IsLegacy=True
+          dotnet publish HitmanPatcher.UI/HitmanPatcher.UI.csproj -c Release -p DebugType=none -p:EnableWindowsTargeting=True -o Publish/Windows-Legacy -p:IsLegacy=True
 
-      - name: Upload Patcher Artifacts
+      - name: Upload patcher-windows-portable
         uses: actions/upload-artifact@v4
         with:
-          name: patcher-windows
-          path: patcher/bin/x64/Release/PeacockPatcher.exe
+          name: patcher-windows-portable
+          path: patcher/Publish/Windows-Portable
+
+      - name: Upload patcher-cli-windows
+        uses: actions/upload-artifact@v4
+        with:
+          name: patcher-cli-windows
+          path: patcher/Publish/Windows-x64/PeacockPatcher.CLI.exe
+
+      - name: Upload patcher-ui-windows
+        uses: actions/upload-artifact@v4
+        with:
+          name: patcher-ui-windows
+          path: patcher/Publish/Windows-x64/PeacockPatcher.UI.exe
+
+      - name: Upload patcher-linux-portable
+        uses: actions/upload-artifact@v4
+        with:
+          name: patcher-linux-portable
+          path: patcher/Publish/Linux-Portable
+
+      - name: Upload patcher-linux
+        uses: actions/upload-artifact@v4
+        with:
+          name: patcher-linux
+          path: patcher/Publish/Linux-x64
+
+      - name: Upload patcher-windows-legacy
+        uses: actions/upload-artifact@v4
+        with:
+          name: patcher-windows-legacy
+          path: patcher/Publish/Windows-Legacy/ILRepack
