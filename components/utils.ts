@@ -559,7 +559,9 @@ export function attainableDefaults(gameVersion: GameVersion): string[] {
     } else {
         return [
             "TOKEN_OUTFIT_GREENLAND_HERO_TRAININGSUIT",
+            "TOKEN_OUTFIT_HOKKAIDO_HERO_HOKKAIDOSUIT",
             "TOKEN_OUTFIT_WET_SUIT",
+            "TOKEN_OUTFIT_OPULENT_HERO_OPULENTSUIT",
             "TOKEN_OUTFIT_HERO_DUGONG_SUIT",
         ]
     }
