@@ -79,13 +79,13 @@ export const error406: unique symbol = Symbol("http406")
 export async function handleOAuthToken(
     req: RequestWithJwt<never, OAuthTokenBody>,
 ): Promise<typeof error400 | typeof error406 | OAuthTokenResponse> {
-    const isFrankenstein = req.body.gs === "scpc-prod"
+    const isScpc = req.body.gs === "scpc-prod"
 
     const signOptions = {
         notBefore: -60000,
         expiresIn: 6000,
         issuer: "auth.hitman.io",
-        audience: isFrankenstein ? "scpc-prod" : "pc_prod_8",
+        audience: isScpc ? "scpc-prod" : "pc_prod_8",
         noTimestamp: true,
     }
 
@@ -136,7 +136,7 @@ export async function handleOAuthToken(
         // @ts-expect-error Non-optional, we're reassigning.
         delete req.jwt.aud // audience
 
-        if (!isFrankenstein) {
+        if (!isScpc) {
             if (userAuths.has(req.jwt.unique_name)) {
                 userAuths
                     .get(req.jwt.unique_name)!
@@ -169,7 +169,7 @@ export async function handleOAuthToken(
 
     let gameVersion: GameVersion = "h1"
 
-    if (isFrankenstein) {
+    if (isScpc) {
         gameVersion = "scpc"
     } else if (isHitman3) {
         gameVersion = "h3"
@@ -221,7 +221,7 @@ export async function handleOAuthToken(
     /*
        Store user auth for all games except scpc
     */
-    if (!isFrankenstein) {
+    if (!isScpc) {
         const authContainer = new OfficialServerAuth(
             gameVersion,
             req.body.access_token,
@@ -261,7 +261,7 @@ export async function handleOAuthToken(
     }
 
     async function getEntitlements(): Promise<string[]> {
-        if (isFrankenstein) {
+        if (isScpc) {
             return new SteamScpcStrategy().get()
         }
 

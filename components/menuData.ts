@@ -160,10 +160,8 @@ menuDataRouter.get("/Hub", (req: RequestWithJwt, res) => {
     if (req.gameVersion === "h3" || req.gameVersion === "h2") {
         template = null
     } else {
-        template =
-            req.gameVersion === "scpc"
-                ? getConfig("FrankensteinHubTemplate", false)
-                : getConfig("LegacyHubTemplate", false)
+        // scpc hub will need to be contributed by a plugin
+        template = getVersionedConfig("HubTemplate", req.gameVersion, false)
     }
 
     res.json({
@@ -381,10 +379,12 @@ menuDataRouter.get(
 
         let template: unknown | null = null
 
-        if (req.gameVersion === "h1") {
-            template = getConfig("LegacyPlanningTemplate", false)
-        } else if (req.gameVersion === "scpc") {
-            template = getConfig("FrankensteinPlanningTemplate", false)
+        if (req.gameVersion === "h1" || req.gameVersion === "scpc") {
+            template = getVersionedConfig(
+                "PlanningTemplate",
+                req.gameVersion,
+                false,
+            )
         }
 
         res.json({
@@ -647,10 +647,7 @@ const missionEndRequest = async (
     }
 
     res.json({
-        template:
-            req.gameVersion === "scpc"
-                ? getConfig("FrankensteinScoreOverviewTemplate", false)
-                : null,
+        template: null,
         data: missionEndOutput,
     })
 }

@@ -664,13 +664,13 @@ export async function getMissionEndData(
     }
 
     // Resolve all opportunities for the location
-    const opportunities = contractData.Metadata.Opportunities
-    const opportunityCount = opportunities ? opportunities.length : 0
-    const opportunityCompleted = opportunities
-        ? opportunities.filter(
-              (ms) => ms in userData.Extensions.opportunityprogression,
-          ).length
-        : 0
+    const opportunities: string[] | null | undefined =
+        contractData.Metadata.Opportunities
+    const opportunityCount = opportunities?.length ?? 0
+    const opportunityCompleted =
+        opportunities?.filter(
+            (ms: string) => ms in userData.Extensions.opportunityprogression,
+        ).length ?? 0
 
     // Resolve all challenges for the location
     const locationChallenges =
