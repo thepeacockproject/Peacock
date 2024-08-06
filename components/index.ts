@@ -52,7 +52,7 @@ import { contractRoutingRouter } from "./contracts/contractRouting"
 import { profileRouter } from "./profileHandler"
 import { menuDataRouter } from "./menuData"
 import { menuSystemPreRouter, menuSystemRouter } from "./menus/menuSystem"
-import { _theLastYardbirdScpc, controller } from "./controller"
+import { controller } from "./controller"
 import {
     STEAM_NAMESPACE_2016,
     STEAM_NAMESPACE_2018,
@@ -64,7 +64,6 @@ import { legacyMenuDataRouter } from "./2016/legacyMenuData"
 import { legacyContractRouter } from "./2016/legacyContractHandler"
 import { initRp } from "./discord/discordRp"
 import random from "random"
-import { generateUserCentric } from "./contracts/dataGen"
 import { json as jsonMiddleware, urlencoded } from "body-parser"
 import { loadoutRouter, loadouts } from "./loadouts"
 import { setupHotListener } from "./hotReloadService"
@@ -328,64 +327,6 @@ app.use(
 
             next()
         }),
-)
-
-app.get(
-    "/profiles/page//dashboard//Dashboard_Category_Sniper_Singleplayer/00000000-0000-0000-0000-000000000015/Contract/ff9f46cf-00bd-4c12-b887-eac491c3a96d",
-    // @ts-expect-error jwt props.
-    (req: RequestWithJwt, res) => {
-        res.json({
-            template: getConfig("FrankensteinMmSpTemplate", false),
-            data: {
-                Item: {
-                    Id: "ff9f46cf-00bd-4c12-b887-eac491c3a96d",
-                    Type: "Contract",
-                    Title: "UI_CONTRACT_HAWK_TITLE",
-                    Date: new Date().toISOString(),
-                    Data: generateUserCentric(
-                        _theLastYardbirdScpc,
-                        req.jwt.unique_name,
-                        "scpc",
-                    ),
-                },
-            },
-        })
-    },
-)
-
-// We handle this for now, but it's not used. For the future though.
-app.get(
-    "/profiles/page//dashboard//Dashboard_Category_Sniper_Multiplayer/00000000-0000-0000-0000-000000000015/Contract/ff9f46cf-00bd-4c12-b887-eac491c3a96d",
-    // @ts-expect-error jwt props.
-    (req: RequestWithJwt, res) => {
-        const template = getConfig("FrankensteinMmMpTemplate", false)
-
-        /* To enable multiplayer:
-         * Change MultiplayerNotSupported to false
-         * NOTE: REMOVING THIS FULLY WILL BREAK THE EDITED TEMPLATE!
-         */
-
-        res.json({
-            template: template,
-            data: {
-                Item: {
-                    Id: "ff9f46cf-00bd-4c12-b887-eac491c3a96d",
-                    Type: "Contract",
-                    Title: "UI_CONTRACT_HAWK_TITLE",
-                    Date: new Date().toISOString(),
-                    Disabled: true,
-                    Data: {
-                        ...generateUserCentric(
-                            _theLastYardbirdScpc,
-                            req.jwt.unique_name,
-                            "scpc",
-                        ),
-                        ...{ MultiplayerNotSupported: true },
-                    },
-                },
-            },
-        })
-    },
 )
 
 if (PEACOCK_DEV) {

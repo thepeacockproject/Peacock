@@ -81,11 +81,6 @@ import H2LocationsData from "../static/H2LocationsData.json"
 import H2FilterData from "../static/H2FilterData.json"
 import H2DashboardTemplate from "../static/H2DashboardTemplate.json"
 import H2LookupContractTemplate from "../static/H2LookupContractTemplate.json"
-import FrankensteinHubTemplate from "../static/FrankensteinHubTemplate.json"
-import FrankensteinMmSpTemplate from "../static/FrankensteinMmSpTemplate.json"
-import FrankensteinMmMpTemplate from "../static/FrankensteinMmMpTemplate.json"
-import FrankensteinScoreOverviewTemplate from "../static/FrankensteinScoreOverviewTemplate.json"
-import FrankensteinPlanningTemplate from "../static/FrankensteinPlanningTemplate.json"
 import Videos from "../static/Videos.json"
 import ChallengeLocationTemplate from "../static/ChallengeLocationTemplate.json"
 import H2ChallengeLocationTemplate from "../static/H2ChallengeLocationTemplate.json"
@@ -99,7 +94,6 @@ import ContractSearchResponseTemplate from "../static/ContractSearchResponseTemp
 import LegacyDebriefingChallengesTemplate from "../static/LegacyDebriefingChallengesTemplate.json"
 import DebriefingChallengesTemplate from "../static/DebriefingChallengesTemplate.json"
 import MasteryUnlockablesTemplate from "../static/MasteryUnlockablesTemplate.json"
-import Scpcallunlockables from "../static/Scpcallunlockables.json"
 import DiscordRichAssetsForBricks from "../static/DiscordRichAssetsForBricks.json"
 import EscalationCodenames from "../static/EscalationCodenames.json"
 import ScoreOverviewTemplate from "../static/ScoreOverviewTemplate.json"
@@ -116,7 +110,6 @@ import HitsCategoryElusiveTemplate from "../static/HitsCategoryElusiveTemplate.j
 import HitsCategoryContractAttackTemplate from "../static/HitsCategoryContractAttackTemplate.json"
 import MissionRewardsTemplate from "../static/MissionRewardsTemplate.json"
 import SniperUnlockables from "../static/SniperUnlockables.json"
-import ScpcLocationsData from "../static/ScpcLocationsData.json"
 import type { GameVersion } from "./types/types"
 import { fastClone } from "./utils"
 
@@ -182,7 +175,6 @@ const configs = {
     DebriefingChallengesTemplate,
     LegacyLookupContractByIdTemplate,
     EiderDashboard,
-    FrankensteinHubTemplate,
     H2allunlockables,
     H2DestinationsData,
     H2StoreData,
@@ -194,10 +186,6 @@ const configs = {
     H2CareerTemplate,
     H2DashboardTemplate,
     H2SniperContentTemplate,
-    FrankensteinMmSpTemplate,
-    FrankensteinMmMpTemplate,
-    FrankensteinPlanningTemplate,
-    FrankensteinScoreOverviewTemplate,
     Videos,
     ChallengeLocationTemplate,
     H2ChallengeLocationTemplate,
@@ -207,8 +195,6 @@ const configs = {
     ContractSearchPaginateTemplate,
     ContractSearchResponseTemplate,
     MasteryUnlockablesTemplate,
-    Scpcallunlockables,
-    ScpcLocationsData,
     DiscordRichAssetsForBricks,
     EscalationCodenames,
     ScoreOverviewTemplate,
@@ -284,7 +270,7 @@ export function getVersionedConfig<T = unknown>(
     ) {
         h1Prefix = "Scpc"
     } else {
-        // the above condition wasn't true
+        // no scpc config, fall back to legacy
         if (["scpc", "h1"].includes(gameVersion)) {
             h1Prefix = "Legacy"
         }

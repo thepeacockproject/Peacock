@@ -56,8 +56,6 @@ import { AsyncSeriesHook, SyncBailHook, SyncHook } from "./hooksImpl"
 import { parse } from "json5"
 import { userAuths } from "./officialServerAuth"
 // @ts-expect-error Ignore JSON import
-import LASTYARDBIRDSCPC from "../contractdata/SNIPER/THELASTYARDBIRD_SCPC.json"
-// @ts-expect-error Ignore JSON import
 import LEGACYFF from "../contractdata/COLORADO/FREEDOMFIGHTERSLEGACY.json"
 import { missionsInLocations } from "./contracts/missionsInLocation"
 import { createContext, Script } from "vm"
@@ -223,9 +221,6 @@ function createPeacockRequire(pluginName: string): NodeRequire {
  * Freedom Fighters for Hitman 2016 (objectives are different).
  */
 export const _legacyBull: MissionManifest = JSON.parse(LEGACYFF)
-
-export const _theLastYardbirdScpc: MissionManifest =
-    JSON.parse(LASTYARDBIRDSCPC)
 
 /**
  * Ensure a mission has the bare minimum required to work.

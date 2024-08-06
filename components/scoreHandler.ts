@@ -32,7 +32,7 @@ import {
 } from "./utils"
 import { contractSessions, getCurrentState } from "./eventHandler"
 import { getConfig } from "./configSwizzleManager"
-import { _theLastYardbirdScpc, controller } from "./controller"
+import { controller } from "./controller"
 import type {
     ContractHistory,
     ContractSession,
@@ -557,11 +557,10 @@ export async function getMissionEndData(
     const userData = getUserData(jwt.unique_name, gameVersion)
 
     // Resolve contract data
-    const contractData =
-        gameVersion === "scpc" &&
-        sessionDetails.contractId === "ff9f46cf-00bd-4c12-b887-eac491c3a96d"
-            ? _theLastYardbirdScpc
-            : controller.resolveContract(sessionDetails.contractId, true)
+    const contractData = controller.resolveContract(
+        sessionDetails.contractId,
+        true,
+    )
 
     if (!contractData) {
         return {

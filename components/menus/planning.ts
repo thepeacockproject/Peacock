@@ -28,7 +28,7 @@ import type {
     UserProfile,
 } from "../types/types"
 import { log, LogLevel } from "../loggingInterop"
-import { _legacyBull, _theLastYardbirdScpc, controller } from "../controller"
+import { _legacyBull, controller } from "../controller"
 import {
     escalationTypes,
     getLevelCount,
@@ -138,8 +138,6 @@ export async function getPlanningData(
         contractId === "42bac555-bbb9-429d-a8ce-f1ffdf94211c"
     ) {
         contractData = _legacyBull
-    } else if (contractId === "ff9f46cf-00bd-4c12-b887-eac491c3a96d") {
-        contractData = _theLastYardbirdScpc
     } else {
         contractData = controller.resolveContract(contractId)
     }
