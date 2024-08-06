@@ -424,6 +424,35 @@ export function makeCampaigns(
                     },
                     pzCampaign,
                     {
+                        Name: "UI_MENU_PAGE_BONUS_MISSIONS_TITLE",
+                        Image: "",
+                        Type: "campaign",
+                        BackgroundImage:
+                            "images/story/background_bonus_missions.jpg",
+                        StoryData: [
+                            genSingleMission(
+                                "00000000-0000-0000-0001-000000000006",
+                                gameVersion,
+                            ),
+                            genSingleMission(
+                                "00000000-0000-0000-0001-000000000005",
+                                gameVersion,
+                            ),
+                            genSingleMission(
+                                "ced93d8f-9535-425a-beb9-ef219e781e81",
+                                gameVersion,
+                            ),
+                            genSingleMission(
+                                "c414a084-a7b9-43ce-b6ca-590620acd87e",
+                                gameVersion,
+                            ),
+                            genSingleMission(
+                                "4e45e91a-94ca-4d89-89fc-1b250e608e73",
+                                gameVersion,
+                            ),
+                        ],
+                    },
+                    {
                         Name: "UI_MENU_PAGE_HITS_ELEMENT_CATEGORY_SARAJEVOSIX",
                         Image: "",
                         Type: "campaign",
@@ -452,35 +481,6 @@ export function makeCampaigns(
                             ),
                             genSingleMission(
                                 "781c68ca-9318-40bf-9cc1-232007be02bf",
-                                gameVersion,
-                            ),
-                        ],
-                    },
-                    {
-                        Name: "UI_MENU_PAGE_BONUS_MISSIONS_TITLE",
-                        Image: "",
-                        Type: "campaign",
-                        BackgroundImage:
-                            "images/story/background_bonus_missions.jpg",
-                        StoryData: [
-                            genSingleMission(
-                                "00000000-0000-0000-0001-000000000006",
-                                gameVersion,
-                            ),
-                            genSingleMission(
-                                "00000000-0000-0000-0001-000000000005",
-                                gameVersion,
-                            ),
-                            genSingleMission(
-                                "ced93d8f-9535-425a-beb9-ef219e781e81",
-                                gameVersion,
-                            ),
-                            genSingleMission(
-                                "c414a084-a7b9-43ce-b6ca-590620acd87e",
-                                gameVersion,
-                            ),
-                            genSingleMission(
-                                "4e45e91a-94ca-4d89-89fc-1b250e608e73",
                                 gameVersion,
                             ),
                         ],
