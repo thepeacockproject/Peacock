@@ -139,7 +139,7 @@ export const missionsInLocations = {
             "85a2b618-2e3c-444f-931c-b89d566e45f7",
             "88451dd9-4b57-441e-9eab-e20b9879bafa",
         ],
-        LOCATION_HOKKAIDO_MAMUSHI: [],
+        LOCATION_HOKKAIDO_MAMUSHI: ["8d716df5-8a25-f72a-bae4-7b4071809070"],
         LOCATION_HOKKAIDO_FLU: [],
         LOCATION_NEWZEALAND: [
             "e1e86206-d3f0-a819-e477-3d80e55e8a40",
