@@ -1,13 +1,5 @@
 {
     "Data": {
-        "EnableExits": {
-            "$eq": [
-                "Completed",
-                "$c51603b3-e08a-36cb-f00e-63e02b9e5e0a",
-                "$733ebb42-f27a-4c2e-3e93-49a3966e3611",
-                "$a516ae6b-ccb5-53f9-9220-4916a7522e4f"
-            ]
-        },
         "Entrances": [
             "a95703cb-091b-4d05-a2ee-3a70ade13590",
             "f4659b56-65c3-4f4f-8f20-11d09af2f2d2",
@@ -41,7 +33,7 @@
                     }
                 ],
                 "Definition": {
-                    "Scope": "session",
+                    "Scope": "hit",
                     "Context": {
                         "Targets": ["80051c02-e026-40fe-970a-7b7aaa62302c"]
                     },
@@ -98,7 +90,7 @@
                     }
                 ],
                 "Definition": {
-                    "Scope": "session",
+                    "Scope": "hit",
                     "Context": {
                         "Targets": ["332280ad-3b31-4913-99f1-794a4a46b98b"]
                     },
@@ -156,7 +148,7 @@
                     }
                 ],
                 "Definition": {
-                    "Scope": "session",
+                    "Scope": "hit",
                     "Context": {
                         "Targets": ["72aa012a-d74d-493f-8b84-397b95efd385"]
                     },
@@ -206,11 +198,12 @@
                 "HUDTemplate": {
                     "display": "$loc UI_PEACOCK_ARTEMIS_KHATAVANGA_NAME"
                 },
-                "ObjectiveType": "custom",
-                "Category": "primary",
+                "ObjectiveType": "setpiece",
+                "Category": "secondary",
                 "ForceShowOnLoadingScreen": true,
+                "ExcludeFromScoring": true,
                 "Definition": {
-                    "Scope": "session",
+                    "Scope": "hit",
                     "Context": {
                         "Targets": ["40e96ed0-7668-4d65-b88a-f44bfff5f537"]
                     },
@@ -226,7 +219,8 @@
                                     },
                                     "Transition": "Success"
                                 }
-                            ]
+                            ],
+                            "exit_gate": { "Transition": "Success" }
                         }
                     }
                 }

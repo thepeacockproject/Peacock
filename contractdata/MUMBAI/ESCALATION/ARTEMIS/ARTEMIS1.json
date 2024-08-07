@@ -1,8 +1,5 @@
 {
     "Data": {
-        "EnableExits": {
-            "$eq": ["Completed", "$c51603b3-e08a-36cb-f00e-63e02b9e5e0a"]
-        },
         "Entrances": [
             "a95703cb-091b-4d05-a2ee-3a70ade13590",
             "f4659b56-65c3-4f4f-8f20-11d09af2f2d2",
@@ -27,7 +24,7 @@
                 },
                 "Category": "primary",
                 "Definition": {
-                    "Scope": "session",
+                    "Scope": "hit",
                     "Context": {
                         "Targets": ["80051c02-e026-40fe-970a-7b7aaa62302c"]
                     },
@@ -55,14 +52,15 @@
                 "BriefingName": "$loc UI_PEACOCK_ARTEMIS_KHATAVANGA_NAME",
                 "BriefingText": "$loc UI_PEACOCK_ARTEMIS_KHATAVANGA_NAME",
                 "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_ARTEMIS_KHATAVANGA_NAME"
+                    "display": "$loc UI_PEACOCK_ARTEMIS_KHATAVANGA_NAME",
+                    "iconType": 17
                 },
-                "ObjectiveType": "custom",
-                "Category": "primary",
+                "ObjectiveType": "setpiece",
+                "Category": "secondary",
                 "ForceShowOnLoadingScreen": true,
                 "ExcludeFromScoring": false,
                 "Definition": {
-                    "Scope": "session",
+                    "Scope": "hit",
                     "Context": {
                         "Targets": ["40e96ed0-7668-4d65-b88a-f44bfff5f537"]
                     },
@@ -78,7 +76,8 @@
                                     },
                                     "Transition": "Success"
                                 }
-                            ]
+                            ],
+                            "exit_gate": { "Transition": "Success" }
                         }
                     }
                 }
@@ -102,12 +101,8 @@
         "PublicId": "166149848423",
         "TileImage": "images/contracts/escalation/contractescalation_artemis.jpg",
         "GroupObjectiveDisplayOrder": [
-            {
-                "Id": "c51603b3-e08a-36cb-f00e-63e02b9e5e0a"
-            },
-            {
-                "Id": "00deb548-dae5-312b-a86e-400965b98e57"
-            }
+            { "Id": "c51603b3-e08a-36cb-f00e-63e02b9e5e0a" },
+            { "Id": "00deb548-dae5-312b-a86e-400965b98e57" }
         ],
         "InGroup": "b4c961a0-42da-b4cc-b92a-763977de914c",
         "CreationTimestamp": "2024-04-08T12:29:31.554Z"
