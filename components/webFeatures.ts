@@ -498,7 +498,7 @@ webFeaturesRouter.post(
             userdata.Extensions.gamepersistentdata =
                 exts.data.Extensions.gamepersistentdata || {}
 
-            // @ts-ignore
+            // @ts-expect-error It's fine
             userdata.Extensions.gamepersistentdata.HitsFilterType ??= {}
             userdata.Extensions.gamepersistentdata.HitsFilterType.MyHistory ??=
                 "all"
