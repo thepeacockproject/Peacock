@@ -1,0 +1,1799 @@
+{
+    "meta": {
+        "Location": "LOCATION_PARENT_MARRAKECH",
+        "GameVersions": ["h1"]
+    },
+    "groups": [
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+            "Image": "images/challenges/categories/assassination/tile.jpg",
+            "Icon": "challenge_category_assassination",
+            "CategoryId": "assassination",
+            "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_SIGNATUREKILL",
+            "OrderIndex": 0,
+            "Challenges": [
+                {
+                    "Id": "e749fae5-357f-44eb-898a-0901257539a3",
+                    "Name": "UI_CHALLENGES_SPIDER_PRO1_ZAYDAN_PRINTINGPRESS_NAME",
+                    "ImageName": "images/challenges/marrakech/spider_sign_zaydan_printingpress.jpg",
+                    "Description": "UI_CHALLENGES_SPIDER_PRO1_ZAYDAN_PRINTINGPRESS_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_MARRAKECH",
+                    "ParentLocationId": "LOCATION_PARENT_MARRAKECH",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_SPIDER_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "ca31c88f-d15e-407b-8407-231f1b068402"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceId",
+                                                    "6ab594fe-bab7-4ed3-a71c-b9b3433d453f"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["7b2d5500-7853-4ad0-b68a-14be791cfba2"]
+                    }
+                },
+                {
+                    "Id": "d53b6f4a-a334-41d1-b4a9-09e756fa6365",
+                    "Name": "UI_CHALLENGES_SPIDER_PRO1_SILENT_ASSASSIN_NAME",
+                    "ImageName": "images/challenges/marrakech/spider_47_silent_assassin.jpg",
+                    "Description": "UI_CHALLENGES_SPIDER_PRO1_SILENT_ASSASSIN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_MARRAKECH",
+                    "ParentLocationId": "LOCATION_PARENT_MARRAKECH",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_SPIDER_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "RecordingDestroyed": true
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [true, "$.RecordingDestroyed"]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$Value.KillContext",
+                                                            1
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.Accident",
+                                                        false
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "CheckNoticedKill"
+                                    }
+                                ],
+                                "CrowdNPC_Died": {
+                                    "Transition": "Failure"
+                                },
+                                "BodyFound": {
+                                    "Transition": "Failure"
+                                },
+                                "SecuritySystemRecorder": [
+                                    {
+                                        "Actions": {
+                                            "$set": [
+                                                "RecordingDestroyed",
+                                                false
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$eq": ["$Value.event", "spotted"]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["RecordingDestroyed", true]
+                                        },
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "erased"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "destroyed"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "Spotted": {
+                                    "Transition": "Failure"
+                                }
+                            },
+                            "CheckNoticedKill": {
+                                "Unnoticed_Kill": {
+                                    "Transition": "Start"
+                                },
+                                "DeadBodySeen": {
+                                    "Transition": "Failure"
+                                },
+                                "Spotted": {
+                                    "Transition": "Failure"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["7b2d5500-7853-4ad0-b68a-14be791cfba2"]
+                    }
+                },
+                {
+                    "Id": "54918249-f3b7-431c-a47a-0f7d67a5815f",
+                    "Name": "UI_CHALLENGES_SPIDER_PRO1_ZAYDAN_PRISONER_NAME",
+                    "ImageName": "images/challenges/marrakech/spider_sign_zaydan_prisoner.jpg",
+                    "Description": "UI_CHALLENGES_SPIDER_PRO1_ZAYDAN_PRISONER_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_MARRAKECH",
+                    "ParentLocationId": "LOCATION_PARENT_MARRAKECH",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_SPIDER_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceId",
+                                                    "d0fb94fa-e219-4c06-a4f9-3150083a8421"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "ca31c88f-d15e-407b-8407-231f1b068402"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["7b2d5500-7853-4ad0-b68a-14be791cfba2"]
+                    }
+                },
+                {
+                    "Id": "ab2af277-0908-4dc7-92f5-175af473426a",
+                    "Name": "UI_CHALLENGES_SPIDER_PRO1_STRANBERG_ELECTRICUTE_NAME",
+                    "ImageName": "images/challenges/marrakech/spider_sign_stranberg_electricute.jpg",
+                    "Description": "UI_CHALLENGES_SPIDER_PRO1_STRANBERG_ELECTRICUTE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_MARRAKECH",
+                    "ParentLocationId": "LOCATION_PARENT_MARRAKECH",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_SPIDER_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "b38b0b62-8071-4761-b2a5-2f635cd8da1b"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceId",
+                                                    "b10a4de0-cd26-4f35-8d63-97f255d5f637"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["7b2d5500-7853-4ad0-b68a-14be791cfba2"]
+                    }
+                },
+                {
+                    "Id": "f8921431-3b99-4c4b-b904-1d3c94a976c1",
+                    "Name": "UI_CHALLENGES_SPIDER_PRO1_STRANBERG_MASSEUSE_NAME",
+                    "ImageName": "images/challenges/marrakech/spider_sign_stranberg_masseuse.jpg",
+                    "Description": "UI_CHALLENGES_SPIDER_PRO1_STRANBERG_MASSEUSE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_MARRAKECH",
+                    "ParentLocationId": "LOCATION_PARENT_MARRAKECH",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_SPIDER_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "b38b0b62-8071-4761-b2a5-2f635cd8da1b"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceId",
+                                                    "18914414-5f69-4f3d-856e-a6b4a61415bf"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["7b2d5500-7853-4ad0-b68a-14be791cfba2"]
+                    }
+                },
+                {
+                    "Id": "47707cff-4125-4380-9eeb-38d7546636a5",
+                    "Name": "UI_CHALLENGES_SPIDER_PRO1_SUIT_ONLY_NAME",
+                    "ImageName": "images/challenges/marrakech/spider_47_suit_only.jpg",
+                    "Description": "UI_CHALLENGES_SPIDER_PRO1_SUIT_ONLY_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_MARRAKECH",
+                    "ParentLocationId": "LOCATION_PARENT_MARRAKECH",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_SPIDER_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "Context": {},
+                        "States": {
+                            "Start": {
+                                "HeroSpawn_Location": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "565614ab-213e-4277-8429-950267941d5e"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "de8c6844-9d28-4cfc-a165-baa3373ae811"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "70f9c93c-57fa-4d61-9cb8-6fcaa0651b0e"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "66ff5ba4-8ebc-4526-8e05-cdb8a055a4c8"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "52598840-4d4d-46de-9446-5f9c64760105"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ],
+                                "Disguise": {
+                                    "Transition": "Failure"
+                                },
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["7b2d5500-7853-4ad0-b68a-14be791cfba2"]
+                    }
+                },
+                {
+                    "Id": "529dbda2-c03e-4702-83be-45ec5c892d04",
+                    "Name": "UI_CHALLENGES_SPIDER_PRO1_SA_SUIT_NAME",
+                    "ImageName": "images/challenges/marrakech/spider_47_sa_suit.jpg",
+                    "Description": "UI_CHALLENGES_SPIDER_PRO1_SA_SUIT_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_MARRAKECH",
+                    "ParentLocationId": "LOCATION_PARENT_MARRAKECH",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_SPIDER_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "RecordingDestroyed": true
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [true, "$.RecordingDestroyed"]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "HeroSpawn_Location": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "565614ab-213e-4277-8429-950267941d5e"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "de8c6844-9d28-4cfc-a165-baa3373ae811"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "70f9c93c-57fa-4d61-9cb8-6fcaa0651b0e"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "66ff5ba4-8ebc-4526-8e05-cdb8a055a4c8"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "52598840-4d4d-46de-9446-5f9c64760105"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ],
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$Value.KillContext",
+                                                            1
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.Accident",
+                                                        false
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "CheckNoticedKill"
+                                    }
+                                ],
+                                "CrowdNPC_Died": {
+                                    "Transition": "Failure"
+                                },
+                                "BodyFound": {
+                                    "Transition": "Failure"
+                                },
+                                "SecuritySystemRecorder": [
+                                    {
+                                        "Actions": {
+                                            "$set": [
+                                                "RecordingDestroyed",
+                                                false
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$eq": ["$Value.event", "spotted"]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["RecordingDestroyed", true]
+                                        },
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "erased"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "destroyed"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "Spotted": {
+                                    "Transition": "Failure"
+                                },
+                                "Disguise": {
+                                    "Transition": "Failure"
+                                }
+                            },
+                            "CheckNoticedKill": {
+                                "Unnoticed_Kill": {
+                                    "Transition": "Start"
+                                },
+                                "DeadBodySeen": {
+                                    "Transition": "Failure"
+                                },
+                                "Spotted": {
+                                    "Transition": "Failure"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["7b2d5500-7853-4ad0-b68a-14be791cfba2"]
+                    }
+                },
+                {
+                    "Id": "533ffb36-f6ab-4c4f-952c-4f8394fcc28c",
+                    "Name": "UI_CHALLENGES_SPIDER_PRO1_STRANBERG_MOOSE_NAME",
+                    "ImageName": "images/challenges/marrakech/spider_sign_stranberg_moose.jpg",
+                    "Description": "UI_CHALLENGES_SPIDER_PRO1_STRANBERG_MOOSE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_MARRAKECH",
+                    "ParentLocationId": "LOCATION_PARENT_MARRAKECH",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_SPIDER_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "b38b0b62-8071-4761-b2a5-2f635cd8da1b"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceType",
+                                                    "0b27b195-6c10-438e-8eb9-812d4ffa35af"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["7b2d5500-7853-4ad0-b68a-14be791cfba2"]
+                    }
+                },
+                {
+                    "Id": "d16cf33e-4345-46b5-bfa5-5585c74420d9",
+                    "Name": "UI_CHALLENGES_SPIDER_PRO1_ZAYDAN_EXPLOSSION_NAME",
+                    "ImageName": "images/challenges/marrakech/spider_sign_zaydan_explossion.jpg",
+                    "Description": "UI_CHALLENGES_SPIDER_PRO1_ZAYDAN_EXPLOSSION_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_MARRAKECH",
+                    "ParentLocationId": "LOCATION_PARENT_MARRAKECH",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_SPIDER_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.RepositoryId",
+                                                        "ca31c88f-d15e-407b-8407-231f1b068402"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.SetPieceId",
+                                                        "733df50d-10dc-4d00-a8d2-b5941c6f3358"
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "End_Contract"
+                                    }
+                                ]
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["7b2d5500-7853-4ad0-b68a-14be791cfba2"]
+                    }
+                },
+                {
+                    "Id": "af60e15a-8ddd-4d02-9b1e-6256c4f0cfd0",
+                    "Name": "UI_CHALLENGES_SPIDER_PRO1_ZAYDAN_DANCE_KILL_NAME",
+                    "ImageName": "images/challenges/marrakech/spider_exp_zaydan_dance_kill.jpg",
+                    "Description": "UI_CHALLENGES_SPIDER_PRO1_ZAYDAN_DANCE_KILL_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_MARRAKECH",
+                    "ParentLocationId": "LOCATION_PARENT_MARRAKECH",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_SPIDER_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "Dance_Party"
+                                        ]
+                                    },
+                                    "Transition": "Check_Kill"
+                                }
+                            },
+                            "Check_Kill": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "ca31c88f-d15e-407b-8407-231f1b068402"
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                },
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "Dance_Party_End"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["7b2d5500-7853-4ad0-b68a-14be791cfba2"]
+                    }
+                },
+                {
+                    "Id": "02c83486-6a4e-4c0c-9aa5-7bc92e503646",
+                    "Name": "UI_CHALLENGES_SPIDER_PRO1_BOTH_TURRET_NAME",
+                    "ImageName": "images/challenges/marrakech/spider_sign_both_turret.jpg",
+                    "Description": "UI_CHALLENGES_SPIDER_PRO1_BOTH_TURRET_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_MARRAKECH",
+                    "ParentLocationId": "LOCATION_PARENT_MARRAKECH",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_SPIDER_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Is_DoubleKill": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$or": [
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "ca31c88f-d15e-407b-8407-231f1b068402"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.SetPieceId",
+                                                            "dc3c70a0-9f34-48a4-9828-3fa2ba8493bd"
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "b38b0b62-8071-4761-b2a5-2f635cd8da1b"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.SetPieceId",
+                                                            "dc3c70a0-9f34-48a4-9828-3fa2ba8493bd"
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$or": [
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "ca31c88f-d15e-407b-8407-231f1b068402"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.SetPieceId",
+                                                            "dc3c70a0-9f34-48a4-9828-3fa2ba8493bd"
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "b38b0b62-8071-4761-b2a5-2f635cd8da1b"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.SetPieceId",
+                                                            "dc3c70a0-9f34-48a4-9828-3fa2ba8493bd"
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Is_DoubleKill"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["7b2d5500-7853-4ad0-b68a-14be791cfba2"]
+                    }
+                },
+                {
+                    "Id": "00cc0c8d-79eb-45bd-8b9b-8164834dadd1",
+                    "Name": "UI_CHALLENGES_SPIDER_PRO1_STRANBERG_INTERVIEW_NAME",
+                    "ImageName": "images/challenges/marrakech/spider_sign_stranberg_camexplossion.jpg",
+                    "Description": "UI_CHALLENGES_SPIDER_PRO1_STRANBERG_INTERVIEW_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_MARRAKECH",
+                    "ParentLocationId": "LOCATION_PARENT_MARRAKECH",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_SPIDER_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "Signature_Interview_Explosive_Kill"
+                                        ]
+                                    },
+                                    "Transition": "Interview_Start"
+                                }
+                            },
+                            "Interview_Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "b38b0b62-8071-4761-b2a5-2f635cd8da1b"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemCategory",
+                                                    "explosive"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "e0fc86fb-a852-4652-bb5c-b591f7bfeb29"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                },
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "Signature_Interview_End"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["7b2d5500-7853-4ad0-b68a-14be791cfba2"]
+                    }
+                },
+                {
+                    "Id": "07ded0ad-2449-44e3-b618-9f238ad71ac0",
+                    "Name": "UI_CHALLENGES_SPIDER_PRO1_NO_EVIDENCE_NAME",
+                    "ImageName": "images/challenges/marrakech/spider_47_no_evidence.jpg",
+                    "Description": "UI_CHALLENGES_SPIDER_PRO1_NO_EVIDENCE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_MARRAKECH",
+                    "ParentLocationId": "LOCATION_PARENT_MARRAKECH",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_SPIDER_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "RecordingDestroyed": true
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [true, "$.RecordingDestroyed"]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "SecuritySystemRecorder": [
+                                    {
+                                        "Actions": {
+                                            "$set": [
+                                                "RecordingDestroyed",
+                                                false
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$eq": ["$Value.event", "spotted"]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["RecordingDestroyed", true]
+                                        },
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "erased"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "destroyed"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.Accident",
+                                                        false
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "CheckNoticedKill"
+                                    }
+                                ],
+                                "BodyFound": {
+                                    "Transition": "Failure"
+                                }
+                            },
+                            "CheckNoticedKill": {
+                                "Unnoticed_Kill": {
+                                    "Transition": "Start"
+                                },
+                                "DeadBodySeen": {
+                                    "Transition": "Failure"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["7b2d5500-7853-4ad0-b68a-14be791cfba2"]
+                    }
+                },
+                {
+                    "Id": "f3e8ac60-1419-4a91-a861-c6108a3dffde",
+                    "Name": "UI_CHALLENGES_SPIDER_PRO1_STRANBERG_INTERN_NAME",
+                    "ImageName": "images/challenges/marrakech/spider_sign_stranberg_intern.jpg",
+                    "Description": "UI_CHALLENGES_SPIDER_PRO1_STRANBERG_INTERN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_MARRAKECH",
+                    "ParentLocationId": "LOCATION_PARENT_MARRAKECH",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_SPIDER_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "b38b0b62-8071-4761-b2a5-2f635cd8da1b"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "65f23b45-f5ab-4ede-82ec-46e4de38c0e9"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemCategory",
+                                                    "fiberwire"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["7b2d5500-7853-4ad0-b68a-14be791cfba2"]
+                    }
+                },
+                {
+                    "Id": "b930882c-c7a7-4d07-9d44-ca305834f307",
+                    "Name": "UI_CHALLENGES_SPIDER_PRO1_BOTH_NEUTRAL_NAME",
+                    "ImageName": "images/challenges/marrakech/spider_sign_both_neutral.jpg",
+                    "Description": "UI_CHALLENGES_SPIDER_PRO1_BOTH_NEUTRAL_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_MARRAKECH",
+                    "ParentLocationId": "LOCATION_PARENT_MARRAKECH",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_SPIDER_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "Zaydan_killed": false,
+                            "Stranberg_killed": false
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.RepositoryId",
+                                                        "ca31c88f-d15e-407b-8407-231f1b068402"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.SetPieceType",
+                                                        "93f3b249-1a2c-46e0-a575-1136a4d00e58"
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$set": ["Zaydan_killed", true]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.RepositoryId",
+                                                        "b38b0b62-8071-4761-b2a5-2f635cd8da1b"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.SetPieceType",
+                                                        "93f3b249-1a2c-46e0-a575-1136a4d00e58"
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$set": ["Stranberg_killed", true]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                true,
+                                                "$.Zaydan_killed",
+                                                "$.Stranberg_killed"
+                                            ]
+                                        },
+                                        "Transition": "End_Contract"
+                                    }
+                                ]
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["7b2d5500-7853-4ad0-b68a-14be791cfba2"]
+                    }
+                },
+                {
+                    "Id": "e07e5d49-5090-4c8a-93b1-ce92c867600d",
+                    "Name": "UI_CHALLENGES_SPIDER_PRO1_KIDS_PAINTING_NAME",
+                    "ImageName": "images/challenges/marrakech/marrakech_all_kids_paintings.jpg",
+                    "Description": "UI_CHALLENGES_SPIDER_PRO1_KIDS_PAINTING_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_MARRAKECH",
+                    "ParentLocationId": "LOCATION_PARENT_MARRAKECH",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_SPIDER_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "Painting_A": false,
+                            "Painting_B": false,
+                            "Painting_C": false,
+                            "Painting_D": false,
+                            "Painting_E": false,
+                            "Painting_F": false,
+                            "Painting_G": false
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "ValidDisguise": {
+                                "Level_Setup_Events": [
+                                    {
+                                        "Actions": {
+                                            "$set": ["Painting_A", true]
+                                        },
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.Event_metricvalue",
+                                                "Painting_A"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["Painting_B", true]
+                                        },
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.Event_metricvalue",
+                                                "Painting_B"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["Painting_C", true]
+                                        },
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.Event_metricvalue",
+                                                "Painting_C"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["Painting_D", true]
+                                        },
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.Event_metricvalue",
+                                                "Painting_D"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["Painting_E", true]
+                                        },
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.Event_metricvalue",
+                                                "Painting_E"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["Painting_F", true]
+                                        },
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.Event_metricvalue",
+                                                "Painting_F"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["Painting_G", true]
+                                        },
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.Event_metricvalue",
+                                                "Painting_G"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                true,
+                                                "$.Painting_A",
+                                                "$.Painting_B",
+                                                "$.Painting_C",
+                                                "$.Painting_D",
+                                                "$.Painting_E",
+                                                "$.Painting_F",
+                                                "$.Painting_G"
+                                            ]
+                                        },
+                                        "Transition": "FounAllPaintings"
+                                    }
+                                ]
+                            },
+                            "Start": {
+                                "Disguise": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value",
+                                            "6136fa6a-3f1f-4606-9b87-fde9538966dc"
+                                        ]
+                                    },
+                                    "Transition": "ValidDisguise"
+                                }
+                            },
+                            "FounAllPaintings": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "ca31c88f-d15e-407b-8407-231f1b068402"
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["7b2d5500-7853-4ad0-b68a-14be791cfba2"]
+                    }
+                },
+                {
+                    "Id": "9e4f1ecc-9b05-47b9-add6-dcd654a7c27b",
+                    "Name": "UI_CHALLENGES_SPIDER_PRO1_STRANBERG_DROWN_NAME",
+                    "ImageName": "images/challenges/marrakech/spider_sign_stranberg_drown.jpg",
+                    "Description": "UI_CHALLENGES_SPIDER_PRO1_STRANBERG_DROWN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_MARRAKECH",
+                    "ParentLocationId": "LOCATION_PARENT_MARRAKECH",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_SPIDER_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "b38b0b62-8071-4761-b2a5-2f635cd8da1b"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceType",
+                                                    "7b28519a-3c66-4498-a61b-ae6926a85594"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["7b2d5500-7853-4ad0-b68a-14be791cfba2"]
+                    }
+                },
+                {
+                    "Id": "cb0b0bc6-c237-45e7-8345-e3882fec01a2",
+                    "Name": "UI_CHALLENGES_SPIDER_PRO1_ZAYDAN_TOILET_NAME",
+                    "ImageName": "images/challenges/marrakech/spider_sign_zaydans_toilet.jpg",
+                    "Description": "UI_CHALLENGES_SPIDER_PRO1_ZAYDAN_TOILET_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_MARRAKECH",
+                    "ParentLocationId": "LOCATION_PARENT_MARRAKECH",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_SPIDER_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "ca31c88f-d15e-407b-8407-231f1b068402"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceType",
+                                                    "1cf9e68a-c7a0-49d7-af89-a699dad2c805"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["7b2d5500-7853-4ad0-b68a-14be791cfba2"]
+                    }
+                },
+                {
+                    "Id": "88beba9f-7e12-40ca-a2ea-ead9a861e759",
+                    "Name": "UI_CHALLENGES_SPIDER_PRO1_ZAYDAN_OILLAMP_NAME",
+                    "ImageName": "images/challenges/marrakech/spider_sign_zaydan_oilamp.jpg",
+                    "Description": "UI_CHALLENGES_SPIDER_PRO1_ZAYDAN_OILLAMP_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_MARRAKECH",
+                    "ParentLocationId": "LOCATION_PARENT_MARRAKECH",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_SPIDER_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "setpieces": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.setpieceType_metricvalue",
+                                            "DistractionFixed"
+                                        ]
+                                    },
+                                    "Transition": "Trap_Set"
+                                }
+                            },
+                            "Trap_Set": {
+                                "$timer": {
+                                    "Condition": {
+                                        "$after": 2
+                                    },
+                                    "Transition": "Start"
+                                },
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "ca31c88f-d15e-407b-8407-231f1b068402"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceId",
+                                                    "e4bc6f9e-def7-4155-9524-16da8d68d4ad"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["7b2d5500-7853-4ad0-b68a-14be791cfba2"]
+                    }
+                },
+                {
+                    "Id": "c88429f2-481d-46cc-b479-ffdabe0e0e34",
+                    "Name": "UI_CHALLENGES_SPIDER_PRO1_SNIPER_ASSASSIN_NAME",
+                    "ImageName": "images/challenges/marrakech/spider_47_sniper_assassin.jpg",
+                    "Description": "UI_CHALLENGES_SPIDER_PRO1_SNIPER_ASSASSIN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_MARRAKECH",
+                    "ParentLocationId": "LOCATION_PARENT_MARRAKECH",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_SPIDER_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "RecordingDestroyed": true,
+                            "SniperKills": [],
+                            "TargetDied": false
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [
+                                            true,
+                                            "$.RecordingDestroyed",
+                                            "$.TargetDied"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "CrowdNPC_Died": {
+                                    "Transition": "Failure"
+                                },
+                                "Kill": [
+                                    {
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "SniperKills",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$contains": [
+                                                "$Value.KillItemCategory",
+                                                "sniperrifle"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["TargetDied", true]
+                                        },
+                                        "Condition": {
+                                            "$all": {
+                                                "?": {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$.##"
+                                                            ]
+                                                        },
+                                                        "in": "$.SniperKills"
+                                                    }
+                                                },
+                                                "in": [
+                                                    "b38b0b62-8071-4761-b2a5-2f635cd8da1b",
+                                                    "ca31c88f-d15e-407b-8407-231f1b068402"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$Value.IsTarget", false]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ],
+                                "SecuritySystemRecorder": [
+                                    {
+                                        "Actions": {
+                                            "$set": [
+                                                "RecordingDestroyed",
+                                                false
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$eq": ["$Value.event", "spotted"]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["RecordingDestroyed", true]
+                                        },
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "erased"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "destroyed"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "Spotted": {
+                                    "Transition": "Failure"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["7b2d5500-7853-4ad0-b68a-14be791cfba2"]
+                    }
+                }
+            ]
+        }
+    ]
+}

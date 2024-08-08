@@ -1,0 +1,1796 @@
+{
+    "meta": {
+        "Location": "LOCATION_PARENT_BANGKOK",
+        "GameVersions": ["h1"]
+    },
+    "groups": [
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+            "Image": "images/challenges/categories/assassination/tile.jpg",
+            "Icon": "challenge_category_assassination",
+            "CategoryId": "assassination",
+            "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_SIGNATUREKILL",
+            "OrderIndex": 0,
+            "Challenges": [
+                {
+                    "Id": "ca54a026-b31d-4160-a547-4a74365b76ad",
+                    "Name": "UI_CHALLENGES_TIGER_PRO1_CROSS_NECK_NAME",
+                    "ImageName": "images/challenges/bangkok/tiger_cross_neck.jpg",
+                    "Description": "UI_CHALLENGES_TIGER_PRO1_CROSS_NECK_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_BANGKOK",
+                    "ParentLocationId": "LOCATION_PARENT_BANGKOK",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_TIGER_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Pacify": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "ee3f55b8-12f8-4245-8ef2-3022b4f6f120"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$any": {
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "$.##"
+                                                                ]
+                                                            },
+                                                            "in": "$Value.DamageEvents"
+                                                        }
+                                                    },
+                                                    "in": ["Poison"]
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Check_Kill"
+                                }
+                            },
+                            "Check_Kill": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "ee3f55b8-12f8-4245-8ef2-3022b4f6f120"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$any": {
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "$.##"
+                                                                ]
+                                                            },
+                                                            "in": "$Value.DamageEvents"
+                                                        }
+                                                    },
+                                                    "in": ["CoupDeGrace"]
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["ad5f9051-045d-4b8e-8a4d-d84429f467f8"]
+                    }
+                },
+                {
+                    "Id": "eeb66c70-0d58-4da3-9ca8-684e75e37671",
+                    "Name": "UI_CHALLENGES_TIGER_PRO1_CROSS_DEATHDAY_NAME",
+                    "ImageName": "images/challenges/bangkok/tiger_sign_cross_deathday.jpg",
+                    "Description": "UI_CHALLENGES_TIGER_PRO1_CROSS_DEATHDAY_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_BANGKOK",
+                    "ParentLocationId": "LOCATION_PARENT_BANGKOK",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_TIGER_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "ee3f55b8-12f8-4245-8ef2-3022b4f6f120"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceId",
+                                                    "be8452d0-3ce9-4f41-b1c2-a381d7e95e15"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["ad5f9051-045d-4b8e-8a4d-d84429f467f8"]
+                    }
+                },
+                {
+                    "Id": "385d1bcf-8d39-4192-ae2b-6a2174736f7f",
+                    "Name": "UI_CHALLENGES_TIGER_PRO1_MORGAN_BALCONY_NAME",
+                    "ImageName": "images/challenges/bangkok/tiger_sign_morgan_balcony.jpg",
+                    "Description": "UI_CHALLENGES_TIGER_PRO1_MORGAN_BALCONY_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_BANGKOK",
+                    "ParentLocationId": "LOCATION_PARENT_BANGKOK",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_TIGER_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "Morgan_On_Balcony"
+                                        ]
+                                    },
+                                    "Transition": "Kill_Position"
+                                }
+                            },
+                            "Kill_Position": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "f65fff84-6cad-4a11-9a0a-b89430c03397"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "PushOver"
+                                                        ]
+                                                    },
+                                                    "in": "$Value.DamageEvents"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["ad5f9051-045d-4b8e-8a4d-d84429f467f8"]
+                    }
+                },
+                {
+                    "Id": "3773a1c5-1b9c-4a51-b0ef-71aa91270b69",
+                    "Name": "UI_CHALLENGES_TIGER_PRO1_CROSS_POISON_CAKE_NAME",
+                    "ImageName": "images/challenges/bangkok/tiger_sign_cross_poison_cake.jpg",
+                    "Description": "UI_CHALLENGES_TIGER_PRO1_CROSS_POISON_CAKE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_BANGKOK",
+                    "ParentLocationId": "LOCATION_PARENT_BANGKOK",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_TIGER_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "ee3f55b8-12f8-4245-8ef2-3022b4f6f120"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceId",
+                                                    "59903f83-a6e3-48dc-9933-b285c9dc6f71"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["ad5f9051-045d-4b8e-8a4d-d84429f467f8"]
+                    }
+                },
+                {
+                    "Id": "d9714274-0a5a-46a7-9486-797121b16a80",
+                    "Name": "UI_CHALLENGES_TIGER_PRO1_MORGAN_DROWN_NAME",
+                    "ImageName": "images/challenges/bangkok/tiger_sign_morgan_drown.jpg",
+                    "Description": "UI_CHALLENGES_TIGER_PRO1_MORGAN_DROWN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_BANGKOK",
+                    "ParentLocationId": "LOCATION_PARENT_BANGKOK",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_TIGER_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "f65fff84-6cad-4a11-9a0a-b89430c03397"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceId",
+                                                    "fe396d19-8cc6-421a-bb2c-f6f778ba6bc0"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["ad5f9051-045d-4b8e-8a4d-d84429f467f8"]
+                    }
+                },
+                {
+                    "Id": "1c53e21b-b542-4ae0-baf4-949fdc87c75b",
+                    "Name": "UI_CHALLENGES_TIGER_PRO1_BOTH_STALKER_KILL_NAME",
+                    "ImageName": "images/challenges/bangkok/tiger_exp_both_stalker_kill.jpg",
+                    "Description": "UI_CHALLENGES_TIGER_PRO1_BOTH_STALKER_KILL_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_BANGKOK",
+                    "ParentLocationId": "LOCATION_PARENT_BANGKOK",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_TIGER_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "Count": 0,
+                            "TargetGoal": 2,
+                            "TargetKilled": []
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count",
+                                            "$pushunique": [
+                                                "TargetKilled",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$Value.RepositoryId"
+                                                            ]
+                                                        },
+                                                        "in": [
+                                                            "f65fff84-6cad-4a11-9a0a-b89430c03397",
+                                                            "ee3f55b8-12f8-4245-8ef2-3022b4f6f120"
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.OutfitRepositoryId",
+                                                        "c5bf909f-66a5-4f19-9aee-aeb953172e45"
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$any": {
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "$Value.RepositoryId"
+                                                                ]
+                                                            },
+                                                            "in": "$.TargetKilled"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.TargetGoal"]
+                                        },
+                                        "Transition": "End_Contract"
+                                    }
+                                ]
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["ad5f9051-045d-4b8e-8a4d-d84429f467f8"]
+                    }
+                },
+                {
+                    "Id": "3fdea4b0-863c-4684-b6c5-9ab21c0f5717",
+                    "Name": "UI_CHALLENGES_TIGER_PRO1_CROSS_SNIPE_WINDOW_NAME",
+                    "ImageName": "images/challenges/bangkok/tiger_sign_cross_window_snipe.jpg",
+                    "Description": "UI_CHALLENGES_TIGER_PRO1_CROSS_SNIPE_WINDOW_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_BANGKOK",
+                    "ParentLocationId": "LOCATION_PARENT_BANGKOK",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_TIGER_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "47_At_Window"
+                                        ]
+                                    },
+                                    "Transition": "Sniper_Position"
+                                }
+                            },
+                            "Sniper_Position": {
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "47_Not_At_Window"
+                                        ]
+                                    },
+                                    "Transition": "Start"
+                                },
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "ee3f55b8-12f8-4245-8ef2-3022b4f6f120"
+                                                ]
+                                            },
+                                            {
+                                                "$contains": [
+                                                    "$Value.KillItemCategory",
+                                                    "sniperrifle"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["ad5f9051-045d-4b8e-8a4d-d84429f467f8"]
+                    }
+                },
+                {
+                    "Id": "a70f11ad-5593-4f1e-b1d5-a90162cd3fad",
+                    "Name": "UI_CHALLENGES_TIGER_PRO1_CROSS_BOOTH_GUN_NAME",
+                    "ImageName": "images/challenges/bangkok/tiger_sign_cross_booth_gun.jpg",
+                    "Description": "UI_CHALLENGES_TIGER_PRO1_CROSS_BOOTH_GUN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_BANGKOK",
+                    "ParentLocationId": "LOCATION_PARENT_BANGKOK",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_TIGER_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "Cross_Singing"
+                                        ]
+                                    },
+                                    "Transition": "Cross_Singing"
+                                }
+                            },
+                            "Cross_Singing": {
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "Cross_Stops_Singing"
+                                        ]
+                                    },
+                                    "Transition": "Start"
+                                },
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "ee3f55b8-12f8-4245-8ef2-3022b4f6f120"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.IsHeadshot",
+                                                    true
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["ad5f9051-045d-4b8e-8a4d-d84429f467f8"]
+                    }
+                },
+                {
+                    "Id": "b14c558b-ac70-482c-ad32-aa073c8f99e3",
+                    "Name": "UI_CHALLENGES_TIGER_PRO1_BOTH_COCONUT_NAME",
+                    "ImageName": "images/challenges/bangkok/tiger_sign_both_coconut.jpg",
+                    "Description": "UI_CHALLENGES_TIGER_PRO1_BOTH_COCONUT_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_BANGKOK",
+                    "ParentLocationId": "LOCATION_PARENT_BANGKOK",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_TIGER_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Is_DoubleKill": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$or": [
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "f65fff84-6cad-4a11-9a0a-b89430c03397"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.SetPieceType",
+                                                            "24704419-6f21-4c0b-a4ff-ecf26f247cfc"
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "ee3f55b8-12f8-4245-8ef2-3022b4f6f120"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.SetPieceType",
+                                                            "24704419-6f21-4c0b-a4ff-ecf26f247cfc"
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$or": [
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "f65fff84-6cad-4a11-9a0a-b89430c03397"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.SetPieceType",
+                                                            "24704419-6f21-4c0b-a4ff-ecf26f247cfc"
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "ee3f55b8-12f8-4245-8ef2-3022b4f6f120"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.SetPieceType",
+                                                            "24704419-6f21-4c0b-a4ff-ecf26f247cfc"
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Is_DoubleKill"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["ad5f9051-045d-4b8e-8a4d-d84429f467f8"]
+                    }
+                },
+                {
+                    "Id": "521ec6fa-8d5f-4798-938f-b21dda8a2fbd",
+                    "Name": "UI_CHALLENGES_TIGER_PRO1_SUIT_ONLY_NAME",
+                    "ImageName": "images/challenges/bangkok/tiger_47_suit_only.jpg",
+                    "Description": "UI_CHALLENGES_TIGER_PRO1_SUIT_ONLY_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_BANGKOK",
+                    "ParentLocationId": "LOCATION_PARENT_BANGKOK",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_TIGER_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "Context": {},
+                        "States": {
+                            "Start": {
+                                "HeroSpawn_Location": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "83f4f967-71bb-48a1-bc53-1e472a9a1b3e"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "3d59f7ff-11b5-4498-925d-d3a2ea148a4e"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "61f8efe4-7e9e-4add-b69e-bf40213209c2"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "c2302bad-8e77-4d72-88c2-36ac1ad8c1b4"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "3aa4388f-6f87-44a4-b3dc-ac015bf65264"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "b947c2dc-bd49-4f61-aed1-d641cc548241"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "b33ae290-5ea1-4229-b41f-680a76d40320"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ],
+                                "Disguise": {
+                                    "Transition": "Failure"
+                                },
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["ad5f9051-045d-4b8e-8a4d-d84429f467f8"]
+                    }
+                },
+                {
+                    "Id": "20f08d1c-d2d2-47da-a48c-b9b68fab4691",
+                    "Name": "UI_CHALLENGES_TIGER_PRO1_NO_EVIDENCE_NAME",
+                    "ImageName": "images/challenges/bangkok/tiger_47_no_evidence.jpg",
+                    "Description": "UI_CHALLENGES_TIGER_PRO1_NO_EVIDENCE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_BANGKOK",
+                    "ParentLocationId": "LOCATION_PARENT_BANGKOK",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_TIGER_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "RecordingDestroyed": true
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [true, "$.RecordingDestroyed"]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "SecuritySystemRecorder": [
+                                    {
+                                        "Actions": {
+                                            "$set": [
+                                                "RecordingDestroyed",
+                                                false
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$eq": ["$Value.event", "spotted"]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["RecordingDestroyed", true]
+                                        },
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "erased"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "destroyed"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.Accident",
+                                                        false
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "CheckNoticedKill"
+                                    }
+                                ],
+                                "BodyFound": {
+                                    "Transition": "Failure"
+                                }
+                            },
+                            "CheckNoticedKill": {
+                                "Unnoticed_Kill": {
+                                    "Transition": "Start"
+                                },
+                                "DeadBodySeen": {
+                                    "Transition": "Failure"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["ad5f9051-045d-4b8e-8a4d-d84429f467f8"]
+                    }
+                },
+                {
+                    "Id": "9b674c70-1787-48b6-ba13-be363f45db29",
+                    "Name": "UI_CHALLENGES_TIGER_PRO1_CROSS_ELECTRICUTION_NAME",
+                    "ImageName": "images/challenges/bangkok/tiger_sign_cross_electricution.jpg",
+                    "Description": "UI_CHALLENGES_TIGER_PRO1_CROSS_ELECTRICUTION_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_BANGKOK",
+                    "ParentLocationId": "LOCATION_PARENT_BANGKOK",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_TIGER_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "ee3f55b8-12f8-4245-8ef2-3022b4f6f120"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceId",
+                                                    "1e94d1a2-a513-4d56-a122-30443b04ecdb"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["ad5f9051-045d-4b8e-8a4d-d84429f467f8"]
+                    }
+                },
+                {
+                    "Id": "daed9da8-9dc7-4e01-82e8-c5df57b736ef",
+                    "Name": "UI_CHALLENGES_TIGER_PRO1_CROSS_GLASS_ROOF_NAME",
+                    "ImageName": "images/challenges/bangkok/tiger_sign_cross_glass_roof.jpg",
+                    "Description": "UI_CHALLENGES_TIGER_PRO1_CROSS_GLASS_ROOF_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_BANGKOK",
+                    "ParentLocationId": "LOCATION_PARENT_BANGKOK",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_TIGER_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "ee3f55b8-12f8-4245-8ef2-3022b4f6f120"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceId",
+                                                    "b9e9f8b0-65b9-4731-ae26-b2e26cac2caf"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["ad5f9051-045d-4b8e-8a4d-d84429f467f8"]
+                    }
+                },
+                {
+                    "Id": "68550b59-219a-4fb1-9df9-c72be8712559",
+                    "Name": "UI_CHALLENGES_TIGER_PRO1_CROSS_FAULTY_MIC_NAME",
+                    "ImageName": "images/challenges/bangkok/tiger_sign_cross_faulty_mic.jpg",
+                    "Description": "UI_CHALLENGES_TIGER_PRO1_CROSS_FAULTY_MIC_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_BANGKOK",
+                    "ParentLocationId": "LOCATION_PARENT_BANGKOK",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_TIGER_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "ee3f55b8-12f8-4245-8ef2-3022b4f6f120"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceId",
+                                                    "36287bb9-5cd0-4b97-9baa-dad239cf3c37"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["ad5f9051-045d-4b8e-8a4d-d84429f467f8"]
+                    }
+                },
+                {
+                    "Id": "ff3b14a5-15ce-44ad-8792-cc9b2cda37c9",
+                    "Name": "UI_CHALLENGES_TIGER_PRO1_CROSS_CHAIR_KILL_NAME",
+                    "ImageName": "images/challenges/bangkok/tiger_sign_cross_chair_kill.jpg",
+                    "Description": "UI_CHALLENGES_TIGER_PRO1_CROSS_CHAIR_KILL_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_BANGKOK",
+                    "ParentLocationId": "LOCATION_PARENT_BANGKOK",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_TIGER_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "ee3f55b8-12f8-4245-8ef2-3022b4f6f120"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceId",
+                                                    "42cc6b76-500a-4433-8fec-6f3bf4827ff1"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["ad5f9051-045d-4b8e-8a4d-d84429f467f8"]
+                    }
+                },
+                {
+                    "Id": "c08e5099-7c23-426d-bfe9-d3582c6c3682",
+                    "Name": "UI_CHALLENGES_TIGER_PRO1_MORGAN_AXE_NAME",
+                    "ImageName": "images/challenges/bangkok/tiger_sign_morgan_axe.jpg",
+                    "Description": "UI_CHALLENGES_TIGER_PRO1_MORGAN_AXE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_BANGKOK",
+                    "ParentLocationId": "LOCATION_PARENT_BANGKOK",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_TIGER_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "Morgan_In_Linnenroom"
+                                        ]
+                                    },
+                                    "Transition": "Kill_Position"
+                                }
+                            },
+                            "Kill_Position": {
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "Morgan_Out_Linnenroom"
+                                        ]
+                                    },
+                                    "Transition": "Start"
+                                },
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "f65fff84-6cad-4a11-9a0a-b89430c03397"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "a8bc4325-718e-45ba-b0e4-000729c70ce4"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["ad5f9051-045d-4b8e-8a4d-d84429f467f8"]
+                    }
+                },
+                {
+                    "Id": "64ec75c2-2c6e-4578-a0d4-d9d31d7cc70c",
+                    "Name": "UI_CHALLENGES_TIGER_PRO1_SA_SUIT_NAME",
+                    "ImageName": "images/challenges/bangkok/tiger_47_sa_suit.jpg",
+                    "Description": "UI_CHALLENGES_TIGER_PRO1_SA_SUIT_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_BANGKOK",
+                    "ParentLocationId": "LOCATION_PARENT_BANGKOK",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_TIGER_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "RecordingDestroyed": true
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [true, "$.RecordingDestroyed"]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "HeroSpawn_Location": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "83f4f967-71bb-48a1-bc53-1e472a9a1b3e"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "3d59f7ff-11b5-4498-925d-d3a2ea148a4e"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "61f8efe4-7e9e-4add-b69e-bf40213209c2"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "c2302bad-8e77-4d72-88c2-36ac1ad8c1b4"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "3aa4388f-6f87-44a4-b3dc-ac015bf65264"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "b947c2dc-bd49-4f61-aed1-d641cc548241"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "b33ae290-5ea1-4229-b41f-680a76d40320"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ],
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$Value.KillContext",
+                                                            1
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.Accident",
+                                                        false
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "CheckNoticedKill"
+                                    }
+                                ],
+                                "CrowdNPC_Died": {
+                                    "Transition": "Failure"
+                                },
+                                "BodyFound": {
+                                    "Transition": "Failure"
+                                },
+                                "SecuritySystemRecorder": [
+                                    {
+                                        "Actions": {
+                                            "$set": [
+                                                "RecordingDestroyed",
+                                                false
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$eq": ["$Value.event", "spotted"]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["RecordingDestroyed", true]
+                                        },
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "erased"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "destroyed"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "Spotted": {
+                                    "Transition": "Failure"
+                                },
+                                "Disguise": {
+                                    "Transition": "Failure"
+                                }
+                            },
+                            "CheckNoticedKill": {
+                                "Unnoticed_Kill": {
+                                    "Transition": "Start"
+                                },
+                                "DeadBodySeen": {
+                                    "Transition": "Failure"
+                                },
+                                "Spotted": {
+                                    "Transition": "Failure"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["ad5f9051-045d-4b8e-8a4d-d84429f467f8"]
+                    }
+                },
+                {
+                    "Id": "8a017de7-d90e-4b7a-8b95-ddafaac6c000",
+                    "Name": "UI_CHALLENGES_TIGER_PRO1_SNIPER_ASSASSIN_NAME",
+                    "ImageName": "images/challenges/bangkok/tiger_47_sniper_assassin.jpg",
+                    "Description": "UI_CHALLENGES_TIGER_PRO1_SNIPER_ASSASSIN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_BANGKOK",
+                    "ParentLocationId": "LOCATION_PARENT_BANGKOK",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_TIGER_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "RecordingDestroyed": true,
+                            "SniperKills": [],
+                            "TargetDied": false
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [
+                                            true,
+                                            "$.RecordingDestroyed",
+                                            "$.TargetDied"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "Kill": [
+                                    {
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "SniperKills",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$contains": [
+                                                "$Value.KillItemCategory",
+                                                "sniperrifle"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["TargetDied", true]
+                                        },
+                                        "Condition": {
+                                            "$all": {
+                                                "?": {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$.##"
+                                                            ]
+                                                        },
+                                                        "in": "$.SniperKills"
+                                                    }
+                                                },
+                                                "in": [
+                                                    "ee3f55b8-12f8-4245-8ef2-3022b4f6f120",
+                                                    "f65fff84-6cad-4a11-9a0a-b89430c03397"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                ],
+                                "SecuritySystemRecorder": [
+                                    {
+                                        "Actions": {
+                                            "$set": [
+                                                "RecordingDestroyed",
+                                                false
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$eq": ["$Value.event", "spotted"]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["RecordingDestroyed", true]
+                                        },
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "erased"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "destroyed"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "Spotted": {
+                                    "Transition": "Failure"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["ad5f9051-045d-4b8e-8a4d-d84429f467f8"]
+                    }
+                },
+                {
+                    "Id": "5e5eee1e-a1d9-4e5f-9db5-f00830c56309",
+                    "Name": "UI_CHALLENGES_TIGER_PRO1_MORGAN_TUK_TUK_NAME",
+                    "ImageName": "images/challenges/bangkok/tiger_sign_morgan_tuk_tuk.jpg",
+                    "Description": "UI_CHALLENGES_TIGER_PRO1_MORGAN_TUK_TUK_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_BANGKOK",
+                    "ParentLocationId": "LOCATION_PARENT_BANGKOK",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_TIGER_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "Tuk_Tuk_Burning"
+                                        ]
+                                    },
+                                    "Transition": "Check_Kill"
+                                }
+                            },
+                            "Check_Kill": {
+                                "$timer": {
+                                    "Condition": {
+                                        "$after": 1
+                                    },
+                                    "Transition": "Start"
+                                },
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "f65fff84-6cad-4a11-9a0a-b89430c03397"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillClass",
+                                                    "explosion"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["ad5f9051-045d-4b8e-8a4d-d84429f467f8"]
+                    }
+                },
+                {
+                    "Id": "a464f48d-5059-4559-9a00-fc2c59251672",
+                    "Name": "UI_CHALLENGES_TIGER_PRO1_SILENT_ASSASSIN_NAME",
+                    "ImageName": "images/challenges/bangkok/tiger_47_silent_assassin.jpg",
+                    "Description": "UI_CHALLENGES_TIGER_PRO1_SILENT_ASSASSIN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_BANGKOK",
+                    "ParentLocationId": "LOCATION_PARENT_BANGKOK",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_TIGER_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "RecordingDestroyed": true
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [true, "$.RecordingDestroyed"]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$Value.KillContext",
+                                                            1
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.Accident",
+                                                        false
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "CheckNoticedKill"
+                                    }
+                                ],
+                                "CrowdNPC_Died": {
+                                    "Transition": "Failure"
+                                },
+                                "BodyFound": {
+                                    "Transition": "Failure"
+                                },
+                                "SecuritySystemRecorder": [
+                                    {
+                                        "Actions": {
+                                            "$set": [
+                                                "RecordingDestroyed",
+                                                false
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$eq": ["$Value.event", "spotted"]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["RecordingDestroyed", true]
+                                        },
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "erased"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "destroyed"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "Spotted": {
+                                    "Transition": "Failure"
+                                }
+                            },
+                            "CheckNoticedKill": {
+                                "Unnoticed_Kill": {
+                                    "Transition": "Start"
+                                },
+                                "DeadBodySeen": {
+                                    "Transition": "Failure"
+                                },
+                                "Spotted": {
+                                    "Transition": "Failure"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["ad5f9051-045d-4b8e-8a4d-d84429f467f8"]
+                    }
+                }
+            ]
+        }
+    ]
+}

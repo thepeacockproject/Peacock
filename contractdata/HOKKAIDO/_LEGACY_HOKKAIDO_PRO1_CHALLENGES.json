@@ -1,0 +1,1773 @@
+{
+    "meta": {
+        "Location": "LOCATION_PARENT_HOKKAIDO",
+        "GameVersions": ["h1"]
+    },
+    "groups": [
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+            "Image": "images/challenges/categories/assassination/tile.jpg",
+            "Icon": "challenge_category_assassination",
+            "CategoryId": "assassination",
+            "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_SIGNATUREKILL",
+            "OrderIndex": 0,
+            "Challenges": [
+                {
+                    "Id": "61ff5f2a-92ef-47d4-a5da-15d28665906b",
+                    "Name": "UI_CHALLENGES_SNOWCRANE_PRO1_SILENT_ASSASSIN_NAME",
+                    "ImageName": "images/challenges/hokkaido/snowcrane_47_silent_assassin.jpg",
+                    "Description": "UI_CHALLENGES_SNOWCRANE_PRO1_SILENT_ASSASSIN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "ParentLocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_SNOW_CRANE_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "RecordingDestroyed": true
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [true, "$.RecordingDestroyed"]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$Value.KillContext",
+                                                            1
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.Accident",
+                                                        false
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "CheckNoticedKill"
+                                    }
+                                ],
+                                "CrowdNPC_Died": {
+                                    "Transition": "Failure"
+                                },
+                                "BodyFound": {
+                                    "Transition": "Failure"
+                                },
+                                "SecuritySystemRecorder": [
+                                    {
+                                        "Actions": {
+                                            "$set": [
+                                                "RecordingDestroyed",
+                                                false
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$eq": ["$Value.event", "spotted"]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["RecordingDestroyed", true]
+                                        },
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "erased"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "destroyed"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "Spotted": {
+                                    "Transition": "Failure"
+                                }
+                            },
+                            "CheckNoticedKill": {
+                                "Unnoticed_Kill": {
+                                    "Transition": "Start"
+                                },
+                                "DeadBodySeen": {
+                                    "Transition": "Failure"
+                                },
+                                "Spotted": {
+                                    "Transition": "Failure"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "pro1", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["3d885714-fa9a-4438-9e0f-c58dbcaab8b8"]
+                    }
+                },
+                {
+                    "Id": "a7eee40e-0fa0-418d-be84-22135176764f",
+                    "Name": "UI_CHALLENGES_SNOWCRANE_PRO1_SNIPER_ASSASSIN_NAME",
+                    "ImageName": "images/challenges/hokkaido/snowcrane_47_sniper_assassin.jpg",
+                    "Description": "UI_CHALLENGES_SNOWCRANE_PRO1_SNIPER_ASSASSIN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "ParentLocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_SNOW_CRANE_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "RecordingDestroyed": true,
+                            "SniperKills": [],
+                            "TargetDied": false
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [
+                                            true,
+                                            "$.RecordingDestroyed",
+                                            "$.TargetDied"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "Kill": [
+                                    {
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "SniperKills",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$contains": [
+                                                "$Value.KillItemCategory",
+                                                "sniperrifle"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["TargetDied", true]
+                                        },
+                                        "Condition": {
+                                            "$all": {
+                                                "?": {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$.##"
+                                                            ]
+                                                        },
+                                                        "in": "$.SniperKills"
+                                                    }
+                                                },
+                                                "in": [
+                                                    "9bebb40a-3746-4ba2-8bfc-a1fcabaec72c"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                ],
+                                "SecuritySystemRecorder": [
+                                    {
+                                        "Actions": {
+                                            "$set": [
+                                                "RecordingDestroyed",
+                                                false
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$eq": ["$Value.event", "spotted"]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["RecordingDestroyed", true]
+                                        },
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "erased"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "destroyed"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "Spotted": {
+                                    "Transition": "Failure"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "pro1", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["3d885714-fa9a-4438-9e0f-c58dbcaab8b8"]
+                    }
+                },
+                {
+                    "Id": "a26f191d-c928-4115-8bd8-2c2e58adb1fe",
+                    "Name": "UI_CHALLENGES_SNOWCRANE_PRO1_YAMAZAKI_YOGA_NAME",
+                    "ImageName": "images/challenges/hokkaido/snowcrane_sign_yamazuki_yoga.jpg",
+                    "Description": "UI_CHALLENGES_SNOWCRANE_PRO1_YAMAZAKI_YOGA_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "ParentLocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_SNOW_CRANE_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "9bebb40a-3746-4ba2-8bfc-a1fcabaec72c"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceId",
+                                                    "40237d59-f3c8-46a7-9760-49eac05315d6"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "pro1", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["3d885714-fa9a-4438-9e0f-c58dbcaab8b8"]
+                    }
+                },
+                {
+                    "Id": "afa06ca5-53f3-4022-992c-3206a37b2929",
+                    "Name": "UI_CHALLENGES_SNOWCRANE_PRO1_YAMAZAKI_BRIDGESNIPE_NAME",
+                    "ImageName": "images/challenges/hokkaido/snowcrane_exp_yamazaki_bridgesnipe.jpg",
+                    "Description": "UI_CHALLENGES_SNOWCRANE_PRO1_YAMAZAKI_BRIDGESNIPE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "ParentLocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_SNOW_CRANE_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "Yuki_On_Bridge"
+                                        ]
+                                    },
+                                    "Transition": "Sniper_Position"
+                                }
+                            },
+                            "Sniper_Position": {
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "Yuki_Off_Bridge"
+                                        ]
+                                    },
+                                    "Transition": "Start"
+                                },
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "9bebb40a-3746-4ba2-8bfc-a1fcabaec72c"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemCategory",
+                                                    "sniperrifle"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "pro1", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["3d885714-fa9a-4438-9e0f-c58dbcaab8b8"]
+                    }
+                },
+                {
+                    "Id": "c7ba2212-581b-457d-b38e-6873e8f177ad",
+                    "Name": "UI_CHALLENGES_SNOWCRANE_PRO1_SODERS_SPIDERMACHINE_NAME",
+                    "ImageName": "images/challenges/hokkaido/snowcrane_soders_spidermachine.jpg",
+                    "Description": "UI_CHALLENGES_SNOWCRANE_PRO1_SODERS_SPIDERMACHINE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "ParentLocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_SNOW_CRANE_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Level_Setup_Events": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.Event_metricvalue",
+                                                "Spidermachine_Kill"
+                                            ]
+                                        },
+                                        "Transition": "End_Contract"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.Event_metricvalue",
+                                                "Heart_Kill"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ]
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "pro1", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["3d885714-fa9a-4438-9e0f-c58dbcaab8b8"]
+                    }
+                },
+                {
+                    "Id": "87146cd3-8f9d-4f28-a3e2-6962b9f7ec9d",
+                    "Name": "UI_CHALLENGES_SNOWCRANE_PRO1_SODERS_CLOSEKILL_NAME",
+                    "ImageName": "images/challenges/hokkaido/snowcrane_exp_soder_closekill.jpg",
+                    "Description": "UI_CHALLENGES_SNOWCRANE_PRO1_SODERS_CLOSEKILL_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "ParentLocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_SNOW_CRANE_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Level_Setup_Events": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.Event_metricvalue",
+                                                "Body_Kill"
+                                            ]
+                                        },
+                                        "Transition": "End_Contract"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.Event_metricvalue",
+                                                "Heart_Kill"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ]
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "pro1", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["3d885714-fa9a-4438-9e0f-c58dbcaab8b8"]
+                    }
+                },
+                {
+                    "Id": "b7d311d8-c71a-4cfd-a768-7367f9b5e366",
+                    "Name": "UI_CHALLENGES_SNOWCRANE_PRO1_SA_SUIT_NAME",
+                    "ImageName": "images/challenges/hokkaido/snowcrane_47_sa_suit.jpg",
+                    "Description": "UI_CHALLENGES_SNOWCRANE_PRO1_SA_SUIT_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "ParentLocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_SNOW_CRANE_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "RecordingDestroyed": true
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [true, "$.RecordingDestroyed"]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "HeroSpawn_Location": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "0e7dd303-c9bb-42cc-aca0-70499931d098"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "2fc483c8-500c-4475-ba5d-e2cdd6ccc64c"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "74b1ad25-06cd-41a2-9cf5-9dd5dac7345d"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "fedf6cd3-d076-4037-b7d8-1449726b4c0a"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ],
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$Value.KillContext",
+                                                            1
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.Accident",
+                                                        false
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "CheckNoticedKill"
+                                    }
+                                ],
+                                "CrowdNPC_Died": {
+                                    "Transition": "Failure"
+                                },
+                                "BodyFound": {
+                                    "Transition": "Failure"
+                                },
+                                "SecuritySystemRecorder": [
+                                    {
+                                        "Actions": {
+                                            "$set": [
+                                                "RecordingDestroyed",
+                                                false
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$eq": ["$Value.event", "spotted"]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["RecordingDestroyed", true]
+                                        },
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "erased"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "destroyed"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "Spotted": {
+                                    "Transition": "Failure"
+                                },
+                                "Disguise": {
+                                    "Transition": "Failure"
+                                }
+                            },
+                            "CheckNoticedKill": {
+                                "Unnoticed_Kill": {
+                                    "Transition": "Start"
+                                },
+                                "DeadBodySeen": {
+                                    "Transition": "Failure"
+                                },
+                                "Spotted": {
+                                    "Transition": "Failure"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "pro1", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["3d885714-fa9a-4438-9e0f-c58dbcaab8b8"]
+                    }
+                },
+                {
+                    "Id": "cd0885e1-2d84-4af2-9640-7b684870d330",
+                    "Name": "UI_CHALLENGES_SNOWCRANE_PRO1_SODERS_ELECTROCUTE_NAME",
+                    "ImageName": "images/challenges/hokkaido/snowcrane_sign_soders_electrocute.jpg",
+                    "Description": "UI_CHALLENGES_SNOWCRANE_PRO1_SODERS_ELECTROCUTE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "ParentLocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_SNOW_CRANE_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Level_Setup_Events": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.Event_metricvalue",
+                                                "Soder_Electrocuted"
+                                            ]
+                                        },
+                                        "Transition": "End_Contract"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.Event_metricvalue",
+                                                "Heart_Kill"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ]
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "pro1", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["3d885714-fa9a-4438-9e0f-c58dbcaab8b8"]
+                    }
+                },
+                {
+                    "Id": "ef34aebe-8401-47b4-9849-891f7714c186",
+                    "Name": "UI_CHALLENGES_SNOWCRANE_PRO1_SODERS_HEART_NAME",
+                    "ImageName": "images/challenges/hokkaido/snowcrane_sign_soders_heart.jpg",
+                    "Description": "UI_CHALLENGES_SNOWCRANE_PRO1_SODERS_HEART_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "ParentLocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_SNOW_CRANE_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Level_Setup_Events": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.Event_metricvalue",
+                                                "Heart_Kill"
+                                            ]
+                                        },
+                                        "Transition": "End_Contract"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.Event_metricvalue",
+                                                        "Poison_Kill"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.Event_metricvalue",
+                                                        "Surgeon_Kills_Soders"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.Event_metricvalue",
+                                                        "47_Performs_Surgery"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.Event_metricvalue",
+                                                        "47_Reveal_Kill"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.Event_metricvalue",
+                                                        "Body_Kill"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.Event_metricvalue",
+                                                        "Spidermachine_Kill"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.Event_metricvalue",
+                                                        "Soder_Electrocuted"
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ]
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "pro1", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["3d885714-fa9a-4438-9e0f-c58dbcaab8b8"]
+                    }
+                },
+                {
+                    "Id": "9aff985a-1439-4904-b0b4-8b0f18177a7e",
+                    "Name": "UI_CHALLENGES_SNOWCRANE_PRO1_SILENT_ASSASSINE_NINJA_NAME",
+                    "ImageName": "images/challenges/hokkaido/snowcrane_silent_assassin_ninja.jpg",
+                    "Description": "UI_CHALLENGES_SNOWCRANE_PRO1_SILENT_ASSASSINE_NINJA_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "ParentLocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_SNOW_CRANE_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "RecordingDestroyed": true
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [true, "$.RecordingDestroyed"]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "HeroSpawn_Location": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "df752dfa-623d-4750-83a6-8b4aba1d8e08"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "85ef518f-0e94-4e5e-9fd2-66fb84d2d0bb"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "a786fc74-b379-41f4-a4ac-ce970ee88b2c"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "bdc80464-31dd-440d-ad79-2767b923a0a4"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "be6045fd-26ab-4a3b-a6ce-b1ccdf405d09"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "2fc483c8-500c-4475-ba5d-e2cdd6ccc64c"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "74b1ad25-06cd-41a2-9cf5-9dd5dac7345d"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "fedf6cd3-d076-4037-b7d8-1449726b4c0a"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ],
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$Value.KillContext",
+                                                            1
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.Accident",
+                                                        false
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "CheckNoticedKill"
+                                    }
+                                ],
+                                "CrowdNPC_Died": {
+                                    "Transition": "Failure"
+                                },
+                                "BodyFound": {
+                                    "Transition": "Failure"
+                                },
+                                "SecuritySystemRecorder": [
+                                    {
+                                        "Actions": {
+                                            "$set": [
+                                                "RecordingDestroyed",
+                                                false
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$eq": ["$Value.event", "spotted"]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["RecordingDestroyed", true]
+                                        },
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "erased"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "destroyed"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "Spotted": {
+                                    "Transition": "Failure"
+                                },
+                                "Disguise": {
+                                    "Transition": "Failure"
+                                }
+                            },
+                            "CheckNoticedKill": {
+                                "Unnoticed_Kill": {
+                                    "Transition": "Start"
+                                },
+                                "DeadBodySeen": {
+                                    "Transition": "Failure"
+                                },
+                                "Spotted": {
+                                    "Transition": "Failure"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "pro1", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["3d885714-fa9a-4438-9e0f-c58dbcaab8b8"]
+                    }
+                },
+                {
+                    "Id": "f5b7cdee-9f40-447e-856e-93d74734dec7",
+                    "Name": "UI_CHALLENGES_SNOWCRANE_PRO1_YAMAZAKI_SUSHI_NAME",
+                    "ImageName": "images/challenges/hokkaido/snowcrane_sign_yamazaki_sushi.jpg",
+                    "Description": "UI_CHALLENGES_SNOWCRANE_PRO1_YAMAZAKI_SUSHI_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "ParentLocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_SNOW_CRANE_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "Yuki_Poisoned_Sushi"
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "pro1", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["3d885714-fa9a-4438-9e0f-c58dbcaab8b8"]
+                    }
+                },
+                {
+                    "Id": "1fe3637f-8f65-41cb-a840-9a5a2447c114",
+                    "Name": "UI_CHALLENGES_SNOWCRANE_PRO1_SODERS_SURGERY_NAME",
+                    "ImageName": "images/challenges/hokkaido/snowcrane_sign_soders_surgery.jpg",
+                    "Description": "UI_CHALLENGES_SNOWCRANE_PRO1_SODERS_SURGERY_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "ParentLocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_SNOW_CRANE_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Level_Setup_Events": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.Event_metricvalue",
+                                                "47_Performs_Surgery"
+                                            ]
+                                        },
+                                        "Transition": "End_Contract"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.Event_metricvalue",
+                                                "Heart_Kill"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ]
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "pro1", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["3d885714-fa9a-4438-9e0f-c58dbcaab8b8"]
+                    }
+                },
+                {
+                    "Id": "3e641fd3-bc96-4776-9fd0-c01b22c81035",
+                    "Name": "UI_CHALLENGES_SNOWCRANE_PRO1_SODERS_POISON_NAME",
+                    "ImageName": "images/challenges/hokkaido/snowcrane_soders_poison.jpg",
+                    "Description": "UI_CHALLENGES_SNOWCRANE_PRO1_SODERS_POISON_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "ParentLocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_SNOW_CRANE_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Level_Setup_Events": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.Event_metricvalue",
+                                                "Poison_Kill"
+                                            ]
+                                        },
+                                        "Transition": "End_Contract"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.Event_metricvalue",
+                                                "Heart_Kill"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ]
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "pro1", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["3d885714-fa9a-4438-9e0f-c58dbcaab8b8"]
+                    }
+                },
+                {
+                    "Id": "714fe4d8-a9ae-4119-ab86-d7a0f2d8ddae",
+                    "Name": "UI_CHALLENGES_SNOWCRANE_PRO1_YAMAZAKI_SMOKE_NAME",
+                    "ImageName": "images/challenges/hokkaido/snowcrane_sign_yamazaki_smoke.jpg",
+                    "Description": "UI_CHALLENGES_SNOWCRANE_PRO1_YAMAZAKI_SMOKE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "ParentLocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_SNOW_CRANE_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "Yuki_Smoking"
+                                        ]
+                                    },
+                                    "Transition": "Kill_Position"
+                                }
+                            },
+                            "Kill_Position": {
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "Yuki_Not_Smoking"
+                                        ]
+                                    },
+                                    "Transition": "Start"
+                                },
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "9bebb40a-3746-4ba2-8bfc-a1fcabaec72c"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "PushOver"
+                                                        ]
+                                                    },
+                                                    "in": "$Value.DamageEvents"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "pro1", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["3d885714-fa9a-4438-9e0f-c58dbcaab8b8"]
+                    }
+                },
+                {
+                    "Id": "004e2910-6ba1-4f91-9e97-e5ec3f0cdd7a",
+                    "Name": "UI_CHALLENGES_SNOWCRANE_PRO1_YAMAZAKI_GASLAMP_NAME",
+                    "ImageName": "images/challenges/hokkaido/snowcrane_exp_yamazaki_gaslamp.jpg",
+                    "Description": "UI_CHALLENGES_SNOWCRANE_PRO1_YAMAZAKI_GASLAMP_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "ParentLocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_SNOW_CRANE_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "9bebb40a-3746-4ba2-8bfc-a1fcabaec72c"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceType",
+                                                    "518b6c2d-2a3d-4f87-afbf-2e84393d260d"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "pro1", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["3d885714-fa9a-4438-9e0f-c58dbcaab8b8"]
+                    }
+                },
+                {
+                    "Id": "5107484a-9736-418d-b239-e8270f712a62",
+                    "Name": "UI_CHALLENGES_SNOWCRANE_PRO1_NO_EVIDENCE_NAME",
+                    "ImageName": "images/challenges/hokkaido/snowcrane_47_no_evidence.jpg",
+                    "Description": "UI_CHALLENGES_SNOWCRANE_PRO1_NO_EVIDENCE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "ParentLocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_SNOW_CRANE_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "RecordingDestroyed": true
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [true, "$.RecordingDestroyed"]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "SecuritySystemRecorder": [
+                                    {
+                                        "Actions": {
+                                            "$set": [
+                                                "RecordingDestroyed",
+                                                false
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$eq": ["$Value.event", "spotted"]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["RecordingDestroyed", true]
+                                        },
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "erased"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "destroyed"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.Accident",
+                                                        false
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "CheckNoticedKill"
+                                    }
+                                ],
+                                "BodyFound": {
+                                    "Transition": "Failure"
+                                }
+                            },
+                            "CheckNoticedKill": {
+                                "Unnoticed_Kill": {
+                                    "Transition": "Start"
+                                },
+                                "DeadBodySeen": {
+                                    "Transition": "Failure"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "pro1", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["3d885714-fa9a-4438-9e0f-c58dbcaab8b8"]
+                    }
+                },
+                {
+                    "Id": "7463f02a-8bcf-4c4f-84fe-ee1dc0413d2a",
+                    "Name": "UI_CHALLENGES_SNOWCRANE_PRO1_SUIT_ONLY_NAME",
+                    "ImageName": "images/challenges/hokkaido/snowcrane_47_suit_only.jpg",
+                    "Description": "UI_CHALLENGES_SNOWCRANE_PRO1_SUIT_ONLY_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "ParentLocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_SNOW_CRANE_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "Context": {},
+                        "States": {
+                            "Start": {
+                                "HeroSpawn_Location": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "0e7dd303-c9bb-42cc-aca0-70499931d098"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "2fc483c8-500c-4475-ba5d-e2cdd6ccc64c"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "74b1ad25-06cd-41a2-9cf5-9dd5dac7345d"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "df752dfa-623d-4750-83a6-8b4aba1d8e08"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "fedf6cd3-d076-4037-b7d8-1449726b4c0a"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ],
+                                "Disguise": {
+                                    "Transition": "Failure"
+                                },
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "pro1", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["3d885714-fa9a-4438-9e0f-c58dbcaab8b8"]
+                    }
+                },
+                {
+                    "Id": "ba2180d1-c012-4c44-b740-eeb00d7d1e11",
+                    "Name": "UI_CHALLENGES_SNOWCRANE_PRO1_YAMAZAKI_SAUNA_NAME",
+                    "ImageName": "images/challenges/hokkaido/snowcrane_exp_yamazaki_sauna.jpg",
+                    "Description": "UI_CHALLENGES_SNOWCRANE_PRO1_YAMAZAKI_SAUNA_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "ParentLocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_SNOW_CRANE_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "Yuki_Killed"
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "pro1", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["3d885714-fa9a-4438-9e0f-c58dbcaab8b8"]
+                    }
+                },
+                {
+                    "Id": "57dac589-bffb-4f0e-92a1-f6aab3f52ae1",
+                    "Name": "UI_CHALLENGES_SNOWCRANE_PRO1_SODERS_REVEALKILL_NAME",
+                    "ImageName": "images/challenges/hokkaido/snowcrane_sign_soders_revealkill.jpg",
+                    "Description": "UI_CHALLENGES_SNOWCRANE_PRO1_SODERS_REVEALKILL_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "ParentLocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_SNOW_CRANE_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Level_Setup_Events": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.Event_metricvalue",
+                                                "47_Reveal_Kill"
+                                            ]
+                                        },
+                                        "Transition": "End_Contract"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.Event_metricvalue",
+                                                "Heart_Kill"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ]
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "pro1", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["3d885714-fa9a-4438-9e0f-c58dbcaab8b8"]
+                    }
+                },
+                {
+                    "Id": "3c0daea3-624b-4404-b083-f8ee9f6259d2",
+                    "Name": "UI_CHALLENGES_SNOWCRANE_PRO1_YAMAZAKI_DIRECTORPUSH_NAME",
+                    "ImageName": "images/challenges/hokkaido/snowcrane_exp_yamazaki_directorpush.jpg",
+                    "Description": "UI_CHALLENGES_SNOWCRANE_PRO1_YAMAZAKI_DIRECTORPUSH_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "ParentLocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_SNOW_CRANE_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "Yuki_On_Platform"
+                                        ]
+                                    },
+                                    "Transition": "Kill_Position"
+                                }
+                            },
+                            "Kill_Position": {
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "Yuki_Off_Platform"
+                                        ]
+                                    },
+                                    "Transition": "Start"
+                                },
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "9bebb40a-3746-4ba2-8bfc-a1fcabaec72c"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "f6f53c39-17f9-48cf-9594-7a696b036d61"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "PushOver"
+                                                        ]
+                                                    },
+                                                    "in": "$Value.DamageEvents"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "pro1", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["3d885714-fa9a-4438-9e0f-c58dbcaab8b8"]
+                    }
+                }
+            ]
+        }
+    ]
+}
