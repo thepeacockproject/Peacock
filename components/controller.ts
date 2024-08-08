@@ -65,7 +65,7 @@ import { unpack } from "msgpackr"
 import { ChallengePackage, SavedChallengeGroup } from "./types/challenges"
 import assert from "assert"
 import { Response } from "express"
-import { ChallengeFilterType } from "./candle/challengeHelpers"
+import { ChallengeFilterType, Pro1FilterType } from "./candle/challengeHelpers"
 import { MasteryService } from "./candle/masteryService"
 import { MasteryPackage } from "./types/mastery"
 import { ProgressionService } from "./candle/progressionService"
@@ -1246,6 +1246,7 @@ export function contractIdToHitObject(
         {
             type: ChallengeFilterType.ParentLocation,
             parent: parentLocation?.Id,
+            pro1Filter: Pro1FilterType.Ignore,
         },
         parentLocation?.Id,
         gameVersion,

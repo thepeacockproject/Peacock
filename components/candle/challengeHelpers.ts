@@ -54,14 +54,38 @@ export function compileRuntimeChallenge(
     }
 }
 
+/**
+ * How to handle filtering of challenges.
+ */
 export enum ChallengeFilterType {
     /** Note that this option will include global elusive and escalations challenges. */
     None = "None",
+    /** A single contract's challenges. */
     Contract = "Contract",
     /** Only used for the CAREER -> CHALLENGES page */
     Contracts = "Contracts",
     /** Only used for the location page, and when calculating location completion */
     ParentLocation = "ParentLocation",
+}
+
+/**
+ * How to handle filtering of pro1 challenges.
+ * Works in conjunction with {@link ChallengeFilterType}, but only if the
+ * challenge is tagged as pro1 and the challenge filter is met.
+ */
+export enum Pro1FilterType {
+    /**
+     * Only include pro1 challenges.
+     */
+    Only = "Only",
+    /**
+     * Include both pro1 and non-pro1 challenges.
+     */
+    Ignore = "Ignore",
+    /**
+     * Exclude pro1 challenges.
+     */
+    Exclude = "Exclude",
 }
 
 export type ChallengeFilterOptions =
@@ -74,15 +98,18 @@ export type ChallengeFilterOptions =
           locationId: string
           isFeatured?: boolean
           difficulty: number
+          pro1Filter: Pro1FilterType
       }
     | {
           type: ChallengeFilterType.Contracts
           contractIds: string[]
           locationId: string
+          pro1Filter: Pro1FilterType
       }
     | {
           type: ChallengeFilterType.ParentLocation
           parent: string
+          pro1Filter: Pro1FilterType
       }
 
 /**
@@ -127,6 +154,7 @@ export function isChallengeForDifficulty(
  * @param locationId The sublocation ID of the challenge.
  * @param difficulty The upper bound on the difficulty of the challenges to return.
  * @param challenge The challenge in question.
+ * @param pro1Filter Settings for handling pro1 challenges.
  * @param forCareer Whether the result is used to decide what is shown the CAREER -> CHALLENGES page. Defaulted to false.
  * @returns A boolean value, denoting the result.
  */
@@ -135,6 +163,7 @@ function isChallengeInContract(
     locationId: string,
     difficulty: number,
     challenge: RegistryChallenge,
+    pro1Filter: Pro1FilterType,
     forCareer = false,
 ): boolean {
     if (!contractId || !locationId) {
@@ -193,6 +222,14 @@ function isChallengeInContract(
         challenge.LocationId === locationId ||
         challenge.LocationId === challenge.ParentLocationId
 
+    const isPro1 = challenge.Tags.includes("pro1")
+
+    if (isPro1 && pro1Filter === Pro1FilterType.Exclude) {
+        return false
+    } else if (!isPro1 && pro1Filter === Pro1FilterType.Only) {
+        return false
+    }
+
     return (
         isForContract ||
         isForContractType ||
@@ -213,6 +250,7 @@ export function filterChallenge(
                 options.locationId,
                 options.difficulty,
                 challenge,
+                options.pro1Filter,
             )
         }
         case ChallengeFilterType.Contracts: {
@@ -223,6 +261,7 @@ export function filterChallenge(
                         options.locationId,
                         gameDifficulty.master, // Get challenges of all difficulties
                         challenge,
+                        options.pro1Filter,
                         true,
                     ),
                 )
@@ -255,10 +294,22 @@ export function filterChallenge(
             }
 
             if (challenge.Tags.includes("escalation")) {
+                if (options.pro1Filter === Pro1FilterType.Only) {
+                    return false
+                }
+
                 return (
                     !isSniperLocation(options.parent) &&
                     "LOCATION_PARENT_SNUG" !== options.parent
                 )
+            }
+
+            const isPro1 = challenge.Tags.includes("pro1")
+
+            if (isPro1 && options.pro1Filter === Pro1FilterType.Exclude) {
+                return false
+            } else if (!isPro1 && options.pro1Filter === Pro1FilterType.Only) {
+                return false
             }
 
             return true
