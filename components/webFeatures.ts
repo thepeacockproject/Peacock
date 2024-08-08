@@ -498,11 +498,14 @@ webFeaturesRouter.post(
             userdata.Extensions.gamepersistentdata =
                 exts.data.Extensions.gamepersistentdata || {}
 
-            userdata.Extensions.gamepersistentdata.HitsFilterType ??= {
-                MyHistory: "all",
-                MyContracts: "all",
-                MyPlaylist: "all",
-            }
+            // @ts-expect-error It's fine
+            userdata.Extensions.gamepersistentdata.HitsFilterType ??= {}
+            userdata.Extensions.gamepersistentdata.HitsFilterType.MyHistory ??=
+                "all"
+            userdata.Extensions.gamepersistentdata.HitsFilterType.MyContracts ??=
+                "all"
+            userdata.Extensions.gamepersistentdata.HitsFilterType.MyPlaylist ??=
+                "all"
 
             const sublocations = getSublocations(req.query.gv)
             userdata.Extensions.defaultloadout ??= {}
