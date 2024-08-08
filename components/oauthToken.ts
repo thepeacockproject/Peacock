@@ -216,6 +216,7 @@ export async function handleOAuthToken(
         await loadUserData(req.body.pId, gameVersion)
     } catch (e) {
         log(LogLevel.DEBUG, "Unable to load profile information.")
+        log(LogLevel.DEBUG, e)
     }
 
     /*
