@@ -220,6 +220,7 @@ export async function cheapLoadUserData(
         await loadUserData(userId, gameVersion)
     } catch (e) {
         log(LogLevel.DEBUG, "Unable to load profile information.")
+        log(LogLevel.DEBUG, e)
     }
 }
 
