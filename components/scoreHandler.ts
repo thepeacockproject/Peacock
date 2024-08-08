@@ -58,7 +58,7 @@ import {
 import { liveSplitManager } from "./livesplit/liveSplitManager"
 import { ScoringHeadline } from "./types/scoring"
 import { MissionEndRequestQuery } from "./types/gameSchemas"
-import { ChallengeFilterType } from "./candle/challengeHelpers"
+import { ChallengeFilterType, Pro1FilterType } from "./candle/challengeHelpers"
 import { getCompletionPercent } from "./menus/destinations"
 import {
     CalculateScoreResult,
@@ -677,6 +677,10 @@ export async function getMissionEndData(
             {
                 type: ChallengeFilterType.ParentLocation,
                 parent: locationParentId,
+                pro1Filter:
+                    levelData.Metadata.Difficulty === "pro1"
+                        ? Pro1FilterType.Only
+                        : Pro1FilterType.Exclude,
             },
             locationParentId,
             gameVersion,

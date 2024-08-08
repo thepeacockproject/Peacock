@@ -56,6 +56,7 @@ import {
     filterChallenge,
     inclusionDataCheck,
     mergeSavedChallengeGroups,
+    Pro1FilterType,
 } from "./challengeHelpers"
 import assert from "assert"
 import { getVersionedConfig } from "../configSwizzleManager"
@@ -849,6 +850,10 @@ export class ChallengeService extends ChallengeRegistry {
                         ? "LOCATION_ICA_FACILITY_SHIP"
                         : contract.Metadata.Location,
                 isFeatured: contractGroup.Metadata.Type === "featured",
+                pro1Filter:
+                    contract.Metadata.Difficulty === "pro1"
+                        ? Pro1FilterType.Only
+                        : Pro1FilterType.Exclude,
                 difficulty,
             },
             levelParentLocation,
@@ -890,6 +895,7 @@ export class ChallengeService extends ChallengeRegistry {
                 type: ChallengeFilterType.Contracts,
                 contractIds: contracts,
                 locationId: child,
+                pro1Filter: Pro1FilterType.Exclude,
             },
             parent,
             gameVersion,
@@ -1249,6 +1255,7 @@ export class ChallengeService extends ChallengeRegistry {
         locationParentId: string,
         gameVersion: GameVersion,
         userId: string,
+        isPro1: boolean,
     ): CompiledChallengeTreeCategory[] {
         const locationsData = getVersionedConfig<PeacockLocationsData>(
             "LocationsData",
@@ -1270,6 +1277,9 @@ export class ChallengeService extends ChallengeRegistry {
             {
                 type: ChallengeFilterType.ParentLocation,
                 parent: locationParentId,
+                pro1Filter: isPro1
+                    ? Pro1FilterType.Only
+                    : Pro1FilterType.Exclude,
             },
             locationParentId,
             gameVersion,
