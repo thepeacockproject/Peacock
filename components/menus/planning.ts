@@ -45,7 +45,6 @@ import { getUserData, writeUserData } from "../databaseHandler"
 import {
     getDefaultSuitFor,
     getMaxProfileLevel,
-    getRemoteService,
     nilUuid,
     unlockOrderComparer,
 } from "../utils"
@@ -55,7 +54,6 @@ import { createSniperLoadouts, SniperCharacter, SniperLoadout } from "./sniper"
 import { getFlag } from "../flags"
 import { loadouts } from "../loadouts"
 import { resolveProfiles } from "../profileHandler"
-import { userAuths } from "../officialServerAuth"
 import assert from "assert"
 
 export type PlanningError = { error: boolean }
@@ -175,36 +173,6 @@ export async function getPlanningData(
     }
 
     if (!contractData) {
-        // This will only happen for **contracts** that are meant to be fetched from the official servers.
-        // E.g. trending contracts, most played last week, etc.
-        // This will also fetch a contract if the player has downloaded it before but deleted the files.
-        // E.g. the user adds a contract to favorites, then deletes the files, then tries to load the contract again.
-        log(
-            LogLevel.WARN,
-            `Trying to download contract ${contractId} due to it not found locally.`,
-        )
-        const user = userAuths.get(userId)
-        const resp = await user?._useService(
-            `https://${getRemoteService(
-                gameVersion,
-            )}.hitman.io/profiles/page/Planning?contractid=${contractId}&resetescalation=false&forcecurrentcontract=false&errorhandling=false`,
-            true,
-        )
-
-        contractData = resp?.data.data.Contract
-
-        if (!contractData) {
-            log(
-                LogLevel.ERROR,
-                `Official planning lookup no result: ${contractId}`,
-            )
-            return { error: true }
-        }
-
-        controller.fetchedContracts.set(contractData.Metadata.Id, contractData)
-    }
-
-    if (!contractData) {
         log(LogLevel.ERROR, `Not found: ${contractId}, planning regular.`)
         return { error: true }
     }
@@ -262,7 +230,7 @@ export async function getPlanningData(
     }
 
     if (!contractData) {
-        log(LogLevel.WARN, `Unknown contract: ${contractId}`)
+        log(LogLevel.ERROR, `Unknown contract: ${contractId}`)
         return { error: true }
     }
 
@@ -508,8 +476,6 @@ export async function getPlanningData(
             }
         }
     }
-
-    assert.ok(contractData, "no contract data at final - planning")
 
     type Cast = keyof typeof limitedLoadoutUnlockLevelMap
 
