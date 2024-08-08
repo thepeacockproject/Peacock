@@ -92,15 +92,18 @@ type GameDestination = {
     }
     Location: Unlockable
     MasteryData: MasteryData | MasteryData[] | Record<string, never>
-    MissionData: {
-        ChallengeCompletion: ChallengeCompletion
-        Location: Unlockable
-        LocationCompletionPercent: number
-        OpportunityStatistics: {
-            Completed: number
-            Count: number
-        }
+    MissionData: DestinationBaseCompletionData & {
         SubLocationMissionsData: LocationMissionData[]
+    }
+}
+
+type DestinationBaseCompletionData = {
+    ChallengeCompletion: ChallengeCompletion
+    Location: Unlockable
+    LocationCompletionPercent: number
+    OpportunityStatistics: {
+        Completed: number
+        Count: number
     }
 }
 
@@ -109,7 +112,7 @@ export function getDestinationCompletion(
     child: Unlockable | undefined,
     gameVersion: GameVersion,
     userId: string,
-) {
+): DestinationBaseCompletionData {
     const missionStories = getConfig<Record<string, MissionStory>>(
         "MissionStories",
         false,
