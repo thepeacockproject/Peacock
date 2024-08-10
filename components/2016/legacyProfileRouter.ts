@@ -28,7 +28,7 @@ import { Router } from "express"
 import { controller } from "../controller"
 import { json as jsonMiddleware } from "body-parser"
 import { uuidRegex } from "../utils"
-import { compileRuntimeChallenge } from "../candle/challengeHelpers"
+import { compileRuntimeChallengeOnly } from "../candle/challengeHelpers"
 import { GetChallengeProgressionBody } from "../types/gameSchemas"
 
 const legacyProfileRouter = Router()
@@ -74,16 +74,8 @@ legacyProfileRouter.post(
                 ),
             )
                 .flat()
-                .map(
-                    (challengeData) =>
-                        compileRuntimeChallenge(
-                            challengeData,
-                            controller.challengeService.getPersistentChallengeProgression(
-                                req.jwt.unique_name,
-                                challengeData.Id,
-                                req.gameVersion,
-                            ),
-                        ).Challenge,
+                .map((challengeData) =>
+                    compileRuntimeChallengeOnly(challengeData),
                 ),
         )
 
@@ -155,7 +147,6 @@ legacyProfileRouter.post(
                 MustBeSaved: progression.MustBeSaved,
             })
         }
-        // TODO: HELP! Please DM rdil if you see this
 
         res.json(challenges)
     },

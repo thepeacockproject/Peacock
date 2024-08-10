@@ -597,6 +597,14 @@ export class ChallengeService extends ChallengeRegistry {
         return (progression?.Completed && !progression.Ticked) || false
     }
 
+    /**
+     * Get the persistent challenge progression data for a challenge.
+     * WARNING: slow! Use sparingly.
+     * @param userId The user's ID.
+     * @param challengeId The challenge ID.
+     * @param gameVersion The game version.
+     * @returns The challenge progression data.
+     */
     getPersistentChallengeProgression(
         userId: string,
         challengeId: string,
@@ -666,7 +674,7 @@ export class ChallengeService extends ChallengeRegistry {
         location: string,
         challenges: [string, RegistryChallenge[]][],
         gameVersion: GameVersion,
-    ) {
+    ): void {
         const groups = this.groups[gameVersion].get(location)?.keys() ?? []
 
         for (const groupId of groups) {
