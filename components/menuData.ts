@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { getMissionEndData, MissionEndError } from "./scoreHandler"
+import { getMissionEndData } from "./scoreHandler"
 import { Response, Router } from "express"
 import {
     contractCreationTutorialId,
@@ -284,16 +284,21 @@ menuDataRouter.get(
 menuDataRouter.get(
     "/missionrewards",
     // @ts-expect-error Jwt props.
-    (
+    async (
         req: RequestWithJwt<{
             contractSessionId: string
         }>,
         res,
     ) => {
-        const s = getSession(req.jwt.unique_name)
+        const s = contractSessions.get(req.query.contractSessionId)
 
         if (!s) {
             res.status(400).send("no session")
+            return
+        }
+
+        if (s.userId !== req.jwt.unique_name) {
+            res.status(403).send("requested score for other user's session")
             return
         }
 
@@ -301,58 +306,65 @@ menuDataRouter.get(
         const contractData = controller.resolveContract(contractId, true)
         const userData = getUserData(req.jwt.unique_name, req.gameVersion)
 
-        res.json({
-            template: getConfig("MissionRewardsTemplate", false),
-            data: {
-                LevelInfo: [
-                    0, 6000, 12000, 18000, 24000, 30000, 36000, 42000, 48000,
-                    54000, 60000, 66000, 72000, 78000, 84000, 90000, 96000,
-                    102000, 108000, 114000,
-                ],
-                XP: 0,
-                Level: 1,
-                Completion: 0,
-                XPGain: 0,
-                Challenges: Object.values(
-                    controller.challengeService.getChallengesForContract(
-                        contractId,
-                        req.gameVersion,
-                        req.jwt.unique_name,
-                        // TODO: Should a difficulty be passed here?
-                    ),
-                )
-                    .flat()
-                    // FIXME: This behaviour may not be accurate to original server
-                    .filter((challengeData) =>
-                        controller.challengeService.fastGetIsCompleted(
-                            userData,
-                            challengeData.Id,
-                        ),
-                    )
-                    .map((challengeData) =>
-                        controller.challengeService.compileRegistryChallengeTreeData(
-                            challengeData,
-                            controller.challengeService.getPersistentChallengeProgression(
-                                req.jwt.unique_name,
-                                challengeData.Id,
-                                req.gameVersion,
-                            ),
+        try {
+            const missionEndData = await getMissionEndData(
+                req.query,
+                req.jwt,
+                req.gameVersion,
+                true,
+            )
+
+            res.json({
+                template: getConfig("MissionRewardsTemplate", false),
+                data: {
+                    LevelInfo: [
+                        0, 6000, 12000, 18000, 24000, 30000, 36000, 42000,
+                        48000, 54000, 60000, 66000, 72000, 78000, 84000, 90000,
+                        96000, 102000, 108000, 114000,
+                    ],
+                    XP: missionEndData.ScoreOverview.XP,
+                    Level: missionEndData.ScoreOverview.Level,
+                    Completion: missionEndData.ScoreOverview.Completion,
+                    XPGain: missionEndData.ScoreOverview.XPGain,
+                    Challenges: Object.values(
+                        controller.challengeService.getChallengesForContract(
+                            contractId,
                             req.gameVersion,
                             req.jwt.unique_name,
+                            // TODO: Should a difficulty be passed here?
                         ),
+                    )
+                        .flat()
+                        .filter((challengeData) =>
+                            controller.challengeService.fastGetIsUnticked(
+                                userData,
+                                challengeData.Id,
+                            ),
+                        )
+                        .map((challengeData) => ({
+                            ChallengeId: challengeData.Id,
+                            ChallengeName: challengeData.Name,
+                            ChallengeImageUrl: challengeData.ImageName,
+                            ChallengeDescription: challengeData.Description,
+                            XPGain: challengeData.Rewards.MasteryXP,
+                        })),
+                    Drops: [],
+                    ContractCompletionBonus: 0,
+                    GroupCompletionBonus: 0,
+                    LocationHideProgression: true,
+                    Difficulty: "normal", // FIXME: is this right?
+                    CompletionData: generateCompletionData(
+                        contractData?.Metadata.Location || "",
+                        req.jwt.unique_name,
+                        req.gameVersion,
                     ),
-                Drops: [],
-                ContractCompletionBonus: 0,
-                GroupCompletionBonus: 0,
-                LocationHideProgression: true,
-                Difficulty: "normal", // FIXME: is this right?
-                CompletionData: generateCompletionData(
-                    contractData?.Metadata.Location || "",
-                    req.jwt.unique_name,
-                    req.gameVersion,
-                ),
-            },
-        })
+                },
+            })
+        } catch (e) {
+            log(LogLevel.ERROR, e)
+            log(LogLevel.ERROR, (e as Error).stack)
+            res.status(400).send("error")
+        }
     },
 )
 
@@ -622,34 +634,30 @@ const missionEndRequest = async (
         return
     }
 
-    const missionEndOutput = await getMissionEndData(
-        req.query,
-        req.jwt,
-        req.gameVersion,
-    )
+    try {
+        const missionEndOutput = await getMissionEndData(
+            req.query,
+            req.jwt,
+            req.gameVersion,
+            false,
+        )
 
-    const isErrorPath = (
-        output: MissionEndResult | MissionEndError,
-    ): output is MissionEndError => {
-        return Boolean((output as MissionEndError).errorCode)
-    }
+        if (req.path.endsWith("/scoreoverview")) {
+            res.json({
+                template: getConfig("ScoreOverviewTemplate", false),
+                data: (missionEndOutput as MissionEndResult).ScoreOverview,
+            })
+            return
+        }
 
-    if (isErrorPath(missionEndOutput)) {
-        res.status(missionEndOutput.errorCode).send(missionEndOutput.error)
-    }
-
-    if (req.path.endsWith("/scoreoverview")) {
         res.json({
-            template: getConfig("ScoreOverviewTemplate", false),
-            data: (missionEndOutput as MissionEndResult).ScoreOverview,
+            template: null,
+            data: missionEndOutput,
         })
-        return
+    } catch (e) {
+        log(LogLevel.ERROR, e)
+        log(LogLevel.ERROR, (e as Error).stack)
     }
-
-    res.json({
-        template: null,
-        data: missionEndOutput,
-    })
 }
 
 // @ts-expect-error Has jwt props.

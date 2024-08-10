@@ -42,6 +42,7 @@ import type {
     MissionManifest,
     MissionManifestObjective,
     Seconds,
+    UserProfile,
 } from "./types/types"
 import {
     escalationTypes,
@@ -387,7 +388,6 @@ export function calculateSniperScore(
 
     let timeBonus = 0
 
-    // TODO? generate this curve from contractSession.scoring.Settings["timebonus"] somehow
     const scorePoints = [
         [0, 50000], // 50000 bonus score at 0 secs (0 min)
         [240, 40000], // 40000 bonus score at 240 secs (4 min)
@@ -529,32 +529,103 @@ export function calculateSniperScore(
     ]
 }
 
-export type MissionEndError = { errorCode: number; error: string }
+async function commitLeaderboardScore(
+    sessionDetails: ContractSession,
+    jwt: JwtData,
+    userData: UserProfile,
+    calculateScoreResult: CalculateScoreResult,
+    result: MissionEndResult,
+    sniperChallengeScore: undefined | CalculateSniperScoreResult,
+): Promise<void> {
+    try {
+        // update leaderboards
+        await axios.post(
+            `${getFlag("leaderboardsHost")}/leaderboards/commit`,
+            {
+                contractId: sessionDetails.contractId,
+                gameDifficulty: difficultyToString(sessionDetails.difficulty),
+                gameVersion: sessionDetails.gameVersion,
+                platform: jwt.platform,
+                username: userData.Gamertag,
+                platformId:
+                    jwt.platform === "epic"
+                        ? userData.EpicId
+                        : userData.SteamId,
+                score: calculateScoreResult.scoreWithBonus,
+                data: {
+                    Score: {
+                        Total: calculateScoreResult.scoreWithBonus,
+                        AchievedMasteries:
+                            result.ScoreOverview.ContractScore
+                                ?.AchievedMasteries,
+                        AwardedBonuses:
+                            result.ScoreOverview.ContractScore?.AwardedBonuses,
+                        TotalNoMultipliers:
+                            result.ScoreOverview.ContractScore
+                                ?.TotalNoMultipliers,
+                        TimeUsedSecs:
+                            result.ScoreOverview.ContractScore?.TimeUsedSecs,
+                        FailedBonuses: null,
+                        IsVR: false,
+                        SilentAssassin: result.ScoreOverview.SilentAssassin,
+                        StarCount: calculateScoreResult.stars,
+                    },
+                    GroupIndex: 0,
+                    SniperChallengeScore: sniperChallengeScore,
+                    PlayStyle: result.ScoreOverview.PlayStyle || null,
+                    Description: "UI_MENU_SCORE_CONTRACT_COMPLETED",
+                    ContractSessionId: sessionDetails.Id,
+                    Percentile: {
+                        Spread: Array(10).fill(0),
+                        Index: 0,
+                    },
+                    peacockHeadlines:
+                        result.ScoreOverview.ScoreDetails.Headlines,
+                },
+            },
+            {
+                headers: {
+                    "Peacock-Version": PEACOCKVERSTRING,
+                },
+            },
+        )
+    } catch (e) {
+        handleAxiosError(e as AxiosError)
+        log(
+            LogLevel.WARN,
+            "Failed to commit leaderboards data! Either you or the server may be offline.",
+        )
+    }
+}
 
+/**
+ * Get the data for a mission end screen.
+ * This function also changes the user's data, unless `isDryRun` is true.
+ * `isDryRun` is a hack because 2016 exists, and needs some of this data before
+ * the intended route will be called.
+ * @param query The query for the route.
+ * @param jwt User's JWT data.
+ * @param gameVersion The game version.
+ * @param isDryRun When true, the function will not change the user's data or commit scores.
+ */
 export async function getMissionEndData(
     query: MissionEndRequestQuery,
     jwt: JwtData,
     gameVersion: GameVersion,
-): Promise<MissionEndError | MissionEndResult> {
+    isDryRun: boolean,
+): Promise<MissionEndResult> {
     // TODO: For this entire function, add support for 2016 difficulties
     const sessionDetails = contractSessions.get(query.contractSessionId || "")
 
-    if (!sessionDetails) {
-        return {
-            errorCode: 404,
-            error: "contract session not found",
-        }
-    }
+    assert.ok(sessionDetails, "contract session not found")
+    assert(
+        sessionDetails.userId !== jwt.unique_name,
+        "requested score for other user's session",
+    )
 
-    if (sessionDetails.userId !== jwt.unique_name) {
-        return {
-            errorCode: 401,
-            error: "requested score for other user's session",
-        }
-    }
-
+    const realData = getUserData(jwt.unique_name, gameVersion)
     // Resolve userdata
-    const userData = getUserData(jwt.unique_name, gameVersion)
+    const userData = isDryRun ? structuredClone(realData) : realData
 
     // Resolve contract data
     const contractData = controller.resolveContract(
@@ -562,29 +633,17 @@ export async function getMissionEndData(
         true,
     )
 
-    if (!contractData) {
-        return {
-            errorCode: 404,
-            error: "Contract not found",
-        }
-    }
+    assert.ok(contractData, "contract not found")
 
     // Handle escalation groups
     if (escalationTypes.includes(contractData.Metadata.Type)) {
         const eGroupId =
             contractData.Metadata.InGroup ?? contractData.Metadata.Id
 
-        if (!eGroupId) {
-            log(
-                LogLevel.ERROR,
-                `Unregistered escalation group ${sessionDetails.contractId}`,
-            )
-
-            return {
-                errorCode: 500,
-                error: "unregistered escalation group",
-            }
-        }
+        assert.ok(
+            eGroupId,
+            `Unregistered escalation group ${sessionDetails.contractId}`,
+        )
 
         if (!userData.Extensions.PeacockEscalations[eGroupId]) {
             userData.Extensions.PeacockEscalations[eGroupId] = 1
@@ -621,7 +680,7 @@ export async function getMissionEndData(
 
         userData.Extensions.PeacockPlayedContracts[eGroupId] = history
 
-        writeUserData(jwt.unique_name, gameVersion)
+        if (!isDryRun) writeUserData(jwt.unique_name, gameVersion)
     } else if (contractTypes.includes(contractData.Metadata.Type)) {
         // Update the contract in the played list
         const id = contractData.Metadata.Id
@@ -635,7 +694,7 @@ export async function getMissionEndData(
             Completed: true,
         }
 
-        writeUserData(jwt.unique_name, gameVersion)
+        if (!isDryRun) writeUserData(jwt.unique_name, gameVersion)
     }
 
     const levelData = controller.resolveContract(
@@ -655,12 +714,10 @@ export async function getMissionEndData(
         ? subLocation.Properties?.ParentLocation
         : levelData.Metadata.Location
 
-    if (!locationParentId) {
-        return {
-            errorCode: 400,
-            error: "location parentid not found",
-        }
-    }
+    assert.ok(
+        locationParentId,
+        `location ${subLocation?.Properties?.ParentLocation || levelData.Metadata.Location} not found (trying to resolve parent)`,
+    )
 
     // Resolve all opportunities for the location
     const opportunities: string[] | null | undefined =
@@ -725,7 +782,7 @@ export async function getMissionEndData(
     let totalXpGain = calculateXpResult.xp
 
     // Calculate XP based on non-global challenges. Remember to add elusive challenges of the contract
-    Object.values({
+    const nonGlobalChallenges = Object.values({
         ...locationChallenges,
         ...contractChallenges,
         ...(Object.keys(contractChallenges).includes("elusive") && {
@@ -733,38 +790,37 @@ export async function getMissionEndData(
         }),
     })
         .flat()
-        .filter((challengeData) => {
-            return (
+        .filter(
+            (challengeData) =>
                 !challengeData.Tags.includes("global") &&
                 controller.challengeService.fastGetIsUnticked(
                     userData,
                     challengeData.Id,
-                )
-            )
+                ),
+        )
+
+    for (const challengeData of nonGlobalChallenges) {
+        const userId = jwt.unique_name
+
+        userData.Extensions.ChallengeProgression[challengeData.Id].Ticked = true
+        if (!isDryRun) writeUserData(userId, gameVersion)
+
+        justTickedChallenges++
+
+        totalXpGain += challengeData.Rewards.MasteryXP
+
+        calculateXpResult.completedChallenges.push({
+            ChallengeId: challengeData.Id,
+            ChallengeTags: challengeData.Tags,
+            ChallengeName: challengeData.Name,
+            ChallengeImageUrl: challengeData.ImageName,
+            ChallengeDescription: challengeData.Description,
+            XPGain: challengeData.Rewards.MasteryXP,
+            IsGlobal: false,
+            IsActionReward: challengeData.Tags.includes("actionreward"),
+            Drops: challengeData.Drops,
         })
-        .forEach((challengeData) => {
-            const userId = jwt.unique_name
-
-            userData.Extensions.ChallengeProgression[challengeData.Id].Ticked =
-                true
-            writeUserData(userId, gameVersion)
-
-            justTickedChallenges++
-
-            totalXpGain += challengeData.Rewards.MasteryXP
-
-            calculateXpResult.completedChallenges.push({
-                ChallengeId: challengeData.Id,
-                ChallengeTags: challengeData.Tags,
-                ChallengeName: challengeData.Name,
-                ChallengeImageUrl: challengeData.ImageName,
-                ChallengeDescription: challengeData.Description,
-                XPGain: challengeData.Rewards.MasteryXP,
-                IsGlobal: false,
-                IsActionReward: challengeData.Tags.includes("actionreward"),
-                Drops: challengeData.Drops,
-            })
-        })
+    }
 
     let completionData = generateCompletionData(
         levelData.Metadata.Location,
@@ -969,16 +1025,18 @@ export async function getMissionEndData(
         )
         sniperChallengeScore = sniperScore
 
-        // Grant sniper mastery
-        controller.progressionService.grantProfileProgression(
-            0,
-            sniperScore.FinalScore,
-            [],
-            sessionDetails,
-            userData,
-            locationParentId,
-            query.masteryUnlockableId,
-        )
+        if (!isDryRun) {
+            // Grant sniper mastery
+            controller.progressionService.grantProfileProgression(
+                0,
+                sniperScore.FinalScore,
+                [],
+                sessionDetails,
+                userData,
+                locationParentId,
+                query.masteryUnlockableId,
+            )
+        }
 
         // Update completion data with latest mastery
         locationLevelInfo = SNIPER_LEVEL_INFO
@@ -1010,7 +1068,7 @@ export async function getMissionEndData(
             query.masteryUnlockableId!
         ].PreviouslySeenXp = completionData.XP
 
-        writeUserData(jwt.unique_name, gameVersion)
+        if (!isDryRun) writeUserData(jwt.unique_name, gameVersion)
 
         // Set the completion data to the location so the end screen formats properly.
         completionData = generateCompletionData(
@@ -1148,6 +1206,10 @@ export async function getMissionEndData(
         },
     }
 
+    if (isDryRun) {
+        return result
+    }
+
     // Finalize the response
     if (getFlag("autoSplitterForceSilentAssassin")) {
         if (result.ScoreOverview.SilentAssassin) {
@@ -1167,69 +1229,14 @@ export async function getMissionEndData(
         // Disable sending sniper scores for now
         contractData.Metadata.Type !== "sniper"
     ) {
-        try {
-            // update leaderboards
-            await axios.post(
-                `${getFlag("leaderboardsHost")}/leaderboards/commit`,
-                {
-                    contractId: sessionDetails.contractId,
-                    gameDifficulty: difficultyToString(
-                        sessionDetails.difficulty,
-                    ),
-                    gameVersion,
-                    platform: jwt.platform,
-                    username: userData.Gamertag,
-                    platformId:
-                        jwt.platform === "epic"
-                            ? userData.EpicId
-                            : userData.SteamId,
-                    score: calculateScoreResult.scoreWithBonus,
-                    data: {
-                        Score: {
-                            Total: calculateScoreResult.scoreWithBonus,
-                            AchievedMasteries:
-                                result.ScoreOverview.ContractScore
-                                    ?.AchievedMasteries,
-                            AwardedBonuses:
-                                result.ScoreOverview.ContractScore
-                                    ?.AwardedBonuses,
-                            TotalNoMultipliers:
-                                result.ScoreOverview.ContractScore
-                                    ?.TotalNoMultipliers,
-                            TimeUsedSecs:
-                                result.ScoreOverview.ContractScore
-                                    ?.TimeUsedSecs,
-                            FailedBonuses: null,
-                            IsVR: false,
-                            SilentAssassin: result.ScoreOverview.SilentAssassin,
-                            StarCount: calculateScoreResult.stars,
-                        },
-                        GroupIndex: 0,
-                        SniperChallengeScore: sniperChallengeScore,
-                        PlayStyle: result.ScoreOverview.PlayStyle || null,
-                        Description: "UI_MENU_SCORE_CONTRACT_COMPLETED",
-                        ContractSessionId: query.contractSessionId,
-                        Percentile: {
-                            Spread: Array(10).fill(0),
-                            Index: 0,
-                        },
-                        peacockHeadlines:
-                            result.ScoreOverview.ScoreDetails.Headlines,
-                    },
-                },
-                {
-                    headers: {
-                        "Peacock-Version": PEACOCKVERSTRING,
-                    },
-                },
-            )
-        } catch (e) {
-            handleAxiosError(e as AxiosError)
-            log(
-                LogLevel.WARN,
-                "Failed to commit leaderboards data! Either you or the server may be offline.",
-            )
-        }
+        await commitLeaderboardScore(
+            sessionDetails,
+            jwt,
+            userData,
+            calculateScoreResult,
+            result,
+            sniperChallengeScore,
+        )
     }
 
     return result

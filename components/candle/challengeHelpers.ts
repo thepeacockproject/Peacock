@@ -18,6 +18,7 @@
 
 import {
     ChallengeProgressionData,
+    CompiledChallengeIngameData,
     CompiledChallengeRuntimeData,
     InclusionData,
     MissionManifest,
@@ -27,29 +28,47 @@ import { SavedChallengeGroup } from "../types/challenges"
 import { controller } from "../controller"
 import { gameDifficulty, isSniperLocation } from "../utils"
 
+/**
+ * Change a registry challenge to the runtime format (for GetActiveChallenges).
+ * @param challenge The challenge.
+ * @returns The runtime challenge.
+ * @see {@link compileRuntimeChallenge} for the modern variant with progression data.
+ */
+export function compileRuntimeChallengeOnly(
+    challenge: RegistryChallenge,
+): CompiledChallengeIngameData {
+    return {
+        Id: challenge.Id,
+        GroupId: challenge.inGroup,
+        Name: challenge.Name,
+        Type: challenge.RuntimeType || "contract",
+        Description: challenge.Description,
+        ImageName: challenge.ImageName,
+        InclusionData: challenge.InclusionData || undefined,
+        Definition: challenge.Definition,
+        Tags: challenge.Tags,
+        Drops: challenge.Drops,
+        LastModified: "2021-01-06T23:00:32.0117635", // this is a lie 👍
+        PlayableSince: null,
+        PlayableUntil: null,
+        Xp: challenge.Rewards.MasteryXP || 0,
+        XpModifier: challenge.XpModifier || {},
+    }
+}
+
+/**
+ * Change a registry challenge to the runtime format (for GetActiveChallengesAndProgression).
+ * @param challenge The challenge.
+ * @param progression The progression data.
+ * @returns The runtime challenge (including progression data).
+ * @see {@link compileRuntimeChallengeOnly} for when you only need the challenge data.
+ */
 export function compileRuntimeChallenge(
     challenge: RegistryChallenge,
     progression: ChallengeProgressionData,
 ): CompiledChallengeRuntimeData {
     return {
-        // GetActiveChallengesAndProgression
-        Challenge: {
-            Id: challenge.Id,
-            GroupId: challenge.inGroup,
-            Name: challenge.Name,
-            Type: challenge.RuntimeType || "contract",
-            Description: challenge.Description,
-            ImageName: challenge.ImageName,
-            InclusionData: challenge.InclusionData || undefined,
-            Definition: challenge.Definition,
-            Tags: challenge.Tags,
-            Drops: challenge.Drops,
-            LastModified: "2021-01-06T23:00:32.0117635", // this is a lie 👍
-            PlayableSince: null,
-            PlayableUntil: null,
-            Xp: challenge.Rewards.MasteryXP || 0,
-            XpModifier: challenge.XpModifier || {},
-        },
+        Challenge: compileRuntimeChallengeOnly(challenge),
         Progression: progression,
     }
 }
