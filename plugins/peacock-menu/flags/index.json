@@ -1,0 +1,46 @@
+{
+    "$datacontext": {
+        "in": "$.",
+        "datavalues": {
+            "Flags": "{$ioiaccountstatus}.Commands.getAllFlags"
+        },
+        "do": {
+            "view": "menu3.basic.ListElementSmall",
+            "controller": "tabsitem",
+            "data": {
+                "title": "Options",
+                "icon": "settings"
+            },
+            "children": [
+                {
+                    "view": "menu3.containers.ScrollingListContainer",
+                    "controller": "context",
+                    "direction": "vertical",
+                    "data": {
+                        "direction": "vertical",
+                        "overflowscrolling": "1.0"
+                    },
+                    "col": 2.25,
+                    "nrows": 3.75,
+                    "ncols": 4,
+                    "children": {
+                        "$each $.Flags": {
+                            "$if $eq($.valueType,category)": {
+                                "$then": {
+                                    "$include": {
+                                        "$path": "$formatstring menusystem/plugins/peacock-menu/flags/category.json@{$.@global.CacheBuster}"
+                                    }
+                                },
+                                "$else": {
+                                    "$include": {
+                                        "$path": "$formatstring menusystem/plugins/peacock-menu/flags/flag.json@{$.@global.CacheBuster}"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}

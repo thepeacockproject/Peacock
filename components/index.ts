@@ -75,7 +75,7 @@ import { multiplayerRouter } from "./multiplayer/multiplayerService"
 import { multiplayerMenuDataRouter } from "./multiplayer/multiplayerMenuData"
 import { liveSplitManager } from "./livesplit/liveSplitManager"
 import { cheapLoadUserData, setupFileStructure } from "./databaseHandler"
-import { getFlag } from "./flags"
+import { getFlag, saveFlags } from "./flags"
 
 const host = process.env.HOST || "0.0.0.0"
 const port = process.env.PORT || 80
@@ -510,6 +510,9 @@ export async function startServer(options: {
         // once contracts directory is present, we are clear to boot
         await loadouts.init()
         await controller.boot(options.pluginDevHost)
+
+        // all plugins had a chance to provide their flags now
+        saveFlags()
 
         const httpServer = http.createServer(app)
 

@@ -18,6 +18,7 @@
 
 import { Router } from "express"
 import path from "path"
+import querystring from "querystring"
 import {
     castUserProfile,
     getMaxProfileLevel,
@@ -39,7 +40,7 @@ import {
     UpdateUserSaveFileTableBody,
     UserProfile,
 } from "./types/types"
-import { log, LogLevel } from "./loggingInterop"
+import { log, logDebug, LogLevel } from "./loggingInterop"
 import {
     deleteContractSession,
     getContractSession,
@@ -64,6 +65,7 @@ import {
     ResolveGamerTagsBody,
 } from "./types/gameSchemas"
 import assert from "assert"
+import { SyncBailHook } from "./hooksImpl"
 
 const profileRouter = Router()
 
@@ -936,5 +938,85 @@ export async function loadSession(
         }.`,
     )
 }
+
+export const handleCommand: SyncBailHook<
+    [/** lastResponse */ unknown, /** command */ string, /** args */ unknown],
+    unknown
+> = new SyncBailHook()
+
+const peacockCommandPrefix = "peacock:"
+const commandResponseCache: {
+    [key: string]: unknown
+} = {}
+
+profileRouter.post(
+    "/ProfileService/GetSemLinkStatus",
+    jsonMiddleware(),
+    (_, res) => {
+        res.json({
+            CacheBuster: Date.now().toString(),
+            Commands: commandResponseCache,
+            IsConfirmed: true,
+            LinkedEmail: "mail@example.com",
+            IOIAccountId: nilUuid,
+            IOIAccountBaseUrl: "https://account.ioi.dk",
+        })
+    },
+)
+
+profileRouter.post(
+    "/ProfileService/SubmitSemEmail",
+    jsonMiddleware(),
+    // @ts-expect-error Has jwt props.
+    (req: RequestWithJwt<never, { email: string }>, res) => {
+        if (req.body.email.startsWith(peacockCommandPrefix)) {
+            try {
+                const commands = req.body.email
+                    .substring(peacockCommandPrefix.length)
+                    .split("|")
+
+                commands.forEach((c) => {
+                    const commandIndex = c.indexOf("?")
+
+                    let command = undefined
+                    let args = undefined
+
+                    if (commandIndex < 0) {
+                        command = c
+                        args = {}
+                    } else {
+                        command = c.substring(0, commandIndex)
+                        args = querystring.parse(c.substring(commandIndex + 1))
+                    }
+
+                    if (command === "clear") {
+                        (args.commands as string)?.split(",").forEach((c2) => {
+                            commandResponseCache[c2] = undefined
+                        })
+                    } else {
+                        commandResponseCache[command] = handleCommand.call(
+                            commandResponseCache[command],
+                            command,
+                            args,
+                        )
+                    }
+
+                    logDebug(command, args, commandResponseCache)
+                })
+            } catch (e) {
+                log(LogLevel.ERROR, `Failed to handle Peacock command: ${e}`)
+            }
+        }
+
+        res.json({
+            CacheBuster: Date.now().toString(),
+            Commands: commandResponseCache,
+            IsConfirmed: true,
+            LinkedEmail: "mail@example.com",
+            IOIAccountId: nilUuid,
+            IOIAccountBaseUrl: "https://account.ioi.dk",
+        })
+    },
+)
 
 export { profileRouter }
