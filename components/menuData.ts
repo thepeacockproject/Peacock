@@ -306,6 +306,12 @@ menuDataRouter.get(
         const contractData = controller.resolveContract(contractId, true)
         const userData = getUserData(req.jwt.unique_name, req.gameVersion)
 
+        assert.ok(contractData, "contract not found")
+        assert.ok(userData, "user data not found")
+
+        const difficulty =
+            contractData.Metadata.Difficulty === "pro1" ? "pro1" : "normal"
+
         try {
             const missionEndData = await getMissionEndData(
                 req.query,
@@ -317,11 +323,9 @@ menuDataRouter.get(
             res.json({
                 template: getConfig("MissionRewardsTemplate", false),
                 data: {
-                    LevelInfo: [
-                        0, 6000, 12000, 18000, 24000, 30000, 36000, 42000,
-                        48000, 54000, 60000, 66000, 72000, 78000, 84000, 90000,
-                        96000, 102000, 108000, 114000,
-                    ],
+                    LevelInfo:
+                        missionEndData.MissionReward.LocationProgression
+                            .LevelInfo,
                     XP: missionEndData.ScoreOverview.XP,
                     Level: missionEndData.ScoreOverview.Level,
                     Completion: missionEndData.ScoreOverview.Completion,
@@ -331,7 +335,6 @@ menuDataRouter.get(
                             contractId,
                             req.gameVersion,
                             req.jwt.unique_name,
-                            // TODO: Should a difficulty be passed here?
                         ),
                     )
                         .flat()
@@ -348,11 +351,15 @@ menuDataRouter.get(
                             ChallengeDescription: challengeData.Description,
                             XPGain: challengeData.Rewards.MasteryXP,
                         })),
-                    Drops: [],
+                    Drops: missionEndData.MissionReward.Drops.map((drop) => ({
+                        // legacy doesn't have the source challenge
+                        Unlockable: drop.Unlockable,
+                    })),
                     ContractCompletionBonus: 0,
                     GroupCompletionBonus: 0,
-                    LocationHideProgression: true,
-                    Difficulty: "normal", // FIXME: is this right?
+                    LocationHideProgression:
+                        missionEndData.ScoreOverview.LocationHideProgression,
+                    Difficulty: difficulty,
                     CompletionData: generateCompletionData(
                         contractData?.Metadata.Location || "",
                         req.jwt.unique_name,
