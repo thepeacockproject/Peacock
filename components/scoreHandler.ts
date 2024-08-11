@@ -845,7 +845,7 @@ export async function getMissionEndData(
         ].PreviouslySeenXp = newLocationXp
     }
 
-    writeUserData(jwt.unique_name, gameVersion)
+    if (!isDryRun) writeUserData(jwt.unique_name, gameVersion)
 
     const masteryData = controller.masteryService.getMasteryPackage(
         locationParentId,
