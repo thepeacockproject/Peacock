@@ -619,7 +619,7 @@ export async function getMissionEndData(
 
     assert.ok(sessionDetails, "contract session not found")
     assert(
-        sessionDetails.userId !== jwt.unique_name,
+        sessionDetails.userId === jwt.unique_name,
         "requested score for other user's session",
     )
 
