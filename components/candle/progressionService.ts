@@ -49,14 +49,14 @@ export class ProgressionService {
         contractSession: ContractSession,
         userProfile: UserProfile,
         location: string,
-        sniperUnlockable?: string,
+        subPackage?: string,
     ): void {
         // Total XP for profile XP is the total sum of the action and mastery XP
         const xp = actionXp + masteryXp
 
         // Grants profile XP, if this is at contract end where we're adding the final
         // sniper score, don't grant it to the profile, otherwise you'll get 1,000+ levels.
-        if (!sniperUnlockable) {
+        if (!subPackage) {
             this.grantUserXp(xp, contractSession, userProfile)
         }
 
@@ -67,7 +67,7 @@ export class ProgressionService {
             contractSession,
             userProfile,
             location,
-            sniperUnlockable,
+            subPackage,
         )
 
         // Award provided drops. E.g. From challenges. Don't run this function
@@ -185,6 +185,7 @@ export class ProgressionService {
             const isEvergreenContract = contract.Metadata.Type === "evergreen"
 
             if (masteryData) {
+                assert.ok(locationData, `location ${location} not found`)
                 const previousLevel = locationData.Level
 
                 locationData.Xp = clampValue(
