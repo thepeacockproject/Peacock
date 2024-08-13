@@ -42,7 +42,7 @@ export interface SavedChallenge {
     LocationId: string
     ParentLocationId: string
     // H1 challenges do not have Type
-    Type?: "contract" | "global" | "location" | "parentlocation" | string
+    Type?: "contract" | string
     RuntimeType: "Hit" | string
     Xp: number
     XpModifier?: unknown

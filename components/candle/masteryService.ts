@@ -156,13 +156,6 @@ export class MasteryService {
         )[0]
     }
 
-    /**
-     * Returns mastery data for a location (either a parent or sub-location). For mastery data of a destination, use {@link getMasteryDataForDestination}.
-     * @param locationId The location's ID.
-     * @param gameVersion The game version.
-     * @param userId The user's ID.
-     * @returns The mastery data.
-     */
     getMasteryDataForLocation(
         locationId: string,
         gameVersion: GameVersion,
@@ -187,14 +180,13 @@ export class MasteryService {
     }
 
     /**
-     * Get generic completion data stored in a user's profile.
+     * Get generic completion data stored in a user's profile. Called by both `getLocationCompletion` and `getFirearmCompletion`.
      * @param userId The id of the user.
      * @param gameVersion The game version.
      * @param locationParentId The location's parent ID, used for progression storage @since v7.0.0
      * @param maxLevel The max level for this progression.
      * @param levelToXpRequired A function to get the XP required for a level.
      * @param subPackageId The subpackage id you want.
-     * @returns The completion data, minus any location-specific fields.
      */
     private getCompletionData(
         userId: string,
@@ -207,12 +199,8 @@ export class MasteryService {
         // Get the user profile
         const userProfile = getUserData(userId, gameVersion)
 
-        assert.ok(userProfile, `user profile ${userId} not found`)
-
         const parent =
             userProfile.Extensions.progression.Locations[locationParentId]
-
-        assert.ok(parent, `parent ${locationParentId} not found`)
 
         const completionData: ProgressionData = subPackageId
             ? (parent[subPackageId as keyof typeof parent] as ProgressionData)
@@ -280,14 +268,10 @@ export class MasteryService {
             ? getConfig<Unlockable[]>("SniperUnlockables", false).find(
                   (unlockable) => unlockable.Id === subPackageId,
               )?.Properties.Name
-            : null
-
-        if (isSniper) {
-            assert.ok(name, `unlockable ${subPackageId} not found`)
-        }
+            : undefined
 
         return {
-            ...this.getGenericCompletionData(
+            ...this.getCompletionData(
                 userId,
                 gameVersion,
                 locationParentId,
@@ -376,9 +360,7 @@ export class MasteryService {
 
             // Add the main unlockable to the set to generate the page properly
             if (isSniper) {
-                for (const pkg of masteryPkg.SubPackages) {
-                    dropIdSet.add(pkg.Id)
-                }
+                masteryPkg.SubPackages.forEach((pkg) => dropIdSet.add(pkg.Id))
             }
 
             if (!dropIdSet || dropIdSet.size === 0) {
