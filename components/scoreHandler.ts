@@ -662,6 +662,11 @@ export async function getMissionEndData(
         }
     }
 
+    if (gameVersion === "h1") {
+        // h1 has a separate mastery track for pro1 and normal
+        query.masteryUnlockableId = contractData.Metadata.Difficulty ?? "normal"
+    }
+
     // Resolve all opportunities for the location
     const opportunities: string[] | null | undefined =
         contractData.Metadata.Opportunities
