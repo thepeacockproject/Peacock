@@ -19,8 +19,10 @@
 const fs = require("fs")
 const { execSync } = require("child_process")
 
-const rpkgCli = `"resources/rpkg-cli.exe"`
-const hmlt = `"resources/HMLanguageTools.exe"`
+const usePath = process.env.USE_PATH === "true"
+
+const rpkgCli = usePath ? "rpkg-cli" : `"resources/rpkg-cli.exe"`
+const hmlt = usePath ? "HMLanguageTools" : `"resources/HMLanguageTools.exe"`
 
 const locale = JSON.parse(fs.readFileSync("resources/locale.json").toString())
 
