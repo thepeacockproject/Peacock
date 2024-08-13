@@ -6702,6 +6702,33 @@
                                         },
                                         "Transition": "Success"
                                     }
+                                ],
+                                "StartingSuit": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "in": "$.EligibleDisguises",
+                                                "?": {
+                                                    "$eq": ["$.#", "$Value"]
+                                                }
+                                            }
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "DisguiseEquipped",
+                                                "$Value"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "($.EligibleDisguises).Count",
+                                                "($.DisguiseEquipped).Count"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
                                 ]
                             }
                         }
