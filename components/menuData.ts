@@ -326,10 +326,14 @@ menuDataRouter.get(
                     LevelInfo:
                         missionEndData.MissionReward.LocationProgression
                             .LevelInfo,
-                    XP: missionEndData.ScoreOverview.XP,
-                    Level: missionEndData.ScoreOverview.Level,
-                    Completion: missionEndData.ScoreOverview.Completion,
-                    XPGain: missionEndData.ScoreOverview.XPGain,
+                    XP: missionEndData.MissionReward.LocationProgression.XP,
+                    Level: missionEndData.MissionReward.LocationProgression
+                        .Level,
+                    Completion:
+                        missionEndData.MissionReward.LocationProgression
+                            .Completion,
+                    XPGain: missionEndData.MissionReward.LocationProgression
+                        .XPGain,
                     Challenges: Object.values(
                         controller.challengeService.getChallengesForContract(
                             contractId,

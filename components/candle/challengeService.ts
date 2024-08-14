@@ -110,7 +110,7 @@ export type GlobalChallengeGroup = {
      *
      * This option is useful when challenge group has to be active for all locations,
      * but doesn't have any location-specific challenges.
-     * However it's advised to create location-specific challenges instead,
+     * However, it's advised to create location-specific challenges instead,
      * as this option will apply the challenge group to all locations and missions,
      * including Freelancer and Sniper modes.
      *
