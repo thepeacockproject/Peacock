@@ -24,6 +24,7 @@ import { log, LogLevel } from "../loggingInterop"
 import { getConfig } from "../configSwizzleManager"
 import { getUserData } from "../databaseHandler"
 import {
+    GenericCompletionData,
     LocationMasteryData,
     MasteryData,
     MasteryDrop,
@@ -123,23 +124,6 @@ export class MasteryService {
         return this.unlockableMasteryData[gameVersion].get(unlockable.Id)
     }
 
-    /**
-     * Exact same thing as {@link getMasteryData}.
-     */
-    getMasteryDataForDestination(
-        locationParentId: string,
-        gameVersion: GameVersion,
-        userId: string,
-        difficulty?: string,
-    ): MasteryData[] {
-        return this.getMasteryData(
-            locationParentId,
-            gameVersion,
-            userId,
-            difficulty,
-        )
-    }
-
     getMasteryDataForSubPackage(
         locationParentId: string,
         subPackageId: string,
@@ -148,7 +132,7 @@ export class MasteryService {
     ): MasteryData {
         // Since we're getting a subpackage, we know there will only be one entry in this array.
         // If the array is empty it will return undefined.
-        return this.getMasteryData(
+        return this.getMasteryDataForDestination(
             locationParentId,
             gameVersion,
             userId,
@@ -174,7 +158,7 @@ export class MasteryService {
 
         assert.ok(location, "cannot get mastery data for unknown location")
 
-        const masteryData = this.getMasteryData(
+        const masteryData = this.getMasteryDataForDestination(
             location.Properties.ParentLocation ?? location.Id,
             gameVersion,
             userId,
@@ -196,14 +180,14 @@ export class MasteryService {
      * @param subPackageId The subpackage id you want.
      * @returns The completion data, minus any location-specific fields.
      */
-    private getCompletionData(
+    private getGenericCompletionData(
         userId: string,
         gameVersion: GameVersion,
         locationParentId: string,
         maxLevel: number,
         levelToXpRequired: (level: number) => number,
         subPackageId?: string,
-    ) {
+    ): GenericCompletionData {
         // Get the user profile
         const userProfile = getUserData(userId, gameVersion)
 
@@ -343,7 +327,7 @@ export class MasteryService {
             })
     }
 
-    private getMasteryData(
+    getMasteryDataForDestination(
         locationParentId: string,
         gameVersion: GameVersion,
         userId: string,

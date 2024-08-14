@@ -22,6 +22,7 @@ import { getUnlockablesById, grantDrops } from "../inventory"
 import type {
     ContractSession,
     GameVersion,
+    ProgressionData,
     Unlockable,
     UserProfile,
 } from "../types/types"
@@ -90,11 +91,16 @@ export class ProgressionService {
         userProfile: UserProfile,
         location: string,
         subPkgId?: string,
-    ) {
+    ): ProgressionData | undefined {
+        const theLocation =
+            userProfile.Extensions.progression.Locations[location]
+
+        assert.ok(theLocation, `Location ${location} not found in user data`)
+
         return subPkgId
             ? // @ts-expect-error It is possible to index into an object with a string
-              userProfile.Extensions.progression.Locations[location][subPkgId]
-            : userProfile.Extensions.progression.Locations[location]
+              theLocation[subPkgId]
+            : theLocation
     }
 
     // Return mastery drops from location from a level range
@@ -234,7 +240,7 @@ export class ProgressionService {
 
                 userProfile.Extensions.CPD[contract.Metadata.CpdId][
                     "EvergreenLevel"
-                ] = locationData.Level
+                ] = locationData?.Level ?? 0
             }
         }
 
