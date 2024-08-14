@@ -18,17 +18,17 @@
 
 import { CompletionData, GameVersion, Unlockable } from "./types"
 
-export type LocationMasteryData = {
+export interface LocationMasteryData {
     Location: Unlockable
     MasteryData: MasteryData[]
 }
 
-export type MasteryPackageDrop = {
+export interface MasteryPackageDrop {
     Id: string
     Level: number
 }
 
-export type MasterySubPackage = {
+interface MasterySubPackage {
     Id: string
     MaxLevel?: number
     Drops: MasteryPackageDrop[]
@@ -49,31 +49,25 @@ export type MasteryPackage = {
     GameVersions: GameVersion[]
     MaxLevel?: number
     HideProgression?: boolean
-} & (MasteryPackageDropExt | MasteryPackageSubPackageExt)
+} & (HasDrop | HasSubPackage)
 
-/**
- * Extends {@link MasteryPackage} with the `Drops` field.
- */
-export type MasteryPackageDropExt = {
+type HasDrop = {
     Drops: MasteryPackageDrop[]
     SubPackages?: never
 }
 
-/**
- * Extends {@link MasteryPackage} with the `SubPackages` field.
- */
-export type MasteryPackageSubPackageExt = {
+type HasSubPackage = {
     Drops?: never
     SubPackages: MasterySubPackage[]
 }
 
-export type MasteryData = {
+export interface MasteryData {
     CompletionData: CompletionData
     Drops: MasteryDrop[]
     Unlockable?: Unlockable
 }
 
-export type MasteryDrop = {
+export interface MasteryDrop {
     IsLevelMarker: boolean
     Unlockable: Unlockable
     Level: number
@@ -81,17 +75,8 @@ export type MasteryDrop = {
     TypeLocaKey: string
 }
 
-export type UnlockableMasteryData = {
+export interface UnlockableMasteryData {
     Location: string
     SubPackageId?: string
     Level: number
 }
-
-export type GenericCompletionData = Omit<
-    CompletionData,
-    | "Id"
-    | "SubLocationId"
-    | "HideProgression"
-    | "IsLocationProgression"
-    | "Name"
->

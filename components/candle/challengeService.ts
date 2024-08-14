@@ -351,8 +351,8 @@ export abstract class ChallengeRegistry {
      * It iterates over all the challenges for the specified game version and for each challenge, it checks if there are any unlockables (Drops).
      * If there are unlockables, it adds them to the accumulator object with the dropId as the key and the challenge Id as the value.
      *
-     * @param gameVersion The version of the game for which to retrieve the unlockables.
-     * @returns An object where each key is an unlockable's id (dropId) and the corresponding value is the id of the challenge that unlocks it.
+     * @param gameVersion - The version of the game for which to retrieve the unlockables.
+     * @returns {Record<string, string>} - An object where each key is an unlockable's id (dropId) and the corresponding value is the id of the challenge that unlocks it.
      */
     getChallengesUnlockables(gameVersion: GameVersion): Record<string, string> {
         return [...this.challenges[gameVersion].values()].reduce(

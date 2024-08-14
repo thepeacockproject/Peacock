@@ -162,11 +162,6 @@ function filterUnlockedContent(
                     unlockableMasteryData.SubPackageId,
                 )
 
-            assert.ok(
-                locationData,
-                `location ${unlockableMasteryData.Location} (subPackageId: ${unlockableMasteryData.SubPackageId}) not found`,
-            )
-
             const canUnlock = locationData.Level >= unlockableMasteryData.Level
 
             if (canUnlock && unlockable.Type !== "evergreenmastery") {
