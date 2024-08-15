@@ -614,7 +614,6 @@ export async function getMissionEndData(
     gameVersion: GameVersion,
     isDryRun: boolean,
 ): Promise<MissionEndResult> {
-    // TODO: For this entire function, add support for 2016 difficulties
     const sessionDetails = contractSessions.get(query.contractSessionId || "")
 
     assert.ok(sessionDetails, "contract session not found")
