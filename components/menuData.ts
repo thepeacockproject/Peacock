@@ -320,6 +320,8 @@ menuDataRouter.get(
                 true,
             )
 
+            // TODO: Enqueue events to unlock PRO1
+
             res.json({
                 template: getConfig("MissionRewardsTemplate", false),
                 data: {
