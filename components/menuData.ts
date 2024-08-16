@@ -25,7 +25,7 @@ import {
     unlockOrderComparer,
     uuidRegex,
 } from "./utils"
-import { contractSessions, getSession } from "./eventHandler"
+import { contractSessions, enqueueEvent, getSession } from "./eventHandler"
 import { getConfig, getVersionedConfig } from "./configSwizzleManager"
 import { controller } from "./controller"
 import { createLocationsData, getDestination } from "./menus/destinations"
@@ -320,7 +320,25 @@ menuDataRouter.get(
                 true,
             )
 
-            // TODO: Enqueue events to unlock PRO1
+            // Send all the drops, we technically only need to send the pro1 drop, but this is best practise.
+            if (missionEndData.MissionReward.Drops.length) {
+                enqueueEvent(req.jwt.unique_name, {
+                    Name: "UnlockableAddedToInventory",
+                    Value: {
+                        Items: missionEndData.MissionReward.Drops.map(
+                            (drop) => {
+                                return { UnlockableId: drop.Unlockable.Id }
+                            },
+                        ),
+                    },
+                    Version: {
+                        _Build: 61,
+                        _Major: 6,
+                        _Minor: 74,
+                        _Revision: 0,
+                    },
+                })
+            }
 
             res.json({
                 template: getConfig("MissionRewardsTemplate", false),
