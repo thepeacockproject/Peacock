@@ -164,18 +164,16 @@ export class HitsCategoryService {
                             if ((contract?.Metadata.Season || 0) <= 2)
                                 contracts.push(id)
                             break
-                        default: {
+                        default:
                             const smfSupport = new SMFSupport(controller)
                             if (
-                                contract?.Metadata.Id ===
-                                    "3716b654-a42c-45df-9db9-61795a6a3e46" &&
-                                !smfSupport.modIsInstalled(
+                                contract?.Metadata.Id !==
+                                    "3716b654-a42c-45df-9db9-61795a6a3e46" ||
+                                smfSupport.modIsInstalled(
                                     "KevinRudd.TheBrothers",
                                 )
                             )
-                                continue
-                            contracts.push(id)
-                        }
+                                contracts.push(id)
                     }
                 }
             })
