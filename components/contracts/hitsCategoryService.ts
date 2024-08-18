@@ -149,7 +149,7 @@ export class HitsCategoryService {
 
         // Elusives
         const smfSupport = new SMFSupport(controller)
-        
+
         this.hitsCategories
             .for("Elusive_Target_Hits")
             .tap(tapName, (contracts, gameVersion) => {
