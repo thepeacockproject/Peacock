@@ -658,9 +658,10 @@ export async function getMissionEndData(
             IsEscalation: true,
         }
 
-        if (
-            userData.Extensions.PeacockEscalations[eGroupId] ===
-            getLevelCount(controller.resolveContract(eGroupId))
+        const levelCount = getLevelCount(controller.resolveContract(eGroupId))
+
+        escalationCompletion: if (
+            userData.Extensions.PeacockEscalations[eGroupId] === levelCount
         ) {
             // we are on the final level, and the user completed this level
             if (
@@ -673,6 +674,25 @@ export async function getMissionEndData(
             }
 
             history.Completed = true
+
+            if ((gameVersion === "h1" && levelCount !== 5) || isDryRun) {
+                break escalationCompletion
+            }
+
+            // Send the AchievementEscalated event to the client
+            // for achievements.
+            enqueueEvent(jwt.unique_name, {
+                Name: "AchievementEscalated",
+                Value: {
+                    Location: contractData.Metadata.Location,
+                },
+                Version: {
+                    _Major: 8,
+                    _Minor: 15,
+                    _Build: 0,
+                    _Revision: 0,
+                },
+            })
         } else {
             // not the final level
             userData.Extensions.PeacockEscalations[eGroupId] += 1
