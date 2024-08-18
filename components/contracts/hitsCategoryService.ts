@@ -164,7 +164,7 @@ export class HitsCategoryService {
                             if ((contract?.Metadata.Season || 0) <= 2)
                                 contracts.push(id)
                             break
-                        default:
+                        default: {
                             const smfSupport = new SMFSupport(controller)
                             if (
                                 contract?.Metadata.Id ===
@@ -175,6 +175,7 @@ export class HitsCategoryService {
                             )
                                 continue
                             contracts.push(id)
+                        }
                     }
                 }
             })
