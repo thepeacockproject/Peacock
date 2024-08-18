@@ -36,6 +36,7 @@ import { log, LogLevel } from "../loggingInterop"
 import { fastClone, getRemoteService } from "../utils"
 import { orderedETAs } from "./elusiveTargetArcades"
 import { missionsInLocations } from "./missionsInLocation"
+import { SMFSupport } from "../smfSupport"
 import assert from "assert"
 
 /**
@@ -164,6 +165,15 @@ export class HitsCategoryService {
                                 contracts.push(id)
                             break
                         default:
+                            const smfSupport = new SMFSupport(controller)
+                            if (
+                                contract?.Metadata.Id ===
+                                    "3716b654-a42c-45df-9db9-61795a6a3e46" &&
+                                !smfSupport.modIsInstalled(
+                                    "KevinRudd.TheBrothers",
+                                )
+                            )
+                                continue
                             contracts.push(id)
                     }
                 }
