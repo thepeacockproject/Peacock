@@ -30,7 +30,7 @@ import {
     sniperLevelForXp,
     xpRequiredForLevel,
 } from "./utils"
-import { contractSessions, getCurrentState } from "./eventHandler"
+import { contractSessions, enqueueEvent, getCurrentState } from "./eventHandler"
 import { getConfig } from "./configSwizzleManager"
 import { controller } from "./controller"
 import type {
@@ -72,7 +72,12 @@ import {
     MissionEndResult,
 } from "./types/score"
 import { MasteryData } from "./types/mastery"
-import { createInventory, getUnlockablesById, InventoryItem } from "./inventory"
+import {
+    createInventory,
+    getUnlockablesById,
+    grantDrops,
+    InventoryItem,
+} from "./inventory"
 import { calculatePlaystyle } from "./playStyles"
 import assert from "assert"
 
@@ -1016,11 +1021,7 @@ export async function getMissionEndData(
     }
 
     if (contractData.Metadata.Type === "sniper") {
-        const userInventory = createInventory(
-            jwt.unique_name,
-            gameVersion,
-            undefined,
-        )
+        const userInventory = createInventory(jwt.unique_name, gameVersion)
 
         const [sniperScore, headlines] = calculateSniperScore(
             sessionDetails,
@@ -1113,6 +1114,41 @@ export async function getMissionEndData(
                 Unlockable: e.Unlockable,
             }))
         }
+
+        // If this isn't a dry run, tell the user that their level has changed,
+        // so we can pop the achievement.
+        if (!isDryRun) {
+            enqueueEvent(jwt.unique_name, {
+                Name: "Progression_LevelGain",
+                Value: {
+                    Location: levelData.Metadata.Location,
+                    NewLevel: newLocationLevel,
+                },
+                Version: {
+                    _Major: 8,
+                    _Minor: 15,
+                    _Build: 0,
+                    _Revision: 0,
+                },
+            })
+        }
+    }
+
+    // If this isn't a dry run (and mastery progression is enabled), grant drops
+    // if the user's inventory doesn't already have it.
+    if (!isDryRun && getFlag("enableMasteryProgression")) {
+        const userInventory = createInventory(jwt.unique_name, gameVersion)
+
+        const toGrant = masteryDrops
+            .filter(
+                (drop) =>
+                    !userInventory.some(
+                        (e) => e.Unlockable.Id === drop.Unlockable.Id,
+                    ),
+            )
+            .map((e) => e.Unlockable)
+
+        grantDrops(jwt.unique_name, toGrant)
     }
 
     // Challenge Drops
