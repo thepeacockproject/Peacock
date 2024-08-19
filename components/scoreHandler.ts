@@ -26,6 +26,7 @@ import {
     isObjectiveActive,
     levelForXp,
     PEACOCKVERSTRING,
+    ServerVer,
     SNIPER_LEVEL_INFO,
     sniperLevelForXp,
     xpRequiredForLevel,
@@ -686,12 +687,7 @@ export async function getMissionEndData(
                 Value: {
                     Location: contractData.Metadata.Location,
                 },
-                Version: {
-                    _Major: 8,
-                    _Minor: 15,
-                    _Build: 0,
-                    _Revision: 0,
-                },
+                Version: ServerVer,
             })
         } else {
             // not the final level
@@ -1144,12 +1140,7 @@ export async function getMissionEndData(
                     Location: levelData.Metadata.Location,
                     NewLevel: newLocationLevel,
                 },
-                Version: {
-                    _Major: 8,
-                    _Minor: 15,
-                    _Build: 0,
-                    _Revision: 0,
-                },
+                Version: ServerVer,
             })
         }
     }
