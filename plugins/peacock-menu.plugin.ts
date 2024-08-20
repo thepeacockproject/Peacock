@@ -1,7 +1,11 @@
 import { Controller } from "@peacockproject/core/controller"
 import { menuSystemDatabase } from "@peacockproject/core/menus/menuSystem"
-import { Flag, FlagSection, GameVersion } from "@peacockproject/core/types/types"
-import { LogLevel, log, logDebug } from "@peacockproject/core/loggingInterop"
+import {
+    Flag,
+    FlagSection,
+    GameVersion,
+} from "@peacockproject/core/types/types"
+import { LogLevel, log } from "@peacockproject/core/loggingInterop"
 import { handleCommand as handleCommandHook } from "@peacockproject/core/profileHandler"
 import {
     defaultFlags,
@@ -173,42 +177,51 @@ function commandGetAllFlags(): getAllFlagsResponse[] {
             title: defaultSection.title,
             description: defaultSection.desc,
             valueType: "category",
-            value: commandGetAllFlagsForSection(sectionKey, defaultSection, allFlags[sectionKey] as IIniObjectSection),
+            value: commandGetAllFlagsForSection(
+                sectionKey,
+                defaultSection,
+                allFlags[sectionKey] as IIniObjectSection,
+            ),
         })
     }
 
     return flagsArray
 }
 
-function commandGetAllFlagsForSection(sectionKey: string, section: FlagSection, sectionValues: IIniObjectSection): getAllFlagsResponse[] {
+function commandGetAllFlagsForSection(
+    sectionKey: string,
+    section: FlagSection,
+    sectionValues: IIniObjectSection,
+): getAllFlagsResponse[] {
     const flagsArray: getAllFlagsResponse[] = []
 
     const categoryMap = new Map<string, getAllFlagsResponse>()
 
-    for(const flagKey of Object.keys(section.flags)) {
+    for (const flagKey of Object.keys(section.flags)) {
         const flag = section.flags[flagKey]
 
-        if(flag.showIngame === false) {
-            continue;
+        if (flag.showIngame === false) {
+            continue
         }
 
-        const flagsType = getFlagType(
-            flag,
-            sectionValues[flagKey],
-        )
+        const flagsType = getFlagType(flag, sectionValues[flagKey])
 
         if (!flagsType) {
             continue
         }
 
-        const noteLines = [];
+        const noteLines = []
 
-        if(flag.requiresGameRestart) {
-            noteLines.push("Game has to be restarted before changes take effect!");
+        if (flag.requiresGameRestart) {
+            noteLines.push(
+                "Game has to be restarted before changes take effect!",
+            )
         }
 
-        if(flag.requiresPeacockRestart) {
-            noteLines.push("Peacock has to be restarted before changes take effect!");
+        if (flag.requiresPeacockRestart) {
+            noteLines.push(
+                "Peacock has to be restarted before changes take effect!",
+            )
         }
 
         const flagResult = {
@@ -220,10 +233,10 @@ function commandGetAllFlagsForSection(sectionKey: string, section: FlagSection, 
             ...flagsType,
         }
 
-        if(flag.category) {
+        if (flag.category) {
             let categoryFlag = categoryMap.get(flag.category)
 
-            if(!categoryFlag) {
+            if (!categoryFlag) {
                 categoryFlag = {
                     key: `${sectionKey}.${flag.category}`,
                     title: flag.category,
@@ -235,22 +248,21 @@ function commandGetAllFlagsForSection(sectionKey: string, section: FlagSection, 
                 categoryMap.set(flag.category, categoryFlag)
             }
 
-            (categoryFlag.value as getAllFlagsResponse[]).push(flagResult)
-        }
-        else {
+            ;(categoryFlag.value as getAllFlagsResponse[]).push(flagResult)
+        } else {
             flagsArray.push(flagResult)
         }
     }
 
     const categoryFlags = [...categoryMap.values()]
 
-    return [
-        ...categoryFlags,
-        ...flagsArray
-    ]
+    return [...categoryFlags, ...flagsArray]
 }
 
-function commandSetFlagBoolean(_lastResponse: unknown, args: setFlagArgs): void {
+function commandSetFlagBoolean(
+    _lastResponse: unknown,
+    args: setFlagArgs,
+): void {
     const keys = args.key.split(".")
     const section = keys[0]
     const key = keys[1]

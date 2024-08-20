@@ -13,19 +13,19 @@ const pluginFlagSection: FlagSection = {
             title: "All difficulties",
             desc: "When turned on, elusive targets can be played on any difficulty.",
             default: true,
-            requiresPeacockRestart: true
+            requiresPeacockRestart: true,
         },
         allEntrances: {
             title: "All entrances",
             desc: "When turned on, any starting location can be chosen for elusive targets, regardless of unlock status.",
             default: true,
-            requiresPeacockRestart: true
+            requiresPeacockRestart: true,
         },
         smallTiles: {
             title: "Small tiles",
             desc: "When turned on, show elusive targets as small tiles under Destinations.",
             default: true,
-            requiresPeacockRestart: true
+            requiresPeacockRestart: true,
         },
     },
 }
@@ -38,15 +38,16 @@ function initPlugin(controller: Controller): void {
     for (const contractId of orderedETs) {
         const contract = controller.resolveContract(contractId)
 
-        if(!contract) {
+        if (!contract) {
             continue
         }
-        
-        // @ts-expect-error Indexer
-        const baseContractId = controller.missionsInLocations[contract.Metadata.Location][0]
+
+        const baseContractId =
+            // @ts-expect-error Indexer
+            controller.missionsInLocations[contract.Metadata.Location][0]
         const baseContract = controller.resolveContract(baseContractId)
 
-        if(!baseContract) {
+        if (!baseContract) {
             continue
         }
 

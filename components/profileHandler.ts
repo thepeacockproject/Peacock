@@ -990,7 +990,7 @@ profileRouter.post(
                     }
 
                     if (command === "clear") {
-                        (args.commands as string)?.split(",").forEach((c2) => {
+                        ;(args.commands as string)?.split(",").forEach((c2) => {
                             commandResponseCache[c2] = undefined
                         })
                     } else {
