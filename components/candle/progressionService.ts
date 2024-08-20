@@ -22,6 +22,7 @@ import { getUnlockablesById, grantDrops } from "../inventory"
 import type {
     ContractSession,
     GameVersion,
+    ProgressionData,
     Unlockable,
     UserProfile,
 } from "../types/types"
@@ -49,14 +50,14 @@ export class ProgressionService {
         contractSession: ContractSession,
         userProfile: UserProfile,
         location: string,
-        sniperUnlockable?: string,
-    ) {
+        subPackage?: string,
+    ): void {
         // Total XP for profile XP is the total sum of the action and mastery XP
         const xp = actionXp + masteryXp
 
         // Grants profile XP, if this is at contract end where we're adding the final
         // sniper score, don't grant it to the profile, otherwise you'll get 1,000+ levels.
-        if (!sniperUnlockable) {
+        if (!subPackage) {
             this.grantUserXp(xp, contractSession, userProfile)
         }
 
@@ -67,7 +68,7 @@ export class ProgressionService {
             contractSession,
             userProfile,
             location,
-            sniperUnlockable,
+            subPackage,
         )
 
         // Award provided drops. E.g. From challenges. Don't run this function
@@ -90,11 +91,16 @@ export class ProgressionService {
         userProfile: UserProfile,
         location: string,
         subPkgId?: string,
-    ) {
+    ): ProgressionData | undefined {
+        const theLocation =
+            userProfile.Extensions.progression.Locations[location]
+
+        assert.ok(theLocation, `Location ${location} not found in user data`)
+
         return subPkgId
             ? // @ts-expect-error It is possible to index into an object with a string
-              userProfile.Extensions.progression.Locations[location][subPkgId]
-            : userProfile.Extensions.progression.Locations[location]
+              theLocation[subPkgId]
+            : theLocation
     }
 
     // Return mastery drops from location from a level range
@@ -104,7 +110,7 @@ export class ProgressionService {
         masteryLocationDrops: MasteryPackageDrop[],
         minLevel: number,
         maxLevel: number,
-    ) {
+    ): Unlockable[] {
         const unlockableIds = masteryLocationDrops
             .filter((drop) => drop.Level > minLevel && drop.Level <= maxLevel)
             .map((drop) => drop.Id)
@@ -135,7 +141,7 @@ export class ProgressionService {
             }
         }
 
-        return unlockables
+        return unlockables.filter((u) => !!u) as Unlockable[]
     }
 
     // Grants xp and rewards to mastery progression on contract location
@@ -146,11 +152,11 @@ export class ProgressionService {
         userProfile: UserProfile,
         location: string,
         sniperUnlockable?: string,
-    ): boolean {
+    ): void {
         const contract = controller.resolveContract(contractSession.contractId)
 
         if (!contract) {
-            return false
+            return
         }
 
         const subLocation = getSubLocationByName(
@@ -163,7 +169,7 @@ export class ProgressionService {
             : location ?? contract.Metadata.Location
 
         if (!parentLocationId) {
-            return false
+            return
         }
 
         // We can't grant sniper XP here as it's based on final score, so we skip updating mastery
@@ -185,6 +191,7 @@ export class ProgressionService {
             const isEvergreenContract = contract.Metadata.Type === "evergreen"
 
             if (masteryData) {
+                assert.ok(locationData, `location ${location} not found`)
                 const previousLevel = locationData.Level
 
                 locationData.Xp = clampValue(
@@ -233,7 +240,7 @@ export class ProgressionService {
 
                 userProfile.Extensions.CPD[contract.Metadata.CpdId][
                     "EvergreenLevel"
-                ] = locationData.Level
+                ] = locationData?.Level ?? 0
             }
         }
 
@@ -248,8 +255,6 @@ export class ProgressionService {
         profileData.Sublocations[contract.Metadata.Location].Xp += masteryXp
         profileData.Sublocations[contract.Metadata.Location].ActionXp +=
             actionXp
-
-        return true
     }
 
     // Grants xp to user profile
@@ -258,7 +263,7 @@ export class ProgressionService {
         xp: number,
         contractSession: ContractSession,
         userProfile: UserProfile,
-    ): boolean {
+    ): void {
         const profileData = userProfile.Extensions.progression.PlayerProfileXP
 
         profileData.Total += xp
@@ -267,7 +272,5 @@ export class ProgressionService {
             1,
             getMaxProfileLevel(contractSession.gameVersion),
         )
-
-        return true
     }
 }

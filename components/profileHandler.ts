@@ -66,6 +66,7 @@ import {
 } from "./types/gameSchemas"
 import assert from "assert"
 import { SyncBailHook } from "./hooksImpl"
+import { generateCompletionData } from "./contracts/dataGen"
 
 const profileRouter = Router()
 
@@ -655,6 +656,23 @@ profileRouter.post(
                     MaxLevel: getMaxProfileLevel(req.gameVersion),
                 },
             },
+        })
+    },
+)
+
+profileRouter.post(
+    "/HubPagesService/GetMasteryCompletionDataForLocation",
+    jsonMiddleware(),
+    // @ts-expect-error Has jwt props.
+    (req: RequestWithJwt<{ locationId: string; difficulty: string }>, res) => {
+        res.json({
+            CompletionData: generateCompletionData(
+                req.body.locationId,
+                req.jwt.unique_name,
+                req.gameVersion,
+                undefined,
+                req.body.difficulty,
+            ),
         })
     },
 )

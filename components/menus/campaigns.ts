@@ -205,10 +205,12 @@ export function makeCampaigns(
                 "7a03a97d-238c-48bd-bda0-e5f279569cce",
                 gameVersion,
             ),
+            genSingleVideo("debriefing_raccoon", gameVersion),
             genSingleMission(
                 "095261b5-e15b-4ca1-9bb7-001fb85c5aaa",
                 gameVersion,
             ),
+            genSingleVideo("debriefing_stingray", gameVersion),
         ]
 
         const s3StoryData: StoryData[] | undefined =

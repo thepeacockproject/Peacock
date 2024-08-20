@@ -33,7 +33,7 @@ import type { MasteryData } from "../types/mastery"
 import { contractIdToHitObject, controller } from "../controller"
 import { generateCompletionData } from "../contracts/dataGen"
 import { getUserData } from "../databaseHandler"
-import { ChallengeFilterType } from "../candle/challengeHelpers"
+import { ChallengeFilterType, Pro1FilterType } from "../candle/challengeHelpers"
 import { GetDestinationQuery } from "../types/gameSchemas"
 import { createInventory } from "../inventory"
 import { log, LogLevel } from "../loggingInterop"
@@ -123,6 +123,7 @@ export function getDestinationCompletion(
         {
             type: ChallengeFilterType.ParentLocation,
             parent: parent.Id,
+            pro1Filter: Pro1FilterType.Exclude,
         },
         parent.Id,
         gameVersion,
@@ -384,6 +385,7 @@ export function getDestination(
                     query.locationId,
                     gameVersion,
                     userId,
+                    query.difficulty === "pro1",
                 ),
         },
         MasteryData: resMasteryData,
