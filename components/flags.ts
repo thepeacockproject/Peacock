@@ -45,7 +45,7 @@ export const defaultFlags: Flags = {
             mapDiscoveryState: {
                 category: "Gameplay",
                 title: "mapDiscoveryState",
-                desc: "Decides what to do with the discovery state of the maps. REVEALED will reset all map locations to discovered, CLOUDED will reset all maps to undiscovered, and KEEP will keep your current discovery state. Note that these actions will take effect every time you connect to Peacock. Your progress of the \"Discover [Location]\" challenges will not be affected by this option.",
+                desc: 'Decides what to do with the discovery state of the maps. REVEALED will reset all map locations to discovered, CLOUDED will reset all maps to undiscovered, and KEEP will keep your current discovery state. Note that these actions will take effect every time you connect to Peacock. Your progress of the "Discover [Location]" challenges will not be affected by this option.',
                 possibleValues: ["REVEALED", "CLOUDED", "KEEP"],
                 default: "KEEP",
             },
@@ -64,20 +64,20 @@ export const defaultFlags: Flags = {
             legacyNoticedKillScoring: {
                 category: "Gameplay",
                 title: "legacyNoticedKillScoring",
-                desc: "In the HITMAN 2016 engine, if noticed kills should behave in the official way (\"vanilla\"), or how they were previously handled by Peacock (\"sane\")",
+                desc: 'In the HITMAN 2016 engine, if noticed kills should behave in the official way ("vanilla"), or how they were previously handled by Peacock ("sane")',
                 possibleValues: ["vanilla", "sane"],
                 default: "vanilla",
             },
             legacyElusivesEnableSaving: {
                 category: "Services",
                 title: "legacyElusivesEnableSaving",
-                desc: "When set to true, playing elusive target missions in Hitman 2016 will share the same restarting/replanning/saving rules with normal missions, but the \"Elusive Target [Location]\" challenges will not be completable. These challenges will only be completable when this option is set to false.",
+                desc: 'When set to true, playing elusive target missions in Hitman 2016 will share the same restarting/replanning/saving rules with normal missions, but the "Elusive Target [Location]" challenges will not be completable. These challenges will only be completable when this option is set to false.',
                 default: false,
             },
             getDefaultSuits: {
                 category: "Services",
                 title: "getDefaultSuits",
-                desc: "Set this to true to add all the default starting suits to your inventory. Note: If you set both this and \"enableMasteryProgression\" to \"true\" at the same time, a starting suit that is also the unlock for a challenge/mastery will be locked behind its challenge/mastery.",
+                desc: 'Set this to true to add all the default starting suits to your inventory. Note: If you set both this and "enableMasteryProgression" to "true" at the same time, a starting suit that is also the unlock for a challenge/mastery will be locked behind its challenge/mastery.',
                 default: false,
             },
             jokes: {
@@ -171,8 +171,8 @@ export const defaultFlags: Flags = {
                 category: "Development",
                 title: "developmentPluginDevHost",
                 desc: "[Workspace required] Toggle loading of plugins with a .ts/.cts extension inside the /plugins folder",
-                default: false
-            },           
+                default: false,
+            },
             leaderboardsHost: {
                 category: "Development",
                 title: "leaderboardsHost",
@@ -190,7 +190,7 @@ export const defaultFlags: Flags = {
     },
 }
 
-const FLAGS_FILE = "options-new.ini"
+const FLAGS_FILE = "options.ini"
 
 /**
  * Get a flag from the flag file.
@@ -203,12 +203,12 @@ export function getFlag(flagId: string): string | boolean | number {
 
     const tempSection = flags[section] as IIniObjectSection
 
-    if(!tempSection) {
+    if (!tempSection) {
         return defaultFlags[section].flags[flag].default
     }
 
     return (
-        tempSection[flag] as string | boolean | number ??
+        (tempSection[flag] as string | boolean | number) ??
         defaultFlags[section].flags[flag].default
     )
 }
@@ -250,9 +250,13 @@ export function saveFlags() {
             const defaultFlag = defaultSection.flags[flagKey]
             const flag = section[flagKey]
 
-            const category = defaultFlag.category ? `[${defaultFlag.category}] ` : "";
-            
-            lines.push(`; ${category}${defaultFlag.title || flag} - ${defaultFlag.desc}`)
+            const category = defaultFlag.category
+                ? `[${defaultFlag.category}] `
+                : ""
+
+            lines.push(
+                `; ${category}${defaultFlag.title || flag} - ${defaultFlag.desc}`,
+            )
             lines.push(`${flagKey}=${flag}`)
             lines.push("")
         })
@@ -271,6 +275,13 @@ export function loadFlags(): void {
 
     // Load the current INI-file
     tempFlags = parse(readFileSync(FLAGS_FILE).toString())
+
+    if (!tempFlags["peacock"]) {
+        // This is an options file from before the rewrite.
+        tempFlags = {
+            peacock: tempFlags,
+        }
+    }
 
     // Create a new INI-file
     flags = {}
@@ -293,7 +304,8 @@ function loadFlagSection(sectionKey: string) {
             : undefined
 
         const tempSection = flags[sectionKey] as IIniObjectSection
-        tempSection[flag] = currentFlagValue ?? defaultFlags[sectionKey].flags[flag].default
+        tempSection[flag] =
+            currentFlagValue ?? defaultFlags[sectionKey].flags[flag].default
     })
 }
 
