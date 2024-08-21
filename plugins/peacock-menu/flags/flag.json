@@ -13,7 +13,18 @@
         },
         "do": {
             "view": "menu3.basic.OptionsListElement",
-            "controller": "tabsitem",
+            "controller": {
+                "$switch $.valueType": [
+                    {
+                        "case": "enum",
+                        "return": "contextitem"
+                    },
+                    {
+                        "case": "boolean",
+                        "return": "tabsitem"
+                    }
+                ]
+            },
             "data": {
                 "$mergeobjects": [
                     {
@@ -51,21 +62,33 @@
                             {
                                 "case": "enum",
                                 "return": {
-                                    "controller": "list",
+                                    "controller": "tabs",
                                     "view": "menu3.containers.ScrollingListContainer",
-                                    "col": 4.25,
-                                    "nrows": 3.75,
-                                    "ncols": 2,
                                     "data": {
                                         "overflowscrolling": "1.0"
                                     },
                                     "children": {
                                         "$each $.PossibleValues": {
-                                            "view": "menu3.basic.OptionsListElementSmall",
+                                            "view": "menu3.basic.OptionsListElement",
+                                            "controller": "tabsitem",
                                             "data": {
                                                 "title": "{$.}"
                                             },
                                             "actions": {
+                                                "select": {
+                                                    "replace-children": {
+                                                        "target": "options_info_container",
+                                                        "children": [
+                                                            {
+                                                                "view": "menu3.basic.OptionsInfo",
+                                                                "data": {
+                                                                    "title": "$.@parent.Title",
+                                                                    "paragraph": "$.@parent.Description"
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                },
                                                 "accept": [
                                                     {
                                                         "trigger-input": {
