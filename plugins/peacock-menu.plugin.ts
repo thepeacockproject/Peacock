@@ -62,13 +62,20 @@ const commandMap = new Map<string, commandFunction>([
 const pluginPrefix = "/plugins/peacock-menu/"
 const jsonExtension = ".json"
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function getDatabaseDiff(_configs: string[], _gameVersion: GameVersion) {
-    return
+function getDatabaseDiff(configs: string[], gameVersion: GameVersion) {
+    if (gameVersion === "h3") {
+        configs.push(
+            "menusystem/elements/settings/ioiaccount/ioiaccount_maintab.json",
+        )
+    }
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getConfig(name: string, _gameVersion: GameVersion) {
+    if (name.endsWith("ioiaccount/ioiaccount_maintab.json")) {
+        name = "/plugins/peacock-menu/index.json"
+    }
+
     if (!name.startsWith(pluginPrefix)) {
         return
     }
