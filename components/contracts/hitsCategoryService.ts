@@ -165,15 +165,18 @@ export class HitsCategoryService {
                             if ((contract?.Metadata.Season || 0) <= 2)
                                 contracts.push(id)
                             break
-                        default:
+                        default: {
                             if (
-                                contract?.Metadata.Id !==
-                                    "3716b654-a42c-45df-9db9-61795a6a3e46" ||
-                                smfSupport.modIsInstalled(
+                                gameVersion === "h3" &&
+                                contract?.Metadata.Id ===
+                                    "3716b654-a42c-45df-9db9-61795a6a3e46" &&
+                                !smfSupport.modIsInstalled(
                                     "KevinRudd.TheBrothers",
                                 )
                             )
-                                contracts.push(id)
+                                break
+                            contracts.push(id)
+                        }
                     }
                 }
             })
