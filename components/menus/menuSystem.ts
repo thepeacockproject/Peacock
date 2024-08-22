@@ -271,6 +271,13 @@ export class MenuSystemDatabase {
                             $else: true,
                         },
                     }
+                case "/data/ispeacockdev.json":
+                    return {
+                        "$if $eq (0,0)": {
+                            $then: PEACOCK_DEV,
+                            $else: PEACOCK_DEV,
+                        },
+                    }
                 // This will only get hit by H2
                 case "/pages/hub/career.json":
                     return getConfig("H2CareerTemplate", false)
