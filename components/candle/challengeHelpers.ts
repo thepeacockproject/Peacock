@@ -216,6 +216,13 @@ function isChallengeInContract(
         )
     }
 
+    if (
+        challenge.Tags.includes("elusive") &&
+        contract?.Metadata.Type !== "elusive"
+    ) {
+        return false
+    }
+
     // Is this for the current contract or group contract?
     const isForContract = (challenge.InclusionData?.ContractIds || []).includes(
         contract?.Metadata.Id || "",

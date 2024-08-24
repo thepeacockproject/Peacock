@@ -118,26 +118,107 @@ menuDataRouter.get(
             req.query.locationId,
         )
 
-        const location = getVersionedConfig<PeacockLocationsData>(
+        const locationData = getVersionedConfig<PeacockLocationsData>(
             "LocationsData",
             req.gameVersion,
             true,
-        ).children[req.query.locationId]
+        )
+
+        const location = locationData.children[req.query.locationId]
 
         if (!pack && !location) {
             res.status(400).send("Invalid locationId")
             return
         }
 
-        const data = {
-            Name: pack ? pack.Name : location.DisplayNameLocKey,
-            Location: location,
-            Children: controller.challengeService.getChallengeDataForCategory(
-                pack ? req.query.locationId : null,
-                pack ? undefined : location,
-                req.gameVersion,
-                req.jwt.unique_name,
-            ),
+        // If the location supports it, pass pro1 as well.
+        // The game can request the difficulty, but official serves both
+        // normal and pro1 even if `normal` is request.
+        let data
+        if (req.gameVersion === "h1") {
+            const parent = pack
+                ? undefined
+                : locationData.parents[location.Properties.ParentLocation!]
+
+            if (parent && parent.Properties.DifficultyUnlock?.pro1) {
+                const inventory = createInventory(
+                    req.jwt.unique_name,
+                    req.gameVersion,
+                )
+
+                const normal =
+                    controller.challengeService.getChallengeDataForDestination(
+                        parent.Id,
+                        req.gameVersion,
+                        req.jwt.unique_name,
+                        false,
+                    )
+
+                const pro1 =
+                    controller.challengeService.getChallengeDataForDestination(
+                        parent.Id,
+                        req.gameVersion,
+                        req.jwt.unique_name,
+                        true,
+                    )
+
+                data = {
+                    DifficultyLevelData: [
+                        {
+                            Name: "normal",
+                            Available: true,
+                            Data: { Children: normal },
+                        },
+                        {
+                            Name: "pro1",
+                            Available: inventory.some(
+                                (e) =>
+                                    e.Unlockable.Id ===
+                                    parent.Properties.DifficultyUnlock?.pro1,
+                            ),
+                            Data: { Children: pro1 },
+                        },
+                    ],
+                }
+            } else {
+                data = {
+                    DifficultyLevelData: [
+                        {
+                            Name: "normal",
+                            Available: true,
+                            Data: {
+                                Children:
+                                    controller.challengeService.getChallengeDataForCategory(
+                                        pack ? req.query.locationId : null,
+                                        pack ? undefined : location,
+                                        req.gameVersion,
+                                        req.jwt.unique_name,
+                                    ),
+                            },
+                        },
+                    ],
+                }
+            }
+
+            data = {
+                ...data,
+                ...{
+                    Name: pack ? pack.Name : location.DisplayNameLocKey,
+                    Location: location,
+                },
+            }
+        } else {
+            data = {
+                Name: pack ? pack.Name : location.DisplayNameLocKey,
+                Location: location,
+                Children:
+                    controller.challengeService.getChallengeDataForCategory(
+                        pack ? req.query.locationId : null,
+                        pack ? undefined : location,
+                        req.gameVersion,
+                        req.jwt.unique_name,
+                    ),
+            }
         }
 
         res.json({

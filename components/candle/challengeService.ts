@@ -188,6 +188,26 @@ export abstract class ChallengeRegistry {
 
     public challengePacks: Map<string, ChallengePack> = new Map([
         [
+            "elusive",
+            {
+                Name: "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+                Description: "",
+                GameVersions: ["h1", "h2", "h3"],
+                Image: "images/challenges/categories/elusive/tile.jpg",
+                Icon: "elusive",
+            },
+        ],
+        [
+            "arcade",
+            {
+                Name: "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ARCADE",
+                Description: "",
+                GameVersions: ["h3"],
+                Image: "images/backgrounds/gamemode_arcade.jpg",
+                Icon: "arcademode",
+            },
+        ],
+        [
             "cheesecake-pack",
             {
                 Name: "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_CHEESECAKE",
@@ -285,6 +305,7 @@ export abstract class ChallengeRegistry {
         for (const challenge of challenges) {
             challenge.inGroup = groupId
             challenge.inLocation = location
+            challenge.Type ??= "contract"
             this.challenges[gameVersion].set(challenge.Id, challenge)
             set.add(challenge.Id)
             this.checkHeuristics(challenge, gameVersion)
@@ -1496,10 +1517,10 @@ export class ChallengeService extends ChallengeRegistry {
                     userId,
                     gameVersion,
                 ),
-                TypeHeader: challenge.TypeHeader,
-                TypeIcon: challenge.TypeIcon,
-                TypeTitle: challenge.TypeTitle,
             }),
+            TypeHeader: challenge.TypeHeader,
+            TypeIcon: challenge.TypeIcon,
+            TypeTitle: challenge.TypeTitle,
         }
     }
 
@@ -1522,7 +1543,6 @@ export class ChallengeService extends ChallengeRegistry {
                 !contract || !meta
                     ? undefined
                     : {
-                          // The null is for escalations as we cannot currently get groups
                           Data: {
                               Bricks: contract.Data.Bricks,
                               DevOnlyBricks: null,
@@ -1552,6 +1572,24 @@ export class ChallengeService extends ChallengeRegistry {
                               Type: meta.Type,
                           },
                       }
+        }
+
+        if (gameVersion === "h1") {
+            switch (challenge.Type) {
+                case "contract": {
+                    challenge.TypeHeader ??= `UI_MENU_PAGE_CHALLENGE_HEADER_${contract?.Metadata.Type.toUpperCase()}`
+                    challenge.TypeIcon ??= contract?.Metadata.Type
+                    challenge.TypeTitle ??= contract?.Metadata.Title
+                    break
+                }
+                case "location": {
+                    challenge.TypeHeader ??=
+                        "UI_MENU_PAGE_CHALLENGE_HEADER_LOCATION"
+                    challenge.TypeIcon ??= "arrowright"
+                    challenge.TypeTitle ??= `UI_${challenge.ParentLocationId}_CITY`
+                    break
+                }
+            }
         }
 
         return {
