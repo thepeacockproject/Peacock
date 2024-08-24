@@ -163,7 +163,10 @@ export class HitsCategoryService {
                             if ((contract?.Metadata.Season || 0) <= 2)
                                 contracts.push(id)
                             break
-                        default:
+                        case "h3":
+                            // Skip the brothers in H3
+                            if (id === "3716b654-a42c-45df-9db9-61795a6a3e46")
+                                break
                             contracts.push(id)
                     }
                 }
