@@ -99,7 +99,7 @@ export class MasteryService {
         for (const gv of gameVersions) {
             this.unlockableMasteryData[gv] = new Map()
 
-            for (const [_, pkg] of this.masteryPackages[gv]) {
+            for (const pkg of this.masteryPackages[gv].values()) {
                 if (pkg.SubPackages) {
                     for (const subPkg of pkg.SubPackages) {
                         for (const drop of subPkg.Drops) {
