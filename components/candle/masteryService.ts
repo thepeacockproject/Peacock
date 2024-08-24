@@ -67,7 +67,7 @@ export class MasteryService {
     /**
      * @Key1 Game version.
      * @Key2 Unlockable Id.
-     * @Value A `MasteryPackage` object.
+     * @Value A `UnlockableMasteryData` object.
      */
     private unlockableMasteryData: Record<
         GameVersion,
@@ -85,27 +85,38 @@ export class MasteryService {
                 masteryPackage.LocationId,
                 masteryPackage,
             )
+        }
+    }
 
-            /**
-             * Generates the same data in a reverse order. It could be considered redundant but this allows for
-             * faster access to location and level based on unlockable ID, avoiding big-O operation for `getMasteryForUnlockable`
-             */
-            if (masteryPackage.SubPackages) {
-                for (const subPkg of masteryPackage.SubPackages) {
-                    for (const drop of subPkg.Drops) {
+    /**
+     * Generates mastery data in a reverse order. It uses already registered
+     * mastery packages, so MUST be rerun when changing mastery data.
+     * This could be considered redundant, but this allows for faster access to
+     * location and level based on unlockable ID, avoiding big-O operation for `getMasteryForUnlockable`.
+     * @param gameVersions Game version(s) to process.
+     */
+    registerDrops(...gameVersions: GameVersion[]) {
+        for (const gv of gameVersions) {
+            this.unlockableMasteryData[gv] = new Map()
+
+            for (const [_, pkg] of this.masteryPackages[gv]) {
+                if (pkg.SubPackages) {
+                    for (const subPkg of pkg.SubPackages) {
+                        for (const drop of subPkg.Drops) {
+                            this.unlockableMasteryData[gv].set(drop.Id, {
+                                Location: pkg.LocationId,
+                                SubPackageId: subPkg.Id,
+                                Level: drop.Level,
+                            })
+                        }
+                    }
+                } else {
+                    for (const drop of pkg.Drops) {
                         this.unlockableMasteryData[gv].set(drop.Id, {
-                            Location: masteryPackage.LocationId,
-                            SubPackageId: subPkg.Id,
+                            Location: pkg.LocationId,
                             Level: drop.Level,
                         })
                     }
-                }
-            } else {
-                for (const drop of masteryPackage.Drops) {
-                    this.unlockableMasteryData[gv].set(drop.Id, {
-                        Location: masteryPackage.LocationId,
-                        Level: drop.Level,
-                    })
                 }
             }
         }
