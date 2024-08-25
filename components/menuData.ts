@@ -182,6 +182,8 @@ menuDataRouter.get(
                     ],
                 }
             } else {
+                // This is either a challenge pack or a location with only
+                // normal difficulty.
                 data = {
                     DifficultyLevelData: [
                         {
