@@ -96,7 +96,7 @@ export class MasteryService {
      * location and level based on unlockable ID, avoiding big-O operation for `getMasteryForUnlockable`.
      * @param gameVersions Game version(s) to process.
      */
-    registerDrops(...gameVersions: GameVersion[]) {
+    rebuildDropIndexes(...gameVersions: GameVersion[]) {
         for (const gv of gameVersions) {
             this.unlockableMasteryData[gv] = new Map()
 

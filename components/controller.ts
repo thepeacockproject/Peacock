@@ -930,7 +930,7 @@ export class Controller {
         )
 
         // Reprocess drops for all versions
-        this.masteryService.registerDrops("h1", "scpc", "h2", "h3")
+        this.masteryService.rebuildDropIndexes("h1", "scpc", "h2", "h3")
     }
 
     private async _handleResources<T>(
