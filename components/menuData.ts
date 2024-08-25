@@ -131,10 +131,11 @@ menuDataRouter.get(
             return
         }
 
+        let data
+
         // If the location supports it, pass pro1 as well.
         // The game can request the difficulty, but official serves both
         // normal and pro1 even if `normal` is request.
-        let data
         if (req.gameVersion === "h1") {
             const parent = pack
                 ? undefined
