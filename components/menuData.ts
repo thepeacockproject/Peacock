@@ -141,7 +141,7 @@ menuDataRouter.get(
                 ? undefined
                 : locationData.parents[location.Properties.ParentLocation!]
 
-            if (parent && parent.Properties.DifficultyUnlock?.pro1) {
+            if (parent?.Properties.DifficultyUnlock?.pro1) {
                 const inventory = createInventory(
                     req.jwt.unique_name,
                     req.gameVersion,
