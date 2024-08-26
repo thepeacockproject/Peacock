@@ -66,7 +66,6 @@ import MissionStories from "../static/MissionStories.json"
 import DebriefingLeaderboardsTemplate from "../static/DebriefingLeaderboardsTemplate.json"
 import LegacyHitsCategoryTemplate from "../static/LegacyHitsCategoryTemplate.json"
 import LegacyStoreData from "../static/LegacyStoreData.json"
-import LegacyDestinations from "../static/LegacyDestinations.json"
 import LegacyDestinationTemplate from "../static/LegacyDestinationTemplate.json"
 import LegacyLocationsData from "../static/LegacyLocationsData.json"
 import LegacySaveMenuTemplate from "../static/LegacySaveMenuTemplate.json"
@@ -110,6 +109,7 @@ import HitsCategoryElusiveTemplate from "../static/HitsCategoryElusiveTemplate.j
 import HitsCategoryContractAttackTemplate from "../static/HitsCategoryContractAttackTemplate.json"
 import MissionRewardsTemplate from "../static/MissionRewardsTemplate.json"
 import SniperUnlockables from "../static/SniperUnlockables.json"
+import LegacyStatisticsTemplate from "../static/LegacyStatisticsTemplate.json"
 import type { GameVersion } from "./types/types"
 import { fastClone } from "./utils"
 
@@ -165,7 +165,6 @@ const configs = {
     DebriefingLeaderboardsTemplate,
     LegacyHitsCategoryTemplate,
     LegacyStoreData,
-    LegacyDestinations,
     LegacyDestinationTemplate,
     LegacyLocationsData,
     LegacySaveMenuTemplate,
@@ -211,6 +210,7 @@ const configs = {
     HitsCategoryContractAttackTemplate,
     MissionRewardsTemplate,
     SniperUnlockables,
+    LegacyStatisticsTemplate,
 }
 
 Object.keys(configs).forEach((cfg) => {
