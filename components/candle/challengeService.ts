@@ -1614,12 +1614,14 @@ export class ChallengeService extends ChallengeRegistry {
      * @param challengeLists A GroupIndexedChallengeLists object, holding some challenges to be counted
      * @param userId The userId of the user to acquire completion information
      * @param gameVersion The version of the game
+     * @param multiplier What to multiply the final completion percentage by
      * @returns An object with two properties: ChallengesCount and CompletedChallengesCount.
      */
     countTotalNCompletedChallenges(
         challengeLists: GroupIndexedChallengeLists,
         userId: string,
         gameVersion: GameVersion,
+        multiplier = 1,
     ): ChallengeCompletion {
         const userData = getUserData(userId, gameVersion)
 
@@ -1642,7 +1644,8 @@ export class ChallengeService extends ChallengeRegistry {
         return {
             ChallengesCount: challengesCount,
             CompletedChallengesCount: completedChallengesCount,
-            CompletionPercent: completedChallengesCount / challengesCount,
+            CompletionPercent:
+                (completedChallengesCount / challengesCount) * multiplier,
         }
     }
 
