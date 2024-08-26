@@ -39,14 +39,6 @@ legacyMenuDataRouter.get(
     "/MasteryLocation",
     // @ts-expect-error Has jwt props.
     (req: RequestWithJwt<{ locationId: string; difficulty: string }>, res) => {
-        const masteryData =
-            controller.masteryService.getMasteryDataForDestination(
-                req.query.locationId,
-                req.gameVersion,
-                req.jwt.unique_name,
-                req.query.difficulty,
-            )
-
         const location = getParentLocationByName(
             req.query.locationId,
             req.gameVersion,
@@ -60,7 +52,12 @@ legacyMenuDataRouter.get(
                         Name: "normal",
                         Data: {
                             LocationId: req.query.locationId,
-                            ...masteryData[0],
+                            ...controller.masteryService.getMasteryDataForDestination(
+                                req.query.locationId,
+                                req.gameVersion,
+                                req.jwt.unique_name,
+                                "normal",
+                            )[0],
                         },
                         Available: true,
                     },
@@ -68,7 +65,12 @@ legacyMenuDataRouter.get(
                         Name: "pro1",
                         Data: {
                             LocationId: req.query.locationId,
-                            ...masteryData[1],
+                            ...controller.masteryService.getMasteryDataForDestination(
+                                req.query.locationId,
+                                req.gameVersion,
+                                req.jwt.unique_name,
+                                "pro1",
+                            )[0],
                         },
                         Available: true,
                     },
