@@ -56,6 +56,7 @@ import {
     filterChallenge,
     inclusionDataCheck,
     mergeSavedChallengeGroups,
+    Pro1FilterType,
 } from "./challengeHelpers"
 import assert from "assert"
 import { getVersionedConfig } from "../configSwizzleManager"
@@ -109,7 +110,7 @@ export type GlobalChallengeGroup = {
      *
      * This option is useful when challenge group has to be active for all locations,
      * but doesn't have any location-specific challenges.
-     * However it's advised to create location-specific challenges instead,
+     * However, it's advised to create location-specific challenges instead,
      * as this option will apply the challenge group to all locations and missions,
      * including Freelancer and Sniper modes.
      *
@@ -186,6 +187,26 @@ export abstract class ChallengeRegistry {
     protected constructor(protected readonly controller: Controller) {}
 
     public challengePacks: Map<string, ChallengePack> = new Map([
+        [
+            "elusive",
+            {
+                Name: "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+                Description: "",
+                GameVersions: ["h1", "h2", "h3"],
+                Image: "images/challenges/categories/elusive/tile.jpg",
+                Icon: "elusive",
+            },
+        ],
+        [
+            "arcade",
+            {
+                Name: "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ARCADE",
+                Description: "",
+                GameVersions: ["h3"],
+                Image: "images/backgrounds/gamemode_arcade.jpg",
+                Icon: "arcademode",
+            },
+        ],
         [
             "argentum-pack",
             {
@@ -294,6 +315,7 @@ export abstract class ChallengeRegistry {
         for (const challenge of challenges) {
             challenge.inGroup = groupId
             challenge.inLocation = location
+            challenge.Type ??= "contract"
             this.challenges[gameVersion].set(challenge.Id, challenge)
             set.add(challenge.Id)
             this.checkHeuristics(challenge, gameVersion)
@@ -360,8 +382,8 @@ export abstract class ChallengeRegistry {
      * It iterates over all the challenges for the specified game version and for each challenge, it checks if there are any unlockables (Drops).
      * If there are unlockables, it adds them to the accumulator object with the dropId as the key and the challenge Id as the value.
      *
-     * @param gameVersion - The version of the game for which to retrieve the unlockables.
-     * @returns {Record<string, string>} - An object where each key is an unlockable's id (dropId) and the corresponding value is the id of the challenge that unlocks it.
+     * @param gameVersion The version of the game for which to retrieve the unlockables.
+     * @returns An object where each key is an unlockable's id (dropId) and the corresponding value is the id of the challenge that unlocks it.
      */
     getChallengesUnlockables(gameVersion: GameVersion): Record<string, string> {
         return [...this.challenges[gameVersion].values()].reduce(
@@ -606,6 +628,14 @@ export class ChallengeService extends ChallengeRegistry {
         return (progression?.Completed && !progression.Ticked) || false
     }
 
+    /**
+     * Get the persistent challenge progression data for a challenge.
+     * WARNING: slow! Use sparingly.
+     * @param userId The user's ID.
+     * @param challengeId The challenge ID.
+     * @param gameVersion The game version.
+     * @returns The challenge progression data.
+     */
     getPersistentChallengeProgression(
         userId: string,
         challengeId: string,
@@ -675,7 +705,7 @@ export class ChallengeService extends ChallengeRegistry {
         location: string,
         challenges: [string, RegistryChallenge[]][],
         gameVersion: GameVersion,
-    ) {
+    ): void {
         const groups = this.groups[gameVersion].get(location)?.keys() ?? []
 
         for (const groupId of groups) {
@@ -859,6 +889,10 @@ export class ChallengeService extends ChallengeRegistry {
                         ? "LOCATION_ICA_FACILITY_SHIP"
                         : contract.Metadata.Location,
                 isFeatured: contractGroup.Metadata.Type === "featured",
+                pro1Filter:
+                    contract.Metadata.Difficulty === "pro1"
+                        ? Pro1FilterType.Only
+                        : Pro1FilterType.Exclude,
                 difficulty,
             },
             levelParentLocation,
@@ -900,6 +934,7 @@ export class ChallengeService extends ChallengeRegistry {
                 type: ChallengeFilterType.Contracts,
                 contractIds: contracts,
                 locationId: child,
+                pro1Filter: Pro1FilterType.Exclude,
             },
             parent,
             gameVersion,
@@ -1259,6 +1294,7 @@ export class ChallengeService extends ChallengeRegistry {
         locationParentId: string,
         gameVersion: GameVersion,
         userId: string,
+        isPro1: boolean,
     ): CompiledChallengeTreeCategory[] {
         const locationsData = getVersionedConfig<PeacockLocationsData>(
             "LocationsData",
@@ -1280,6 +1316,9 @@ export class ChallengeService extends ChallengeRegistry {
             {
                 type: ChallengeFilterType.ParentLocation,
                 parent: locationParentId,
+                pro1Filter: isPro1
+                    ? Pro1FilterType.Only
+                    : Pro1FilterType.Exclude,
             },
             locationParentId,
             gameVersion,
@@ -1488,10 +1527,10 @@ export class ChallengeService extends ChallengeRegistry {
                     userId,
                     gameVersion,
                 ),
-                TypeHeader: challenge.TypeHeader,
-                TypeIcon: challenge.TypeIcon,
-                TypeTitle: challenge.TypeTitle,
             }),
+            TypeHeader: challenge.TypeHeader,
+            TypeIcon: challenge.TypeIcon,
+            TypeTitle: challenge.TypeTitle,
         }
     }
 
@@ -1514,7 +1553,6 @@ export class ChallengeService extends ChallengeRegistry {
                 !contract || !meta
                     ? undefined
                     : {
-                          // The null is for escalations as we cannot currently get groups
                           Data: {
                               Bricks: contract.Data.Bricks,
                               DevOnlyBricks: null,
@@ -1544,6 +1582,24 @@ export class ChallengeService extends ChallengeRegistry {
                               Type: meta.Type,
                           },
                       }
+        }
+
+        if (gameVersion === "h1") {
+            switch (challenge.Type) {
+                case "contract": {
+                    challenge.TypeHeader ??= `UI_MENU_PAGE_CHALLENGE_HEADER_${contract?.Metadata.Type.toUpperCase()}`
+                    challenge.TypeIcon ??= contract?.Metadata.Type
+                    challenge.TypeTitle ??= contract?.Metadata.Title
+                    break
+                }
+                case "location": {
+                    challenge.TypeHeader ??=
+                        "UI_MENU_PAGE_CHALLENGE_HEADER_LOCATION"
+                    challenge.TypeIcon ??= "arrowright"
+                    challenge.TypeTitle ??= `UI_${challenge.ParentLocationId}_CITY`
+                    break
+                }
+            }
         }
 
         return {

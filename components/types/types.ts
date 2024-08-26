@@ -1258,6 +1258,9 @@ export type CompiledChallengeTreeData = {
     }
     Type?: string
     UserCentricContract?: UserCentricContract
+    TypeHeader?: string
+    TypeIcon?: string
+    TypeTitle?: string
 }
 
 export interface InclusionData {
