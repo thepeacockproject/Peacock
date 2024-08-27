@@ -99,7 +99,6 @@ legacyMenuDataRouter.get(
     "/Statistics",
     // @ts-expect-error Has jwt props.
     (req: RequestWithJwt, res) => {
-        console.time("stats")
         const data: StatisticsData = {
             DifficultyLevelData: [
                 {
@@ -248,7 +247,6 @@ legacyMenuDataRouter.get(
             template: getConfig("LegacyStatisticsTemplate", false),
             data,
         })
-        console.timeEnd("stats")
     },
 )
 
