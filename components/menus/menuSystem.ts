@@ -344,6 +344,8 @@ export class MenuSystemDatabase {
                             $else: true,
                         },
                     }
+                case "/pages/hub/modals/peacock/dynresmodal.json":
+                    return getConfig("DynresModal", false)
                 // This will only get hit by H2
                 case "/pages/hub/career.json":
                     return getConfig("H2CareerTemplate", false)

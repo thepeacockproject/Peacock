@@ -110,6 +110,7 @@ import HitsCategoryContractAttackTemplate from "../static/HitsCategoryContractAt
 import MissionRewardsTemplate from "../static/MissionRewardsTemplate.json"
 import SniperUnlockables from "../static/SniperUnlockables.json"
 import LegacyStatisticsTemplate from "../static/LegacyStatisticsTemplate.json"
+import DynresModal from "../static/DynresModal.json"
 import type { GameVersion } from "./types/types"
 import { fastClone } from "./utils"
 
@@ -211,6 +212,7 @@ const configs = {
     MissionRewardsTemplate,
     SniperUnlockables,
     LegacyStatisticsTemplate,
+    DynresModal,
 }
 
 Object.keys(configs).forEach((cfg) => {
