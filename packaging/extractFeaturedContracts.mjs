@@ -50,6 +50,7 @@ async function processHitsCategory(hits) {
         // Light optimisation
         delete hit.UserCentricContract.Contract.Metadata.GameVersion
         delete hit.UserCentricContract.Contract.Metadata.ServerVersion
+        delete hit.UserCentricContract.Contract.Metadata.LastUpdate
 
         contracts[hit.Id] = hit.UserCentricContract.Contract
         ids.push(hit.Id)
