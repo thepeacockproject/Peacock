@@ -49,7 +49,10 @@ legacyProfileRouter.post(
             false,
         )
 
-        const json = controller.resolveContract(req.body.contractId)
+        const json = controller.resolveContract(
+            req.body.contractId,
+            req.gameVersion,
+        )
 
         if (!json) {
             log(

@@ -28,7 +28,7 @@ import type {
     UserProfile,
 } from "../types/types"
 import { log, LogLevel } from "../loggingInterop"
-import { _legacyBull, controller } from "../controller"
+import { controller } from "../controller"
 import {
     escalationTypes,
     getLevelCount,
@@ -129,16 +129,7 @@ export async function getPlanningData(
         }
     }
 
-    let contractData: MissionManifest | undefined
-
-    if (
-        gameVersion === "h1" &&
-        contractId === "42bac555-bbb9-429d-a8ce-f1ffdf94211c"
-    ) {
-        contractData = _legacyBull
-    } else {
-        contractData = controller.resolveContract(contractId)
-    }
+    let contractData = controller.resolveContract(contractId, gameVersion)
 
     if (!contractData) {
         return {
@@ -169,7 +160,7 @@ export async function getPlanningData(
         // now reassign properties and continue
         contractId = group["1"]
 
-        contractData = controller.resolveContract(contractId)
+        contractData = controller.resolveContract(contractId, gameVersion)
     }
 
     if (!contractData) {
@@ -195,7 +186,10 @@ export async function getPlanningData(
         contractData.Metadata.InGroup ?? contractData.Metadata.Id
 
     if (escalation) {
-        const groupContractData = controller.resolveContract(escalationGroupId)
+        const groupContractData = controller.resolveContract(
+            escalationGroupId,
+            gameVersion,
+        )
 
         if (!groupContractData) {
             log(LogLevel.ERROR, `Not found: ${contractId}, planning esc group`)
@@ -225,7 +219,7 @@ export async function getPlanningData(
 
             assert(typeof newLevelId === "string", "newLevelId is not a string")
 
-            contractData = controller.resolveContract(newLevelId)
+            contractData = controller.resolveContract(newLevelId, gameVersion)
         }
     }
 

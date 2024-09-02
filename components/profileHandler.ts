@@ -476,7 +476,11 @@ profileRouter.post(
             return res.status(404).send("invalid contract")
         }
 
-        const json = controller.resolveContract(req.body.contractId, true)
+        const json = controller.resolveContract(
+            req.body.contractId,
+            req.gameVersion,
+            true,
+        )
 
         if (!json) {
             log(

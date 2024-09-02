@@ -123,6 +123,7 @@ export function getDestinationCompletion(
         {
             type: ChallengeFilterType.ParentLocation,
             parent: parent.Id,
+            gameVersion,
             pro1Filter: Pro1FilterType.Exclude,
         },
         parent.Id,
@@ -298,6 +299,7 @@ export function createLocationsData(
             locData.parents[sublocation.Properties.ParentLocation]
         const creationContract = controller.resolveContract(
             sublocation.Properties.CreateContractId!,
+            gameVersion,
         )
 
         if (!creationContract && excludeIfNoContracts) {

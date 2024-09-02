@@ -71,6 +71,7 @@ import {
     ManifestScoringModule,
 } from "./types/scoring"
 import { deepmerge } from "deepmerge-ts"
+import assert from "assert"
 
 const eventRouter = Router()
 
@@ -302,12 +303,9 @@ export function newSession(
 ): void {
     const timestamp = new Date()
 
-    const contract = controller.resolveContract(contractId)
+    const contract = controller.resolveContract(contractId, gameVersion)
 
-    if (!contract) {
-        log(LogLevel.ERROR, `Failed to load ${contractId}`)
-        throw new Error("no ct")
-    }
+    assert.ok(contract, `Failed to load ${contractId}`)
 
     if (difficulty === 0 && contractTypes.includes(contract.Metadata.Type)) {
         log(
@@ -546,7 +544,10 @@ function contractFailed(
 ): void {
     session.markedTargets.clear()
 
-    const json = controller.resolveContract(session.contractId)!
+    const json = controller.resolveContract(
+        session.contractId,
+        session.gameVersion,
+    )!
     const userData = getUserData(session.userId, session.gameVersion)
 
     let realName: string
@@ -677,7 +678,10 @@ function saveEvents(
         session.duration = event.Timestamp
         session.lastUpdate = new Date()
 
-        const contract = controller.resolveContract(session.contractId)
+        const contract = controller.resolveContract(
+            session.contractId,
+            gameVersion,
+        )
         const contractType = contract?.Metadata?.Type?.toLowerCase()
 
         controller.hooks.newEvent.call(

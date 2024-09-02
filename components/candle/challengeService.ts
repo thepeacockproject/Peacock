@@ -833,7 +833,11 @@ export class ChallengeService extends ChallengeRegistry {
         difficulty = 4,
     ): GroupIndexedChallengeLists {
         const userData = getUserData(userId, gameVersion)
-        const contractGroup = this.controller.resolveContract(contractId, true)
+        const contractGroup = this.controller.resolveContract(
+            contractId,
+            gameVersion,
+            true,
+        )
 
         if (!contractGroup) {
             return {}
@@ -852,9 +856,17 @@ export class ChallengeService extends ChallengeRegistry {
 
             assert.ok(currentLevel, "expected current level ID in escalation")
 
-            contract = this.controller.resolveContract(currentLevel, false)
+            contract = this.controller.resolveContract(
+                currentLevel,
+                gameVersion,
+                false,
+            )
         } else {
-            contract = this.controller.resolveContract(contractId, false)
+            contract = this.controller.resolveContract(
+                contractId,
+                gameVersion,
+                false,
+            )
         }
 
         if (!contract) {
@@ -878,6 +890,7 @@ export class ChallengeService extends ChallengeRegistry {
                     gameVersion !== "h1"
                         ? "LOCATION_ICA_FACILITY_SHIP"
                         : contract.Metadata.Location,
+                gameVersion,
                 isFeatured: contractGroup.Metadata.Type === "featured",
                 pro1Filter:
                     contract.Metadata.Difficulty === "pro1"
@@ -924,6 +937,7 @@ export class ChallengeService extends ChallengeRegistry {
                 type: ChallengeFilterType.Contracts,
                 contractIds: contracts,
                 locationId: child,
+                gameVersion,
                 pro1Filter: Pro1FilterType.Exclude,
             },
             parent,
@@ -936,7 +950,11 @@ export class ChallengeService extends ChallengeRegistry {
         // brand new.
         const { gameVersion, contractId, challengeContexts } = session
 
-        const contractJson = this.controller.resolveContract(contractId, true)
+        const contractJson = this.controller.resolveContract(
+            contractId,
+            gameVersion,
+            true,
+        )
 
         const challengeGroups = this.getChallengesForContract(
             contractId,
@@ -1139,7 +1157,11 @@ export class ChallengeService extends ChallengeRegistry {
     ): CompiledChallengeTreeCategory[] {
         const userData = getUserData(userId, gameVersion)
 
-        const contractData = this.controller.resolveContract(contractId, true)
+        const contractData = this.controller.resolveContract(
+            contractId,
+            gameVersion,
+            true,
+        )
 
         if (!contractData) {
             return []
@@ -1164,9 +1186,17 @@ export class ChallengeService extends ChallengeRegistry {
                 return []
             }
 
-            levelData = this.controller.resolveContract(order, false)
+            levelData = this.controller.resolveContract(
+                order,
+                gameVersion,
+                false,
+            )
         } else {
-            levelData = this.controller.resolveContract(contractId, false)
+            levelData = this.controller.resolveContract(
+                contractId,
+                gameVersion,
+                false,
+            )
         }
 
         if (!levelData) {
@@ -1306,6 +1336,7 @@ export class ChallengeService extends ChallengeRegistry {
             {
                 type: ChallengeFilterType.ParentLocation,
                 parent: locationParentId,
+                gameVersion,
                 pro1Filter: isPro1
                     ? Pro1FilterType.Only
                     : Pro1FilterType.Exclude,
@@ -1535,6 +1566,7 @@ export class ChallengeService extends ChallengeRegistry {
         if (challenge.Type === "contract") {
             contract = this.controller.resolveContract(
                 challenge.InclusionData?.ContractIds?.[0] || "",
+                gameVersion,
             )
 
             // This is so we can remove unused data and make it more like official - AF

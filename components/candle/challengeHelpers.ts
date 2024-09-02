@@ -20,6 +20,7 @@ import {
     ChallengeProgressionData,
     CompiledChallengeIngameData,
     CompiledChallengeRuntimeData,
+    GameVersion,
     InclusionData,
     MissionManifest,
     RegistryChallenge,
@@ -115,6 +116,7 @@ export type ChallengeFilterOptions =
           type: ChallengeFilterType.Contract
           contractId: string
           locationId: string
+          gameVersion: GameVersion
           isFeatured?: boolean
           difficulty: number
           pro1Filter: Pro1FilterType
@@ -122,12 +124,14 @@ export type ChallengeFilterOptions =
     | {
           type: ChallengeFilterType.Contracts
           contractIds: string[]
+          gameVersion: GameVersion
           locationId: string
           pro1Filter: Pro1FilterType
       }
     | {
           type: ChallengeFilterType.ParentLocation
           parent: string
+          gameVersion: GameVersion
           pro1Filter: Pro1FilterType
       }
 
@@ -172,6 +176,7 @@ export function isChallengeForDifficulty(
  * @param contractId The id of the contract.
  * @param locationId The sublocation ID of the challenge.
  * @param difficulty The upper bound on the difficulty of the challenges to return.
+ * @param gameVersion The game version.
  * @param challenge The challenge in question.
  * @param pro1Filter Settings for handling pro1 challenges.
  * @param forCareer Whether the result is used to decide what is shown the CAREER -> CHALLENGES page. Defaulted to false.
@@ -181,6 +186,7 @@ function isChallengeInContract(
     contractId: string,
     locationId: string,
     difficulty: number,
+    gameVersion: GameVersion,
     challenge: RegistryChallenge,
     pro1Filter: Pro1FilterType,
     forCareer = false,
@@ -197,7 +203,7 @@ function isChallengeInContract(
         return false
     }
 
-    const contract = controller.resolveContract(contractId, true)
+    const contract = controller.resolveContract(contractId, gameVersion, true)
 
     if (challenge.Type === "global") {
         return inclusionDataCheck(
@@ -233,7 +239,9 @@ function isChallengeInContract(
     // We have to resolve the non-group contract, `contract` is the group contract
     const isForContractType = (
         challenge.InclusionData?.ContractTypes || []
-    ).includes(controller.resolveContract(contractId)!.Metadata.Type)
+    ).includes(
+        controller.resolveContract(contractId, gameVersion)!.Metadata.Type,
+    )
 
     // Is this a location-wide challenge?
     // "location" is more widely used, but "parentlocation" is used in Ambrose and Berlin, as well as some "Discover XX" challenges.
@@ -275,6 +283,7 @@ export function filterChallenge(
                 options.contractId,
                 options.locationId,
                 options.difficulty,
+                options.gameVersion,
                 challenge,
                 options.pro1Filter,
             )
@@ -286,6 +295,7 @@ export function filterChallenge(
                         contractId,
                         options.locationId,
                         gameDifficulty.master, // Get challenges of all difficulties
+                        options.gameVersion,
                         challenge,
                         options.pro1Filter,
                         true,
