@@ -637,7 +637,7 @@ export async function getMissionEndData(
     // Resolve contract data
     const contractData = controller.resolveContract(
         sessionDetails.contractId,
-        true,
+        false,
     )
 
     assert.ok(contractData, "contract not found")
@@ -719,26 +719,19 @@ export async function getMissionEndData(
         if (!isDryRun) writeUserData(jwt.unique_name, gameVersion)
     }
 
-    const levelData = controller.resolveContract(
-        sessionDetails.contractId,
-        false,
-    )
-
-    assert.ok(levelData, "contract not found")
-
     // Resolve the id of the parent location
     const subLocation = getSubLocationByName(
-        levelData.Metadata.Location,
+        contractData.Metadata.Location,
         gameVersion,
     )
 
     const locationParentId = subLocation
         ? subLocation.Properties?.ParentLocation
-        : levelData.Metadata.Location
+        : contractData.Metadata.Location
 
     assert.ok(
         locationParentId,
-        `location ${subLocation?.Properties?.ParentLocation || levelData.Metadata.Location} not found (trying to resolve parent)`,
+        `location ${subLocation?.Properties?.ParentLocation || contractData.Metadata.Location} not found (trying to resolve parent)`,
     )
 
     if (gameVersion === "h1") {
@@ -762,7 +755,7 @@ export async function getMissionEndData(
                 type: ChallengeFilterType.ParentLocation,
                 parent: locationParentId,
                 pro1Filter:
-                    levelData.Metadata.Difficulty === "pro1"
+                    contractData.Metadata.Difficulty === "pro1"
                         ? Pro1FilterType.Only
                         : Pro1FilterType.Exclude,
             },
@@ -850,7 +843,7 @@ export async function getMissionEndData(
     }
 
     let completionData = generateCompletionData(
-        levelData.Metadata.Location,
+        contractData.Metadata.Location,
         jwt.unique_name,
         gameVersion,
         contractData.Metadata.Type,
@@ -1067,7 +1060,7 @@ export async function getMissionEndData(
 
         // Temporarily get completion data for the unlockable
         completionData = generateCompletionData(
-            levelData.Metadata.Location,
+            contractData.Metadata.Location,
             jwt.unique_name,
             gameVersion,
             "sniper", // We know the type will be sniper.
@@ -1095,7 +1088,7 @@ export async function getMissionEndData(
 
         // Set the completion data to the location so the end screen formats properly.
         completionData = generateCompletionData(
-            levelData.Metadata.Location,
+            contractData.Metadata.Location,
             jwt.unique_name,
             gameVersion,
         )
@@ -1139,7 +1132,7 @@ export async function getMissionEndData(
             enqueueEvent(jwt.unique_name, {
                 Name: "Progression_LevelGain",
                 Value: {
-                    Location: levelData.Metadata.Location,
+                    Location: contractData.Metadata.Location,
                     NewLevel: newLocationLevel,
                 },
                 Version: ServerVer,
