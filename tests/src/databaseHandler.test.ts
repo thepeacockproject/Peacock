@@ -71,7 +71,7 @@ const basicFakeSession: ContractSession = {
     difficulty: 2,
     objectiveContexts: new Map(),
     objectiveStates: new Map(),
-    objectiveDefinitions: new Map(),
+    objectives: new Map(),
     ghost: {
         deaths: 0,
         unnoticedKills: 0,

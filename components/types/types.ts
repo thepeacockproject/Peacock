@@ -256,7 +256,7 @@ export interface ContractSession {
     compat: boolean
     currentDisguise: string
     difficulty: number
-    objectiveDefinitions: Map<string, unknown>
+    objectives: Map<string, MissionManifestObjective>
     objectiveStates: Map<string, string>
     objectiveContexts: Map<string, unknown>
     /**

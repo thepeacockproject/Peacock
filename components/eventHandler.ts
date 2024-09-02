@@ -124,7 +124,7 @@ export function registerObjectiveListener(
     let context = objective.Definition.Context || {}
     let state = "Start"
 
-    session.objectiveDefinitions.set(objective.Id, objective.Definition)
+    session.objectives.set(objective.Id, objective)
 
     const immediate = handleEvent(
         // @ts-expect-error Type issue, needs to be corrected in sm-p.
@@ -359,7 +359,7 @@ export function newSession(
         difficulty,
         objectiveContexts: new Map(),
         objectiveStates: new Map(),
-        objectiveDefinitions: new Map(),
+        objectives: new Map(),
         ghost: {
             deaths: 0,
             unnoticedKills: 0,
@@ -691,10 +691,14 @@ function saveEvents(
             session,
         )
 
-        for (const objectiveId of session.objectiveStates.keys()) {
+        for (const [objectiveId, objective] of session.objectives) {
             try {
-                const objectiveDefinition =
-                    session.objectiveDefinitions.get(objectiveId)
+                const objectiveDefinition = objective.Definition
+
+                if (!objectiveDefinition) {
+                    continue
+                }
+
                 const objectiveState = session.objectiveStates.get(objectiveId)
                 const objectiveContext =
                     session.objectiveContexts.get(objectiveId)

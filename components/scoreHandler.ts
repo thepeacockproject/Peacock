@@ -22,6 +22,7 @@ import {
     difficultyToString,
     EVERGREEN_LEVEL_INFO,
     evergreenLevelForXp,
+    isTrueForEveryElement,
     handleAxiosError,
     isObjectiveActive,
     levelForXp,
@@ -31,7 +32,7 @@ import {
     sniperLevelForXp,
     xpRequiredForLevel,
 } from "./utils"
-import { contractSessions, enqueueEvent, getCurrentState } from "./eventHandler"
+import { contractSessions, enqueueEvent } from "./eventHandler"
 import { getConfig } from "./configSwizzleManager"
 import { controller } from "./controller"
 import type {
@@ -151,7 +152,8 @@ export function calculateScore(
                 gameVersion === "h1" ||
                 contractData.Metadata.Id ===
                     "2d1bada4-aa46-4954-8cf5-684989f1668a" ||
-                contractData.Data.Objectives?.every(
+                isTrueForEveryElement(
+                    contractSession.objectives.values(),
                     (obj: MissionManifestObjective) =>
                         obj.ExcludeFromScoring ||
                         contractSession.completedObjectives.has(obj.Id) ||
@@ -161,7 +163,7 @@ export function calculateScore(
                                 contractSession.completedObjectives,
                             )) ||
                         "Success" ===
-                            getCurrentState(contractSession.Id, obj.Id),
+                            contractSession.objectiveStates.get(obj.Id),
                 ),
             fractionNumerator: 2,
             fractionDenominator: 3,

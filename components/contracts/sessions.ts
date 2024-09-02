@@ -38,7 +38,7 @@ const SESSION_SET_PROPS: (keyof ContractSession)[] = [
 const SESSION_MAP_PROPS: (keyof ContractSession)[] = [
     "objectiveStates",
     "objectiveContexts",
-    "objectiveDefinitions",
+    "objectives",
 ]
 
 /**
