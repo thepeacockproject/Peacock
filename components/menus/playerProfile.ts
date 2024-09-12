@@ -176,7 +176,8 @@ export function getPlayerProfileData(
             playerProfilePage.PlayerProfileXp.Seasons.reduce((data, season) => {
                 return data.concat(season.Locations)
             }, [] as PlayerProfileLocation[])
-        // @ts-ignore H2 does not use this
+
+        // @ts-expect-error H2 does not use this
         delete playerProfilePage.PlayerProfileXp.Seasons
     }
 
