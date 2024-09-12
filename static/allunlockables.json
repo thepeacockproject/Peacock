@@ -2545,10 +2545,10 @@
             "IsLocked": false,
             "UpcomingContent": false,
             "UpcomingKey": "UI_MENU_LIVETILE_CONTENT_UPCOMING_HEADLINE",
-            "Order": 360,
+            "Order": 125,
             "LimitedLoadout": false,
             "ProgressionKey": "LOCATION_ROCKY",
-            "Season": 3,
+            "Season": 2,
             "CreateContractId": "0862d67a-e7a5-4092-a47d-6d3d57c83e37",
             "RequiredResources": [
                 "[assembly:/_PRO/Scenes/Missions/Rocky/scene_dugong.entity].entitytemplate"
@@ -2583,7 +2583,7 @@
             "Order": 1,
             "LimitedLoadout": false,
             "ProgressionKey": "LOCATION_ROCKY",
-            "Season": 3,
+            "Season": 2,
             "CreateContractId": "0862d67a-e7a5-4092-a47d-6d3d57c83e37",
             "RequiredResources": [
                 "[assembly:/_PRO/Scenes/Missions/Rocky/scene_dugong.entity].entitytemplate"
@@ -5396,7 +5396,7 @@
         "Id": "TOKEN_OUTFIT_TOMORROWLAND_SUIT_REWARD",
         "Guid": "e3035017-3325-46b0-81b9-e341f4ca98f0",
         "Type": "disguise",
-        "Subtype": "casual",
+        "Subtype": "themed",
         "ImageId": "",
         "RMTPrice": 99,
         "GamePrice": 99,
@@ -5409,8 +5409,32 @@
             "Rarity": "common",
             "LoadoutSlot": "disguise",
             "RepositoryId": "5fabfe45-e581-4bc3-af41-8c9726dfc1b0",
-            "OrderIndex": 933,
+            "OrderIndex": 932,
             "AllowUpSync": true
+        },
+        "Rarity": "common",
+        "IsDroppable": false
+    },
+    {
+        "Id": "TOKEN_OUTFIT_TOMORROWLAND_DJSUIT_REWARD",
+        "Guid": "7f8acbd3-a97d-4739-b3f5-0f77738fa8f7",
+        "Type": "disguise",
+        "Subtype": "themed",
+        "ImageId": "",
+        "RMTPrice": 99,
+        "GamePrice": 99,
+        "IsPurchasable": false,
+        "IsPublished": true,
+        "Capabilities": [],
+        "Qualities": {},
+        "Properties": {
+            "Quality": 1,
+            "Rarity": "common",
+            "LoadoutSlot": "disguise",
+            "RepositoryId": "5048eb98-6cce-4294-9f31-e80f1159f9f9",
+            "OrderIndex": 934,
+            "AllowUpSync": true,
+            "Entitlements": ["H3_ET_TOMORROWLAND"]
         },
         "Rarity": "common",
         "IsDroppable": false
@@ -7265,6 +7289,40 @@
         "Rarity": "common"
     },
     {
+        "Id": "PROP_MELEE_SHURIKEN_LP_TOMORROWLAND",
+        "Guid": "7f75d280-5fdb-41ab-852e-719e6e227422",
+        "Type": "weapon",
+        "Subtype": "melee",
+        "ImageId": "",
+        "RMTPrice": -1,
+        "GamePrice": -1,
+        "IsPurchasable": false,
+        "IsPublished": true,
+        "IsDroppable": false,
+        "Capabilities": [],
+        "Qualities": {},
+        "Properties": {
+            "LoadoutSlot": "gear",
+            "Rarity": "common",
+            "GameAssets": [
+                "PROP_MELEE_MELEE_SHURIKEN_LP_TOMORROWLAND",
+                "PROP_MELEE_MELEE_SHURIKEN_LP_TOMORROWLAND"
+            ],
+            "RepositoryId": "490493af-64db-4692-b32e-d691d86bc82a",
+            "RepositoryAssets": [
+                "490493af-64db-4692-b32e-d691d86bc82a",
+                "490493af-64db-4692-b32e-d691d86bc82a",
+                "490493af-64db-4692-b32e-d691d86bc82a"
+            ],
+            "AllowUpSync": true,
+            "Quality": "2",
+            "UnlockOrder": 7,
+            "Entitlements": ["H3_ET_TOMORROWLAND"],
+            "ItemSize": "ITEMSIZE_SMALL"
+        },
+        "Rarity": "common"
+    },
+    {
         "Id": "PROP_MELEE_HIDDEN_BLADE",
         "Guid": "03252483-c8b4-4c64-b1c3-1f1963ca7945",
         "Type": "weapon",
@@ -7308,6 +7366,30 @@
             "RepositoryId": "c7296c5f-6c0e-4d52-98cd-e70a0d329e73",
             "Quality": "1",
             "UnlockOrder": 10,
+            "ItemSize": "ITEMSIZE_LARGE"
+        },
+        "Rarity": "common"
+    },
+    {
+        "Id": "PROP_MELEE_BASEBALLBAT_PURPLE",
+        "Guid": "7c9521e7-8acb-4c50-b755-4c15b9cede10",
+        "Type": "weapon",
+        "Subtype": "melee",
+        "ImageId": "",
+        "RMTPrice": -1,
+        "GamePrice": -1,
+        "IsPurchasable": false,
+        "IsPublished": true,
+        "IsDroppable": false,
+        "Capabilities": [],
+        "Qualities": {},
+        "Properties": {
+            "LoadoutSlot": "carriedweapon",
+            "Rarity": "common",
+            "RepositoryId": "9074303b-a253-4c6a-b1b0-43412622b521",
+            "Quality": "1",
+            "UnlockOrder": 10,
+            "AllowUpSync": true,
             "ItemSize": "ITEMSIZE_LARGE"
         },
         "Rarity": "common"
@@ -10618,6 +10700,30 @@
             "LoadoutSlot": "gear",
             "Rarity": "common",
             "RepositoryId": "3f9cf03f-b84f-4419-b831-4704cff9775c",
+            "ItemSize": "ITEMSIZE_SMALL"
+        },
+        "Rarity": "common"
+    },
+    {
+        "Id": "PROP_EXPLOSIVE_GRENADE_FLASH_TOMORROWLAND",
+        "Guid": "9f23c5e1-628b-403b-a190-68719ec9f304",
+        "Type": "gear",
+        "Subtype": "explosive",
+        "ImageId": "",
+        "RMTPrice": 149,
+        "GamePrice": 149,
+        "IsPurchasable": false,
+        "IsPublished": true,
+        "IsDroppable": false,
+        "Capabilities": [],
+        "Qualities": {},
+        "Properties": {
+            "Quality": 3,
+            "LoadoutSlot": "gear",
+            "Rarity": "common",
+            "RepositoryId": "bc9bf630-8a8b-438c-9b63-3dd5e9245595",
+            "AllowUpSync": true,
+            "Entitlements": ["H3_ET_TOMORROWLAND"],
             "ItemSize": "ITEMSIZE_SMALL"
         },
         "Rarity": "common"
@@ -16845,6 +16951,31 @@
         "Rarity": "common"
     },
     {
+        "Id": "PROP_CONTAINER_SUITCASE_DJ_BAG",
+        "Guid": "81eb3d37-9bc5-46af-9b75-b82e7fb8d692",
+        "Type": "gear",
+        "Subtype": "container",
+        "ImageId": "",
+        "RMTPrice": 149,
+        "GamePrice": 149,
+        "IsPurchasable": false,
+        "IsPublished": true,
+        "IsDroppable": false,
+        "Capabilities": [],
+        "Qualities": {},
+        "Properties": {
+            "Quality": 3,
+            "LoadoutSlot": "gear",
+            "IsContainer": true,
+            "Rarity": "common",
+            "RepositoryId": "763217e5-8e47-4ae1-88a1-88f13b0f73eb",
+            "AllowUpSync": true,
+            "Entitlements": ["H3_ET_TOMORROWLAND"],
+            "ItemSize": "ITEMSIZE_LARGE"
+        },
+        "Rarity": "common"
+    },
+    {
         "Id": "PROP_CONTAINER_SUITCASE_SIEGER300",
         "Guid": "417357f9-2feb-4a56-9f34-27dc12ac9178",
         "Type": "gear",
@@ -16990,6 +17121,26 @@
         "Rarity": null
     },
     {
+        "Id": "ACCESS_HIT_DUGONG",
+        "Guid": "c1994f4f-72eb-426e-b15b-a513ae541344",
+        "Type": "access",
+        "Subtype": "hit",
+        "ImageId": null,
+        "RMTPrice": -1,
+        "GamePrice": -1,
+        "IsPurchasable": false,
+        "IsPublished": true,
+        "IsDroppable": false,
+        "Capabilities": [],
+        "Qualities": {},
+        "Properties": {
+            "RewardHidden": true,
+            "HowToUnlock": "UI_CONTRACT_SKUNK_LOCKED_REASON",
+            "AllowUpSync": true
+        },
+        "Rarity": null
+    },
+    {
         "Id": "ACCESS_HIT_MAGPIE",
         "Guid": "052ed989-2a7c-4447-8ead-a8fa22ccdc9e",
         "Type": "access",
@@ -17004,7 +17155,7 @@
         "Qualities": {},
         "Properties": {
             "RewardHidden": true,
-            "HowToUnlock": "UI_CONTRACT_SKUNK_LOCKED_REASON",
+            "HowToUnlock": "UI_CONTRACT_DUGONG_LOCKED_REASON",
             "AllowUpSync": true
         },
         "Rarity": null
@@ -18148,7 +18299,7 @@
             "Rarity": "common",
             "LoadoutSlot": "disguise",
             "RepositoryId": "9b1083cd-c745-4dfd-9c77-b81f87819a90",
-            "OrderIndex": 932,
+            "OrderIndex": 931,
             "AllowUpSync": true
         },
         "IsDroppable": false,
@@ -18195,6 +18346,52 @@
             "LoadoutSlot": "disguise",
             "RepositoryId": "2afecc9a-4fe9-411f-a34f-b038ef91ee98",
             "OrderIndex": 960,
+            "AllowUpSync": true
+        },
+        "IsDroppable": false,
+        "Rarity": "common"
+    },
+    {
+        "Id": "TOKEN_OUTFIT_HERO_SUPERFAN",
+        "Guid": "8ac78fcf-287a-4326-a37f-4013f8e5a9fc",
+        "Type": "disguise",
+        "Subtype": "themed",
+        "ImageId": "",
+        "RMTPrice": 99,
+        "GamePrice": 99,
+        "IsPurchasable": false,
+        "IsPublished": true,
+        "Capabilities": [],
+        "Qualities": {},
+        "Properties": {
+            "Quality": 1,
+            "Rarity": "common",
+            "LoadoutSlot": "disguise",
+            "RepositoryId": "c516b6ad-0012-4505-b5c0-a361221dfb47",
+            "OrderIndex": 963,
+            "AllowUpSync": true
+        },
+        "IsDroppable": false,
+        "Rarity": "common"
+    },
+    {
+        "Id": "TOKEN_OUTFIT_HERO_PLAGUEDOCTOR",
+        "Guid": "45fd2e16-ffaa-448b-9613-c0518ad21c5a",
+        "Type": "disguise",
+        "Subtype": "themed",
+        "ImageId": "",
+        "RMTPrice": 99,
+        "GamePrice": 99,
+        "IsPurchasable": false,
+        "IsPublished": true,
+        "Capabilities": [],
+        "Qualities": {},
+        "Properties": {
+            "Quality": 1,
+            "Rarity": "common",
+            "LoadoutSlot": "disguise",
+            "RepositoryId": "efc6e2f6-80cf-4008-b106-f2e265ff2855",
+            "OrderIndex": 962,
             "AllowUpSync": true
         },
         "IsDroppable": false,
@@ -18768,7 +18965,7 @@
             "Rarity": "common",
             "LoadoutSlot": "disguise",
             "RepositoryId": "3c6a9b35-82ac-4e08-8e32-d9fd77cbd7d3",
-            "OrderIndex": 935,
+            "OrderIndex": 933,
             "AllowUpSync": true
         },
         "IsDroppable": false,
@@ -28444,6 +28641,7 @@
             "LoadoutSlot": "gear",
             "Rarity": "common",
             "RepositoryId": "e68927af-746d-41fa-83e2-402da0163262",
+            "AllowUpSync": true,
             "ItemSize": "ITEMSIZE_SMALL"
         },
         "Rarity": "common"
@@ -28565,6 +28763,50 @@
             "OrderIndex": 633,
             "AllowUpSync": true,
             "Entitlements": ["H3_ET_PENICILLIN"],
+            "ItemSize": "ITEMSIZE_LARGE"
+        },
+        "Rarity": "common"
+    },
+    {
+        "Id": "PROP_DEVICE_ICA_MODULAR_PROXIMITY_MICRO_TASER",
+        "Guid": "4447c258-df2c-4d14-b018-19eaec4b4c9f",
+        "Type": "gear",
+        "Subtype": "tool",
+        "ImageId": "",
+        "RMTPrice": 149,
+        "GamePrice": 149,
+        "IsPurchasable": false,
+        "IsPublished": true,
+        "IsDroppable": false,
+        "Capabilities": [],
+        "Qualities": {},
+        "Properties": {
+            "Quality": 3,
+            "LoadoutSlot": "gear",
+            "Rarity": "common",
+            "RepositoryId": "67559fbc-0877-4b82-9b05-6fe0cf6d7b1c",
+            "ItemSize": "ITEMSIZE_SMALL"
+        },
+        "Rarity": "common"
+    },
+    {
+        "Id": "PROP_DEVICE_EVERGREEN_OILSPILL_CANISTER",
+        "Guid": "39b4887a-64ab-411a-beaa-6c93067f9d96",
+        "Type": "gear",
+        "Subtype": "tool",
+        "ImageId": "",
+        "RMTPrice": 149,
+        "GamePrice": 149,
+        "IsPurchasable": false,
+        "IsPublished": true,
+        "IsDroppable": false,
+        "Capabilities": [],
+        "Qualities": {},
+        "Properties": {
+            "Quality": 3,
+            "LoadoutSlot": "carriedweapon",
+            "Rarity": "common",
+            "RepositoryId": "8431dd21-42ba-4da8-bfdb-6d870c9e1458",
             "ItemSize": "ITEMSIZE_LARGE"
         },
         "Rarity": "common"
