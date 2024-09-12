@@ -42,6 +42,7 @@ export const orderedMainCampaignMissions: string[] = [
     "422519be-ed2e-44df-9dac-18f739d44fd9",
     "0fad48d7-3d0f-4c66-8605-6cbe9c3a46d7",
     "82f55837-e26c-41bf-bc6e-fa97b7981fbc",
+    "b2aac100-dfc7-4f85-b9cd-528114436f6c",
     "0d225edf-40cd-4f20-a30f-b62a373801d3",
     "7a03a97d-238c-48bd-bda0-e5f279569cce",
     "095261b5-e15b-4ca1-9bb7-001fb85c5aaa",

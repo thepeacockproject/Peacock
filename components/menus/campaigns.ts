@@ -195,6 +195,14 @@ export function makeCampaigns(
                 gameVersion,
             ),
             genSingleVideo("debriefing_skunk", gameVersion),
+            ...(gameVersion === "h3"
+                ? [
+                      genSingleMission(
+                          "b2aac100-dfc7-4f85-b9cd-528114436f6c",
+                          gameVersion,
+                      ),
+                  ]
+                : []),
             genSingleVideo("intro_magpie", gameVersion),
             genSingleMission(
                 "0d225edf-40cd-4f20-a30f-b62a373801d3",
