@@ -410,6 +410,16 @@ export type MissionStory = {
     Image: string
 }
 
+export type PlayerProfileLocation = {
+    LocationId: string
+    Xp: number
+    ActionXp: number
+    LocationProgression?: {
+        Level: number
+        MaxLevel: number
+    }
+}
+
 export type PlayerProfileView = {
     SubLocationData: {
         ParentLocation: Unlockable
@@ -423,17 +433,10 @@ export type PlayerProfileView = {
     PlayerProfileXp: {
         Total: number
         Level: number
+        Sublocations?: PlayerProfileLocation[]
         Seasons: {
             Number: number
-            Locations: {
-                LocationId: string
-                Xp: number
-                ActionXp: number
-                LocationProgression?: {
-                    Level: number
-                    MaxLevel: number
-                }
-            }[]
+            Locations: PlayerProfileLocation[]
         }[]
     }
 }
