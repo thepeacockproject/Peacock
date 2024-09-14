@@ -615,9 +615,9 @@ function getCampaignMissions(
             case 1:
                 return trilogy.slice(0, 6)
             case 2:
-                return trilogy.slice(6, 14)
+                return trilogy.slice(6, 15)
             case 3:
-                return trilogy.slice(14, trilogy.length)
+                return trilogy.slice(15, trilogy.length)
             default:
                 return trilogy
         }
