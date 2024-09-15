@@ -153,7 +153,10 @@ export class ProgressionService {
         location: string,
         sniperUnlockable?: string,
     ): void {
-        const contract = controller.resolveContract(contractSession.contractId)
+        const contract = controller.resolveContract(
+            contractSession.contractId,
+            contractSession.gameVersion,
+        )
 
         if (!contract) {
             return

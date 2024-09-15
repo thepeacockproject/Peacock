@@ -19,12 +19,12 @@
 import { contractIdToHitObject, controller } from "../controller"
 import type {
     Campaign,
-    GameVersion,
-    GenSingleMissionFunc,
     CampaignMission,
     CampaignVideo,
-    Video,
+    GameVersion,
+    GenSingleMissionFunc,
     StoryData,
+    Video,
 } from "../types/types"
 import { log, LogLevel } from "../loggingInterop"
 import { getConfig } from "../configSwizzleManager"
@@ -47,7 +47,11 @@ const genSingleMissionFactory = (userId: string): GenSingleMissionFunc => {
             "Plugin tried to generate mission with no game version",
         )
 
-        const actualContractData = controller.resolveContract(contractId, true)
+        const actualContractData = controller.resolveContract(
+            contractId,
+            gameVersion,
+            true,
+        )
 
         if (!actualContractData) {
             log(LogLevel.ERROR, `Failed to resolve contract ${contractId}!`)

@@ -152,7 +152,7 @@ export class HitsCategoryService {
             .for("Elusive_Target_Hits")
             .tap(tapName, (contracts, gameVersion) => {
                 for (const id of orderedETs) {
-                    const contract = controller.resolveContract(id)
+                    const contract = controller.resolveContract(id, gameVersion)
 
                     switch (gameVersion) {
                         case "h1":
@@ -243,7 +243,10 @@ export class HitsCategoryService {
                     missionsInLocations.escalations,
                 )) {
                     for (const id of escalations) {
-                        const contract = controller.resolveContract(id)
+                        const contract = controller.resolveContract(
+                            id,
+                            gameVersion,
+                        )
 
                         if (!contract) continue
 

@@ -20,7 +20,7 @@ import { Router } from "express"
 import { gameDifficulty, nilUuid, ServerVer, uuidRegex } from "../utils"
 import { json as jsonMiddleware } from "body-parser"
 import { enqueueEvent, newSession } from "../eventHandler"
-import { _legacyBull, controller } from "../controller"
+import { controller } from "../controller"
 import { log, LogLevel } from "../loggingInterop"
 import { getConfig } from "../configSwizzleManager"
 import type { GameChanger, RequestWithJwt } from "../types/types"
@@ -88,11 +88,10 @@ legacyContractRouter.post(
             return
         }
 
-        const contractData =
-            req.gameVersion === "h1" &&
-            req.body.id === "42bac555-bbb9-429d-a8ce-f1ffdf94211c"
-                ? _legacyBull
-                : controller.resolveContract(req.body.id)
+        const contractData = controller.resolveContract(
+            req.body.id,
+            req.gameVersion,
+        )
 
         if (!contractData) {
             log(
@@ -193,7 +192,10 @@ legacyContractRouter.post(
             return
         }
 
-        const c = controller.resolveContract(req.body.contractId)
+        const c = controller.resolveContract(
+            req.body.contractId,
+            req.gameVersion,
+        )
 
         if (!c) {
             res.status(404).end()

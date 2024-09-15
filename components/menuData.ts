@@ -387,7 +387,11 @@ menuDataRouter.get(
         }
 
         const { contractId } = s
-        const contractData = controller.resolveContract(contractId, true)
+        const contractData = controller.resolveContract(
+            contractId,
+            req.gameVersion,
+            true,
+        )
         const userData = getUserData(req.jwt.unique_name, req.gameVersion)
 
         assert.ok(contractData, "contract not found")
@@ -534,7 +538,10 @@ menuDataRouter.get(
 
         const inventory = createInventory(req.jwt.unique_name, req.gameVersion)
 
-        const contractData = controller.resolveContract(req.query.contractId)
+        const contractData = controller.resolveContract(
+            req.query.contractId,
+            req.gameVersion,
+        )
 
         if (!contractData) {
             log(
@@ -636,7 +643,10 @@ menuDataRouter.get(
 
         const inventory = createInventory(req.jwt.unique_name, req.gameVersion)
 
-        const contractData = controller.resolveContract(req.query.contractId)
+        const contractData = controller.resolveContract(
+            req.query.contractId,
+            req.gameVersion,
+        )
 
         if (!contractData) {
             log(LogLevel.WARN, `Unknown contract: ${req.query.contractId}`)
@@ -1066,6 +1076,7 @@ menuDataRouter.get(
 menuDataRouter.get("/contractsearchpage", (req: RequestWithJwt, res) => {
     const createContractTutorial = controller.resolveContract(
         contractCreationTutorialId,
+        req.gameVersion,
     )
 
     res.json({
@@ -1121,7 +1132,7 @@ menuDataRouter.post(
 
             for (const contract of specialContracts) {
                 const userCentric = generateUserCentric(
-                    controller.resolveContract(contract),
+                    controller.resolveContract(contract, req.gameVersion),
                     req.jwt.unique_name,
                     req.gameVersion,
                 )
@@ -1250,7 +1261,7 @@ menuDataRouter.get("/contractcreation/create", (req: RequestWithJwt, res) => {
 
     // if for some reason the id is already in use, generate a new one
     // the math says this is like a one in a billion chance though, I think
-    while (controller.resolveContract(cUuid)) {
+    while (controller.resolveContract(cUuid, req.gameVersion)) {
         cUuid = randomUUID()
     }
 
@@ -1351,7 +1362,7 @@ const createLoadSaveMiddleware =
             if (e && !doneContracts.includes(e)) {
                 doneContracts.push(e)
 
-                const contract = controller.resolveContract(e)
+                const contract = controller.resolveContract(e, req.gameVersion)
 
                 if (!contract) {
                     log(LogLevel.WARN, `Unknown contract in L/S: ${e}`)

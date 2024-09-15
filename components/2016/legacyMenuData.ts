@@ -135,6 +135,7 @@ legacyMenuDataRouter.get(
                     {
                         type: ChallengeFilterType.ParentLocation,
                         parent: parentLocation.Id,
+                        gameVersion: req.gameVersion,
                         pro1Filter: Pro1FilterType.Exclude,
                     },
                     parentLocation.Id,
@@ -198,6 +199,7 @@ legacyMenuDataRouter.get(
                     {
                         type: ChallengeFilterType.ParentLocation,
                         parent: parentLocation.Id,
+                        gameVersion: req.gameVersion,
                         pro1Filter: Pro1FilterType.Only,
                     },
                     parentLocation.Id,

@@ -637,6 +637,7 @@ export async function getMissionEndData(
     // Resolve contract data
     const contractData = controller.resolveContract(
         sessionDetails.contractId,
+        gameVersion,
         false,
     )
 
@@ -661,7 +662,9 @@ export async function getMissionEndData(
             IsEscalation: true,
         }
 
-        const levelCount = getLevelCount(controller.resolveContract(eGroupId))
+        const levelCount = getLevelCount(
+            controller.resolveContract(eGroupId, gameVersion),
+        )
 
         escalationCompletion: if (
             userData.Extensions.PeacockEscalations[eGroupId] === levelCount
@@ -754,6 +757,7 @@ export async function getMissionEndData(
             {
                 type: ChallengeFilterType.ParentLocation,
                 parent: locationParentId,
+                gameVersion,
                 pro1Filter:
                     contractData.Metadata.Difficulty === "pro1"
                         ? Pro1FilterType.Only
