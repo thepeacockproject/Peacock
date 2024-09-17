@@ -31,12 +31,14 @@ import assert from "assert"
  * Main story campaign ordered mission IDs.
  */
 export const orderedMainCampaignMissions: string[] = [
+    // h1
     "00000000-0000-0000-0000-000000000200",
     "00000000-0000-0000-0000-000000000600",
     "00000000-0000-0000-0000-000000000400",
     "db341d9f-58a4-411d-be57-0bc4ed85646b",
     "42bac555-bbb9-429d-a8ce-f1ffdf94211c",
     "0e81a82e-b409-41e9-9e3b-5f82e57f7a12",
+    // h2
     "c65019e5-43a8-4a33-8a2a-84c750a5eeb3",
     "c1d015b4-be08-4e44-808e-ada0f387656f",
     "422519be-ed2e-44df-9dac-18f739d44fd9",
@@ -46,6 +48,7 @@ export const orderedMainCampaignMissions: string[] = [
     "0d225edf-40cd-4f20-a30f-b62a373801d3",
     "7a03a97d-238c-48bd-bda0-e5f279569cce",
     "095261b5-e15b-4ca1-9bb7-001fb85c5aaa",
+    // h3
     "7d85f2b0-80ca-49be-a2b7-d56f67faf252",
     "755984a8-fb0b-4673-8637-95cfe7d34e0f",
     "ebcd14b2-0786-4ceb-a2a4-e771f60d0125",
@@ -81,7 +84,7 @@ function getSeasonId(index: number): string {
         return "1"
     }
 
-    if (index <= 13) {
+    if (index <= 14) {
         return "2"
     }
 
