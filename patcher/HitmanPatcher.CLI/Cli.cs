@@ -1,10 +1,3 @@
-using System;
-using System.Diagnostics.CodeAnalysis;
-#if !DEBUG
-using System.Linq;
-using System.Runtime.InteropServices;
-#endif
-
 namespace HitmanPatcher
 {
     internal static class Cli
@@ -13,41 +6,30 @@ namespace HitmanPatcher
         // in any mode outside debug (which is probably what it's being run in while in IDE),
         // we attach the console to the parent process
 
-        [DllImport("kernel32.dll", SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool AttachConsole(int dwProcessId);
-
         private const int ATTACH_PARENT_PROCESS = -1;
 
         internal static void EnsureConsole(string[] args)
         {
             if (args.Any(arg => arg.Contains("-")))
             {
-                AttachConsole(ATTACH_PARENT_PROCESS);
+                Pinvoke.AttachConsole(ATTACH_PARENT_PROCESS);
             }
         }
 #endif
 
         internal class CliOptions
         {
-            internal bool Headless { get; set; }
-
             internal string Domain { get; set; }
 
-            internal bool UseHttp { get; set; }
+            internal bool? UseHttp { get; set; }
 
-            internal bool OptionalDynRes { get; set; }
+            internal bool? OptionalDynRes { get; set; }
 
-            [SuppressMessage("ReSharper", "LocalizableElement")]
+            internal bool? KeepScanning { get; set; }
+
             internal static CliOptions FromArguments(string[] args)
             {
-                var options = new CliOptions
-                {
-                    Domain = "127.0.0.1",
-                    Headless = false,
-                    OptionalDynRes = true,
-                    UseHttp = true
-                };
+                var options = new CliOptions();
 
                 var i = 0;
 
@@ -63,9 +45,6 @@ namespace HitmanPatcher
                 {
                     switch (arg)
                     {
-                        case "--headless":
-                            options.Headless = true;
-                            break;
                         case "--optional-dynamic-resources":
                             options.OptionalDynRes = true;
                             break;
@@ -76,14 +55,17 @@ namespace HitmanPatcher
                         case "--use-http":
                             options.UseHttp = true;
                             break;
+                        case "--keep-scanning":
+                            options.KeepScanning = true;
+                            break;
                         case "--help":
                             Console.WriteLine(CliLocale.HelpHeader);
                             Console.WriteLine("");
                             Console.WriteLine("Options:");
-                            Console.WriteLine($"  --headless : {CliLocale.HeadlessDescription}");
                             Console.WriteLine($"  --optional-dynamic-resources : {CliLocale.OptionalDynResDescription}");
                             Console.WriteLine($"  --domain <url> : {CliLocale.DomainDescription}");
                             Console.WriteLine($"  --use-http : {CliLocale.UseHttpDescription}");
+                            Console.WriteLine($"  --keep-scanning : {CliLocale.KeepScanning}");
                             Environment.Exit(0);
                             break;
                     }

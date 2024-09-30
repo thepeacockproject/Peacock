@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -35,7 +35,7 @@ namespace HitmanPatcher
 			{
 				try
 				{
-					if (names.Contains(p.ProcessName, StringComparer.OrdinalIgnoreCase))
+					if (names.Contains(Path.GetFileNameWithoutExtension(p.ProcessName), StringComparer.OrdinalIgnoreCase))
 					{
 						result.Add(p);
 					}
@@ -52,8 +52,10 @@ namespace HitmanPatcher
 			return result;
 		}
 
-		public static void PatchAllProcesses(ILoggingProvider logger, Options patchOptions)
-		{
+		public static bool PatchAllProcesses(ILoggingProvider logger, Options patchOptions)
+        {
+            bool patched = false;
+
 			IEnumerable<Process> hitmans = GetProcessesByName("HITMAN", "HITMAN2", "HITMAN3");
 			foreach (Process process in hitmans)
 			{
@@ -69,7 +71,7 @@ namespace HitmanPatcher
 						}
 						catch (Win32Exception ex)
 						{
-							if (ex.NativeErrorCode == 5 && !Program.HasAdmin)
+							if (ex.NativeErrorCode == 5 && !Compositions.HasAdmin)
 							{
 								logger.log(String.Format("Access denied, try running the patcher as admin."));
 								process.Dispose();
@@ -95,7 +97,9 @@ namespace HitmanPatcher
 							{
 								logger.log(String.Format("Injected server: {0}", patchOptions.CustomConfigDomain));
 							}
-						}
+
+                            patched = true;
+                        }
 						else
 						{
 							// else: process not yet ready for patching, try again next timer tick
@@ -114,39 +118,37 @@ namespace HitmanPatcher
 				}
 				process.Dispose();
 			}
-		}
+
+            return patched;
+        }
 
         public static bool Patch(Process process, Options patchOptions)
         {
-			IntPtr hProcess = Pinvoke.OpenProcess(
+            var processMetadata = Pinvoke.GetProcessMetadata(process);
+
+            if (processMetadata.BaseAddress == IntPtr.Zero || processMetadata.ModuleMemorySize == 0)
+            {
+                return false; // process has no main module (not initialized yet?), try again next timer tick.
+            }
+
+            IntPtr hProcess = Pinvoke.OpenProcess(
 				  ProcessAccess.PROCESS_VM_READ
 				| ProcessAccess.PROCESS_VM_WRITE
 				| ProcessAccess.PROCESS_VM_OPERATION,
-				false, process.Id);
+				false, processMetadata.PID);
 
             if (hProcess == IntPtr.Zero)
             {
-                throw new Win32Exception(Marshal.GetLastWin32Error(), "Failed to get a process handle.");
+                throw new Win32Exception(Pinvoke.LastError, "Failed to get a process handle.");
             }
 
 			try
 			{
-				IntPtr b = IntPtr.Zero;
-				try
-				{
-					ProcessModule mainModule = process.MainModule;
-					b = mainModule.BaseAddress;
-				}
-				catch (NullReferenceException)
-				{
-					return false; // process has no main module (not initialized yet?), try again next timer tick.
-				}
-
-				uint timestamp = getTimestamp(hProcess, b);
+				uint timestamp = getTimestamp(hProcess, processMetadata.BaseAddress);
 				HitmanVersion v = HitmanVersion.GetVersion(timestamp);
 				if (v == HitmanVersion.NotFound)
 				{
-					if (AOBScanner.TryGetHitmanVersionByScanning(process, hProcess, out v))
+					if (AOBScanner.TryGetHitmanVersionByScanning(processMetadata, hProcess, out v))
 					{
 						// add it to the db so subsequent patches don't need searching again
 						HitmanVersion.AddVersion(timestamp.ToString("X8"), timestamp, v);
@@ -161,7 +163,7 @@ namespace HitmanPatcher
 				byte[] newurl = Encoding.ASCII.GetBytes(patchOptions.CustomConfigDomain).Concat(new byte[] { 0x00 }).ToArray();
 				List<Patch> patches = new List<Patch>();
 
-				if (!IsReadyForPatching(hProcess, b, v))
+				if (!IsReadyForPatching(hProcess, processMetadata.BaseAddress, v))
 				{
 					// Online_ConfigDomain variable is not initialized yet, try again in 1 second.
 					Pinvoke.CloseHandle(hProcess);
@@ -212,24 +214,24 @@ namespace HitmanPatcher
 							throw new Exception("This shouldn't be able to happen.");
 					}
 
-					if (!Pinvoke.VirtualProtectEx(hProcess, b + patch.offset, (UIntPtr)dataToWrite.Length,
+					if (!Pinvoke.VirtualProtectEx(hProcess, processMetadata.BaseAddress + patch.offset, (UIntPtr)dataToWrite.Length,
 						newmemprotection, out oldprotectflags))
 					{
-						throw new Win32Exception(Marshal.GetLastWin32Error(), string.Format("error at {0} for offset {1:X}", "vpe1", patch.offset));
+						throw new Win32Exception(Pinvoke.LastError, string.Format("error at {0} for offset {1:X}", "vpe1", patch.offset));
 					}
 
-					if (!Pinvoke.WriteProcessMemory(hProcess, b + patch.offset, dataToWrite, (UIntPtr)dataToWrite.Length, out byteswritten))
+					if (!Pinvoke.WriteProcessMemory(hProcess, processMetadata.BaseAddress + patch.offset, dataToWrite, (UIntPtr)dataToWrite.Length, out byteswritten))
 					{
-						throw new Win32Exception(Marshal.GetLastWin32Error(), string.Format("error at {0} for offset {1:X}"
+						throw new Win32Exception(Pinvoke.LastError, string.Format("error at {0} for offset {1:X}"
 							+ "\nBytes written: {2}", "wpm", patch.offset, byteswritten));
 					}
 
 					MemProtection protectionToRestore = oldprotectflags;
 
-					if (!Pinvoke.VirtualProtectEx(hProcess, b + patch.offset, (UIntPtr)dataToWrite.Length,
+					if (!Pinvoke.VirtualProtectEx(hProcess, processMetadata.BaseAddress + patch.offset, (UIntPtr)dataToWrite.Length,
 						protectionToRestore, out oldprotectflags))
 					{
-						throw new Win32Exception(Marshal.GetLastWin32Error(), string.Format("error at {0} for offset {1:X}", "vpe2", patch.offset));
+						throw new Win32Exception(Pinvoke.LastError, string.Format("error at {0} for offset {1:X}", "vpe2", patch.offset));
 					}
 				}
 			}
@@ -253,15 +255,15 @@ namespace HitmanPatcher
 				MemProtection oldprotectflags;
 				if (!Pinvoke.VirtualProtectEx(hProcess, baseAddress + p.offset, (UIntPtr)1, newmemprotection, out oldprotectflags))
 				{
-					throw new Win32Exception(Marshal.GetLastWin32Error(), string.Format("error at vpe1Check for offset {0:X}", p.offset));
+					throw new Win32Exception(Pinvoke.LastError, string.Format("error at vpe1Check for offset {0:X}", p.offset));
 				}
 				if (!Pinvoke.ReadProcessMemory(hProcess, baseAddress + p.offset, buffer, (UIntPtr)1, out bytesread))
 				{
-					throw new Win32Exception(Marshal.GetLastWin32Error(), string.Format("error at rpmCheck for offset {0:X}", p.offset));
+					throw new Win32Exception(Pinvoke.LastError, string.Format("error at rpmCheck for offset {0:X}", p.offset));
 				}
 				if (!Pinvoke.VirtualProtectEx(hProcess, baseAddress + p.offset, (UIntPtr)1, oldprotectflags, out oldprotectflags))
 				{
-					throw new Win32Exception(Marshal.GetLastWin32Error(), string.Format("error at vpe2Check for offset {0:X}", p.offset));
+					throw new Win32Exception(Pinvoke.LastError, string.Format("error at vpe2Check for offset {0:X}", p.offset));
 				}
 				ready &= buffer[0] != 0;
 			}

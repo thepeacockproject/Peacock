@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Target Name="Custom-ILRepack" AfterTargets="Publish" Condition="'$(IsLegacy)' == 'True'">
+        <Message Text="Running ILRepack..." Importance="high" />
+
+        <ItemGroup>
+            <InputAssemblies Include="$(PublishDir)PeacockPatcher.CLI.exe" />
+            <InputAssemblies Include="$(PublishDir)PeacockPatcher.Core.dll" />
+        </ItemGroup>
+
+        <ILRepack
+            InputAssemblies="@(InputAssemblies)"
+            TargetKind="Exe"
+            OutputFile="$(PublishDir)\ILRepack\PeacockPatcher.CLI.exe" />
+    </Target>
+</Project>
