@@ -20,9 +20,7 @@
                 "Definition": {
                     "Scope": "session",
                     "States": {
-                        "Start": {
-                            "AmbientChanged": { "Transition": "Success" }
-                        }
+                        "Start": { "-": { "Transition": "Success" } }
                     }
                 }
             },
@@ -44,9 +42,7 @@
                 "Definition": {
                     "Scope": "session",
                     "States": {
-                        "Start": {
-                            "AmbientChanged": { "Transition": "Success" }
-                        },
+                        "Start": { "-": { "Transition": "Success" } },
                         "Success": {
                             "Disguise": { "Transition": "PleaseDoFail" }
                         },
@@ -197,10 +193,10 @@
         "TileImage": "images/contracts/escalation/contractescalation_rosebush.jpg",
         "Entitlements": ["LOCATION_ANCESTRAL"],
         "GroupObjectiveDisplayOrder": [
-            { "Id": "a12ccd08-ee68-4e92-860e-fc63fba72d7f", "IsNew": true },
-            { "Id": "118041f6-34e5-4f33-9d6f-19b70d555189", "IsNew": true },
             { "Id": "a2125ded-5ed2-4bb1-a7e1-fb5c2446d9c8", "IsNew": true },
-            { "Id": "f80cd9dd-0908-4e91-8e78-7345d90f506c", "IsNew": true }
+            { "Id": "f80cd9dd-0908-4e91-8e78-7345d90f506c", "IsNew": true },
+            { "Id": "a12ccd08-ee68-4e92-860e-fc63fba72d7f", "IsNew": true },
+            { "Id": "118041f6-34e5-4f33-9d6f-19b70d555189", "IsNew": true }
         ]
     }
 }
