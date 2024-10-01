@@ -36,13 +36,6 @@ then install the dependencies by using:
 The project is bundled with a server running configuration.
 Run that when editing the project with the IDE of choice, and it should open.
 
-We highly suggest you use [WebStorm](https://www.jetbrains.com/webstorm/) for
-development,
-but it is a paid product, so you may want to choose something
-like [Visual Studio Code](https://code.visualstudio.com/).
-WebStorm will provide a better experience for development, but VSCode will work
-just fine.
-
 ## Contributing
 
 To contribute, you can use Pull Requests from your own fork. You can fix bugs
