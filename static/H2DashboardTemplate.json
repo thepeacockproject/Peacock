@@ -317,5 +317,25 @@
                 }
             }
         ]
+    },
+    "actions": {
+        "activated": {
+            "$datacontext": {
+                "in": "$.",
+                "datavalues": {
+                    "peacockstrings": "$loc UI_PEACOCK_STRINGS_PRESENT"
+                },
+                "do": {
+                    "$if $eq($.peacockstrings,yes)": {
+                        "$then": {},
+                        "$else": {
+                            "$include": {
+                                "$path": "menusystem/pages/hub/modals/peacock/dynresmodal.json"
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

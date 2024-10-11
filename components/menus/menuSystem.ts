@@ -33,7 +33,7 @@ import { SyncBailHook, SyncHook } from "../hooksImpl"
 const menuSystemPreRouter = Router()
 const menuSystemRouter = Router()
 
-// /resources-8-16/
+// /resources-8-17/
 
 /**
  * A class for managing the menu system's fetched JSON data.
@@ -92,6 +92,10 @@ export class MenuSystemDatabase {
 
                     configs.push(
                         "images/unlockables/outfit_ef223b60-b53a-4c7b-b914-13c3310fc61a_0.jpg",
+                    )
+
+                    configs.push(
+                        "menusystem/elements/challenges/challengelocationviewtile.json",
                     )
                 }
 
@@ -163,6 +167,75 @@ export class MenuSystemDatabase {
                     }
                 case "/pages/gamemodes/gamemodearcade_page.json":
                     return getConfig("ArcadePageTemplate", false)
+                case "/elements/challenges/challengelocationviewtile.json":
+                    return {
+                        "$if $.IsPack": {
+                            $then: {
+                                $include: {
+                                    $path: "menusystem/elements/challenges/challengelocationview_challengepack.json",
+                                },
+                            },
+                            $else: {
+                                $datacontext: {
+                                    in: "$.",
+                                    datavalues: {
+                                        ParentLocationId:
+                                            "$.@parent.Location.Id",
+                                        LocationId: "$.CategoryId",
+                                        PageLink: "challengelocation",
+                                        LinkArgs: {
+                                            url: "challengelocation",
+                                            locationId: "$.CategoryId",
+                                        },
+                                        ResourceAvailability: {
+                                            "$if $not $isnullorempty $.Location.Properties.Entitlements":
+                                                {
+                                                    $then: {
+                                                        $availabilityofresources:
+                                                            {
+                                                                resources:
+                                                                    "$.RequiredResources",
+                                                                entitlements:
+                                                                    "$.Location.Properties.Entitlements",
+                                                            },
+                                                    },
+                                                    $else: {
+                                                        $availabilityofresources:
+                                                            {
+                                                                resources:
+                                                                    "$.RequiredResources",
+                                                            },
+                                                    },
+                                                },
+                                        },
+                                    },
+                                    do: {
+                                        id: "$formatstring challenge_location_{$.Name}",
+                                        view: "menu3.basic.CategoryTile",
+                                        nrows: 3,
+                                        ncols: 2,
+                                        data: {
+                                            $include: {
+                                                $path: "menusystem/elements/challenges/data/challengelocation_data.json",
+                                            },
+                                        },
+                                        pressable: {
+                                            "$if $.IsLocked": {
+                                                $then: false,
+                                                $else: true,
+                                            },
+                                        },
+                                        actions: {
+                                            $include: {
+                                                $path: "menusystem/elements/challenges/actions/challengelocation_defaultactions.json",
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    }
+
                 // Only for Hitman 2
                 case "/pages/gamemodes/gamemodesniper_content.json":
                     // Every time I see this, I get increasingly annoyed that we
@@ -278,6 +351,8 @@ export class MenuSystemDatabase {
                             $else: PEACOCK_DEV,
                         },
                     }
+                case "/pages/hub/modals/peacock/dynresmodal.json":
+                    return getConfig("DynresModal", false)
                 // This will only get hit by H2
                 case "/pages/hub/career.json":
                     return getConfig("H2CareerTemplate", false)

@@ -774,3 +774,16 @@ export function getSublocations(gameVersion: GameVersion): SublocationMap {
 
     return sublocations
 }
+
+export function isTrueForEveryElement<Type>(
+    iter: Iterable<Type>,
+    test: (elem: Type) => boolean,
+): boolean {
+    for (const element of iter) {
+        if (!test(element)) {
+            return false
+        }
+    }
+
+    return true
+}

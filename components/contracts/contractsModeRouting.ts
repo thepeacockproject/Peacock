@@ -42,6 +42,7 @@ export function contractsModeHome(req: RequestWithJwt, res: Response): void {
 
     const contractCreationTutorial = controller.resolveContract(
         contractCreationTutorialId,
+        req.gameVersion,
     )
 
     res.json({

@@ -17,10 +17,11 @@
  */
 
 import { getConfig, getVersionedConfig } from "../configSwizzleManager"
-import type {
+import {
     ChallengeCategoryCompletion,
     GameVersion,
     PeacockLocationsData,
+    PlayerProfileLocation,
     PlayerProfileView,
     ProgressionData,
 } from "../types/types"
@@ -137,6 +138,15 @@ export function getPlayerProfileData(
     playerProfilePage.PlayerProfileXp.Level =
         userProfile.Extensions.progression.PlayerProfileXP.ProfileLevel
 
+    // Stupid workaround for Ambrose being in H2 now
+    if (gameVersion === "h2") {
+        playerProfilePage.PlayerProfileXp.Seasons[1].Locations =
+            playerProfilePage.PlayerProfileXp.Seasons[1].Locations.filter(
+                (loc) => loc.LocationId !== "LOCATION_PARENT_ROCKY",
+            )
+        playerProfilePage.PlayerProfileXp.Seasons.pop()
+    }
+
     for (const season of playerProfilePage.PlayerProfileXp.Seasons) {
         for (const location of season.Locations) {
             const locationData = xpData[location.LocationId]
@@ -158,6 +168,17 @@ export function getPlayerProfileData(
                     ).Level || 1
             }
         }
+    }
+
+    // Final reordering for H2
+    if (gameVersion === "h2") {
+        playerProfilePage.PlayerProfileXp.Sublocations =
+            playerProfilePage.PlayerProfileXp.Seasons.reduce((data, season) => {
+                return data.concat(season.Locations)
+            }, [] as PlayerProfileLocation[])
+
+        // @ts-expect-error H2 does not use this
+        delete playerProfilePage.PlayerProfileXp.Seasons
     }
 
     return playerProfilePage

@@ -19,6 +19,7 @@
         "typedefs": "yarn workspace @peacockproject/core",
         "run-dev": "node packaging/devLoader.mjs",
         "extract-challenge-data": "node packaging/extractChallengeData.mjs",
+        "extract-featured-contracts": "node packaging/extractFeaturedContracts.mjs",
         "find-circular": "yarn dlx dpdm components/index.ts --exclude \"(components/types)|(node_modules)\" -T"
     },
     "prettier": {
@@ -46,7 +47,7 @@
         "@peacockproject/statemachine-parser": "^6.1.0",
         "@yarnpkg/fslib": "^3.1.0",
         "@yarnpkg/libzip": "^3.1.0",
-        "axios": "^1.7.2",
+        "axios": "^1.7.4",
         "body-parser": "*",
         "clipanion": "^4.0.0-rc.3",
         "commander": "^12.1.0",
@@ -104,7 +105,7 @@
         "winston-daily-rotate-file": "^5.0.0"
     },
     "engines": {
-        "node": "18.x || 20.x"
+        "node": "20.x || 22.x"
     },
     "workspaces": [
         "webui",
@@ -112,5 +113,5 @@
         "packaging/eslint",
         "tests"
     ],
-    "packageManager": "yarn@4.4.0"
+    "packageManager": "yarn@4.5.0"
 }

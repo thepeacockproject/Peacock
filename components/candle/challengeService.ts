@@ -188,6 +188,26 @@ export abstract class ChallengeRegistry {
 
     public challengePacks: Map<string, ChallengePack> = new Map([
         [
+            "elusive",
+            {
+                Name: "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+                Description: "",
+                GameVersions: ["h1", "h2", "h3"],
+                Image: "images/challenges/categories/elusive/tile.jpg",
+                Icon: "elusive",
+            },
+        ],
+        [
+            "arcade",
+            {
+                Name: "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ARCADE",
+                Description: "",
+                GameVersions: ["h3"],
+                Image: "images/backgrounds/gamemode_arcade.jpg",
+                Icon: "arcademode",
+            },
+        ],
+        [
             "cheesecake-pack",
             {
                 Name: "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_CHEESECAKE",
@@ -285,6 +305,7 @@ export abstract class ChallengeRegistry {
         for (const challenge of challenges) {
             challenge.inGroup = groupId
             challenge.inLocation = location
+            challenge.Type ??= "contract"
             this.challenges[gameVersion].set(challenge.Id, challenge)
             set.add(challenge.Id)
             this.checkHeuristics(challenge, gameVersion)
@@ -812,7 +833,11 @@ export class ChallengeService extends ChallengeRegistry {
         difficulty = 4,
     ): GroupIndexedChallengeLists {
         const userData = getUserData(userId, gameVersion)
-        const contractGroup = this.controller.resolveContract(contractId, true)
+        const contractGroup = this.controller.resolveContract(
+            contractId,
+            gameVersion,
+            true,
+        )
 
         if (!contractGroup) {
             return {}
@@ -831,9 +856,17 @@ export class ChallengeService extends ChallengeRegistry {
 
             assert.ok(currentLevel, "expected current level ID in escalation")
 
-            contract = this.controller.resolveContract(currentLevel, false)
+            contract = this.controller.resolveContract(
+                currentLevel,
+                gameVersion,
+                false,
+            )
         } else {
-            contract = this.controller.resolveContract(contractId, false)
+            contract = this.controller.resolveContract(
+                contractId,
+                gameVersion,
+                false,
+            )
         }
 
         if (!contract) {
@@ -857,6 +890,7 @@ export class ChallengeService extends ChallengeRegistry {
                     gameVersion !== "h1"
                         ? "LOCATION_ICA_FACILITY_SHIP"
                         : contract.Metadata.Location,
+                gameVersion,
                 isFeatured: contractGroup.Metadata.Type === "featured",
                 pro1Filter:
                     contract.Metadata.Difficulty === "pro1"
@@ -903,6 +937,7 @@ export class ChallengeService extends ChallengeRegistry {
                 type: ChallengeFilterType.Contracts,
                 contractIds: contracts,
                 locationId: child,
+                gameVersion,
                 pro1Filter: Pro1FilterType.Exclude,
             },
             parent,
@@ -915,7 +950,11 @@ export class ChallengeService extends ChallengeRegistry {
         // brand new.
         const { gameVersion, contractId, challengeContexts } = session
 
-        const contractJson = this.controller.resolveContract(contractId, true)
+        const contractJson = this.controller.resolveContract(
+            contractId,
+            gameVersion,
+            true,
+        )
 
         const challengeGroups = this.getChallengesForContract(
             contractId,
@@ -1118,7 +1157,11 @@ export class ChallengeService extends ChallengeRegistry {
     ): CompiledChallengeTreeCategory[] {
         const userData = getUserData(userId, gameVersion)
 
-        const contractData = this.controller.resolveContract(contractId, true)
+        const contractData = this.controller.resolveContract(
+            contractId,
+            gameVersion,
+            true,
+        )
 
         if (!contractData) {
             return []
@@ -1143,9 +1186,17 @@ export class ChallengeService extends ChallengeRegistry {
                 return []
             }
 
-            levelData = this.controller.resolveContract(order, false)
+            levelData = this.controller.resolveContract(
+                order,
+                gameVersion,
+                false,
+            )
         } else {
-            levelData = this.controller.resolveContract(contractId, false)
+            levelData = this.controller.resolveContract(
+                contractId,
+                gameVersion,
+                false,
+            )
         }
 
         if (!levelData) {
@@ -1285,6 +1336,7 @@ export class ChallengeService extends ChallengeRegistry {
             {
                 type: ChallengeFilterType.ParentLocation,
                 parent: locationParentId,
+                gameVersion,
                 pro1Filter: isPro1
                     ? Pro1FilterType.Only
                     : Pro1FilterType.Exclude,
@@ -1496,10 +1548,10 @@ export class ChallengeService extends ChallengeRegistry {
                     userId,
                     gameVersion,
                 ),
-                TypeHeader: challenge.TypeHeader,
-                TypeIcon: challenge.TypeIcon,
-                TypeTitle: challenge.TypeTitle,
             }),
+            TypeHeader: challenge.TypeHeader,
+            TypeIcon: challenge.TypeIcon,
+            TypeTitle: challenge.TypeTitle,
         }
     }
 
@@ -1514,6 +1566,7 @@ export class ChallengeService extends ChallengeRegistry {
         if (challenge.Type === "contract") {
             contract = this.controller.resolveContract(
                 challenge.InclusionData?.ContractIds?.[0] || "",
+                gameVersion,
             )
 
             // This is so we can remove unused data and make it more like official - AF
@@ -1522,7 +1575,6 @@ export class ChallengeService extends ChallengeRegistry {
                 !contract || !meta
                     ? undefined
                     : {
-                          // The null is for escalations as we cannot currently get groups
                           Data: {
                               Bricks: contract.Data.Bricks,
                               DevOnlyBricks: null,
@@ -1554,6 +1606,24 @@ export class ChallengeService extends ChallengeRegistry {
                       }
         }
 
+        if (gameVersion === "h1") {
+            switch (challenge.Type) {
+                case "contract": {
+                    challenge.TypeHeader ??= `UI_MENU_PAGE_CHALLENGE_HEADER_${contract?.Metadata.Type.toUpperCase()}`
+                    challenge.TypeIcon ??= contract?.Metadata.Type
+                    challenge.TypeTitle ??= contract?.Metadata.Title
+                    break
+                }
+                case "location": {
+                    challenge.TypeHeader ??=
+                        "UI_MENU_PAGE_CHALLENGE_HEADER_LOCATION"
+                    challenge.TypeIcon ??= "arrowright"
+                    challenge.TypeTitle ??= `UI_${challenge.ParentLocationId}_CITY`
+                    break
+                }
+            }
+        }
+
         return {
             ...this.compileRegistryChallengeTreeData(
                 challenge,
@@ -1576,12 +1646,14 @@ export class ChallengeService extends ChallengeRegistry {
      * @param challengeLists A GroupIndexedChallengeLists object, holding some challenges to be counted
      * @param userId The userId of the user to acquire completion information
      * @param gameVersion The version of the game
+     * @param multiplier What to multiply the final completion percentage by
      * @returns An object with two properties: ChallengesCount and CompletedChallengesCount.
      */
     countTotalNCompletedChallenges(
         challengeLists: GroupIndexedChallengeLists,
         userId: string,
         gameVersion: GameVersion,
+        multiplier = 1,
     ): ChallengeCompletion {
         const userData = getUserData(userId, gameVersion)
 
@@ -1604,7 +1676,8 @@ export class ChallengeService extends ChallengeRegistry {
         return {
             ChallengesCount: challengesCount,
             CompletedChallengesCount: completedChallengesCount,
-            CompletionPercent: completedChallengesCount / challengesCount,
+            CompletionPercent:
+                (completedChallengesCount / challengesCount) * multiplier,
         }
     }
 

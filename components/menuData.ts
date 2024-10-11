@@ -118,26 +118,110 @@ menuDataRouter.get(
             req.query.locationId,
         )
 
-        const location = getVersionedConfig<PeacockLocationsData>(
+        const locationData = getVersionedConfig<PeacockLocationsData>(
             "LocationsData",
             req.gameVersion,
             true,
-        ).children[req.query.locationId]
+        )
+
+        const location = locationData.children[req.query.locationId]
 
         if (!pack && !location) {
             res.status(400).send("Invalid locationId")
             return
         }
 
-        const data = {
-            Name: pack ? pack.Name : location.DisplayNameLocKey,
-            Location: location,
-            Children: controller.challengeService.getChallengeDataForCategory(
-                pack ? req.query.locationId : null,
-                pack ? undefined : location,
-                req.gameVersion,
-                req.jwt.unique_name,
-            ),
+        let data
+
+        // If the location supports it, pass pro1 as well.
+        // The game can request the difficulty, but official serves both
+        // normal and pro1 even if `normal` is request.
+        if (req.gameVersion === "h1") {
+            const parent = pack
+                ? undefined
+                : locationData.parents[location.Properties.ParentLocation!]
+
+            if (parent?.Properties.DifficultyUnlock?.pro1) {
+                const inventory = createInventory(
+                    req.jwt.unique_name,
+                    req.gameVersion,
+                )
+
+                const normal =
+                    controller.challengeService.getChallengeDataForDestination(
+                        parent.Id,
+                        req.gameVersion,
+                        req.jwt.unique_name,
+                        false,
+                    )
+
+                const pro1 =
+                    controller.challengeService.getChallengeDataForDestination(
+                        parent.Id,
+                        req.gameVersion,
+                        req.jwt.unique_name,
+                        true,
+                    )
+
+                data = {
+                    DifficultyLevelData: [
+                        {
+                            Name: "normal",
+                            Available: true,
+                            Data: { Children: normal },
+                        },
+                        {
+                            Name: "pro1",
+                            Available: inventory.some(
+                                (e) =>
+                                    e.Unlockable.Id ===
+                                    parent.Properties.DifficultyUnlock?.pro1,
+                            ),
+                            Data: { Children: pro1 },
+                        },
+                    ],
+                }
+            } else {
+                // This is either a challenge pack or a location with only
+                // normal difficulty.
+                data = {
+                    DifficultyLevelData: [
+                        {
+                            Name: "normal",
+                            Available: true,
+                            Data: {
+                                Children:
+                                    controller.challengeService.getChallengeDataForCategory(
+                                        pack ? req.query.locationId : null,
+                                        pack ? undefined : location,
+                                        req.gameVersion,
+                                        req.jwt.unique_name,
+                                    ),
+                            },
+                        },
+                    ],
+                }
+            }
+
+            data = {
+                ...data,
+                ...{
+                    Name: pack ? pack.Name : location.DisplayNameLocKey,
+                    Location: location,
+                },
+            }
+        } else {
+            data = {
+                Name: pack ? pack.Name : location.DisplayNameLocKey,
+                Location: location,
+                Children:
+                    controller.challengeService.getChallengeDataForCategory(
+                        pack ? req.query.locationId : null,
+                        pack ? undefined : location,
+                        req.gameVersion,
+                        req.jwt.unique_name,
+                    ),
+            }
         }
 
         res.json({
@@ -303,7 +387,11 @@ menuDataRouter.get(
         }
 
         const { contractId } = s
-        const contractData = controller.resolveContract(contractId, true)
+        const contractData = controller.resolveContract(
+            contractId,
+            req.gameVersion,
+            true,
+        )
         const userData = getUserData(req.jwt.unique_name, req.gameVersion)
 
         assert.ok(contractData, "contract not found")
@@ -450,7 +538,10 @@ menuDataRouter.get(
 
         const inventory = createInventory(req.jwt.unique_name, req.gameVersion)
 
-        const contractData = controller.resolveContract(req.query.contractId)
+        const contractData = controller.resolveContract(
+            req.query.contractId,
+            req.gameVersion,
+        )
 
         if (!contractData) {
             log(
@@ -552,7 +643,10 @@ menuDataRouter.get(
 
         const inventory = createInventory(req.jwt.unique_name, req.gameVersion)
 
-        const contractData = controller.resolveContract(req.query.contractId)
+        const contractData = controller.resolveContract(
+            req.query.contractId,
+            req.gameVersion,
+        )
 
         if (!contractData) {
             log(LogLevel.WARN, `Unknown contract: ${req.query.contractId}`)
@@ -982,6 +1076,7 @@ menuDataRouter.get(
 menuDataRouter.get("/contractsearchpage", (req: RequestWithJwt, res) => {
     const createContractTutorial = controller.resolveContract(
         contractCreationTutorialId,
+        req.gameVersion,
     )
 
     res.json({
@@ -1037,7 +1132,7 @@ menuDataRouter.post(
 
             for (const contract of specialContracts) {
                 const userCentric = generateUserCentric(
-                    controller.resolveContract(contract),
+                    controller.resolveContract(contract, req.gameVersion),
                     req.jwt.unique_name,
                     req.gameVersion,
                 )
@@ -1166,7 +1261,7 @@ menuDataRouter.get("/contractcreation/create", (req: RequestWithJwt, res) => {
 
     // if for some reason the id is already in use, generate a new one
     // the math says this is like a one in a billion chance though, I think
-    while (controller.resolveContract(cUuid)) {
+    while (controller.resolveContract(cUuid, req.gameVersion)) {
         cUuid = randomUUID()
     }
 
@@ -1267,7 +1362,7 @@ const createLoadSaveMiddleware =
             if (e && !doneContracts.includes(e)) {
                 doneContracts.push(e)
 
-                const contract = controller.resolveContract(e)
+                const contract = controller.resolveContract(e, req.gameVersion)
 
                 if (!contract) {
                     log(LogLevel.WARN, `Unknown contract in L/S: ${e}`)

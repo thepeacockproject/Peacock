@@ -37,6 +37,7 @@ import {
     SIN_SLOTH_UNLOCKABLES,
     SIN_WRATH_UNLOCKABLES,
     SMART_CASUAL_UNLOCKABLES,
+    TOMORROWLAND_UNLOCKABLES,
     TRINITY_UNLOCKABLES,
     WINTERSPORTS_UNLOCKABLES,
 } from "./ownership"
@@ -68,6 +69,7 @@ const DELUXE_DATA = [
     ...WINTERSPORTS_UNLOCKABLES,
     ...SAMBUCA_UNLOCKABLES,
     ...PENICILLIN_UNLOCKABLES,
+    ...TOMORROWLAND_UNLOCKABLES,
 ]
 
 /**
@@ -408,6 +410,13 @@ function filterAllowedContent(gameVersion: GameVersion, entP: string[]) {
             return (
                 e.includes("6cdf07da030d4f66acd50eaf3cd234c7") ||
                 e.includes("2973650")
+            )
+        }
+
+        if (TOMORROWLAND_UNLOCKABLES.includes(id)) {
+            return (
+                e.includes("f04198e0ffcf49079b5ec77bb6b66891") ||
+                e.includes("3110360")
             )
         }
 

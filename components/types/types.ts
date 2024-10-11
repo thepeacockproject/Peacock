@@ -256,7 +256,7 @@ export interface ContractSession {
     compat: boolean
     currentDisguise: string
     difficulty: number
-    objectiveDefinitions: Map<string, unknown>
+    objectives: Map<string, MissionManifestObjective>
     objectiveStates: Map<string, string>
     objectiveContexts: Map<string, unknown>
     /**
@@ -410,6 +410,16 @@ export type MissionStory = {
     Image: string
 }
 
+export type PlayerProfileLocation = {
+    LocationId: string
+    Xp: number
+    ActionXp: number
+    LocationProgression?: {
+        Level: number
+        MaxLevel: number
+    }
+}
+
 export type PlayerProfileView = {
     SubLocationData: {
         ParentLocation: Unlockable
@@ -423,17 +433,10 @@ export type PlayerProfileView = {
     PlayerProfileXp: {
         Total: number
         Level: number
+        Sublocations?: PlayerProfileLocation[]
         Seasons: {
             Number: number
-            Locations: {
-                LocationId: string
-                Xp: number
-                ActionXp: number
-                LocationProgression?: {
-                    Level: number
-                    MaxLevel: number
-                }
-            }[]
+            Locations: PlayerProfileLocation[]
         }[]
     }
 }
@@ -1258,6 +1261,9 @@ export type CompiledChallengeTreeData = {
     }
     Type?: string
     UserCentricContract?: UserCentricContract
+    TypeHeader?: string
+    TypeIcon?: string
+    TypeTitle?: string
 }
 
 export interface InclusionData {
