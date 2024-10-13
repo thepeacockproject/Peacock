@@ -13,7 +13,7 @@ online mode.
 
 Install [Node.js](https://nodejs.org/en/). Use the Latest version, or the
 version
-specifically mentioned here: **Version 20**
+specifically mentioned here: **Version 22.9.0**
 
 Clone the repository where-ever you wish.
 
