@@ -4305,6 +4305,164 @@
                     }
                 }
             ]
+        },
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_AMMONIA",
+            "Image": "images/challenges/categories/packammonia/tile.jpg",
+            "Icon": "challenge_category_feats",
+            "CategoryId": "ammonia-pack",
+            "Description": "",
+            "OrderIndex": 6.992,
+            "Challenges": [
+                {
+                    "Id": "4989d836-569a-4997-9755-95bd2e831d2a",
+                    "Name": "UI_PEACOCK_CHALLENGEPACK_AMMONIA_WRAPPER_NAME",
+                    "ImageName": "images/challenges/Categories/PackAmmonia/tile.jpg",
+                    "Description": "UI_PEACOCK_CHALLENGEPACK_AMMONIA_WRAPPER_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": ["PROP_DEVICE_ICA_RUBBERDUCK_REMOTE_EXPLOSIVE_T"],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_AMMONIA",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 100000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "profile",
+                        "Constants": {
+                            "RequiredChallenges": [
+                                "09eb54ac-6037-4f3f-9c9d-a2ae00a0273c",
+                                "0a43e29e-07da-495c-ba41-1904851526fd",
+                                "744b8c17-ac05-48a8-8eab-84af4aa0f5f0",
+                                "31fd53b9-8acc-46b8-95be-53a6474cff88"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedChallenges": []
+                        },
+                        "ContextListeners": {
+                            "CompletedChallenges": {
+                                "comparand": "$.RequiredChallenges",
+                                "type": "challengetree"
+                            }
+                        },
+                        "States": {
+                            "Start": {
+                                "ChallengeCompleted": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$Value.ChallengeId"
+                                                    ]
+                                                },
+                                                "in": "$.RequiredChallenges"
+                                            }
+                                        },
+                                        "$pushunique": [
+                                            "CompletedChallenges",
+                                            "$Value.ChallengeId"
+                                        ]
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "($.CompletedChallenges).Count",
+                                                "($.RequiredChallenges).Count"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["ammonia-pack", "story", "hard"],
+                    "InclusionData": {
+                        "ContractIds": [
+                            "ebcd14b2-0786-4ceb-a2a4-e771f60d0125",
+                            "c414a084-a7b9-43ce-b6ca-590620acd87e"
+                        ],
+                        "ContractTypes": null,
+                        "Locations": ["LOCATION_MUMBAI", "LOCATION_WET"],
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "31fd53b9-8acc-46b8-95be-53a6474cff88",
+                    "Name": "UI_PEACOCK_CHALLENGEPACK_AMMONIA_FLYINGSWAN_NAME",
+                    "ImageName": "images/challenges/categories/packammonia/ammonia_flyingswan.jpg",
+                    "Description": "UI_PEACOCK_CHALLENGEPACK_AMMONIA_FLYINGSWAN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_AMMONIA",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_PARENT_EDGY",
+                    "ParentLocationId": "LOCATION_PARENT_EDGY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 100004,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "Context": {},
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "922deccd-7fb4-45d9-ae3d-2cf11915c403"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillMethodStrict",
+                                                    "accident_push"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "CheckExit"
+                                }
+                            },
+                            "CheckExit": {
+                                "exit_gate": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "33c581f6-45ee-4a83-8209-d131ba6a755d"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["ammonia-pack", "story", "live", "medium"],
+                    "InclusionData": {
+                        "ContractIds": ["ebcd14b2-0786-4ceb-a2a4-e771f60d0125"]
+                    }
+                }
+            ]
         }
     ]
 }
