@@ -246,7 +246,9 @@ export function saveFlags() {
         lines.push(`; ${defaultSection.title} - ${defaultSection.desc}`)
         lines.push(`[${sectionKey}]`)
 
-        Object.keys(defaultSection.flags).forEach((flagKey) => {
+        const flagsKeys = Object.keys(defaultSection.flags)
+
+        for (const flagKey of flagsKeys) {
             const defaultFlag = defaultSection.flags[flagKey]
             const flag = section[flagKey]
 
@@ -259,7 +261,7 @@ export function saveFlags() {
             )
             lines.push(`${flagKey}=${flag}`)
             lines.push("")
-        })
+        }
     })
 
     writeFileSync(FLAGS_FILE, lines.join("\n"))

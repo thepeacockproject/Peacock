@@ -29,12 +29,12 @@
                             "$if $eq($.valueType,category)": {
                                 "$then": {
                                     "$include": {
-                                        "$path": "$formatstring menusystem/plugins/peacock-menu/flags/category.json@{$.@global.CacheBuster}"
+                                        "$path": "$formatstring menusystem/pages/peacock-menu/flags/category.json@{$.@global.CacheBuster}"
                                     }
                                 },
                                 "$else": {
                                     "$include": {
-                                        "$path": "$formatstring menusystem/plugins/peacock-menu/flags/flag.json@{$.@global.CacheBuster}"
+                                        "$path": "$formatstring menusystem/pages/peacock-menu/flags/flag.json@{$.@global.CacheBuster}"
                                     }
                                 }
                             }

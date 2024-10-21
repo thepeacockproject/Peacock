@@ -27,6 +27,26 @@ const pluginFlagSection: FlagSection = {
             default: true,
             requiresPeacockRestart: true,
         },
+        smallTiles1: {
+            title: "Small tiles",
+            desc: "When turned on, show elusive targets as small tiles under Destinations.",
+            category: "Test category",
+            default: true,
+            requiresPeacockRestart: true,
+        },
+        test1: {
+            title: "Test 1",
+            desc: "This is a test",
+            default: "1",
+            possibleValues: ["1", "2", "3"],
+        },
+        test2: {
+            title: "Test 2",
+            category: "Test category",
+            desc: "This is a test",
+            default: "1",
+            possibleValues: ["1", "2", "3"],
+        },
     },
 }
 
@@ -36,7 +56,7 @@ function initPlugin(controller: Controller): void {
     registerFlagSection(pluginFlagSectionKey, pluginFlagSection)
 
     for (const contractId of orderedETs) {
-        const contract = controller.resolveContract(contractId)
+        const contract = controller.resolveContract(contractId, undefined!)
 
         if (!contract) {
             continue
@@ -45,7 +65,10 @@ function initPlugin(controller: Controller): void {
         const baseContractId =
             // @ts-expect-error Indexer
             controller.missionsInLocations[contract.Metadata.Location][0]
-        const baseContract = controller.resolveContract(baseContractId)
+        const baseContract = controller.resolveContract(
+            baseContractId,
+            undefined!,
+        )
 
         if (!baseContract) {
             continue

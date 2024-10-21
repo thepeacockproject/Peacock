@@ -76,6 +76,7 @@ import { multiplayerMenuDataRouter } from "./multiplayer/multiplayerMenuData"
 import { liveSplitManager } from "./livesplit/liveSplitManager"
 import { cheapLoadUserData, setupFileStructure } from "./databaseHandler"
 import { getFlag, saveFlags } from "./flags"
+import { initializePeacockMenu } from "./menus/settings"
 
 const host = process.env.HOST || "0.0.0.0"
 const port = process.env.PORT || 80
@@ -526,6 +527,8 @@ export async function startServer(options: {
 
         // initialize livesplit
         await liveSplitManager.init()
+
+        initializePeacockMenu()
 
         return
     } catch (e) {
