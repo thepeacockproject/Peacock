@@ -1,0 +1,77 @@
+{
+    "$datacontext": {
+        "in": "$.",
+        "datavalues": {
+            "Flags": "{$ioiaccountstatus}.Commands.getAllFlags"
+        },
+        "do": {
+            "view": "menu3.containers.ScrollingListContainer",
+            "controller": "context",
+            "direction": "vertical",
+            "data": {
+                "direction": "vertical",
+                "overflowscrolling": "1.0"
+            },
+            "col": 2.25,
+            "nrows": 3.75,
+            "ncols": 4,
+            "children": {
+                "$mergearrays": [
+                    {
+                        "$each $.Flags": {
+                            "$if $eq($.valueType,category)": {
+                                "$then": {
+                                    "$include": {
+                                        "$path": "$formatstring menusystem/pages/peacock-menu/flags/category.json@{$.@global.CacheBuster}"
+                                    }
+                                },
+                                "$else": {
+                                    "$include": {
+                                        "$path": "$formatstring menusystem/pages/peacock-menu/flags/flag.json@{$.@global.CacheBuster}"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "$if": {
+                            "$condition": {
+                                "$include": "menusystem/data/ispeacockdev.json"
+                            },
+                            "$then": [
+                                {
+                                    "view": "menu3.basic.OptionsListElement",
+                                    "controller": "tabsitem",
+                                    "data": {
+                                        "title": "Debug - Refresh UI"
+                                    },
+                                    "actions": {
+                                        "accept": {
+                                            "set-value": {
+                                                "target": "$.@global.CacheBuster",
+                                                "value": "{$ioiaccountstatus}.CacheBuster"
+                                            },
+                                            "_ioiaccount": {
+                                                "mode": "refresh"
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "view": "menu3.TextboxElement",
+                                    "col": 0,
+                                    "data": {
+                                        "size": 24,
+                                        "width": 500,
+                                        "text": "$formatstring CacheBuster Version\n- Next:\t{{$ioiaccountstatus}.CacheBuster}\n- Active:\t{$.@global.CacheBuster}",
+                                        "color": "ffffff"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}
