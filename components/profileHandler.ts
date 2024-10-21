@@ -66,7 +66,6 @@ import {
 import assert from "assert"
 import { generateCompletionData } from "./contracts/dataGen"
 import { commandService } from "./commandService"
-import { initializePeacockMenu } from "./menus/settings"
 
 const profileRouter = Router()
 

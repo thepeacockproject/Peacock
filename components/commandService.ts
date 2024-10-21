@@ -1,5 +1,5 @@
 import { SyncBailHook } from "./hooksImpl"
-import { log, logDebug, LogLevel } from "./loggingInterop"
+import { log, LogLevel } from "./loggingInterop"
 import { nilUuid } from "./utils"
 
 const peacockCommandPrefix = "peacock:"
