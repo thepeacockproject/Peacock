@@ -1,11 +1,19 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using System.Text;
 using HitmanPatcher.PatchDefinitions;
 
 namespace HitmanPatcher
 {
+    public static class SoapHexBinary
+    {
+        public static byte[] Parse(string value)
+        {
+            return Enumerable.Range(0, value.Length)
+                .Where(x => x % 2 == 0)
+                .Select(x => Convert.ToByte(value.Substring(x, 2), 16))
+                .ToArray();
+        }
+    }
+
     public class Patch
     {
         public static readonly byte[] http = Encoding.ASCII.GetBytes("http://{0}\0").ToArray();
@@ -26,7 +34,7 @@ namespace HitmanPatcher
         }
 
         public Patch(int offset, string original, string patch, MemProtection defaultProtection, string customPatch = "")
-            : this(offset, SoapHexBinary.Parse(original).Value, SoapHexBinary.Parse(patch).Value, defaultProtection, customPatch)
+            : this(offset, SoapHexBinary.Parse(original), SoapHexBinary.Parse(patch), defaultProtection, customPatch)
         {
 
         }

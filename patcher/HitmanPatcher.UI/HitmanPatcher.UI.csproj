@@ -1,0 +1,65 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net8.0-windows</TargetFramework>
+        <TargetFramework Condition="'$(IsLegacy)' == 'True'">net46</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>disable</Nullable>
+
+        <RootNamespace>HitmanPatcher</RootNamespace>
+        <AssemblyName>PeacockPatcher.UI</AssemblyName>
+
+        <Configurations>Debug;Release</Configurations>
+
+        <Title>Peacock Patcher</Title>
+        <Description>Peacock's HITMAN™ World of Assassination trilogy game patcher.</Description>
+        <Company>The Peacock Project</Company>
+        <Product>Peacock Patcher</Product>
+        <Copyright>Copyright © 2020-2024 grappigegovert &amp; The Peacock Project</Copyright>
+        <UseWindowsForms>true</UseWindowsForms>
+        <ForceDesignerDPIUnaware>true</ForceDesignerDPIUnaware>
+        <ApplicationHighDpiMode>DpiUnawareGdiScaled</ApplicationHighDpiMode>
+        <ApplicationIcon>patcher.ico</ApplicationIcon>
+        <AssemblyVersion>8.0.0.0</AssemblyVersion>
+        <FileVersion>8.0.0.0</FileVersion>
+
+        <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
+        <DefineConstants Condition="'$(IsLegacy)' == 'True'">$(DefineConstants);LEGACY</DefineConstants>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+
+    <ItemGroup Condition="'$(IsLegacy)' == 'True'">
+        <PackageReference Include="ILRepack.Lib.MSBuild.Task" Version="2.0.26">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\HitmanPatcher.Core\HitmanPatcher.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Remove="App.config" Condition="'$(IsLegacy)' != 'True'"/>
+        <None Remove="Novikov_error.png" />
+        <None Remove="Novikov_standard.png" />
+        <None Remove="Novikov_success.png" />
+        <None Remove="patcher.ico" />
+        <EmbeddedResource Include="Novikov_error.png" />
+        <EmbeddedResource Include="Novikov_standard.png" />
+        <EmbeddedResource Include="Novikov_success.png" />
+        <EmbeddedResource Include="patcher.ico" />
+        <EmbeddedResource Remove="MainForm.resx" />
+        <EmbeddedResource Remove="OptionsForm.resx" />
+        <EmbeddedResource Remove="TrayOptionsForm.resx" />
+        <Compile Update="MainForm.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Update="OptionsForm.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Update="TrayOptionsForm.cs">
+            <SubType>Form</SubType>
+        </Compile>
+    </ItemGroup>
+</Project>

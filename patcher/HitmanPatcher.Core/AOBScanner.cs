@@ -1,20 +1,16 @@
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace HitmanPatcher
 {
     internal static class AOBScanner
     {
-        public static bool TryGetHitmanVersionByScanning(Process process,
+        public static bool TryGetHitmanVersionByScanning(ProcessMetadata processMetadata,
             IntPtr hProcess, out HitmanVersion result)
         {
             Stopwatch bench = Stopwatch.StartNew();
 
-            IntPtr baseAddress = process.MainModule.BaseAddress;
-            byte[] exeData = new byte[process.MainModule.ModuleMemorySize];
+            IntPtr baseAddress = processMetadata.BaseAddress;
+            byte[] exeData = new byte[processMetadata.ModuleMemorySize];
             Pinvoke.ReadProcessMemory(hProcess, baseAddress, exeData,
                 (UIntPtr) exeData.Length,
                 out _); // fuck it, just read the whole thing
@@ -77,7 +73,7 @@ namespace HitmanPatcher
             Task.WaitAll(alltasks);
 
             bench.Stop();
-            Console.WriteLine(bench.Elapsed.ToString());
+            Compositions.Logger.log(bench.Elapsed.ToString());
 
             // error out if any task does not have exactly 1 result
             if (alltasks.Any(task => task.Result.Count() != 1))
@@ -113,7 +109,7 @@ namespace HitmanPatcher
 #if DEBUG
         private static void Note(string name, Patch patch)
         {
-            MainForm.GetInstance().log($"{name}: {patch.offset:X} {BitConverter.ToString(patch.original).Replace("-", string.Empty)} {BitConverter.ToString(patch.patch).Replace("-", string.Empty)}");
+            Compositions.Logger.log($"{name}: {patch.offset:X} {BitConverter.ToString(patch.original).Replace("-", string.Empty)} {BitConverter.ToString(patch.patch).Replace("-", string.Empty)}");
         }
 #endif
 
