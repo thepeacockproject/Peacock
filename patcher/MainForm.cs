@@ -6,25 +6,19 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.IO;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace HitmanPatcher
 {
     public partial class MainForm : Form, ILoggingProvider
     {
         private static MainForm instance;
+        private GameServer[] gameServers;
 
         public static MainForm GetInstance()
         {
             return instance ??= new MainForm();
         }
-
-        private static readonly Dictionary<string, string> servers = new Dictionary<string, string>()
-        {
-            {"IOI Official", "config.hitman.io"},
-            {"Peacock Local", "127.0.0.1"}
-        };
-
-        private static readonly Dictionary<string, string> serversReverse = servers.ToDictionary(kvp => kvp.Value, kvp => kvp.Key);
 
         private void ToggleTheme(bool darkModeEnabled)
         {
@@ -60,6 +54,27 @@ namespace HitmanPatcher
         public MainForm()
         {
             InitializeComponent();
+            
+            // Try to get ServerList
+            try
+            {
+                var fileContent = File.ReadAllText("Servers.json", Encoding.UTF8);
+                gameServers = JsonConvert.DeserializeObject<GameServer[]>(fileContent);
+                if (gameServers == null || gameServers.Length == 0)
+                {
+                    gameServers = CreateDefautServerList();
+                }
+
+            }
+            catch ( FileNotFoundException ex)
+            {
+                gameServers = CreateDefautServerList();
+            }
+            catch (JsonSerializationException ex) 
+            {
+                gameServers = CreateDefautServerList();
+            }
+            
             logListView.Columns[0].Width = logListView.Width - 4 - SystemInformation.VerticalScrollBarWidth;
             Timer timer = new Timer
             {
@@ -90,6 +105,16 @@ namespace HitmanPatcher
                 ShowInTaskbar = false;
                 trayIcon.ShowBalloonTip(5000, "Peacock Patcher", "The Peacock Patcher has been started in the tray.", ToolTipIcon.Info);
             }
+        }
+
+        private static GameServer[] CreateDefautServerList()
+        {
+            GameServer[] gameServers = new GameServer[2];
+            gameServers[0] = new GameServer { ServerName = "IOI Official", ServerAddress = "config.hitman.io" };
+            gameServers[1] = new GameServer { ServerName = "Peacock Local", ServerAddress = "127.0.0.1" };
+            var serverList = JsonConvert.SerializeObject(gameServers);
+            File.WriteAllText("Servers.json", serverList, Encoding.UTF8);
+            return gameServers;
         }
 
         public void log(string msg)
@@ -128,14 +153,16 @@ namespace HitmanPatcher
 
         private string GetSelectedServerHostname()
         {
-            if (!servers.TryGetValue(serverUrlComboBox.Text, out string hostname))
+            string hostname = "";
+            var result = gameServers.FirstOrDefault(server => server.ServerName == serverUrlComboBox.Text);
+            if(result == null)
             {
                 hostname = serverUrlComboBox.Text;
             }
 
             if (string.IsNullOrEmpty(hostname))
             {
-                hostname = "localhost";
+                hostname = "127.0.0.1";
             }
 
             return hostname;
@@ -143,9 +170,24 @@ namespace HitmanPatcher
 
         private void SetSelectedServerHostname(string input)
         {
-            if (!serversReverse.TryGetValue(input, out string result))
+            GameServer server = null;
+            if (input == "localhost" || input == "127.0.0.1")
             {
-                result = input;
+                server = gameServers.FirstOrDefault(server => server.ServerAddress == input);
+            }
+            else
+            {
+                server = gameServers.FirstOrDefault(server => server.ServerName == input);
+            }
+
+            string result;
+            if (server == null)
+            {
+                result = input;             
+            }
+            else
+            {
+                result = server.ServerName;
             }
 
             serverUrlComboBox.Text = result;
@@ -183,7 +225,10 @@ namespace HitmanPatcher
                 SetSelectedServerHostname(value.patchOptions.CustomConfigDomain);
 
                 serverUrlComboBox.Items.Clear();
-                serverUrlComboBox.Items.AddRange(servers.Keys.ToArray<object>());
+                foreach(var gameserver in gameServers)
+                {
+                    serverUrlComboBox.Items.Add(gameserver.ServerName);
+                }
             }
         }
 
@@ -278,6 +323,22 @@ namespace HitmanPatcher
                 builder.AppendLine(item.Text);
             }
             Clipboard.SetText(builder.ToString());
+        }
+
+        private void serverList_Click(object sender, EventArgs e)
+        {
+            ServerListEditor serverListEditor = new ServerListEditor();
+            serverListEditor.GameServers = gameServers;
+            var result = serverListEditor.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                gameServers = serverListEditor.GameServers;
+                serverUrlComboBox.Items.Clear();
+                foreach (var gameserver in gameServers)
+                {
+                    serverUrlComboBox.Items.Add(gameserver.ServerName);
+                }
+            }
         }
     }
 }

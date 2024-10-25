@@ -16,10 +16,8 @@
   -     You should have received a copy of the GNU Affero General Public License
   -     along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
-
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
@@ -28,7 +26,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HitmanPatcher</RootNamespace>
     <AssemblyName>PeacockPatcher</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <ShouldCreateLogs>True</ShouldCreateLogs>
@@ -40,7 +38,6 @@
     <AssemblyFileVersionSettings>None.None.None.Increment</AssemblyFileVersionSettings>
     <LangVersion>8</LangVersion>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x64\Debug\</OutputPath>
@@ -51,7 +48,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\x64\Release\</OutputPath>
     <DefineConstants>TRACE;PLATFORM_STEAM;PLATFORM_EPIC</DefineConstants>
@@ -62,14 +58,16 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
-
   <PropertyGroup>
     <ApplicationIcon>patcher.ico</ApplicationIcon>
   </PropertyGroup>
-
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -79,7 +77,6 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
-
   <ItemGroup>
     <Compile Include="Cli.cs" />
     <Compile Include="CliLocale.Designer.cs">
@@ -87,6 +84,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>CliLocale.resx</DependentUpon>
     </Compile>
+    <Compile Include="GameServer.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -119,6 +117,12 @@
     <Compile Include="PatchDefinitions\v3_70.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServerListEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ServerListEditor.Designer.cs">
+      <DependentUpon>ServerListEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Settings.cs" />
     <Compile Include="TrayOptionsForm.cs">
       <SubType>Form</SubType>
@@ -148,12 +152,16 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="ServerListEditor.resx">
+      <DependentUpon>ServerListEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TrayOptionsForm.resx">
       <LastGenOutput>TrayOptionsForm.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="Novikov_error.png" />
     <None Include="Novikov_standard.png" />
     <None Include="Novikov_success.png" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -167,11 +175,9 @@
     <Compile Include="AOBScanner.cs" />
     <Compile Include="Pinvoke.cs" />
   </ItemGroup>
-
   <ItemGroup>
     <None Include="App.config" />
     <Content Include="patcher.ico" />
   </ItemGroup>
-
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
