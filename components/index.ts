@@ -75,7 +75,8 @@ import { multiplayerRouter } from "./multiplayer/multiplayerService"
 import { multiplayerMenuDataRouter } from "./multiplayer/multiplayerMenuData"
 import { liveSplitManager } from "./livesplit/liveSplitManager"
 import { cheapLoadUserData, setupFileStructure } from "./databaseHandler"
-import { getFlag } from "./flags"
+import { getFlag, saveFlags } from "./flags"
+import { initializePeacockMenu } from "./menus/settings"
 
 const host = process.env.HOST || "0.0.0.0"
 const port = process.env.PORT || 80
@@ -511,6 +512,9 @@ export async function startServer(options: {
         await loadouts.init()
         await controller.boot(options.pluginDevHost)
 
+        // all plugins had a chance to provide their flags now
+        saveFlags()
+
         const httpServer = http.createServer(app)
 
         // @ts-expect-error Non-matching method sig
@@ -523,6 +527,8 @@ export async function startServer(options: {
 
         // initialize livesplit
         await liveSplitManager.init()
+
+        initializePeacockMenu()
 
         return
     } catch (e) {

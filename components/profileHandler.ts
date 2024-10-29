@@ -65,6 +65,7 @@ import {
 } from "./types/gameSchemas"
 import assert from "assert"
 import { generateCompletionData } from "./contracts/dataGen"
+import { commandService } from "./commandService"
 
 const profileRouter = Router()
 
@@ -540,7 +541,7 @@ profileRouter.post(
                     // prettier-ignore
                     val.Challenge.Definition!["States"]["Start"][
                         "CrowdNPC_Died"
-                        ]["Transition"] = "Success"
+                    ]["Transition"] = "Success"
                 }
             })
         }
@@ -958,5 +959,22 @@ export async function loadSession(
         }.`,
     )
 }
+
+profileRouter.post(
+    "/ProfileService/GetSemLinkStatus",
+    jsonMiddleware(),
+    (_, res) => {
+        res.json(commandService.getCommandStatus())
+    },
+)
+
+profileRouter.post(
+    "/ProfileService/SubmitSemEmail",
+    jsonMiddleware(),
+    // @ts-expect-error Has jwt props.
+    (req: RequestWithJwt<never, { email: string }>, res) => {
+        res.json(commandService.submitCommands(req.body.email))
+    },
+)
 
 export { profileRouter }
