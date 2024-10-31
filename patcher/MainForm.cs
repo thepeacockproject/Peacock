@@ -14,6 +14,7 @@ namespace HitmanPatcher
     {
         private static MainForm instance;
         private GameServer[] gameServers;
+        private readonly string configLocation;
 
         public static MainForm GetInstance()
         {
@@ -54,26 +55,14 @@ namespace HitmanPatcher
         public MainForm()
         {
             InitializeComponent();
-            
-            // Try to get ServerList
-            try
-            {
-                var fileContent = File.ReadAllText("Servers.json", Encoding.UTF8);
-                gameServers = JsonConvert.DeserializeObject<GameServer[]>(fileContent);
-                if (gameServers == null || gameServers.Length == 0)
-                {
-                    gameServers = CreateDefautServerList();
-                }
 
-            }
-            catch ( FileNotFoundException ex)
-            {
-                gameServers = CreateDefautServerList();
-            }
-            catch (JsonSerializationException ex) 
-            {
-                gameServers = CreateDefautServerList();
-            }
+            // Try to get ServerList
+            string appData = Environment.GetFolderPath(Environment
+                .SpecialFolder
+                .ApplicationData);
+
+            configLocation = $@"{appData}\PeacockProject\";
+            
             
             logListView.Columns[0].Width = logListView.Width - 4 - SystemInformation.VerticalScrollBarWidth;
             Timer timer = new Timer
@@ -82,7 +71,7 @@ namespace HitmanPatcher
             };
             timer.Tick += (sender, args) => MemoryPatcher.PatchAllProcesses(this, CurrentSettings.patchOptions);
             timer.Enabled = true;
-
+            gameServers = new GameServer[0];
             try
             {
                 CurrentSettings = Settings.GetFromFile();
@@ -91,6 +80,26 @@ namespace HitmanPatcher
             {
                 CurrentSettings = new Settings();
             }
+            try
+            {
+                var fileContent = File.ReadAllText($@"{configLocation}\Servers.json", Encoding.UTF8);
+                gameServers = JsonConvert.DeserializeObject<GameServer[]>(fileContent);
+                if (gameServers == null || gameServers.Length == 0)
+                {
+                    gameServers = CreateDefautServerList();
+                }
+
+            }
+            catch (FileNotFoundException ex)
+            {
+                gameServers = CreateDefautServerList();
+            }
+            catch (JsonSerializationException ex)
+            {
+                gameServers = CreateDefautServerList();
+            }
+            SetSelectedServerHostname(serverUrlComboBox.Text);
+            UpdateServerUrlCombobox();
             updateTrayDomains();
 
             ToggleTheme(CurrentSettings.darkModeEnabled);
@@ -107,13 +116,14 @@ namespace HitmanPatcher
             }
         }
 
-        private static GameServer[] CreateDefautServerList()
+        private GameServer[] CreateDefautServerList()
         {
             GameServer[] gameServers = new GameServer[2];
             gameServers[0] = new GameServer { ServerName = "IOI Official", ServerAddress = "config.hitman.io" };
             gameServers[1] = new GameServer { ServerName = "Peacock Local", ServerAddress = "127.0.0.1" };
             var serverList = JsonConvert.SerializeObject(gameServers);
-            File.WriteAllText("Servers.json", serverList, Encoding.UTF8);
+           
+            File.WriteAllText($@"{configLocation}Servers.json", serverList, Encoding.UTF8);
             return gameServers;
         }
 
@@ -143,9 +153,9 @@ namespace HitmanPatcher
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\PeacockProject"))
+            if (!Directory.Exists(configLocation))
             {
-                Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\PeacockProject");
+                Directory.CreateDirectory(configLocation);
             }
 
             CurrentSettings.SaveToFile();
@@ -223,12 +233,16 @@ namespace HitmanPatcher
                 _currentSettings = value;
 
                 SetSelectedServerHostname(value.patchOptions.CustomConfigDomain);
+                UpdateServerUrlCombobox();
+            }
+        }
 
-                serverUrlComboBox.Items.Clear();
-                foreach(var gameserver in gameServers)
-                {
-                    serverUrlComboBox.Items.Add(gameserver.ServerName);
-                }
+        private void UpdateServerUrlCombobox()
+        {
+            serverUrlComboBox.Items.Clear();
+            foreach (var gameserver in gameServers)
+            {
+                serverUrlComboBox.Items.Add(gameserver.ServerName);
             }
         }
 
@@ -333,11 +347,7 @@ namespace HitmanPatcher
             if (result == DialogResult.OK)
             {
                 gameServers = serverListEditor.GameServers;
-                serverUrlComboBox.Items.Clear();
-                foreach (var gameserver in gameServers)
-                {
-                    serverUrlComboBox.Items.Add(gameserver.ServerName);
-                }
+                UpdateServerUrlCombobox();
             }
         }
     }
