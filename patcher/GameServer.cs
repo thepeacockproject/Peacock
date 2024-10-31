@@ -18,7 +18,7 @@ namespace HitmanPatcher
             StringBuilder stringBuilder = new StringBuilder();
             foreach (GameServer server in servers)
             {
-                stringBuilder.Append(server.ServerName + ";" + server.ServerAddress + '\n');
+                stringBuilder.Append(server.ServerName.Replace(";","-") + ";" + server.ServerAddress.Replace(";", "-") + '\n');
             }
             File.WriteAllText(path, stringBuilder.ToString().Trim());
         }
