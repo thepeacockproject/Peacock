@@ -37,14 +37,17 @@ const commandMap = new Map<string, CommandFunction>([
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const builtInPages: Record<string, any> = {
-    "/pages/peacock-menu/index.json": JSON.parse(PeacockMenuIndex),
-    "/pages/peacock-menu/options.json": JSON.parse(PeacockMenuOptions),
-    "/pages/peacock-menu/flags/index.json": JSON.parse(PeacockMenuFlagIndex),
-    "/pages/peacock-menu/flags/category.json": JSON.parse(
-        PeacockMenuFlagCategory,
-    ),
-    "/pages/peacock-menu/flags/flag.json": JSON.parse(PeacockMenuFlag),
+    "/pages/peacock-menu/index.json": PeacockMenuIndex,
+    "/pages/peacock-menu/options.json": PeacockMenuOptions,
+    "/pages/peacock-menu/flags/index.json": PeacockMenuFlagIndex,
+    "/pages/peacock-menu/flags/category.json": PeacockMenuFlagCategory,
+    "/pages/peacock-menu/flags/flag.json": PeacockMenuFlag,
 }
+
+Object.keys(builtInPages).forEach((page) => {
+    // Parse the string into an object
+    builtInPages[page] = JSON.parse(builtInPages[page])
+})
 
 const pagePrefix = "/pages/peacock-menu/"
 const jsonExtension = ".json"
