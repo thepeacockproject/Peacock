@@ -6,7 +6,6 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.IO;
 using System.Text;
-using Newtonsoft.Json;
 
 namespace HitmanPatcher
 {
@@ -57,33 +56,10 @@ namespace HitmanPatcher
             InitializeComponent();
 
             // Try to get ServerList
-            string appData = Environment.GetFolderPath(Environment
-                .SpecialFolder
-                .ApplicationData);
-
-            serverlistLocation = Path.Combine(Settings.ConfigLocation, "Server.json");
-            
-            
-            logListView.Columns[0].Width = logListView.Width - 4 - SystemInformation.VerticalScrollBarWidth;
-            Timer timer = new Timer
-            {
-                Interval = 1000
-            };
-            timer.Tick += (sender, args) => MemoryPatcher.PatchAllProcesses(this, CurrentSettings.patchOptions);
-            timer.Enabled = true;
-            gameServers = new GameServer[0];
+            serverlistLocation = Path.Combine(Settings.ConfigLocation, "ServerList.txt");
             try
             {
-                CurrentSettings = Settings.GetFromFile();
-            }
-            catch (Exception)
-            {
-                CurrentSettings = new Settings();
-            }
-            try
-            {
-                var fileContent = File.ReadAllText(serverlistLocation, Encoding.UTF8);
-                gameServers = JsonConvert.DeserializeObject<GameServer[]>(fileContent);
+                gameServers = GameServer.LoadServers(serverlistLocation);
                 if (gameServers == null || gameServers.Length == 0)
                 {
                     gameServers = CreateDefautServerList();
@@ -94,10 +70,24 @@ namespace HitmanPatcher
             {
                 gameServers = CreateDefautServerList();
             }
-            catch (JsonSerializationException ex)
+
+
+            logListView.Columns[0].Width = logListView.Width - 4 - SystemInformation.VerticalScrollBarWidth;
+            Timer timer = new Timer
             {
-                gameServers = CreateDefautServerList();
+                Interval = 1000
+            };
+            timer.Tick += (sender, args) => MemoryPatcher.PatchAllProcesses(this, CurrentSettings.patchOptions);
+            timer.Enabled = true;
+            try
+            {
+                CurrentSettings = Settings.GetFromFile();
             }
+            catch (Exception)
+            {
+                CurrentSettings = new Settings();
+            }
+            
             SetSelectedServerHostname(serverUrlComboBox.Text);
             UpdateServerUrlCombobox();
             updateTrayDomains();
@@ -121,9 +111,7 @@ namespace HitmanPatcher
             GameServer[] gameServers = new GameServer[2];
             gameServers[0] = new GameServer { ServerName = "IOI Official", ServerAddress = "config.hitman.io" };
             gameServers[1] = new GameServer { ServerName = "Peacock Local", ServerAddress = "127.0.0.1" };
-            var serverList = JsonConvert.SerializeObject(gameServers);
-           
-            File.WriteAllText(serverlistLocation, serverList, Encoding.UTF8);
+            GameServer.SaveServers(serverlistLocation, gameServers);
             return gameServers;
         }
 
@@ -338,6 +326,7 @@ namespace HitmanPatcher
         {
             ServerListEditor serverListEditor = new ServerListEditor();
             serverListEditor.GameServers = gameServers;
+            serverListEditor.SaveLocation = serverlistLocation;
             var result = serverListEditor.ShowDialog();
             if (result == DialogResult.OK)
             {

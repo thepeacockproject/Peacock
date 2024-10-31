@@ -1,4 +1,3 @@
-using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,6 +15,8 @@ namespace HitmanPatcher
     public partial class ServerListEditor : Form
     {
         private GameServer[] gameServers;
+        public string SaveLocation { get; set; }
+
         public GameServer[] GameServers { 
             get { return gameServers; } 
             set
@@ -44,8 +45,8 @@ namespace HitmanPatcher
             }
             GameServers = list.ToArray();
      
-            var serverString = JsonConvert.SerializeObject(GameServers);
-            File.WriteAllText(Path.Combine(Settings.ConfigLocation, "Server.json"), serverString, Encoding.UTF8);
+            
+            GameServer.SaveServers(Path.Combine(Settings.ConfigLocation, SaveLocation), gameServers);
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
