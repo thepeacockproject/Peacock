@@ -99,6 +99,58 @@
                     }
                 },
                 {
+                    "Id": "7ac9aacb-1325-40f0-9926-8fb929b7a3b0",
+                    "Name": "UI_CHALLENGES_EBOLA_TRUEFAN_NAME",
+                    "ImageName": "images/challenges/sapienza/ebola_truefan.jpg",
+                    "Description": "UI_CHALLENGES_EBOLA_TRUEFAN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": ["TOKEN_OUTFIT_HERO_SUPERFAN"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_COASTALTOWN",
+                    "ParentLocationId": "LOCATION_PARENT_COASTALTOWN",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "ab48a89d-e8a7-4df4-ae72-f0fccaa65e7f"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "95c7f899-e20c-4182-a228-28bd3d8a4ff4"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["7e3f758a-2435-42de-93bd-d8f0b72c63a4"]
+                    }
+                },
+                {
                     "Id": "996e1023-0355-4049-a8a7-e8d8b5427253",
                     "Name": "UI_CHALLENGES_EBOLA_EXPLOSIVE_READING_NAME",
                     "ImageName": "images/challenges/sapienza/ebola_assasination_boom_blah.jpg",

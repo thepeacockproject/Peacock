@@ -344,6 +344,13 @@ export class MenuSystemDatabase {
                             $else: true,
                         },
                     }
+                case "/data/ispeacockdev.json":
+                    return {
+                        "$if $eq (0,0)": {
+                            $then: PEACOCK_DEV,
+                            $else: PEACOCK_DEV,
+                        },
+                    }
                 case "/pages/hub/modals/peacock/dynresmodal.json":
                     return getConfig("DynresModal", false)
                 // This will only get hit by H2

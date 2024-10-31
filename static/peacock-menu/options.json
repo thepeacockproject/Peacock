@@ -1,0 +1,53 @@
+{
+    "id": "UI_MENU_PEACOCK_FLAGS",
+    "view": "menu3.basic.ListElementSmall",
+    "controller": "tabsitem",
+    "data": {
+        "title": "$loc UI_PEACOCK_BRANDING_SHORT",
+        "icon": "fixed"
+    },
+    "actions": {
+        "select": [
+            {
+                "ioiaccount": {
+                    "_comment": "Do not trigger an ioiaccount-event after another ioiaccount-event, it will cause the game to crash!",
+                    "mode": "submit-email",
+                    "email": "peacock:getAllFlags"
+                }
+            }
+        ]
+    },
+    "children": [
+        {
+            "controller": "list",
+            "row": 1,
+            "col": 6.5,
+            "nrows": 4.1,
+            "ncols": 4,
+            "children": [
+                {
+                    "$include": {
+                        "$path": "menusystem/elements/settings/generic/optionsinfo_container.json"
+                    }
+                }
+            ]
+        },
+        {
+            "controller": "list",
+            "row": 1,
+            "col": 6.5,
+            "children": [
+                {
+                    "$include": {
+                        "$path": "menusystem/elements/settings/generic/optionsgroupinfo_container.json"
+                    }
+                }
+            ]
+        },
+        {
+            "$include": {
+                "$path": "$formatstring menusystem/pages/peacock-menu/flags/index.json@{$.@global.CacheBuster}"
+            }
+        }
+    ]
+}

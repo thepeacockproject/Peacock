@@ -467,6 +467,66 @@
                     }
                 },
                 {
+                    "Id": "ba7425f7-b4d2-45b1-bb91-942722903c22",
+                    "Name": "UI_CHALLENGES_DUGONG_AKKA_ELIMINATE_FIRE_NAME",
+                    "ImageName": "images/challenges/Rocky/Dugong_AkkaFire_kill.jpg",
+                    "Description": "UI_CHALLENGES_DUGONG_AKKA_ELIMINATE_FIRE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": ["PROP_DEVICE_EVERGREEN_OILSPILL_CANISTER"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ROCKY",
+                    "ParentLocationId": "LOCATION_PARENT_ROCKY",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "666521d2-1efe-4d0a-b7f7-2afeb08262b6"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "accident_burn"
+                                                        ]
+                                                    },
+                                                    "in": [
+                                                        "$Value.KillMethodBroad",
+                                                        "$Value.KillMethodStrict"
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["b2aac100-dfc7-4f85-b9cd-528114436f6c"]
+                    }
+                },
+                {
                     "Id": "d634562c-c265-4b62-b123-d93b89d81c9f",
                     "Name": "UI_CHALLENGES_DUGONG_CRESTROPEBRIDGETRAP_NAME",
                     "ImageName": "images/challenges/Rocky/Rocky_CrestBridgeTrap.jpg",
