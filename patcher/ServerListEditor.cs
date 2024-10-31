@@ -43,13 +43,9 @@ namespace HitmanPatcher
                 list.Add(new GameServer { ServerName = item.Cells[0].Value.ToString(), ServerAddress = item.Cells[1].Value.ToString() });
             }
             GameServers = list.ToArray();
-            string appData = Environment.GetFolderPath(Environment
-                .SpecialFolder
-                .ApplicationData);
-
-            var folder = $@"{appData}\PeacockProject\";
+     
             var serverString = JsonConvert.SerializeObject(GameServers);
-            File.WriteAllText(@$"{folder}Servers.json", serverString, Encoding.UTF8);
+            File.WriteAllText(Path.Combine(Settings.ConfigLocation, "Server.json"), serverString, Encoding.UTF8);
             this.DialogResult = DialogResult.OK;
             this.Close();
         }

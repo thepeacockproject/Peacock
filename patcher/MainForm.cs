@@ -14,7 +14,7 @@ namespace HitmanPatcher
     {
         private static MainForm instance;
         private GameServer[] gameServers;
-        private readonly string configLocation;
+        private readonly string serverlistLocation;
 
         public static MainForm GetInstance()
         {
@@ -61,7 +61,7 @@ namespace HitmanPatcher
                 .SpecialFolder
                 .ApplicationData);
 
-            configLocation = $@"{appData}\PeacockProject\";
+            serverlistLocation = Path.Combine(Settings.ConfigLocation, "Server.json");
             
             
             logListView.Columns[0].Width = logListView.Width - 4 - SystemInformation.VerticalScrollBarWidth;
@@ -82,7 +82,7 @@ namespace HitmanPatcher
             }
             try
             {
-                var fileContent = File.ReadAllText($@"{configLocation}\Servers.json", Encoding.UTF8);
+                var fileContent = File.ReadAllText(serverlistLocation, Encoding.UTF8);
                 gameServers = JsonConvert.DeserializeObject<GameServer[]>(fileContent);
                 if (gameServers == null || gameServers.Length == 0)
                 {
@@ -123,7 +123,7 @@ namespace HitmanPatcher
             gameServers[1] = new GameServer { ServerName = "Peacock Local", ServerAddress = "127.0.0.1" };
             var serverList = JsonConvert.SerializeObject(gameServers);
            
-            File.WriteAllText($@"{configLocation}Servers.json", serverList, Encoding.UTF8);
+            File.WriteAllText(serverlistLocation, serverList, Encoding.UTF8);
             return gameServers;
         }
 
@@ -153,11 +153,6 @@ namespace HitmanPatcher
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!Directory.Exists(configLocation))
-            {
-                Directory.CreateDirectory(configLocation);
-            }
-
             CurrentSettings.SaveToFile();
         }
 
