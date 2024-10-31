@@ -100,7 +100,7 @@ export async function checkForUpdates(): Promise<void> {
                 "updates",
             )
         }
-    } catch (e) {
+    } catch {
         log(LogLevel.WARN, "Failed to check for updates!", "updates")
     }
 }

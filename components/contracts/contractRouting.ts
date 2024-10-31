@@ -105,10 +105,8 @@ contractRoutingRouter.post(
                       req.gameVersion,
                   )
                 : {}),
-            ...(loadoutData || {}),
-            ...{
-                OpportunityData: getContractOpportunityData(req, contractData),
-            },
+            ...loadoutData,
+            OpportunityData: getContractOpportunityData(req, contractData),
         }
 
         // Edit usercreated contract data HERE

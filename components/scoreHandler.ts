@@ -432,7 +432,7 @@ export function calculateSniperScore(
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const baseScore = (contractSession.scoring?.Context as any)["TotalScore"]
+    const baseScore = (contractSession.scoring?.Context as any)?.["TotalScore"]
     // @ts-expect-error it's a number
     const challengeMultiplier = contractSession.scoring?.Settings["challenges"][
         "Unlockables"

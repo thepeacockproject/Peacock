@@ -533,8 +533,8 @@ export abstract class ChallengeRegistry {
         return parseContextListeners(
             challenge.Definition?.ContextListeners || {},
             {
-                ...(Context || challenge.Definition?.Context || {}),
-                ...(challenge.Definition?.Constants || {}),
+                ...(Context || challenge.Definition?.Context),
+                ...challenge.Definition?.Constants,
             },
         )
     }

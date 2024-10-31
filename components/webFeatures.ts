@@ -202,7 +202,7 @@ webFeaturesRouter.get(
 
         try {
             await loadUserData(req.query.user, req.query.gv)
-        } catch (e) {
+        } catch {
             formErrorMessage(res, "Failed to load user data.")
             return
         }
@@ -253,7 +253,7 @@ webFeaturesRouter.get(
     async (req: CommonRequest, res) => {
         try {
             await loadUserData(req.query.user, req.query.gv)
-        } catch (e) {
+        } catch {
             formErrorMessage(res, "Failed to load user data.")
             return
         }

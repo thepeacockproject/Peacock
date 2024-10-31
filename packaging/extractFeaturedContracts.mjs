@@ -29,7 +29,7 @@ import axios from "axios"
  * @param gameVersion
  * @returns {Promise<*>}
  */
-async function fetchHitsCategoryPage(axiosClient, type, page, gameVersion) {
+async function fetchHitsCategoryPage(axiosClient, type, page) {
     console.log(`${pc.blue`Fetching hits category `}${type} page ${page}...`)
 
     const url = `/profiles/page/HitsCategory?page=${page}&type=${type}&mode=dataonly`

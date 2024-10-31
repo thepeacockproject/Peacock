@@ -187,7 +187,7 @@ export async function handleOAuthToken(
                     gameVersion,
                 )
             ).toString()
-        } catch (e) {
+        } catch {
             req.body.pId = randomUUID()
             await writeExternalUserData(
                 external_userid,

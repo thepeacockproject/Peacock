@@ -209,13 +209,11 @@ export function getAllGameDestinations(
 
         const template: GameFacingDestination = {
             ...getDestinationCompletion(parent, undefined, gameVersion, userId),
-            ...{
-                CompletionData: generateCompletionData(
-                    destination,
-                    userId,
-                    gameVersion,
-                ),
-            },
+            CompletionData: generateCompletionData(
+                destination,
+                userId,
+                gameVersion,
+            ),
         }
 
         // TODO: THIS IS NOT CORRECT FOR 2016!
@@ -379,7 +377,7 @@ export function getDestination(
                 gameVersion,
                 userId,
             ),
-            ...{ SubLocationMissionsData: [] },
+            SubLocationMissionsData: [],
         },
         ChallengeData: {
             Children:
@@ -510,16 +508,14 @@ export function getDestination(
         }
 
         const types = [
-            ...[
-                [undefined, "Missions"],
-                ["elusive", "ElusiveMissions"],
-            ],
             ...((gameVersion === "h1" &&
                 // @ts-expect-error Hack.
                 missionsInLocations.sarajevo["h2016enabled"]) ||
             gameVersion === "h3"
                 ? [["sarajevo", "SarajevoSixMissions"]]
                 : []),
+            [undefined, "Missions"],
+            ["elusive", "ElusiveMissions"],
         ]
 
         for (const t of types) {

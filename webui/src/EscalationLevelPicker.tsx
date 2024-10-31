@@ -204,7 +204,11 @@ export function EscalationLevelPicker({
         <section className="app-grid">
             {Object.keys(final).map((val) => {
                 return (
-                    <div className="container" style={{ padding: "15px" }}>
+                    <div
+                        className="container"
+                        style={{ padding: "15px" }}
+                        key={val}
+                    >
                         <h1>{val}</h1>
                         {final[val].map((row, index) => (
                             <div className="row" key={index}>

@@ -205,10 +205,8 @@ menuDataRouter.get(
 
             data = {
                 ...data,
-                ...{
-                    Name: pack ? pack.Name : location.DisplayNameLocKey,
-                    Location: location,
-                },
+                Name: pack ? pack.Name : location.DisplayNameLocKey,
+                Location: location,
             }
         } else {
             data = {
