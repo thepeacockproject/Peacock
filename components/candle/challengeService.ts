@@ -418,6 +418,10 @@ export abstract class ChallengeRegistry {
             return gameGroups.get("GLOBAL_ESCALATION_CHALLENGES")?.get(groupId)
         }
 
+        if (groupId?.includes("peacock")) {
+            return gameGroups.get("GLOBAL_PEACOCK_CHALLENGES")?.get(groupId)
+        }
+
         // Global merge groups are included by default. Filtered later.
 
         const globalGroup = this.globalMergeGroups.get(groupId)
@@ -469,6 +473,10 @@ export abstract class ChallengeRegistry {
 
         if (groupId?.includes("escalation")) {
             return gameChalGC.get("GLOBAL_ESCALATION_CHALLENGES")?.get(groupId)
+        }
+
+        if (groupId?.includes("peacock")) {
+            return gameChalGC.get("GLOBAL_PEACOCK_CHALLENGES")?.get(groupId)
         }
 
         // Global merge groups are included by default. Filtered later.
@@ -780,6 +788,18 @@ export class ChallengeService extends ChallengeRegistry {
                 )
             }
 
+            if (
+                filter.type === ChallengeFilterType.Contract &&
+                filter.isPeacockExclusive
+            ) {
+                this.getGroupedChallengesByLoc(
+                    filter,
+                    "GLOBAL_PEACOCK_CHALLENGES",
+                    challenges,
+                    gameVersion,
+                )
+            }
+
             this.getGroupedChallengesByLoc(
                 filter,
                 "GLOBAL_ARCADE_CHALLENGES",
@@ -892,6 +912,7 @@ export class ChallengeService extends ChallengeRegistry {
                         : contract.Metadata.Location,
                 gameVersion,
                 isFeatured: contractGroup.Metadata.Type === "featured",
+                isPeacockExclusive: contract.Metadata.Season === 0,
                 pro1Filter:
                     contract.Metadata.Difficulty === "pro1"
                         ? Pro1FilterType.Only

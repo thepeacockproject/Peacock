@@ -118,6 +118,7 @@ export type ChallengeFilterOptions =
           locationId: string
           gameVersion: GameVersion
           isFeatured?: boolean
+          isPeacockExclusive?: boolean
           difficulty: number
           pro1Filter: Pro1FilterType
       }
