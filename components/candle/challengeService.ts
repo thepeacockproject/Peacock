@@ -900,6 +900,26 @@ export class ChallengeService extends ChallengeRegistry {
 
         assert.ok(levelParentLocation)
 
+        const PeacockEscalations = [
+            "07bbf22b-d6ae-4883-bec2-122eeeb7b665",
+            "9e0188e8-bdad-476c-b4ce-2faa5d2be56c",
+            "74415eca-d01e-4070-9bc9-5ef9b4e8f7d2",
+            "0cceeecb-c8fe-42a4-aee4-d7b575f56a1b",
+            "115425b1-e797-47bf-b517-410dc7507397",
+            "e1e86206-d3f0-a819-e477-3d80e55e8a40",
+            "667f48a3-7f6b-486e-8f6b-2f782a5c4857",
+            "218302a3-f682-46f9-9ffd-bb3e82487b7c",
+            "9a461f89-86c5-44e4-998e-f2f66b496aa7",
+            "f19f7ac8-39ec-498b-aa23-44c8e75d8693",
+            "35f1f534-ae2d-42be-8472-dd55e96625ea",
+            "78628e05-93ce-4f87-8a17-b910d32df51f",
+            "ccdc7043-62af-44e8-a5fc-38b008c2044e",
+            "07ffa72a-bbac-45ca-8c9f-b9c1b526153a",
+            "1e4423b7-d4ff-448f-a8a8-4bb600cab7e3",
+            "edbacf4b-e402-4548-b723-cd4351571537",
+            "50fa5e99-0b51-45d4-9062-cd46dd928461",
+        ]
+
         return this.getGroupedChallengeLists(
             {
                 type: ChallengeFilterType.Contract,
@@ -912,7 +932,11 @@ export class ChallengeService extends ChallengeRegistry {
                         : contract.Metadata.Location,
                 gameVersion,
                 isFeatured: contractGroup.Metadata.Type === "featured",
-                isPeacockExclusive: contract.Metadata.Season === 0,
+                isPeacockExclusive:
+                    PeacockEscalations.includes(contractGroup.Metadata.Id) ||
+                    PeacockEscalations.includes(
+                        String(contractGroup.Metadata?.InGroup),
+                    ),
                 pro1Filter:
                     contract.Metadata.Difficulty === "pro1"
                         ? Pro1FilterType.Only
