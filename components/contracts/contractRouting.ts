@@ -57,6 +57,7 @@ import { GetForPlay2Body } from "../types/gameSchemas"
 import assert from "assert"
 import { getUserData } from "../databaseHandler"
 import { getCpd } from "../evergreen"
+import { getFlag } from "../flags"
 
 const contractRoutingRouter = Router()
 
@@ -110,7 +111,10 @@ contractRoutingRouter.post(
         }
 
         // Edit usercreated contract data HERE
-        if (contractTypes.includes(contractData.Metadata.Type)) {
+        if (
+            contractTypes.includes(contractData.Metadata.Type) &&
+            getFlag("enableContractsModeSaving")
+        ) {
             contractData.Data.EnableSaving = false
         }
 
