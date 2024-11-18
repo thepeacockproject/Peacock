@@ -64,7 +64,7 @@ export const defaultFlags: Flags = {
             enableContractsModeSaving: {
                 category: "Gameplay",
                 title: "enableContractsModeSaving",
-                desc: "Enable saving in Contracts Mode, including both usercreated and featured contracts.",
+                desc: "Enable saving in Contracts Mode, including both usercreated and featured contracts. Please note that even if you enable this, the saving function is consistent with the setting in the contract.",
                 default: false,
             },
             legacyNoticedKillScoring: {
