@@ -49,6 +49,12 @@ export const defaultFlags: Flags = {
                 possibleValues: ["REVEALED", "CLOUDED", "KEEP"],
                 default: "KEEP",
             },
+            exclusiveContent: {
+                category: "Gameplay",
+                title: "exclusiveContent",
+                desc: "Enable or disable Peacock exclusive content (challenges, escalations, etc).",
+                default: true,
+            },
             enableMasteryProgression: {
                 category: "Gameplay",
                 title: "enableMasteryProgression",

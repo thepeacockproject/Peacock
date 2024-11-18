@@ -28,6 +28,7 @@ import {
 import { SavedChallengeGroup } from "../types/challenges"
 import { controller } from "../controller"
 import { gameDifficulty, isSniperLocation } from "../utils"
+import { getFlag } from "../flags"
 
 /**
  * Change a registry challenge to the runtime format (for GetActiveChallenges).
@@ -275,6 +276,10 @@ export function filterChallenge(
     options: ChallengeFilterOptions,
     challenge: RegistryChallenge,
 ): boolean {
+    if (challenge.Tags.includes("peacock") && !getFlag("exclusiveContent")) {
+        return false
+    }
+
     switch (options.type) {
         case ChallengeFilterType.None:
             return true

@@ -350,6 +350,10 @@ export abstract class ChallengeRegistry {
         return this.challenges[gameVersion].get(challengeId)
     }
 
+    /**
+     * Get all challenge IDs that are present on a specific game version.
+     * @param gameVersion The game version.
+     */
     getChallengeIds(gameVersion: GameVersion): string[] {
         return Array.from(this.challenges[gameVersion].keys())
     }
