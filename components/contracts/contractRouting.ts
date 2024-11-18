@@ -97,6 +97,13 @@ contractRoutingRouter.post(
         }
 
         // Add escalation data to Contract data HERE
+        if (
+            escalationTypes.includes(contractData.Metadata.Type) &&
+            getFlag("enableSpeacialModesSaving")
+        ) {
+            contractData.Data.EnableSaving = false
+        }
+
         contractData.Metadata = {
             ...contractData.Metadata,
             ...(escalationTypes.includes(contractData.Metadata.Type)
@@ -113,7 +120,7 @@ contractRoutingRouter.post(
         // Edit usercreated contract data HERE
         if (
             contractTypes.includes(contractData.Metadata.Type) &&
-            getFlag("enableContractsModeSaving")
+            getFlag("enableSpeacialModesSaving")
         ) {
             contractData.Data.EnableSaving = false
         }
