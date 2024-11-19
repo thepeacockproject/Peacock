@@ -61,6 +61,12 @@ export const defaultFlags: Flags = {
                 desc: "Show elusive targets in instinct like normal targets would appear on normal missions. (for speedrunners who are submitting to speedrun.com, just as a reminder, this tool is for practice only!)",
                 default: false,
             },
+            enableContractsModeSaving: {
+                category: "Gameplay",
+                title: "enableContractsModeSaving",
+                desc: "Enable saving in Contracts Mode, including both usercreated and featured contracts. Please note that even if you enable this, the saving function is consistent with the setting in the contract.",
+                default: false,
+            },
             legacyNoticedKillScoring: {
                 category: "Gameplay",
                 title: "legacyNoticedKillScoring",
