@@ -7600,6 +7600,96 @@
                     "Tags": ["story", "hard", "live", "feats"]
                 },
                 {
+                    "Id": "d7b1f3e5-5199-4f03-8b3c-13e2fde8463c",
+                    "Name": "UI_CHALLENGES_SAPIENZA_PLAGUEDOCTOR_NAME",
+                    "ImageName": "images/challenges/sapienza/sapienza_plaguedoctor.jpg",
+                    "Description": "UI_CHALLENGES_SAPIENZA_PLAGUEDOCTOR_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": ["TOKEN_OUTFIT_HERO_PLAGUEDOCTOR"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_COASTALTOWN",
+                    "ParentLocationId": "LOCATION_PARENT_COASTALTOWN",
+                    "Type": "location",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 3
+                        },
+                        "Context": {
+                            "Completed": [],
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "$.Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count",
+                                            "$pushunique": [
+                                                "Completed",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.KillItemRepositoryId",
+                                                        "62c2ac2e-329e-4648-822a-e45a29a93cd0"
+                                                    ]
+                                                },
+                                                {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$Value.OutfitRepositoryId"
+                                                            ]
+                                                        },
+                                                        "in": [
+                                                            "2bbc0c72-fc99-465d-9dec-c276f68ab982"
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.ActorType",
+                                                        1
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "feats"]
+                },
+                {
                     "Id": "73f09360-52c5-4908-85e8-7ee7ba769157",
                     "Name": "UI_CHALLENGES_COPPERHEAD_47_MASTER_OF_DISGUISE_NAME",
                     "ImageName": "images/challenges/profile_challenges/generic_location_47_chameleon.jpg",
