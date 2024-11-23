@@ -931,6 +931,7 @@ function saveEvents(
             case "Witnesses":
                 for (const actor of (event as WitnessesC2SEvent).Value) {
                     session.witnesses.add(actor)
+                    session.killsNoticedBy.add(actor)
                 }
 
                 break
@@ -988,12 +989,6 @@ function saveEvents(
                     session.bodiesFoundBy.add(
                         (<MurderedBodySeenC2SEvent>event).Value.Witness,
                     )
-
-                    if (event.Timestamp === session.lastKill.timestamp) {
-                        session.killsNoticedBy.add(
-                            (<MurderedBodySeenC2SEvent>event).Value.Witness,
-                        )
-                    }
                 }
 
                 break
