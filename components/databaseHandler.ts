@@ -21,15 +21,18 @@ import type { ContractSession, GameVersion, UserProfile } from "./types/types"
 import { deserializeSession, serializeSession } from "./contracts/sessions"
 import { castUserProfile } from "./utils"
 import { log, LogLevel } from "./loggingInterop"
-import { mkdir, readdir, readFile, unlink, writeFile } from "fs/promises"
+import { mkdir, readdir, unlink } from "fs/promises"
 import type * as nodeFs from "node:fs/promises"
+import * as atomically from "atomically"
 import { existsSync } from "fs"
 
 // unlink, mkdir, readdir from node:fs/promises
 type NodeUnlinkMkdirReaddir = Pick<
     typeof nodeFs,
-    "unlink" | "mkdir" | "readdir" | "writeFile" | "readFile"
+    "unlink" | "mkdir" | "readdir"
 >
+
+type AtomicReadWrite = Pick<typeof atomically, "readFile" | "writeFile">
 
 // custom exists function because node doesn't have an async version of existsSync
 type ExistsPromise = {
@@ -39,7 +42,9 @@ type ExistsPromise = {
 /**
  * The fs implementation that this system uses.
  */
-export type DataStorageFs = NodeUnlinkMkdirReaddir & ExistsPromise
+export type DataStorageFs = NodeUnlinkMkdirReaddir &
+    ExistsPromise &
+    AtomicReadWrite
 
 /**
  * Handles the dispatching of user data in a way that avoids FS operations unless absolutely needed.
@@ -65,8 +70,8 @@ class AsyncUserDataGuard {
      */
     getFs(): DataStorageFs {
         return {
-            writeFile,
-            readFile,
+            writeFile: atomically.writeFile,
+            readFile: atomically.readFile,
             unlink,
             mkdir,
             readdir,
