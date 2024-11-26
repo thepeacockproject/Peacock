@@ -947,7 +947,7 @@ export interface MissionManifestMetadata {
     GroupObjectiveDisplayOrder?: GroupObjectiveDisplayOrderItem[] | null
     GameVersion?: string | null
     ServerVersion?: string | null
-    AllowNonTargetKills?: boolean | null
+    NonTargetKillsAllowed?: boolean | null
     Difficulty?: "pro1" | string | null
     CharacterSetup?:
         | {
