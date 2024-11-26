@@ -368,6 +368,7 @@ export function newSession(
             IsWinner: false,
             timerEnd: null,
         },
+        silentAssassinLost: false,
         challengeContexts: {},
     })
     userIdToTempSession.set(userId, sessionId)
@@ -989,6 +990,12 @@ function saveEvents(
                     session.bodiesFoundBy.add(
                         (<MurderedBodySeenC2SEvent>event).Value.Witness,
                     )
+
+                    if (
+                        !(<MurderedBodySeenC2SEvent>event).Value.IsWitnessTarget
+                    ) {
+                        session.silentAssassinLost = true
+                    }
                 }
 
                 break

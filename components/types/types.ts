@@ -310,6 +310,11 @@ export interface ContractSession {
      * @since v7.0.0
      */
     firstKillTimestamp?: number
+    /**
+     * If true, it is not possible anymore to get an SA rating.
+     * @since v8.0.0
+     */
+    silentAssassinLost?: boolean
 }
 
 /**

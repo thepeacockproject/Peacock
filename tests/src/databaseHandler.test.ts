@@ -83,6 +83,7 @@ const basicFakeSession: ContractSession = {
         timerEnd: null,
     },
     challengeContexts: {},
+    silentAssassinLost: false,
 }
 
 describe("contract session storage", () => {

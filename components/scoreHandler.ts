@@ -374,10 +374,10 @@ export function calculateScore(
     ]
 
     // NOTE: need to have all bonuses except objectives for SA
-    const silentAssassin = [
-        ...bonuses.slice(1),
-        { condition: nonTargetKills === 0 },
-    ].every((x) => x.condition)
+    const silentAssassin =
+        [...bonuses.slice(1), { condition: nonTargetKills === 0 }].every(
+            (x) => x.condition,
+        ) && !contractSession.silentAssassinLost
 
     return {
         stars: stars,
