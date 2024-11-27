@@ -217,12 +217,12 @@ export function calculateScore(
     ]
 
     // Non-target kills
+    const allowNonTargetKills =
+        contractData?.Metadata.NonTargetKillsAllowed === true
     const nonTargetKills =
-        contractData?.Metadata.AllowNonTargetKills === true
-            ? 0
-            : contractSession.npcKills.size + contractSession.crowdNpcKills
+        contractSession.npcKills.size + contractSession.crowdNpcKills
 
-    let totalScore = -5000 * nonTargetKills
+    let totalScore = 0
 
     // Headlines and bonuses
     const scoringHeadlines = []
@@ -268,13 +268,24 @@ export function calculateScore(
 
     totalScore = Math.max(0, totalScore)
 
-    scoringHeadlines.push(
-        Object.assign(Object.assign({}, headlineObjTemplate), {
-            headline: "UI_SCORING_SUMMARY_KILL_PENALTY",
-            count: nonTargetKills > 0 ? `${nonTargetKills}x-5000` : "",
-            scoreTotal: -5000 * nonTargetKills,
-        }) as ScoringHeadline,
-    )
+    if (nonTargetKills === 0 || allowNonTargetKills) {
+        scoringHeadlines.push(
+            Object.assign(Object.assign({}, headlineObjTemplate), {
+                headline: "UI_SCORING_SUMMARY_KILL_PENALTY",
+                count: "",
+                scoreTotal: 0,
+            }) as ScoringHeadline,
+        )
+    } else {
+        scoringHeadlines.push(
+            Object.assign(Object.assign({}, headlineObjTemplate), {
+                headline: "UI_SCORING_SUMMARY_KILL_PENALTY",
+                count: `${nonTargetKills}x-5000`,
+                scoreTotal: -5000 * nonTargetKills,
+            }) as ScoringHeadline,
+        )
+        totalScore += -5000 * nonTargetKills
+    }
 
     const timeHours = Math.floor(timeTotal / 3600)
     const timeMinutes = Math.floor((timeTotal - timeHours * 3600) / 60)
@@ -344,9 +355,10 @@ export function calculateScore(
     // Stars
     let stars =
         5 -
-        [...bonuses, { condition: nonTargetKills === 0 }].filter(
-            (x) => !x!.condition,
-        ).length // one star less for each bonus missed
+        [
+            ...bonuses,
+            { condition: nonTargetKills === 0 || allowNonTargetKills },
+        ].filter((x) => !x!.condition).length // one star less for each bonus missed
 
     stars = stars < 0 ? 0 : stars // clamp to 0
 
@@ -362,10 +374,10 @@ export function calculateScore(
     ]
 
     // NOTE: need to have all bonuses except objectives for SA
-    const silentAssassin = [
-        ...bonuses.slice(1),
-        { condition: nonTargetKills === 0 },
-    ].every((x) => x.condition)
+    const silentAssassin =
+        [...bonuses.slice(1), { condition: nonTargetKills === 0 }].every(
+            (x) => x.condition,
+        ) && !contractSession.silentAssassinLost
 
     return {
         stars: stars,

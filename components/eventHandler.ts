@@ -368,6 +368,7 @@ export function newSession(
             IsWinner: false,
             timerEnd: null,
         },
+        silentAssassinLost: false,
         challengeContexts: {},
     })
     userIdToTempSession.set(userId, sessionId)
@@ -931,6 +932,7 @@ function saveEvents(
             case "Witnesses":
                 for (const actor of (event as WitnessesC2SEvent).Value) {
                     session.witnesses.add(actor)
+                    session.killsNoticedBy.add(actor)
                 }
 
                 break
@@ -989,10 +991,10 @@ function saveEvents(
                         (<MurderedBodySeenC2SEvent>event).Value.Witness,
                     )
 
-                    if (event.Timestamp === session.lastKill.timestamp) {
-                        session.killsNoticedBy.add(
-                            (<MurderedBodySeenC2SEvent>event).Value.Witness,
-                        )
+                    if (
+                        !(<MurderedBodySeenC2SEvent>event).Value.IsWitnessTarget
+                    ) {
+                        session.silentAssassinLost = true
                     }
                 }
 
