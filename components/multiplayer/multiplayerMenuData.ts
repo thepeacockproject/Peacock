@@ -108,10 +108,7 @@ multiplayerMenuDataRouter.get(
             return
         }
 
-        if (!req.query.disguiseUnlockableId) {
-            res.status(400).send("no disguiseUnlockableId")
-            return
-        }
+        req.query.disguiseUnlockableId ??= "TOKEN_OUTFIT_HITMANSUIT"
 
         const presets = getConfig<MultiplayerPreset[]>(
             "MultiplayerPresets",
@@ -159,10 +156,7 @@ multiplayerMenuDataRouter.get(
             return
         }
 
-        if (!req.query.disguiseUnlockableId) {
-            res.status(400).send("no disguiseUnlockableId")
-            return
-        }
+        req.query.disguiseUnlockableId ??= "TOKEN_OUTFIT_HITMANSUIT"
 
         const userData = getUserData(req.jwt.unique_name, req.gameVersion)
 
