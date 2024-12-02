@@ -109,6 +109,7 @@ import HitsCategoryElusiveTemplate from "../static/HitsCategoryElusiveTemplate.j
 import HitsCategoryContractAttackTemplate from "../static/HitsCategoryContractAttackTemplate.json"
 import MissionRewardsTemplate from "../static/MissionRewardsTemplate.json"
 import SniperUnlockables from "../static/SniperUnlockables.json"
+import VersusUnlockables from "../static/VersusUnlockables.json"
 import LegacyStatisticsTemplate from "../static/LegacyStatisticsTemplate.json"
 import DynresModal from "../static/DynresModal.json"
 import type { GameVersion } from "./types/types"
@@ -211,6 +212,7 @@ const configs = {
     HitsCategoryContractAttackTemplate,
     MissionRewardsTemplate,
     SniperUnlockables,
+    VersusUnlockables,
     LegacyStatisticsTemplate,
     DynresModal,
 }

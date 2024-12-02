@@ -409,6 +409,12 @@ export function getSafehouseCategory(
         } else if (item.Unlockable.Properties.InclusionData) {
             // Only sniper unlockables have inclusion data, don't show them
             continue
+        } else if (
+            item.Unlockable.Type === "emote" &&
+            ["h1", "scpc"].includes(gameVersion)
+        ) {
+            // Don't show emotes outside H2 or 3
+            continue
         }
 
         if (item.Unlockable.Subtype === "disguise" && gameVersion === "h3") {

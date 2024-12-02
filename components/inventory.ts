@@ -458,6 +458,7 @@ export function getUnlockableById(
             unlockables = [
                 ...unlockables,
                 ...getConfig<readonly Unlockable[]>("SniperUnlockables", false),
+                ...getConfig<readonly Unlockable[]>("VersusUnlockables", false),
             ]
         }
 
@@ -570,6 +571,7 @@ export function createInventory(
             true,
         ),
         ...getConfig<Unlockable[]>("SniperUnlockables", true),
+        ...getConfig<Unlockable[]>("VersusUnlockables", true),
     ].filter((u) => u.Type !== "location") // locations not in inventory
 
     let unlockables: Unlockable[] = allunlockables
