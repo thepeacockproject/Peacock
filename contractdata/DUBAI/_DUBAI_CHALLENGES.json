@@ -4217,6 +4217,97 @@
             "OrderIndex": 6.1,
             "Challenges": [
                 {
+                    "Id": "0e08ee97-8f70-c82e-f04a-9d2cd60ae5b5",
+                    "Name": "UI_PEACOCK_CHALLENGEPACK_CHEESECAKE_WRAPPER_NAME",
+                    "ImageName": "images/challenges/Categories/PackCheesecake/tile.jpg",
+                    "Description": "UI_PEACOCK_CHALLENGEPACK_CHEESECAKE_WRAPPER_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": ["TOKEN_OUTFIT_HERO_BUTCHER_SUIT"],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_CHEESECAKE",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 100000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "profile",
+                        "Constants": {
+                            "RequiredChallenges": [
+                                "0570b6e5-3c27-e715-042a-59313b0a0916",
+                                "15dfb94e-72cc-9f43-5281-a0f7e5180f24",
+                                "eff06c02-2410-4226-1abc-076a2e71ee97",
+                                "b5386255-0e7e-2bd7-6c28-c1096d4902c5",
+                                "c098a7cf-8c49-02ce-475e-20beaed99712"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedChallenges": []
+                        },
+                        "ContextListeners": {
+                            "CompletedChallenges": {
+                                "comparand": "$.RequiredChallenges",
+                                "type": "challengetree"
+                            }
+                        },
+                        "States": {
+                            "Start": {
+                                "ChallengeCompleted": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$Value.ChallengeId"
+                                                    ]
+                                                },
+                                                "in": "$.RequiredChallenges"
+                                            }
+                                        },
+                                        "$pushunique": [
+                                            "CompletedChallenges",
+                                            "$Value.ChallengeId"
+                                        ]
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "($.CompletedChallenges).Count",
+                                                "($.RequiredChallenges).Count"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["cheesecake-pack", "story", "hard"],
+                    "InclusionData": {
+                        "ContractIds": [
+                            "179563a4-727a-4072-b354-c9fff4e8bff0",
+                            "b2aac100-dfc7-4f85-b9cd-528114436f6c"
+                        ],
+                        "ContractTypes": null,
+                        "Locations": [
+                            "LOCATION_COASTALTOWN",
+                            "LOCATION_COASTALTOWN_NIGHT",
+                            "LOCATION_COASTALTOWN_MOVIESET",
+                            "LOCATION_WET",
+                            "LOCATION_GOLDEN"
+                        ],
+                        "GameModes": null
+                    }
+                },
+                {
                     "Id": "c098a7cf-8c49-02ce-475e-20beaed99712",
                     "Name": "UI_PEACOCK_CHALLENGEPACK_CHEESECAKE_DUBAIPANPACIFY_NAME",
                     "ImageName": "images/challenges/categories/packcheesecake/cheesecake_dubaipanpacify.jpg",

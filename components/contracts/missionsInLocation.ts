@@ -247,6 +247,7 @@ export const missionsInLocations = {
             "07bc9bbf-7cba-4cdf-92bb-3ab57f09b1cc",
             "09a40d33-4820-454b-89af-a10e0b8d3e08",
             "74278853-5990-4058-8972-1f10ad12b6d8",
+            "b1fb40d7-c013-4c9f-bb8a-8782e980b11a",
         ],
         LOCATION_COLOMBIA: ["90121ee0-0431-4a97-9bc8-8a7e2ca30d65"],
         LOCATION_ANCESTRAL_BULLDOG: [
@@ -259,6 +260,7 @@ export const missionsInLocations = {
             "be787ec9-e7b9-4984-bb39-fda4c71705ec",
             "e4b29c19-13b4-471b-b188-cd9c0a788cd0",
             "797e204a-ef3d-463b-a386-57df0fe29b8f",
+            "f1e3dcdc-2247-4da8-bf8e-856f5fd23888",
         ],
         LOCATION_PARIS: [
             "7886bed7-3805-46c6-a792-4a0d55758934",

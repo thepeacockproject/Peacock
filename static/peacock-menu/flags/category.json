@@ -1,0 +1,69 @@
+{
+    "$datacontext": {
+        "in": "$.",
+        "datavalues": {
+            "Title": "$.title",
+            "Description": "$.description",
+            "Flags": "$.value"
+        },
+        "do": {
+            "view": "menu3.basic.OptionsListElement",
+            "controller": "contextitem",
+            "data": {
+                "title": "$.Title"
+            },
+            "children": [
+                {
+                    "view": "menu3.containers.ScrollingListContainer",
+                    "controller": "context",
+                    "direction": "vertical",
+                    "data": {
+                        "direction": "vertical",
+                        "overflowscrolling": "1.0"
+                    },
+                    "col": 0,
+                    "nrows": 3.75,
+                    "ncols": 4,
+                    "children": {
+                        "$each $.Flags": {
+                            "$if $eq($.valueType,category)": {
+                                "$then": {
+                                    "$include": {
+                                        "$path": "$formatstring menusystem/pages/peacock-menu/flags/category.json@{$.@global.CacheBuster}"
+                                    }
+                                },
+                                "$else": {
+                                    "$include": {
+                                        "$path": "$formatstring menusystem/pages/peacock-menu/flags/flag.json@{$.@global.CacheBuster}"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            ],
+            "actions": {
+                "select": {
+                    "replace-children": {
+                        "target": "options_info_container",
+                        "children": [
+                            {
+                                "view": "menu3.basic.OptionsInfo",
+                                "data": {
+                                    "title": "$.Title",
+                                    "paragraph": "$.Description"
+                                }
+                            }
+                        ]
+                    }
+                },
+                "deselect": {
+                    "replace-children": {
+                        "target": "options_info_container",
+                        "children": []
+                    }
+                }
+            }
+        }
+    }
+}

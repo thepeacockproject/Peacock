@@ -33,7 +33,7 @@ import type { MasteryData } from "../types/mastery"
 import { contractIdToHitObject, controller } from "../controller"
 import { generateCompletionData } from "../contracts/dataGen"
 import { getUserData } from "../databaseHandler"
-import { ChallengeFilterType } from "../candle/challengeHelpers"
+import { ChallengeFilterType, Pro1FilterType } from "../candle/challengeHelpers"
 import { GetDestinationQuery } from "../types/gameSchemas"
 import { createInventory } from "../inventory"
 import { log, LogLevel } from "../loggingInterop"
@@ -92,15 +92,18 @@ type GameDestination = {
     }
     Location: Unlockable
     MasteryData: MasteryData | MasteryData[] | Record<string, never>
-    MissionData: {
-        ChallengeCompletion: ChallengeCompletion
-        Location: Unlockable
-        LocationCompletionPercent: number
-        OpportunityStatistics: {
-            Completed: number
-            Count: number
-        }
+    MissionData: DestinationBaseCompletionData & {
         SubLocationMissionsData: LocationMissionData[]
+    }
+}
+
+type DestinationBaseCompletionData = {
+    ChallengeCompletion: ChallengeCompletion
+    Location: Unlockable
+    LocationCompletionPercent: number
+    OpportunityStatistics: {
+        Completed: number
+        Count: number
     }
 }
 
@@ -109,7 +112,7 @@ export function getDestinationCompletion(
     child: Unlockable | undefined,
     gameVersion: GameVersion,
     userId: string,
-) {
+): DestinationBaseCompletionData {
     const missionStories = getConfig<Record<string, MissionStory>>(
         "MissionStories",
         false,
@@ -120,6 +123,8 @@ export function getDestinationCompletion(
         {
             type: ChallengeFilterType.ParentLocation,
             parent: parent.Id,
+            gameVersion,
+            pro1Filter: Pro1FilterType.Exclude,
         },
         parent.Id,
         gameVersion,
@@ -204,13 +209,11 @@ export function getAllGameDestinations(
 
         const template: GameFacingDestination = {
             ...getDestinationCompletion(parent, undefined, gameVersion, userId),
-            ...{
-                CompletionData: generateCompletionData(
-                    destination,
-                    userId,
-                    gameVersion,
-                ),
-            },
+            CompletionData: generateCompletionData(
+                destination,
+                userId,
+                gameVersion,
+            ),
         }
 
         // TODO: THIS IS NOT CORRECT FOR 2016!
@@ -294,6 +297,7 @@ export function createLocationsData(
             locData.parents[sublocation.Properties.ParentLocation]
         const creationContract = controller.resolveContract(
             sublocation.Properties.CreateContractId!,
+            gameVersion,
         )
 
         if (!creationContract && excludeIfNoContracts) {
@@ -373,7 +377,7 @@ export function getDestination(
                 gameVersion,
                 userId,
             ),
-            ...{ SubLocationMissionsData: [] },
+            SubLocationMissionsData: [],
         },
         ChallengeData: {
             Children:
@@ -381,6 +385,7 @@ export function getDestination(
                     query.locationId,
                     gameVersion,
                     userId,
+                    query.difficulty === "pro1",
                 ),
         },
         MasteryData: resMasteryData,
@@ -503,16 +508,14 @@ export function getDestination(
         }
 
         const types = [
-            ...[
-                [undefined, "Missions"],
-                ["elusive", "ElusiveMissions"],
-            ],
             ...((gameVersion === "h1" &&
                 // @ts-expect-error Hack.
                 missionsInLocations.sarajevo["h2016enabled"]) ||
             gameVersion === "h3"
                 ? [["sarajevo", "SarajevoSixMissions"]]
                 : []),
+            [undefined, "Missions"],
+            ["elusive", "ElusiveMissions"],
         ]
 
         for (const t of types) {

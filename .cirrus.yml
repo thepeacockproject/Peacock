@@ -4,7 +4,7 @@ env:
 
 Build_task:
   container:
-    image: node:20-slim
+    image: node:22-slim
   Enable_Corepack_script:
     - corepack enable
   Yarn_cache:
@@ -37,7 +37,7 @@ Build_task:
 
 task:
   container:
-    image: node:20-slim
+    image: node:22-slim
   Enable_Corepack_script:
     - corepack enable
   Yarn_cache:

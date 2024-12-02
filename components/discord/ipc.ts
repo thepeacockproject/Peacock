@@ -95,7 +95,7 @@ async function findEndpoint(tries = 0): Promise<string> {
         }
 
         return findEndpoint(tries + 1)
-    } catch (e) {
+    } catch {
         return findEndpoint(tries + 1)
     }
 }
@@ -138,7 +138,7 @@ function decode(socket: net.Socket, callback): void {
         callback({ op, data })
         working.full = ""
         working.op = undefined
-    } catch (err) {
+    } catch {
         working.full += raw
     }
 

@@ -45,7 +45,7 @@ function createUrlencodedBody(params: Record<string, string>): string {
 
 const requestHeadersH3 = {
     "User-agent": "G2 Http/1.0 (Windows NT 10.0; DX12/1; d3d12/1)",
-    Version: "8.15.0",
+    Version: "8.17.0",
 }
 
 const requestHeadersH2 = {
@@ -95,7 +95,7 @@ export class OfficialServerAuth {
     }
 
     /**
-     * Authenticates the client with the official service the first time.
+     * Authenticates the client with the official service for the first time.
      * @param req The initial client request.
      */
     async _initiallyAuthenticate(req: Request): Promise<void> {

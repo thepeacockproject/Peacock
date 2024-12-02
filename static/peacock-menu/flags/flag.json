@@ -1,0 +1,151 @@
+{
+    "$datacontext": {
+        "in": "$.",
+        "datavalues": {
+            "Title": "$.title",
+            "Description": "$.description",
+            "PossibleValues": {
+                "$arraysort": {
+                    "source": "$.possibleValues",
+                    "property": ""
+                }
+            }
+        },
+        "do": {
+            "view": "menu3.basic.OptionsListElement",
+            "controller": {
+                "$switch $.valueType": [
+                    {
+                        "case": "enum",
+                        "return": "contextitem"
+                    },
+                    {
+                        "case": "boolean",
+                        "return": "tabsitem"
+                    }
+                ]
+            },
+            "data": {
+                "$mergeobjects": [
+                    {
+                        "title": "$.Title",
+                        "value": "$.value"
+                    },
+                    {
+                        "$switch $.valueType": [
+                            {
+                                "case": "enum",
+                                "return": {
+                                    "displayValue": "$formatstring [{$.value}]"
+                                }
+                            },
+                            {
+                                "case": "boolean",
+                                "return": {
+                                    "toggle": true,
+                                    "displayValue": {
+                                        "$if $.value": {
+                                            "$then": "$formatstring [{$loc UI_AID_VALUE_ON}]",
+                                            "$else": "$formatstring [{$loc UI_AID_VALUE_OFF}]"
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            "children": {
+                "$mergearrays": [
+                    {
+                        "$switch $.valueType": [
+                            {
+                                "case": "enum",
+                                "return": {
+                                    "controller": "tabs",
+                                    "view": "menu3.containers.ScrollingListContainer",
+                                    "data": {
+                                        "overflowscrolling": "1.0"
+                                    },
+                                    "children": {
+                                        "$each $.PossibleValues": {
+                                            "view": "menu3.basic.OptionsListElement",
+                                            "controller": "tabsitem",
+                                            "data": {
+                                                "title": "{$.}"
+                                            },
+                                            "actions": {
+                                                "select": {
+                                                    "replace-children": {
+                                                        "target": "options_info_container",
+                                                        "children": [
+                                                            {
+                                                                "view": "menu3.basic.OptionsInfo",
+                                                                "data": {
+                                                                    "title": "$.@parent.Title",
+                                                                    "paragraph": "$.@parent.Description"
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                "accept": [
+                                                    {
+                                                        "trigger-input": {
+                                                            "action": "cancel"
+                                                        }
+                                                    },
+                                                    {
+                                                        "ioiaccount": {
+                                                            "mode": "submit-email",
+                                                            "email": "$formatstring peacock:setFlagEnum?key={$.@parent.key}&value={$.}|getAllFlags"
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            "actions": {
+                "accept": {
+                    "$switch $.valueType": [
+                        {
+                            "case": "boolean",
+                            "return": {
+                                "ioiaccount": {
+                                    "mode": "submit-email",
+                                    "email": "$formatstring peacock:setFlagBoolean?key={$.key}&value={$not $.value}|getAllFlags"
+                                }
+                            }
+                        }
+                    ]
+                },
+                "select": {
+                    "replace-children": {
+                        "target": "options_info_container",
+                        "children": [
+                            {
+                                "view": "menu3.basic.OptionsInfo",
+                                "data": {
+                                    "title": "$.Title",
+                                    "paragraph": "$.Description"
+                                }
+                            }
+                        ]
+                    }
+                },
+                "deselect": {
+                    "replace-children": {
+                        "target": "options_info_container",
+                        "children": []
+                    }
+                }
+            }
+        }
+    }
+}

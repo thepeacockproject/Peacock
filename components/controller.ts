@@ -56,8 +56,6 @@ import { AsyncSeriesHook, SyncBailHook, SyncHook } from "./hooksImpl"
 import { parse } from "json5"
 import { userAuths } from "./officialServerAuth"
 // @ts-expect-error Ignore JSON import
-import LASTYARDBIRDSCPC from "../contractdata/SNIPER/THELASTYARDBIRD_SCPC.json"
-// @ts-expect-error Ignore JSON import
 import LEGACYFF from "../contractdata/COLORADO/FREEDOMFIGHTERSLEGACY.json"
 import { missionsInLocations } from "./contracts/missionsInLocation"
 import { createContext, Script } from "vm"
@@ -65,11 +63,9 @@ import { ChallengeService } from "./candle/challengeService"
 import { getFlag } from "./flags"
 import { unpack } from "msgpackr"
 import { ChallengePackage, SavedChallengeGroup } from "./types/challenges"
-import { promisify } from "util"
-import { brotliDecompress } from "zlib"
 import assert from "assert"
 import { Response } from "express"
-import { ChallengeFilterType } from "./candle/challengeHelpers"
+import { ChallengeFilterType, Pro1FilterType } from "./candle/challengeHelpers"
 import { MasteryService } from "./candle/masteryService"
 import { MasteryPackage } from "./types/mastery"
 import { ProgressionService } from "./candle/progressionService"
@@ -224,10 +220,7 @@ function createPeacockRequire(pluginName: string): NodeRequire {
 /**
  * Freedom Fighters for Hitman 2016 (objectives are different).
  */
-export const _legacyBull: MissionManifest = JSON.parse(LEGACYFF)
-
-export const _theLastYardbirdScpc: MissionManifest =
-    JSON.parse(LASTYARDBIRDSCPC)
+const _legacyBull: MissionManifest = JSON.parse(LEGACYFF)
 
 /**
  * Ensure a mission has the bare minimum required to work.
@@ -292,6 +285,11 @@ function registerInternals(contracts: MissionManifest[]): void {
                         "elusive/arcade has no objectives",
                     )
                     c.Data.Objectives = c.Data.Objectives.map((obj) => {
+                        // for moscowmule, cosmopolitan, etc.
+                        if (obj.Type === "statemachine" && obj.IsHidden) {
+                            obj.IsHidden = false
+                        }
+
                         if (obj.SuccessEvent?.EventName === "Kill") {
                             obj.IsHidden = false
                         }
@@ -332,9 +330,10 @@ export class Controller {
             ]
         >
         getContractManifest: SyncBailHook<
-            [contractId: string],
+            [contractId: string, gameVersion: GameVersion, isGroup: boolean],
             MissionManifest | undefined
         >
+        getContractIdsForGroupDiscovery: SyncHook<[string[]]>
         contributeCampaigns: SyncHook<
             [
                 campaigns: Campaign[],
@@ -391,6 +390,7 @@ export class Controller {
             newEvent: new SyncHook(),
             newMetricsEvent: new SyncHook(),
             getContractManifest: new SyncBailHook(),
+            getContractIdsForGroupDiscovery: new SyncHook(),
             contributeCampaigns: new SyncHook(),
             getSearchResults: new AsyncSeriesHook(),
             getNextCampaignMission: new SyncBailHook(),
@@ -457,6 +457,18 @@ export class Controller {
         )
 
         await this._loadInternalContracts()
+        // in h1 (legacy), bull is not the same
+        this.hooks.getContractManifest.tap(
+            "PeacockH1Bull",
+            (id, gameVersion) => {
+                if (
+                    gameVersion === "h1" &&
+                    id === "42bac555-bbb9-429d-a8ce-f1ffdf94211c"
+                ) {
+                    return _legacyBull
+                }
+            },
+        )
 
         this.challengeService = new ChallengeService(this)
         this.masteryService = new MasteryService()
@@ -494,7 +506,7 @@ export class Controller {
 
     private _getETALocations(): void {
         for (const cId of orderedETAs) {
-            const contract = this.resolveContract(cId, true)
+            const contract = this.resolveContract(cId, "h3", true)
 
             if (!contract) {
                 continue
@@ -506,7 +518,7 @@ export class Controller {
             )
 
             for (const lId of contract.Metadata.GroupDefinition.Order) {
-                const level = this.resolveContract(lId, false)
+                const level = this.resolveContract(lId, "h3", false)
 
                 if (!level) {
                     continue
@@ -582,13 +594,18 @@ export class Controller {
         return manifest
     }
 
-    private getGroupContract(json: MissionManifest) {
+    private getGroupContract(
+        json: MissionManifest,
+        gameVersion: GameVersion,
+    ): MissionManifest {
         if (escalationTypes.includes(json.Metadata.Type)) {
             if (!json.Metadata.InGroup) {
                 return json
             }
 
-            return this.resolveContract(json.Metadata.InGroup) ?? json
+            return (
+                this.resolveContract(json.Metadata.InGroup, gameVersion) ?? json
+            )
         }
 
         return json
@@ -598,28 +615,48 @@ export class Controller {
      * Get a contract by its ID.
      *
      * Order of precedence:
-     * 1. Plugins ({@link addMission} or the `getMissionManifest` hook)
-     * 2. Peacock internal contracts storage
+     * 1. Plugins ({@link addMission} or the `getContractManifest` hook).
+     * 2. Peacock internal contracts storage.
      * 3. Files in the `contracts` folder.
      *
      * @param id The contract's ID.
+     * @param gameVersion The game version.
      * @param getGroup When `id` points one of the levels in a contract group, controls whether to get the group contract instead of the individual mission. Defaulted to false. WARNING: If you set this to true, what is returned is not what is pointed to by the inputted `id`.
      * @returns The mission manifest object, or undefined if it wasn't found.
      */
     public resolveContract(
         id: string | undefined,
+        gameVersion: GameVersion,
         getGroup = false,
     ): MissionManifest | undefined {
         if (!id) {
             return undefined
         }
 
-        const optionalPluginJson = this.hooks.getContractManifest.call(id)
+        // no matter what, this function is so widely used that it's almost certain
+        // at some point, it'll be called with either a boolean or undefined as game version,
+        // because people haven't updated their plugins yet.
+        // noinspection SuspiciousTypeOfGuard
+        if (typeof gameVersion === "boolean" || gameVersion === undefined) {
+            gameVersion = "h3"
+            log(
+                LogLevel.WARN,
+                `Game version not specified. This plugin needs to be updated! Assuming h3.`,
+                "Contracts",
+            )
+            log(LogLevel.TRACE, `No game version.`, "Contracts")
+        }
+
+        const optionalPluginJson = this.hooks.getContractManifest.call(
+            id,
+            gameVersion,
+            getGroup,
+        )
 
         if (optionalPluginJson) {
             return fastClone(
                 getGroup
-                    ? this.getGroupContract(optionalPluginJson)
+                    ? this.getGroupContract(optionalPluginJson, gameVersion)
                     : optionalPluginJson,
             )
         }
@@ -628,7 +665,9 @@ export class Controller {
 
         if (registryJson) {
             return fastClone(
-                getGroup ? this.getGroupContract(registryJson) : registryJson,
+                getGroup
+                    ? this.getGroupContract(registryJson, gameVersion)
+                    : registryJson,
             )
         }
 
@@ -638,7 +677,9 @@ export class Controller {
 
         if (openCtJson) {
             return fastClone(
-                getGroup ? this.getGroupContract(openCtJson) : openCtJson,
+                getGroup
+                    ? this.getGroupContract(openCtJson, gameVersion)
+                    : openCtJson,
             )
         }
 
@@ -648,7 +689,9 @@ export class Controller {
 
         if (officialJson) {
             return fastClone(
-                getGroup ? this.getGroupContract(officialJson) : officialJson,
+                getGroup
+                    ? this.getGroupContract(officialJson, gameVersion)
+                    : officialJson,
             )
         }
 
@@ -930,6 +973,9 @@ export class Controller {
                 this._handleMasteryResources(data)
             },
         )
+
+        // Reprocess drops for all versions
+        this.masteryService.rebuildDropIndexes("h1", "scpc", "h2", "h3")
     }
 
     private async _handleResources<T>(
@@ -959,14 +1005,12 @@ export class Controller {
                     version,
                 )
 
-                for (const challenge of group.Challenges) {
-                    this.challengeService.registerChallenge(
-                        challenge,
-                        group.CategoryId,
-                        data.meta.Location,
-                        version,
-                    )
-                }
+                this.challengeService.registerChallengeList(
+                    group.Challenges,
+                    group.CategoryId,
+                    data.meta.Location,
+                    version,
+                )
             }
         }
     }
@@ -1106,23 +1150,26 @@ export class Controller {
 
             await (plugin as (controller: Controller) => Promise<void>)(this)
         } catch (e) {
-            log(LogLevel.ERROR, `Error while evaluating plugin ${pluginName}!`)
-            log(LogLevel.ERROR, e)
+            log(
+                LogLevel.ERROR,
+                `Error while evaluating plugin ${pluginName}!`,
+                "plugins",
+            )
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            log(LogLevel.ERROR, (e as any)?.stack ?? e, "plugins")
         }
     }
 
     private async _loadInternalContracts(): Promise<void> {
-        const decompress = promisify(brotliDecompress)
-
         const buf = await readFile(
             join(
                 PEACOCK_DEV ? process.cwd() : __dirname,
                 "resources",
-                "contracts.br",
+                "contracts.prp",
             ),
         )
 
-        const decompressed = JSON.parse((await decompress(buf)).toString()) as {
+        const decompressed = unpack(buf) as {
             b: MissionManifest[]
             el: MissionManifest[]
         }
@@ -1135,11 +1182,15 @@ export class Controller {
     scanForGroups(): void {
         let groupCount = 0
 
+        const discoveryIdPool: string[] = []
+        this.hooks.getContractIdsForGroupDiscovery.call(discoveryIdPool)
+
         allGroups: for (const contractId of new Set<string>([
             ...Object.keys(internalContracts),
             ...this.hooks.getContractManifest.allTapNames,
+            ...discoveryIdPool,
         ])) {
-            const contract = this.resolveContract(contractId)
+            const contract = this.resolveContract(contractId, "h3")
 
             if (!contract?.Metadata?.GroupDefinition) {
                 continue
@@ -1152,7 +1203,7 @@ export class Controller {
             const order = contract.Metadata.GroupDefinition.Order
 
             while (i + 1 <= order.length) {
-                const next = this.resolveContract(order[i])
+                const next = this.resolveContract(order[i], "h3")
 
                 if (!next) {
                     log(
@@ -1206,7 +1257,7 @@ export function contractIdToHitObject(
     gameVersion: GameVersion,
     userId: string,
 ): Hit | undefined {
-    const contract = controller.resolveContract(contractId)
+    const contract = controller.resolveContract(contractId, gameVersion)
 
     if (!contract) {
         return undefined
@@ -1247,6 +1298,8 @@ export function contractIdToHitObject(
         {
             type: ChallengeFilterType.ParentLocation,
             parent: parentLocation?.Id,
+            gameVersion,
+            pro1Filter: Pro1FilterType.Ignore,
         },
         parentLocation?.Id,
         gameVersion,

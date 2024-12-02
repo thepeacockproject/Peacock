@@ -110,7 +110,7 @@ multiplayerRouter.post(
         const userCentrics = contractIds
             .map((id) =>
                 generateUserCentric(
-                    controller.resolveContract(id),
+                    controller.resolveContract(id, req.gameVersion),
                     req.jwt.unique_name,
                     req.gameVersion,
                 ),
@@ -218,7 +218,7 @@ multiplayerRouter.post(
     (req: RequestWithJwt, res) => {
         const match = activeMatches.get(req.body.matchId)
 
-        if (!(match && match.Players.includes(req.jwt.unique_name))) {
+        if (!match?.Players.includes(req.jwt.unique_name)) {
             res.status(404).end()
             return
         }

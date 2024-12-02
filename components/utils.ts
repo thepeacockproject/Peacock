@@ -100,7 +100,7 @@ export async function checkForUpdates(): Promise<void> {
                 "updates",
             )
         }
-    } catch (e) {
+    } catch {
         log(LogLevel.WARN, "Failed to check for updates!", "updates")
     }
 }
@@ -559,7 +559,9 @@ export function attainableDefaults(gameVersion: GameVersion): string[] {
     } else {
         return [
             "TOKEN_OUTFIT_GREENLAND_HERO_TRAININGSUIT",
+            "TOKEN_OUTFIT_HOKKAIDO_HERO_HOKKAIDOSUIT",
             "TOKEN_OUTFIT_WET_SUIT",
+            "TOKEN_OUTFIT_OPULENT_HERO_OPULENTSUIT",
             "TOKEN_OUTFIT_HERO_DUGONG_SUIT",
         ]
     }
@@ -771,4 +773,17 @@ export function getSublocations(gameVersion: GameVersion): SublocationMap {
     }
 
     return sublocations
+}
+
+export function isTrueForEveryElement<Type>(
+    iter: Iterable<Type>,
+    test: (elem: Type) => boolean,
+): boolean {
+    for (const element of iter) {
+        if (!test(element)) {
+            return false
+        }
+    }
+
+    return true
 }

@@ -1,0 +1,257 @@
+{
+    "buttons": [
+        {
+            "actiontype": "cancel",
+            "actionlabel": "$loc UI_BUTTON_PROMPTS_ACTION_BACK"
+        }
+    ],
+    "onpageopened": {
+        "emit-sound-signal": {
+            "signal-name": "SET_DIFFICULTY_normal"
+        }
+    },
+    "body": {
+        "controller": "list",
+        "data": {
+            "direction": "vertical"
+        },
+        "children": [
+            {
+                "controller": "list",
+                "id": "category_container"
+            },
+            {
+                "controller": "category",
+                "container": "category_container",
+                "id": "profile_category_controller",
+                "view": "menu3.containers.ScrollingTabsContainer",
+                "direction": "horizontal",
+                "data": {
+                    "direction": "horizontal",
+                    "overflowscrolling": "0.45",
+                    "buttonprompts": [
+                        {
+                            "actiontype": ["lb", "rb"],
+                            "actionlabel": "$loc UI_BUTTON_PROMPTS_BROWSE_CATEGORIES"
+                        }
+                    ],
+                    "topnavigation": {
+                        "header": "$loc UI_MENU_PAGE_HUB_PROFILE",
+                        "title": "$loc UI_MENU_PAGE_PROFILE_STATISTICS",
+                        "icon": "stats"
+                    }
+                },
+                "children": {
+                    "$each $.DifficultyLevelData": {
+                        "$setpageargs": {
+                            "Difficulty": "$.Name"
+                        },
+                        "view": "menu3.basic.CategoryElement",
+                        "data": {
+                            "title": "$loc $formatstring UI_DIFFICULTY_{$.Name}_TITLE",
+                            "icon": "difficultylevel"
+                        },
+                        "children": {
+                            "controller": "list",
+                            "view": "menu3.containers.ScrollingListContainer",
+                            "col": 0,
+                            "row": 1,
+                            "nrows": 3,
+                            "ncols": 10,
+                            "direction": "horizontal",
+                            "data": {
+                                "direction": "horizontal",
+                                "scrollbarspaceoffset": 50
+                            },
+                            "children": {
+                                "$each $.SubLocationData": {
+                                    "view": "menu3.statistics.MenuTileStatistics",
+                                    "data": {
+                                        "isAvailable": "false",
+                                        "tileIcon": "location",
+                                        "tileHeader": "$loc $formatstring UI_{$.Location.Id}_CITY",
+                                        "tileTitle": "$loc $formatstring UI_{$.Location.Id}_TITLE",
+                                        "tileImage": {
+                                            "$switch $.Location.Id": [
+                                                {
+                                                    "case": "LOCATION_ICA_FACILITY",
+                                                    "return": "ica"
+                                                },
+                                                {
+                                                    "case": "LOCATION_PARIS",
+                                                    "return": "paris"
+                                                },
+                                                {
+                                                    "case": "LOCATION_COASTALTOWN",
+                                                    "return": "sapienza1"
+                                                },
+                                                {
+                                                    "case": "LOCATION_COASTALTOWN_MOVIESET",
+                                                    "return": "sapienza2"
+                                                },
+                                                {
+                                                    "case": "LOCATION_COASTALTOWN_NIGHT",
+                                                    "return": "sapienza3"
+                                                },
+                                                {
+                                                    "case": "LOCATION_COASTALTOWN_EBOLA",
+                                                    "return": "sapienza4"
+                                                },
+                                                {
+                                                    "case": "LOCATION_MARRAKECH",
+                                                    "return": "marrakesh1"
+                                                },
+                                                {
+                                                    "case": "LOCATION_MARRAKECH_NIGHT",
+                                                    "return": "marrakesh2"
+                                                },
+                                                {
+                                                    "case": "LOCATION_BANGKOK",
+                                                    "return": "bangkok"
+                                                },
+                                                {
+                                                    "case": "LOCATION_BANGKOK_ZIKA",
+                                                    "return": "bangkok2"
+                                                },
+                                                {
+                                                    "case": "LOCATION_COLORADO",
+                                                    "return": "colorado"
+                                                },
+                                                {
+                                                    "case": "LOCATION_COLORADO_RABIES",
+                                                    "return": "colorado2"
+                                                },
+                                                {
+                                                    "case": "LOCATION_HOKKAIDO",
+                                                    "return": "hokkaido"
+                                                },
+                                                {
+                                                    "case": "LOCATION_HOKKAIDO_FLU",
+                                                    "return": "hokkaido2"
+                                                }
+                                            ]
+                                        },
+                                        "completionTitle": "$loc UI_MENU_PAGE_TOTAL_COMPLETION",
+                                        "completionValue": "$.ChallengeCompletion.CompletionPercent",
+                                        "pro1Title": "$loc UI_DIFFICULTY_PRO1_TITLE",
+                                        "difficulty": {
+                                            "$switch $arg Difficulty": [
+                                                {
+                                                    "case": "normal",
+                                                    "return": "pro1"
+                                                },
+                                                {
+                                                    "case": "pro1",
+                                                    "return": "normal"
+                                                }
+                                            ]
+                                        },
+                                        "challenges": {
+                                            "challengesIcon": "challenge",
+                                            "challengesTitle": "$loc UI_MENU_PAGE_LOCATION_COMPLETION",
+                                            "statistics": {
+                                                "$each $.ChallengeCategoryCompletion": {
+                                                    "title": "$loc $.Name",
+                                                    "completed": "$.CompletedChallengesCount",
+                                                    "total": "$.ChallengesCount"
+                                                }
+                                            }
+                                        },
+                                        "hideMastery": "$.CompletionData.HideProgression",
+                                        "masteryIcon": "arrowright",
+                                        "masteryTitle": "$loc UI_MENU_PAGE_PROFILE_CHALLENGES_MASTERY",
+                                        "mastery": {
+                                            "completed": "$.CompletionData.Level",
+                                            "total": "$.CompletionData.MaxLevel"
+                                        },
+                                        "availableDifficulty": [
+                                            "normal",
+                                            {
+                                                "$if $isininventory $.ParentLocation.Properties.DifficultyUnlock.pro1": {
+                                                    "$then": "pro1",
+                                                    "$else": null
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "stateproviders": [
+                                        {
+                                            "type": "resourceavailability",
+                                            "resources": "$.Location.Properties.RequiredResources"
+                                        }
+                                    ],
+                                    "actions": {
+                                        "on-free-prologue-user": {
+                                            "_comment": "We have a free prologue user and the content is not owned",
+                                            "trigger-action": {
+                                                "name": "hide-mastery-and-challenges"
+                                            }
+                                        },
+                                        "on-content-unknown": {
+                                            "_comment": "No DLC could be found containing contract",
+                                            "trigger-action": {
+                                                "name": "hide-mastery-and-challenges"
+                                            }
+                                        },
+                                        "on-content-not-owned": {
+                                            "_comment": "DLC is not owned",
+                                            "trigger-action": {
+                                                "name": "hide-mastery-and-challenges"
+                                            }
+                                        },
+                                        "on-content-not-installed": {
+                                            "_comment": "DLC owned but not installed",
+                                            "trigger-action": {
+                                                "name": "hide-mastery-and-challenges"
+                                            }
+                                        },
+                                        "on-content-downloading": {
+                                            "_comment": "DLC owned and currently downloading",
+                                            "trigger-action": {
+                                                "name": "hide-mastery-and-challenges"
+                                            }
+                                        },
+                                        "on-content-update-required": {
+                                            "_comment": "DLC owned and requires update",
+                                            "trigger-action": {
+                                                "name": "hide-mastery-and-challenges"
+                                            }
+                                        },
+                                        "on-content-available": {
+                                            "_comment": "Contract is ready to be played",
+                                            "trigger-action": {
+                                                "name": "show-mastery-and-challenges"
+                                            }
+                                        },
+                                        "hide-mastery-and-challenges": {
+                                            "set-data-property": [
+                                                {
+                                                    "reload-node": false,
+                                                    "property": {
+                                                        "name": "isAvailable",
+                                                        "value": false
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "show-mastery-and-challenges": {
+                                            "set-data-property": [
+                                                {
+                                                    "reload-node": false,
+                                                    "property": {
+                                                        "name": "isAvailable",
+                                                        "value": true
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    }
+}

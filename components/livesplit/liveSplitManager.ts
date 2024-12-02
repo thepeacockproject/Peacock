@@ -37,6 +37,7 @@ export class LiveSplitManager {
     private _inValidCampaignRun: boolean
     private _currentMission: string | undefined
     private _currentMissionTotalTime: number
+    private _currentMissionGameVersion: GameVersion
     private _campaignTotalTime: number
     private _completedMissions: string[]
     private _timeCalcEntries: LiveSplitTimeCalcEntry[]
@@ -53,6 +54,7 @@ export class LiveSplitManager {
         this._currentMissionTotalTime = 0
         this._campaignTotalTime = 0
         this._raceMode = undefined
+        this._currentMissionGameVersion = "h3"
         this._liveSplitClient = new LiveSplitClient("127.0.0.1:16834")
     }
 
@@ -76,10 +78,12 @@ export class LiveSplitManager {
         contractId: string,
         gameVersion: GameVersion,
         userId: string,
-    ) {
+    ): Promise<void> {
         if (!this._checkInit()) {
             return
         }
+
+        this._currentMissionGameVersion = gameVersion
 
         const campaign = getCampaignMissions(contractId, gameVersion, userId)
 
@@ -164,7 +168,7 @@ export class LiveSplitManager {
         }
     }
 
-    async failMission(attemptTime: Seconds) {
+    async failMission(attemptTime: Seconds): Promise<void> {
         if (!this._checkInit()) {
             return
         }
@@ -176,13 +180,18 @@ export class LiveSplitManager {
             )
 
             const computedTime = this._addMissionTime(attemptTime)
-            this._addTimeCalcEntry(this._currentMission, computedTime, false)
+            this._addTimeCalcEntry(
+                this._currentMission,
+                this._currentMissionGameVersion,
+                computedTime,
+                false,
+            )
             LiveSplitManager._logAttempt(computedTime)
             await this._pushGameTime()
         }
     }
 
-    async completeMission(attemptTime: Seconds) {
+    async completeMission(attemptTime: Seconds): Promise<void> {
         LiveSplitManager._logAttempt(attemptTime)
 
         if (!this._checkInit()) {
@@ -196,7 +205,12 @@ export class LiveSplitManager {
             )
 
             const computedTime = this._addMissionTime(attemptTime)
-            this._addTimeCalcEntry(this._currentMission, computedTime, true)
+            this._addTimeCalcEntry(
+                this._currentMission,
+                this._currentMissionGameVersion,
+                computedTime,
+                true,
+            )
             log(
                 LogLevel.INFO,
                 `Total mission time with resets: ${this._currentMissionTotalTime}`,
@@ -256,7 +270,7 @@ export class LiveSplitManager {
      * PRIVATE METHODS
      */
 
-    async init() {
+    async init(): Promise<void> {
         if (!getFlag("liveSplit")) {
             this._initializationAttempted = true
 
@@ -311,7 +325,7 @@ export class LiveSplitManager {
         return this._raceMode as boolean
     }
 
-    private async _invalidateRun(contractId: string) {
+    private async _invalidateRun(contractId: string): Promise<void> {
         log(
             LogLevel.INFO,
             "Entered invalid mission for current campaign state, invalidating autosplitter run. Start first mission of a campaign to reset and start a new run.",
@@ -379,7 +393,7 @@ export class LiveSplitManager {
         ].includes(startLocationId)
     }
 
-    private async _setGameTime(totalTime: Seconds) {
+    private async _setGameTime(totalTime: Seconds): Promise<void> {
         // IMPORTANT to floor to int before sending to livesplit or else parsing will fail silently...
         const flooredTime = Math.floor(totalTime)
         const minutes = Math.floor(flooredTime / 60)
@@ -420,8 +434,11 @@ export class LiveSplitManager {
         await this._setGameTime(this._campaignTotalTime)
     }
 
-    private _getMissionLocationName(contractId: string): string | undefined {
-        const contract = controller.resolveContract(contractId)
+    private _getMissionLocationName(
+        contractId: string,
+        gameVersion: GameVersion,
+    ): string | undefined {
+        const contract = controller.resolveContract(contractId, gameVersion)
 
         if (!contract) {
             return undefined
@@ -436,10 +453,11 @@ export class LiveSplitManager {
 
     private _addTimeCalcEntry(
         contractId: string,
+        gameVersion: GameVersion,
         time: Seconds,
         isCompleted: boolean,
     ) {
-        const location = this._getMissionLocationName(contractId)
+        const location = this._getMissionLocationName(contractId, gameVersion)
 
         if (!location) return
 
@@ -615,9 +633,9 @@ function getCampaignMissions(
             case 1:
                 return trilogy.slice(0, 6)
             case 2:
-                return trilogy.slice(6, 14)
+                return trilogy.slice(6, 15)
             case 3:
-                return trilogy.slice(14, trilogy.length)
+                return trilogy.slice(15, trilogy.length)
             default:
                 return trilogy
         }
