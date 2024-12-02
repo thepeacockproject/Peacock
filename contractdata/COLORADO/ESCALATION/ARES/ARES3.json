@@ -127,32 +127,6 @@
                     },
                     "States": {
                         "Start": {
-                            "ItemRemovedFromInventory": {
-                                "Condition": {
-                                    "$eq": [
-                                        "$Value.RepositoryId",
-                                        "af8a7b6c-692c-4a76-b9bc-2b91ce32bcbc"
-                                    ]
-                                },
-                                "Transition": "CheckExplosion"
-                            },
-                            "Kill": {
-                                "Condition": {
-                                    "$eq": [
-                                        "$Value.RepositoryId",
-                                        "126935a7-7aec-4b67-afd6-9427813df3b8"
-                                    ]
-                                },
-                                "Transition": "Failure"
-                            }
-                        },
-                        "CheckExplosion": {
-                            "$timer": {
-                                "Condition": {
-                                    "$after": 5
-                                },
-                                "Transition": "Start"
-                            },
                             "setpieces": {
                                 "Condition": {
                                     "$eq": [
@@ -166,16 +140,26 @@
                         "CheckKill": {
                             "$timer": {
                                 "Condition": {
-                                    "$after": 5
+                                    "$after": 0.5
                                 },
                                 "Transition": "Start"
                             },
                             "Kill": [
                                 {
                                     "Condition": {
-                                        "$eq": [
-                                            "$Value.RepositoryId",
-                                            "126935a7-7aec-4b67-afd6-9427813df3b8"
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "126935a7-7aec-4b67-afd6-9427813df3b8"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillMethodBroad",
+                                                    "explosive"
+                                                ]
+                                            }
                                         ]
                                     },
                                     "Transition": "Success"
