@@ -23,6 +23,7 @@ import {
     GameVersion,
     InclusionData,
     MissionManifest,
+    MissionType,
     RegistryChallenge,
 } from "../types/types"
 import { SavedChallengeGroup } from "../types/challenges"
@@ -86,6 +87,8 @@ export enum ChallengeFilterType {
     Contracts = "Contracts",
     /** Only used for the location page, and when calculating location completion */
     ParentLocation = "ParentLocation",
+    /** Challenges for a contract type. Only used for ContractTypeChallenges */
+    ContractType = "ContractType",
 }
 
 /**
@@ -127,6 +130,10 @@ export type ChallengeFilterOptions =
           gameVersion: GameVersion
           locationId: string
           pro1Filter: Pro1FilterType
+      }
+    | {
+          type: ChallengeFilterType.ContractType
+          contractType: MissionType
       }
     | {
           type: ChallengeFilterType.ParentLocation
@@ -313,6 +320,13 @@ export function filterChallenge(
             }
 
             return false
+        }
+        case ChallengeFilterType.ContractType: {
+            return (
+                challenge.InclusionData?.ContractTypes?.includes(
+                    options.contractType,
+                ) ?? false
+            )
         }
         case ChallengeFilterType.ParentLocation: {
             // Challenges are already organized by parent location

@@ -1,0 +1,998 @@
+{
+    "meta": {
+        "Location": "GLOBAL_VERSUS_CHALLENGES",
+        "GameVersions": ["h2", "h3"]
+    },
+    "groups": [
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_VERSUS",
+            "Image": "images/challenges/categories/versus/tile.jpg",
+            "Icon": "versus",
+            "CategoryId": "versus",
+            "Description": "",
+            "OrderIndex": 100000,
+            "Challenges": [
+                {
+                    "Id": "16275b69-1913-4ba7-a1b9-4457d22f49f7",
+                    "Name": "CHALLENGE_VS_FLAWLESS_NAME",
+                    "ImageName": "images/challenges/GhostMode/ghostmode_flawless.jpg",
+                    "Description": "CHALLENGE_VS_FLAWLESS_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_VERSUS",
+                    "Icon": "versus",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "HasKilled": false
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "MatchOver": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": ["$Value.IsWinner", true]
+                                            },
+                                            {
+                                                "$eq": ["$.HasKilled", true]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "Ghost_TargetNoticed": {
+                                    "Transition": "Failure"
+                                },
+                                "Ghost_PlayerDied": {
+                                    "Transition": "Failure"
+                                },
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$Value.IsTarget", false]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["HasKilled", true]
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["medium", "versus"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["vsrace"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "20b06535-5fbd-461e-aca5-fa5fb3e103d1",
+                    "Name": "CHALLENGE_VS_ACCIDENTAL_NAME",
+                    "ImageName": "images/challenges/GhostMode/ghostmode_accidental.jpg",
+                    "Description": "CHALLENGE_VS_ACCIDENTAL_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_VERSUS",
+                    "Icon": "versus",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "HasKilled": false
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "MatchOver": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": ["$Value.IsWinner", true]
+                                            },
+                                            {
+                                                "$eq": ["$.HasKilled", true]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.Accident",
+                                                        false
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["HasKilled", true]
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["medium", "versus"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["vsrace"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "2458ce46-4b58-4161-810a-7d724893cf28",
+                    "Name": "CHALLENGE_VS_VICTORIOUS_NAME",
+                    "ImageName": "images/challenges/GhostMode/ghostmode_victorious.jpg",
+                    "Description": "CHALLENGE_VS_VICTORIOUS_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_VERSUS",
+                    "Icon": "versus",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "MatchOver": {
+                                    "Condition": {
+                                        "$eq": ["$Value.IsWinner", true]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["easy", "versus"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["vsrace"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "34a9aff2-7220-47f1-9629-0f902b81fd75",
+                    "Name": "CHALLENGE_VS_PACIFICATION_NAME",
+                    "ImageName": "images/challenges/GhostMode/ghostmode_nonpacifist.jpg",
+                    "Description": "CHALLENGE_VS_PACIFICATION_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_VERSUS",
+                    "Icon": "versus",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "MatchOver": {
+                                    "Condition": {
+                                        "$eq": ["$Value.IsWinner", true]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "Pacify": {
+                                    "Transition": "Failure"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["easy", "versus"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["vsrace"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "4526fa97-6252-473e-afca-3604b9fd7b70",
+                    "Name": "CHALLENGE_VS_FIVE_WINS_NAME",
+                    "ImageName": "images/challenges/GhostMode/ghostmode_quintuple.jpg",
+                    "Description": "CHALLENGE_VS_FIVE_WINS_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_VERSUS",
+                    "Icon": "versus",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 5
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "$.Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "MatchOver": [
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$Value.IsWinner", true]
+                                        },
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Transition": "Start"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["hard", "versus"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["vsrace"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "52b9c12a-b9a4-4713-962a-de15b9f9b611",
+                    "Name": "CHALLENGE_VS_TARGET_ACCIDENT_NAME",
+                    "ImageName": "images/challenges/ghostmode/ghostmode_47_accident.jpg",
+                    "Description": "CHALLENGE_VS_TARGET_ACCIDENT_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_VERSUS",
+                    "Icon": "versus",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {},
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "CheckNoticed": {
+                                "$timer": {
+                                    "Condition": {
+                                        "$after": 10.5
+                                    },
+                                    "Transition": "Start"
+                                },
+                                "Ghost_TargetNoticed": {
+                                    "Transition": "Start"
+                                },
+                                "Ghost_TargetUnnoticed": {
+                                    "Transition": "Success"
+                                }
+                            },
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": ["$Value.IsTarget", true]
+                                            },
+                                            {
+                                                "$eq": ["$Value.Accident", true]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "CheckNoticed"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["easy", "versus"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["vsrace"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "5dff165c-7881-4e0b-b2cb-2204e7039a34",
+                    "Name": "CHALLENGE_VS_TARGET_DROWN_NAME",
+                    "ImageName": "images/challenges/ghostmode/ghostmode_47_drown.jpg",
+                    "Description": "CHALLENGE_VS_TARGET_DROWN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_VERSUS",
+                    "Icon": "versus",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {},
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "CheckNoticed": {
+                                "$timer": {
+                                    "Condition": {
+                                        "$after": 10.5
+                                    },
+                                    "Transition": "Start"
+                                },
+                                "Ghost_TargetNoticed": {
+                                    "Transition": "Start"
+                                },
+                                "Ghost_TargetUnnoticed": {
+                                    "Transition": "Success"
+                                }
+                            },
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": ["$Value.IsTarget", true]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillMethodStrict",
+                                                    "accident_drown"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "CheckNoticed"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["easy", "versus"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["vsrace"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "6205d47a-806b-4da7-80a9-56338595882e",
+                    "Name": "CHALLENGE_VS_HIT_TRICK_NAME",
+                    "ImageName": "images/challenges/GhostMode/ghostmode_hittrick.jpg",
+                    "Description": "CHALLENGE_VS_HIT_TRICK_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_VERSUS",
+                    "Icon": "versus",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 3
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "$.Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "MatchOver": [
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$Value.IsWinner", true]
+                                        },
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$Value.IsWinner", false]
+                                        },
+                                        "Actions": {
+                                            "$set": ["Count", 0]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Transition": "Start"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["hard", "versus"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["vsrace"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "7109e65a-45c6-48df-be08-83e0fa1199c8",
+                    "Name": "CHALLENGE_VS_EXPLOSIVE_NAME",
+                    "ImageName": "images/challenges/GhostMode/ghostmode_explosive.jpg",
+                    "Description": "CHALLENGE_VS_EXPLOSIVE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_VERSUS",
+                    "Icon": "versus",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "CheckWin": {
+                                "$timer": {
+                                    "Condition": {
+                                        "$after": 10.5
+                                    },
+                                    "Transition": "Start"
+                                },
+                                "MatchOver": {
+                                    "Condition": {
+                                        "$eq": ["$Value.IsWinner", true]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            },
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": ["$Value.IsTarget", true]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillClass",
+                                                    "explosion"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "CheckWin"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["hard", "versus"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["vsrace"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "87679e16-ae94-4119-b5b1-8614eca20e4e",
+                    "Name": "CHALLENGE_VS_SUIT_ONLY_NAME",
+                    "ImageName": "images/challenges/GhostMode/ghostmode_suitonly.jpg",
+                    "Description": "CHALLENGE_VS_SUIT_ONLY_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_VERSUS",
+                    "Icon": "versus",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "MatchOver": {
+                                    "Condition": {
+                                        "$eq": ["$Value.IsWinner", true]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "Disguise": {
+                                    "Transition": "Failure"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["medium", "versus"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["vsrace"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "ce1b1f8a-8d3b-424c-b17f-fb9a4af34e23",
+                    "Name": "CHALLENGE_VS_TARGET_HEADSHOT_NAME",
+                    "ImageName": "images/challenges/ghostmode/ghostmode_47_headshot.jpg",
+                    "Description": "CHALLENGE_VS_TARGET_HEADSHOT_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_VERSUS",
+                    "Icon": "versus",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {},
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "CheckNoticed": {
+                                "$timer": {
+                                    "Condition": {
+                                        "$after": 10.5
+                                    },
+                                    "Transition": "Start"
+                                },
+                                "Ghost_TargetNoticed": {
+                                    "Transition": "Start"
+                                },
+                                "Ghost_TargetUnnoticed": {
+                                    "Transition": "Success"
+                                }
+                            },
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": ["$Value.IsTarget", true]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.IsHeadshot",
+                                                    true
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "CheckNoticed"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["easy", "versus"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["vsrace"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "cf16303b-c8a4-49fc-9b7e-f2d379dae8f1",
+                    "Name": "CHALLENGE_VS_TARGET_POISON_NAME",
+                    "ImageName": "images/challenges/ghostmode/ghostmode_47_poison.jpg",
+                    "Description": "CHALLENGE_VS_TARGET_POISON_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_VERSUS",
+                    "Icon": "versus",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {},
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "CheckNoticed": {
+                                "$timer": {
+                                    "Condition": {
+                                        "$after": 10.5
+                                    },
+                                    "Transition": "Start"
+                                },
+                                "Ghost_TargetNoticed": {
+                                    "Transition": "Start"
+                                },
+                                "Ghost_TargetUnnoticed": {
+                                    "Transition": "Success"
+                                }
+                            },
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": ["$Value.IsTarget", true]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillClass",
+                                                    "poison"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "CheckNoticed"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["easy", "versus"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["vsrace"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "d913b32a-85f9-44f1-a55e-991a70f1b6ab",
+                    "Name": "CHALLENGE_VS_TARGET_FIBER_NAME",
+                    "ImageName": "images/challenges/ghostmode/ghostmode_47_fiberwire.jpg",
+                    "Description": "CHALLENGE_VS_TARGET_FIBER_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": [],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_VERSUS",
+                    "Icon": "versus",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {},
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "CheckNoticed": {
+                                "$timer": {
+                                    "Condition": {
+                                        "$after": 10.5
+                                    },
+                                    "Transition": "Start"
+                                },
+                                "Ghost_TargetNoticed": {
+                                    "Transition": "Start"
+                                },
+                                "Ghost_TargetUnnoticed": {
+                                    "Transition": "Success"
+                                }
+                            },
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": ["$Value.IsTarget", true]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemCategory",
+                                                    "fiberwire"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "CheckNoticed"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["easy", "versus"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["vsrace"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "f211f6be-937e-4b6a-a466-1ab2f401e432",
+                    "Name": "CHALLENGE_VS_PHANTOM_ASSASSIN_NAME",
+                    "ImageName": "images/challenges/ghostmode/ghostmode_phantom.jpg",
+                    "Description": "CHALLENGE_VS_PHANTOM_ASSASSIN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": ["TOKEN_OUTFIT_GHOSTMODE_PHANTOM_REWARD_SUIT"],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_VERSUS",
+                    "Icon": "versus",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 100
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "$.Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "profile",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$eq": ["$Value.IsTarget", true]
+                                    },
+                                    "Transition": "CheckNoticed"
+                                }
+                            },
+                            "CheckNoticed": {
+                                "$timer": {
+                                    "Condition": {
+                                        "$after": 10.5
+                                    },
+                                    "Transition": "Start"
+                                },
+                                "Ghost_TargetNoticed": {
+                                    "Transition": "Start"
+                                },
+                                "Ghost_TargetUnnoticed": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Transition": "Start"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["hard", "versus"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["vsrace"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                },
+                {
+                    "Id": "f299f4e9-ba3b-49c5-bbf1-f39ba324706f",
+                    "Name": "CHALLENGE_VS_TARGET_VERSATILE_NAME",
+                    "ImageName": "images/challenges/ghostmode/ghostmode_47_versatile.jpg",
+                    "Description": "CHALLENGE_VS_TARGET_VERSATILE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_VERSUS",
+                    "Icon": "versus",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "RequiredChallenges": [
+                                "d913b32a-85f9-44f1-a55e-991a70f1b6ab",
+                                "cf16303b-c8a4-49fc-9b7e-f2d379dae8f1",
+                                "5dff165c-7881-4e0b-b2cb-2204e7039a34",
+                                "52b9c12a-b9a4-4713-962a-de15b9f9b611",
+                                "ce1b1f8a-8d3b-424c-b17f-fb9a4af34e23"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedChallenges": []
+                        },
+                        "ContextListeners": {
+                            "CompletedChallenges": {
+                                "comparand": "$.RequiredChallenges",
+                                "type": "challengetree"
+                            }
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "ChallengeCompleted": [
+                                    {
+                                        "$pushunique": [
+                                            "CompletedChallenges",
+                                            "$Value.ChallengeId"
+                                        ]
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$all": {
+                                                "?": {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$.##"
+                                                            ]
+                                                        },
+                                                        "in": "$.CompletedChallenges"
+                                                    }
+                                                },
+                                                "in": "$.RequiredChallenges"
+                                            }
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["medium", "versus"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["vsrace"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                }
+            ]
+        }
+    ]
+}

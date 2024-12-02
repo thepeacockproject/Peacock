@@ -208,6 +208,16 @@ export abstract class ChallengeRegistry {
             },
         ],
         [
+            "versus",
+            {
+                Name: "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_VERSUS",
+                Description: "",
+                GameVersions: ["h2", "h3"],
+                Image: "images/challenges/categories/versus/tile.jpg",
+                Icon: "versus",
+            },
+        ],
+        [
             "cheesecake-pack",
             {
                 Name: "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_CHEESECAKE",
@@ -736,6 +746,39 @@ export class ChallengeService extends ChallengeRegistry {
                 challenges.push([groupId, [...groupChallenges]])
             }
         }
+    }
+
+    /**
+     * Filter all challenges (except global) within Peacock and return them as a `CompiledChallengeTreeCategory[]`.
+     *
+     * @param filter The filter to use.
+     * @param userId The user's id.
+     * @param gameVersion The active game version.
+     * @returns A CompiledChallengeTreeCategory[] returning
+     */
+    getFilteredChallengeTree(
+        filter: ChallengeFilterOptions,
+        userId: string,
+        gameVersion: GameVersion,
+    ): CompiledChallengeTreeCategory[] {
+        const challenges: GroupIndexedChallengeLists = {}
+
+        for (const challenge of this.challenges[gameVersion].values()) {
+            // Skip global challenges
+            if (challenge.inGroup === "global") continue
+
+            if (filterChallenge(filter, challenge)) {
+                challenges[challenge.inGroup!] ??= []
+                challenges[challenge.inGroup!].push(challenge)
+            }
+        }
+
+        return this.reBatchIntoSwitchedData(
+            challenges,
+            userId,
+            gameVersion,
+            true,
+        )
     }
 
     /**

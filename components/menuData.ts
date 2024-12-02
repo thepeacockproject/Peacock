@@ -68,6 +68,7 @@ import { json as jsonMiddleware } from "body-parser"
 import { hitsCategoryService } from "./contracts/hitsCategoryService"
 import {
     ChallengeLocationQuery,
+    ContractTypeChallengesQuery,
     DebriefingLeaderboardsQuery,
     GetCompletionDataForLocationQuery,
     GetDestinationQuery,
@@ -92,6 +93,7 @@ import {
 } from "./menus/stashpoints"
 import { getHubData } from "./menus/hub"
 import { getPlayerProfileData } from "./menus/playerProfile"
+import { ChallengeFilterType } from "./candle/challengeHelpers"
 
 const menuDataRouter = Router()
 
@@ -229,6 +231,34 @@ menuDataRouter.get(
                 false,
             ),
             data,
+        })
+    },
+)
+
+menuDataRouter.get(
+    "/ContractTypeChallenges",
+    // @ts-expect-error Jwt props.
+    (req: RequestWithJwt<ContractTypeChallengesQuery>, res) => {
+        if (!req.query.contractType) {
+            res.status(400).send("Invalid contractType")
+            return
+        }
+
+        res.json({
+            template: null,
+            data: {
+                ChallengeData: {
+                    Children:
+                        controller.challengeService.getFilteredChallengeTree(
+                            {
+                                type: ChallengeFilterType.ContractType,
+                                contractType: req.query.contractType,
+                            },
+                            req.jwt.unique_name,
+                            req.gameVersion,
+                        ),
+                },
+            },
         })
     },
 )
