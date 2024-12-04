@@ -6004,6 +6004,97 @@
             "OrderIndex": 6.5,
             "Challenges": [
                 {
+                    "Id": "eca7ab97-c312-4d71-81ce-45146dd19123",
+                    "Name": "CHALLENGEPACK_ARGENTUM_WRAPPER_NAME",
+                    "ImageName": "images/challenges/Categories/PackArgentum/Argentum_Wrapper.jpg",
+                    "Description": "CHALLENGEPACK_ARGENTUM_WRAPPER_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": ["TOKEN_OUTFIT_REWARD_HERO_LEGACY47_SUIT"],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_ARGENTUM",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 1,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "profile",
+                        "Constants": {
+                            "RequiredChallenges": [
+                                "f8ba2bd3-dcd7-453f-aa64-c0ed6992e24b",
+                                "86e11742-f0e6-4594-b914-9ab0d8f7ab1b",
+                                "5b943968-7142-406e-bd6c-9b9018554667",
+                                "2b9f479e-6789-4f23-9eef-e17f268a2b11",
+                                "1bcab2a7-626e-4bf2-a9af-7adb823cdd4a"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedChallenges": []
+                        },
+                        "ContextListeners": {
+                            "CompletedChallenges": {
+                                "comparand": "$.RequiredChallenges",
+                                "type": "challengetree"
+                            }
+                        },
+                        "States": {
+                            "Start": {
+                                "ChallengeCompleted": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$Value.ChallengeId"
+                                                    ]
+                                                },
+                                                "in": "$.RequiredChallenges"
+                                            }
+                                        },
+                                        "$pushunique": [
+                                            "CompletedChallenges",
+                                            "$Value.ChallengeId"
+                                        ]
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "($.CompletedChallenges).Count",
+                                                "($.RequiredChallenges).Count"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["argentum-pack", "story", "hard"],
+                    "InclusionData": {
+                        "ContractIds": [
+                            "ebcd14b2-0786-4ceb-a2a4-e771f60d0125",
+                            "a3e19d55-64a6-4282-bb3c-d18c3f3e6e29"
+                        ],
+                        "ContractTypes": null,
+                        "Locations": [
+                            "LOCATION_WET_RAT",
+                            "LOCATION_COLOMBIA",
+                            "LOCATION_COLOMBIA_ANACONDA",
+                            "LOCATION_BANGKOK",
+                            "LOCATION_BANGKOK_ZIKA"
+                        ],
+                        "GameModes": null
+                    }
+                },
+                {
                     "Id": "5b943968-7142-406e-bd6c-9b9018554667",
                     "Name": "CHALLENGEPACK_ARGENTUM_TIGERDROWNER_NAME",
                     "ImageName": "images/challenges/Categories/PackArgentum/Argentum_TigerDrowner.jpg",

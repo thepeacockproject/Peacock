@@ -99,6 +99,58 @@
                     }
                 },
                 {
+                    "Id": "7ac9aacb-1325-40f0-9926-8fb929b7a3b0",
+                    "Name": "UI_CHALLENGES_EBOLA_TRUEFAN_NAME",
+                    "ImageName": "images/challenges/sapienza/ebola_truefan.jpg",
+                    "Description": "UI_CHALLENGES_EBOLA_TRUEFAN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 1000
+                    },
+                    "Drops": ["TOKEN_OUTFIT_HERO_SUPERFAN"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_COASTALTOWN",
+                    "ParentLocationId": "LOCATION_PARENT_COASTALTOWN",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "ab48a89d-e8a7-4df4-ae72-f0fccaa65e7f"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "95c7f899-e20c-4182-a228-28bd3d8a4ff4"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "easy", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["7e3f758a-2435-42de-93bd-d8f0b72c63a4"]
+                    }
+                },
+                {
                     "Id": "996e1023-0355-4049-a8a7-e8d8b5427253",
                     "Name": "UI_CHALLENGES_EBOLA_EXPLOSIVE_READING_NAME",
                     "ImageName": "images/challenges/sapienza/ebola_assasination_boom_blah.jpg",
@@ -7548,6 +7600,96 @@
                     "Tags": ["story", "hard", "live", "feats"]
                 },
                 {
+                    "Id": "d7b1f3e5-5199-4f03-8b3c-13e2fde8463c",
+                    "Name": "UI_CHALLENGES_SAPIENZA_PLAGUEDOCTOR_NAME",
+                    "ImageName": "images/challenges/sapienza/sapienza_plaguedoctor.jpg",
+                    "Description": "UI_CHALLENGES_SAPIENZA_PLAGUEDOCTOR_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": ["TOKEN_OUTFIT_HERO_PLAGUEDOCTOR"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_COASTALTOWN",
+                    "ParentLocationId": "LOCATION_PARENT_COASTALTOWN",
+                    "Type": "location",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 3
+                        },
+                        "Context": {
+                            "Completed": [],
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "$.Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count",
+                                            "$pushunique": [
+                                                "Completed",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.KillItemRepositoryId",
+                                                        "62c2ac2e-329e-4648-822a-e45a29a93cd0"
+                                                    ]
+                                                },
+                                                {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$Value.OutfitRepositoryId"
+                                                            ]
+                                                        },
+                                                        "in": [
+                                                            "2bbc0c72-fc99-465d-9dec-c276f68ab982"
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.ActorType",
+                                                        1
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "feats"]
+                },
+                {
                     "Id": "73f09360-52c5-4908-85e8-7ee7ba769157",
                     "Name": "UI_CHALLENGES_COPPERHEAD_47_MASTER_OF_DISGUISE_NAME",
                     "ImageName": "images/challenges/profile_challenges/generic_location_47_chameleon.jpg",
@@ -11555,6 +11697,310 @@
             ]
         },
         {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+            "Image": "images/challenges/categories/elusive/tile.jpg",
+            "Icon": "elusive",
+            "CategoryId": "elusive",
+            "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_ELUSIVE",
+            "OrderIndex": 5,
+            "Challenges": [
+                {
+                    "Id": "6499764a-8f43-4ab0-94d6-1aa8e940025a",
+                    "Name": "UI_CHALLENGES_ET_CORPSEREVIVER_TARGETDOWN_NAME",
+                    "ImageName": "images/challenges/elusive_target/et_corpsereviver_targetdown.jpg",
+                    "Description": "UI_CHALLENGES_ET_CORPSEREVIVER_TARGETDOWN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": [],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+                    "Icon": "elusive",
+                    "LocationId": "LOCATION_COASTALTOWN",
+                    "ParentLocationId": "LOCATION_PARENT_COASTALTOWN",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "RequiredTargetCount": 2
+                        },
+                        "Context": {
+                            "KilledTargetCount": 0
+                        },
+                        "ContextListeners": {
+                            "KilledTargetCount": {
+                                "type": "challengecounter",
+                                "count": "$.KilledTargetCount",
+                                "total": "$.RequiredTargetCount"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$Value.IsTarget", true]
+                                        },
+                                        "Actions": {
+                                            "$inc": "KilledTargetCount"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$.KilledTargetCount",
+                                                "$.RequiredTargetCount"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "elusive"],
+                    "InclusionData": {
+                        "ContractIds": ["8462b2e5-4d34-4300-896f-fe1dc98fa877"]
+                    }
+                },
+                {
+                    "Id": "b1a4642e-6a67-437a-8dee-4ff47af87ca1",
+                    "Name": "UI_CHALLENGES_ET_CORPSEREVIVER_SILENT_ASSASSIN_NAME",
+                    "ImageName": "images/challenges/elusive_target/et_corpsereviver_silentassassin.jpg",
+                    "Description": "UI_CHALLENGES_ET_CORPSEREVIVER_SILENT_ASSASSIN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+                    "Icon": "elusive",
+                    "LocationId": "LOCATION_COASTALTOWN",
+                    "ParentLocationId": "LOCATION_PARENT_COASTALTOWN",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "Witnesses": [],
+                            "KilledTargets": [],
+                            "RecordingDestroyed": true,
+                            "LastAccidentTime": 0
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    true,
+                                                    "$.RecordingDestroyed"
+                                                ]
+                                            },
+                                            {
+                                                "$all": {
+                                                    "in": "$.Witnesses",
+                                                    "?": {
+                                                        "$any": {
+                                                            "in": "$.KilledTargets",
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "$.##"
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "AccidentBodyFound": {
+                                    "$set": ["LastAccidentTime", "$Timestamp"]
+                                },
+                                "Witnesses": {
+                                    "Condition": {
+                                        "$any": {
+                                            "in": "$Value",
+                                            "?": {
+                                                "$pushunique": [
+                                                    "Witnesses",
+                                                    "$.#"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                "Spotted": {
+                                    "Condition": {
+                                        "$any": {
+                                            "in": "$Value",
+                                            "?": {
+                                                "$pushunique": [
+                                                    "Witnesses",
+                                                    "$.#"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$Value.KillContext",
+                                                            1
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.KillContext",
+                                                        1
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "KilledTargets",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$Value.IsTarget", true]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "KilledTargets",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "CrowdNPC_Died": {
+                                    "Transition": "Failure"
+                                },
+                                "MurderedBodySeen": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.IsWitnessTarget",
+                                                true
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "Witnesses",
+                                                "$Value.Witness"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsWitnessTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$.LastAccidentTime",
+                                                            "$Timestamp"
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ],
+                                "SecuritySystemRecorder": [
+                                    {
+                                        "Actions": {
+                                            "$set": [
+                                                "RecordingDestroyed",
+                                                false
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$eq": ["$Value.event", "spotted"]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["RecordingDestroyed", true]
+                                        },
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "erased"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "destroyed"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "hard", "elusive"],
+                    "InclusionData": {
+                        "ContractIds": ["8462b2e5-4d34-4300-896f-fe1dc98fa877"]
+                    }
+                }
+            ]
+        },
+        {
             "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_CHEESECAKE",
             "Image": "images/challenges/categories/packcheesecake/tile.jpg",
             "Icon": "challenge_category_feats",
@@ -11562,6 +12008,97 @@
             "Description": "",
             "OrderIndex": 6.1,
             "Challenges": [
+                {
+                    "Id": "0e08ee97-8f70-c82e-f04a-9d2cd60ae5b5",
+                    "Name": "UI_PEACOCK_CHALLENGEPACK_CHEESECAKE_WRAPPER_NAME",
+                    "ImageName": "images/challenges/Categories/PackCheesecake/tile.jpg",
+                    "Description": "UI_PEACOCK_CHALLENGEPACK_CHEESECAKE_WRAPPER_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": ["TOKEN_OUTFIT_HERO_BUTCHER_SUIT"],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_CHEESECAKE",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 100000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "profile",
+                        "Constants": {
+                            "RequiredChallenges": [
+                                "0570b6e5-3c27-e715-042a-59313b0a0916",
+                                "15dfb94e-72cc-9f43-5281-a0f7e5180f24",
+                                "eff06c02-2410-4226-1abc-076a2e71ee97",
+                                "b5386255-0e7e-2bd7-6c28-c1096d4902c5",
+                                "c098a7cf-8c49-02ce-475e-20beaed99712"
+                            ]
+                        },
+                        "Context": {
+                            "CompletedChallenges": []
+                        },
+                        "ContextListeners": {
+                            "CompletedChallenges": {
+                                "comparand": "$.RequiredChallenges",
+                                "type": "challengetree"
+                            }
+                        },
+                        "States": {
+                            "Start": {
+                                "ChallengeCompleted": [
+                                    {
+                                        "Condition": {
+                                            "$any": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$Value.ChallengeId"
+                                                    ]
+                                                },
+                                                "in": "$.RequiredChallenges"
+                                            }
+                                        },
+                                        "$pushunique": [
+                                            "CompletedChallenges",
+                                            "$Value.ChallengeId"
+                                        ]
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "($.CompletedChallenges).Count",
+                                                "($.RequiredChallenges).Count"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["cheesecake-pack", "story", "hard"],
+                    "InclusionData": {
+                        "ContractIds": [
+                            "179563a4-727a-4072-b354-c9fff4e8bff0",
+                            "b2aac100-dfc7-4f85-b9cd-528114436f6c"
+                        ],
+                        "ContractTypes": null,
+                        "Locations": [
+                            "LOCATION_COASTALTOWN",
+                            "LOCATION_COASTALTOWN_NIGHT",
+                            "LOCATION_COASTALTOWN_MOVIESET",
+                            "LOCATION_WET",
+                            "LOCATION_GOLDEN"
+                        ],
+                        "GameModes": null
+                    }
+                },
                 {
                     "Id": "0570b6e5-3c27-e715-042a-59313b0a0916",
                     "Name": "UI_PEACOCK_CHALLENGEPACK_CHEESECAKE_SAPIENZACLEAVERKILL_NAME",

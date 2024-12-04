@@ -21,14 +21,6 @@ import picocolors from "picocolors"
 import winston from "winston"
 import "winston-daily-rotate-file"
 
-const isDebug = ["*", "true", "peacock", "yes"].includes(
-    process.env.DEBUG || "false",
-)
-
-const isTest = ["*", "true", "peacock", "yes"].includes(
-    process.env.TEST || "false",
-)
-
 /**
  * Represents the different log levels.
  */
@@ -51,7 +43,7 @@ export enum LogLevel {
      */
     DEBUG = "debug",
     /**
-     * For outputting stacktraces.
+     * For outputting stack traces.
      */
     TRACE = "trace",
     /**
@@ -62,16 +54,13 @@ export enum LogLevel {
 
 /**
  * Represents the different internal log categories used by Peacock.
+ * @internal
  */
-export enum LogCategory {
+export const enum LogCategory {
     /**
      * Remove the category from the log
      */
     NONE = "none",
-    /**
-     * Set the category to the name of the calling function
-     */
-    CALLER = "caller",
     /**
      * Used for logging HTTP request
      */
@@ -80,9 +69,7 @@ export enum LogCategory {
 
 const LOG_LEVEL_NONE = "none"
 
-// NOTE: Tests run in "strict mode", so only enable CALLER by default for debug-mode.
-const LOG_CATEGORY_DEFAULT =
-    isDebug && !isTest ? LogCategory.CALLER : LogCategory.NONE
+const LOG_CATEGORY_DEFAULT = LogCategory.NONE
 
 const fileLogLevel = process.env.LOG_LEVEL_FILE || LogLevel.SILLY
 const consoleLogLevel = process.env.LOG_LEVEL_CONSOLE || LogLevel.SILLY
@@ -163,6 +150,21 @@ export function logDebug(...args: unknown[]): void {
     log(LogLevel.DEBUG, JSON.stringify(args, undefined, "    "))
 }
 
+function fixMessage(message: string | unknown | null | undefined): string {
+    switch (typeof message) {
+        case "string":
+            return message
+        case "object":
+            return JSON.stringify(message, undefined, 4)
+        case "undefined":
+            return "undefined"
+        case "function":
+            return "function"
+        default:
+            return String(message)
+    }
+}
+
 /**
  * Outputs a log message to the console.
  *
@@ -178,11 +180,7 @@ export function log(
     data: string | unknown,
     category: LogCategory | string = LOG_CATEGORY_DEFAULT,
 ): void {
-    if (category === LogCategory.CALLER) {
-        category = log.caller?.name.toString() || "unknown"
-    }
-
-    const message = data || "No message specified"
+    const message = fixMessage(data)
 
     const now = new Date()
     const stampParts: number[] = [

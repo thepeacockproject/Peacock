@@ -134,7 +134,7 @@ export function getModernStashData(
     let contractData: MissionManifest | undefined = undefined
 
     if (query.contractid) {
-        contractData = controller.resolveContract(query.contractid)
+        contractData = controller.resolveContract(query.contractid, gameVersion)
     }
 
     const inventory = createInventory(
@@ -264,7 +264,10 @@ export function getLegacyStashData(
         return undefined
     }
 
-    const contractData = controller.resolveContract(query.contractid)
+    const contractData = controller.resolveContract(
+        query.contractid,
+        gameVersion,
+    )
 
     if (!contractData) {
         return undefined
@@ -405,6 +408,12 @@ export function getSafehouseCategory(
             continue // these types should not be displayed when not asked for
         } else if (item.Unlockable.Properties.InclusionData) {
             // Only sniper unlockables have inclusion data, don't show them
+            continue
+        } else if (
+            item.Unlockable.Type === "emote" &&
+            ["h1", "scpc"].includes(gameVersion)
+        ) {
+            // Don't show emotes outside H2 or 3
             continue
         }
 

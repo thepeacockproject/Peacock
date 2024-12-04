@@ -49,7 +49,7 @@ cp resources/dynamic_resources_h2.rpkg "$OUT_DIR"/resources/dynamic_resources_h2
 cp resources/dynamic_resources_h1.rpkg "$OUT_DIR"/resources/dynamic_resources_h1.rpkg
 cp -r resources/challenges "$OUT_DIR"/resources/challenges
 cp -r resources/mastery "$OUT_DIR"/resources/mastery
-cp resources/contracts.br "$OUT_DIR"/resources/contracts.br
+cp resources/contracts.prp "$OUT_DIR"/resources/contracts.prp
 mkdir "$OUT_DIR"/webui
 mkdir "$OUT_DIR"/webui/dist
 cp webui/dist/*.html "$OUT_DIR"/webui/dist

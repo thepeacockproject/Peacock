@@ -173,6 +173,91 @@
                     }
                 },
                 {
+                    "Id": "74112a5c-f226-4127-860b-afd328c5ddd2",
+                    "Name": "UI_CHALLENGES_LLAMA_FINEVINTAGE_NAME",
+                    "ImageName": "images/challenges/Elegant/Elegant_FineVintage.jpg",
+                    "Description": "UI_CHALLENGES_LLAMA_FINEVINTAGE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": ["PROP_MELEE_PINOTNOIR"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ELEGANT",
+                    "ParentLocationId": "LOCATION_PARENT_ELEGANT",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 2
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$contains": [
+                                                        "$Value.KillItemCategory",
+                                                        "fiberwire"
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "CheckExit"
+                                    }
+                                ],
+                                "Disguise": {
+                                    "Transition": "Failure"
+                                }
+                            },
+                            "CheckExit": {
+                                "exit_gate": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "4c70c22c-1a69-432a-8ae0-1742606dcc0a"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "Disguise": {
+                                    "Transition": "Failure"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "hard", "assassination"],
+                    "InclusionData": {
+                        "ContractIds": ["d42f850f-ca55-4fc9-9766-8c6a2b5c3129"]
+                    }
+                },
+                {
                     "Id": "87fe1e5b-6b9b-428f-aaa2-199f35f9ef8c",
                     "Name": "UI_CHALLENGES_LLAMA_YATES_ELIMINATE_BRANSON_NAME",
                     "ImageName": "images/challenges/Elegant/Llama_branson_kill.jpg",

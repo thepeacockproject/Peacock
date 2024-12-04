@@ -1,0 +1,1906 @@
+{
+    "meta": {
+        "Location": "LOCATION_PARENT_PARIS",
+        "GameVersions": ["h1"]
+    },
+    "groups": [
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+            "Image": "images/challenges/categories/assassination/tile.jpg",
+            "Icon": "challenge_category_assassination",
+            "CategoryId": "assassination",
+            "Description": "UI_MENU_PAGE_CHALLENGE_CATEGORY_DESCRIPTION_SIGNATUREKILL",
+            "OrderIndex": 0,
+            "Challenges": [
+                {
+                    "Id": "29042c88-fdbf-4990-bde7-0584027edb7f",
+                    "Name": "UI_CHALLENGES_PEACOCK_PRO1_SILENT_ASSASSIN_NAME",
+                    "ImageName": "images/challenges/paris/peacock_c_47_silent_assassin.jpg",
+                    "Description": "UI_CHALLENGES_PEACOCK_PRO1_SILENT_ASSASSIN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_PARIS",
+                    "ParentLocationId": "LOCATION_PARENT_PARIS",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_PEACOCK_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "RecordingDestroyed": true
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [true, "$.RecordingDestroyed"]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$Value.KillContext",
+                                                            1
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.Accident",
+                                                        false
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "CheckNoticedKill"
+                                    }
+                                ],
+                                "CrowdNPC_Died": {
+                                    "Transition": "Failure"
+                                },
+                                "BodyFound": {
+                                    "Transition": "Failure"
+                                },
+                                "SecuritySystemRecorder": [
+                                    {
+                                        "Actions": {
+                                            "$set": [
+                                                "RecordingDestroyed",
+                                                false
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$eq": ["$Value.event", "spotted"]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["RecordingDestroyed", true]
+                                        },
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "erased"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "destroyed"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "Spotted": {
+                                    "Transition": "Failure"
+                                }
+                            },
+                            "CheckNoticedKill": {
+                                "Unnoticed_Kill": {
+                                    "Transition": "Start"
+                                },
+                                "DeadBodySeen": {
+                                    "Transition": "Failure"
+                                },
+                                "Spotted": {
+                                    "Transition": "Failure"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["5ee4d771-6ab3-41fa-ab4f-04970d0ca327"]
+                    }
+                },
+                {
+                    "Id": "b0d020ed-2e32-4f78-862a-07e500e84210",
+                    "Name": "UI_CHALLENGES_PEACOCK_PRO1_BOTH_EXPLOSION_NAME",
+                    "ImageName": "images/challenges/paris/peacock_c_sign_both_explosion.jpg",
+                    "Description": "UI_CHALLENGES_PEACOCK_PRO1_BOTH_EXPLOSION_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_PARIS",
+                    "ParentLocationId": "LOCATION_PARENT_PARIS",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_PEACOCK_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Is_DoubleKill": {
+                                "$timer": {
+                                    "Condition": {
+                                        "$after": 0.1
+                                    },
+                                    "Transition": "Start"
+                                },
+                                "Kill": {
+                                    "Condition": {
+                                        "$or": [
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "052434e7-f451-462f-a9d7-13657cb047c0"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillClass",
+                                                            "explosion"
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "edad702b-5b37-4dc1-a47c-36a1588f1d3f"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillClass",
+                                                            "explosion"
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$or": [
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "052434e7-f451-462f-a9d7-13657cb047c0"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillClass",
+                                                            "explosion"
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "$and": [
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.RepositoryId",
+                                                            "edad702b-5b37-4dc1-a47c-36a1588f1d3f"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$eq": [
+                                                            "$Value.KillClass",
+                                                            "explosion"
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Is_DoubleKill"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["5ee4d771-6ab3-41fa-ab4f-04970d0ca327"]
+                    }
+                },
+                {
+                    "Id": "6f685377-c690-4fae-8a9d-09ab995f9d4a",
+                    "Name": "UI_CHALLENGES_PEACOCK_PRO1_BOTH_IN_CHAND_NAME",
+                    "ImageName": "images/challenges/paris/peacock_c_sign_both_in_chand1.jpg",
+                    "Description": "UI_CHALLENGES_PEACOCK_PRO1_BOTH_IN_CHAND_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_PARIS",
+                    "ParentLocationId": "LOCATION_PARENT_PARIS",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_PEACOCK_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "ChandlierKills": []
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": [
+                                    {
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "ChandlierKills",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.SetPieceId",
+                                                        "06244a0c-c4a5-450a-8b9f-a5645e38acfa"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["TargetDied", true]
+                                        },
+                                        "Condition": {
+                                            "$all": {
+                                                "?": {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$.##"
+                                                            ]
+                                                        },
+                                                        "in": "$.ChandlierKills"
+                                                    }
+                                                },
+                                                "in": [
+                                                    "052434e7-f451-462f-a9d7-13657cb047c0",
+                                                    "edad702b-5b37-4dc1-a47c-36a1588f1d3f"
+                                                ]
+                                            }
+                                        },
+                                        "Transition": "End_Contract"
+                                    }
+                                ]
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["5ee4d771-6ab3-41fa-ab4f-04970d0ca327"]
+                    }
+                },
+                {
+                    "Id": "90f03fbd-54f6-49f5-8313-118d54158065",
+                    "Name": "UI_CHALLENGES_PEACOCK_PRO1_DAHLIA_DROWN_NAME",
+                    "ImageName": "images/challenges/paris/peacock_c_sign_dahlia_drown.jpg",
+                    "Description": "UI_CHALLENGES_PEACOCK_PRO1_DAHLIA_DROWN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_PARIS",
+                    "ParentLocationId": "LOCATION_PARENT_PARIS",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_PEACOCK_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "edad702b-5b37-4dc1-a47c-36a1588f1d3f"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceType",
+                                                    "7b28519a-3c66-4498-a61b-ae6926a85594"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["5ee4d771-6ab3-41fa-ab4f-04970d0ca327"]
+                    }
+                },
+                {
+                    "Id": "24a2ac1e-4dd7-4883-8cc9-1979f9e4ef48",
+                    "Name": "UI_CHALLENGES_PEACOCK_PRO1_DAHLIA_IAGOHACK_NAME",
+                    "ImageName": "images/challenges/paris/peacock_c_sign_dahlia_iagohack.jpg",
+                    "Description": "UI_CHALLENGES_PEACOCK_PRO1_DAHLIA_IAGOHACK_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_PARIS",
+                    "ParentLocationId": "LOCATION_PARENT_PARIS",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_PEACOCK_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "IagoHacked": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "edad702b-5b37-4dc1-a47c-36a1588f1d3f"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$any": {
+                                                            "?": {
+                                                                "$eq": [
+                                                                    "$.#",
+                                                                    "$.##"
+                                                                ]
+                                                            },
+                                                            "in": "$Value.DamageEvents"
+                                                        }
+                                                    },
+                                                    "in": [
+                                                        "Subdue",
+                                                        "CoupDeGrace"
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                },
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "Iago_HackFixed"
+                                        ]
+                                    },
+                                    "Transition": "Start"
+                                }
+                            },
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "edad702b-5b37-4dc1-a47c-36a1588f1d3f"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                },
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "Iago_Hack_Response"
+                                        ]
+                                    },
+                                    "Transition": "IagoHacked"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["5ee4d771-6ab3-41fa-ab4f-04970d0ca327"]
+                    }
+                },
+                {
+                    "Id": "7fb6e4dc-aabd-4f98-b35d-2f0a839b716f",
+                    "Name": "UI_CHALLENGES_PEACOCK_PRO1_SNIPER_ASSASSIN_NAME",
+                    "ImageName": "images/challenges/paris/peacock_c_47_sniper_assassin.jpg",
+                    "Description": "UI_CHALLENGES_PEACOCK_PRO1_SNIPER_ASSASSIN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_PARIS",
+                    "ParentLocationId": "LOCATION_PARENT_PARIS",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_PEACOCK_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "RecordingDestroyed": true,
+                            "SniperKills": [],
+                            "TargetDied": false
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [
+                                            true,
+                                            "$.RecordingDestroyed",
+                                            "$.TargetDied"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "CrowdNPC_Died": {
+                                    "Transition": "Failure"
+                                },
+                                "Kill": [
+                                    {
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "SniperKills",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$contains": [
+                                                "$Value.KillItemCategory",
+                                                "sniperrifle"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["TargetDied", true]
+                                        },
+                                        "Condition": {
+                                            "$all": {
+                                                "?": {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$.##"
+                                                            ]
+                                                        },
+                                                        "in": "$.SniperKills"
+                                                    }
+                                                },
+                                                "in": [
+                                                    "052434e7-f451-462f-a9d7-13657cb047c0",
+                                                    "edad702b-5b37-4dc1-a47c-36a1588f1d3f"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$Value.IsTarget", false]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ],
+                                "SecuritySystemRecorder": [
+                                    {
+                                        "Actions": {
+                                            "$set": [
+                                                "RecordingDestroyed",
+                                                false
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$eq": ["$Value.event", "spotted"]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["RecordingDestroyed", true]
+                                        },
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "erased"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "destroyed"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "Spotted": {
+                                    "Transition": "Failure"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "sniper", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["5ee4d771-6ab3-41fa-ab4f-04970d0ca327"]
+                    }
+                },
+                {
+                    "Id": "78209921-103a-4867-b2cf-358d67a2d54f",
+                    "Name": "UI_CHALLENGES_PEACOCK_PRO1_NOVIKOV_INTERVIEW_NAME",
+                    "ImageName": "images/challenges/paris/peacock_c_sign_novikov_interview.jpg",
+                    "Description": "UI_CHALLENGES_PEACOCK_PRO1_NOVIKOV_INTERVIEW_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_PARIS",
+                    "ParentLocationId": "LOCATION_PARENT_PARIS",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_PEACOCK_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "CameraDestoryed": {
+                                "$timer": {
+                                    "Condition": {
+                                        "$after": 5
+                                    },
+                                    "Transition": "Failure"
+                                },
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "052434e7-f451-462f-a9d7-13657cb047c0"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillClass",
+                                                    "explosion"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "InterviewStart_State": {
+                                "Level_Setup_Events": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.Event_metricvalue",
+                                                "Novikov_Interview_Done"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.Event_metricvalue",
+                                                "Camera_destoryed"
+                                            ]
+                                        },
+                                        "Transition": "CameraDestoryed"
+                                    }
+                                ]
+                            },
+                            "Start": {
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "Novikov_Interview_start"
+                                        ]
+                                    },
+                                    "Transition": "InterviewStart_State"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["5ee4d771-6ab3-41fa-ab4f-04970d0ca327"]
+                    }
+                },
+                {
+                    "Id": "1098ef9d-9cc5-4071-adf8-36ea3cb86621",
+                    "Name": "UI_CHALLENGES_PEACOCK_PRO1_DAHLIA_CHAND_NAME",
+                    "ImageName": "images/challenges/paris/peacock_c_sign_dahlia_chand1.jpg",
+                    "Description": "UI_CHALLENGES_PEACOCK_PRO1_DAHLIA_CHAND_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_PARIS",
+                    "ParentLocationId": "LOCATION_PARENT_PARIS",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_PEACOCK_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.RepositoryId",
+                                                        "edad702b-5b37-4dc1-a47c-36a1588f1d3f"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.SetPieceId",
+                                                        "c09be259-2823-4568-b4ea-7cb83093cf97"
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "End_Contract"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.RepositoryId",
+                                                        "edad702b-5b37-4dc1-a47c-36a1588f1d3f"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.SetPieceId",
+                                                        "7a4d3095-cbfb-4a28-940c-ceddec7ee27a"
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "End_Contract"
+                                    }
+                                ]
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["5ee4d771-6ab3-41fa-ab4f-04970d0ca327"]
+                    }
+                },
+                {
+                    "Id": "9e626463-f1f3-409c-b40b-3ee202333ee3",
+                    "Name": "UI_CHALLENGES_PEACOCK_PRO1_NOVIKOV_CHAND_NAME",
+                    "ImageName": "images/challenges/paris/peacock_c_sign_novikov_chand1.jpg",
+                    "Description": "UI_CHALLENGES_PEACOCK_PRO1_NOVIKOV_CHAND_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_PARIS",
+                    "ParentLocationId": "LOCATION_PARENT_PARIS",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_PEACOCK_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "Context": {
+                            "Collection": [
+                                "966a8c88-76eb-4cfa-a50a-b927618b22f5",
+                                "69495224-e982-4a79-989c-afff7e980490",
+                                "e3c339ce-b390-45d4-ae37-7151947c3fe1",
+                                "0612c231-65f3-43a8-a6f6-a0f2805ce234"
+                            ]
+                        },
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "052434e7-f451-462f-a9d7-13657cb047c0"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.SetPieceType"
+                                                        ]
+                                                    },
+                                                    "in": "$.Collection"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["5ee4d771-6ab3-41fa-ab4f-04970d0ca327"]
+                    }
+                },
+                {
+                    "Id": "d19a68be-3119-466f-8d07-3fb86f99bfc0",
+                    "Name": "UI_CHALLENGES_PEACOCK_PRO1_BOTH_FIBERWIRE_NAME",
+                    "ImageName": "images/challenges/paris/peacock_c_sign_both_fiberwire.jpg",
+                    "Description": "UI_CHALLENGES_PEACOCK_PRO1_BOTH_FIBERWIRE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_PARIS",
+                    "ParentLocationId": "LOCATION_PARENT_PARIS",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_PEACOCK_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "FiberWireKills": []
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": [
+                                    {
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "FiberWireKills",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.KillItemCategory",
+                                                        "fiberwire"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["TargetDied", true]
+                                        },
+                                        "Condition": {
+                                            "$all": {
+                                                "?": {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$.##"
+                                                            ]
+                                                        },
+                                                        "in": "$.FiberWireKills"
+                                                    }
+                                                },
+                                                "in": [
+                                                    "052434e7-f451-462f-a9d7-13657cb047c0",
+                                                    "edad702b-5b37-4dc1-a47c-36a1588f1d3f"
+                                                ]
+                                            }
+                                        },
+                                        "Transition": "End_Contract"
+                                    }
+                                ]
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["5ee4d771-6ab3-41fa-ab4f-04970d0ca327"]
+                    }
+                },
+                {
+                    "Id": "5ba0a3cc-ca89-42eb-a20f-44549ef466ae",
+                    "Name": "UI_CHALLENGES_PEACOCK_PRO1_SUIT_ONLY_NAME",
+                    "ImageName": "images/challenges/paris/peacock_c_47_suit_only.jpg",
+                    "Description": "UI_CHALLENGES_PEACOCK_PRO1_SUIT_ONLY_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_PARIS",
+                    "ParentLocationId": "LOCATION_PARENT_PARIS",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_PEACOCK_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "Context": {},
+                        "States": {
+                            "Start": {
+                                "HeroSpawn_Location": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "aa4cdd0b-8fcf-4160-a049-c15a19c82af1"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "04834714-406b-444e-b0d8-2f1054c1f8b5"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "c6765d3e-4031-4778-a5c5-a6d875131ea4"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "be610298-cbe8-47ce-9e90-951d2aae6f39"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ],
+                                "Disguise": {
+                                    "Transition": "Failure"
+                                },
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["5ee4d771-6ab3-41fa-ab4f-04970d0ca327"]
+                    }
+                },
+                {
+                    "Id": "79cf3c19-7c25-402d-b883-480e659a3d04",
+                    "Name": "UI_CHALLENGES_PEACOCK_PRO1_DAHLIA_POISON_NAME",
+                    "ImageName": "images/challenges/paris/peacock_c_sign_dahlia_poison1.jpg",
+                    "Description": "UI_CHALLENGES_PEACOCK_PRO1_DAHLIA_POISON_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_PARIS",
+                    "ParentLocationId": "LOCATION_PARENT_PARIS",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_PEACOCK_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "Context": {
+                            "Collection": [
+                                "e37f114a-13d4-479a-8da4-205db7dec084",
+                                "3b65524a-0b68-4d17-841b-221c1e637560"
+                            ]
+                        },
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "edad702b-5b37-4dc1-a47c-36a1588f1d3f"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillClass",
+                                                    "poison"
+                                                ]
+                                            },
+                                            {
+                                                "$any": {
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.SetPieceId"
+                                                        ]
+                                                    },
+                                                    "in": "$.Collection"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["5ee4d771-6ab3-41fa-ab4f-04970d0ca327"]
+                    }
+                },
+                {
+                    "Id": "981b0a3a-820e-4116-b8d4-48b83f876b20",
+                    "Name": "UI_CHALLENGES_PEACOCK_PRO1_BOTH_FALL_NAME",
+                    "ImageName": "images/challenges/paris/peacock_c_sign_both_fall.jpg",
+                    "Description": "UI_CHALLENGES_PEACOCK_PRO1_BOTH_FALL_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_PARIS",
+                    "ParentLocationId": "LOCATION_PARENT_PARIS",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_PEACOCK_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "052434e7-f451-462f-a9d7-13657cb047c0"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceType",
+                                                    "8f241099-1afa-4950-8a4a-54b13e8d5a14"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["5ee4d771-6ab3-41fa-ab4f-04970d0ca327"]
+                    }
+                },
+                {
+                    "Id": "119553ef-4ea6-4366-8303-49fb3d082eea",
+                    "Name": "UI_CHALLENGES_PEACOCK_PRO1_SA_SUIT_NAME",
+                    "ImageName": "images/challenges/paris/peacock_c_47_sa_suit_only.jpg",
+                    "Description": "UI_CHALLENGES_PEACOCK_PRO1_SA_SUIT_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_PARIS",
+                    "ParentLocationId": "LOCATION_PARENT_PARIS",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_PEACOCK_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "RecordingDestroyed": true
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [true, "$.RecordingDestroyed"]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "HeroSpawn_Location": [
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "aa4cdd0b-8fcf-4160-a049-c15a19c82af1"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "04834714-406b-444e-b0d8-2f1054c1f8b5"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "c6765d3e-4031-4778-a5c5-a6d875131ea4"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "be610298-cbe8-47ce-9e90-951d2aae6f39"
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    }
+                                ],
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        false
+                                                    ]
+                                                },
+                                                {
+                                                    "$not": {
+                                                        "$eq": [
+                                                            "$Value.KillContext",
+                                                            1
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "Failure"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.IsTarget",
+                                                        true
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.Accident",
+                                                        false
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "CheckNoticedKill"
+                                    }
+                                ],
+                                "CrowdNPC_Died": {
+                                    "Transition": "Failure"
+                                },
+                                "BodyFound": {
+                                    "Transition": "Failure"
+                                },
+                                "SecuritySystemRecorder": [
+                                    {
+                                        "Actions": {
+                                            "$set": [
+                                                "RecordingDestroyed",
+                                                false
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$eq": ["$Value.event", "spotted"]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["RecordingDestroyed", true]
+                                        },
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "erased"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "destroyed"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "Spotted": {
+                                    "Transition": "Failure"
+                                },
+                                "Disguise": {
+                                    "Transition": "Failure"
+                                }
+                            },
+                            "CheckNoticedKill": {
+                                "Unnoticed_Kill": {
+                                    "Transition": "Start"
+                                },
+                                "DeadBodySeen": {
+                                    "Transition": "Failure"
+                                },
+                                "Spotted": {
+                                    "Transition": "Failure"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "suitonly", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["5ee4d771-6ab3-41fa-ab4f-04970d0ca327"]
+                    }
+                },
+                {
+                    "Id": "2c2611f4-29f5-4b1b-9173-57be715e9b38",
+                    "Name": "UI_CHALLENGES_PEACOCK_PRO1_NOVIKOV_DROWN_NAME",
+                    "ImageName": "images/challenges/paris/peacock_c_sign_novikov_drown.jpg",
+                    "Description": "UI_CHALLENGES_PEACOCK_PRO1_NOVIKOV_DROWN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_PARIS",
+                    "ParentLocationId": "LOCATION_PARENT_PARIS",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_PEACOCK_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "052434e7-f451-462f-a9d7-13657cb047c0"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceType",
+                                                    "7b28519a-3c66-4498-a61b-ae6926a85594"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["5ee4d771-6ab3-41fa-ab4f-04970d0ca327"]
+                    }
+                },
+                {
+                    "Id": "8d25d4da-0969-456f-99e8-6f794af3d462",
+                    "Name": "UI_CHALLENGES_PEACOCK_PRO1_NOVIKOV_LIGHTRIG_NAME",
+                    "ImageName": "images/challenges/paris/peacock_c_sign_novikov_lightrig.jpg",
+                    "Description": "UI_CHALLENGES_PEACOCK_PRO1_NOVIKOV_LIGHTRIG_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_PARIS",
+                    "ParentLocationId": "LOCATION_PARENT_PARIS",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_PEACOCK_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "052434e7-f451-462f-a9d7-13657cb047c0"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.SetPieceId",
+                                                    "675e4629-a251-4597-bf60-a93fe8d5a0f6"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["5ee4d771-6ab3-41fa-ab4f-04970d0ca327"]
+                    }
+                },
+                {
+                    "Id": "af42a3c4-4e08-49fa-bedc-8e48058693bf",
+                    "Name": "UI_CHALLENGES_PEACOCK_PRO1_NO_EVIDENCE_NAME",
+                    "ImageName": "images/challenges/paris/peacock_c_47_no_evidence.jpg",
+                    "Description": "UI_CHALLENGES_PEACOCK_PRO1_NO_EVIDENCE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_PARIS",
+                    "ParentLocationId": "LOCATION_PARENT_PARIS",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_PEACOCK_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "RecordingDestroyed": true
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [true, "$.RecordingDestroyed"]
+                                    },
+                                    "Transition": "Success"
+                                },
+                                "SecuritySystemRecorder": [
+                                    {
+                                        "Actions": {
+                                            "$set": [
+                                                "RecordingDestroyed",
+                                                false
+                                            ]
+                                        },
+                                        "Condition": {
+                                            "$eq": ["$Value.event", "spotted"]
+                                        }
+                                    },
+                                    {
+                                        "Actions": {
+                                            "$set": ["RecordingDestroyed", true]
+                                        },
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "erased"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.event",
+                                                        "destroyed"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.Accident",
+                                                        false
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "CheckNoticedKill"
+                                    }
+                                ],
+                                "BodyFound": {
+                                    "Transition": "Failure"
+                                }
+                            },
+                            "CheckNoticedKill": {
+                                "Unnoticed_Kill": {
+                                    "Transition": "Start"
+                                },
+                                "DeadBodySeen": {
+                                    "Transition": "Failure"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["5ee4d771-6ab3-41fa-ab4f-04970d0ca327"]
+                    }
+                },
+                {
+                    "Id": "4a0e364e-35a2-4884-b683-992270b46642",
+                    "Name": "UI_CHALLENGES_PEACOCK_PRO1_DAHLIA_KRUGER_NAME",
+                    "ImageName": "images/challenges/paris/peacock_c_sign_dahlia_kruger.jpg",
+                    "Description": "UI_CHALLENGES_PEACOCK_PRO1_DAHLIA_KRUGER_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_PARIS",
+                    "ParentLocationId": "LOCATION_PARENT_PARIS",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_PEACOCK_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "MeetigStart": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "edad702b-5b37-4dc1-a47c-36a1588f1d3f"
+                                                ]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.OutfitRepositoryId",
+                                                    "642c20f9-bf41-41b4-b0bb-2491b5be938a"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                },
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "47Kruger_Dahlia_End"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            },
+                            "Start": {
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "47Kruger_Dahlia"
+                                        ]
+                                    },
+                                    "Transition": "MeetigStart"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["5ee4d771-6ab3-41fa-ab4f-04970d0ca327"]
+                    }
+                },
+                {
+                    "Id": "a3e749d6-2979-4326-a2db-f87343a66d6f",
+                    "Name": "UI_CHALLENGES_PEACOCK_PRO1_NOVIKOV_SEINE_NAME",
+                    "ImageName": "images/challenges/paris/peacock_c_sign_novikov_seine.jpg",
+                    "Description": "UI_CHALLENGES_PEACOCK_PRO1_NOVIKOV_SEINE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_PARIS",
+                    "ParentLocationId": "LOCATION_PARENT_PARIS",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_PEACOCK_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "Novikov_SnapKill"
+                                        ]
+                                    },
+                                    "Transition": "End_Contract"
+                                }
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["5ee4d771-6ab3-41fa-ab4f-04970d0ca327"]
+                    }
+                },
+                {
+                    "Id": "03cc4c40-f1bb-400a-9a9b-fc4d90f1fcb5",
+                    "Name": "UI_CHALLENGES_PEACOCK_PRO1_BOTH_SNIPE_NAME",
+                    "ImageName": "images/challenges/paris/peacock_c_sign_both_snipe.jpg",
+                    "Description": "UI_CHALLENGES_PEACOCK_PRO1_BOTH_SNIPE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 5000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_PARIS",
+                    "ParentLocationId": "LOCATION_PARENT_PARIS",
+                    "TypeHeader": "UI_MENU_PAGE_CHALLENGE_HEADER_MISSION",
+                    "TypeTitle": "UI_CONTRACT_PEACOCK_TITLE",
+                    "TypeIcon": "mission",
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {
+                            "MagolisKilled": false,
+                            "NovikovKilled": false
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "FireworkStart"
+                                        ]
+                                    },
+                                    "Transition": "Triggered"
+                                }
+                            },
+                            "StartTimer": {
+                                "$timer": {
+                                    "Condition": {
+                                        "$after": 11
+                                    },
+                                    "Transition": "Failure"
+                                },
+                                "Spotted": {
+                                    "Transition": "Failure"
+                                },
+                                "AmbientChanged": {
+                                    "Condition": {
+                                        "$eq": ["$Value.Ambient", "Combat"]
+                                    },
+                                    "Transition": "Failure"
+                                },
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "FireworkEnd"
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                },
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.RepositoryId",
+                                                        "052434e7-f451-462f-a9d7-13657cb047c0"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.KillItemCategory",
+                                                        "sniperrifle"
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "End_Contract"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.RepositoryId",
+                                                        "edad702b-5b37-4dc1-a47c-36a1588f1d3f"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.KillItemCategory",
+                                                        "sniperrifle"
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "End_Contract"
+                                    }
+                                ]
+                            },
+                            "Triggered": {
+                                "Level_Setup_Events": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.Event_metricvalue",
+                                            "FireworkEnd"
+                                        ]
+                                    },
+                                    "Transition": "Start"
+                                },
+                                "Spotted": {
+                                    "Transition": "Failure"
+                                },
+                                "AmbientChanged": {
+                                    "Condition": {
+                                        "$eq": ["$Value.Ambient", "Combat"]
+                                    },
+                                    "Transition": "Failure"
+                                },
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.RepositoryId",
+                                                        "052434e7-f451-462f-a9d7-13657cb047c0"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.KillItemCategory",
+                                                        "sniperrifle"
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "StartTimer"
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$eq": [
+                                                        "$Value.RepositoryId",
+                                                        "edad702b-5b37-4dc1-a47c-36a1588f1d3f"
+                                                    ]
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.KillItemCategory",
+                                                        "sniperrifle"
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Transition": "StartTimer"
+                                    }
+                                ]
+                            },
+                            "End_Contract": {
+                                "ContractEnd": {
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "pro1"],
+                    "InclusionData": {
+                        "ContractIds": ["5ee4d771-6ab3-41fa-ab4f-04970d0ca327"]
+                    }
+                }
+            ]
+        }
+    ]
+}

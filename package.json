@@ -1,6 +1,6 @@
 {
     "name": "@peacockproject/monorepo",
-    "version": "7.3.2",
+    "version": "8.0.0-alpha.3",
     "private": true,
     "license": "AGPL-3.0",
     "scripts": {
@@ -19,6 +19,7 @@
         "typedefs": "yarn workspace @peacockproject/core",
         "run-dev": "node packaging/devLoader.mjs",
         "extract-challenge-data": "node packaging/extractChallengeData.mjs",
+        "extract-featured-contracts": "node packaging/extractFeaturedContracts.mjs",
         "find-circular": "yarn dlx dpdm components/index.ts --exclude \"(components/types)|(node_modules)\" -T"
     },
     "prettier": {
@@ -31,13 +32,23 @@
         "debug": "^4.3.4",
         "http-errors": "patch:http-errors@npm:2.0.0#.yarn/patches/http-errors-npm-2.0.0-3f1c503428.patch",
         "iconv-lite": "patch:iconv-lite@npm:0.6.3#.yarn/patches/iconv-lite-npm-0.6.3-24b8aae27e.patch",
-        "send": "patch:send@npm:0.18.0#.yarn/patches/send-npm-0.18.0-faadf6353f.patch"
+        "send": "patch:send@npm:0.18.0#.yarn/patches/send-npm-0.18.0-faadf6353f.patch",
+        "function-bind": "npm:@nolyfill/function-bind@^1",
+        "gopd": "npm:@nolyfill/gopd@^1",
+        "has-property-descriptors": "npm:@nolyfill/has-property-descriptors@^1",
+        "has-proto": "npm:@nolyfill/has-proto@^1",
+        "has-symbols": "npm:@nolyfill/has-symbols@^1",
+        "hasown": "npm:@nolyfill/hasown@^1",
+        "isarray": "npm:@nolyfill/isarray@^1",
+        "set-function-length": "npm:@nolyfill/set-function-length@^1",
+        "side-channel": "npm:@nolyfill/side-channel@^1"
     },
     "dependencies": {
-        "@peacockproject/statemachine-parser": "^6.1.0",
+        "@peacockproject/statemachine-parser": "^6.2.0",
         "@yarnpkg/fslib": "^3.1.0",
         "@yarnpkg/libzip": "^3.1.0",
-        "axios": "^1.7.2",
+        "atomically": "^2.0.3",
+        "axios": "^1.7.4",
         "body-parser": "*",
         "clipanion": "^4.0.0-rc.3",
         "commander": "^12.1.0",
@@ -95,7 +106,7 @@
         "winston-daily-rotate-file": "^5.0.0"
     },
     "engines": {
-        "node": "18.x || 20.x"
+        "node": "20.x || 22.x"
     },
     "workspaces": [
         "webui",
@@ -103,5 +114,5 @@
         "packaging/eslint",
         "tests"
     ],
-    "packageManager": "yarn@4.3.0"
+    "packageManager": "yarn@4.5.1"
 }

@@ -44,7 +44,10 @@ export function withLookupDialog(
         return
     }
 
-    const contract = controller.resolveContract(req.query.contractId)
+    const contract = controller.resolveContract(
+        req.query.contractId,
+        req.gameVersion,
+    )
 
     if (!contract) {
         res.status(404).send("contract does not exist!")
@@ -130,7 +133,10 @@ export function directRoute(req: RequestWithJwt, res: Response): void {
         return
     }
 
-    const contract = controller.resolveContract(req.params.contractId)
+    const contract = controller.resolveContract(
+        req.params.contractId,
+        req.gameVersion,
+    )
 
     if (!contract) {
         res.status(404).send("contract does not exist!")
