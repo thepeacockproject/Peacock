@@ -155,14 +155,25 @@ export function inclusionDataCheck(
     if (!incData) return true
     if (!contract) return false
 
-    return Boolean(
-        incData.ContractIds?.includes(contract.Metadata.Id) ||
-            incData.ContractTypes?.includes(contract.Metadata.Type) ||
-            incData.Locations?.includes(contract.Metadata.Location) ||
+    const checks: boolean[] = []
+
+    if (incData.ContractIds)
+        checks.push(incData.ContractIds?.includes(contract.Metadata.Id))
+
+    if (incData.ContractTypes)
+        checks.push(incData.ContractTypes?.includes(contract.Metadata.Type))
+
+    if (incData.Locations)
+        checks.push(incData.Locations?.includes(contract.Metadata.Location))
+
+    if (incData.GameModes)
+        checks.push(
             contract.Metadata?.Gamemodes?.some((r) =>
                 incData.GameModes?.includes(r),
-            ),
-    )
+            ) ?? false,
+        )
+
+    return checks.every(Boolean)
 }
 
 export function isChallengeForDifficulty(
