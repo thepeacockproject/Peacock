@@ -298,6 +298,13 @@ export const TOMORROWLAND_UNLOCKABLES = [
     "PROP_CONTAINER_SUITCASE_DJ_BAG",
 ]
 
+export const LAMBIC_UNLOCKABLES = [
+    "TOKEN_OUTFIT_LAMBIC_KICKBOXER_REWARD",
+    "FIREARMS_HERO_SMG_HX_10_LAMBIC",
+    "PROP_MELEE_KUKRI_KNIFE_LAMBIC",
+    "PROP_MELEE_VHS_LAMBIC",
+]
+
 export const brokenItems = [
     // duped dart gun (thanks IOI)
     "835ad050-6d19-4e94-80b1-f5cec9815ba3",

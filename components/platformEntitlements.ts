@@ -87,6 +87,8 @@ export const H3_EPIC_ENTITLEMENTS = [
     "6cdf07da030d4f66acd50eaf3cd234c7",
     // TOMORROWLAND:
     "f04198e0ffcf49079b5ec77bb6b66891",
+    // LAMBIC:
+    "70a9afcc8de84b6ab0f2b45b2018559b",
 ]
 
 export const H2_STEAM_ENTITLEMENTS = [

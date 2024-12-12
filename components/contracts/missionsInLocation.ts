@@ -292,6 +292,7 @@ export const missionsInLocations = {
         LOCATION_WET_RAT: [
             "dd68d30f-3900-415f-bb17-84681a2cd4fc",
             "9cbdb972-95df-4e0a-be77-7937ec6f2fb0",
+            "e9168f42-882e-4c7e-8353-33d2bd8bb864",
         ],
         LOCATION_MIAMI: ["de9788cc-b9c4-47fc-b5df-86451cd82c43"],
     },

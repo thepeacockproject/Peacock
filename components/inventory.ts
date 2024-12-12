@@ -26,6 +26,7 @@ import {
     H1_GOTY_UNLOCKABLES,
     H1_REQUIEM_UNLOCKABLES,
     H2_RACCOON_STINGRAY_UNLOCKABLES,
+    LAMBIC_UNLOCKABLES,
     MAKESHIFT_UNLOCKABLES,
     PENICILLIN_UNLOCKABLES,
     SAMBUCA_UNLOCKABLES,
@@ -70,6 +71,7 @@ const DELUXE_DATA = [
     ...SAMBUCA_UNLOCKABLES,
     ...PENICILLIN_UNLOCKABLES,
     ...TOMORROWLAND_UNLOCKABLES,
+    ...LAMBIC_UNLOCKABLES,
 ]
 
 /**
@@ -417,6 +419,13 @@ function filterAllowedContent(gameVersion: GameVersion, entP: string[]) {
             return (
                 e.includes("f04198e0ffcf49079b5ec77bb6b66891") ||
                 e.includes("3110360")
+            )
+        }
+
+        if (LAMBIC_UNLOCKABLES.includes(id)) {
+            return (
+                e.includes("70a9afcc8de84b6ab0f2b45b2018559b") ||
+                e.includes("3254350")
             )
         }
 
