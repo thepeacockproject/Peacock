@@ -173,7 +173,7 @@ export function inclusionDataCheck(
             ) ?? false,
         )
 
-    return checks.every(Boolean)
+    return checks.length === 0 ? false : checks.every(Boolean)
 }
 
 export function isChallengeForDifficulty(
