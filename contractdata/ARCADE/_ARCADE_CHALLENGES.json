@@ -13,6 +13,49 @@
             "OrderIndex": 6,
             "Challenges": [
                 {
+                    "Id": "9c427e50-bf40-4c01-ab91-2d5d5b3590c8",
+                    "Name": "UI_KIWI_COMPLETION_CHALLENGE_NAME",
+                    "ImageName": "images/contracts/arcade/Arcade_Kiwi_Group.jpg",
+                    "Description": "UI_KIWI_COMPLETION_CHALLENGE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ARCADE",
+                    "Icon": "arcademode",
+                    "LocationId": "LOCATION_PARENT_WET",
+                    "ParentLocationId": "LOCATION_PARENT_WET",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$ContractId",
+                                            "927c73f4-aa6e-4da6-8672-86b2c1dd1443"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["arcade", "hard"],
+                    "InclusionData": {
+                        "ContractIds": ["e9168f42-882e-4c7e-8353-33d2bd8bb864"]
+                    }
+                },
+                {
                     "Id": "b3212798-0c9e-4239-9c4a-0a669d2818f6",
                     "Name": "UI_COCONUT_COMPLETION_CHALLENGE_NAME",
                     "ImageName": "images/contracts/arcade/Arcade_Coconut_Group.jpg",
