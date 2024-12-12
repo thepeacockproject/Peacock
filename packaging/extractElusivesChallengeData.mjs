@@ -359,7 +359,10 @@ const contractIds = {
         "1fcaff1b-7fa3-4b9f-a586-9c7a1689b48d",
     ],
     LOCATION_PARENT_EDGY: ["3f0b8f19-d5d4-4611-ac8f-480f81c18f54"],
-    LOCATION_PARENT_WET: ["6fad7901-279f-45df-ab8d-087a3cb06dcc"],
+    LOCATION_PARENT_WET: [
+        "6fad7901-279f-45df-ab8d-087a3cb06dcc",
+        "699ec9a3-102e-499b-ad60-6a329cc2054c",
+    ],
     LOCATION_PARENT_ELEGANT: [
         "d030216e-a8d6-4446-a1f6-2fc1a2461464",
         "9a36cc55-bfc4-4f8b-99d2-c65cf4de365d",
@@ -422,7 +425,7 @@ async function extract(locationParent, jwt, apiUrl) {
             "User-Agent": "G2 Http/1.0 (Windows NT 10.0; DX12/1; d3d12/1)",
             "Content-Type": "application/json",
             Accept: "application/json, text/*, image/*, application/json",
-            Version: "8.17.0",
+            Version: "8.18.0",
             Authorization: `bearer ${jwt}`,
         },
     })
