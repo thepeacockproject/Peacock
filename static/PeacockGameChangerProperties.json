@@ -270,5 +270,55 @@
         ],
         "ShowBasedOnObjectives": null,
         "IsPrestigeObjective": null
+    },
+    "cf2f8e72-467d-4344-98f8-f1a863bb6cfe": {
+        "Name": "UI_PEACOCK_GAMECHANGERS_EDGY_CASPER_TRESPASSER_NAME",
+        "Description": "UI_PEACOCK_GAMECHANGERS_EDGY_CASPER_TRESPASSER_DESC",
+        "Icon": null,
+        "IsHidden": null,
+        "TileImage": "images/contracts/gamechangers/gamechanger_edgy_casper_trespasser.jpg",
+        "ObjectivesCategory": "primary",
+        "Resource": [],
+        "Objectives": [
+            {
+                "Id": "8b8f4a89-342b-4cef-a3c2-a05e22d7b83b",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": true
+                    }
+                },
+                "BriefingText": "$loc UI_PEACOCK_GAMECHANGERS_EDGY_CASPER_TRESPASSER_FAIL",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_GAMECHANGERS_EDGY_CASPER_TRESPASSER_DESC",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "Trespassing": {
+                                "Condition": {
+                                    "$eq": ["$Value.IsTrespassing", true]
+                                },
+                                "Transition": "Trespassenger"
+                            },
+                            "Kill": { "Transition": "Failure" }
+                        },
+                        "Trespassenger": {
+                            "Trespassing": {
+                                "Condition": {
+                                    "$eq": ["$Value.IsTrespassing", false]
+                                },
+                                "Transition": "Start"
+                            }
+                        }
+                    }
+                }
+            }
+        ]
     }
 }
