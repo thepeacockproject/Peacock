@@ -14,6 +14,7 @@ jobs:
       - name: Checkout Peacock
         uses: actions/checkout@v4
         with:
+          persist-credentials: false
           token: ${{ secrets.PEACOCKBOT_TOKEN }}
           path: "./Peacock"
 
@@ -35,14 +36,6 @@ jobs:
         run: |
           cd Peacock
           yarn install --immutable
-
-      #- name: Download ResourceLib
-      #  uses: robinraju/release-downloader@v1.7
-      #  with:
-      #    repository: "OrfeasZ/ZHMTools"
-      #    latest: true
-      #    fileName: "ResourceLib-win-x64.zip"
-      #    out-file-path: "Peacock/resources"
 
       - name: Download RPKG-CLI
         id: rpkgcli
