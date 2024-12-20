@@ -479,7 +479,7 @@ namespace HitmanPatcher
         {
             return Task.Factory.ContinueWhenAll(new[]
             {
-                Task.Factory.StartNew(() => findPattern(data, 0x4, "baa7935217488d0d58")) // 3.210
+                Task.Factory.StartNew(() => findPattern(data, 0x4, "baa7935217488d0d")) // 3.210
 					.ContinueWith(task =>
                         task.Result.Select(addr => addr + 0x22 + BitConverter.ToInt32(data, addr + 0x1A)).ToArray()),
                 Task.Factory.StartNew(() => findPattern(data, 0x1,
