@@ -1122,6 +1122,7 @@ export class Controller {
             process,
             fetch,
             require: createPeacockRequire(pluginName),
+            __filename: pluginPath,
         })
 
         let theExports
