@@ -370,6 +370,8 @@ app.get(
             servertimeutc: new Date().toISOString(),
             ias: 2,
         })
+
+        controller.hooks.onUserLogin.call(req.gameVersion, req.jwt.unique_name)
     },
 )
 
