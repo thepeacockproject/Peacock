@@ -642,6 +642,9 @@ export async function getMissionEndData(
         "requested score for other user's session",
     )
 
+    // call hook
+    controller.hooks.onMissionEnd.call(sessionDetails)
+
     const realData = getUserData(jwt.unique_name, gameVersion)
     // Resolve userdata
     const userData = isDryRun ? structuredClone(realData) : realData

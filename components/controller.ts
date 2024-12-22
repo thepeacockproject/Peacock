@@ -351,6 +351,7 @@ export class Controller {
         >
         onMissionEnd: SyncHook<[session: ContractSession]>
         onEscalationReset: SyncHook<[groupId: string]>
+        onUserLogin: SyncHook<[gameVersion: GameVersion, userId: string]>
     }
     public configManager: typeof configManagerType = {
         getConfig,
@@ -396,6 +397,7 @@ export class Controller {
             getNextCampaignMission: new SyncBailHook(),
             onMissionEnd: new SyncHook(),
             onEscalationReset: new SyncHook(),
+            onUserLogin: new SyncHook(),
         }
     }
 
@@ -1120,6 +1122,7 @@ export class Controller {
             process,
             fetch,
             require: createPeacockRequire(pluginName),
+            __filename: pluginPath,
         })
 
         let theExports
