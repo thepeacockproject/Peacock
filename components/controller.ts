@@ -480,10 +480,15 @@ export class Controller {
         this._addElusiveTargets()
         this._getETALocations()
 
+        log(LogLevel.INFO, "Loading user contracts...", "contracts")
+
         // load contracts asynchronously to avoid blocking the server
         // otherwise, the player may have to wait a long time for the
         // server to start, even if they're not planning to play contracts
-        this.index()
+        // eslint-disable-next-line promise/catch-or-return
+        this.index().then(() =>
+            log(LogLevel.INFO, "Completed loading contracts.", "contracts"),
+        )
 
         try {
             await this._loadResources()
@@ -590,13 +595,19 @@ export class Controller {
         log(
             LogLevel.INFO,
             `Saving generated contract ${manifest.Metadata.Id} to contracts/${manifest.Metadata.PublicId}.json`,
+            "contracts",
         )
 
         const name = `contracts/${manifest.Metadata.PublicId}.json`
 
         await writeFile(name, j)
 
-        await this.index()
+        log(LogLevel.INFO, "Re-indexing...", "contracts")
+
+        // eslint-disable-next-line promise/catch-or-return
+        this.index().then(() =>
+            log(LogLevel.INFO, "Completed re-indexing.", "contracts"),
+        )
         return manifest
     }
 
@@ -819,7 +830,7 @@ export class Controller {
     }
 
     /**
-     * Index all installed contract files (OCREs).
+     * Index all installed contract files (JSON & OCREs [legacy]).
      *
      * @internal
      */
@@ -861,8 +872,6 @@ export class Controller {
                 log(LogLevel.DEBUG, e, "contracts")
             }
         }
-
-        log(LogLevel.INFO, "Contracts loading completed", "contracts")
     }
 
     /**

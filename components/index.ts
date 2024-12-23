@@ -506,7 +506,14 @@ export async function startServer(options: {
                     LogLevel.INFO,
                     "Detected a change in contracts! Re-indexing...",
                 )
-                controller.index()
+                // eslint-disable-next-line promise/catch-or-return
+                controller.index().then(() => {
+                    return log(
+                        LogLevel.INFO,
+                        "Completed re-indexing.",
+                        "contracts",
+                    )
+                })
             })
         }
 
