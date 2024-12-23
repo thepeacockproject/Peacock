@@ -12,19 +12,13 @@ namespace HitmanPatcher
     public partial class MainForm : Form, ILoggingProvider
     {
         private static MainForm instance;
+        private GameServer[] gameServers;
+        private readonly string serverlistLocation;
 
         public static MainForm GetInstance()
         {
             return instance ??= new MainForm();
         }
-
-        private static readonly Dictionary<string, string> servers = new Dictionary<string, string>()
-        {
-            {"IOI Official", "config.hitman.io"},
-            {"Peacock Local", "127.0.0.1"}
-        };
-
-        private static readonly Dictionary<string, string> serversReverse = servers.ToDictionary(kvp => kvp.Value, kvp => kvp.Key);
 
         private void ToggleTheme(bool darkModeEnabled)
         {
@@ -60,6 +54,24 @@ namespace HitmanPatcher
         public MainForm()
         {
             InitializeComponent();
+
+            // Try to get ServerList
+            serverlistLocation = Path.Combine(Settings.ConfigLocation, "ServerList.txt");
+            try
+            {
+                gameServers = GameServer.LoadServers(serverlistLocation);
+                if (gameServers == null || gameServers.Length == 0)
+                {
+                    gameServers = CreateDefautServerList();
+                }
+
+            }
+            catch (FileNotFoundException ex)
+            {
+                gameServers = CreateDefautServerList();
+            }
+
+
             logListView.Columns[0].Width = logListView.Width - 4 - SystemInformation.VerticalScrollBarWidth;
             Timer timer = new Timer
             {
@@ -67,7 +79,6 @@ namespace HitmanPatcher
             };
             timer.Tick += (sender, args) => MemoryPatcher.PatchAllProcesses(this, CurrentSettings.patchOptions);
             timer.Enabled = true;
-
             try
             {
                 CurrentSettings = Settings.GetFromFile();
@@ -76,6 +87,9 @@ namespace HitmanPatcher
             {
                 CurrentSettings = new Settings();
             }
+            
+            SetSelectedServerHostname(serverUrlComboBox.Text);
+            UpdateServerUrlCombobox();
             updateTrayDomains();
 
             ToggleTheme(CurrentSettings.darkModeEnabled);
@@ -90,6 +104,15 @@ namespace HitmanPatcher
                 ShowInTaskbar = false;
                 trayIcon.ShowBalloonTip(5000, "Peacock Patcher", "The Peacock Patcher has been started in the tray.", ToolTipIcon.Info);
             }
+        }
+
+        private GameServer[] CreateDefautServerList()
+        {
+            GameServer[] gameServers = new GameServer[2];
+            gameServers[0] = new GameServer { ServerName = "IOI Official", ServerAddress = "config.hitman.io" };
+            gameServers[1] = new GameServer { ServerName = "Peacock Local", ServerAddress = "127.0.0.1" };
+            GameServer.SaveServers(serverlistLocation, gameServers);
+            return gameServers;
         }
 
         public void log(string msg)
@@ -118,24 +141,21 @@ namespace HitmanPatcher
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\PeacockProject"))
-            {
-                Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\PeacockProject");
-            }
-
             CurrentSettings.SaveToFile();
         }
 
         private string GetSelectedServerHostname()
         {
-            if (!servers.TryGetValue(serverUrlComboBox.Text, out string hostname))
+            string hostname = "";
+            var result = gameServers.FirstOrDefault(server => server.ServerName == serverUrlComboBox.Text);
+            if(result == null)
             {
                 hostname = serverUrlComboBox.Text;
             }
 
             if (string.IsNullOrEmpty(hostname))
             {
-                hostname = "localhost";
+                hostname = "127.0.0.1";
             }
 
             return hostname;
@@ -143,9 +163,24 @@ namespace HitmanPatcher
 
         private void SetSelectedServerHostname(string input)
         {
-            if (!serversReverse.TryGetValue(input, out string result))
+            GameServer server = null;
+            if (input == "localhost" || input == "127.0.0.1")
             {
-                result = input;
+                server = gameServers.FirstOrDefault(server => server.ServerAddress == input);
+            }
+            else
+            {
+                server = gameServers.FirstOrDefault(server => server.ServerName == input);
+            }
+
+            string result;
+            if (server == null)
+            {
+                result = input;             
+            }
+            else
+            {
+                result = server.ServerName;
             }
 
             serverUrlComboBox.Text = result;
@@ -181,9 +216,16 @@ namespace HitmanPatcher
                 _currentSettings = value;
 
                 SetSelectedServerHostname(value.patchOptions.CustomConfigDomain);
+                UpdateServerUrlCombobox();
+            }
+        }
 
-                serverUrlComboBox.Items.Clear();
-                serverUrlComboBox.Items.AddRange(servers.Keys.ToArray<object>());
+        private void UpdateServerUrlCombobox()
+        {
+            serverUrlComboBox.Items.Clear();
+            foreach (var gameserver in gameServers)
+            {
+                serverUrlComboBox.Items.Add(gameserver.ServerName);
             }
         }
 
@@ -278,6 +320,19 @@ namespace HitmanPatcher
                 builder.AppendLine(item.Text);
             }
             Clipboard.SetText(builder.ToString());
+        }
+
+        private void serverList_Click(object sender, EventArgs e)
+        {
+            ServerListEditor serverListEditor = new ServerListEditor();
+            serverListEditor.GameServers = gameServers;
+            serverListEditor.SaveLocation = serverlistLocation;
+            var result = serverListEditor.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                gameServers = serverListEditor.GameServers;
+                UpdateServerUrlCombobox();
+            }
         }
     }
 }
