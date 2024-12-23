@@ -479,7 +479,11 @@ export class Controller {
 
         this._addElusiveTargets()
         this._getETALocations()
-        await this.index()
+
+        // load contracts asynchronously to avoid blocking the server
+        // otherwise, the player may have to wait a long time for the
+        // server to start, even if they're not planning to play contracts
+        this.index()
 
         try {
             await this._loadResources()
@@ -857,6 +861,8 @@ export class Controller {
                 log(LogLevel.DEBUG, e, "contracts")
             }
         }
+
+        log(LogLevel.INFO, "Contracts loading completed", "contracts")
     }
 
     /**
