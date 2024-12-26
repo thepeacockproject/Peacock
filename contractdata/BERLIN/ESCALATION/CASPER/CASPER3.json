@@ -148,6 +148,58 @@
                         }
                     }
                 }
+            },
+            {
+                "Type": "statemachine",
+                "Id": "8db5aa4b-6049-4bc0-864e-4d5db0dcf822",
+                "BriefingText": "$loc UI_PEACOCK_CASPER_OBJ_LVL3_CLUBOWNERKILL_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_CASPER_OBJ_LVL3_CLUBOWNERKILL_DESC"
+                },
+                "Category": "primary",
+                "ObjectiveType": "customkill",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["bf185f2f-17c7-414c-b237-6b2cc8a13b69"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": [
+                                                    "$Value.RepositoryId",
+                                                    "bf185f2f-17c7-414c-b237-6b2cc8a13b69"
+                                                ]
+                                            },
+                                            {
+                                                "$not": {
+                                                    "$eq": [
+                                                        "$Value.OutfitRepositoryId",
+                                                        "8e41db54-b097-4704-8a88-83043e6557f7"
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$Value.RepositoryId",
+                                            "bf185f2f-17c7-414c-b237-6b2cc8a13b69"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
             }
         ]
     },
@@ -164,6 +216,10 @@
         "Type": "escalation",
         "InGroup": "5bc6a2a3-d80a-4cb3-9ebc-a93d9238950d",
         "GroupObjectiveDisplayOrder": [
+            {
+                "Id": "8db5aa4b-6049-4bc0-864e-4d5db0dcf822",
+                "IsNew": true
+            },
             {
                 "Id": "cf2f8e72-467d-4344-98f8-f1a863bb6cfe",
                 "IsNew": true
