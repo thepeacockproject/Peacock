@@ -1,6 +1,8 @@
 {
     "Data": {
-        "Bricks": [],
+        "Bricks": [
+            "assembly:/_PRO/Scenes/missions/edgy/mission_fox/fox_contractcreation.brick"
+        ],
         "VR": [
             {
                 "Quality": "base",
@@ -19,7 +21,10 @@
             }
         ],
         "DevOnlyBricks": [],
-        "GameChangers": [],
+        "GameChangers": [
+            "cedbcd52-90c7-435f-a10e-b8da610e6110",
+            "cf2f8e72-467d-4344-98f8-f1a863bb6cfe"
+        ],
         "Entrances": [],
         "GameChangerReferences": [],
         "EnableSaving": false,
@@ -143,130 +148,6 @@
                         }
                     }
                 }
-            },
-            {
-                "Type": "statemachine",
-                "Id": "555da74c-90fd-4e85-8b4b-a71261f86453",
-                "BriefingText": {
-                    "$loc": {
-                        "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
-                        "data": "$($repository bd4cfd46-1bd0-47d5-b226-f4d1e9caabc1).Name"
-                    }
-                },
-                "HUDTemplate": {
-                    "display": {
-                        "$loc": {
-                            "key": "UI_CONTRACT_GENERAL_OBJ_KILL",
-                            "data": "$($repository bd4cfd46-1bd0-47d5-b226-f4d1e9caabc1).Name"
-                        }
-                    }
-                },
-                "Category": "primary",
-                "Definition": {
-                    "Scope": "Hit",
-                    "Context": {
-                        "Targets": ["bd4cfd46-1bd0-47d5-b226-f4d1e9caabc1"]
-                    },
-                    "States": {
-                        "Start": {
-                            "Kill": [
-                                {
-                                    "Condition": {
-                                        "$eq": [
-                                            "$Value.RepositoryId",
-                                            "bd4cfd46-1bd0-47d5-b226-f4d1e9caabc1"
-                                        ]
-                                    },
-                                    "Transition": "Success"
-                                }
-                            ]
-                        }
-                    }
-                },
-                "TargetConditions": [
-                    {
-                        "Type": "disguise",
-                        "RepositoryId": "590629f7-19a3-4eb8-88a6-94e550cd1c07",
-                        "HardCondition": false,
-                        "ObjectiveId": "c3ccfaa4-3218-4608-af63-0005391435d3",
-                        "KillMethod": ""
-                    }
-                ]
-            },
-            {
-                "Type": "statemachine",
-                "Id": "c3ccfaa4-3218-4608-af63-0005391435d3",
-                "Category": "secondary",
-                "Definition": {
-                    "Scope": "Hit",
-                    "Context": {
-                        "Targets": ["bd4cfd46-1bd0-47d5-b226-f4d1e9caabc1"]
-                    },
-                    "States": {
-                        "Start": {
-                            "Kill": [
-                                {
-                                    "Condition": {
-                                        "$and": [
-                                            {
-                                                "$eq": [
-                                                    "$Value.RepositoryId",
-                                                    "bd4cfd46-1bd0-47d5-b226-f4d1e9caabc1"
-                                                ]
-                                            },
-                                            {
-                                                "$eq": [
-                                                    "$Value.OutfitRepositoryId",
-                                                    "590629f7-19a3-4eb8-88a6-94e550cd1c07"
-                                                ]
-                                            }
-                                        ]
-                                    },
-                                    "Transition": "Success"
-                                },
-                                {
-                                    "Condition": {
-                                        "$eq": [
-                                            "$Value.RepositoryId",
-                                            "bd4cfd46-1bd0-47d5-b226-f4d1e9caabc1"
-                                        ]
-                                    },
-                                    "Transition": "Failure"
-                                }
-                            ]
-                        }
-                    }
-                }
-            },
-            {
-                "Id": "1145143d-1919-4952-ac35-2d415ccd1f9d",
-                "Category": "primary",
-                "ObjectiveType": "custom",
-                "Image": "images/contracts/gamechangers/Gamechanger_Global_Wild_Card_Objectives.jpg",
-                "BriefingName": "REINCARNATION START",
-                "HUDTemplate": {
-                    "display": "All your targets are join the reinacrnation",
-                    "iconType": 8
-                },
-                "OnActive": {
-                    "IfCompleted": {
-                        "Visible": false
-                    }
-                },
-
-                "ExcludeFromScoring": true,
-
-                "BriefingText": "All your targets are join the reinacrnation",
-                "Type": "statemachine",
-                "Definition": {
-                    "States": {
-                        "Start": {
-                            "IntroCutEnd": {
-                                "Transition": "Success"
-                            }
-                        }
-                    }
-                }
             }
         ]
     },
@@ -282,7 +163,25 @@
         "ScenePath": "assembly:/_pro/scenes/missions/edgy/mission_fox/scene_fox_contractcreation.entity",
         "Type": "escalation",
         "InGroup": "5bc6a2a3-d80a-4cb3-9ebc-a93d9238950d",
-        "GroupObjectiveDisplayOrder": [],
+        "GroupObjectiveDisplayOrder": [
+            {
+                "Id": "cf2f8e72-467d-4344-98f8-f1a863bb6cfe",
+                "IsNew": true
+            },
+            {
+                "Id": "cedbcd52-90c7-435f-a10e-b8da610e6110",
+                "IsNew": true
+            },
+            {
+                "Id": "5211537d-ce93-4464-b8b3-051d8a11f15b"
+            },
+            {
+                "Id": "435849b5-d994-488e-a10b-1ff5bfb34f60"
+            },
+            {
+                "Id": "5bcb648a-7c86-4ea2-b6e4-f6e83e419a63"
+            }
+        ],
         "Entitlements": ["LOCATION_EDGY"],
         "LastUpdate": "2023-03-30T11:20:27.0914255Z",
         "TileImage": "images/contracts/escalation/contractescalation_casper.jpg",

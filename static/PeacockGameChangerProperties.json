@@ -286,7 +286,7 @@
                 "ExcludeFromScoring": true,
                 "OnActive": {
                     "IfCompleted": {
-                        "Visible": true
+                        "Visible": false
                     }
                 },
                 "BriefingText": "$loc UI_PEACOCK_GAMECHANGERS_EDGY_CASPER_TRESPASSER_FAIL",
@@ -297,7 +297,9 @@
                 "Type": "statemachine",
                 "Definition": {
                     "Scope": "session",
-                    "Context": {},
+                    "Context": {
+                        "KilledTargets": 0
+                    },
                     "States": {
                         "Start": {
                             "Trespassing": {
@@ -314,6 +316,54 @@
                                     "$eq": ["$Value.IsTrespassing", false]
                                 },
                                 "Transition": "Start"
+                            },
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$eq": ["$Value.IsTarget", true]
+                                    },
+                                    "Actions": { "$inc": "KilledTargets" }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.KilledTargets", 3]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "cedbcd52-90c7-435f-a10e-b8da610e6110": {
+        "Name": "UI_PEACOCK_GAMECHANGERS_EDGY_CASPER_CYCLE_NAME",
+        "Description": "UI_PEACOCK_GAMECHANGERS_EDGY_CASPER_CYCLE_DESC",
+        "Icon": null,
+        "IsHidden": null,
+        "TileImage": "images/contracts/gamechangers/Gamechanger_Global_Wild_Card_Objectives.jpg",
+        "ObjectivesCategory": "primary",
+        "Resource": [],
+        "Objectives": [
+            {
+                "Id": "db6f1a40-3e7b-4a87-9c86-da6e80222273",
+                "Category": "primary",
+                "ObjectiveType": "custom",
+                "Image": "images/contracts/gamechangers/Gamechanger_Global_Wild_Card_Objectives.jpg",
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "ExcludeFromScoring": true,
+                "BriefingText": "$loc UI_PEACOCK_GAMECHANGERS_EDGY_CASPER_CYCLE_DESC",
+                "Type": "statemachine",
+                "Definition": {
+                    "States": {
+                        "Start": {
+                            "IntroCutEnd": {
+                                "Transition": "Success"
                             }
                         }
                     }
