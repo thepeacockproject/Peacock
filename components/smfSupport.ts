@@ -32,7 +32,7 @@ export class SMFSupport {
     public readonly lastDeploy: SMFLastDeploy | null
 
     constructor(private readonly controller: Controller) {
-        const dataPaths = SMFSupport.modFrameworkDataPath
+        const dataPaths = SMFSupport.modFrameworkDataPaths
 
         if (dataPaths) {
             for (const dataPath of dataPaths) {
@@ -45,7 +45,7 @@ export class SMFSupport {
         this.lastDeploy = null
     }
 
-    static get modFrameworkDataPath(): string[] | false {
+    static get modFrameworkDataPaths(): string[] | false {
         if (getFlag("frameworkDeploySummaryPath") !== "AUTO")
             return [getFlag("frameworkDeploySummaryPath") as string]
 
