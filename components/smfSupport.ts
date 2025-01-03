@@ -32,26 +32,63 @@ export class SMFSupport {
     public readonly lastDeploy: SMFLastDeploy | null
 
     constructor(private readonly controller: Controller) {
-        const dataPath = SMFSupport.modFrameworkDataPath
+        const dataPaths = SMFSupport.modFrameworkDataPath
 
-        if (dataPath && existsSync(dataPath)) {
-            this.lastDeploy = parse(readFileSync(dataPath).toString())
-            return
+        if (dataPaths) {
+            for (const dataPath of dataPaths) {
+                if (!existsSync(dataPath)) continue
+                this.lastDeploy = parse(readFileSync(dataPath).toString())
+                return
+            }
         }
 
         this.lastDeploy = null
     }
 
-    static get modFrameworkDataPath() {
-        return (
-            (process.env.LOCALAPPDATA &&
-                join(
-                    process.env.LOCALAPPDATA,
-                    "Simple Mod Framework",
-                    "lastDeploy.json",
-                )) ||
-            false
-        )
+    static get modFrameworkDataPath(): string[] | false {
+        if (getFlag("frameworkDeploySummaryPath") !== "AUTO")
+            return [getFlag("frameworkDeploySummaryPath") as string]
+
+        switch (process.platform) {
+            case "win32":
+                return (
+                    (process.env.LOCALAPPDATA && [
+                        join(
+                            process.env.LOCALAPPDATA,
+                            "Simple Mod Framework",
+                            "deploySummary.json",
+                        ),
+                        join(
+                            process.env.LOCALAPPDATA,
+                            "Simple Mod Framework",
+                            "lastDeploy.json",
+                        ),
+                    ]) ||
+                    false
+                )
+            case "linux": {
+                if (!process.env.HOME) return false
+                const XDG_DATA_HOME =
+                    process.env.XDG_DATA_HOME ??
+                    join(process.env.HOME, ".local", "share")
+
+                return [
+                    join(
+                        XDG_DATA_HOME,
+                        "app.simple-mod-framework",
+                        "deploySummary.json",
+                    ),
+                    join(
+                        XDG_DATA_HOME,
+                        "app.simple-mod-framework",
+                        "lastDeploy.json",
+                    ),
+                ]
+            }
+
+            default:
+                return false
+        }
     }
 
     private async executePlugin(plugin: string) {
@@ -141,10 +178,8 @@ export class SMFSupport {
         }
     }
 
-    public async initSMFSupport(modFrameworkDataPath: string) {
-        if (!(modFrameworkDataPath && existsSync(modFrameworkDataPath))) {
-            return
-        }
+    public async initSMFSupport() {
+        if (!this.lastDeploy) return
 
         log(
             LogLevel.INFO,

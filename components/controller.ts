@@ -500,10 +500,8 @@ export class Controller {
             log(LogLevel.ERROR, e)
         }
 
-        const deployPath = SMFSupport.modFrameworkDataPath
-
-        if (typeof deployPath === "string") {
-            await this.smf.initSMFSupport(deployPath)
+        if (this.smf.lastDeploy) {
+            await this.smf.initSMFSupport()
         }
 
         await this._loadPlugins()

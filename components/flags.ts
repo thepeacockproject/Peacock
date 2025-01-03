@@ -167,6 +167,13 @@ export const defaultFlags: Flags = {
                 desc: "Forcibly disable installed mod checks",
                 default: false,
             },
+            frameworkDeploySummaryPath: {
+                category: "Modding",
+                title: "frameworkDeploySummaryPath",
+                desc: 'The path of Simple Mod Framework\'s deploy summary file. By default, it is set to "AUTO", which will attempt to locate the file in predefined locations. Alternatively, you can specify a custom path.',
+                default: "AUTO",
+                showIngame: false,
+            },
             experimentalHMR: {
                 category: "Experimental",
                 title: "experimentalHMR",
