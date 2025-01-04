@@ -57,7 +57,7 @@ import { parse } from "json5"
 import { userAuths } from "./officialServerAuth"
 // @ts-expect-error Ignore JSON import
 import LEGACYFF from "../contractdata/COLORADO/FREEDOMFIGHTERSLEGACY.json"
-import { missionsInLocations } from "./contracts/missionsInLocation"
+import { missionsInLocation } from "./contracts/missionsInLocation"
 import { createContext, Script } from "vm"
 import { ChallengeService } from "./candle/challengeService"
 import { getFlag } from "./flags"
@@ -358,7 +358,7 @@ export class Controller {
         configs,
         getVersionedConfig,
     }
-    public missionsInLocations = missionsInLocations
+    public missionsInLocation = missionsInLocation
     /**
      * Note: if you are adding a contract, please use {@link addMission}!
      */
@@ -804,13 +804,12 @@ export class Controller {
         fixedLevels.forEach((level) => this.addMission(level))
 
         type K =
-            keyof (typeof this.missionsInLocations)[GameVersion]["escalations"]
+            keyof (typeof this.missionsInLocation)[GameVersion]["escalations"]
 
         // @ts-expect-error This is fine.
-        this.missionsInLocations[gameVersion].escalations[locationId as K] ??=
-            []
+        this.missionsInLocation[gameVersion].escalations[locationId as K] ??= []
 
-        const a = this.missionsInLocations[gameVersion].escalations[
+        const a = this.missionsInLocation[gameVersion].escalations[
             locationId as K
         ] as string[]
 

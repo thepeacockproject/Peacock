@@ -23,7 +23,7 @@ import { MissionsInLocation } from "../types/types"
  *
  * @since v8.0.0 these are separated by game version.
  */
-export const missionsInLocations = {
+export const missionsInLocation = {
     h1: {
         LOCATION_ICA_FACILITY: [
             "1436cbe4-164b-450f-ad2c-77dec88f53dd",

@@ -35,7 +35,7 @@ import { userAuths } from "../officialServerAuth"
 import { log, LogLevel } from "../loggingInterop"
 import { fastClone, getRemoteService } from "../utils"
 import { orderedETAs } from "./elusiveTargetArcades"
-import { missionsInLocations } from "./missionsInLocation"
+import { missionsInLocation } from "./missionsInLocation"
 import assert from "assert"
 
 /**
@@ -240,7 +240,7 @@ export class HitsCategoryService {
                 const nEscalations: string[] = []
 
                 for (const escalations of Object.values(
-                    missionsInLocations[gameVersion].escalations,
+                    missionsInLocation[gameVersion].escalations,
                 )) {
                     for (const id of escalations) {
                         const contract = controller.resolveContract(

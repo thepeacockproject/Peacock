@@ -420,13 +420,13 @@ export function getDestination(
 
     // I know it's redundant to check game version here, but it's just for typescript.
     if (query.difficulty === "pro1" && gameVersion === "h1") {
-        type Cast = keyof (typeof controller.missionsInLocations)["h1"]["pro1"]
+        type Cast = keyof (typeof controller.missionsInLocation)["h1"]["pro1"]
 
         const obj: LocationMissionData = {
             Location: locationData,
             SubLocation: locationData,
             Missions: [
-                controller.missionsInLocations[gameVersion].pro1[
+                controller.missionsInLocation[gameVersion].pro1[
                     LOCATION as Cast
                 ],
             ]
@@ -456,10 +456,10 @@ export function getDestination(
         const escalations: Hit[] = []
 
         type ECast =
-            keyof (typeof controller.missionsInLocations)[GameVersion]["escalations"]
+            keyof (typeof controller.missionsInLocation)[GameVersion]["escalations"]
         // every unique escalation from the sublocation
         const escalationIds: string[] =
-            controller.missionsInLocations[gameVersion].escalations[
+            controller.missionsInLocation[gameVersion].escalations[
                 e.Id as ECast
             ] ?? []
 
@@ -474,12 +474,12 @@ export function getDestination(
         const sniperMissions: Hit[] = []
 
         if (gameVersion !== "h1") {
-            type SCast = keyof (typeof controller.missionsInLocations)[Exclude<
+            type SCast = keyof (typeof controller.missionsInLocation)[Exclude<
                 GameVersion,
                 "h1"
             >]["sniper"]
 
-            for (const sniperMission of controller.missionsInLocations[
+            for (const sniperMission of controller.missionsInLocation[
                 gameVersion
             ].sniper[e.Id as SCast] ?? []) {
                 const hit = contractIdToHitObject(
@@ -511,15 +511,15 @@ export function getDestination(
             ["sarajevo", "SarajevoSixMissions"],
         ]
 
-        type TCast = keyof (typeof controller.missionsInLocations)[GameVersion]
+        type TCast = keyof (typeof controller.missionsInLocation)[GameVersion]
 
         for (const t of types) {
             const theMissions: string[] | undefined = (
                 !t[0] // no specific type
-                    ? controller.missionsInLocations[gameVersion][e.Id as ECast]
-                    : controller.missionsInLocations[gameVersion][
-                          t[0] as TCast
-                      ][e.Id as ECast]
+                    ? controller.missionsInLocation[gameVersion][e.Id as ECast]
+                    : controller.missionsInLocation[gameVersion][t[0] as TCast][
+                          e.Id as ECast
+                      ]
             ) as string[] | undefined
 
             if (theMissions) {
