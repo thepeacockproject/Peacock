@@ -1028,6 +1028,7 @@ export interface GameChanger {
     Resource?: string[] | null
     Objectives?: MissionManifestObjective[] | null
     LongDescription?: string | null
+    ShowBasedOnObjectives?: boolean | null
     IsPrestigeObjective?: boolean
 }
 

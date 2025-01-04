@@ -307,6 +307,10 @@ export function mapObjectives(
                 true,
             ),
             ...getConfig<Record<string, GameChanger>>(
+                "EvergreenGameChangerProperties",
+                true,
+            ),
+            ...getConfig<Record<string, GameChanger>>(
                 "PeacockGameChangerProperties",
                 true,
             ),
@@ -316,7 +320,7 @@ export function mapObjectives(
             if (isEvergreenSafehouse) break
             const gameChangerProps = gameChangerData[gamechangerId]
 
-            if (gameChangerProps) {
+            if (gameChangerProps && !gameChangerProps.ShowBasedOnObjectives) {
                 if (gameChangerProps.IsHidden) {
                     if (gameChangerProps.Objectives?.length === 1) {
                         // Either 0 or 1 I think.
@@ -332,15 +336,9 @@ export function mapObjectives(
                             // @ts-expect-error State machines are impossible to type
                             for (obj of gameChangerProps.Objectives) {
                                 if (obj.Category === "primary") return "primary"
-                                if (obj.Category === "secondary")
-                                    return "secondary"
                             }
 
-                            // If we've not hit a primary or secondary objective, we've hit a condition
-                            // I'm not exactly sure if below follows what official does - AF
-                            // EDIT: Turns out, conditions still show as optional, setting this to
-                            //       primary for now, awaiting future investigation - AF
-                            return "primary"
+                            return "secondary" // unless specified as primary, a gamechanger is secondary
                         })()
                     }
 
@@ -366,10 +364,6 @@ export function mapObjectives(
     }
 
     for (const objective of (objectives || []).concat(gameChangerObjectives)) {
-        if (!objective.Category) {
-            objective.Category = objective.Primary ? "primary" : "secondary"
-        }
-
         if (
             objective.Activation ||
             (objective.OnActive?.IfInProgress &&
@@ -411,6 +405,15 @@ export function mapObjectives(
                 id = objective.Definition.Context.Targets[0]
             }
 
+            let categoryIsPrimary = true // Unless otherwise specified, an objective is primary
+
+            if (
+                (objective.Category && objective.Category !== "primary") ||
+                objective.Primary === false
+            ) {
+                categoryIsPrimary = false
+            }
+
             const properties = {
                 Id: id,
                 BriefingText: objective.BriefingText || "",
@@ -418,12 +421,14 @@ export function mapObjectives(
                     objective.LongBriefingText === undefined
                         ? objective.BriefingText || ""
                         : objective.LongBriefingText,
-                Image: objective.Image,
-                BriefingName: objective.BriefingName,
-                DisplayAsKill: objective.DisplayAsKillObjective || false,
-                ObjectivesCategory: objective.Category as
-                    | typeof objective.Category
+                Image: (objective.Image || "") as string | undefined,
+                BriefingName: (objective.BriefingName || "") as
+                    | string
                     | undefined,
+                DisplayAsKill: objective.DisplayAsKillObjective || false,
+                ObjectivesCategory: (categoryIsPrimary
+                    ? "primary"
+                    : "secondary") as string | undefined,
                 ForceShowOnLoadingScreen: (objective.ForceShowOnLoadingScreen ||
                     false) as boolean | undefined,
             }
@@ -434,6 +439,7 @@ export function mapObjectives(
                     properties.Image = undefined
                     properties.ForceShowOnLoadingScreen = undefined
                     properties.BriefingName = undefined
+                    properties.ObjectivesCategory = undefined
                     break
                 case "setpiece":
                     properties.ObjectivesCategory = undefined
@@ -502,16 +508,11 @@ export function mapObjectives(
     }
 
     // add each objective or gamechanger that is not already in the result
-    for (const { Id, ExcludeFromScoring, ForceShowOnLoadingScreen } of (
-        objectives || []
-    ).concat((gameChangers || []).map((x) => ({ Id: x })))) {
+    for (const Id of objectives.map((obj) => obj.Id).concat(gameChangers)) {
         if (!resultIds.has(Id)) {
             const resultobjective = result.get(Id)
 
-            if (
-                resultobjective &&
-                (!ExcludeFromScoring || ForceShowOnLoadingScreen)
-            ) {
+            if (resultobjective) {
                 sortedResult.push(resultobjective)
                 resultIds.add(Id)
             }
