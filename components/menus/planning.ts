@@ -512,7 +512,6 @@ export async function getPlanningData(
             contractData.Data.Objectives!,
             contractData.Data.GameChangers || [],
             contractData.Metadata.GroupObjectiveDisplayOrder || [],
-            Boolean(contractData.Metadata.IsEvergreenSafehouse),
         ),
         GroupData: groupData,
         Entrances:
