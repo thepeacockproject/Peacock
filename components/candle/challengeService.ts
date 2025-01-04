@@ -959,15 +959,21 @@ export class ChallengeService extends ChallengeRegistry {
 
         let contracts = isSniperLocation(child)
             ? // @ts-expect-error This is fine - we know it will be there
-              this.controller.missionsInLocations.sniper[child]
-            : // @ts-expect-error This is fine - we know it will be there
-              (this.controller.missionsInLocations[child] ?? [])
+              this.controller.missionsInLocation[gameVersion].sniper[child]
+            : // @ts-expect-error This is fine - we can index this
+              (this.controller.missionsInLocation[gameVersion][child] ?? [])
                   .concat(
-                      // @ts-expect-error This is fine - we know it will be there
-                      this.controller.missionsInLocations.escalations[child],
+                      // @ts-expect-error This is fine - we can index this
+                      this.controller.missionsInLocation[gameVersion]
+                          .escalations[child] ?? [],
                   )
-                  // @ts-expect-error This is fine - we know it will be there
-                  .concat(this.controller.missionsInLocations.arcade[child])
+                  .concat(
+                      gameVersion === "h3"
+                          ? // @ts-expect-error This is fine - we know it will be there
+                            this.controller.missionsInLocation[gameVersion]
+                                .arcade[child]
+                          : [],
+                  )
 
         if (!contracts) {
             contracts = []
