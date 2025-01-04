@@ -25,6 +25,7 @@ import type {
 import { getSubLocationByName } from "../contracts/dataGen"
 import { InventoryItem } from "../inventory"
 import assert from "assert"
+import { getFlag } from "../flags"
 
 export type SniperCharacter = {
     Id: string
@@ -117,8 +118,11 @@ export function createSniperLoadouts(
             const curUnlockable =
                 masteryData.CompletionData.Level === 1
                     ? masteryData.Unlockable
-                    : masteryData.Drops[masteryData.CompletionData.Level - 2]
-                          .Unlockable
+                    : masteryData.Drops[
+                          (getFlag("enableMasteryProgression")
+                              ? masteryData.CompletionData.Level
+                              : 20) - 2
+                      ].Unlockable
 
             assert.ok(curUnlockable, "Unlockable not found")
             assert.ok(
