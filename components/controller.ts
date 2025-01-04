@@ -627,6 +627,47 @@ export class Controller {
     }
 
     /**
+     * Fixes a contract based on game version.
+     *
+     * An example of this is the location for Holiday Hoarders changing in
+     * HITMAN 3 thus breaking the contract in standalone 2016.
+     *
+     * @param contract The contract to fix.
+     * @param gameVersion The game version.
+     * @returns The fixed contract.
+     * @private
+     */
+    private fixContract(
+        contract: MissionManifest,
+        gameVersion: GameVersion,
+    ): MissionManifest {
+        switch (gameVersion) {
+            case "h1": {
+                if (contract.Metadata.Location === "LOCATION_PARIS_NOEL")
+                    contract.Metadata.Location = "LOCATION_PARIS"
+
+                break
+            }
+            case "h2": {
+                if (contract.Metadata.Location === "LOCATION_PARIS_NOEL")
+                    contract.Metadata.Location = "LOCATION_PARIS"
+
+                if (contract.Metadata.Location === "LOCATION_HOKKAIDO_MAMUSHI")
+                    contract.Metadata.Location = "LOCATION_HOKKAIDO"
+
+                // Fix The Jeffrey Consolation
+                if (contract.Data.Bricks)
+                    contract.Data.Bricks = contract.Data.Bricks.filter(
+                        (brick) =>
+                            !brick.includes("override_constantjeff.brick"),
+                    )
+            }
+        }
+
+        return contract
+    }
+
+    /**
      * Get a contract by its ID.
      *
      * Order of precedence:
@@ -669,6 +710,7 @@ export class Controller {
         )
 
         if (optionalPluginJson) {
+            // We skip fixing plugins as we assume they know what they're doing.
             return fastClone(
                 getGroup
                     ? this.getGroupContract(optionalPluginJson, gameVersion)
@@ -679,10 +721,13 @@ export class Controller {
         const registryJson: MissionManifest | undefined = internalContracts[id]
 
         if (registryJson) {
-            return fastClone(
-                getGroup
-                    ? this.getGroupContract(registryJson, gameVersion)
-                    : registryJson,
+            return this.fixContract(
+                fastClone(
+                    getGroup
+                        ? this.getGroupContract(registryJson, gameVersion)
+                        : registryJson,
+                ),
+                gameVersion,
             )
         }
 
@@ -691,10 +736,13 @@ export class Controller {
             : undefined
 
         if (openCtJson) {
-            return fastClone(
-                getGroup
-                    ? this.getGroupContract(openCtJson, gameVersion)
-                    : openCtJson,
+            return this.fixContract(
+                fastClone(
+                    getGroup
+                        ? this.getGroupContract(openCtJson, gameVersion)
+                        : openCtJson,
+                ),
+                gameVersion,
             )
         }
 
@@ -703,10 +751,13 @@ export class Controller {
             : undefined
 
         if (officialJson) {
-            return fastClone(
-                getGroup
-                    ? this.getGroupContract(officialJson, gameVersion)
-                    : officialJson,
+            return this.fixContract(
+                fastClone(
+                    getGroup
+                        ? this.getGroupContract(officialJson, gameVersion)
+                        : officialJson,
+                ),
+                gameVersion,
             )
         }
 
@@ -738,11 +789,13 @@ export class Controller {
      *
      * @param groupContract The escalation group contract, ALL levels must have the Id of this in Metadata.InGroup
      * @param locationId The location of the escalation's ID.
+     * @param gameVersion The game version to add the escalation to.
      * @param levels The escalation's levels.
      */
     public addEscalation(
         groupContract: MissionManifest,
         locationId: string,
+        gameVersion: GameVersion,
         ...levels: MissionManifest[]
     ): void {
         const fixedLevels = [...levels].filter(Boolean)
@@ -750,12 +803,14 @@ export class Controller {
         this.addMission(groupContract)
         fixedLevels.forEach((level) => this.addMission(level))
 
-        type K = keyof typeof this.missionsInLocations.escalations
+        type K =
+            keyof (typeof this.missionsInLocations)[GameVersion]["escalations"]
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        this.missionsInLocations.escalations[locationId as K] ??= <any>[]
+        // @ts-expect-error This is fine.
+        this.missionsInLocations[gameVersion].escalations[locationId as K] ??=
+            []
 
-        const a = this.missionsInLocations.escalations[
+        const a = this.missionsInLocations[gameVersion].escalations[
             locationId as K
         ] as string[]
 

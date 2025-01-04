@@ -240,7 +240,7 @@ export class HitsCategoryService {
                 const nEscalations: string[] = []
 
                 for (const escalations of Object.values(
-                    missionsInLocations.escalations,
+                    missionsInLocations[gameVersion].escalations,
                 )) {
                     for (const id of escalations) {
                         const contract = controller.resolveContract(
