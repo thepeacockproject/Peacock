@@ -294,7 +294,6 @@ export function mapObjectives(
     objectives: MissionManifestObjective[],
     gameChangers: string[],
     displayOrder: GroupObjectiveDisplayOrderItem[],
-    isEvergreenSafehouse = false,
 ): MissionManifestObjective[] {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const result = new Map<string, any>()
@@ -317,13 +316,11 @@ export function mapObjectives(
         }
 
         for (const gamechangerId of gameChangers) {
-            if (isEvergreenSafehouse) break
             const gameChangerProps = gameChangerData[gamechangerId]
 
             if (gameChangerProps && !gameChangerProps.ShowBasedOnObjectives) {
                 if (gameChangerProps.IsHidden) {
                     if (gameChangerProps.Objectives?.length === 1) {
-                        // Either 0 or 1 I think.
                         const objective = gameChangerProps.Objectives[0]!
                         objective.Id = gamechangerId
                         gameChangerObjectives.push(objective)
@@ -363,13 +360,11 @@ export function mapObjectives(
         }
     }
 
-    for (const objective of (objectives || []).concat(gameChangerObjectives)) {
+    for (const objective of objectives.concat(gameChangerObjectives)) {
         if (
             objective.Activation ||
-            (objective.OnActive?.IfInProgress &&
-                objective.OnActive.IfInProgress.Visible === false) ||
-            (objective.OnActive?.IfCompleted &&
-                objective.OnActive.IfCompleted.Visible === false &&
+            objective.OnActive?.IfInProgress?.Visible === false ||
+            (objective.OnActive?.IfCompleted?.Visible === false &&
                 // @ts-expect-error State machines are impossible to type
                 objective.Definition?.States?.Start?.["-"]?.Transition ===
                     "Success")
@@ -485,7 +480,7 @@ export function mapObjectives(
     const sortedResult: MissionManifestObjective[] = []
     const resultIds: Set<string> = new Set()
 
-    for (const { Id, IsNew } of displayOrder || []) {
+    for (const { Id, IsNew } of displayOrder) {
         if (!resultIds.has(Id)) {
             // if not yet added
             const objective = result.get(Id)
@@ -499,12 +494,6 @@ export function mapObjectives(
                 resultIds.add(Id)
             }
         }
-    }
-
-    // This is something to get the main objective to show on the planning menu - AF
-    if (isEvergreenSafehouse) {
-        sortedResult.push(result.get("f9cfcf80-9977-4ad1-b3c7-0228a2026b9c"))
-        resultIds.add("f9cfcf80-9977-4ad1-b3c7-0228a2026b9c")
     }
 
     // add each objective or gamechanger that is not already in the result
