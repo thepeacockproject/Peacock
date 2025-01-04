@@ -333,6 +333,9 @@ export class Controller {
             [contractId: string, gameVersion: GameVersion, isGroup: boolean],
             MissionManifest | undefined
         >
+        fixContract: SyncHook<
+            [contract: MissionManifest, gameVersion: GameVersion]
+        >
         getContractIdsForGroupDiscovery: SyncHook<[string[]]>
         contributeCampaigns: SyncHook<
             [
@@ -391,6 +394,7 @@ export class Controller {
             newEvent: new SyncHook(),
             newMetricsEvent: new SyncHook(),
             getContractManifest: new SyncBailHook(),
+            fixContract: new SyncHook(),
             getContractIdsForGroupDiscovery: new SyncHook(),
             contributeCampaigns: new SyncHook(),
             getSearchResults: new AsyncSeriesHook(),
@@ -663,6 +667,9 @@ export class Controller {
                     )
             }
         }
+
+        // See if any plugins want to make any changes
+        this.hooks.fixContract.call(contract, gameVersion)
 
         return contract
     }
