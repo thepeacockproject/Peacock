@@ -418,8 +418,11 @@ export function getDestination(
         (subLocation) => subLocation.Properties.ParentLocation === LOCATION,
     )
 
-    // I know it's redundant to check game version here, but it's just for typescript.
-    if (query.difficulty === "pro1" && gameVersion === "h1") {
+    if (query.difficulty === "pro1") {
+        assert(
+            gameVersion === "h1",
+            `${gameVersion} has requested a pro1 difficulty destination!`,
+        )
         type Cast = keyof (typeof controller.missionsInLocation)["h1"]["pro1"]
 
         const obj: LocationMissionData = {
