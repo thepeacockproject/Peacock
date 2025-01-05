@@ -639,7 +639,6 @@ export class Controller {
      * @param contract The contract to fix.
      * @param gameVersion The game version.
      * @returns The fixed contract.
-     * @private
      */
     private fixContract(
         contract: MissionManifest,
