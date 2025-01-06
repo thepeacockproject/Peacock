@@ -137,7 +137,7 @@ export abstract class BaseImpl<Params, Return = void> {
         this._intercepts.push(intercept)
 
         this._intercepts.sort((a, b) => {
-            if (a.priority !== a.priority) return b.priority - a.priority
+            if (a.priority !== b.priority) return b.priority - a.priority
 
             return a.name.localeCompare(b.name)
         })
@@ -179,7 +179,7 @@ export abstract class BaseImpl<Params, Return = void> {
         })
 
         this._taps.sort((a, b) => {
-            if (a.priority !== a.priority) return b.priority - a.priority
+            if (a.priority !== b.priority) return b.priority - a.priority
 
             return a.name.localeCompare(b.name)
         })
