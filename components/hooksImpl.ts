@@ -56,7 +56,14 @@ export class HookMap<Hook> {
 /**
  * The options for a hook. Will either be just the name (as a string), or an object containing the additional options.
  */
-export type TapOptions = string | { name: string; context: boolean }
+export type TapOptions =
+    | string
+    | {
+          name: string
+          context: boolean
+          // Priority of the tap, higher goes first. Defaults to 0.
+          priority?: number
+      }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type AsArray<T> = T extends any[] ? T : [T]
@@ -68,12 +75,14 @@ interface Tap<T, R> {
     name: string
     func: (...args: AsArray<T>) => R
     enableContext: boolean
+    priority: number
 }
 
 /**
  * The structure of an intercept.
  *
  * @see name
+ * @see priority
  * @see call
  * @see tap
  */
@@ -82,6 +91,11 @@ export interface Intercept<Params, Return> {
      * The name of the intercept.
      */
     name: string
+
+    /**
+     * The priority of the intercept, higher goes first.
+     */
+    priority: number
 
     /**
      * A function called just after the hook is called, and before all taps run.
@@ -120,6 +134,12 @@ export abstract class BaseImpl<Params, Return = void> {
      */
     public intercept(intercept: Intercept<Params, Return>): void {
         this._intercepts.push(intercept)
+
+        this._intercepts.sort((a, b) => {
+            if (a.priority !== a.priority) return b.priority - a.priority
+
+            return a.name.localeCompare(b.name)
+        })
     }
 
     /**
@@ -139,6 +159,8 @@ export abstract class BaseImpl<Params, Return = void> {
                 : nameOrOptions.name
         const enableContext =
             typeof nameOrOptions === "string" ? false : nameOrOptions.context
+        const priority =
+            typeof nameOrOptions === "string" ? 0 : nameOrOptions.priority ?? 0
 
         for (const intercept of this._intercepts) {
             if (intercept.tap) {
@@ -150,6 +172,13 @@ export abstract class BaseImpl<Params, Return = void> {
             name,
             func: consumer,
             enableContext,
+            priority,
+        })
+
+        this._taps.sort((a, b) => {
+            if (a.priority !== a.priority) return b.priority - a.priority
+
+            return a.name.localeCompare(b.name)
         })
     }
 
