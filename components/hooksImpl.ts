@@ -60,7 +60,8 @@ export type TapOptions =
     | string
     | {
           name: string
-          context: boolean
+          // Whether the context object (which can be modified) should be used. Defaults to false.
+          enableContext?: boolean
           // Priority of the tap, higher goes first. Defaults to 0.
           priority?: number
       }
@@ -158,7 +159,9 @@ export abstract class BaseImpl<Params, Return = void> {
                 ? nameOrOptions
                 : nameOrOptions.name
         const enableContext =
-            typeof nameOrOptions === "string" ? false : nameOrOptions.context
+            typeof nameOrOptions === "string"
+                ? false
+                : nameOrOptions.enableContext ?? false
         const priority =
             typeof nameOrOptions === "string" ? 0 : nameOrOptions.priority ?? 0
 
