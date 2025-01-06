@@ -380,6 +380,9 @@ export class Controller {
     public locationsWithETA = new Set<string>()
     public parentsWithETA = new Set<string>()
 
+    // A place for plugins to share data.
+    public blackboard: unknown = {}
+
     /**
      * The constructor.
      */
