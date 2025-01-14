@@ -12,38 +12,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@aws-crypto/crc32@npm:^5.2.0":
-  version: 5.2.0
-  resolution: "@aws-crypto/crc32@npm:5.2.0"
-  dependencies:
-    "@aws-crypto/util": "npm:^5.2.0"
-    "@aws-sdk/types": "npm:^3.222.0"
-    tslib: "npm:^2.6.2"
-  checksum: 10/1b0a56ad4cb44c9512d8b1668dcf9306ab541d3a73829f435ca97abaec8d56f3db953db03ad0d0698754fea16fcd803d11fa42e0889bc7b803c6a030b04c63de
-  languageName: node
-  linkType: hard
-
-"@aws-crypto/util@npm:^5.2.0":
-  version: 5.2.0
-  resolution: "@aws-crypto/util@npm:5.2.0"
-  dependencies:
-    "@aws-sdk/types": "npm:^3.222.0"
-    "@smithy/util-utf8": "npm:^2.0.0"
-    tslib: "npm:^2.6.2"
-  checksum: 10/f80a174c404e1ad4364741c942f440e75f834c08278fa754349fe23a6edc679d480ea9ced5820774aee58091ed270067022d8059ecf1a7ef452d58134ac7e9e1
-  languageName: node
-  linkType: hard
-
-"@aws-sdk/types@npm:^3.222.0":
-  version: 3.515.0
-  resolution: "@aws-sdk/types@npm:3.515.0"
-  dependencies:
-    "@smithy/types": "npm:^2.9.1"
-    tslib: "npm:^2.5.0"
-  checksum: 10/465b998e539e88fcd7be3d4acaaf9a8cd80bda2f2cb0ae407f60b87eb3e3dd9229df1d384ba524de8b9e2bb2c61f4f126b0bc5f5b42558235e40e5f491b3997d
-  languageName: node
-  linkType: hard
-
 "@babel/runtime@npm:^7.13.10":
   version: 7.24.4
   resolution: "@babel/runtime@npm:7.24.4"
@@ -523,7 +491,7 @@ __metadata:
     "@rdil/parallel-prettier": "npm:^3.0.0"
     "@types/express": "npm:^4.17.20"
     "@types/jsonwebtoken": "npm:^9.0.6"
-    "@types/node": "npm:^20"
+    "@types/node": "npm:^20.17.12"
     "@types/parseurl": "npm:^1.3.3"
     "@types/progress": "npm:^2.0.7"
     "@types/prompts": "npm:^2.4.7"
@@ -557,7 +525,7 @@ __metadata:
     md5-file: "npm:^5.0.0"
     ms: "npm:^2.1.3"
     msgpackr: "npm:^1.10.2"
-    nanoid: "npm:^5.0.7"
+    nanoid: "npm:^5.0.8"
     parseurl: "npm:^1.3.3"
     picocolors: "patch:picocolors@npm%3A1.0.0#~/.yarn/patches/picocolors-npm-1.0.0-d81e0b1927.patch"
     prettier: "npm:^3.3.2"
@@ -587,7 +555,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@peacockproject/tests@workspace:tests"
   dependencies:
-    "@aws-crypto/crc32": "npm:^5.2.0"
+    "@rdil/factorygirl": "npm:^0.1.1"
     "@vitest/ui": "npm:^1.3.0"
     vite: "npm:^5.1.3"
     vitest: "npm:^1.3.0"
@@ -948,6 +916,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rdil/factorygirl@npm:^0.1.1":
+  version: 0.1.1
+  resolution: "@rdil/factorygirl@npm:0.1.1"
+  dependencies:
+    es-toolkit: "npm:^1.31.0"
+    tslib: "npm:^2.8.1"
+  checksum: 10/057b22345954625a2b60634f70bd6a9bb2c1435a4061f343f0633e26f24d1bfabc17a74f528b9396d797374f67a496afc51bc0abcb8a08be6ea45378c431c743
+  languageName: node
+  linkType: hard
+
 "@rdil/parallel-prettier@npm:^3.0.0":
   version: 3.0.0
   resolution: "@rdil/parallel-prettier@npm:3.0.0"
@@ -1086,44 +1064,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@smithy/is-array-buffer@npm:^2.1.1":
-  version: 2.1.1
-  resolution: "@smithy/is-array-buffer@npm:2.1.1"
-  dependencies:
-    tslib: "npm:^2.5.0"
-  checksum: 10/0724355a8fa1e61c9fb77c6e6965cc7eae0cd561f158b768f8d1c9a26254db149bb545b318cdd81ebe383bbe5f26f6197b144c69e812dfd55f512e511e0ccbd8
-  languageName: node
-  linkType: hard
-
-"@smithy/types@npm:^2.9.1":
-  version: 2.9.1
-  resolution: "@smithy/types@npm:2.9.1"
-  dependencies:
-    tslib: "npm:^2.5.0"
-  checksum: 10/82156919fd78814cfe988b8e0eea9d086134583e5d55501429a2cde6f0c5465cdbc274816162cdce3c19f5c81f7d8aed6c5d2edde3a214250760fce794efa4c2
-  languageName: node
-  linkType: hard
-
-"@smithy/util-buffer-from@npm:^2.1.1":
-  version: 2.1.1
-  resolution: "@smithy/util-buffer-from@npm:2.1.1"
-  dependencies:
-    "@smithy/is-array-buffer": "npm:^2.1.1"
-    tslib: "npm:^2.5.0"
-  checksum: 10/5de4cf8b2d9c5347990be5791882947a509ba00a55ee67589f327e4852309dac5278248317929519f5a9d2aa5dc1c11cd54803db962287909e0322b7f73332bc
-  languageName: node
-  linkType: hard
-
-"@smithy/util-utf8@npm:^2.0.0":
-  version: 2.1.1
-  resolution: "@smithy/util-utf8@npm:2.1.1"
-  dependencies:
-    "@smithy/util-buffer-from": "npm:^2.1.1"
-    tslib: "npm:^2.5.0"
-  checksum: 10/736992921e50c2c96234dc5eab305a30d29b1cfa29ce5ad2ec0e4b3f2e0dc3e2d29303bd1362bd20fa2e66c5fd494c558f4b1050b91ead5e13a479903bb9686f
-  languageName: node
-  linkType: hard
-
 "@types/body-parser@npm:*":
   version: 1.19.5
   resolution: "@types/body-parser@npm:1.19.5"
@@ -1211,12 +1151,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^20":
-  version: 20.11.7
-  resolution: "@types/node@npm:20.11.7"
+"@types/node@npm:*, @types/node@npm:^20.17.12":
+  version: 20.17.12
+  resolution: "@types/node@npm:20.17.12"
   dependencies:
-    undici-types: "npm:~5.26.4"
-  checksum: 10/ff0428c093987f1f6e3400b91450077cf006d7f0e4ff316e20636218562c53761565ceb06bd7a161badf46e6884d78b554c7b1c3a7717cf5cb8c97f461ecd754
+    undici-types: "npm:~6.19.2"
+  checksum: 10/d4748de76c6c4fa0371802429d4bcd68ecd638f5cd7d8a4510d3196302d417b6bb17e31c5b1117bfa09b58276d05c14a5fde73b9da2547200195e819e4b43368
   languageName: node
   linkType: hard
 
@@ -2293,6 +2233,18 @@ __metadata:
   version: 2.0.3
   resolution: "err-code@npm:2.0.3"
   checksum: 10/1d20d825cdcce8d811bfbe86340f4755c02655a7feb2f13f8c880566d9d72a3f6c92c192a6867632e490d6da67b678271f46e01044996a6443e870331100dfdd
+  languageName: node
+  linkType: hard
+
+"es-toolkit@npm:^1.31.0":
+  version: 1.31.0
+  resolution: "es-toolkit@npm:1.31.0"
+  dependenciesMeta:
+    "@trivago/prettier-plugin-sort-imports@4.3.0":
+      unplugged: true
+    prettier-plugin-sort-re-exports@0.0.1:
+      unplugged: true
+  checksum: 10/6d9d88901f6e9589c991d2f9cd85df8076eb02dc472a5661477332fb9870c23e0b13170a19cd37cfe58839717792b132a44aecc6e4954c1e57cddb6c5f531570
   languageName: node
   linkType: hard
 
@@ -3990,12 +3942,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nanoid@npm:^5.0.7":
-  version: 5.0.7
-  resolution: "nanoid@npm:5.0.7"
+"nanoid@npm:^5.0.8":
+  version: 5.0.9
+  resolution: "nanoid@npm:5.0.9"
   bin:
     nanoid: bin/nanoid.js
-  checksum: 10/25ab0b0cf9082ae6747f0f55cec930e6c1cc5975103aa3a5fda44be5720eff57d9b25a8a9850274bfdde8def964b49bf03def71c6aa7ad1cba32787819b79f60
+  checksum: 10/8a3f9104f81095e3e4785f58caae47a05755599824b8611b9730cbf73db706b664f100e6189f8303f08764f144d499613d8e4a39e83125c53f4b4986d6576621
   languageName: node
   linkType: hard
 
@@ -5369,10 +5321,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.0.0, tslib@npm:^2.1.0, tslib@npm:^2.4.0, tslib@npm:^2.5.0, tslib@npm:^2.6.2":
-  version: 2.6.2
-  resolution: "tslib@npm:2.6.2"
-  checksum: 10/bd26c22d36736513980091a1e356378e8b662ded04204453d353a7f34a4c21ed0afc59b5f90719d4ba756e581a162ecbf93118dc9c6be5acf70aa309188166ca
+"tslib@npm:^2.0.0, tslib@npm:^2.1.0, tslib@npm:^2.4.0, tslib@npm:^2.8.1":
+  version: 2.8.1
+  resolution: "tslib@npm:2.8.1"
+  checksum: 10/3e2e043d5c2316461cb54e5c7fe02c30ef6dccb3384717ca22ae5c6b5bc95232a6241df19c622d9c73b809bea33b187f6dbc73030963e29950c2141bc32a79f7
   languageName: node
   linkType: hard
 
@@ -5443,10 +5395,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"undici-types@npm:~5.26.4":
-  version: 5.26.5
-  resolution: "undici-types@npm:5.26.5"
-  checksum: 10/0097779d94bc0fd26f0418b3a05472410408877279141ded2bd449167be1aed7ea5b76f756562cb3586a07f251b90799bab22d9019ceba49c037c76445f7cddd
+"undici-types@npm:~6.19.2":
+  version: 6.19.8
+  resolution: "undici-types@npm:6.19.8"
+  checksum: 10/cf0b48ed4fc99baf56584afa91aaffa5010c268b8842f62e02f752df209e3dea138b372a60a963b3b2576ed932f32329ce7ddb9cb5f27a6c83040d8cd74b7a70
   languageName: node
   linkType: hard
 

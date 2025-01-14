@@ -16,12 +16,12 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { describe, expect, it } from "vitest"
+import { expect, it } from "vitest"
 import { glob } from "fast-glob"
 import { readFile } from "fs/promises"
 import { MissionManifest } from "../../components/types/types"
 import { unpack } from "msgpackr"
-import { crc32 } from "@aws-crypto/crc32"
+import { crc32 } from "zlib"
 
 const allContractFiles = (
     await glob("**/*.json", {
@@ -91,63 +91,61 @@ const ignored = [
     "UI_CONTRACT_GORSE_OBJ_2_NAME",
 ]
 
-describe("contract files", () => {
-    it("contract objectives have working localization", async () => {
-        for (const file of allContractFiles) {
-            const contract: MissionManifest = JSON.parse(
-                (await readFile(`../contractdata/${file}`)).toString(),
-            )
+it("contract objectives have working localization", async () => {
+    for (const file of allContractFiles) {
+        const contract: MissionManifest = JSON.parse(
+            (await readFile(`../contractdata/${file}`)).toString(),
+        )
 
-            if (contract.Metadata.Type === "featured") {
-                continue
+        if (contract.Metadata.Type === "featured") {
+            continue
+        }
+
+        for (const objective of contract.Data.Objectives || []) {
+            if (objective.BriefingText) {
+                const loc = parseLocString(
+                    objective.BriefingText,
+                ).toUpperCase()
+
+                if (!ignored.includes(loc) && !loc.startsWith("$.")) {
+                    const i = getCrc(loc)
+
+                    expect(
+                        allCrcs,
+                        `${file} objective ${objective.Id} BriefingText (${loc}) in defined strings`,
+                    ).toContain(i)
+                }
             }
 
-            for (const objective of contract.Data.Objectives || []) {
-                if (objective.BriefingText) {
-                    const loc = parseLocString(
-                        objective.BriefingText,
-                    ).toUpperCase()
+            if (objective.BriefingName) {
+                const loc = parseLocString(
+                    objective.BriefingName,
+                ).toUpperCase()
 
-                    if (!ignored.includes(loc) && !loc.startsWith("$.")) {
-                        const i = getCrc(loc)
+                if (!ignored.includes(loc) && !loc.startsWith("$.")) {
+                    const i = getCrc(loc)
 
-                        expect(
-                            allCrcs,
-                            `${file} objective ${objective.Id} BriefingText (${loc}) in defined strings`,
-                        ).toContain(i)
-                    }
+                    expect(
+                        allCrcs,
+                        `${file} objective ${objective.Id} BriefingName (${loc}) in defined strings`,
+                    ).toContain(i)
                 }
+            }
 
-                if (objective.BriefingName) {
-                    const loc = parseLocString(
-                        objective.BriefingName,
-                    ).toUpperCase()
+            if (objective.HUDTemplate?.display) {
+                const loc = parseLocString(
+                    objective.HUDTemplate.display,
+                ).toUpperCase()
 
-                    if (!ignored.includes(loc) && !loc.startsWith("$.")) {
-                        const i = getCrc(loc)
+                if (!ignored.includes(loc) && !loc.startsWith("$.")) {
+                    const i = getCrc(loc)
 
-                        expect(
-                            allCrcs,
-                            `${file} objective ${objective.Id} BriefingName (${loc}) in defined strings`,
-                        ).toContain(i)
-                    }
-                }
-
-                if (objective.HUDTemplate?.display) {
-                    const loc = parseLocString(
-                        objective.HUDTemplate.display,
-                    ).toUpperCase()
-
-                    if (!ignored.includes(loc) && !loc.startsWith("$.")) {
-                        const i = getCrc(loc)
-
-                        expect(
-                            allCrcs,
-                            `${file} objective ${objective.Id} HUDTemplate.display (${loc}) in defined strings`,
-                        ).toContain(i)
-                    }
+                    expect(
+                        allCrcs,
+                        `${file} objective ${objective.Id} HUDTemplate.display (${loc}) in defined strings`,
+                    ).toContain(i)
                 }
             }
         }
-    })
+    }
 })

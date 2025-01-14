@@ -105,6 +105,14 @@ export abstract class BaseImpl<Params, Return = void> {
         })
     }
 
+    /**
+     * Destructively remove all taps from the hook.
+     * Are you SURE you know what you're doing if you want to use this?
+     */
+    public resetTaps(): void {
+        this._taps = []
+    }
+
     public get allTapNames(): string[] {
         return this._taps.map((t) => t.name)
     }

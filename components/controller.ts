@@ -74,6 +74,7 @@ import { escalationTypes } from "./contracts/escalations/escalationService"
 import { orderedETAs } from "./contracts/elusiveTargetArcades"
 import { SMFSupport } from "./smfSupport"
 import { glob } from "fast-glob"
+import { asyncGuard } from "./databaseHandler"
 
 /**
  * An array of string arrays that contains the IDs of the featured contracts.
@@ -835,36 +836,37 @@ export class Controller {
     async index(): Promise<void> {
         this.contracts.clear()
         this._pubIdToContractId.clear()
+        const fs = asyncGuard.getFs()
 
         const contracts = await glob("contracts/**/*.{json,ocre}")
 
-        for (const i of contracts) {
+        for (const contract of contracts) {
             try {
-                const f = parse(
-                    (await readFile(i)).toString(),
+                const manifest = parse(
+                    (await fs.readFile(contract)).toString(),
                 ) as MissionManifest
 
-                if (!validateMission(f)) {
+                if (!validateMission(manifest)) {
                     log(
                         LogLevel.ERROR,
-                        `Contract ${i} failed validation!`,
+                        `Contract ${contract} failed validation!`,
                         "contracts",
                     )
                     continue
                 }
 
-                this.contracts.set(f.Metadata.Id, f)
+                this.contracts.set(manifest.Metadata.Id, manifest)
 
-                if (f.Metadata.PublicId) {
+                if (manifest.Metadata.PublicId) {
                     this._pubIdToContractId.set(
-                        f.Metadata.PublicId,
-                        f.Metadata.Id,
+                        manifest.Metadata.PublicId,
+                        manifest.Metadata.Id,
                     )
                 }
             } catch (e) {
                 log(
                     LogLevel.ERROR,
-                    `Failed to load contract ${i}!`,
+                    `Failed to load contract ${contract}!`,
                     "contracts",
                 )
                 log(LogLevel.DEBUG, e, "contracts")
@@ -959,7 +961,7 @@ export class Controller {
     private async _loadResources(): Promise<void> {
         // Load challenge resources
         const challengeDirectory = join(
-            PEACOCK_DEV ? process.cwd() : __dirname,
+            this._resolveRoot,
             "resources",
             "challenges",
         )
@@ -977,7 +979,7 @@ export class Controller {
 
         // Load mastery resources
         const masteryDirectory = join(
-            PEACOCK_DEV ? process.cwd() : __dirname,
+            this._resolveRoot,
             "resources",
             "mastery",
         )
@@ -1176,10 +1178,13 @@ export class Controller {
         }
     }
 
+    /** @internal */
+    _resolveRoot = PEACOCK_DEV ? process.cwd() : __dirname
+
     private async _loadInternalContracts(): Promise<void> {
         const buf = await readFile(
             join(
-                PEACOCK_DEV ? process.cwd() : __dirname,
+                this._resolveRoot,
                 "resources",
                 "contracts.prp",
             ),
