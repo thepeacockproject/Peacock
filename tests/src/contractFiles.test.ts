@@ -103,9 +103,7 @@ it("contract objectives have working localization", async () => {
 
         for (const objective of contract.Data.Objectives || []) {
             if (objective.BriefingText) {
-                const loc = parseLocString(
-                    objective.BriefingText,
-                ).toUpperCase()
+                const loc = parseLocString(objective.BriefingText).toUpperCase()
 
                 if (!ignored.includes(loc) && !loc.startsWith("$.")) {
                     const i = getCrc(loc)
@@ -118,9 +116,7 @@ it("contract objectives have working localization", async () => {
             }
 
             if (objective.BriefingName) {
-                const loc = parseLocString(
-                    objective.BriefingName,
-                ).toUpperCase()
+                const loc = parseLocString(objective.BriefingName).toUpperCase()
 
                 if (!ignored.includes(loc) && !loc.startsWith("$.")) {
                     const i = getCrc(loc)

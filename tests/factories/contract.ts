@@ -25,25 +25,29 @@ function pad(n: number, places: number) {
     return n.toString(10).padStart(places, "0")
 }
 
-export const contractFactory = factory<MissionManifest, ContractFactoryTraits>((utils) => ({
-    Data: {
-        Objectives: [],
-        Bricks: []
-    },
-    Metadata: {
-        Id: utils.sequentialUuid("id"),
-        Title: `Amazing contract ${utils.sequentialValue("title")}`,
-        Description: `Amazing contract ${utils.sequentialValue("description")}`,
-        Location: "LOCATION_PARENT_PARIS",
-        Type: "mission",
-        ScenePath: "assembly:/_pro/scenes/missions/paris/_scene_fashionshowhit_01.entity",
-        Entitlements: [],
-    },
-}), ({ trait }) => {
-    trait("usercreated", (_, { sequentialValue }) => ({
+export const contractFactory = factory<MissionManifest, ContractFactoryTraits>(
+    (utils) => ({
+        Data: {
+            Objectives: [],
+            Bricks: [],
+        },
         Metadata: {
-            Type: "usercreated",
-            PublicId: `1-01-${pad(sequentialValue("publicId"), 7)}-${pad(sequentialValue("publicId-end"), 2)}}`,
-        } as never,
-    }))
-})
+            Id: utils.sequentialUuid("id"),
+            Title: `Amazing contract ${utils.sequentialValue("title")}`,
+            Description: `Amazing contract ${utils.sequentialValue("description")}`,
+            Location: "LOCATION_PARENT_PARIS",
+            Type: "mission",
+            ScenePath:
+                "assembly:/_pro/scenes/missions/paris/_scene_fashionshowhit_01.entity",
+            Entitlements: [],
+        },
+    }),
+    ({ trait }) => {
+        trait("usercreated", (_, { sequentialValue }) => ({
+            Metadata: {
+                Type: "usercreated",
+                PublicId: `1-01-${pad(sequentialValue("publicId"), 7)}-${pad(sequentialValue("publicId-end"), 2)}}`,
+            } as never,
+        }))
+    },
+)

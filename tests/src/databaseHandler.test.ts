@@ -17,9 +17,7 @@
  */
 
 import { afterEach, describe, expect, vi } from "vitest"
-import {
-    UserProfile,
-} from "../../components/types/types"
+import { UserProfile } from "../../components/types/types"
 import {
     asyncGuard,
     getContractSession,

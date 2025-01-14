@@ -978,11 +978,7 @@ export class Controller {
         }
 
         // Load mastery resources
-        const masteryDirectory = join(
-            this._resolveRoot,
-            "resources",
-            "mastery",
-        )
+        const masteryDirectory = join(this._resolveRoot, "resources", "mastery")
 
         await this._handleResources(
             masteryDirectory,
@@ -1183,11 +1179,7 @@ export class Controller {
 
     private async _loadInternalContracts(): Promise<void> {
         const buf = await readFile(
-            join(
-                this._resolveRoot,
-                "resources",
-                "contracts.prp",
-            ),
+            join(this._resolveRoot, "resources", "contracts.prp"),
         )
 
         const decompressed = unpack(buf) as {
