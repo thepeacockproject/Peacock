@@ -155,7 +155,7 @@ export const XP_PER_LEVEL = 6000
 
 export function getMaxProfileLevel(gameVersion: GameVersion): number {
     if (gameVersion === "h3") {
-        return 7500
+        return 12500
     }
 
     return 5000
