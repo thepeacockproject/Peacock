@@ -1616,3 +1616,12 @@ export type OfficialSublocation = {
     Xp: number
     ActionXp: number
 }
+
+export type MILLocations = {
+    [location in `LOCATION_${string}`]: string[] | string
+}
+
+export type MissionsInLocation = Record<
+    GameVersion,
+    MILLocations & { [key: string]: MILLocations | string[] }
+>
