@@ -641,8 +641,13 @@ function generateSelectPage(
         ),
         Contract: contractData,
         OrderedUnlocks: allunlockables
-            .filter((unlockable) =>
-                inScene.includes(unlockable.Properties.RepositoryId || ""),
+            .filter(
+                (unlockable) =>
+                    inScene.includes(
+                        unlockable.Properties.RepositoryId || "",
+                    ) &&
+                    unlockable.Properties.Difficulty ===
+                        contractData.Metadata.Difficulty,
             )
             .map((unlockable) => {
                 unlockable.Properties.UnlockLevel =
