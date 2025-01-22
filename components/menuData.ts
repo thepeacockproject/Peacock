@@ -22,7 +22,7 @@ import {
     contractCreationTutorialId,
     getMaxProfileLevel,
     isSuit,
-    unlockOrderComparer,
+    unlockLevelComparer,
     uuidRegex,
 } from "./utils"
 import { contractSessions, enqueueEvent, getSession } from "./eventHandler"
@@ -37,6 +37,7 @@ import type {
     RequestWithJwt,
     SceneConfig,
     SelectEntranceOrPickupData,
+    Unlockable,
     UserCentricContract,
 } from "./types/types"
 import {
@@ -553,6 +554,119 @@ menuDataRouter.get(
     },
 )
 
+function generateSelectPage(
+    page: "Entrance" | "Pickup",
+    contractId: string,
+    userId: string,
+    gameVersion: GameVersion,
+): number | object {
+    const sceneConfig = getConfig<SceneConfig>(
+        page === "Pickup" ? "AgencyPickups" : "Entrances",
+        false,
+    )
+
+    const inventory = createInventory(userId, gameVersion)
+
+    const allunlockables = getVersionedConfig<Unlockable[]>(
+        "allunlockables",
+        gameVersion,
+        false,
+    )
+
+    const contractData = controller.resolveContract(contractId, gameVersion)
+
+    if (!contractData) {
+        log(
+            LogLevel.WARN,
+            `Unknown contract on select page ${page}: ${contractId}`,
+        )
+        return 404
+    }
+
+    const scenePath = contractData.Metadata.ScenePath.toLowerCase()
+
+    log(
+        LogLevel.DEBUG,
+        `Looking up details for contract - Id: ${contractId} (${scenePath})`,
+    )
+
+    if (!sceneConfig[scenePath]) {
+        log(
+            LogLevel.ERROR,
+            `Could not find scene data for ${scenePath} in select page ${page}! This may cause an unhandled promise rejection.`,
+        )
+    }
+
+    if (
+        contractData.Peacock?.noAgencyPickupsActive === true &&
+        page === "Pickup"
+    ) {
+        const data: SelectEntranceOrPickupData = {
+            Unlocked: [],
+            Contract: contractData,
+            OrderedUnlocks: [],
+            UserCentric: generateUserCentric(
+                contractData,
+                userId,
+                gameVersion,
+            )!,
+        }
+
+        return {
+            template: getVersionedConfig(
+                "SelectAgencyPickupTemplate",
+                gameVersion,
+                false,
+            ),
+            data,
+        }
+    }
+
+    const inScene = sceneConfig[scenePath]
+
+    const unlocked = inventory
+        .filter(
+            (item) =>
+                item.Unlockable.Type ===
+                    (page === "Pickup" ? "agencypickup" : "startinglocation") &&
+                item.Unlockable.Properties.Difficulty ===
+                    contractData.Metadata.Difficulty &&
+                item.Unlockable.Properties.RepositoryId,
+        )
+        .map((i) => i.Unlockable)
+
+    const data: SelectEntranceOrPickupData = {
+        Unlocked: unlocked.map(
+            (unlockable) => unlockable.Properties.RepositoryId!,
+        ),
+        Contract: contractData,
+        OrderedUnlocks: allunlockables
+            .filter((unlockable) =>
+                inScene.includes(unlockable.Properties.RepositoryId || ""),
+            )
+            .map((unlockable) => {
+                unlockable.Properties.UnlockLevel =
+                    controller.masteryService
+                        .getMasteryForUnlockable(unlockable, gameVersion)
+                        ?.Level.toString() ?? "1"
+                return unlockable
+            })
+            .sort(unlockLevelComparer),
+        UserCentric: generateUserCentric(contractData, userId, gameVersion)!,
+    }
+
+    return {
+        template: getVersionedConfig(
+            page === "Pickup"
+                ? "SelectAgencyPickupTemplate"
+                : "SelectEntranceTemplate",
+            gameVersion,
+            false,
+        ),
+        data,
+    }
+}
+
 menuDataRouter.get(
     "/selectagencypickup",
     // @ts-expect-error Jwt props.
@@ -562,99 +676,19 @@ menuDataRouter.get(
         }>,
         res,
     ) => {
-        const pickupData = getConfig<SceneConfig>("AgencyPickups", false)
-
-        const inventory = createInventory(req.jwt.unique_name, req.gameVersion)
-
-        const contractData = controller.resolveContract(
+        const page = generateSelectPage(
+            "Pickup",
             req.query.contractId,
+            req.jwt.unique_name,
             req.gameVersion,
         )
 
-        if (!contractData) {
-            log(
-                LogLevel.WARN,
-                `Unknown contract on SAP: ${req.query.contractId}`,
-            )
-            return res.status(404).end()
-        }
-
-        const scenePath = contractData.Metadata.ScenePath.toLowerCase()
-
-        log(
-            LogLevel.DEBUG,
-            `Looking up details for contract - Id:${req.query.contractId} (${scenePath})`,
-        )
-
-        if (!pickupData[scenePath]) {
-            log(
-                LogLevel.ERROR,
-                `Could not find AgencyPickup data for ${scenePath}! This may cause an unhandled promise rejection.`,
-            )
-        }
-
-        if (contractData.Peacock?.noAgencyPickupsActive === true) {
-            const data: SelectEntranceOrPickupData = {
-                Unlocked: [],
-                Contract: contractData,
-                OrderedUnlocks: [],
-                UserCentric: generateUserCentric(
-                    contractData,
-                    req.jwt.unique_name,
-                    req.gameVersion,
-                )!,
-            }
-
-            res.json({
-                template: getVersionedConfig(
-                    "SelectAgencyPickupTemplate",
-                    req.gameVersion,
-                    false,
-                ),
-                data,
-            })
+        if (typeof page === "number") {
+            res.status(page).end()
             return
         }
 
-        const pickupsInScene = pickupData[scenePath]
-
-        const unlockedAgencyPickups = inventory
-            .filter(
-                (item) =>
-                    item.Unlockable.Type === "agencypickup" &&
-                    item.Unlockable.Properties.Difficulty ===
-                        contractData.Metadata.Difficulty &&
-                    item.Unlockable.Properties.RepositoryId,
-            )
-            .map((i) => i.Unlockable)
-
-        const data: SelectEntranceOrPickupData = {
-            Unlocked: unlockedAgencyPickups.map(
-                (unlockable) => unlockable.Properties.RepositoryId!,
-            ),
-            Contract: contractData,
-            OrderedUnlocks: unlockedAgencyPickups
-                .filter((unlockable) =>
-                    pickupsInScene.includes(
-                        unlockable.Properties.RepositoryId || "",
-                    ),
-                )
-                .sort(unlockOrderComparer),
-            UserCentric: generateUserCentric(
-                contractData,
-                req.jwt.unique_name,
-                req.gameVersion,
-            )!,
-        }
-
-        res.json({
-            template: getVersionedConfig(
-                "SelectAgencyPickupTemplate",
-                req.gameVersion,
-                false,
-            ),
-            data,
-        })
+        res.json(page)
     },
 )
 
@@ -667,73 +701,19 @@ menuDataRouter.get(
         }>,
         res,
     ) => {
-        const entranceData = getConfig<SceneConfig>("Entrances", false)
-
-        const inventory = createInventory(req.jwt.unique_name, req.gameVersion)
-
-        const contractData = controller.resolveContract(
+        const page = generateSelectPage(
+            "Entrance",
             req.query.contractId,
+            req.jwt.unique_name,
             req.gameVersion,
         )
 
-        if (!contractData) {
-            log(LogLevel.WARN, `Unknown contract: ${req.query.contractId}`)
-            return res.status(404).end()
+        if (typeof page === "number") {
+            res.status(page).end()
+            return
         }
 
-        const scenePath = contractData.Metadata.ScenePath.toLowerCase()
-
-        log(
-            LogLevel.DEBUG,
-            `Looking up details for contract - Id:${req.query.contractId} (${scenePath})`,
-        )
-
-        if (!entranceData[scenePath]) {
-            log(
-                LogLevel.ERROR,
-                `Could not find Entrance data for ${scenePath}! This may cause an unhandled promise rejection.`,
-            )
-        }
-
-        const entrancesInScene = entranceData[scenePath]
-
-        const unlockedEntrances = inventory
-            .filter(
-                (item) =>
-                    item.Unlockable.Subtype === "startinglocation" &&
-                    item.Unlockable.Properties.Difficulty ===
-                        contractData.Metadata.Difficulty &&
-                    item.Unlockable.Properties.RepositoryId,
-            )
-            .map((i) => i.Unlockable)
-
-        const data: SelectEntranceOrPickupData = {
-            Unlocked: unlockedEntrances.map(
-                (unlockable) => unlockable.Properties.RepositoryId!,
-            ),
-            Contract: contractData,
-            OrderedUnlocks: unlockedEntrances
-                .filter((unlockable) =>
-                    entrancesInScene.includes(
-                        unlockable.Properties.RepositoryId!,
-                    ),
-                )
-                .sort(unlockOrderComparer),
-            UserCentric: generateUserCentric(
-                contractData,
-                req.jwt.unique_name,
-                req.gameVersion,
-            )!,
-        }
-
-        res.json({
-            template: getVersionedConfig(
-                "SelectEntranceTemplate",
-                req.gameVersion,
-                true,
-            ),
-            data,
-        })
+        res.json(page)
     },
 )
 

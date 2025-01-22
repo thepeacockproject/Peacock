@@ -675,6 +675,7 @@ export type Unlockable = {
         Name?: string
         Description?: string
         UnlockOrder?: number
+        UnlockLevel?: string
         Location?: string
         Equip?: string[]
         GameAssets?: string[]
@@ -701,13 +702,8 @@ export type Unlockable = {
         /**
          * Inclusion data for an unlockable. The only known use for this is
          * sniper rifle unlockables for Sniper Assassin mode.
-         *
-         * With the `InclusionData` type added,
-         * I think this line can be `InclusionData: InclusionData`. --Moony
          */
-        InclusionData?: {
-            ContractTypes?: MissionType[] | null
-        } | null
+        InclusionData?: InclusionData
         /**
          * Item perks - only known use is for Sniper Assassin.
          */

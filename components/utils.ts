@@ -698,6 +698,17 @@ export function unlockOrderComparer(a: Unlockable, b: Unlockable): number {
     )
 }
 
+export function unlockLevelComparer(a: Unlockable, b: Unlockable): number {
+    return (
+        (a?.Properties?.UnlockLevel
+            ? parseInt(a?.Properties?.UnlockLevel)
+            : Number.POSITIVE_INFINITY) -
+            (b?.Properties?.UnlockLevel
+                ? parseInt(b?.Properties?.UnlockLevel)
+                : Number.POSITIVE_INFINITY) || 0
+    )
+}
+
 /**
  * Converts a contract's public ID as a long-form number into the version with dashes.
  *
