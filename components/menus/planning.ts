@@ -28,7 +28,7 @@ import type {
     UserProfile,
 } from "../types/types"
 import { log, LogLevel } from "../loggingInterop"
-import { _legacyBull, _theLastYardbirdScpc, controller } from "../controller"
+import { controller } from "../controller"
 import {
     escalationTypes,
     getLevelCount,
@@ -45,7 +45,6 @@ import { getUserData, writeUserData } from "../databaseHandler"
 import {
     getDefaultSuitFor,
     getMaxProfileLevel,
-    getRemoteService,
     nilUuid,
     unlockOrderComparer,
 } from "../utils"
@@ -55,7 +54,6 @@ import { createSniperLoadouts, SniperCharacter, SniperLoadout } from "./sniper"
 import { getFlag } from "../flags"
 import { loadouts } from "../loadouts"
 import { resolveProfiles } from "../profileHandler"
-import { userAuths } from "../officialServerAuth"
 import assert from "assert"
 
 export type PlanningError = { error: boolean }
@@ -131,18 +129,7 @@ export async function getPlanningData(
         }
     }
 
-    let contractData: MissionManifest | undefined
-
-    if (
-        gameVersion === "h1" &&
-        contractId === "42bac555-bbb9-429d-a8ce-f1ffdf94211c"
-    ) {
-        contractData = _legacyBull
-    } else if (contractId === "ff9f46cf-00bd-4c12-b887-eac491c3a96d") {
-        contractData = _theLastYardbirdScpc
-    } else {
-        contractData = controller.resolveContract(contractId)
-    }
+    let contractData = controller.resolveContract(contractId, gameVersion)
 
     if (!contractData) {
         return {
@@ -173,37 +160,7 @@ export async function getPlanningData(
         // now reassign properties and continue
         contractId = group["1"]
 
-        contractData = controller.resolveContract(contractId)
-    }
-
-    if (!contractData) {
-        // This will only happen for **contracts** that are meant to be fetched from the official servers.
-        // E.g. trending contracts, most played last week, etc.
-        // This will also fetch a contract if the player has downloaded it before but deleted the files.
-        // E.g. the user adds a contract to favorites, then deletes the files, then tries to load the contract again.
-        log(
-            LogLevel.WARN,
-            `Trying to download contract ${contractId} due to it not found locally.`,
-        )
-        const user = userAuths.get(userId)
-        const resp = await user?._useService(
-            `https://${getRemoteService(
-                gameVersion,
-            )}.hitman.io/profiles/page/Planning?contractid=${contractId}&resetescalation=false&forcecurrentcontract=false&errorhandling=false`,
-            true,
-        )
-
-        contractData = resp?.data.data.Contract
-
-        if (!contractData) {
-            log(
-                LogLevel.ERROR,
-                `Official planning lookup no result: ${contractId}`,
-            )
-            return { error: true }
-        }
-
-        controller.fetchedContracts.set(contractData.Metadata.Id, contractData)
+        contractData = controller.resolveContract(contractId, gameVersion)
     }
 
     if (!contractData) {
@@ -229,7 +186,10 @@ export async function getPlanningData(
         contractData.Metadata.InGroup ?? contractData.Metadata.Id
 
     if (escalation) {
-        const groupContractData = controller.resolveContract(escalationGroupId)
+        const groupContractData = controller.resolveContract(
+            escalationGroupId,
+            gameVersion,
+        )
 
         if (!groupContractData) {
             log(LogLevel.ERROR, `Not found: ${contractId}, planning esc group`)
@@ -259,12 +219,12 @@ export async function getPlanningData(
 
             assert(typeof newLevelId === "string", "newLevelId is not a string")
 
-            contractData = controller.resolveContract(newLevelId)
+            contractData = controller.resolveContract(newLevelId, gameVersion)
         }
     }
 
     if (!contractData) {
-        log(LogLevel.WARN, `Unknown contract: ${contractId}`)
+        log(LogLevel.ERROR, `Unknown contract: ${contractId}`)
         return { error: true }
     }
 
@@ -511,8 +471,6 @@ export async function getPlanningData(
         }
     }
 
-    assert.ok(contractData, "no contract data at final - planning")
-
     type Cast = keyof typeof limitedLoadoutUnlockLevelMap
 
     return {
@@ -554,7 +512,6 @@ export async function getPlanningData(
             contractData.Data.Objectives!,
             contractData.Data.GameChangers || [],
             contractData.Metadata.GroupObjectiveDisplayOrder || [],
-            Boolean(contractData.Metadata.IsEvergreenSafehouse),
         ),
         GroupData: groupData,
         Entrances:

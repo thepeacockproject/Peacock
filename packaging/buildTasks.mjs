@@ -22,8 +22,6 @@ import millis from "ms"
 import { mkdir, readdir, readFile, unlink, writeFile } from "fs/promises"
 import { createHash } from "crypto"
 import { Packr } from "msgpackr"
-import { brotliCompress } from "zlib"
-import { promisify } from "util"
 import glob from "fast-glob"
 import prettier from "prettier"
 
@@ -197,9 +195,8 @@ export async function packResources() {
         }
     }
 
-    const d = JSON.stringify({ b, el })
-    const compressed = await promisify(brotliCompress)(d)
-    await writeFile("resources/contracts.br", compressed)
+    const compressed = packer.pack({ b, el })
+    await writeFile("resources/contracts.prp", compressed)
 
     console.log(
         `Gathered built-in contracts and challenges in ${millis(

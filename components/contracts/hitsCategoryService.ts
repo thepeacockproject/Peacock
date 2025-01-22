@@ -35,7 +35,6 @@ import { userAuths } from "../officialServerAuth"
 import { log, LogLevel } from "../loggingInterop"
 import { fastClone, getRemoteService } from "../utils"
 import { orderedETAs } from "./elusiveTargetArcades"
-import { missionsInLocations } from "./missionsInLocation"
 import assert from "assert"
 
 /**
@@ -152,7 +151,7 @@ export class HitsCategoryService {
             .for("Elusive_Target_Hits")
             .tap(tapName, (contracts, gameVersion) => {
                 for (const id of orderedETs) {
-                    const contract = controller.resolveContract(id)
+                    const contract = controller.resolveContract(id, gameVersion)
 
                     switch (gameVersion) {
                         case "h1":
@@ -163,7 +162,10 @@ export class HitsCategoryService {
                             if ((contract?.Metadata.Season || 0) <= 2)
                                 contracts.push(id)
                             break
-                        default:
+                        case "h3":
+                            // Skip the brothers in H3
+                            if (id === "3716b654-a42c-45df-9db9-61795a6a3e46")
+                                break
                             contracts.push(id)
                     }
                 }
@@ -237,10 +239,13 @@ export class HitsCategoryService {
                 const nEscalations: string[] = []
 
                 for (const escalations of Object.values(
-                    missionsInLocations.escalations,
+                    controller.missionsInLocation[gameVersion].escalations,
                 )) {
                     for (const id of escalations) {
-                        const contract = controller.resolveContract(id)
+                        const contract = controller.resolveContract(
+                            id,
+                            gameVersion,
+                        )
 
                         if (!contract) continue
 
@@ -264,7 +269,6 @@ export class HitsCategoryService {
                                     )
                                 break
                             default:
-                                // eslint-disable-next-line no-extra-semi
                                 ;(isPeacock ? contracts : nEscalations).push(id)
                         }
                     }

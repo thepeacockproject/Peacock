@@ -344,6 +344,8 @@ export function scenePathToRpAsset(
         case "assembly:/_pro/scenes/missions/theark/_scene_magpie_pansy.entity":
         case "assembly:/_pro/scenes/missions/theark/_scene_magpie_lotus.entity":
             return ["sgailarksociety", "The Ark Society", "Isle of Sgáil"]
+        case "assembly:/_pro/scenes/missions/theark/scene_penicillin.entity":
+            return ["elusivepenicillin", "The Disruptor", "Isle of Sgáil"]
 
         // whittleton
         case "assembly:/_pro/scenes/missions/skunk/scene_skunk.entity":

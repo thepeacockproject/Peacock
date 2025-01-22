@@ -56,6 +56,7 @@ import {
     filterChallenge,
     inclusionDataCheck,
     mergeSavedChallengeGroups,
+    Pro1FilterType,
 } from "./challengeHelpers"
 import assert from "assert"
 import { getVersionedConfig } from "../configSwizzleManager"
@@ -85,6 +86,38 @@ export type ChallengePack = {
     GameVersions: GameVersion[]
     Image: string
     Icon: string
+}
+
+export type GlobalChallengeGroup = {
+    /**
+     * ID of a challenge group that will have location and global challenges merged.
+     *
+     * Not necessarily should match the group it's being merged with,
+     * but it's highly advised to match them.
+     */
+    groupId: string
+    /**
+     * The global challenge group location ID from where the global challenges are merged.
+     */
+    location: string
+    /**
+     * Which game versions are supported by this global challenge group.
+     */
+    gameVersions: GameVersion[]
+    /**
+     * If set, this global challenge group will be visible in all locations,
+     * regardless if this group has challenges in that location or not.
+     *
+     * This option is useful when challenge group has to be active for all locations,
+     * but doesn't have any location-specific challenges.
+     * However, it's advised to create location-specific challenges instead,
+     * as this option will apply the challenge group to all locations and missions,
+     * including Freelancer and Sniper modes.
+     *
+     * This can be alleviated by providing valid InclusionData filter to challenges,
+     * in order to exclude them from locations you do not wish them to be in.
+     */
+    allLocations?: boolean
 }
 
 /**
@@ -155,6 +188,36 @@ export abstract class ChallengeRegistry {
 
     public challengePacks: Map<string, ChallengePack> = new Map([
         [
+            "elusive",
+            {
+                Name: "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ELUSIVE",
+                Description: "",
+                GameVersions: ["h1", "h2", "h3"],
+                Image: "images/challenges/categories/elusive/tile.jpg",
+                Icon: "elusive",
+            },
+        ],
+        [
+            "arcade",
+            {
+                Name: "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_ARCADE",
+                Description: "",
+                GameVersions: ["h3"],
+                Image: "images/backgrounds/gamemode_arcade.jpg",
+                Icon: "arcademode",
+            },
+        ],
+        [
+            "versus",
+            {
+                Name: "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_VERSUS",
+                Description: "",
+                GameVersions: ["h2", "h3"],
+                Image: "images/challenges/categories/versus/tile.jpg",
+                Icon: "versus",
+            },
+        ],
+        [
             "cheesecake-pack",
             {
                 Name: "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_PACK_CHEESECAKE",
@@ -186,16 +249,56 @@ export abstract class ChallengeRegistry {
         ],
     ])
 
+    /**
+     * The list of user-made challenge groups that span multiple locations
+     * and should merge their global type challenges merged with location challenges.
+     *
+     * @see GlobalChallengeGroup fields for more information.
+     */
+    public globalMergeGroups: Map<string, GlobalChallengeGroup> = new Map([
+        [
+            "classic",
+            {
+                gameVersions: ["h1", "h2", "h3", "scpc"],
+                groupId: "classic",
+                location: "GLOBAL_CLASSIC_CHALLENGES",
+            },
+        ],
+        [
+            "elusive",
+            {
+                gameVersions: ["h1", "h2", "h3", "scpc"],
+                groupId: "elusive",
+                location: "GLOBAL_ELUSIVES_CHALLENGES",
+            },
+        ],
+        [
+            // H2 & H1 have the escalation challenges in "feats"
+            "feats",
+            {
+                gameVersions: ["h1", "h2", "scpc"],
+                groupId: "feats",
+                location: "GLOBAL_ESCALATION_CHALLENGES",
+            },
+        ],
+    ])
+
     registerChallenge(
         challenge: RegistryChallenge,
         groupId: string,
         location: string,
         gameVersion: GameVersion,
     ): void {
+        this.registerChallengeList([challenge], groupId, location, gameVersion)
+    }
+
+    registerChallengeList(
+        challenges: RegistryChallenge[],
+        groupId: string,
+        location: string,
+        gameVersion: GameVersion,
+    ): void {
         const gameChallenges = this.groupContents[gameVersion]
-        challenge.inGroup = groupId
-        challenge.inLocation = location
-        this.challenges[gameVersion].set(challenge.Id, challenge)
 
         if (!gameChallenges.has(location)) {
             gameChallenges.set(location, new Map())
@@ -208,9 +311,15 @@ export abstract class ChallengeRegistry {
         }
 
         const set = locationMap.get(groupId)!
-        set.add(challenge.Id)
 
-        this.checkHeuristics(challenge, gameVersion)
+        for (const challenge of challenges) {
+            challenge.inGroup = groupId
+            challenge.inLocation = location
+            challenge.Type ??= "contract"
+            this.challenges[gameVersion].set(challenge.Id, challenge)
+            set.add(challenge.Id)
+            this.checkHeuristics(challenge, gameVersion)
+        }
     }
 
     registerGroup(
@@ -225,6 +334,23 @@ export abstract class ChallengeRegistry {
         }
 
         gameGroups.get(location)?.set(group.CategoryId, group)
+    }
+
+    /**
+     * Check if `groupId` is already registered for given `location` and `gameVersion`.
+     *
+     * @param groupId The group ID to check
+     * @param location The location group belongs to
+     * @param gameVersion The game version group works in
+     */
+    hasGroup(
+        groupId: string,
+        location: string,
+        gameVersion: GameVersion,
+    ): boolean {
+        return (
+            this.groups[gameVersion]?.get(location)?.get(groupId) !== undefined
+        )
     }
 
     getChallengeById(
@@ -256,8 +382,8 @@ export abstract class ChallengeRegistry {
      * It iterates over all the challenges for the specified game version and for each challenge, it checks if there are any unlockables (Drops).
      * If there are unlockables, it adds them to the accumulator object with the dropId as the key and the challenge Id as the value.
      *
-     * @param gameVersion - The version of the game for which to retrieve the unlockables.
-     * @returns {Record<string, string>} - An object where each key is an unlockable's id (dropId) and the corresponding value is the id of the challenge that unlocks it.
+     * @param gameVersion The version of the game for which to retrieve the unlockables.
+     * @returns An object where each key is an unlockable's id (dropId) and the corresponding value is the id of the challenge that unlocks it.
      */
     getChallengesUnlockables(gameVersion: GameVersion): Record<string, string> {
         return [...this.challenges[gameVersion].values()].reduce(
@@ -290,18 +416,6 @@ export abstract class ChallengeRegistry {
 
         const mainGroup = gameGroups.get(location)?.get(groupId)
 
-        if (groupId === "feats" && gameVersion !== "h3") {
-            if (!mainGroup) {
-                // emergency bailout - shouldn't happen in practice
-                return undefined
-            }
-
-            return mergeSavedChallengeGroups(
-                mainGroup,
-                gameGroups.get("GLOBAL_ESCALATION_CHALLENGES")?.get(groupId),
-            )
-        }
-
         if (groupId?.includes("featured")) {
             return gameGroups.get("GLOBAL_FEATURED_CHALLENGES")?.get(groupId)
         }
@@ -314,32 +428,24 @@ export abstract class ChallengeRegistry {
             return gameGroups.get("GLOBAL_ESCALATION_CHALLENGES")?.get(groupId)
         }
 
-        // Included by default. Filtered later.
-        if (groupId === "classic" && location !== "GLOBAL_CLASSIC_CHALLENGES") {
-            if (!mainGroup) {
-                // emergency bailout - shouldn't happen in practice
-                return undefined
-            }
+        // Global merge groups are included by default. Filtered later.
 
-            return mergeSavedChallengeGroups(
-                mainGroup,
-                gameGroups.get("GLOBAL_CLASSIC_CHALLENGES")?.get(groupId),
-            )
-        }
+        const globalGroup = this.globalMergeGroups.get(groupId)
 
         if (
-            groupId === "elusive" &&
-            location !== "GLOBAL_ELUSIVES_CHALLENGES"
+            globalGroup &&
+            location !== globalGroup.location &&
+            globalGroup.gameVersions.includes(gameVersion)
         ) {
+            const globalGroupChallenges = gameGroups
+                .get(globalGroup.location)
+                ?.get(globalGroup.groupId)
+
             if (!mainGroup) {
-                // emergency bailout - shouldn't happen in practice
-                return undefined
+                return globalGroupChallenges
             }
 
-            return mergeSavedChallengeGroups(
-                mainGroup,
-                gameGroups.get("GLOBAL_ELUSIVES_CHALLENGES")?.get(groupId),
-            )
+            return mergeSavedChallengeGroups(mainGroup, globalGroupChallenges)
         }
 
         return mainGroup
@@ -363,15 +469,6 @@ export abstract class ChallengeRegistry {
     ): Set<string> | undefined {
         const gameChalGC = this.groupContents[gameVersion]
 
-        if (groupId === "feats" && gameVersion !== "h3") {
-            return new Set([
-                ...(gameChalGC.get(location)?.get(groupId) ?? []),
-                ...(gameChalGC
-                    .get("GLOBAL_ESCALATION_CHALLENGES")
-                    ?.get(groupId) ?? []),
-            ])
-        }
-
         if (groupId?.includes("featured")) {
             return gameChalGC.get("GLOBAL_FEATURED_CHALLENGES")?.get(groupId)
         }
@@ -384,24 +481,20 @@ export abstract class ChallengeRegistry {
             return gameChalGC.get("GLOBAL_ESCALATION_CHALLENGES")?.get(groupId)
         }
 
-        // Included by default. Filtered later.
-        if (groupId === "classic" && location !== "GLOBAL_CLASSIC_CHALLENGES") {
-            return new Set([
-                ...(gameChalGC.get(location)?.get(groupId) ?? []),
-                ...(gameChalGC.get("GLOBAL_CLASSIC_CHALLENGES")?.get(groupId) ??
-                    []),
-            ])
-        }
+        // Global merge groups are included by default. Filtered later.
+
+        const globalGroup = this.globalMergeGroups.get(groupId)
 
         if (
-            groupId === "elusive" &&
-            location !== "GLOBAL_ELUSIVES_CHALLENGES"
+            globalGroup &&
+            globalGroup.location !== location &&
+            globalGroup.gameVersions.includes(gameVersion)
         ) {
             return new Set([
                 ...(gameChalGC.get(location)?.get(groupId) ?? []),
                 ...(gameChalGC
-                    .get("GLOBAL_ELUSIVES_CHALLENGES")
-                    ?.get(groupId) ?? []),
+                    .get(globalGroup.location)
+                    ?.get(globalGroup.groupId) ?? []),
             ])
         }
 
@@ -450,8 +543,8 @@ export abstract class ChallengeRegistry {
         return parseContextListeners(
             challenge.Definition?.ContextListeners || {},
             {
-                ...(Context || challenge.Definition?.Context || {}),
-                ...(challenge.Definition?.Constants || {}),
+                ...(Context || challenge.Definition?.Context),
+                ...challenge.Definition?.Constants,
             },
         )
     }
@@ -535,6 +628,14 @@ export class ChallengeService extends ChallengeRegistry {
         return (progression?.Completed && !progression.Ticked) || false
     }
 
+    /**
+     * Get the persistent challenge progression data for a challenge.
+     * WARNING: slow! Use sparingly.
+     * @param userId The user's ID.
+     * @param challengeId The challenge ID.
+     * @param gameVersion The game version.
+     * @returns The challenge progression data.
+     */
     getPersistentChallengeProgression(
         userId: string,
         challengeId: string,
@@ -604,7 +705,7 @@ export class ChallengeService extends ChallengeRegistry {
         location: string,
         challenges: [string, RegistryChallenge[]][],
         gameVersion: GameVersion,
-    ) {
+    ): void {
         const groups = this.groups[gameVersion].get(location)?.keys() ?? []
 
         for (const groupId of groups) {
@@ -645,6 +746,39 @@ export class ChallengeService extends ChallengeRegistry {
                 challenges.push([groupId, [...groupChallenges]])
             }
         }
+    }
+
+    /**
+     * Filter all challenges (except global) within Peacock and return them as a `CompiledChallengeTreeCategory[]`.
+     *
+     * @param filter The filter to use.
+     * @param userId The user's id.
+     * @param gameVersion The active game version.
+     * @returns A CompiledChallengeTreeCategory[] returning
+     */
+    getFilteredChallengeTree(
+        filter: ChallengeFilterOptions,
+        userId: string,
+        gameVersion: GameVersion,
+    ): CompiledChallengeTreeCategory[] {
+        const challenges: GroupIndexedChallengeLists = {}
+
+        for (const challenge of this.challenges[gameVersion].values()) {
+            // Skip global challenges
+            if (challenge.inGroup === "global") continue
+
+            if (filterChallenge(filter, challenge)) {
+                challenges[challenge.inGroup!] ??= []
+                challenges[challenge.inGroup!].push(challenge)
+            }
+        }
+
+        return this.reBatchIntoSwitchedData(
+            challenges,
+            userId,
+            gameVersion,
+            true,
+        )
     }
 
     /**
@@ -705,6 +839,26 @@ export class ChallengeService extends ChallengeRegistry {
                     gameVersion,
                 )
             }
+
+            // Handle merge gropus with `allLocations` flag.
+            // Should apply only if location has no challenges in that group,
+            // as those are merged in `getGroupContentByIdLoc` already.
+            for (const globalGroup of this.globalMergeGroups.values()) {
+                if (
+                    globalGroup.allLocations &&
+                    globalGroup.gameVersions.includes(gameVersion) &&
+                    this.groups[gameVersion]
+                        .get(location)
+                        ?.get(globalGroup.groupId) === undefined
+                ) {
+                    this.getGroupedChallengesByLoc(
+                        filter,
+                        globalGroup.location,
+                        challenges,
+                        gameVersion,
+                    )
+                }
+            }
         }
 
         // remove empty groups
@@ -722,7 +876,11 @@ export class ChallengeService extends ChallengeRegistry {
         difficulty = 4,
     ): GroupIndexedChallengeLists {
         const userData = getUserData(userId, gameVersion)
-        const contractGroup = this.controller.resolveContract(contractId, true)
+        const contractGroup = this.controller.resolveContract(
+            contractId,
+            gameVersion,
+            true,
+        )
 
         if (!contractGroup) {
             return {}
@@ -741,9 +899,17 @@ export class ChallengeService extends ChallengeRegistry {
 
             assert.ok(currentLevel, "expected current level ID in escalation")
 
-            contract = this.controller.resolveContract(currentLevel, false)
+            contract = this.controller.resolveContract(
+                currentLevel,
+                gameVersion,
+                false,
+            )
         } else {
-            contract = this.controller.resolveContract(contractId, false)
+            contract = this.controller.resolveContract(
+                contractId,
+                gameVersion,
+                false,
+            )
         }
 
         if (!contract) {
@@ -767,7 +933,12 @@ export class ChallengeService extends ChallengeRegistry {
                     gameVersion !== "h1"
                         ? "LOCATION_ICA_FACILITY_SHIP"
                         : contract.Metadata.Location,
+                gameVersion,
                 isFeatured: contractGroup.Metadata.Type === "featured",
+                pro1Filter:
+                    contract.Metadata.Difficulty === "pro1"
+                        ? Pro1FilterType.Only
+                        : Pro1FilterType.Exclude,
                 difficulty,
             },
             levelParentLocation,
@@ -788,15 +959,21 @@ export class ChallengeService extends ChallengeRegistry {
 
         let contracts = isSniperLocation(child)
             ? // @ts-expect-error This is fine - we know it will be there
-              this.controller.missionsInLocations.sniper[child]
-            : // @ts-expect-error This is fine - we know it will be there
-              (this.controller.missionsInLocations[child] ?? [])
+              this.controller.missionsInLocation[gameVersion].sniper[child]
+            : // @ts-expect-error This is fine - we can index this
+              (this.controller.missionsInLocation[gameVersion][child] ?? [])
                   .concat(
-                      // @ts-expect-error This is fine - we know it will be there
-                      this.controller.missionsInLocations.escalations[child],
+                      // @ts-expect-error This is fine - we can index this
+                      this.controller.missionsInLocation[gameVersion]
+                          .escalations[child] ?? [],
                   )
-                  // @ts-expect-error This is fine - we know it will be there
-                  .concat(this.controller.missionsInLocations.arcade[child])
+                  .concat(
+                      gameVersion === "h3"
+                          ? // @ts-expect-error This is fine - we know it will be there
+                            this.controller.missionsInLocation[gameVersion]
+                                .arcade[child]
+                          : [],
+                  )
 
         if (!contracts) {
             contracts = []
@@ -809,6 +986,8 @@ export class ChallengeService extends ChallengeRegistry {
                 type: ChallengeFilterType.Contracts,
                 contractIds: contracts,
                 locationId: child,
+                gameVersion,
+                pro1Filter: Pro1FilterType.Exclude,
             },
             parent,
             gameVersion,
@@ -820,7 +999,11 @@ export class ChallengeService extends ChallengeRegistry {
         // brand new.
         const { gameVersion, contractId, challengeContexts } = session
 
-        const contractJson = this.controller.resolveContract(contractId, true)
+        const contractJson = this.controller.resolveContract(
+            contractId,
+            gameVersion,
+            true,
+        )
 
         const challengeGroups = this.getChallengesForContract(
             contractId,
@@ -969,7 +1152,12 @@ export class ChallengeService extends ChallengeRegistry {
                 )
             }
         } catch (e) {
-            log(LogLevel.ERROR, e)
+            log(
+                LogLevel.ERROR,
+                `Error while handling challenge ${challengeId}:`,
+                "ChallengeService",
+            )
+            log(LogLevel.ERROR, (e as Error).stack ?? e, "ChallengeService")
         }
     }
 
@@ -1018,7 +1206,11 @@ export class ChallengeService extends ChallengeRegistry {
     ): CompiledChallengeTreeCategory[] {
         const userData = getUserData(userId, gameVersion)
 
-        const contractData = this.controller.resolveContract(contractId, true)
+        const contractData = this.controller.resolveContract(
+            contractId,
+            gameVersion,
+            true,
+        )
 
         if (!contractData) {
             return []
@@ -1043,9 +1235,17 @@ export class ChallengeService extends ChallengeRegistry {
                 return []
             }
 
-            levelData = this.controller.resolveContract(order, false)
+            levelData = this.controller.resolveContract(
+                order,
+                gameVersion,
+                false,
+            )
         } else {
-            levelData = this.controller.resolveContract(contractId, false)
+            levelData = this.controller.resolveContract(
+                contractId,
+                gameVersion,
+                false,
+            )
         }
 
         if (!levelData) {
@@ -1163,6 +1363,7 @@ export class ChallengeService extends ChallengeRegistry {
         locationParentId: string,
         gameVersion: GameVersion,
         userId: string,
+        isPro1: boolean,
     ): CompiledChallengeTreeCategory[] {
         const locationsData = getVersionedConfig<PeacockLocationsData>(
             "LocationsData",
@@ -1184,6 +1385,10 @@ export class ChallengeService extends ChallengeRegistry {
             {
                 type: ChallengeFilterType.ParentLocation,
                 parent: locationParentId,
+                gameVersion,
+                pro1Filter: isPro1
+                    ? Pro1FilterType.Only
+                    : Pro1FilterType.Exclude,
             },
             locationParentId,
             gameVersion,
@@ -1392,10 +1597,10 @@ export class ChallengeService extends ChallengeRegistry {
                     userId,
                     gameVersion,
                 ),
-                TypeHeader: challenge.TypeHeader,
-                TypeIcon: challenge.TypeIcon,
-                TypeTitle: challenge.TypeTitle,
             }),
+            TypeHeader: challenge.TypeHeader,
+            TypeIcon: challenge.TypeIcon,
+            TypeTitle: challenge.TypeTitle,
         }
     }
 
@@ -1410,6 +1615,7 @@ export class ChallengeService extends ChallengeRegistry {
         if (challenge.Type === "contract") {
             contract = this.controller.resolveContract(
                 challenge.InclusionData?.ContractIds?.[0] || "",
+                gameVersion,
             )
 
             // This is so we can remove unused data and make it more like official - AF
@@ -1418,7 +1624,6 @@ export class ChallengeService extends ChallengeRegistry {
                 !contract || !meta
                     ? undefined
                     : {
-                          // The null is for escalations as we cannot currently get groups
                           Data: {
                               Bricks: contract.Data.Bricks,
                               DevOnlyBricks: null,
@@ -1450,6 +1655,24 @@ export class ChallengeService extends ChallengeRegistry {
                       }
         }
 
+        if (gameVersion === "h1") {
+            switch (challenge.Type) {
+                case "contract": {
+                    challenge.TypeHeader ??= `UI_MENU_PAGE_CHALLENGE_HEADER_${contract?.Metadata.Type.toUpperCase()}`
+                    challenge.TypeIcon ??= contract?.Metadata.Type
+                    challenge.TypeTitle ??= contract?.Metadata.Title
+                    break
+                }
+                case "location": {
+                    challenge.TypeHeader ??=
+                        "UI_MENU_PAGE_CHALLENGE_HEADER_LOCATION"
+                    challenge.TypeIcon ??= "arrowright"
+                    challenge.TypeTitle ??= `UI_${challenge.ParentLocationId}_CITY`
+                    break
+                }
+            }
+        }
+
         return {
             ...this.compileRegistryChallengeTreeData(
                 challenge,
@@ -1472,12 +1695,14 @@ export class ChallengeService extends ChallengeRegistry {
      * @param challengeLists A GroupIndexedChallengeLists object, holding some challenges to be counted
      * @param userId The userId of the user to acquire completion information
      * @param gameVersion The version of the game
+     * @param multiplier What to multiply the final completion percentage by
      * @returns An object with two properties: ChallengesCount and CompletedChallengesCount.
      */
     countTotalNCompletedChallenges(
         challengeLists: GroupIndexedChallengeLists,
         userId: string,
         gameVersion: GameVersion,
+        multiplier = 1,
     ): ChallengeCompletion {
         const userData = getUserData(userId, gameVersion)
 
@@ -1500,7 +1725,8 @@ export class ChallengeService extends ChallengeRegistry {
         return {
             ChallengesCount: challengesCount,
             CompletedChallengesCount: completedChallengesCount,
-            CompletionPercent: completedChallengesCount / challengesCount,
+            CompletionPercent:
+                (completedChallengesCount / challengesCount) * multiplier,
         }
     }
 

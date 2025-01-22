@@ -27,6 +27,7 @@ import {
     ProgressionData,
     UserProfile,
 } from "./types/types"
+import { ProfileChallengeData } from "./types/challenges"
 import { join } from "path"
 import {
     getRemoteService,
@@ -67,6 +68,7 @@ if (PEACOCK_DEV) {
             "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
         )
         res.set("Access-Control-Allow-Headers", "content-type")
+        res.set("Content-Type", "application/json")
         next()
     })
 }
@@ -200,7 +202,7 @@ webFeaturesRouter.get(
 
         try {
             await loadUserData(req.query.user, req.query.gv)
-        } catch (e) {
+        } catch {
             formErrorMessage(res, "Failed to load user data.")
             return
         }
@@ -251,7 +253,7 @@ webFeaturesRouter.get(
     async (req: CommonRequest, res) => {
         try {
             await loadUserData(req.query.user, req.query.gv)
-        } catch (e) {
+        } catch {
             formErrorMessage(res, "Failed to load user data.")
             return
         }
@@ -357,7 +359,11 @@ webFeaturesRouter.post(
 
         try {
             // Challenge Progression
-            log(LogLevel.DEBUG, "Getting challenge progression...")
+            log(
+                LogLevel.DEBUG,
+                "Getting challenge progression...",
+                "progressionTransfer",
+            )
 
             const challengeProgression = await auth._useService<
                 ChallengeProgressionData[]
@@ -374,22 +380,35 @@ webFeaturesRouter.post(
 
             userdata.Extensions.ChallengeProgression = Object.fromEntries(
                 challengeProgression.data.map((data) => {
-                    return [
-                        data.ChallengeId,
-                        {
-                            Ticked: data.Completed,
-                            Completed: data.Completed,
-                            CurrentState:
-                                (data.State["CurrentState"] as string) ??
-                                "Start",
-                            State: data.State,
-                        },
-                    ]
+                    const dataObject = {
+                        Ticked: data.Completed,
+                        Completed: data.Completed,
+                        CurrentState:
+                            (data.State["CurrentState"] as string) ?? "Start",
+                        State: data.State,
+                    }
+
+                    if (Object.keys(data.State).length < 1) {
+                        const peacockChallenge =
+                            controller.challengeService.getChallengeById(
+                                data.ChallengeId,
+                                req.query.gv as Exclude<GameVersion, "scpc">,
+                            )
+
+                        dataObject.State =
+                            peacockChallenge?.Definition.Context || {}
+                    }
+
+                    return [data.ChallengeId, dataObject]
                 }),
             )
 
             // Profile Progression
-            log(LogLevel.DEBUG, "Getting profile progression...")
+            log(
+                LogLevel.DEBUG,
+                "Getting profile progression...",
+                "progressionTransfer",
+            )
 
             const exts = await auth._useService<OfficialProfileResponse>(
                 `https://${remoteService}.hitman.io/authentication/api/userchannel/ProfileService/GetProfile`,
@@ -409,7 +428,11 @@ webFeaturesRouter.post(
             )
 
             if (req.query.gv !== "h1") {
-                log(LogLevel.DEBUG, "Processing PlayerProfileXP...")
+                log(
+                    LogLevel.DEBUG,
+                    "Processing PlayerProfileXP...",
+                    "progressionTransfer",
+                )
 
                 const sublocations = exts.data.Extensions.progression
                     .PlayerProfileXP
@@ -433,7 +456,11 @@ webFeaturesRouter.post(
                     ),
                 }
 
-                log(LogLevel.DEBUG, "Processing opportunity progression...")
+                log(
+                    LogLevel.DEBUG,
+                    "Processing opportunity progression...",
+                    "progressionTransfer",
+                )
 
                 userdata.Extensions.opportunityprogression = Object.fromEntries(
                     Object.keys(
@@ -442,7 +469,11 @@ webFeaturesRouter.post(
                 )
 
                 if (exts.data.Extensions.progression.Unlockables) {
-                    log(LogLevel.DEBUG, "Processing unlockables...")
+                    log(
+                        LogLevel.DEBUG,
+                        "Processing unlockables...",
+                        "progressionTransfer",
+                    )
 
                     for (const [unlockId, data] of Object.entries(
                         exts.data.Extensions.progression.Unlockables,
@@ -467,11 +498,14 @@ webFeaturesRouter.post(
             userdata.Extensions.gamepersistentdata =
                 exts.data.Extensions.gamepersistentdata || {}
 
-            userdata.Extensions.gamepersistentdata.HitsFilterType ??= {
-                MyHistory: "all",
-                MyContracts: "all",
-                MyPlaylist: "all",
-            }
+            // @ts-expect-error It's fine
+            userdata.Extensions.gamepersistentdata.HitsFilterType ??= {}
+            userdata.Extensions.gamepersistentdata.HitsFilterType.MyHistory ??=
+                "all"
+            userdata.Extensions.gamepersistentdata.HitsFilterType.MyContracts ??=
+                "all"
+            userdata.Extensions.gamepersistentdata.HitsFilterType.MyPlaylist ??=
+                "all"
 
             const sublocations = getSublocations(req.query.gv)
             userdata.Extensions.defaultloadout ??= {}
@@ -531,6 +565,7 @@ webFeaturesRouter.post(
             log(
                 LogLevel.DEBUG,
                 `Getting escalation${req.query.gv === "h3" ? " & arcade" : ""} progression...`,
+                "progressionTransfer",
             )
 
             const escalations = await getAllHitsCategory(
@@ -570,8 +605,18 @@ webFeaturesRouter.post(
             // Freelancer Progression
             // TODO: Try and see if there is a less intensive way to do this
             // GetForPlay2 is quite intensive on IOI's side as it starts a session
-            if (req.query.gv === "h3") {
-                log(LogLevel.DEBUG, "Getting freelancer progression...")
+            if (
+                req.query.gv === "h3" &&
+                (userdata.Extensions.entP.includes(
+                    "06d4d61bbb774ca99c1661bee04fbde0",
+                ) ||
+                    userdata.Extensions.entP.includes("1829605"))
+            ) {
+                log(
+                    LogLevel.DEBUG,
+                    "Getting freelancer progression...",
+                    "progressionTransfer",
+                )
 
                 await auth._useService(
                     `https://${remoteService}.hitman.io/authentication/api/configuration/Init?configName=pc-prod&lockedContentDisabled=false&isFreePrologueUser=false&isIntroPackUser=false&isFullExperienceUser=true`,
@@ -599,17 +644,66 @@ webFeaturesRouter.post(
                 ] = freelancerSession.data.ContractProgressionData
             }
 
+            // Set progress for Peacock-exclusive challenges
+            // _FACILITY_CHALLENGES.json - 2546d4f7-191c-4858-840f-321d31aed410 - "Discover the yacht"
+            {
+                const progressionObj: ProfileChallengeData = {
+                    Ticked: false,
+                    Completed: false,
+                    CurrentState: "Start",
+                    State: {
+                        AreaIDs: [],
+                    },
+                }
+
+                for (const areaRepoId of [
+                    "0a4513e4-338c-4328-ad72-82c1b5ff2a73", // AD_YACHT_BAR
+                    "705c3917-9f3d-4444-a268-41e74bc8e4ad", // AD_YACHT_OFFICE
+                    "7cfd6202-b3fb-4c9f-b3c2-c892b8031901", // AD_YACHT_KITCHEN
+                    "ba0fe890-9feb-4991-82f8-5daf7aff3380", // AD_YACHT_BRIDGE
+                    "fa7b2877-3159-454a-82d3-422a0dd7e5da", // AD_YACHT_GARAGE
+                ]) {
+                    if (
+                        userdata.Extensions.gamepersistentdata
+                            ?.PersistentBool?.[areaRepoId]
+                    ) {
+                        progressionObj.State.AreaIDs.push(areaRepoId)
+                    }
+                }
+
+                if (progressionObj.State.AreaIDs.length === 5) {
+                    progressionObj.Ticked = progressionObj.Completed = true
+                    progressionObj.CurrentState = "Success"
+                }
+
+                userdata.Extensions.ChallengeProgression[
+                    "2546d4f7-191c-4858-840f-321d31aed410"
+                ] = progressionObj
+            }
+
             userdata.Extensions.LastOfficialSync = new Date().toISOString()
 
             writeUserData(req.query.user, req.query.gv)
         } catch (error) {
             if (error instanceof AxiosError) {
+                const req = error.request?._currentRequest ?? error.request
+                const reqUrl = req && `${req.protocol}//${req.host}${req.path}`
+                log(
+                    LogLevel.DEBUG,
+                    `Failed to sync official data: got ${error.code}: ${error.response?.status} ${error.response?.statusText} for url ${reqUrl}`,
+                    "progressionTransfer",
+                )
                 formErrorMessage(
                     res,
                     `Failed to sync official data: got ${error.response?.status} ${error.response?.statusText}.`,
                 )
                 return
             } else {
+                log(
+                    LogLevel.DEBUG,
+                    `Failed to sync official data: ${JSON.stringify(error)}.`,
+                    "progressionTransfer",
+                )
                 formErrorMessage(
                     res,
                     `Failed to sync official data: got ${JSON.stringify(error)}.`,

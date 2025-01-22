@@ -24,6 +24,7 @@ import axios from "axios"
 /**
  * @param {import("axios").AxiosInstance} axiosClient
  * @param {string} contractId
+ * @param gameVersion
  * @returns {Promise<*>}
  */
 async function fetchContractCAndPFromIOI(axiosClient, contractId, gameVersion) {
@@ -46,12 +47,14 @@ async function fetchContractCAndPFromIOI(axiosClient, contractId, gameVersion) {
 /**
  * @param {import("axios").AxiosInstance} axiosClient
  * @param {string} locationId
+ * @param {boolean} pro1
  * @returns {Promise<*>}
  */
-async function fetchDestination(axiosClient, locationId) {
+async function fetchDestination(axiosClient, locationId, pro1) {
     const resp = await axiosClient.get("/profiles/page/Destination", {
         params: {
             locationId,
+            ...(pro1 ? { difficulty: "pro1" } : {}),
         },
     })
 
@@ -101,16 +104,17 @@ function getOrderIndex(categoryId) {
  * @param {string} locationParent
  * @param {string} jwt
  * @param {string} gameVersion
+ * @param {boolean} pro1
  * @returns {Promise<string>}
  */
-async function extract(locationParent, jwt, gameVersion) {
+async function extract(locationParent, jwt, gameVersion, pro1) {
     const httpClient = axios.create({
         baseURL: `https://${getUrlFromVersion(gameVersion)}/`,
         headers: {
             "User-Agent": "G2 Http/1.0 (Windows NT 10.0; DX12/1; d3d12/1)",
             "Content-Type": "application/json",
             Accept: "application/json, text/*, image/*, application/json",
-            Version: gameVersion === "h1" ? "6.74.0" : "8.15.0",
+            Version: gameVersion === "h1" ? "6.74.0" : "8.18.0",
             Authorization: `bearer ${jwt}`,
         },
     })
@@ -123,7 +127,11 @@ async function extract(locationParent, jwt, gameVersion) {
 
     const missionIds = new Set()
 
-    const destinationsData = await fetchDestination(httpClient, locationParent)
+    const destinationsData = await fetchDestination(
+        httpClient,
+        locationParent,
+        pro1,
+    )
 
     const sublocations =
         destinationsData.data.MissionData.SubLocationMissionsData
@@ -297,6 +305,7 @@ class ExtractChallengeDataCommand extends Command {
     // https://youtrack.jetbrains.com/issue/WEB-56917
     // noinspection JSCheckFunctionSignatures
     gameVersion = Option.String("--game-version", "h3")
+    pro1 = Option.Boolean("--pro1", false)
 
     static usage = Command.Usage({
         category: `Challenges`,
@@ -311,6 +320,10 @@ class ExtractChallengeDataCommand extends Command {
                 `With game version`,
                 `$0 --location-parent LOCATION_PARENT_PARIS --jwt someJsonWebToken --out-file out.json --game-version h2`,
             ],
+            [
+                `For legacy professional mode`,
+                `$0 --location-parent LOCATION_PARENT_PARIS --jwt someJsonWebToken --out-file out.json --pro1`,
+            ],
         ],
     })
 
@@ -319,6 +332,7 @@ class ExtractChallengeDataCommand extends Command {
             this.locationParent,
             this.jwt,
             this.gameVersion,
+            this.pro1,
         )
 
         await writeFile(this.outFile, data)

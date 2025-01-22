@@ -16,6 +16,8 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { MissionType } from "./types"
+
 export type MissionEndRequestQuery = Partial<{
     contractSessionId: string
     masteryUnlockableId?: string
@@ -150,6 +152,13 @@ export type DebriefingLeaderboardsQuery = {
  */
 export type ChallengeLocationQuery = {
     locationId: string
+}
+
+/**
+ * Query for `/profiles/page/ContractTypeChallenges`.
+ */
+export type ContractTypeChallengesQuery = {
+    contractType: MissionType
 }
 
 /**

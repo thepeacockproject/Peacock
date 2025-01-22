@@ -83,6 +83,12 @@ export const H3_EPIC_ENTITLEMENTS = [
     "28455871cd0d4ffab52f557cc012ea5e",
     // SAMBUCA:
     "9220c020262f420da06eb46a4b1ce86f",
+    // PENICILLIN:
+    "6cdf07da030d4f66acd50eaf3cd234c7",
+    // TOMORROWLAND:
+    "f04198e0ffcf49079b5ec77bb6b66891",
+    // LAMBIC:
+    "70a9afcc8de84b6ab0f2b45b2018559b",
 ]
 
 export const H2_STEAM_ENTITLEMENTS = [
@@ -134,7 +140,7 @@ export const STEAM_NAMESPACE_2018 = "863550"
 export const EPIC_NAMESPACE_2021 = "ed55aa5edc5941de92fd7f64de415793"
 export const STEAM_NAMESPACE_2021 = "1659040"
 
-export const FRANKENSTEIN_SNIPER_ENTITLEMENTS = [STEAM_NAMESPACE_2016, "783781"]
+export const SCPC_ENTITLEMENTS = [STEAM_NAMESPACE_2016, "783781"]
 
 export function getPlatformEntitlements(
     req: RequestWithJwt,

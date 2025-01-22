@@ -42,6 +42,7 @@ export function contractsModeHome(req: RequestWithJwt, res: Response): void {
 
     const contractCreationTutorial = controller.resolveContract(
         contractCreationTutorialId,
+        req.gameVersion,
     )
 
     res.json({
@@ -91,6 +92,11 @@ export async function officialSearchContract(
         false,
         filters,
     )
+
+    for (const contract of resp.data.data.Data.Contracts) {
+        const contractData = contract.UserCentricContract.Contract
+        controller.fetchedContracts.set(contractData.Metadata.Id, contractData)
+    }
 
     preserveContracts(
         resp.data.data.Data.Contracts.map(

@@ -622,6 +622,55 @@
                     }
                 },
                 {
+                    "Id": "fb09e534-93fa-4ec0-bb60-0a493a6ff2a2",
+                    "Name": "UI_CHALLENGE_SMOOTHSNAKE_MYSTERYUNICORN_NAME",
+                    "ImageName": "images/contracts/escalation/ContractEscalation_Ancestral_SmoothSnake_MysteryofUnicorns.jpg",
+                    "Description": "UI_CHALLENGE_SMOOTHSNAKE_MYSTERYUNICORN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": ["PROP_MELEE_UNICORNHORN"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_ANCESTRAL",
+                    "ParentLocationId": "LOCATION_PARENT_ANCESTRAL",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": ["$Value.IsTarget", true]
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillItemRepositoryId",
+                                                    "58769c58-3e70-4746-be8e-4c7114f8c2bb"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["assassination", "medium"],
+                    "InclusionData": {
+                        "ContractIds": ["5680108a-19dc-4448-9344-3d0290217162"]
+                    }
+                },
+                {
                     "Id": "ff861061-b0d6-437d-a2a1-d7678a45e786",
                     "Name": "UI_CHALLENGE_SMOOTHSNAKE_HOLYMOLY_NAME",
                     "ImageName": "images/contracts/escalation/ContractEscalation_Ancestral_SmoothSnake_HolyMoly.jpg",

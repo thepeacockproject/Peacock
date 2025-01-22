@@ -108,10 +108,7 @@ multiplayerMenuDataRouter.get(
             return
         }
 
-        if (!req.query.disguiseUnlockableId) {
-            res.status(400).send("no disguiseUnlockableId")
-            return
-        }
+        req.query.disguiseUnlockableId ??= "TOKEN_OUTFIT_HITMANSUIT"
 
         const presets = getConfig<MultiplayerPreset[]>(
             "MultiplayerPresets",
@@ -134,7 +131,7 @@ multiplayerMenuDataRouter.get(
                 Presets: presets,
                 UserCentricContracts: [...contractIds].map((contractId) => {
                     return generateUserCentric(
-                        controller.resolveContract(contractId),
+                        controller.resolveContract(contractId, req.gameVersion),
                         req.jwt.unique_name,
                         req.gameVersion,
                     )
@@ -159,10 +156,7 @@ multiplayerMenuDataRouter.get(
             return
         }
 
-        if (!req.query.disguiseUnlockableId) {
-            res.status(400).send("no disguiseUnlockableId")
-            return
-        }
+        req.query.disguiseUnlockableId ??= "TOKEN_OUTFIT_HITMANSUIT"
 
         const userData = getUserData(req.jwt.unique_name, req.gameVersion)
 

@@ -28,6 +28,9 @@ else
     OUT_DIR=Peacock-v"$VERSION"-linux
 fi
 
+# generate options.ini
+node chunk0.js noop
+
 mkdir "$OUT_DIR"
 cp packaging/HOW_TO_USE.html "$OUT_DIR"
 cp PeacockPatcher.exe "$OUT_DIR"
@@ -46,11 +49,12 @@ cp resources/dynamic_resources_h2.rpkg "$OUT_DIR"/resources/dynamic_resources_h2
 cp resources/dynamic_resources_h1.rpkg "$OUT_DIR"/resources/dynamic_resources_h1.rpkg
 cp -r resources/challenges "$OUT_DIR"/resources/challenges
 cp -r resources/mastery "$OUT_DIR"/resources/mastery
-cp resources/contracts.br "$OUT_DIR"/resources/contracts.br
+cp resources/contracts.prp "$OUT_DIR"/resources/contracts.prp
 mkdir "$OUT_DIR"/webui
 mkdir "$OUT_DIR"/webui/dist
 cp webui/dist/*.html "$OUT_DIR"/webui/dist
 cp -r webui/dist/assets "$OUT_DIR"/webui/dist/assets
 cp webui/dist/THIRDPARTYNOTICES.txt "$OUT_DIR"/webui/dist/THIRDPARTYNOTICES.txt
+cp options.ini "$OUT_DIR"
 ls "$OUT_DIR"
 zip -9 -r "$OUT_DIR".zip "$OUT_DIR"

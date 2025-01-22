@@ -26,7 +26,9 @@ import {
     H1_GOTY_UNLOCKABLES,
     H1_REQUIEM_UNLOCKABLES,
     H2_RACCOON_STINGRAY_UNLOCKABLES,
+    LAMBIC_UNLOCKABLES,
     MAKESHIFT_UNLOCKABLES,
+    PENICILLIN_UNLOCKABLES,
     SAMBUCA_UNLOCKABLES,
     SIN_ENVY_UNLOCKABLES,
     SIN_GLUTTONY_UNLOCKABLES,
@@ -36,6 +38,7 @@ import {
     SIN_SLOTH_UNLOCKABLES,
     SIN_WRATH_UNLOCKABLES,
     SMART_CASUAL_UNLOCKABLES,
+    TOMORROWLAND_UNLOCKABLES,
     TRINITY_UNLOCKABLES,
     WINTERSPORTS_UNLOCKABLES,
 } from "./ownership"
@@ -66,6 +69,9 @@ const DELUXE_DATA = [
     ...TRINITY_UNLOCKABLES,
     ...WINTERSPORTS_UNLOCKABLES,
     ...SAMBUCA_UNLOCKABLES,
+    ...PENICILLIN_UNLOCKABLES,
+    ...TOMORROWLAND_UNLOCKABLES,
+    ...LAMBIC_UNLOCKABLES,
 ]
 
 /**
@@ -159,6 +165,11 @@ function filterUnlockedContent(
                     unlockableMasteryData.Location,
                     unlockableMasteryData.SubPackageId,
                 )
+
+            assert.ok(
+                locationData,
+                `location ${unlockableMasteryData.Location} (subPackageId: ${unlockableMasteryData.SubPackageId}) not found`,
+            )
 
             const canUnlock = locationData.Level >= unlockableMasteryData.Level
 
@@ -397,6 +408,27 @@ function filterAllowedContent(gameVersion: GameVersion, entP: string[]) {
             )
         }
 
+        if (PENICILLIN_UNLOCKABLES.includes(id)) {
+            return (
+                e.includes("6cdf07da030d4f66acd50eaf3cd234c7") ||
+                e.includes("2973650")
+            )
+        }
+
+        if (TOMORROWLAND_UNLOCKABLES.includes(id)) {
+            return (
+                e.includes("f04198e0ffcf49079b5ec77bb6b66891") ||
+                e.includes("3110360")
+            )
+        }
+
+        if (LAMBIC_UNLOCKABLES.includes(id)) {
+            return (
+                e.includes("70a9afcc8de84b6ab0f2b45b2018559b") ||
+                e.includes("3254350")
+            )
+        }
+
         return true
     }
 }
@@ -435,6 +467,7 @@ export function getUnlockableById(
             unlockables = [
                 ...unlockables,
                 ...getConfig<readonly Unlockable[]>("SniperUnlockables", false),
+                ...getConfig<readonly Unlockable[]>("VersusUnlockables", false),
             ]
         }
 
@@ -547,6 +580,7 @@ export function createInventory(
             true,
         ),
         ...getConfig<Unlockable[]>("SniperUnlockables", true),
+        ...getConfig<Unlockable[]>("VersusUnlockables", true),
     ].filter((u) => u.Type !== "location") // locations not in inventory
 
     let unlockables: Unlockable[] = allunlockables
@@ -629,6 +663,11 @@ export function createInventory(
 export function grantDrops(profileId: string, drops: Unlockable[]): void {
     if (!inventoryUserCache.has(profileId)) {
         assert.fail(`User ${profileId} does not have an inventory??!`)
+    }
+
+    if (!getFlag("enableMasteryProgression")) {
+        // mastery is disabled, everything is already unlocked, don't double-unlock
+        return
     }
 
     const inventoryItems: InventoryItem[] = drops.map((unlockable) => ({

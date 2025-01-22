@@ -16,6 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import * as commandService from "./commandService"
 import * as configSwizzleManager from "./configSwizzleManager"
 import * as controller from "./controller"
 import * as databaseHandler from "./databaseHandler"
@@ -69,6 +70,7 @@ import * as menuSystem from "./menus/menuSystem"
 import * as planning from "./menus/planning"
 import * as playerProfile from "./menus/playerProfile"
 import * as playnext from "./menus/playnext"
+import * as settings from "./menus/settings"
 import * as sniper from "./menus/sniper"
 import * as stashpoints from "./menus/stashpoints"
 import * as multiplayerMenuData from "./multiplayer/multiplayerMenuData"
@@ -79,6 +81,7 @@ import * as contractCreation from "./statemachines/contractCreation"
 import * as escalationService from "./contracts/escalations/escalationService"
 
 export default {
+    "@peacockproject/core/commandService": commandService,
     "@peacockproject/core/configSwizzleManager": configSwizzleManager,
     "@peacockproject/core/controller": controller,
     "@peacockproject/core/databaseHandler": databaseHandler,
@@ -132,6 +135,7 @@ export default {
     "@peacockproject/core/menus/planning": planning,
     "@peacockproject/core/menus/playerProfile": playerProfile,
     "@peacockproject/core/menus/playnext": playnext,
+    "@peacockproject/core/menus/settings": settings,
     "@peacockproject/core/menus/sniper": sniper,
     "@peacockproject/core/menus/stashpoints": stashpoints,
     "@peacockproject/core/multiplayer/multiplayerMenuData": multiplayerMenuData,
