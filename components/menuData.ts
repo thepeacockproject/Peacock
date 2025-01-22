@@ -627,8 +627,8 @@ function generateSelectPage(
     const unlocked = inventory
         .filter(
             (item) =>
-                item.Unlockable.Type ===
-                    (page === "Pickup" ? "agencypickup" : "access") &&
+                item.Unlockable[page === "Pickup" ? "Type" : "Subtype"] ===
+                    (page === "Pickup" ? "agencypickup" : "startinglocation") &&
                 item.Unlockable.Properties.Difficulty ===
                     contractData.Metadata.Difficulty &&
                 item.Unlockable.Properties.RepositoryId,
