@@ -683,10 +683,7 @@ menuDataRouter.get(
             req.gameVersion,
         )
 
-        if (typeof page === "number") {
-            res.status(page).end()
-            return
-        }
+        if (typeof page === "number") return res.status(page).end()
 
         res.json(page)
     },
@@ -708,10 +705,7 @@ menuDataRouter.get(
             req.gameVersion,
         )
 
-        if (typeof page === "number") {
-            res.status(page).end()
-            return
-        }
+        if (typeof page === "number") return res.status(page).end()
 
         res.json(page)
     },
