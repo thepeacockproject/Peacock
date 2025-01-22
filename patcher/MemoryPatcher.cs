@@ -137,7 +137,7 @@ namespace HitmanPatcher
 					ProcessModule mainModule = process.MainModule;
 					b = mainModule.BaseAddress;
 				}
-				catch (NullReferenceException)
+				catch (Exception)
 				{
 					return false; // process has no main module (not initialized yet?), try again next timer tick.
 				}
