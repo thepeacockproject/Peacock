@@ -628,7 +628,7 @@ function generateSelectPage(
         .filter(
             (item) =>
                 item.Unlockable.Type ===
-                    (page === "Pickup" ? "agencypickup" : "startinglocation") &&
+                    (page === "Pickup" ? "agencypickup" : "access") &&
                 item.Unlockable.Properties.Difficulty ===
                     contractData.Metadata.Difficulty &&
                 item.Unlockable.Properties.RepositoryId,
