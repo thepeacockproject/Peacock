@@ -1,10 +1,113 @@
 {
     "Data": {
         "EnableSaving": false,
-        "Entrances": ["f9c65d0b-e5ce-454e-8f20-08a8083a9b9d"],
-        "Objectives": [],
+        "Objectives": [
+            {
+                "_comment": "serve dishes",
+                "Id": "6dcbf0c6-7d39-4265-9b2b-ecc115fb85d0",
+                "Type": "statemachine",
+                "ObjectiveType": "custom",
+                "Category": "Primary",
+                "Image": "images/contracts/escalation/contractescalation_wet_nian_obj_familymeal.jpg",
+                "BriefingName": "$loc UI_PEACOCK_NIAN_OBJ_FAMILYMEAL_NAME",
+                "BriefingText": "$loc UI_PEACOCK_NIAN_OBJ_FAMILYMEAL_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_NIAN_OBJ_FAMILYMEAL_DESC",
+                    "iconType": 17
+                },
+                "ForceShowOnLoadingScreen": true,
+                "ShowInHud": true,
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "setpieces": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "bf6c5c71-86b8-4abb-aed9-63dbbf320c52"
+                                    ]
+                                },
+                                "Transition": "MealMake"
+                            }
+                        },
+                        "MealMake": {
+                            "setpieces": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "3a2722a3-0458-4db7-aa4b-0440728e4db6"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "visit neighbors",
+                "Id": "acecde5b-7fd9-4103-978a-5a89c1e251ef",
+                "Type": "statemachine",
+                "ObjectiveType": "custom",
+                "Category": "Primary",
+                "Image": "images/stashpoints/wet_agencypickup_apartment.jpg",
+                "BriefingName": "$loc UI_PEACOCK_NIAN_OBJ_VISITNEIGHBOR_NAME",
+                "BriefingText": "$loc UI_PEACOCK_NIAN_OBJ_VISITNEIGHBOR_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_NIAN_OBJ_VISITNEIGHBOR_HUD"
+                },
+                "IsHidden": true,
+                "ForceShowOnLoadingScreen": true,
+                "ShowInHud": true,
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "Targets": [
+                            "fc776f90-eda8-4aaf-83d9-bb069c3827ab",
+                            "18324739-f01e-47f4-8c8b-c7f880805491"
+                        ],
+                        "TargetsKilled": []
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$any": {
+                                            "in": "$.Targets",
+                                            "?": {
+                                                "$eq": [
+                                                    "$.#",
+                                                    "$Value.RepositoryId"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "Actions": {
+                                        "$pushunique": [
+                                            "TargetsKilled",
+                                            "$Value.RepositoryId"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "($.Targets).Count",
+                                            "($.TargetsKilled).Count"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
         "Bricks": [],
-        "MandatoryLoadout": [],
         "VR": [
             {
                 "Quality": "base",
@@ -33,12 +136,19 @@
         "TileImage": "images/contracts/escalation/ContractEscalation_Wet_Nian.jpg",
         "Title": "UI_PEACOCK_NIAN1",
         "Description": "UI_PEACOCK_ESCALATION_CHONGQING_DESC",
-        "CodeName_Hint": "Nian - Group",
+        "CodeName_Hint": "Nian Level 1",
         "Location": "LOCATION_WET_RAT",
         "RequiredUnlockable": "ACCESS_HIT_RAT",
         "ScenePath": "assembly:/_pro/scenes/missions/wet/scene_rat_basic.entity",
         "Type": "escalation",
-        "GroupObjectiveDisplayOrder": [],
+        "GroupObjectiveDisplayOrder": [
+            {
+                "Id": "6dcbf0c6-7d39-4265-9b2b-ecc115fb85d0"
+            },
+            {
+                "Id": "acecde5b-7fd9-4103-978a-5a89c1e251ef"
+            }
+        ],
         "InGroup": "5d0668b9-665f-48a7-a72c-6f5614b350a2",
         "Entitlements": ["LOCATION_WET"],
         "LastUpdate": "2023-03-30T11:20:23.763366Z",

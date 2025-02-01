@@ -270,5 +270,107 @@
         ],
         "ShowBasedOnObjectives": null,
         "IsPrestigeObjective": null
+    },
+    "2873db55-1bab-427c-9db5-72ede3a13aa6": {
+        "Name": "UI_PEACOCK_GAMECHANGERS_GLOBAL_FROZEN_DISGUISE_NAME",
+        "Description": "UI_PEACOCK_GAMECHANGERS_WET_NIAN_FREEZE_DUMPLINGCOOK_DESC",
+        "Icon": null,
+        "IsHidden": null,
+        "TileImage": "images/contracts/gamechangers/gamechanger_wet_nian_freeze_dumplingcook.jpg",
+        "ObjectivesCategory": "primary",
+        "Resource": [],
+        "Objectives": [
+            {
+                "Id": "86083e73-f98b-4dc0-8f7d-f8c39f67a669",
+                "Category": "primary",
+                "BriefingText": "$loc UI_PEACOCK_GAMECHANGERS_WET_NIAN_FREEZE_DUMPLINGCOOK_FAIL",
+                "Type": "statemachine",
+                "ObjectiveType": "custom",
+                "Definition": {
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "StartingSuit": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value",
+                                        "c5f6dd2a-3600-40be-9a82-bbf5d360c379"
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            },
+                            "IntroCutEnd": { "Transition": "Success" }
+                        }
+                    }
+                }
+            }
+        ],
+        "ShowBasedOnObjectives": null,
+        "IsPrestigeObjective": null
+    },
+    "562c54f5-8363-4942-ac1e-6dd179ab1597": {
+        "Name": "UI_PEACOCK_GAMECHANGERS_WET_NIAN_DONOTHARMCOOKS_NAME",
+        "Description": "UI_PEACOCK_GAMECHANGERS_WET_NIAN_DONOTHARMCOOKS_DESC",
+        "Icon": null,
+        "IsHidden": null,
+        "TileImage": "images/contracts/gamechangers/gamechanger_wet_nian_donotharmcooks.jpg",
+        "ObjectivesCategory": "primary",
+        "Resource": [],
+        "Objectives": [
+            {
+                "Id": "a4b7e9b8-b288-499c-b3e9-4a98f06a9de0",
+                "Category": "primary",
+                "BriefingText": "$loc UI_PEACOCK_GAMECHANGERS_WET_NIAN_DONOTHARMCOOKS_DESC",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "KitchenStaffs": [
+                            "92532bb0-0f92-4bbe-847f-4c248729cb14",
+                            "845d07f2-7f6d-4fe0-a0ba-d242756c6715",
+                            "8b5d93ba-88d7-4e28-b759-1cb155d91c08",
+                            "9d4c1674-678b-4adc-9496-b82f19582a6d"
+                        ]
+                    },
+                    "States": {
+                        "Start": {
+                            "-": { "Transition": "Success" }
+                        },
+                        "Success": {
+                            "Kill": {
+                                "Condition": {
+                                    "$any": {
+                                        "?": {
+                                            "$eq": [
+                                                "$.#",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        },
+                                        "in": "$.KitchenStaffs"
+                                    }
+                                },
+                                "Transition": "Failure"
+                            },
+                            "Pacify": {
+                                "Condition": {
+                                    "$any": {
+                                        "?": {
+                                            "$eq": [
+                                                "$.#",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        },
+                                        "in": "$.KitchenStaffs"
+                                    }
+                                },
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "ShowBasedOnObjectives": null,
+        "IsPrestigeObjective": null
     }
 }
