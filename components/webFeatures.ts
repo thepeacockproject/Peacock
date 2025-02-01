@@ -372,9 +372,9 @@ webFeaturesRouter.post(
                 false,
                 {
                     profileid: req.query.user,
-                    challengeids: controller.challengeService.getChallengeIds(
-                        req.query.gv,
-                    ),
+                    challengeids: controller.challengeService
+                        .getChallengeIds(req.query.gv)
+                        .filter((id) => uuidRegex.test(id)), // filter out potential bogus challenge ids added by plugins
                 },
             )
 

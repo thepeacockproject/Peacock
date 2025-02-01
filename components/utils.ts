@@ -51,7 +51,7 @@ export const ServerVer: ServerVersion = {
 export const PEACOCKVERSTRING = HUMAN_VERSION
 
 export const uuidRegex =
-    /^[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$/
+    /^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$/
 
 export const contractTypes = ["featured", "usercreated"]
 
