@@ -273,33 +273,62 @@
     },
     "2873db55-1bab-427c-9db5-72ede3a13aa6": {
         "Name": "UI_PEACOCK_GAMECHANGERS_GLOBAL_FROZEN_DISGUISE_NAME",
-        "Description": "UI_PEACOCK_GAMECHANGERS_WET_NIAN_FREEZE_DUMPLINGCOOK_DESC",
+        "Description": "UI_PEACOCK_GAMECHANGERS_WET_NIAN_FREEZE_FACILITY_DESC",
         "Icon": null,
         "IsHidden": null,
-        "TileImage": "images/contracts/gamechangers/gamechanger_wet_nian_freeze_dumplingcook.jpg",
+        "TileImage": "images/contracts/gamechangers/gamechanger_wet_nian_freeze_facility.jpg",
         "ObjectivesCategory": "primary",
         "Resource": [],
         "Objectives": [
             {
                 "Id": "86083e73-f98b-4dc0-8f7d-f8c39f67a669",
                 "Category": "primary",
-                "BriefingText": "$loc UI_PEACOCK_GAMECHANGERS_WET_NIAN_FREEZE_DUMPLINGCOOK_FAIL",
+                "BriefingText": "$loc UI_PEACOCK_GAMECHANGERS_WET_NIAN_FREEZE_FACILITY_FAIL",
                 "Type": "statemachine",
                 "ObjectiveType": "custom",
                 "Definition": {
                     "Scope": "session",
+                    "Context": {
+                        "EligibleDisguises": [
+                            "4dd90d10-ac5f-404f-9c20-4428653ca7ba",
+                            "f5c73d58-a24f-4957-b80d-5efb6771ad9b",
+                            "e9660960-799e-4787-b163-fb96c192f5b6",
+                            "b3515a1e-4a32-475c-bd61-4fdae243a7e5",
+                            "86bdb741-6810-4610-8e21-799c93c71849",
+                            "fd1d39d8-db06-47b3-8f4b-eb1febf5ccb7",
+                            "553bb399-2ee0-41bb-a76b-b7ec6d49f5a3",
+                            "c5f6dd2a-3600-40be-9a82-bbf5d360c379",
+                            "9c07a86c-2d03-417b-b46f-cb433481080e",
+                            "8fc343f2-6e9a-4e06-9342-705e5b171895"
+                        ]
+                    },
                     "States": {
                         "Start": {
                             "StartingSuit": {
                                 "Condition": {
-                                    "$eq": [
-                                        "$Value",
-                                        "c5f6dd2a-3600-40be-9a82-bbf5d360c379"
-                                    ]
+                                    "$any": {
+                                        "?": {
+                                            "$eq": ["$Value", "$.#"]
+                                        },
+                                        "in": "$.EligibleDisguises"
+                                    }
                                 },
                                 "Transition": "Failure"
                             },
                             "IntroCutEnd": { "Transition": "Success" }
+                        },
+                        "Success": {
+                            "Disguise": {
+                                "Condition": {
+                                    "$any": {
+                                        "?": {
+                                            "$eq": ["$Value", "$.#"]
+                                        },
+                                        "in": "$.EligibleDisguises"
+                                    }
+                                },
+                                "Transition": "Failure"
+                            }
                         }
                     }
                 }
@@ -329,7 +358,8 @@
                             "92532bb0-0f92-4bbe-847f-4c248729cb14",
                             "845d07f2-7f6d-4fe0-a0ba-d242756c6715",
                             "8b5d93ba-88d7-4e28-b759-1cb155d91c08",
-                            "9d4c1674-678b-4adc-9496-b82f19582a6d"
+                            "9d4c1674-678b-4adc-9496-b82f19582a6d",
+                            "55670310-d927-425b-854e-25e9b81fbb65"
                         ]
                     },
                     "States": {

@@ -4,11 +4,8 @@
         "Entrances": [
             "f9c65d0b-e5ce-454e-8f20-08a8083a9b9d",
             "d497ce5a-011e-4b40-9d69-341cc8141120",
-            "7371c3ea-cfb9-46b8-a699-93ab1cdd07af",
             "c235f578-f55b-4c9d-b568-db6cad909c8c",
-            "f3944deb-0747-4d67-b26a-99af5f979705",
-            "75827342-5601-4656-ac00-55aff44b48f4",
-            "3fd57506-80d6-4a63-88ed-206b15686758"
+            "f3944deb-0747-4d67-b26a-99af5f979705"
         ],
         "Objectives": [
             {
@@ -62,10 +59,10 @@
                 "ObjectiveType": "custom",
                 "Category": "Primary",
                 "Image": "images/stashpoints/wet_agencypickup_apartment.jpg",
-                "BriefingName": "$loc UI_PEACOCK_NIAN_OBJ_VISITNEIGHBOR_EXPLOSION_NAME",
+                "BriefingName": "$loc UI_PEACOCK_NIAN_OBJ_VISITNEIGHBOR_EXPLOSIVE_NAME",
                 "BriefingText": "$loc UI_PEACOCK_NIAN_OBJ_VISITNEIGHBOR_DESC",
                 "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_NIAN_OBJ_VISITNEIGHBOR_EXPLOSION_HUD"
+                    "display": "$loc UI_PEACOCK_NIAN_OBJ_VISITNEIGHBOR_EXPLOSIVE_HUD"
                 },
                 "IsHidden": true,
                 "ForceShowOnLoadingScreen": true,
@@ -97,19 +94,9 @@
                                                 }
                                             },
                                             {
-                                                "$or": [
-                                                    {
-                                                        "$eq": [
-                                                            "$Value.KillMethodBroad",
-                                                            "explosive"
-                                                        ]
-                                                    },
-                                                    {
-                                                        "$eq": [
-                                                            "$Value.KillMethodStrict",
-                                                            "accident_explosion"
-                                                        ]
-                                                    }
+                                                "$eq": [
+                                                    "$Value.KillMethodBroad",
+                                                    "explosive"
                                                 ]
                                             }
                                         ]
@@ -137,19 +124,9 @@
                                             },
                                             {
                                                 "$not": {
-                                                    "$or": [
-                                                        {
-                                                            "$eq": [
-                                                                "$Value.KillMethodBroad",
-                                                                "explosive"
-                                                            ]
-                                                        },
-                                                        {
-                                                            "$eq": [
-                                                                "$Value.KillMethodStrict",
-                                                                "accident_explosion"
-                                                            ]
-                                                        }
+                                                    "$eq": [
+                                                        "$Value.KillMethodBroad",
+                                                        "explosive"
                                                     ]
                                                 }
                                             }
@@ -296,18 +273,18 @@
         "Type": "escalation",
         "GroupObjectiveDisplayOrder": [
             {
-                "Id": "562c54f5-8363-4942-ac1e-6dd179ab1597",
-                "IsNew": true
-            },
-            {
                 "Id": "5e0ba90d-d126-4c0a-8d2d-9e2c47202a81",
                 "IsNew": true
             },
             {
-                "Id": "2873db55-1bab-427c-9db5-72ede3a13aa6"
+                "Id": "562c54f5-8363-4942-ac1e-6dd179ab1597",
+                "IsNew": true
             },
             {
                 "Id": "ff195884-816c-4259-b5f5-555511bebc1b"
+            },
+            {
+                "Id": "2873db55-1bab-427c-9db5-72ede3a13aa6"
             },
             {
                 "Id": "6dcbf0c6-7d39-4265-9b2b-ecc115fb85d0"

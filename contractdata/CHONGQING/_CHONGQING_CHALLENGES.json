@@ -3373,6 +3373,49 @@
                     "InclusionData": {
                         "ContractIds": ["07ffa72a-bbac-45ca-8c9f-b9c1b526153a"]
                     }
+                },
+                {
+                    "Id": "d3307d53-bde8-435a-bffd-c2270c66792e",
+                    "Name": "UI_PEACOCK_NIAN",
+                    "ImageName": "images/contracts/escalation/ContractEscalation_Wet_Nian.jpg",
+                    "Description": "UI_CHALLENGES_ESCLATION_COMPLETE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_WET_RAT",
+                    "ParentLocationId": "LOCATION_PARENT_WET",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$ContractId",
+                                            "67359030-6871-4c71-85a6-c04b45419265"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["feats", "hard"],
+                    "InclusionData": {
+                        "ContractIds": ["5d0668b9-665f-48a7-a72c-6f5614b350a2"]
+                    }
                 }
             ]
         },
