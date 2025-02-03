@@ -1,5 +1,6 @@
 {
     "Data": {
+        "EnableSaving": false,
         "Objectives": [
             {
                 "Id": "fe4be56b-82e6-444a-ae9e-408e92b65380",
@@ -57,12 +58,12 @@
                 "Id": "8d606509-7d54-4dac-8142-a4349fd6279d",
                 "Type": "statemachine",
                 "BriefingName": "$loc LLAMA_QUESTITEMS_YATESFILES_NAME",
-                "BriefingText": "$loc UI_PEACOCK_GRAPEBUSH_FILES_DESC",
+                "BriefingText": "$loc UI_PEACOCK_GRAPEBUSH_OBJ_FILES_DESC",
                 "Image": "images/unlockables/item_perspective_773e7624-307e-418e-b6cf-f9bc6dc6b295_0.jpg",
                 "Primary": true,
                 "ObjectiveType": "custom",
                 "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_GRAPEBUSH_FILES",
+                    "display": "$loc UI_PEACOCK_GRAPEBUSH_OBJ_FILES_NAME",
                     "iconType": 17
                 },
                 "Definition": {
@@ -86,23 +87,45 @@
             }
         ],
         "Bricks": [],
-        "EnableSaving": false
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/elegant/vr_overrides_llama.brick",
+                    "assembly:/_pro/scenes/missions/elegant/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/elegant/vr_overrides_llama.brick"
+                ]
+            }
+        ],
+        "GameChangers": [],
+        "GameChangerReferences": []
     },
     "Metadata": {
+        "Id": "4bab4282-ad93-45e3-ace7-c9daf78dec94",
+        "IsPublished": true,
+        "TileImage": "images/contracts/escalation/contractescalation_grapebush.jpg",
         "Title": "UI_PEACOCK_GRAPEBUSH1",
         "Description": "",
-        "Type": "escalation",
-        "Id": "4bab4282-ad93-45e3-ace7-c9daf78dec94",
-        "InGroup": "edbacf4b-e402-4548-b723-cd4351571537",
-        "TileImage": "images/contracts/escalation/contractescalation_grapebush.jpg",
-        "PublicID": 123435430528,
-        "ScenePath": "assembly:/_pro/scenes/missions/elegant/scene_llama.entity",
-        "Entitlements": ["LOCATION_ELEGANT"],
+        "CodeName_Hint": "[PEACOCK] Grapebush - Level 1",
         "Location": "LOCATION_ELEGANT_LLAMA",
+        "RequiredUnlockable": "ACCESS_HIT_LLAMA",
+        "ScenePath": "assembly:/_pro/scenes/missions/elegant/scene_llama.entity",
+        "Type": "escalation",
+        "Release": "3.1.0 Escalation",
+        "InGroup": "edbacf4b-e402-4548-b723-cd4351571537",
         "GroupObjectiveDisplayOrder": [
             { "Id": "fe4be56b-82e6-444a-ae9e-408e92b65380" },
             { "Id": "122428ab-7075-4842-b54c-757c221723ef" },
             { "Id": "8d606509-7d54-4dac-8142-a4349fd6279d" }
-        ]
+        ],
+        "Entitlements": ["LOCATION_ELEGANT"],
+        "PublicID": "123435430528"
     }
 }

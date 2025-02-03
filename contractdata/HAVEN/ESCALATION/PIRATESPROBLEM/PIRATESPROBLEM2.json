@@ -45,12 +45,12 @@
                 "_comment": "Map",
                 "Type": "statemachine",
                 "Id": "4f9a1d25-7854-4918-b581-602adb8acdc1",
-                "BriefingName": "$loc UI_PEACOCK_PIRATESPROBLEM_PIRATES",
-                "BriefingText": "$loc UI_PEACOCK_PIRATESPROBLEM_PIRATES_DESC",
+                "BriefingName": "$loc UI_PEACOCK_PIRATESPROBLEM_OBJ_PIRATES_NAME",
+                "BriefingText": "$loc UI_PEACOCK_PIRATESPROBLEM_OBJ_PIRATES_DESC",
                 "Image": "images/contracts/escalation/contractescalation_pirates_problem_list.jpg",
                 "ObjectiveType": "custom",
                 "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_PIRATESPROBLEM_PIRATES"
+                    "display": "$loc UI_PEACOCK_PIRATESPROBLEM_OBJ_PIRATES_NAME"
                 },
                 "Category": "primary",
                 "Definition": {
@@ -75,27 +75,48 @@
                 }
             }
         ],
+        "Bricks": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/opulent/mission_stingray/vr_overrides_stingray.brick",
+                    "assembly:/_pro/scenes/missions/opulent/mission_stingray/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/opulent/mission_stingray/vr_overrides_stingray.brick"
+                ]
+            }
+        ],
         "GameChangers": [],
-        "Bricks": []
+        "GameChangerReferences": []
     },
     "Metadata": {
-        "Title": "UI_PEACOCK_PIRATESPROBLEM2",
-        "Description": "",
-        "Entitlements": ["H2_LEGACY_EXPANSION"],
-        "ScenePath": "assembly:/_pro/scenes/missions/Opulent/mission_stingray/scene_stingray_basic.entity",
-        "Location": "LOCATION_OPULENT_STINGRAY",
+        "Id": "3f5c032b-1429-455e-acfd-5ceab5a4e26d",
         "IsPublished": true,
         "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
-        "Type": "escalation",
-        "Id": "3f5c032b-1429-455e-acfd-5ceab5a4e26d",
-        "InGroup": "f19f7ac8-39ec-498b-aa23-44c8e75d8693",
         "TileImage": "images/contracts/escalation/contractescalation_pirates_problem.jpg",
+        "Title": "UI_PEACOCK_PIRATESPROBLEM2",
+        "Description": "",
+        "CodeName_Hint": "[PEACOCK] Pirates - Level 2",
+        "Location": "LOCATION_OPULENT_STINGRAY",
+        "RequiredUnlockable": "ACCESS_HIT_STINGRAY",
+        "ScenePath": "assembly:/_pro/scenes/missions/Opulent/mission_stingray/scene_stingray_basic.entity",
+        "Type": "escalation",
+        "Release": "3.1.0 Escalation",
+        "InGroup": "f19f7ac8-39ec-498b-aa23-44c8e75d8693",
         "GroupObjectiveDisplayOrder": [
             { "Id": "7de479e9-d468-461d-bd60-2ef454f98285", "IsNew": true },
             { "Id": "5f890d35-c14d-4f51-a433-546d94494f53", "IsNew": true },
             { "Id": "adaaf9fb-a43b-4d22-9d5a-598ef1d0273d", "IsNew": true },
             { "Id": "4f9a1d25-7854-4918-b581-602adb8acdc1", "IsNew": true }
-        ]
+        ],
+        "Entitlements": ["H2_LEGACY_EXPANSION"]
     },
     "UserData": {}
 }

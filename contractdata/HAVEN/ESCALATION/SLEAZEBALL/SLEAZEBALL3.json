@@ -6,11 +6,11 @@
                 "_comment": "Target 1",
                 "Type": "statemachine",
                 "Id": "26009bfe-b1d2-4533-9d8c-a2362b8ff4a5",
-                "BriefingName": "$loc UI_PEACOCK_LONGBUSH_GYM_ACCIDENT",
-                "BriefingText": "$loc UI_PEACOCK_LONGBUSH_GYM_ACCIDENT_OBJ1",
+                "BriefingName": "$loc UI_PEACOCK_LONGBUSH_OBJ_GYM_ACCIDENT_NAME",
+                "BriefingText": "$loc UI_PEACOCK_LONGBUSH_OBJ1_GYM_ACCIDENT",
                 "ObjectiveType": "customkill",
                 "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_LONGBUSH_GYM_ACCIDENT_OBJ1"
+                    "display": "$loc UI_PEACOCK_LONGBUSH_OBJ1_GYM_ACCIDENT"
                 },
                 "Category": "primary",
                 "Definition": {
@@ -108,11 +108,11 @@
                 "_comment": "Target 2",
                 "Type": "statemachine",
                 "Id": "74c86d8a-3a1d-4c76-a7a4-fa9805b0bae8",
-                "BriefingName": "$loc UI_PEACOCK_LONGBUSH_GYM_ACCIDENT",
-                "BriefingText": "$loc UI_PEACOCK_LONGBUSH_GYM_ACCIDENT_OBJ2",
+                "BriefingName": "$loc UI_PEACOCK_LONGBUSH_OBJ_GYM_ACCIDENT_NAME",
+                "BriefingText": "$loc UI_PEACOCK_LONGBUSH_OBJ2_GYM_ACCIDENT",
                 "ObjectiveType": "customkill",
                 "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_LONGBUSH_GYM_ACCIDENT_OBJ2"
+                    "display": "$loc UI_PEACOCK_LONGBUSH_OBJ2_GYM_ACCIDENT"
                 },
                 "Category": "primary",
                 "Definition": {
@@ -210,11 +210,11 @@
                 "_comment": "Target 3",
                 "Type": "statemachine",
                 "Id": "3ca3dd52-c4f8-44da-9f9c-e046d88271c8",
-                "BriefingName": "$loc UI_PEACOCK_LONGBUSH_GYM_ACCIDENT",
-                "BriefingText": "$loc UI_PEACOCK_LONGBUSH_GYM_ACCIDENT_OBJ3",
+                "BriefingName": "$loc UI_PEACOCK_LONGBUSH_OBJ_GYM_ACCIDENT_NAME",
+                "BriefingText": "$loc UI_PEACOCK_LONGBUSH_OBJ3_GYM_ACCIDENT",
                 "ObjectiveType": "customkill",
                 "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_LONGBUSH_GYM_ACCIDENT_OBJ3"
+                    "display": "$loc UI_PEACOCK_LONGBUSH_OBJ3_GYM_ACCIDENT"
                 },
                 "Category": "primary",
                 "Definition": {
@@ -312,11 +312,11 @@
                 "_comment": "Target 4",
                 "Type": "statemachine",
                 "Id": "fff4788e-2975-4ec3-9d74-f64470f0910d",
-                "BriefingName": "$loc UI_PEACOCK_LONGBUSH_GYM_ACCIDENT",
-                "BriefingText": "$loc UI_PEACOCK_LONGBUSH_GYM_ACCIDENT_OBJ4",
+                "BriefingName": "$loc UI_PEACOCK_LONGBUSH_OBJ_GYM_ACCIDENT_NAME",
+                "BriefingText": "$loc UI_PEACOCK_LONGBUSH_OBJ4_GYM_ACCIDENT",
                 "ObjectiveType": "customkill",
                 "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_LONGBUSH_GYM_ACCIDENT_OBJ4"
+                    "display": "$loc UI_PEACOCK_LONGBUSH_OBJ4_GYM_ACCIDENT"
                 },
                 "Category": "primary",
                 "Definition": {
@@ -411,24 +411,44 @@
                 }
             }
         ],
+        "Bricks": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/opulent/mission_stingray/vr_overrides_stingray.brick",
+                    "assembly:/_pro/scenes/missions/opulent/mission_stingray/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/opulent/mission_stingray/vr_overrides_stingray.brick"
+                ]
+            }
+        ],
         "GameChangers": [
             "1f1f3c9e-1490-4fcc-aee6-5fde7c6c48ca",
             "f41f18fe-0fe5-416a-a793-50727e594655"
         ],
-        "Bricks": []
+        "GameChangerReferences": []
     },
     "Metadata": {
-        "Title": "UI_PEACOCK_LONGBUSH3",
-        "Description": "",
-        "Entitlements": ["H2_LEGACY_EXPANSION"],
-        "ScenePath": "assembly:/_pro/scenes/missions/Opulent/mission_stingray/scene_stingray_basic.entity",
-        "Location": "LOCATION_OPULENT_STINGRAY",
+        "Id": "83655c86-012f-4d2b-a57d-5b021af99af1",
         "IsPublished": true,
         "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
-        "Type": "escalation",
-        "Id": "83655c86-012f-4d2b-a57d-5b021af99af1",
-        "InGroup": "35f1f534-ae2d-42be-8472-dd55e96625ea",
         "TileImage": "images/contracts/escalation/contractescalation_longbush.jpg",
+        "Title": "UI_PEACOCK_LONGBUSH3",
+        "Description": "",
+        "CodeName_Hint": "[PEACOCK] Longbush - Level 3",
+        "Location": "LOCATION_OPULENT_STINGRAY",
+        "RequiredUnlockable": "ACCESS_HIT_STINGRAY",
+        "ScenePath": "assembly:/_pro/scenes/missions/Opulent/mission_stingray/scene_stingray_basic.entity",
+        "Type": "escalation",
+        "Release": "3.1.0 Escalation",
+        "InGroup": "35f1f534-ae2d-42be-8472-dd55e96625ea",
         "GroupObjectiveDisplayOrder": [
             { "Id": "3ca3dd52-c4f8-44da-9f9c-e046d88271c8", "IsNew": true },
             { "Id": "fff4788e-2975-4ec3-9d74-f64470f0910d", "IsNew": true },
@@ -436,7 +456,8 @@
             { "Id": "26009bfe-b1d2-4533-9d8c-a2362b8ff4a5" },
             { "Id": "1f1f3c9e-1490-4fcc-aee6-5fde7c6c48ca" },
             { "Id": "f41f18fe-0fe5-416a-a793-50727e594655" }
-        ]
+        ],
+        "Entitlements": ["H2_LEGACY_EXPANSION"]
     },
     "UserData": {}
 }

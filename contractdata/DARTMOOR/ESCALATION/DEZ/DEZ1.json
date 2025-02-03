@@ -10,12 +10,12 @@
                 "Category": "primary",
                 "Image": "images/contracts/escalation/contractescalation_rosebush_employee1.jpg",
                 "IsHidden": false,
-                "BriefingName": "$loc UI_PEACOCK_ROSEBUSH_MANSION_GUARDS",
-                "BriefingText": "$loc UI_PEACOCK_ROSEBUSH_MANSION_GUARDS_DESC",
+                "BriefingName": "$loc UI_PEACOCK_ROSEBUSH_OBJ_MANSION_GUARD_NAME",
+                "BriefingText": "$loc UI_PEACOCK_ROSEBUSH_OBJ_MANSION_GUARD_DESC",
                 "UpdateActivationWhileCompleted": true,
                 "OnActive": { "IfCompleted": { "Visible": false } },
                 "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_ROSEBUSH_MANSION_GUARDS_HUD"
+                    "display": "$loc UI_PEACOCK_ROSEBUSH_OBJ_MANSION_GUARD_HUD"
                 },
                 "Definition": {
                     "Scope": "session",
@@ -35,7 +35,7 @@
                 "Image": "images/contracts/escalation/contractescalation_rosebush_employee2.jpg",
                 "IsHidden": false,
                 "BriefingName": "$loc UI_GAMECHANGERS_GLOBAL_NO_DISGUISE_CHANGE_NAME",
-                "BriefingText": "$loc UI_PEACOCK_ROSEBUSH_DISGUISE1",
+                "BriefingText": "$loc UI_PEACOCK_ROSEBUSH_DISGUISE_STAFFROAR_DESC",
                 "UpdateActivationWhileCompleted": true,
                 "OnActive": { "IfCompleted": { "Visible": false } },
                 "HUDTemplate": {
@@ -183,22 +183,45 @@
             }
         ],
         "Bricks": [],
-        "GameChangers": []
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ancestral_bulldog.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ancestral_bulldog.brick"
+                ]
+            }
+        ],
+        "GameChangers": [],
+        "GameChangerReferences": []
     },
     "Metadata": {
         "Id": "4804d74a-96d9-40af-8a37-a1f377781fc1",
-        "Title": "UI_PEACOCK_ROSEBUSH1",
-        "Type": "escalation",
-        "Location": "LOCATION_ANCESTRAL_BULLDOG",
-        "ScenePath": "assembly:/_pro/scenes/missions/Ancestral/scene_bulldog.entity",
-        "InGroup": "78628e05-93ce-4f87-8a17-b910d32df51f",
+        "IsPublished": true,
         "TileImage": "images/contracts/escalation/contractescalation_rosebush.jpg",
-        "Entitlements": ["LOCATION_ANCESTRAL"],
+        "Title": "UI_PEACOCK_ROSEBUSH1",
+        "Description": "UI_PEACOCK_ESCALATION_DARTMOOR_DESC",
+        "CodeName_Hint": "[PEACOCK] Rosebush - Level 1",
+        "Location": "LOCATION_ANCESTRAL_BULLDOG",
+        "RequiredUnlockable": "ACCESS_HIT_BULLDOG",
+        "ScenePath": "assembly:/_pro/scenes/missions/Ancestral/scene_bulldog.entity",
+        "Type": "escalation",
+        "Release": "3.1.0 Escalation",
+        "InGroup": "78628e05-93ce-4f87-8a17-b910d32df51f",
         "GroupObjectiveDisplayOrder": [
             { "Id": "1b6a050f-162e-4038-898f-859c5c956a7b" },
             { "Id": "bca06014-1580-4837-916a-95bc9f64d76a" },
             { "Id": "6cb73180-4426-4281-a7bb-840f4917640a" },
             { "Id": "0cf80053-183c-4a6f-8024-bd3e982129f6" }
-        ]
+        ],
+        "Entitlements": ["LOCATION_ANCESTRAL"]
     }
 }

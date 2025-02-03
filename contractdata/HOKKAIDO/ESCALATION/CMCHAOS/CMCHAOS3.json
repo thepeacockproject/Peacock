@@ -7,10 +7,10 @@
                 "Category": "primary",
                 "ObjectiveType": "custom",
                 "Image": "images/contracts/escalation/contractescalation_currymaker_chaos_spa.jpg",
-                "BriefingName": "$loc UI_PEACOCK_CURRYMAKER_CHAOS_SPA",
-                "BriefingText": "$loc UI_PEACOCK_CURRYMAKER_CHAOS_SPA",
+                "BriefingName": "$loc UI_PEACOCK_CURRYMAKER_CHAOS_OBJ_SPA_NAME",
+                "BriefingText": "$loc UI_PEACOCK_CURRYMAKER_CHAOS_OBJ_SPA_NAME",
                 "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_CURRYMAKER_CHAOS_SPA",
+                    "display": "$loc UI_PEACOCK_CURRYMAKER_CHAOS_OBJ_SPA_NAME",
                     "iconType": 17
                 },
                 "Type": "statemachine",
@@ -38,10 +38,10 @@
                 "Category": "primary",
                 "ObjectiveType": "custom",
                 "Image": "images/contracts/escalation/contractescalation_currymaker_chaos_sauna.jpg",
-                "BriefingName": "$loc UI_PEACOCK_CURRYMAKER_CHAOS_SAUNA",
-                "BriefingText": "$loc UI_PEACOCK_CURRYMAKER_CHAOS_SAUNA",
+                "BriefingName": "$loc UI_PEACOCK_CURRYMAKER_CHAOS_OBJ_SAUNA_NAME",
+                "BriefingText": "$loc UI_PEACOCK_CURRYMAKER_CHAOS_OBJ_SAUNA_NAME",
                 "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_CURRYMAKER_CHAOS_SAUNA",
+                    "display": "$loc UI_PEACOCK_CURRYMAKER_CHAOS_OBJ_SAUNA_NAME",
                     "iconType": 17
                 },
                 "Type": "statemachine",
@@ -118,9 +118,25 @@
             }
         ],
         "Bricks": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/hokkaido/vr_overrides_snowcrane.brick",
+                    "assembly:/_PRO/scenes/missions/hokkaido/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/hokkaido/vr_overrides_snowcrane.brick"
+                ]
+            }
+        ],
         "GameChangers": [],
-        "GameChangerReferences": [],
-        "Stashpoints": []
+        "GameChangerReferences": []
     },
     "Metadata": {
         "Id": "af09780c-eee9-4478-932c-e21c7bbe10b5",
@@ -130,7 +146,7 @@
         "TileImage": "images/contracts/escalation/contractescalation_currymaker_chaos.jpg",
         "Title": "UI_PEACOCK_CURRYMAKER_CHAOS3",
         "Description": "",
-        "CodeName_Hint": "CM Chaos 3",
+        "CodeName_Hint": "[PEACOCK] CM Chaos Level 3",
         "RequiredUnlockable": "ACCESS_HIT_SNOW_CRANE",
         "Location": "LOCATION_HOKKAIDO",
         "ScenePath": "assembly:/_PRO/Scenes/Missions/Hokkaido/_scene_snowcrane.entity",

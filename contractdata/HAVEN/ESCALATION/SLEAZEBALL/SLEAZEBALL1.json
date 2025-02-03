@@ -6,11 +6,11 @@
                 "_comment": "Target 1",
                 "Type": "statemachine",
                 "Id": "26009bfe-b1d2-4533-9d8c-a2362b8ff4a5",
-                "BriefingName": "$loc UI_PEACOCK_LONGBUSH_GYM_ACCIDENT",
-                "BriefingText": "$loc UI_PEACOCK_LONGBUSH_GYM_ACCIDENT_OBJ1",
+                "BriefingName": "$loc UI_PEACOCK_LONGBUSH_OBJ_GYM_ACCIDENT_NAME",
+                "BriefingText": "$loc UI_PEACOCK_LONGBUSH_OBJ1_GYM_ACCIDENT",
                 "ObjectiveType": "customkill",
                 "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_LONGBUSH_GYM_ACCIDENT_OBJ1"
+                    "display": "$loc UI_PEACOCK_LONGBUSH_OBJ1_GYM_ACCIDENT"
                 },
                 "Category": "primary",
                 "Definition": {
@@ -105,29 +105,49 @@
                 }
             }
         ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/opulent/mission_stingray/vr_overrides_stingray.brick",
+                    "assembly:/_pro/scenes/missions/opulent/mission_stingray/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/opulent/mission_stingray/vr_overrides_stingray.brick"
+                ]
+            }
+        ],
         "GameChangers": [
             "1f1f3c9e-1490-4fcc-aee6-5fde7c6c48ca",
             "f41f18fe-0fe5-416a-a793-50727e594655"
         ],
-        "Bricks": []
+        "GameChangerReferences": []
     },
     "Metadata": {
-        "Title": "UI_PEACOCK_LONGBUSH1",
-        "Description": "",
-        "Entitlements": ["H2_LEGACY_EXPANSION"],
-        "ScenePath": "assembly:/_pro/scenes/missions/Opulent/mission_stingray/scene_stingray_basic.entity",
-        "Location": "LOCATION_OPULENT_STINGRAY",
+        "Id": "3edb330f-5129-49c6-9afd-70111ce72ae5",
         "IsPublished": true,
         "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
-        "Type": "escalation",
-        "Id": "3edb330f-5129-49c6-9afd-70111ce72ae5",
-        "InGroup": "35f1f534-ae2d-42be-8472-dd55e96625ea",
         "TileImage": "images/contracts/escalation/contractescalation_longbush.jpg",
+        "Title": "UI_PEACOCK_LONGBUSH1",
+        "Description": "",
+        "CodeName_Hint": "[PEACOCK] Longbush - Level 1",
+        "Location": "LOCATION_OPULENT_STINGRAY",
+        "RequiredUnlockable": "ACCESS_HIT_STINGRAY",
+        "ScenePath": "assembly:/_pro/scenes/missions/Opulent/mission_stingray/scene_stingray_basic.entity",
+        "Type": "escalation",
+        "Release": "3.1.0 Escalation",
+        "InGroup": "35f1f534-ae2d-42be-8472-dd55e96625ea",
         "GroupObjectiveDisplayOrder": [
             { "Id": "26009bfe-b1d2-4533-9d8c-a2362b8ff4a5" },
             { "Id": "1f1f3c9e-1490-4fcc-aee6-5fde7c6c48ca" },
             { "Id": "f41f18fe-0fe5-416a-a793-50727e594655" }
-        ]
+        ],
+        "Entitlements": ["H2_LEGACY_EXPANSION"]
     },
     "UserData": {}
 }

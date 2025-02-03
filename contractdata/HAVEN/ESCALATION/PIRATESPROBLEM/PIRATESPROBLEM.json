@@ -1,16 +1,41 @@
 {
-    "Data": {},
+    "Data": {
+        "EnableSaving": false,
+        "Objectives": [],
+        "Bricks": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/opulent/mission_stingray/vr_overrides_stingray.brick",
+                    "assembly:/_pro/scenes/missions/opulent/mission_stingray/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/opulent/mission_stingray/vr_overrides_stingray.brick"
+                ]
+            }
+        ],
+        "GameChangers": [],
+        "GameChangerReferences": []
+    },
     "Metadata": {
-        "Title": "UI_PEACOCK_PIRATESPROBLEM",
-        "Description": "UI_PEACOCK_ESCALATION_HAVEN_DESC",
-        "ScenePath": "assembly:/_pro/scenes/missions/Opulent/mission_stingray/scene_stingray_basic.entity",
-        "Location": "LOCATION_OPULENT_STINGRAY",
+        "Id": "f19f7ac8-39ec-498b-aa23-44c8e75d8693",
         "IsPublished": true,
         "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
-        "Type": "escalation",
-        "Id": "f19f7ac8-39ec-498b-aa23-44c8e75d8693",
         "TileImage": "images/contracts/escalation/contractescalation_pirates_problem.jpg",
-        "Entitlements": ["H2_LEGACY_EXPANSION"],
+        "Title": "UI_PEACOCK_PIRATESPROBLEM",
+        "Description": "UI_PEACOCK_ESCALATION_HAVEN_DESC",
+        "CodeName_Hint": "[PEACOCK] Pirates - Group",
+        "Location": "LOCATION_OPULENT_STINGRAY",
+        "RequiredUnlockable": "ACCESS_HIT_STINGRAY",
+        "ScenePath": "assembly:/_pro/scenes/missions/Opulent/mission_stingray/scene_stingray_basic.entity",
+        "Type": "escalation",
+        "Release": "3.1.0 Escalation",
         "GroupDefinition": {
             "Type": "escalation",
             "Order": [
@@ -19,6 +44,7 @@
                 "bdd4bdee-6720-44c2-908d-769f58c0cf12"
             ]
         },
+        "Entitlements": ["H2_LEGACY_EXPANSION"],
         "Season": 0,
         "OriginalSeason": 2
     }

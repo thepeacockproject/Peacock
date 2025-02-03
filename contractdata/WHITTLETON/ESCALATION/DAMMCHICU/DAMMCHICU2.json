@@ -1,5 +1,6 @@
 {
     "Data": {
+        "EnableSaving": false,
         "Objectives": [
             {
                 "_comment": "Jed West",
@@ -77,7 +78,7 @@
                 "Type": "statemachine",
                 "ObjectiveType": "customkill",
                 "Id": "77daefbe-1b3c-40ab-b0eb-502dfe10231e",
-                "BriefingText": "$loc UI_PEACOCK_THORNBUSH_OBJ2_EXT",
+                "BriefingText": "$loc UI_PEACOCK_THORNBUSH_OBJ2_EXTRA",
                 "HUDTemplate": {
                     "display": "$loc UI_PEACOCK_THORNBUSH_OBJ2"
                 },
@@ -166,7 +167,7 @@
                 "ObjectiveType": "custom",
                 "Category": "primary",
                 "BriefingName": "$loc UI_PROP_MELEE_MEAT_JOINT_NAME",
-                "BriefingText": "$loc UI_PEACOCK_THORNBUSH_OBJ3_EXT",
+                "BriefingText": "$loc UI_PEACOCK_THORNBUSH_OBJ3_EXTRA",
                 "HUDTemplate": {
                     "iconType": 17,
                     "display": "$loc UI_PEACOCK_THORNBUSH_OBJ3"
@@ -210,23 +211,47 @@
             }
         ],
         "Bricks": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/Scenes/missions/skunk/vr_overrides_skunk.brick",
+                    "assembly:/_pro/scenes/missions/skunk/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/Scenes/missions/skunk/vr_overrides_skunk.brick"
+                ]
+            }
+        ],
         "GameChangers": [],
-        "EnableSaving": false
+        "GameChangerReferences": []
     },
     "Metadata": {
-        "Title": "UI_PEACOCK_THORNBUSH2",
-        "InGroup": "218302a3-f682-46f9-9ffd-bb3e82487b7c",
         "Id": "b07af7b6-01cb-4cee-83bf-2c73f71bf2a3",
-        "Type": "escalation",
-        "Entitlements": ["H2_LEGACY_STANDARD"],
+        "IsPublished": true,
         "TileImage": "images/contracts/escalation/contractescalation_thornbush.jpg",
+        "Title": "UI_PEACOCK_THORNBUSH2",
+        "Description": "UI_PEACOCK_ESCALATION_WHITTLETON_DESC",
+        "CodeName_Hint": "[PEACOCK] Thornbush - Level 2",
         "Location": "LOCATION_NORTHAMERICA",
+        "RequiredUnlockable": "ACCESS_HIT_SKUNK",
         "ScenePath": "assembly:/_pro/scenes/missions/skunk/scene_skunk.entity",
+        "Type": "escalation",
+        "Release": "3.1.0 Escalation",
+        "InGroup": "218302a3-f682-46f9-9ffd-bb3e82487b7c",
         "GroupObjectiveDisplayOrder": [
             { "Id": "77daefbe-1b3c-40ab-b0eb-502dfe10231e", "IsNew": true },
             { "Id": "bb3b562d-b08b-41e5-ac57-801dc80532b0", "IsNew": true },
             { "Id": "5a49ee9f-97e7-4e3b-90e6-0baa6d01b094" }
-        ]
+        ],
+        "Entitlements": ["H2_LEGACY_STANDARD"]
     },
-    "Peacock": { "noAgencyPickupsActive": true }
+    "Peacock": {
+        "noAgencyPickupsActive": true
+    }
 }
