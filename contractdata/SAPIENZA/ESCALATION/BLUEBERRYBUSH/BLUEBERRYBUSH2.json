@@ -7,15 +7,17 @@
                 "_comment": "----- Kill Rocco's Sister -----",
                 "Type": "statemachine",
                 "Id": "3846c991-edda-4b66-8d0f-d2a702b20fcf",
-                "BriefingText": "$loc UI_PEACOCK_BLUEBERRYBUSH_OBJ1_CONDITION",
+                "BriefingText": "$loc UI_PEACOCK_BLUEBERRYBUSH_OBJ1_EXTRA",
                 "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_BLUEBERRYBUSH_OBJ1_CONDITION"
+                    "display": "$loc UI_PEACOCK_BLUEBERRYBUSH_OBJ1_EXTRA"
                 },
                 "Category": "primary",
                 "Definition": {
                     "Scope": "Hit",
                     "Context": {
-                        "Targets": ["8de9aa5e-6d61-442f-a4c0-e5bba91cd3cd"]
+                        "Targets": [
+                            "8de9aa5e-6d61-442f-a4c0-e5bba91cd3cd"
+                        ]
                     },
                     "States": {
                         "Start": {
@@ -72,15 +74,17 @@
                 "_comment": "----- Kill the Right Guard -----",
                 "Type": "statemachine",
                 "Id": "28275372-d543-49ba-a799-97b9ca4b4cdf",
-                "BriefingText": "$loc UI_PEACOCK_BLUEBERRYBUSH_OBJ2_CONDITION",
+                "BriefingText": "$loc UI_PEACOCK_BLUEBERRYBUSH_OBJ2_EXTRA",
                 "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_BLUEBERRYBUSH_OBJ2_CONDITION"
+                    "display": "$loc UI_PEACOCK_BLUEBERRYBUSH_OBJ2_EXTRA"
                 },
                 "Category": "primary",
                 "Definition": {
                     "Scope": "Hit",
                     "Context": {
-                        "Targets": ["77154a7c-89d0-49df-82ae-6810e27ec9ca"]
+                        "Targets": [
+                            "77154a7c-89d0-49df-82ae-6810e27ec9ca"
+                        ]
                     },
                     "States": {
                         "Start": {
@@ -150,7 +154,9 @@
                 "Definition": {
                     "Scope": "Hit",
                     "Context": {
-                        "Targets": ["a023e9ed-fdd5-4e0b-ac00-b010c876f29b"]
+                        "Targets": [
+                            "a023e9ed-fdd5-4e0b-ac00-b010c876f29b"
+                        ]
                     },
                     "States": {
                         "Start": {
@@ -194,14 +200,17 @@
     },
     "Metadata": {
         "Id": "97ab1c9a-3236-41f0-b22e-b46728ffc9fd",
-        "PublicId": "08458632084",
+        "IsPublished": true,
+        "TileImage": "images/contracts/escalation/contractescalation_blueberrybush.jpg",
         "Title": "UI_PEACOCK_BLUEBERRYBUSH2",
         "Description": "",
-        "Type": "escalation",
+        "CodeName_Hint": "[PEACOCK] BlueberryBush - Level 2",
         "Location": "LOCATION_COASTALTOWN",
+        "RequiredUnlockable": "ACCESS_HIT_OCTOPUS",
         "ScenePath": "assembly:/_PRO/Scenes/Missions/CoastalTown/_scene_octopus.entity",
+        "Type": "escalation",
+        "Release": "3.1.0 Escalation",
         "InGroup": "74415eca-d01e-4070-9bc9-5ef9b4e8f7d2",
-        "TileImage": "images/contracts/escalation/contractescalation_blueberrybush.jpg",
         "GroupObjectiveDisplayOrder": [
             {
                 "IsNew": true,
@@ -223,6 +232,9 @@
                 "Id": "f8feee12-0353-44ef-8b80-dfe0a0e11061"
             }
         ],
-        "Entitlements": ["LOCATION_COASTALTOWN"]
+        "Entitlements": [
+            "H1_LEGACY_STANDARD"
+        ],
+        "PublicId": "08458632084"
     }
 }

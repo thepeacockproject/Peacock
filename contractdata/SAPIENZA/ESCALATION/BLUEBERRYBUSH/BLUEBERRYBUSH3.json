@@ -7,9 +7,9 @@
                 "_comment": "----- Kill Rocco's Sister -----",
                 "Type": "statemachine",
                 "Id": "3846c991-edda-4b66-8d0f-d2a702b20fcf",
-                "BriefingText": "$loc UI_PEACOCK_BLUEBERRYBUSH_OBJ1_CONDITION",
+                "BriefingText": "$loc UI_PEACOCK_BLUEBERRYBUSH_OBJ1_EXTRA",
                 "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_BLUEBERRYBUSH_OBJ1_CONDITION"
+                    "display": "$loc UI_PEACOCK_BLUEBERRYBUSH_OBJ1_EXTRA"
                 },
                 "Category": "primary",
                 "Definition": {
@@ -74,9 +74,9 @@
                 "_comment": "----- Kill the Right Guard -----",
                 "Type": "statemachine",
                 "Id": "28275372-d543-49ba-a799-97b9ca4b4cdf",
-                "BriefingText": "$loc UI_PEACOCK_BLUEBERRYBUSH_OBJ2_CONDITION",
+                "BriefingText": "$loc UI_PEACOCK_BLUEBERRYBUSH_OBJ2_EXTRA",
                 "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_BLUEBERRYBUSH_OBJ2_CONDITION"
+                    "display": "$loc UI_PEACOCK_BLUEBERRYBUSH_OBJ2_EXTRA"
                 },
                 "Category": "primary",
                 "Definition": {
@@ -141,9 +141,9 @@
                 "_comment": "----- Kill the Guard near Cleaned Car -----",
                 "Type": "statemachine",
                 "Id": "7e8cd02d-b6c9-48be-a363-b1d1c3b55dd1",
-                "BriefingText": "$loc UI_PEACOCK_BLUEBERRYBUSH_OBJ3_CONDITION",
+                "BriefingText": "$loc UI_PEACOCK_BLUEBERRYBUSH_OBJ3_EXTRA",
                 "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_BLUEBERRYBUSH_OBJ3_CONDITION"
+                    "display": "$loc UI_PEACOCK_BLUEBERRYBUSH_OBJ3_EXTRA"
                 },
                 "Category": "primary",
                 "Definition": {
@@ -268,14 +268,17 @@
     },
     "Metadata": {
         "Id": "490cbf23-92ca-4cdb-b301-9a576442ad2b",
-        "PublicId": "06656372635",
+        "IsPublished": true,
+        "TileImage": "images/contracts/escalation/contractescalation_blueberrybush.jpg",
         "Title": "UI_PEACOCK_BLUEBERRYBUSH3",
         "Description": "",
-        "Type": "escalation",
+        "CodeName_Hint": "[PEACOCK] BlueberryBush - Level 3",
         "Location": "LOCATION_COASTALTOWN",
+        "RequiredUnlockable": "ACCESS_HIT_OCTOPUS",
         "ScenePath": "assembly:/_PRO/Scenes/Missions/CoastalTown/_scene_octopus.entity",
+        "Type": "escalation",
+        "Release": "3.1.0 Escalation",
         "InGroup": "74415eca-d01e-4070-9bc9-5ef9b4e8f7d2",
-        "TileImage": "images/contracts/escalation/contractescalation_blueberrybush.jpg",
         "GroupObjectiveDisplayOrder": [
             {
                 "IsNew": true,
@@ -303,7 +306,8 @@
             }
         ],
         "Entitlements": [
-            "LOCATION_COASTALTOWN"
-        ]
+            "H1_LEGACY_STANDARD"
+        ],
+        "PublicId": "06656372635"
     }
 }
