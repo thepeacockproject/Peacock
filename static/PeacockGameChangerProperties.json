@@ -394,6 +394,31 @@
                                     }
                                 },
                                 "Transition": "Failure"
+                            },
+                            "Actorsick": {
+                                "Condition": {
+                                    "$any": {
+                                        "?": {
+                                            "$eq": ["$Value.actor_R_ID", "$.#"]
+                                        },
+                                        "in": "$.KitchenStaffs"
+                                    }
+                                },
+                                "Transition": "Failure"
+                            },
+                            "NPC_Blinded": {
+                                "Condition": {
+                                    "$any": {
+                                        "?": {
+                                            "$eq": [
+                                                "$Value.RepositoryId",
+                                                "$.#"
+                                            ]
+                                        },
+                                        "in": "$.KitchenStaffs"
+                                    }
+                                },
+                                "Transition": "Failure"
                             }
                         }
                     }
