@@ -1837,15 +1837,12 @@ export class ChallengeService extends ChallengeRegistry {
             Name: "ChallengeCompleted",
             // The timestamp (used for timers) is not important here, since it's not an event sent by the game.
             Timestamp: 0,
+            Id: randomUUID(),
+            Version: ServerVer,
         }
 
         this.onContractEvent(event, session)
-
-        enqueueEvent(userId, {
-            ...event,
-            Id: randomUUID(),
-            Version: ServerVer,
-        })
+        enqueueEvent(userId, event)
 
         const userData = getUserData(userId, gameVersion)
 
