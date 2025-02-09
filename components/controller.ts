@@ -364,6 +364,21 @@ export class Controller {
     }
     public missionsInLocation = missionsInLocation
     /**
+     * @deprecated since v8, use `controller.missionsInLocation` instead
+     */
+    public missionsInLocations = new Proxy(missionsInLocation, {
+        get(target, propName) {
+            log(
+                LogLevel.WARN,
+                "controller.missionsInLocations is deprecated since v8, this plugin must be updated!",
+                "plugins",
+            )
+
+            // @ts-expect-error just forward the indexer to h3, don't care if it exists.
+            return target.h3[propName]
+        },
+    })
+    /**
      * Note: if you are adding a contract, please use {@link addMission}!
      */
     public contracts: Map<string, MissionManifest> = new Map()
@@ -805,6 +820,17 @@ export class Controller {
         gameVersion: GameVersion,
         ...levels: MissionManifest[]
     ): void {
+        if (typeof gameVersion !== "string") {
+            levels = [gameVersion, ...levels]
+            gameVersion = "h3"
+            log(
+                LogLevel.WARN,
+                `Game version not specified. This plugin needs to be updated! Assuming h3.`,
+                "addEscalation",
+            )
+            log(LogLevel.TRACE, `No game version.`, "Contracts")
+        }
+
         const fixedLevels = [...levels].filter(Boolean)
 
         this.addMission(groupContract)
