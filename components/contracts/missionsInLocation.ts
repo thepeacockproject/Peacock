@@ -550,6 +550,7 @@ export const missionsInLocation = {
                 "5bb29a6b-7384-4641-944c-3540fa5cd8aa",
             ],
             LOCATION_WET_RAT: [
+                "5d0668b9-665f-48a7-a72c-6f5614b350a2",
                 "07ffa72a-bbac-45ca-8c9f-b9c1b526153a",
                 "5121acde-313d-4517-ae70-6a54ca5d775a",
                 "494d97a6-9e31-45e0-9dae-f3793c731336",

@@ -1,0 +1,207 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Entrances": [
+            "f9c65d0b-e5ce-454e-8f20-08a8083a9b9d",
+            "d497ce5a-011e-4b40-9d69-341cc8141120",
+            "c235f578-f55b-4c9d-b568-db6cad909c8c",
+            "f3944deb-0747-4d67-b26a-99af5f979705"
+        ],
+        "Objectives": [
+            {
+                "_comment": "serve dishes",
+                "Id": "6dcbf0c6-7d39-4265-9b2b-ecc115fb85d0",
+                "Type": "statemachine",
+                "ObjectiveType": "custom",
+                "Category": "Primary",
+                "Image": "images/contracts/escalation/contractescalation_wet_nian_obj_familymeal.jpg",
+                "BriefingName": "$loc UI_PEACOCK_NIAN_OBJ_FAMILYMEAL_NAME",
+                "BriefingText": "$loc UI_PEACOCK_NIAN_OBJ_FAMILYMEAL_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_NIAN_OBJ_FAMILYMEAL_DESC",
+                    "iconType": 17
+                },
+                "ForceShowOnLoadingScreen": true,
+                "ShowInHud": true,
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "setpieces": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "bf6c5c71-86b8-4abb-aed9-63dbbf320c52"
+                                    ]
+                                },
+                                "Transition": "MealMake"
+                            }
+                        },
+                        "MealMake": {
+                            "setpieces": {
+                                "Condition": {
+                                    "$eq": [
+                                        "$Value.RepositoryId",
+                                        "3a2722a3-0458-4db7-aa4b-0440728e4db6"
+                                    ]
+                                },
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "visit neighbors with fire crackers",
+                "Id": "ff195884-816c-4259-b5f5-555511bebc1b",
+                "Type": "statemachine",
+                "ObjectiveType": "custom",
+                "Category": "Primary",
+                "Image": "images/stashpoints/wet_agencypickup_apartment.jpg",
+                "BriefingName": "$loc UI_PEACOCK_NIAN_OBJ_VISITNEIGHBOR_EXPLOSIVE_NAME",
+                "BriefingText": "$loc UI_PEACOCK_NIAN_OBJ_VISITNEIGHBOR_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_NIAN_OBJ_VISITNEIGHBOR_EXPLOSIVE_HUD"
+                },
+                "IsHidden": true,
+                "ForceShowOnLoadingScreen": true,
+                "ShowInHud": true,
+                "Definition": {
+                    "Scope": "hit",
+                    "Context": {
+                        "Targets": [
+                            "fc776f90-eda8-4aaf-83d9-bb069c3827ab",
+                            "18324739-f01e-47f4-8c8b-c7f880805491"
+                        ],
+                        "TargetsKilled": []
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$any": {
+                                                    "in": "$.Targets",
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.RepositoryId"
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "$eq": [
+                                                    "$Value.KillMethodBroad",
+                                                    "explosive"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Actions": {
+                                        "$pushunique": [
+                                            "TargetsKilled",
+                                            "$Value.RepositoryId"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$any": {
+                                                    "in": "$.Targets",
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "$Value.RepositoryId"
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "$not": {
+                                                    "$eq": [
+                                                        "$Value.KillMethodBroad",
+                                                        "explosive"
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Transition": "Failure"
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": [
+                                            "($.Targets).Count",
+                                            "($.TargetsKilled).Count"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "Bricks": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/wet/vr_overrides_rat.brick",
+                    "assembly:/_pro/scenes/missions/Wet/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/wet/vr_overrides_rat.brick"
+                ]
+            }
+        ],
+        "GameChangers": ["2873db55-1bab-427c-9db5-72ede3a13aa6"],
+        "GameChangerReferences": []
+    },
+    "Metadata": {
+        "Id": "4730bae6-39db-470f-b3b8-094efe982746",
+        "IsPublished": true,
+        "CreationTimestamp": "2021-01-12T12:24:16.194497Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "TileImage": "images/contracts/escalation/ContractEscalation_Wet_Nian.jpg",
+        "Title": "UI_PEACOCK_NIAN2",
+        "Description": "UI_PEACOCK_ESCALATION_CHONGQING_DESC",
+        "CodeName_Hint": "Nian Level 2",
+        "Location": "LOCATION_WET_RAT",
+        "RequiredUnlockable": "ACCESS_HIT_RAT",
+        "ScenePath": "assembly:/_pro/scenes/missions/wet/scene_rat_basic.entity",
+        "Type": "escalation",
+        "GroupObjectiveDisplayOrder": [
+            {
+                "Id": "ff195884-816c-4259-b5f5-555511bebc1b",
+                "IsNew": true
+            },
+            {
+                "Id": "2873db55-1bab-427c-9db5-72ede3a13aa6",
+                "IsNew": true
+            },
+            {
+                "Id": "6dcbf0c6-7d39-4265-9b2b-ecc115fb85d0"
+            }
+        ],
+        "InGroup": "5d0668b9-665f-48a7-a72c-6f5614b350a2",
+        "Entitlements": ["LOCATION_WET"],
+        "LastUpdate": "2023-03-30T11:20:23.763366Z",
+        "PublicId": "030245785347",
+        "Season": 0,
+        "OriginalSeason": 3
+    },
+    "UserData": {}
+}
