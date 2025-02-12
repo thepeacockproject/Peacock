@@ -1,14 +1,40 @@
 {
-    "Data": {},
+    "Data": {
+        "EnableSaving": false,
+        "Objectives": [],
+        "Bricks": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/elegant/vr_overrides_llama.brick",
+                    "assembly:/_pro/scenes/missions/elegant/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/elegant/vr_overrides_llama.brick"
+                ]
+            }
+        ],
+        "GameChangers": [],
+        "GameChangerReferences": []
+    },
     "Metadata": {
+        "Id": "edbacf4b-e402-4548-b723-cd4351571537",
+        "IsPublished": true,
+        "TileImage": "images/contracts/escalation/contractescalation_grapebush.jpg",
         "Title": "UI_PEACOCK_GRAPEBUSH",
         "Description": "UI_PEACOCK_ESCALATION_MENDOZA_DESC",
-        "Type": "escalation",
-        "Id": "edbacf4b-e402-4548-b723-cd4351571537",
-        "TileImage": "images/contracts/escalation/contractescalation_grapebush.jpg",
-        "ScenePath": "assembly:/_pro/scenes/missions/elegant/scene_llama.entity",
-        "Entitlements": ["LOCATION_ELEGANT"],
+        "CodeName_Hint": "[PEACOCK] Grapebush - Group",
         "Location": "LOCATION_ELEGANT_LLAMA",
+        "RequiredUnlockable": "ACCESS_HIT_LLAMA",
+        "ScenePath": "assembly:/_pro/scenes/missions/elegant/scene_llama.entity",
+        "Type": "escalation",
+        "Release": "3.1.0 Escalation",
         "GroupDefinition": {
             "Type": "escalation",
             "Order": [
@@ -17,6 +43,7 @@
                 "a7ddf3f3-7fd9-4749-b63b-f2579bbd0f6c"
             ]
         },
+        "Entitlements": ["LOCATION_ELEGANT"],
         "Season": 0,
         "OriginalSeason": 3
     }

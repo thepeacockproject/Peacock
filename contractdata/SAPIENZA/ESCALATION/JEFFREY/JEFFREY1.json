@@ -1,19 +1,27 @@
 {
     "Data": {
         "EnableSaving": false,
+        "Entrances": [
+            "a28dd5e3-1f1d-408d-9387-945641c32218",
+            "c200b5c6-2c14-4602-b22d-3a67b9fb3e3b",
+            "4970aae5-e4c1-4d5c-a66a-0fc06616211b",
+            "1c386bb9-aead-42c0-b604-ad560056ddf4",
+            "c27f76ca-ed71-4b2d-9b9d-693875df830c",
+            "c113315d-ffcc-4878-9e70-bb35aadf0211"
+        ],
         "Objectives": [
             {
                 "Id": "7a3650bb-68fd-4916-ae4d-40ed06990f70",
                 "Type": "statemachine",
                 "Category": "primary",
                 "Image": "images/contracts/escalation/contractescalation_satanta_jeffsnote.jpg",
-                "BriefingName": "$loc UI_PEACOCK_SATANTA_OBJ1_TITLE",
-                "BriefingText": "$loc UI_PEACOCK_SATANTA_OBJ1_DESC",
+                "BriefingName": "$loc UI_PEACOCK_SATANTA_OBJ_NOTE_NAME",
+                "BriefingText": "$loc UI_PEACOCK_SATANTA_OBJ_NOTE_DESC",
                 "IsHidden": false,
-                "LongBriefingText": "$loc UI_PEACOCK_SATANTA_OBJ1_LONG",
+                "LongBriefingText": "$loc UI_PEACOCK_SATANTA_OBJ_NOTE_LONG",
                 "ObjectiveType": "custom",
                 "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_SATANTA_OBJ1_TITLE",
+                    "display": "$loc UI_PEACOCK_SATANTA_OBJ_NOTE_NAME",
                     "iconType": 17
                 },
                 "Definition": {
@@ -41,13 +49,13 @@
                 "Type": "statemachine",
                 "Category": "primary",
                 "Image": "images/contracts/escalation/contractescalation_satanta.jpg",
-                "BriefingName": "$loc UI_PEACOCK_SATANTA_OBJ2_TITLE",
-                "BriefingText": "$loc UI_PEACOCK_SATANTA_OBJ2_DESC",
+                "BriefingName": "$loc UI_PEACOCK_SATANTA_OBJ_HUG_NAME",
+                "BriefingText": "$loc UI_PEACOCK_SATANTA_OBJ_HUG_DESC",
                 "IsHidden": false,
-                "LongBriefingText": "$loc UI_PEACOCK_SATANTA_OBJ2_LONG",
+                "LongBriefingText": "$loc UI_PEACOCK_SATANTA_OBJ_HUG_LONG",
                 "ObjectiveType": "custom",
                 "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_SATANTA_OBJ2_TITLE",
+                    "display": "$loc UI_PEACOCK_SATANTA_OBJ_HUG_NAME",
                     "iconType": 17
                 },
                 "Definition": {
@@ -83,23 +91,39 @@
         "Bricks": [
             "assembly:/_PRO/Scenes/Missions/CoastalTown/override_constantjeff.brick"
         ],
-        "Entrances": [
-            "a28dd5e3-1f1d-408d-9387-945641c32218",
-            "c200b5c6-2c14-4602-b22d-3a67b9fb3e3b",
-            "4970aae5-e4c1-4d5c-a66a-0fc06616211b",
-            "1c386bb9-aead-42c0-b604-ad560056ddf4",
-            "c27f76ca-ed71-4b2d-9b9d-693875df830c",
-            "c113315d-ffcc-4878-9e70-bb35aadf0211"
-        ]
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_ebola.brick",
+                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/coastaltown/vr_overrides_ebola.brick"
+                ]
+            }
+        ],
+        "GameChangers": [],
+        "GameChangerReferences": []
     },
     "Metadata": {
         "Id": "408d03c6-46db-45f4-ab05-9f380eae4670",
+        "IsPublished": true,
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "TileImage": "images/contracts/escalation/contractescalation_satanta.jpg",
         "Title": "UI_PEACOCK_SATANTA1",
         "Description": "",
-        "Type": "escalation",
+        "CodeName_Hint": "[PEACOCK] Satanta - Level 1",
         "Location": "LOCATION_COASTALTOWN_EBOLA",
-        "TileImage": "images/contracts/escalation/contractescalation_satanta.jpg",
+        "RequiredUnlockable": "ACCESS_HIT_EBOLA",
         "ScenePath": "assembly:/_PRO/Scenes/Missions/CoastalTown/scene_ebola.entity",
+        "Type": "escalation",
+        "Release": "3.1.0 Escalation",
         "GroupObjectiveDisplayOrder": [
             { "Id": "7a3650bb-68fd-4916-ae4d-40ed06990f70" },
             { "Id": "6c64e36d-68b7-4ec3-9ac2-04d7bef865a7" }

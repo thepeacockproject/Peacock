@@ -1,14 +1,39 @@
 {
-    "Data": {},
+    "Data": {
+        "EnableSaving": false,
+        "Objectives": [],
+        "Bricks": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ancestral_bulldog.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ancestral_bulldog.brick"
+                ]
+            }
+        ],
+        "GameChangers": [],
+        "GameChangerReferences": []
+    },
     "Metadata": {
+        "Id": "78628e05-93ce-4f87-8a17-b910d32df51f",
+        "IsPublished": true,
+        "TileImage": "images/contracts/escalation/contractescalation_rosebush.jpg",
         "Title": "UI_PEACOCK_ROSEBUSH",
         "Description": "UI_PEACOCK_ESCALATION_DARTMOOR_DESC",
-        "ScenePath": "assembly:/_pro/scenes/missions/Ancestral/scene_bulldog.entity",
+        "CodeName_Hint": "[PEACOCK] Rosebush - Group",
         "Location": "LOCATION_ANCESTRAL_BULLDOG",
+        "RequiredUnlockable": "ACCESS_HIT_BULLDOG",
+        "ScenePath": "assembly:/_pro/scenes/missions/Ancestral/scene_bulldog.entity",
         "Type": "escalation",
-        "Id": "78628e05-93ce-4f87-8a17-b910d32df51f",
-        "TileImage": "images/contracts/escalation/contractescalation_rosebush.jpg",
-        "Entitlements": ["LOCATION_ANCESTRAL"],
         "GroupDefinition": {
             "Type": "escalation",
             "Order": [
@@ -17,6 +42,7 @@
                 "0fc24d6e-5870-44d3-897a-15f19c4ccef2"
             ]
         },
+        "Entitlements": ["LOCATION_ANCESTRAL"],
         "Season": 0,
         "OriginalSeason": 3
     }

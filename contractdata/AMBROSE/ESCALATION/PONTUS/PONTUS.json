@@ -3,6 +3,23 @@
         "EnableSaving": false,
         "Objectives": [],
         "Bricks": [],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/scenes/missions/rocky/vr_overrides_dugong.brick",
+                    "assembly:/_PRO/scenes/missions/rocky/vr_overrides_ps4perf.brick"
+                ]
+            },
+            {
+                "Quality": "better",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/scenes/missions/rocky/vr_overrides_dugong.brick"
+                ]
+            }
+        ],
         "GameChangers": [],
         "GameChangerReferences": []
     },
@@ -12,9 +29,12 @@
         "TileImage": "images/contracts/escalation/contractescalation_pontus.jpg",
         "Title": "UI_PEACOCK_PONTUS",
         "Description": "UI_PEACOCK_ESCALATION_AMBROSE_DESC",
+        "CodeName_Hint": "[PEACOCK] Pontus - Group",
         "Location": "LOCATION_ROCKY_DUGONG",
+        "RequiredUnlockable": "ACCESS_HIT_DUGONG",
         "ScenePath": "assembly:/_pro/scenes/missions/Rocky/scene_dugong.entity",
         "Type": "escalation",
+        "Release": "3.1.0 Escalation",
         "GroupDefinition": {
             "Type": "escalation",
             "Order": [

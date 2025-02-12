@@ -7,9 +7,9 @@
                 "_comment": "----- Kill Rocco's Sister -----",
                 "Type": "statemachine",
                 "Id": "3846c991-edda-4b66-8d0f-d2a702b20fcf",
-                "BriefingText": "$loc UI_PEACOCK_BLUEBERRYBUSH_OBJ1_CONDITION",
+                "BriefingText": "$loc UI_PEACOCK_BLUEBERRYBUSH_OBJ1_EXTRA",
                 "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_BLUEBERRYBUSH_OBJ1_CONDITION"
+                    "display": "$loc UI_PEACOCK_BLUEBERRYBUSH_OBJ1_EXTRA"
                 },
                 "Category": "primary",
                 "Definition": {
@@ -72,9 +72,9 @@
                 "_comment": "----- Kill the Right Guard -----",
                 "Type": "statemachine",
                 "Id": "28275372-d543-49ba-a799-97b9ca4b4cdf",
-                "BriefingText": "$loc UI_PEACOCK_BLUEBERRYBUSH_OBJ2_CONDITION",
+                "BriefingText": "$loc UI_PEACOCK_BLUEBERRYBUSH_OBJ2_EXTRA",
                 "HUDTemplate": {
-                    "display": "$loc UI_PEACOCK_BLUEBERRYBUSH_OBJ2_CONDITION"
+                    "display": "$loc UI_PEACOCK_BLUEBERRYBUSH_OBJ2_EXTRA"
                 },
                 "Category": "primary",
                 "Definition": {
@@ -177,14 +177,17 @@
     },
     "Metadata": {
         "Id": "97ab1c9a-3236-41f0-b22e-b46728ffc9fd",
-        "PublicId": "08458632084",
+        "IsPublished": true,
+        "TileImage": "images/contracts/escalation/contractescalation_blueberrybush.jpg",
         "Title": "UI_PEACOCK_BLUEBERRYBUSH2",
         "Description": "",
-        "Type": "escalation",
+        "CodeName_Hint": "[PEACOCK] BlueberryBush - Level 2",
         "Location": "LOCATION_COASTALTOWN",
+        "RequiredUnlockable": "ACCESS_HIT_OCTOPUS",
         "ScenePath": "assembly:/_PRO/Scenes/Missions/CoastalTown/_scene_octopus.entity",
+        "Type": "escalation",
+        "Release": "3.1.0 Escalation",
         "InGroup": "74415eca-d01e-4070-9bc9-5ef9b4e8f7d2",
-        "TileImage": "images/contracts/escalation/contractescalation_blueberrybush.jpg",
         "GroupObjectiveDisplayOrder": [
             { "IsNew": true, "Id": "7e8cd02d-b6c9-48be-a363-b1d1c3b55dd1" },
             { "IsNew": true, "Id": "28275372-d543-49ba-a799-97b9ca4b4cdf" },
@@ -192,6 +195,7 @@
             { "IsNew": true, "Id": "98610b95-8908-4110-b9b8-c5d9696e7fbe" },
             { "Id": "f8feee12-0353-44ef-8b80-dfe0a0e11061" }
         ],
-        "Entitlements": ["H1_LEGACY_STANDARD"]
+        "Entitlements": ["H1_LEGACY_STANDARD"],
+        "PublicId": "08458632084"
     }
 }
