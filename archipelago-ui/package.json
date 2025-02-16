@@ -1,0 +1,39 @@
+{
+    "name": "@peacockproject/archipelago-ui",
+    "version": "0.1.0",
+    "type": "module",
+    "scripts": {
+        "start:dev": "vite",
+        "build": "vite build",
+        "build:watch": "vite build --watch --emptyOutDir",
+        "typecheck": "tsc",
+        "clean": "rm -rf dist node_modules",
+        "lint": "eslint . --ext .ts",
+        "lint:fix": "eslint . --ext .ts --fix",
+        "format": "prettier --write './src/**/*'",
+        "generate:localization": "node --experimental-strip-types ./scripts/rpkg-locr-to-single-file.ts"
+    },
+    "private": true,
+    "devDependencies": {
+        "@tanstack/router-devtools": "^1.105.0",
+        "@tanstack/router-plugin": "^1.105.0",
+        "@types/react": "^19.0.8",
+        "@types/react-dom": "^19.0.3",
+        "@types/stream-json": "^1.7.8",
+        "@vitejs/plugin-react": "^4.3.4",
+        "stream-json": "^1.9.1",
+        "typescript": "^5.7.3",
+        "vite": "^6.1.0"
+    },
+    "dependencies": {
+        "@tailwindcss/vite": "^4.0.6",
+        "@tanstack/react-router": "^1.105.0",
+        "react": "^19.0.0",
+        "react-dom": "^19.0.0",
+        "tailwindcss": "^4.0.6",
+        "zod": "^3.24.1"
+    },
+    "ca8aMetadata": {
+        "initVersion": "1.5.0"
+    }
+}

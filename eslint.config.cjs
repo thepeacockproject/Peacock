@@ -64,6 +64,7 @@ module.exports = [
                     "./tsconfig.json",
                     "./webui/tsconfig.json",
                     "./tests/tsconfig.json",
+                    "./archipelago-ui/tsconfig.json",
                 ],
             },
         },

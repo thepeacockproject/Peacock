@@ -1,0 +1,58 @@
+{
+    "include": [
+        "src/**/*",
+        "scripts/**/*",
+        "vite.config.ts"
+    ],
+    "exclude": [
+        "node_modules",
+        "dist"
+    ],
+    "compilerOptions": {
+        /* Visit https://aka.ms/tsconfig to read more about this file */
+        /* Projects */
+        "incremental": true /* Save .tsbuildinfo files to allow for incremental compilation of projects. */,
+        "tsBuildInfoFile": "./.tsbuildinfo" /* Specify the path to .tsbuildinfo incremental compilation file. */,
+        /* Language and Environment */
+        "target": "ES2021" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
+        "lib": [
+            "ESNext",
+            "DOM"
+        ] /* Specify a set of bundled library declaration files that describe the target runtime environment. */,
+        /* Modules */
+        "module": "ESNext" /* Specify what module code is generated. */,
+        "moduleResolution": "bundler",
+        "baseUrl": "./" /* Specify the base directory to resolve non-relative module names. */,
+        "paths": {
+            "~/*": [
+                "./src/*"
+            ]
+        },
+        "jsx": "react-jsx",
+        "resolveJsonModule": true /* Enable importing .json files. */,
+        /* JavaScript Support */
+        "allowJs": true /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */,
+        "checkJs": false /* Enable error reporting in type-checked JavaScript files. */,
+        /* Emit */
+        "sourceMap": true /* Create source map files for emitted JavaScript files. */,
+        "outDir": "./dist" /* Specify an output folder for all emitted files. */,
+        "removeComments": true /* Disable emitting comments. */,
+        /* Interop Constraints */
+        // "isolatedModules": true,                          /* Ensure that each file can be safely transpiled without relying on other imports. */
+        "allowSyntheticDefaultImports": true /* Allow 'import x from y' when a module doesn't have a default export. */,
+        "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */,
+        "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
+        /* Type Checking */
+        "strict": true /* Enable all strict type-checking options. */,
+        "noImplicitAny": true /* Enable error reporting for expressions and declarations with an implied 'any' type. */,
+        "useUnknownInCatchVariables": true /* Default catch clause variables as 'unknown' instead of 'any'. */,
+        "noUnusedLocals": false /* Enable error reporting when local variables aren't read. */,
+        "noUnusedParameters": false /* Raise an error when a function parameter isn't read. */,
+        "noImplicitReturns": true /* Enable error reporting for codepaths that do not explicitly return in a function. */,
+        "noFallthroughCasesInSwitch": true /* Enable error reporting for fallthrough cases in switch statements. */,
+        "noUncheckedIndexedAccess": true /* Add 'undefined' to a type when accessed using an index. */,
+        "noImplicitOverride": true /* Ensure overriding members in derived classes are marked with an override modifier. */,
+        /* Completeness */
+        "skipLibCheck": true /* Skip type checking all .d.ts files. */
+    }
+}

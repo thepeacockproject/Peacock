@@ -75,6 +75,7 @@ import { orderedETAs } from "./contracts/elusiveTargetArcades"
 import { SMFSupport } from "./smfSupport"
 import { glob } from "fast-glob"
 import { asyncGuard } from "./databaseHandler"
+import { loadArchipelago } from "./archipelago"
 
 /**
  * An array of string arrays that contains the IDs of the featured contracts.
@@ -530,6 +531,8 @@ export class Controller {
         if (PEACOCK_DEV && pluginDevHost) {
             await this._loadWorkspacePlugins()
         }
+
+        loadArchipelago(this)
 
         this.hooks.serverStart.call()
     }

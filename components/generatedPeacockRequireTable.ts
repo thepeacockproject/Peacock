@@ -43,6 +43,9 @@ import * as webFeatures from "./webFeatures"
 import * as legacyContractHandler from "./2016/legacyContractHandler"
 import * as legacyMenuData from "./2016/legacyMenuData"
 import * as legacyProfileRouter from "./2016/legacyProfileRouter"
+import * as archipelago from "./archipelago/archipelago"
+import * as index from "./archipelago/index"
+import * as store from "./archipelago/store"
 import * as challengeHelpers from "./candle/challengeHelpers"
 import * as challengeService from "./candle/challengeService"
 import * as masteryService from "./candle/masteryService"
@@ -78,6 +81,8 @@ import * as multiplayerService from "./multiplayer/multiplayerService"
 import * as multiplayerUtils from "./multiplayer/multiplayerUtils"
 import * as contextListeners from "./statemachines/contextListeners"
 import * as contractCreation from "./statemachines/contractCreation"
+import * as apiRouter from "./archipelago/server/apiRouter"
+import * as index from "./archipelago/server/index"
 import * as escalationService from "./contracts/escalations/escalationService"
 
 export default {
@@ -108,6 +113,9 @@ export default {
     "@peacockproject/core/2016/legacyContractHandler": legacyContractHandler,
     "@peacockproject/core/2016/legacyMenuData": legacyMenuData,
     "@peacockproject/core/2016/legacyProfileRouter": legacyProfileRouter,
+    "@peacockproject/core/archipelago/archipelago": archipelago,
+    "@peacockproject/core/archipelago/index": index,
+    "@peacockproject/core/archipelago/store": store,
     "@peacockproject/core/candle/challengeHelpers": challengeHelpers,
     "@peacockproject/core/candle/challengeService": challengeService,
     "@peacockproject/core/candle/masteryService": masteryService,
@@ -143,6 +151,8 @@ export default {
     "@peacockproject/core/multiplayer/multiplayerUtils": multiplayerUtils,
     "@peacockproject/core/statemachines/contextListeners": contextListeners,
     "@peacockproject/core/statemachines/contractCreation": contractCreation,
+    "@peacockproject/core/archipelago/server/apiRouter": apiRouter,
+    "@peacockproject/core/archipelago/server/index": index,
     "@peacockproject/core/contracts/escalations/escalationService":
         escalationService,
 }
