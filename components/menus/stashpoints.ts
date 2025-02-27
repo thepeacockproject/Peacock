@@ -134,7 +134,7 @@ export function getModernStashData(
     let contractData: MissionManifest | undefined = undefined
 
     if (query.contractid) {
-        contractData = controller.resolveContract(query.contractid)
+        contractData = controller.resolveContract(query.contractid, gameVersion)
     }
 
     const inventory = createInventory(
@@ -264,7 +264,10 @@ export function getLegacyStashData(
         return undefined
     }
 
-    const contractData = controller.resolveContract(query.contractid)
+    const contractData = controller.resolveContract(
+        query.contractid,
+        gameVersion,
+    )
 
     if (!contractData) {
         return undefined
@@ -400,7 +403,8 @@ export function getSafehouseCategory(
             item.Unlockable.Type === "loadoutunlock" ||
             item.Unlockable.Type === "difficultyunlock" ||
             item.Unlockable.Type === "agencypickup" ||
-            item.Unlockable.Type === "challengemultiplier"
+            item.Unlockable.Type === "challengemultiplier" ||
+            item.Unlockable.Type === "emote"
         ) {
             continue // these types should not be displayed when not asked for
         } else if (item.Unlockable.Properties.InclusionData) {

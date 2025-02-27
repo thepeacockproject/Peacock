@@ -23,6 +23,10 @@ import { expect, Mock, test, vi } from "vitest"
 import { sign } from "jsonwebtoken"
 import { mockDatabaseFs, MockedFsReturn } from "../mocks/databaseHandlerMock"
 import type { DataStorageFs } from "../../components/databaseHandler"
+import process from "node:process"
+import { resolve } from "node:path"
+import { Controller } from "../../components/controller"
+import { loadConfig } from "../mocks/configSwizzleManager"
 
 export function asMock<T>(value: T): Mock {
     return value as Mock
@@ -120,3 +124,21 @@ export const testWithFakeFs = test.extend<{
         dbFs.discard()
     },
 })
+
+vi.mock("fast-glob")
+
+export async function createControllerInstance() {
+    loadConfig("LocationsData")
+    loadConfig("GlobalChallenges")
+    loadConfig("H2GlobalChallenges")
+    loadConfig("LegacyGlobalChallenges")
+    loadConfig("ScpcGlobalChallenges")
+
+    const originalCwd = process.cwd()
+    const realRootForTestPurposes = resolve(originalCwd, "../")
+    const controller = new Controller()
+    controller._resolveRoot = realRootForTestPurposes
+
+    await controller.boot(false)
+    return controller
+}

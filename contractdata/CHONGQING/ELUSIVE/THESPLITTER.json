@@ -1,0 +1,283 @@
+{
+    "Data": {
+        "Bricks": [
+            "assembly:/_pro/scenes/missions/wet/mission_lambic.brick",
+            "assembly:/_pro/scenes/missions/wet/scenario_lambic.brick"
+        ],
+        "DevOnlyBricks": [
+            "assembly:/_pro/scenes/missions/wet/dev_lambic.brick"
+        ],
+        "GameChangers": [],
+        "Entrances": ["bd3df5ac-b7b8-45dd-99ed-681428786384"],
+        "EnableSaving": true,
+        "Objectives": [
+            {
+                "_comment": "----- Eliminate Max Valliant (no instinct) -----",
+                "Id": "15c53180-29ec-40e7-98f9-887d3999ceef",
+                "Category": "primary",
+                "IsHidden": true,
+                "ExcludeFromScoring": true,
+                "ObjectiveType": "custom",
+                "BriefingName": "$loc UI_CONTRACT_LAMBIC_ACTOR_LAMBIC_NAME",
+                "BriefingText": "$loc UI_CONTRACT_LAMBIC_OBJ_LAMBIC_NAME",
+                "LongBriefingText": "$loc UI_CONTRACT_LAMBIC_ACTOR_LAMBIC_DESC",
+                "Image": "Images/Actors/elusive_Lambic_face.jpg",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_LAMBIC_OBJ_LAMBIC_NAME"
+                },
+                "DisplayAsKillObjective": true,
+                "OnInactive": {
+                    "IfCompleted": {
+                        "State": "Completed",
+                        "Visible": false
+                    },
+                    "IfInProgress": {
+                        "Visible": false
+                    }
+                },
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "Hit",
+                    "Context": {
+                        "Targets": ["9c2190fa-0095-4fa9-9f27-394e09c96bc5"]
+                    },
+                    "States": {
+                        "Start": {
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$inarray": {
+                                            "in": "$.Targets",
+                                            "?": {
+                                                "$eq": [
+                                                    "$.#",
+                                                    "$Value.RepositoryId"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ],
+                            "Lambic_EnableSecondaryTargetsObjective": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Eliminate Max Valliant (instinct) -----",
+                "Id": "a38f56a6-e877-42e4-864f-ea1153818c26",
+                "Category": "primary",
+                "Activation": {
+                    "$eq": [
+                        "$15c53180-29ec-40e7-98f9-887d3999ceef",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": {
+                    "IfCompleted": {
+                        "State": "Completed",
+                        "Visible": true
+                    }
+                },
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": true
+                    }
+                },
+                "SuccessEvent": {
+                    "EventName": "Kill",
+                    "EventValues": {
+                        "RepositoryId": "9c2190fa-0095-4fa9-9f27-394e09c96bc5"
+                    }
+                }
+            },
+            {
+                "_comment": "----- Eliminate secondary targets (hidden) -----",
+                "Id": "acd7b21f-a088-4980-a49d-4a7c7e70cdf5",
+                "Type": "statemachine",
+                "Category": "primary",
+                "IsHidden": true,
+                "ExcludeFromScoring": true,
+                "OnInactive": {
+                    "IfCompleted": {
+                        "State": "Completed",
+                        "Visible": false
+                    }
+                },
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    }
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {
+                        "Targets": [],
+                        "TargetCount": 0
+                    },
+                    "States": {
+                        "Start": {
+                            "AddTarget": [
+                                {
+                                    "Actions": {
+                                        "$pushunique": [
+                                            "Targets",
+                                            "$Value.RepositoryId"
+                                        ],
+                                        "$inc": "TargetCount"
+                                    }
+                                }
+                            ],
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$inarray": {
+                                            "in": "$.Targets",
+                                            "?": {
+                                                "$eq": [
+                                                    "$.#",
+                                                    "$Value.RepositoryId"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "Actions": {
+                                        "$dec": "TargetCount"
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.TargetCount", 0]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ],
+                            "Lambic_EnableSecondaryTargetsObjective": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "_comment": "----- Eliminate secondary targets -----",
+                "Id": "0158e00e-88e7-4e95-bbf6-bca90f673a23",
+                "Category": "primary",
+                "Image": "Images/Contracts/Elusive/S3_Lambic/Secondary_Target.jpg",
+                "BriefingName": "$loc UI_CONTRACT_LAMBIC_OBJ_SECONDARY_NAME",
+                "BriefingText": "$loc UI_CONTRACT_LAMBIC_OBJ_SECONDARY_DESC",
+                "LongBriefingText": "$loc UI_CONTRACT_LAMBIC_OBJ_SECONDARY_LONG",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_LAMBIC_OBJ_SECONDARY_HUD",
+                    "iconType": 0
+                },
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "Scope": "hit",
+                "Activation": {
+                    "$eq": [
+                        "$acd7b21f-a088-4980-a49d-4a7c7e70cdf5",
+                        "Completed"
+                    ]
+                },
+                "OnInactive": {
+                    "IfCompleted": {
+                        "State": "Completed",
+                        "Visible": true
+                    }
+                },
+                "Definition": {
+                    "Context": {
+                        "Targets": [],
+                        "TargetCount": 0
+                    },
+                    "ContextListeners": {
+                        "TargetCount": {
+                            "type": "objective-counter",
+                            "header": "UI_CONTRACT_LAMBIC_OBJ_SECONDARY_COUNTER"
+                        }
+                    },
+                    "States": {
+                        "Start": {
+                            "AddTarget": [
+                                {
+                                    "Actions": {
+                                        "$pushunique": [
+                                            "Targets",
+                                            "$Value.RepositoryId"
+                                        ],
+                                        "$inc": "TargetCount"
+                                    }
+                                }
+                            ],
+                            "Kill": [
+                                {
+                                    "Condition": {
+                                        "$inarray": {
+                                            "in": "$.Targets",
+                                            "?": {
+                                                "$eq": [
+                                                    "$.#",
+                                                    "$Value.RepositoryId"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "Actions": {
+                                        "$dec": "TargetCount"
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.TargetCount", 0]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "Metadata": {
+        "Id": "699ec9a3-102e-499b-ad60-6a329cc2054c",
+        "CodeName_Hint": "Lambic",
+        "Release": {
+            "Major": 3,
+            "Minor": 210,
+            "Build": 0,
+            "Revision": -1
+        },
+        "Type": "elusive",
+        "Title": "UI_CONTRACT_LAMBIC_TITLE",
+        "Description": "UI_CONTRACT_LAMBIC_DESC",
+        "BriefingVideo": "briefing_lambic",
+        "DebriefingVideo": "debriefing_lambic",
+        "ScenePath": "assembly:/_pro/scenes/missions/wet/scene_wet_lambic.entity",
+        "TileImage": "Images/Contracts/Elusive/S3_Lambic/Title.jpg",
+        "Location": "LOCATION_WET_RAT",
+        "IsPublished": true,
+        "Season": 3,
+        "LastUpdate": "2015-03-10T12:00:00.441Z",
+        "CreationTimestamp": "2024-12-12T10:56:54.2760006Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Entitlements": ["LOCATION_WET"],
+        "PublicId": "030924302847"
+    },
+    "UserData": {}
+}

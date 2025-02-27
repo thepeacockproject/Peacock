@@ -16,6 +16,9 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+const fs = require("fs")
+const { execSync } = require("child_process")
+
 // Usage:
 // - Go to https://glaciermodding.org/rpkg/ and click "Download latest CLI"
 // - Extract contents of downloaded zip file to packaging/add_itemsize/
@@ -24,12 +27,12 @@
 // - either H2 or H3 Runtime path seem to work for Scpc Game Version
 
 async function main() {
-    const fs = require("fs")
     const rpkgCli = `"./rpkg-cli.exe"`
-    const { execSync } = require("child_process")
+
     let chunk0patches = fs
         .readdirSync(`${process.argv[2]}`)
         .filter((fn) => fn.includes("chunk0") && !fn.includes("300.rpkg"))
+
     let gameprefix = ""
     if (process.argv[3] === "H1") {
         gameprefix = "Legacy"
@@ -66,14 +69,15 @@ async function main() {
             0,
             repofiles[0].length - 5,
         )}.json`
-        await fs.promises
-            .copyFile(orig, newfile)
-            .then(function () {
-                console.log(`${newfile} file copied`)
-            })
-            .catch(function (error) {
-                console.log(error)
-            })
+
+        try {
+            await fs.promises.copyFile(orig, newfile)
+
+            console.log(`${newfile} file copied`)
+        } catch (error) {
+            console.log(error)
+        }
+
         let repochunk0 = require(`../add_itemsize/${newfile}`)
 
         for (let i = 0; i < allunlockables.length; i++) {
@@ -114,21 +118,21 @@ async function main() {
     }
 
     const jsonContent = JSON.stringify(allunlockables, null, 4)
-    fs.writeFile(
-        `../../static/${gameprefix}allunlockables.json`,
-        jsonContent,
-        "utf8",
-        function (err) {
-            if (err) {
-                return console.log(err)
-            }
-            console.log(
-                `${gameprefix}allunlockables.json file updated with item sizes!`,
-            )
-            // Might be better to have the user call this themselves, but it resolves line break inconsistencies
-            execSync(`yarn prettier`)
-        },
-    )
+    try {
+        await fs.promises.writeFile(
+            `../../static/${gameprefix}allunlockables.json`,
+            jsonContent,
+            "utf8",
+        )
+
+        console.log(
+            `${gameprefix}allunlockables.json file updated with item sizes!`,
+        )
+        // Might be better to have the user call this themselves, but it resolves line break inconsistencies
+        execSync(`yarn prettier`)
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 main()

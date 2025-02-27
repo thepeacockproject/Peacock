@@ -33,12 +33,10 @@ import type { MasteryData } from "../types/mastery"
 import { contractIdToHitObject, controller } from "../controller"
 import { generateCompletionData } from "../contracts/dataGen"
 import { getUserData } from "../databaseHandler"
-import { ChallengeFilterType } from "../candle/challengeHelpers"
+import { ChallengeFilterType, Pro1FilterType } from "../candle/challengeHelpers"
 import { GetDestinationQuery } from "../types/gameSchemas"
 import { createInventory } from "../inventory"
 import { log, LogLevel } from "../loggingInterop"
-import { no2016 } from "../contracts/escalations/escalationService"
-import { missionsInLocations } from "../contracts/missionsInLocation"
 import assert from "assert"
 import { translateEntitlements } from "../ownership"
 
@@ -92,15 +90,18 @@ type GameDestination = {
     }
     Location: Unlockable
     MasteryData: MasteryData | MasteryData[] | Record<string, never>
-    MissionData: {
-        ChallengeCompletion: ChallengeCompletion
-        Location: Unlockable
-        LocationCompletionPercent: number
-        OpportunityStatistics: {
-            Completed: number
-            Count: number
-        }
+    MissionData: DestinationBaseCompletionData & {
         SubLocationMissionsData: LocationMissionData[]
+    }
+}
+
+type DestinationBaseCompletionData = {
+    ChallengeCompletion: ChallengeCompletion
+    Location: Unlockable
+    LocationCompletionPercent: number
+    OpportunityStatistics: {
+        Completed: number
+        Count: number
     }
 }
 
@@ -109,7 +110,7 @@ export function getDestinationCompletion(
     child: Unlockable | undefined,
     gameVersion: GameVersion,
     userId: string,
-) {
+): DestinationBaseCompletionData {
     const missionStories = getConfig<Record<string, MissionStory>>(
         "MissionStories",
         false,
@@ -120,6 +121,8 @@ export function getDestinationCompletion(
         {
             type: ChallengeFilterType.ParentLocation,
             parent: parent.Id,
+            gameVersion,
+            pro1Filter: Pro1FilterType.Exclude,
         },
         parent.Id,
         gameVersion,
@@ -204,13 +207,11 @@ export function getAllGameDestinations(
 
         const template: GameFacingDestination = {
             ...getDestinationCompletion(parent, undefined, gameVersion, userId),
-            ...{
-                CompletionData: generateCompletionData(
-                    destination,
-                    userId,
-                    gameVersion,
-                ),
-            },
+            CompletionData: generateCompletionData(
+                destination,
+                userId,
+                gameVersion,
+            ),
         }
 
         // TODO: THIS IS NOT CORRECT FOR 2016!
@@ -294,6 +295,7 @@ export function createLocationsData(
             locData.parents[sublocation.Properties.ParentLocation]
         const creationContract = controller.resolveContract(
             sublocation.Properties.CreateContractId!,
+            gameVersion,
         )
 
         if (!creationContract && excludeIfNoContracts) {
@@ -373,7 +375,7 @@ export function getDestination(
                 gameVersion,
                 userId,
             ),
-            ...{ SubLocationMissionsData: [] },
+            SubLocationMissionsData: [],
         },
         ChallengeData: {
             Children:
@@ -381,6 +383,7 @@ export function getDestination(
                     query.locationId,
                     gameVersion,
                     userId,
+                    query.difficulty === "pro1",
                 ),
         },
         MasteryData: resMasteryData,
@@ -416,12 +419,20 @@ export function getDestination(
     )
 
     if (query.difficulty === "pro1") {
-        type Cast = keyof typeof controller.missionsInLocations.pro1
+        assert(
+            gameVersion === "h1",
+            `${gameVersion} has requested a pro1 difficulty destination!`,
+        )
+        type Cast = keyof (typeof controller.missionsInLocation)["h1"]["pro1"]
 
         const obj: LocationMissionData = {
             Location: locationData,
             SubLocation: locationData,
-            Missions: [controller.missionsInLocations.pro1[LOCATION as Cast]]
+            Missions: [
+                controller.missionsInLocation[gameVersion].pro1[
+                    LOCATION as Cast
+                ],
+            ]
                 .map((id) => contractIdToHitObject(id, gameVersion, userId))
                 .filter(Boolean) as Hit[],
             SarajevoSixMissions: [],
@@ -447,27 +458,16 @@ export function getDestination(
 
         const escalations: Hit[] = []
 
-        type ECast = keyof typeof controller.missionsInLocations.escalations
+        type ECast =
+            keyof (typeof controller.missionsInLocation)[GameVersion]["escalations"]
         // every unique escalation from the sublocation
-        const allUniqueEscalations: string[] = [
-            ...(gameVersion === "h1" && e.Id === "LOCATION_ICA_FACILITY"
-                ? controller.missionsInLocations.escalations[
-                      "LOCATION_ICA_FACILITY_SHIP"
-                  ]
-                : []),
-            ...new Set<string>(
-                controller.missionsInLocations.escalations[e.Id as ECast] || [],
-            ),
-        ]
+        const escalationIds: string[] =
+            controller.missionsInLocation[gameVersion].escalations[
+                e.Id as ECast
+            ] ?? []
 
-        for (const escalation of allUniqueEscalations) {
-            if (gameVersion === "h1" && no2016.includes(escalation)) continue
-
-            const details = contractIdToHitObject(
-                escalation,
-                gameVersion,
-                userId,
-            )
+        for (const id of escalationIds) {
+            const details = contractIdToHitObject(id, gameVersion, userId)
 
             if (details) {
                 escalations.push(details)
@@ -475,18 +475,24 @@ export function getDestination(
         }
 
         const sniperMissions: Hit[] = []
-        type SCast = keyof typeof controller.missionsInLocations.sniper
 
-        for (const sniperMission of controller.missionsInLocations.sniper[
-            e.Id as SCast
-        ] ?? []) {
-            const hit = contractIdToHitObject(
-                sniperMission,
-                gameVersion,
-                userId,
-            )
+        if (gameVersion !== "h1") {
+            type SCast = keyof (typeof controller.missionsInLocation)[Exclude<
+                GameVersion,
+                "h1"
+            >]["sniper"]
 
-            if (hit) sniperMissions.push(hit)
+            for (const sniperMission of controller.missionsInLocation[
+                gameVersion
+            ].sniper[e.Id as SCast] ?? []) {
+                const hit = contractIdToHitObject(
+                    sniperMission,
+                    gameVersion,
+                    userId,
+                )
+
+                if (hit) sniperMissions.push(hit)
+            }
         }
 
         const obj = {
@@ -503,51 +509,24 @@ export function getDestination(
         }
 
         const types = [
-            ...[
-                [undefined, "Missions"],
-                ["elusive", "ElusiveMissions"],
-            ],
-            ...((gameVersion === "h1" &&
-                // @ts-expect-error Hack.
-                missionsInLocations.sarajevo["h2016enabled"]) ||
-            gameVersion === "h3"
-                ? [["sarajevo", "SarajevoSixMissions"]]
-                : []),
+            [undefined, "Missions"],
+            ["elusive", "ElusiveMissions"],
+            ["sarajevo", "SarajevoSixMissions"],
         ]
 
-        for (const t of types) {
-            let theMissions: string[] | undefined = !t[0] // no specific type
-                ? // @ts-expect-error Yup.
-                  controller.missionsInLocations[e.Id]
-                : // @ts-expect-error Yup.
-                  controller.missionsInLocations[t[0]][e.Id]
+        type TCast = keyof (typeof controller.missionsInLocation)[GameVersion]
 
-            // edge case: ica facility in h1 was only 1 sublocation, so we merge
-            // these into a single array
-            if (
-                gameVersion === "h1" &&
-                !t[0] &&
-                LOCATION === "LOCATION_PARENT_ICA_FACILITY"
-            ) {
-                theMissions = [
-                    ...controller.missionsInLocations
-                        .LOCATION_ICA_FACILITY_ARRIVAL,
-                    ...controller.missionsInLocations
-                        .LOCATION_ICA_FACILITY_SHIP,
-                    ...controller.missionsInLocations.LOCATION_ICA_FACILITY,
-                ]
-            }
+        for (const t of types) {
+            const theMissions: string[] | undefined = (
+                !t[0] // no specific type
+                    ? controller.missionsInLocation[gameVersion][e.Id as ECast]
+                    : controller.missionsInLocation[gameVersion][t[0] as TCast][
+                          e.Id as ECast
+                      ]
+            ) as string[] | undefined
 
             if (theMissions) {
-                for (const c of theMissions.filter(
-                    // removes snow festival on h1
-                    (m) =>
-                        m &&
-                        !(
-                            gameVersion === "h1" &&
-                            m === "c414a084-a7b9-43ce-b6ca-590620acd87e"
-                        ),
-                )) {
+                for (const c of theMissions) {
                     const mission = contractIdToHitObject(
                         c,
                         gameVersion,

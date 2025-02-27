@@ -1,0 +1,99 @@
+{
+    "meta": {
+        "Location": "GLOBAL_VERSUS_CHALLENGES",
+        "GameVersions": ["h3"]
+    },
+    "groups": [
+        {
+            "Name": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_VERSUS",
+            "Image": "images/challenges/categories/versus/tile.jpg",
+            "Icon": "versus",
+            "CategoryId": "versus",
+            "Description": "",
+            "OrderIndex": 100000,
+            "Challenges": [
+                {
+                    "Id": "f211f6be-937e-4b6a-a466-1ab2f401e432",
+                    "Name": "CHALLENGE_VS_PHANTOM_ASSASSIN_NAME",
+                    "ImageName": "images/challenges/ghostmode/ghostmode_phantom.jpg",
+                    "Description": "CHALLENGE_VS_PHANTOM_ASSASSIN_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": false,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_VERSUS",
+                    "Icon": "versus",
+                    "LocationId": "",
+                    "ParentLocationId": "",
+                    "Type": "global",
+                    "DifficultyLevels": [],
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 100
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "$.Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "profile",
+                        "States": {
+                            "Start": {
+                                "Kill": {
+                                    "Condition": {
+                                        "$eq": ["$Value.IsTarget", true]
+                                    },
+                                    "Transition": "CheckNoticed"
+                                }
+                            },
+                            "CheckNoticed": {
+                                "$timer": {
+                                    "Condition": {
+                                        "$after": 10.5
+                                    },
+                                    "Transition": "Start"
+                                },
+                                "Ghost_TargetNoticed": {
+                                    "Transition": "Start"
+                                },
+                                "Ghost_TargetUnnoticed": [
+                                    {
+                                        "Actions": {
+                                            "$inc": "Count"
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    },
+                                    {
+                                        "Transition": "Start"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["hard", "versus"],
+                    "InclusionData": {
+                        "ContractIds": null,
+                        "ContractTypes": ["vsrace"],
+                        "Locations": null,
+                        "GameModes": null
+                    }
+                }
+            ]
+        }
+    ]
+}

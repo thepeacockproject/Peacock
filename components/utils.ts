@@ -51,7 +51,7 @@ export const ServerVer: ServerVersion = {
 export const PEACOCKVERSTRING = HUMAN_VERSION
 
 export const uuidRegex =
-    /^[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$/
+    /^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$/
 
 export const contractTypes = ["featured", "usercreated"]
 
@@ -100,7 +100,7 @@ export async function checkForUpdates(): Promise<void> {
                 "updates",
             )
         }
-    } catch (e) {
+    } catch {
         log(LogLevel.WARN, "Failed to check for updates!", "updates")
     }
 }
@@ -155,7 +155,7 @@ export const XP_PER_LEVEL = 6000
 
 export function getMaxProfileLevel(gameVersion: GameVersion): number {
     if (gameVersion === "h3") {
-        return 7500
+        return 12500
     }
 
     return 5000
@@ -559,7 +559,9 @@ export function attainableDefaults(gameVersion: GameVersion): string[] {
     } else {
         return [
             "TOKEN_OUTFIT_GREENLAND_HERO_TRAININGSUIT",
+            "TOKEN_OUTFIT_HOKKAIDO_HERO_HOKKAIDOSUIT",
             "TOKEN_OUTFIT_WET_SUIT",
+            "TOKEN_OUTFIT_OPULENT_HERO_OPULENTSUIT",
             "TOKEN_OUTFIT_HERO_DUGONG_SUIT",
         ]
     }
@@ -696,6 +698,17 @@ export function unlockOrderComparer(a: Unlockable, b: Unlockable): number {
     )
 }
 
+export function unlockLevelComparer(a: Unlockable, b: Unlockable): number {
+    return (
+        (a?.Properties?.UnlockLevel
+            ? parseInt(a?.Properties?.UnlockLevel)
+            : Number.POSITIVE_INFINITY) -
+            (b?.Properties?.UnlockLevel
+                ? parseInt(b?.Properties?.UnlockLevel)
+                : Number.POSITIVE_INFINITY) || 0
+    )
+}
+
 /**
  * Converts a contract's public ID as a long-form number into the version with dashes.
  *
@@ -771,4 +784,17 @@ export function getSublocations(gameVersion: GameVersion): SublocationMap {
     }
 
     return sublocations
+}
+
+export function isTrueForEveryElement<Type>(
+    iter: Iterable<Type>,
+    test: (elem: Type) => boolean,
+): boolean {
+    for (const element of iter) {
+        if (!test(element)) {
+            return false
+        }
+    }
+
+    return true
 }

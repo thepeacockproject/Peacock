@@ -89,7 +89,10 @@ export function getHubData(gameVersion: GameVersion, userId: string) {
 
     const contractCreationTutorial =
         gameVersion !== "scpc"
-            ? controller.resolveContract(contractCreationTutorialId)!
+            ? controller.resolveContract(
+                  contractCreationTutorialId,
+                  gameVersion,
+              )!
             : undefined
 
     const locations = getVersionedConfig<PeacockLocationsData>(

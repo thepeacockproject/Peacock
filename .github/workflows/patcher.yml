@@ -2,10 +2,10 @@ name: Patcher
 
 on:
   push:
-    branches: [ "v*" ]
+    branches: [ "v*", "master" ]
     paths: [ "patcher/**/*" ]
   pull_request:
-    branches: [ "v*" ]
+    branches: [ "v*", "master" ]
     paths: [ "patcher/**/*" ]
 
 env:
@@ -19,6 +19,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v4

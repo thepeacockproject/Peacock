@@ -153,6 +153,7 @@ export type PacifyC2SEvent = KillC2SEvent
 
 export type MurderedBodySeenC2SEvent = ClientToServerEvent<{
     Witness: string
+    /** `true` if the witness is a target */
     IsWitnessTarget: boolean
     DeadBody: {
         RepositoryId: RepositoryId
