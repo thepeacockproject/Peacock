@@ -718,6 +718,7 @@ function saveEvents(
                         eventName: event.Name,
                         currentState: objectiveState,
                         timestamp: event.Timestamp,
+                        contractId: event.ContractId,
                     },
                 )
 
@@ -757,6 +758,7 @@ function saveEvents(
                     timestamp: event.Timestamp,
                     currentState: scoringState,
                     timers: session.scoring.Timers,
+                    contractId: event.ContractId,
                 },
             )
 
