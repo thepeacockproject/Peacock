@@ -17,6 +17,7 @@
  */
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react-hooks/rules-of-hooks */
 import type * as core from "express-serve-static-core"
 import { RequestWithJwt } from "../../components/types/types"
 import { expect, Mock, test, vi } from "vitest"

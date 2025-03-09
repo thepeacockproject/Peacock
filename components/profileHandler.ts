@@ -426,7 +426,9 @@ profileRouter.post(
     },
 )
 
-profileRouter.post("/ProfileService/GetFriendsCount", (_, res) => res.send("0"))
+profileRouter.post("/ProfileService/GetFriendsCount", (_, res) => {
+    res.send("0")
+})
 
 profileRouter.post(
     "/GamePersistentDataService/GetData",

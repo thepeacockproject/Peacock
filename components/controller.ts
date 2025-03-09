@@ -193,6 +193,7 @@ function createPeacockRequire(pluginName: string): NodeRequire {
         }
 
         try {
+            // eslint-disable-next-line @typescript-eslint/no-require-imports
             return require(specifier)
         } catch (e) {
             log(LogLevel.ERROR, `PRMR: Unable to load ${specifier}.`)

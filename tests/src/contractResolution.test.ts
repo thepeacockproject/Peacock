@@ -80,7 +80,7 @@ describe("contracts folder", () => {
     testWithFakeFs(
         "can resolve a contract from the contracts folder",
         async ({ fakeFs, expect }) => {
-            const contract = contractFactory(["usercreated"])
+            const contract = contractFactory({}, ["usercreated"])
             await fakeFs.writeFile(
                 "contracts/test.json",
                 JSON.stringify(contract),

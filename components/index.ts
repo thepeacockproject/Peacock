@@ -113,7 +113,7 @@ function uncaught(error: Error): void {
     }
 
     log(LogLevel.ERROR, error.message)
-    error.stack && log(LogLevel.ERROR, error.stack)
+    if (error.stack) log(LogLevel.ERROR, error.stack)
 }
 
 process.on("uncaughtException", uncaught)

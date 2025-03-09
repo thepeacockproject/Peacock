@@ -100,6 +100,7 @@ export class ProgressionService {
         return subPkgId
             ? // @ts-expect-error It is possible to index into an object with a string
               theLocation[subPkgId]
+            // @ts-expect-error Todo?
             : theLocation
     }
 
