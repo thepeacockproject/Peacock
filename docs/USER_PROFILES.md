@@ -16,17 +16,17 @@ If you are unsure, ask.
 
 Version 1 introduced the profile versioning system. The changes are:
 
--   Removed unused keys (non location parents) in `u.Extensions.progression.Locations`.
--   Upper-cased keys in `u.Extensions.progression.Locations` to fit with the rest of Peacock.
--   Added subpackages to certain locations in `u.Extensions.progression.Locations`:
-    -   Legacy profiles now have `normal` and `pro1`.
-    -   Sniper locations now have their unlockables contained inside the location.
--   Unused properties were removed from locations in `u.Extensions.progression.Locations`.
--   `u.Extensions.progression.Unlockables` has been removed.
+- Removed unused keys (non location parents) in `u.Extensions.progression.Locations`.
+- Upper-cased keys in `u.Extensions.progression.Locations` to fit with the rest of Peacock.
+- Added subpackages to certain locations in `u.Extensions.progression.Locations`:
+    - Legacy profiles now have `normal` and `pro1`.
+    - Sniper locations now have their unlockables contained inside the location.
+- Unused properties were removed from locations in `u.Extensions.progression.Locations`.
+- `u.Extensions.progression.Unlockables` has been removed.
 
 ## Version 2
 
 Version 2 introduced support for syncing official progress to Peacock. The changes are:
 
--   `u.Extensions.LastOfficialSync` has been added which records a date and time of the last official sync.
--   `u.Extensions.progression.PlayerProfileXp.Sublocations` has been changed to an object.
+- `u.Extensions.LastOfficialSync` has been added which records a date and time of the last official sync.
+- `u.Extensions.progression.PlayerProfileXp.Sublocations` has been changed to an object.

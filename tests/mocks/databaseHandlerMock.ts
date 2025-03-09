@@ -101,9 +101,7 @@ export async function mockDatabaseFs(): Promise<MockedFsReturn> {
     }
 
     const getFsSpy = vi.spyOn(databaseHandler.asyncGuard, "getFs")
-    getFsSpy.mockImplementation(
-        () => fsImpl,
-    )
+    getFsSpy.mockImplementation(() => fsImpl)
 
     await databaseHandler.setupFileStructure((...strings) =>
         npath.toPortablePath(npath.join(...strings)),

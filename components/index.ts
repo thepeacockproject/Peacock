@@ -143,7 +143,6 @@ app.get("/", (_: Request, res) => {
     res.send(data)
 })
 
-serveStatic.mime.define({ "application/javascript": ["js"] })
 app.use("/assets", serveStatic("webui/dist/assets"))
 
 // make sure all responses have a default content-type set

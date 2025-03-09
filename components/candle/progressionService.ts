@@ -100,8 +100,8 @@ export class ProgressionService {
         return subPkgId
             ? // @ts-expect-error It is possible to index into an object with a string
               theLocation[subPkgId]
-            // @ts-expect-error Todo?
-            : theLocation
+            : // @ts-expect-error Todo?
+              theLocation
     }
 
     // Return mastery drops from location from a level range
@@ -170,7 +170,7 @@ export class ProgressionService {
 
         const parentLocationId = subLocation
             ? subLocation.Properties?.ParentLocation
-            : location ?? contract.Metadata.Location
+            : (location ?? contract.Metadata.Location)
 
         if (!parentLocationId) {
             return
@@ -187,8 +187,8 @@ export class ProgressionService {
                 userProfile,
                 parentLocationId,
                 contractSession.gameVersion === "h1"
-                    ? contract.Metadata.Difficulty ?? "normal"
-                    : sniperUnlockable ?? undefined,
+                    ? (contract.Metadata.Difficulty ?? "normal")
+                    : (sniperUnlockable ?? undefined),
             )
 
             const maxLevel = masteryData?.MaxLevel || DEFAULT_MASTERY_MAXLEVEL
