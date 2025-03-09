@@ -302,6 +302,8 @@ export function scenePathToRpAsset(
             return ["elusiveredsnapper", "The Rage", "Chongqing"]
         case "assembly:/_pro/scenes/missions/wet/scene_wet_azalea.entity":
             return ["azalea", "The Gluttony Gobble", "Chongqing"]
+        case "assembly:/_pro/scenes/missions/wet/scene_wet_lambic.entity":
+            return ["elusivelambic", "The Splitter", "Chongqing"]
 
         // training
         case "assembly:/_pro/scenes/missions/thefacility/_scene_polarbear_005.entity":
@@ -311,6 +313,7 @@ export function scenePathToRpAsset(
         case "assembly:/_pro/scenes/missions/thefacility/_scene_mission_polarbear_module_002.entity":
         case "assembly:/_pro/scenes/missions/thefacility/_scene_mission_polarbear_module_002_b.entity":
         case "assembly:/_pro/scenes/missions/thefacility/_scene_mission_polarbear_module_005.entity":
+        case "assembly:/_pro/scenes/missions/thefacility/_scene_mission_polarbear_module_005_vr_tutorial.entity":
             return ["icafacilityfinaltest", "ICA Facility", "Greenland"]
 
         // new york
