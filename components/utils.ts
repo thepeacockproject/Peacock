@@ -587,6 +587,8 @@ export const nilUuid = "00000000-0000-0000-0000-000000000000"
 
 export const hitmapsUrl = "https://backend.rdil.rocks/partners/hitmaps/contract"
 
+export const vrTutorialId = "2d106f47-ee07-45f6-862e-77ae02d38725"
+
 export function isObjectiveActive(
     objective: MissionManifestObjective,
     doneObjectives: Set<RepositoryId>,

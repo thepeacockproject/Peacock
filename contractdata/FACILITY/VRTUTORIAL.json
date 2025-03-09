@@ -1,0 +1,80 @@
+{
+    "Data": {
+        "EnableSaving": false,
+        "Bricks": [
+            "assembly:/_PRO/Scenes/Missions/thefacility/vr_tutorial_pc_graduation.brick"
+        ],
+        "VR": [
+            {
+                "Quality": "base",
+                "Bricks": ["assembly:/_pro/Scenes/Bricks/vr_setup.brick"]
+            }
+        ],
+        "GameChangers": [],
+        "Objectives": [
+            {
+                "Id": "72d6ce0e-2566-4275-9bac-3b1e2b1ef8df",
+                "Category": "primary",
+                "OnActive": {
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false }
+                },
+                "ObjectiveType": "setpiece",
+                "Image": "",
+                "BriefingName": "",
+                "BriefingText": "",
+                "HUDTemplate": { "display": "" },
+                "Type": "statemachine",
+                "Definition": {
+                    "Context": {
+                        "Targets": [
+                            "5dee969a-920f-4598-879c-5704a79e0474",
+                            "f79f0f7f-3262-417d-b21b-8afb5b8a3fe4",
+                            "d6965d57-7f5e-44ef-b1de-716e633355c2",
+                            "ba0ec9cc-038d-420c-b3ae-16268f83aa65",
+                            "2295021d-ae83-4ee4-ad06-8906d6d56b2e",
+                            "7cfbb19b-8aa7-4575-807a-63b668d9e2de",
+                            "ec1196c3-2a6b-48f6-8202-f2c112599fe7",
+                            "83c487d8-ab92-4ca0-875a-4700b16c19a1"
+                        ]
+                    },
+                    "States": {
+                        "Start": {
+                            "TutorialFinished": { "Transition": "Success" }
+                        }
+                    }
+                }
+            }
+        ],
+        "MandatoryLoadout": [
+            {
+                "Id": "Tool_Coin",
+                "Properties": {
+                    "LoadoutSlot": "gear",
+                    "RepositoryId": "dda002e9-02b1-4208-82a5-cf059f3c79cf"
+                }
+            }
+        ],
+        "RecommendedLoadout": []
+    },
+    "Metadata": {
+        "CodeName_Hint": "Polarbear PCVR Tutorial",
+        "CreationTimestamp": "2015-03-27T13:03:33.163Z",
+        "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
+        "Description": "UI_CONTRACT_POLARBEAR_VR_TUTORIAL_DESC",
+        "TileImage": "images/contracts/polarbear/vr_tutorial/Tile.jpg",
+        "DebriefingVideo": "",
+        "Id": "2d106f47-ee07-45f6-862e-77ae02d38725",
+        "IsPublished": true,
+        "Location": "LOCATION_ICA_FACILITY",
+        "ScenePath": "assembly:/_PRO/Scenes/Missions/TheFacility/_scene_mission_polarbear_module_005_vr_tutorial.entity",
+        "Title": "UI_CONTRACT_POLARBEAR_VR_TUTORIAL_TITLE",
+        "Type": "tutorial",
+        "Release": "3.x.x",
+        "Drops": ["ACCESS_HIT_POLARBEAR_VR_TUTORIAL_DONE"],
+        "Opportunities": [],
+        "LastUpdate": "2025-02-27T14:55:57.854396Z",
+        "PublicId": "001567310647"
+    },
+    "UserData": {}
+}

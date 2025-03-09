@@ -28,10 +28,14 @@ import type {
     OpportunityStatistics,
     PeacockLocationsData,
     Unlockable,
+    UserCentricContract,
 } from "../types/types"
 import type { MasteryData } from "../types/mastery"
 import { contractIdToHitObject, controller } from "../controller"
-import { generateCompletionData } from "../contracts/dataGen"
+import {
+    generateCompletionData,
+    generateUserCentric,
+} from "../contracts/dataGen"
 import { getUserData } from "../databaseHandler"
 import { ChallengeFilterType, Pro1FilterType } from "../candle/challengeHelpers"
 import { GetDestinationQuery } from "../types/gameSchemas"
@@ -39,6 +43,7 @@ import { createInventory } from "../inventory"
 import { log, LogLevel } from "../loggingInterop"
 import assert from "assert"
 import { translateEntitlements } from "../ownership"
+import { vrTutorialId } from "../utils"
 
 type LegacyData = {
     [difficulty: string]: {
@@ -92,6 +97,10 @@ type GameDestination = {
     MasteryData: MasteryData | MasteryData[] | Record<string, never>
     MissionData: DestinationBaseCompletionData & {
         SubLocationMissionsData: LocationMissionData[]
+    }
+    // H3 & ICA Facility only
+    VRTutorial: {
+        UserCentricContract: UserCentricContract
     }
 }
 
@@ -409,6 +418,21 @@ export function getDestination(
             ],
             Difficulty: query.difficulty,
             LocationId: LOCATION,
+        }
+    }
+
+    // Add VR Tutorial
+    if (gameVersion === "h3" && LOCATION === "LOCATION_PARENT_ICA_FACILITY") {
+        const userCentric = generateUserCentric(
+            controller.resolveContract(vrTutorialId, "h3"),
+            userId,
+            "h3",
+        )
+
+        if (userCentric) {
+            response.VRTutorial = {
+                UserCentricContract: userCentric,
+            }
         }
     }
 
