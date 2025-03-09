@@ -798,3 +798,41 @@ export function isTrueForEveryElement<Type>(
 
     return true
 }
+
+const SERVER_VERSION_REGEX = /^(?<major>\d+)_(?<minor>\d+)_(?<build>\d+)$/
+const RESOURCES_VERSION_REGEX = /^(?<major>\d+)_(?<minor>\d+)$/
+
+export function extractServerVersion(
+    serverVersion: string | undefined,
+): ServerVersion | undefined {
+    if (!serverVersion) return
+
+    const versionParts = SERVER_VERSION_REGEX.exec(serverVersion)
+
+    if (versionParts?.groups) {
+        return {
+            _Major: parseInt(versionParts.groups.major, 10),
+            _Minor: parseInt(versionParts.groups.minor, 10),
+            _Build: parseInt(versionParts.groups.build, 10),
+            _Revision: 0,
+        }
+    }
+}
+
+// TODO: use me for validation on resources!!
+export function extractResourcesVersion(
+    resourcesServerVersion: string | undefined,
+): ServerVersion | undefined {
+    if (!resourcesServerVersion) return
+
+    const versionParts = RESOURCES_VERSION_REGEX.exec(resourcesServerVersion)
+
+    if (versionParts?.groups) {
+        return {
+            _Major: parseInt(versionParts.groups.major, 10),
+            _Minor: parseInt(versionParts.groups.minor, 10),
+            _Build: 0,
+            _Revision: 0,
+        }
+    }
+}

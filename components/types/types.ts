@@ -126,8 +126,9 @@ export interface RequestWithJwt<
     // TODO: Make this `unknown` instead, requires lots of changes elsewhere
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     RequestBody = any,
+    Params = core.ParamsDictionary,
 > extends Request<
-        core.ParamsDictionary,
+        Params,
         // eslint-disable-next-line
         any,
         RequestBody,
