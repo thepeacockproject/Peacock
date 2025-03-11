@@ -81,10 +81,9 @@ docker_builder:
     DOCKER_PASSWORD: ENCRYPTED[...]
   artifact_script:
     - echo "CIRRUS_BUILD_ID: $CIRRUS_BUILD_ID"
-    - echo "CIRRUS_TASK_ID: $CIRRUS_TASK_ID"
     - apt update --yes
     - apt install unzip curl --yes
-    - curl -L "https://api.cirrus-ci.com/v1/artifact/task/$CIRRUS_BUILD_ID/Peacock_Release.zip" -o Peacock.zip
+    - curl -L "https://api.cirrus-ci.com/v1/artifact/build/$CIRRUS_BUILD_ID/Build/Peacock_Release.zip" -o Peacock.zip
     - unzip Peacock.zip
     - unzip Peacock-v*-linux.zip
   pre_build_script: ls -la
