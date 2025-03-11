@@ -79,11 +79,9 @@ docker_builder:
   env:
     DOCKER_USERNAME: ENCRYPTED[...]
     DOCKER_PASSWORD: ENCRYPTED[...]
-  artifacts_from_build_task:
-    path: Peacock-v*.zip
-    type: application/zip
+  download_artifact: curl -L "https://api.cirrus-ci.com/v1/artifact/task/$CIRRUS_BUILD_ID/Peacock_Release.zip"
   pre_build_script: ls -la
   build_script: docker build --tag thepeacockproject/peacock:latest .
   # build_script: docker build --tag thepeacockproject/peacock:$CIRRUS_TAG --tag thepeacockproject/peacock:latest .
-  # login_script: docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
   # push_script: docker push thepeacockproject/peacock:$CIRRUS_TAG && docker push thepeacockproject/peacock:latest
+  # login_script: docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
