@@ -81,6 +81,9 @@ docker_builder:
   env:
     DOCKER_USERNAME: ENCRYPTED[...]
     DOCKER_PASSWORD: ENCRYPTED[...]
+  artifacts:
+    - Peacock-v*
+  pre_build_script: ls -la
   build_script: docker build --tag peacock/peacock:latest .
   # build_script: docker build --tag peacock/peacock:$CIRRUS_TAG --tag peacock/peacock:latest .
   # login_script: docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
