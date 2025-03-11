@@ -77,7 +77,7 @@ task:
 docker_builder:
   # only_if: $CIRRUS_TAG != ''
   depends_on:
-    - Build_task
+    - Build
   env:
     DOCKER_USERNAME: ENCRYPTED[...]
     DOCKER_PASSWORD: ENCRYPTED[...]
