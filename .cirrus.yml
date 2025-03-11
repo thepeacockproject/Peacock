@@ -34,8 +34,8 @@ Build_task:
     type: application/zip
   SourceMap_artifacts:
     path: chunk0.js.map
-  Docker_Build_Artifacts:
-    path: Peacock-v*
+  Docker_Build_artifacts:
+    path: Peacock-v*/
     type: directory
 
 task:
@@ -82,10 +82,8 @@ docker_builder:
     DOCKER_USERNAME: ENCRYPTED[...]
     DOCKER_PASSWORD: ENCRYPTED[...]
   artifacts_from_build_task:
-    path: Peacock-v*
+    path: Peacock-v*/
     type: directory
-    task: Build_task
-    source: Peacock-v*
   pre_build_script: ls -la
   build_script: docker build --tag thepeacockproject/peacock:latest .
   # build_script: docker build --tag thepeacockproject/peacock:$CIRRUS_TAG --tag thepeacockproject/peacock:latest .
