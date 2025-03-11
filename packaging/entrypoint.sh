@@ -2,9 +2,9 @@
 
 mkdir -p /app
 
-cp /app_build/chunk0* /app
-cp -r /app_build/resources /app
-cp -r /app_build/webui /app
+cp /app_linux/chunk0* /app
+cp -r /app_linux/resources /app
+cp -r /app_linux/webui /app
 
 cd /app
 

@@ -29,6 +29,12 @@ Build_task:
     - ./packaging/ciAssemble.sh
   Assemble_Linux_script:
     - ./packaging/ciAssemble.sh linux
+  Docker_Build_script:
+    - docker build -t peacock:latest .
+  Docker_Publish_script:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - docker tag peacock:latest peacock/peacock:latest
+    - docker push peacock/peacock:latest
   Peacock_Release_artifacts:
     path: Peacock-v*.zip
     type: application/zip
