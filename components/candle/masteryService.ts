@@ -223,7 +223,10 @@ export class MasteryService {
 
         const nextLevelXp: number = levelToXpRequired(nextLevel, xpPerLevel)
 
-        const thisLevelXp: number = levelToXpRequired(completionData.Level, xpPerLevel)
+        const thisLevelXp: number = levelToXpRequired(
+            completionData.Level,
+            xpPerLevel,
+        )
 
         return {
             Level: completionData.Level,

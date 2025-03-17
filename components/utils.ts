@@ -173,7 +173,10 @@ export function levelForXp(xp: number, xpPerLevel = XP_PER_LEVEL): number {
  * Calculates the required XP for the given level based on xpPerLevel (defaults to XP_PER_LEVEL).
  * Minimum XP returned is 0.
  */
-export function xpRequiredForLevel(level: number, xpPerLevel = XP_PER_LEVEL): number {
+export function xpRequiredForLevel(
+    level: number,
+    xpPerLevel = XP_PER_LEVEL,
+): number {
     return Math.max(0, (level - 1) * xpPerLevel)
 }
 
