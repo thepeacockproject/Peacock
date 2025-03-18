@@ -162,19 +162,22 @@ export function getMaxProfileLevel(gameVersion: GameVersion): number {
 }
 
 /**
- * Calculates the level for the given XP based on XP_PER_LEVEL.
+ * Calculates the level for the given XP based on xpPerLevel (defaults to XP_PER_LEVEL).
  * Minimum level returned is 1.
  */
-export function levelForXp(xp: number): number {
-    return Math.max(1, Math.floor(xp / XP_PER_LEVEL) + 1)
+export function levelForXp(xp: number, xpPerLevel = XP_PER_LEVEL): number {
+    return Math.max(1, Math.floor(xp / xpPerLevel) + 1)
 }
 
 /**
- * Calculates the required XP for the given level based on XP_PER_LEVEL.
+ * Calculates the required XP for the given level based on xpPerLevel (defaults to XP_PER_LEVEL).
  * Minimum XP returned is 0.
  */
-export function xpRequiredForLevel(level: number): number {
-    return Math.max(0, (level - 1) * XP_PER_LEVEL)
+export function xpRequiredForLevel(
+    level: number,
+    xpPerLevel = XP_PER_LEVEL,
+): number {
+    return Math.max(0, (level - 1) * xpPerLevel)
 }
 
 export const EVERGREEN_LEVEL_INFO: number[] = [

@@ -869,14 +869,19 @@ export async function getMissionEndData(
         query.masteryUnlockableId,
     )
 
+    const masteryData = controller.masteryService.getMasteryPackage(
+        locationParentId,
+        gameVersion,
+    )
+
     // Calculate the old location progression based on the current one and process it
     const oldLocationXp = completionData.PreviouslySeenXp
         ? completionData.PreviouslySeenXp
         : completionData.XP - totalXpGain
-    let oldLocationLevel = levelForXp(oldLocationXp)
+    let oldLocationLevel = levelForXp(oldLocationXp, masteryData?.XpPerLevel)
 
     const newLocationXp = completionData.XP
-    let newLocationLevel = levelForXp(newLocationXp)
+    let newLocationLevel = levelForXp(newLocationXp, masteryData?.XpPerLevel)
 
     if (!query.masteryUnlockableId) {
         userData.Extensions.progression.Locations[
@@ -885,11 +890,6 @@ export async function getMissionEndData(
     }
 
     if (!isDryRun) writeUserData(jwt.unique_name, gameVersion)
-
-    const masteryData = controller.masteryService.getMasteryPackage(
-        locationParentId,
-        gameVersion,
-    )
 
     let maxLevel = 1
     let locationLevelInfo = [0]
@@ -903,15 +903,21 @@ export async function getMissionEndData(
                 : masteryData.MaxLevel) || DEFAULT_MASTERY_MAXLEVEL
 
         locationLevelInfo = Array.from({ length: maxLevel }, (_, i) => {
-            return xpRequiredForLevel(i + 1)
+            return xpRequiredForLevel(i + 1, masteryData.XpPerLevel)
         })
     }
 
     // Calculate the old playerprofile progression based on the current one and process it
     const oldPlayerProfileXp = playerProgressionData.Total - totalXpGain
-    const oldPlayerProfileLevel = levelForXp(oldPlayerProfileXp)
+    const oldPlayerProfileLevel = levelForXp(
+        oldPlayerProfileXp,
+        masteryData?.XpPerLevel,
+    )
     const newPlayerProfileXp = playerProgressionData.Total
-    const newPlayerProfileLevel = levelForXp(newPlayerProfileXp)
+    const newPlayerProfileLevel = levelForXp(
+        newPlayerProfileXp,
+        masteryData?.XpPerLevel,
+    )
 
     // NOTE: We assume the ProfileLevel is currently already up-to-date
     const profileLevelInfo = []
@@ -921,7 +927,9 @@ export async function getMissionEndData(
         level <= newPlayerProfileLevel + 1;
         level++
     ) {
-        profileLevelInfo.push(xpRequiredForLevel(level))
+        profileLevelInfo.push(
+            xpRequiredForLevel(level, masteryData?.XpPerLevel),
+        )
     }
 
     const profileLevelInfoOffset = oldPlayerProfileLevel - 1

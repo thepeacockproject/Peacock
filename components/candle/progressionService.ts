@@ -205,7 +205,10 @@ export class ProgressionService {
                         ? xpRequiredForEvergreenLevel(maxLevel)
                         : sniperUnlockable
                           ? xpRequiredForSniperLevel(maxLevel)
-                          : xpRequiredForLevel(maxLevel),
+                          : xpRequiredForLevel(
+                                maxLevel,
+                                masteryData.XpPerLevel,
+                            ),
                 )
 
                 locationData.Level = clampValue(
@@ -213,7 +216,7 @@ export class ProgressionService {
                         ? evergreenLevelForXp(locationData.Xp)
                         : sniperUnlockable
                           ? sniperLevelForXp(locationData.Xp)
-                          : levelForXp(locationData.Xp),
+                          : levelForXp(locationData.Xp, masteryData.XpPerLevel),
                     1,
                     maxLevel,
                 )

@@ -189,6 +189,7 @@ export class MasteryService {
      * @param maxLevel The max level for this progression.
      * @param levelToXpRequired A function to get the XP required for a level.
      * @param subPackageId The subpackage id you want.
+     * @param xpPerLevel The amount of XP required to level up, passed to `levelToXpRequired` function.
      * @returns The completion data, minus any location-specific fields.
      */
     private getGenericCompletionData(
@@ -196,8 +197,9 @@ export class MasteryService {
         gameVersion: GameVersion,
         locationParentId: string,
         maxLevel: number,
-        levelToXpRequired: (level: number) => number,
+        levelToXpRequired: (level: number, xpPerLevel?: number) => number,
         subPackageId?: string,
+        xpPerLevel?: number,
     ): GenericCompletionData {
         // Get the user profile
         const userProfile = getUserData(userId, gameVersion)
@@ -219,9 +221,12 @@ export class MasteryService {
             maxLevel,
         )
 
-        const nextLevelXp: number = levelToXpRequired(nextLevel)
+        const nextLevelXp: number = levelToXpRequired(nextLevel, xpPerLevel)
 
-        const thisLevelXp: number = levelToXpRequired(completionData.Level)
+        const thisLevelXp: number = levelToXpRequired(
+            completionData.Level,
+            xpPerLevel,
+        )
 
         return {
             Level: completionData.Level,
@@ -294,6 +299,7 @@ export class MasteryService {
                       ? xpRequiredForEvergreenLevel
                       : xpRequiredForLevel,
                 subPackageId,
+                masteryPkg.XpPerLevel,
             ),
             Id: isSniper ? subPackageId! : masteryPkg.LocationId,
             SubLocationId: isSniper ? "" : subLocationId,
