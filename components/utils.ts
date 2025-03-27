@@ -43,7 +43,7 @@ export const IS_LAUNCHER = process.env.IS_PEACOCK_LAUNCHER === "true"
 
 export const ServerVer: ServerVersion = {
     _Major: 8,
-    _Minor: 15,
+    _Minor: 19,
     _Build: 0,
     _Revision: 0,
 }
