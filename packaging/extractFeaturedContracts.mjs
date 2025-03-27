@@ -26,7 +26,6 @@ import axios from "axios"
  * @param {AxiosInstance} axiosClient
  * @param {string} type
  * @param {number} page
- * @param gameVersion
  * @returns {Promise<*>}
  */
 async function fetchHitsCategoryPage(axiosClient, type, page) {
