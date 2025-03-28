@@ -7,11 +7,19 @@
         ],
         "VR": [
             {
+                "Quality": "ps4_vr1",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_PRO/scenes/missions/rocky/vr_overrides_dugong_ps4_vr1.brick",
+                    "assembly:/_PRO/scenes/missions/rocky/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
                 "Quality": "base",
                 "Bricks": [
                     "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
                     "assembly:/_PRO/scenes/missions/rocky/vr_overrides_dugong.brick",
-                    "assembly:/_PRO/scenes/missions/rocky/vr_overrides_ps4perf.brick"
+                    "assembly:/_PRO/scenes/missions/rocky/vr_overrides_low_performance.brick"
                 ]
             },
             {
@@ -31,10 +39,7 @@
                     "assembly:/_pro/scenes/missions/rocky/difficulty_easy_dugong.brick"
                 ]
             },
-            {
-                "Difficulty": "normal",
-                "Bricks": []
-            },
+            { "Difficulty": "normal", "Bricks": [] },
             {
                 "Difficulty": "hard",
                 "Bricks": [
@@ -121,21 +126,13 @@
                     },
                     "States": {
                         "Start": {
-                            "-": {
-                                "Actions": {
-                                    "$inc": "update_counter"
-                                }
-                            },
+                            "-": { "Actions": { "$inc": "update_counter" } },
                             "KeyPieceFound": {
-                                "Actions": {
-                                    "$inc": "PieceCounter"
-                                },
+                                "Actions": { "$inc": "PieceCounter" },
                                 "Transition": "DiskText"
                             },
                             "McGuffinDestroyedEvent": {
-                                "Actions": {
-                                    "$set": ["Core", "$.Core_Got"]
-                                },
+                                "Actions": { "$set": ["Core", "$.Core_Got"] },
                                 "Transition": "Success"
                             }
                         },
@@ -145,25 +142,19 @@
                                     "Condition": {
                                         "$eq": ["$.PieceCounter", 0]
                                     },
-                                    "Actions": {
-                                        "$set": ["Disks", "$.Disk_0"]
-                                    }
+                                    "Actions": { "$set": ["Disks", "$.Disk_0"] }
                                 },
                                 {
                                     "Condition": {
                                         "$eq": ["$.PieceCounter", 1]
                                     },
-                                    "Actions": {
-                                        "$set": ["Disks", "$.Disk_1"]
-                                    }
+                                    "Actions": { "$set": ["Disks", "$.Disk_1"] }
                                 },
                                 {
                                     "Condition": {
                                         "$eq": ["$.PieceCounter", 2]
                                     },
-                                    "Actions": {
-                                        "$set": ["Core", ""]
-                                    },
+                                    "Actions": { "$set": ["Core", ""] },
                                     "Transition": "Success"
                                 },
                                 {
@@ -182,11 +173,7 @@
                                 }
                             },
                             "KeyPieceFound": [
-                                {
-                                    "Actions": {
-                                        "$inc": "PieceCounter"
-                                    }
-                                },
+                                { "Actions": { "$inc": "PieceCounter" } },
                                 {
                                     "Condition": {
                                         "$eq": ["$.PieceCounter", 2]
@@ -211,11 +198,7 @@
                 "Scope": "session",
                 "Definition": {
                     "States": {
-                        "Start": {
-                            "exit_gate": {
-                                "Transition": "Success"
-                            }
-                        }
+                        "Start": { "exit_gate": { "Transition": "Success" } }
                     }
                 }
             }
@@ -224,7 +207,7 @@
     "Metadata": {
         "Id": "b2aac100-dfc7-4f85-b9cd-528114436f6c",
         "IsPublished": true,
-        "CreationTimestamp": "2022-07-26T12:35:11.5296748Z",
+        "CreationTimestamp": "2019-09-06T08:30:40.6504427Z",
         "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
         "Title": "UI_CONTRACT_DUGONG_TITLE",
         "Description": "UI_CONTRACT_DUGONG_DESC",
@@ -234,19 +217,15 @@
         "ScenePath": "assembly:/_pro/scenes/missions/Rocky/scene_dugong.entity",
         "TileImage": "images/contracts/Dugong/Dugong_tile.jpg",
         "Type": "mission",
-        "Release": {
-            "Major": 3,
-            "Minor": 100,
-            "Build": -1,
-            "Revision": -1
-        },
+        "Release": { "Major": 3, "Minor": 100, "Build": -1, "Revision": -1 },
+        "RequiredUnlockable": "ACCESS_HIT_DUGONG",
         "GameModes": null,
         "EngineModes": null,
         "IsVersus": false,
-        "RequiredUnlockable": "ACCESS_HIT_DUGONG",
         "Drops": ["ACCESS_HIT_MAGPIE"],
         "Opportunities": [],
         "Entitlements": ["LOCATION_ROCKY"],
+        "LastUpdate": "2025-03-27T14:29:02.3950041Z",
         "PublicId": "034879834147"
     },
     "UserData": {}
