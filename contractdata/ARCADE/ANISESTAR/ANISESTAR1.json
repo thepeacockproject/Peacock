@@ -20,11 +20,7 @@
                 "ObjectiveType": "custom",
                 "ForceShowOnLoadingScreen": true,
                 "ExcludeFromScoring": true,
-                "OnActive": {
-                    "IfCompleted": {
-                        "Visible": true
-                    }
-                },
+                "OnActive": { "IfCompleted": { "Visible": true } },
                 "Image": "images/challenges/elusive_target/et_sambuca_started_pen.jpg",
                 "BriefingName": "$loc UI_CONTRACT_ANISESTAR_PENKILL_NAME",
                 "BriefingText": "$loc UI_CONTRACT_ANISESTAR_PENKILL_DESC",
@@ -34,18 +30,12 @@
                 },
                 "Type": "statemachine",
                 "Definition": {
-                    "display": {
-                        "iconType": 17
-                    },
+                    "display": { "iconType": 17 },
                     "Scope": "session",
                     "States": {
                         "Start": {
-                            "Faba_Pen_Fail": {
-                                "Transition": "Failure"
-                            },
-                            "Faba_Pen_Completed": {
-                                "Transition": "Success"
-                            }
+                            "Faba_Pen_Fail": { "Transition": "Failure" },
+                            "Faba_Pen_Completed": { "Transition": "Success" }
                         }
                     }
                 }
@@ -57,11 +47,20 @@
         ],
         "VR": [
             {
+                "Quality": "ps4_vr1",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/miami/vr_overrides_flamingo_ps4_vr1.brick",
+                    "assembly:/_PRO/scenes/missions/miami/vr_overrides_low_performance.brick",
+                    "assembly:/_pro/scenes/missions/miami/vr_overrides_sambuca_ps4_vr1.brick"
+                ]
+            },
+            {
                 "Quality": "base",
                 "Bricks": [
                     "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
                     "assembly:/_pro/scenes/missions/miami/vr_overrides_flamingo.brick",
-                    "assembly:/_PRO/scenes/missions/miami/vr_overrides_ps4perf.brick",
+                    "assembly:/_PRO/scenes/missions/miami/vr_overrides_low_performance.brick",
                     "assembly:/_pro/scenes/missions/miami/vr_overrides_sambuca.brick"
                 ]
             },
@@ -88,12 +87,13 @@
         "InGroup": "de9788cc-b9c4-47fc-b5df-86451cd82c43",
         "Location": "LOCATION_MIAMI",
         "IsPublished": true,
-        "LastUpdate": "2024-02-02T12:00:00.441Z",
-        "CreationTimestamp": "2024-03-22T10:54:18.9583011Z",
+        "LastUpdate": "2025-03-27T14:29:18.5093308Z",
+        "CreationTimestamp": "2012-12-12T12:12:12.743Z",
         "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
         "Type": "arcade",
         "Release": "3.180.0 Arcade",
         "Entitlements": ["H3_ET_SAMBUCA"],
         "PublicId": "011002667847"
-    }
+    },
+    "UserData": {}
 }

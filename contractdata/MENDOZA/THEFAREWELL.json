@@ -27,16 +27,9 @@
                     }
                 },
                 "OnInactive": {
-                    "IfCompleted": {
-                        "State": "Completed",
-                        "Visible": false
-                    }
+                    "IfCompleted": { "State": "Completed", "Visible": false }
                 },
-                "OnActive": {
-                    "IfCompleted": {
-                        "Visible": true
-                    }
-                }
+                "OnActive": { "IfCompleted": { "Visible": true } }
             },
             {
                 "_comment": "----- Eliminate The Herald -----",
@@ -56,16 +49,9 @@
                     }
                 },
                 "OnInactive": {
-                    "IfCompleted": {
-                        "State": "Completed",
-                        "Visible": false
-                    }
+                    "IfCompleted": { "State": "Completed", "Visible": false }
                 },
-                "OnActive": {
-                    "IfCompleted": {
-                        "Visible": true
-                    }
-                }
+                "OnActive": { "IfCompleted": { "Visible": true } }
             },
             {
                 "_comment": "----- Find Diana Burnwood -----",
@@ -74,11 +60,7 @@
                 "ObjectiveType": "custom",
                 "ForceShowOnLoadingScreen": true,
                 "ExcludeFromScoring": true,
-                "OnActive": {
-                    "IfCompleted": {
-                        "Visible": false
-                    }
-                },
+                "OnActive": { "IfCompleted": { "Visible": false } },
                 "Image": "images/actors/Llama_Diana_Burnwood.jpg",
                 "BriefingName": "$loc UI_CONTRACT_LLAMA_DIANA_FIND_NAME",
                 "BriefingText": "$loc UI_CONTRACT_LLAMA_DIANA_FIND_OBJ",
@@ -88,18 +70,12 @@
                 },
                 "Type": "statemachine",
                 "Definition": {
-                    "display": {
-                        "iconType": 17
-                    },
+                    "display": { "iconType": 17 },
                     "Scope": "session",
                     "States": {
                         "Start": {
-                            "Diana_Fail": {
-                                "Transition": "Failure"
-                            },
-                            "Diana_Find_Completed": {
-                                "Transition": "Success"
-                            }
+                            "Diana_Fail": { "Transition": "Failure" },
+                            "Diana_Find_Completed": { "Transition": "Success" }
                         }
                     }
                 }
@@ -117,11 +93,7 @@
                 "ObjectiveType": "custom",
                 "ForceShowOnLoadingScreen": true,
                 "ExcludeFromScoring": true,
-                "OnActive": {
-                    "IfCompleted": {
-                        "Visible": false
-                    }
-                },
+                "OnActive": { "IfCompleted": { "Visible": false } },
                 "Image": "images/actors/Llama_Diana_Burnwood.jpg",
                 "BriefingName": "$loc UI_CONTRACT_LLAMA_DIANA_NAME",
                 "BriefingText": "$loc UI_CONTRACT_LLAMA_DIANA_NAME",
@@ -131,15 +103,11 @@
                 },
                 "Type": "statemachine",
                 "Definition": {
-                    "display": {
-                        "iconType": 17
-                    },
+                    "display": { "iconType": 17 },
                     "Scope": "session",
                     "States": {
                         "Start": {
-                            "Diana_Extract_Start": {
-                                "Transition": "Success"
-                            }
+                            "Diana_Extract_Start": { "Transition": "Success" }
                         }
                     }
                 }
@@ -158,15 +126,9 @@
                 "ForceShowOnLoadingScreen": false,
                 "ExcludeFromScoring": true,
                 "OnActive": {
-                    "IfInProgress": {
-                        "Visible": false
-                    },
-                    "IfCompleted": {
-                        "Visible": false
-                    },
-                    "IfFailed": {
-                        "Visible": false
-                    }
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
                 },
                 "Image": "images/actors/Llama_Diana_Burnwood.jpg",
                 "BriefingName": "$loc UI_CONTRACT_LLAMA_DIANA_NAME",
@@ -177,16 +139,10 @@
                 },
                 "Type": "statemachine",
                 "Definition": {
-                    "display": {
-                        "iconType": 17
-                    },
+                    "display": { "iconType": 17 },
                     "Scope": "session",
                     "States": {
-                        "Start": {
-                            "Diana_Fail": {
-                                "Transition": "Failure"
-                            }
-                        }
+                        "Start": { "Diana_Fail": { "Transition": "Failure" } }
                     }
                 }
             },
@@ -196,24 +152,16 @@
                 "Category": "condition",
                 "ExcludeFromScoring": true,
                 "OnActive": {
-                    "IfInProgress": {
-                        "Visible": false
-                    },
-                    "IfCompleted": {
-                        "Visible": true
-                    },
-                    "IfFailed": {
-                        "Visible": false
-                    }
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": true },
+                    "IfFailed": { "Visible": false }
                 },
                 "Definition": {
                     "Scope": "session",
                     "Context": {},
                     "States": {
                         "Start": {
-                            "DianaMurderStarted": {
-                                "Transition": "Failure"
-                            }
+                            "DianaMurderStarted": { "Transition": "Failure" }
                         }
                     }
                 }
@@ -231,15 +179,9 @@
                 "Category": "secondary",
                 "ExcludeFromScoring": true,
                 "OnActive": {
-                    "IfInProgress": {
-                        "Visible": true
-                    },
-                    "IfFailed": {
-                        "Visible": false
-                    },
-                    "IfCompleted": {
-                        "Visible": false
-                    }
+                    "IfInProgress": { "Visible": true },
+                    "IfFailed": { "Visible": false },
+                    "IfCompleted": { "Visible": false }
                 },
                 "Definition": {
                     "ContextListeners": {
@@ -255,31 +197,19 @@
                             }
                         }
                     },
-                    "Context": {
-                        "Timeout": 1
-                    },
+                    "Context": { "Timeout": 1 },
                     "States": {
                         "Start": {
-                            "BeginTimer": {
-                                "Transition": "TimerRunning"
-                            }
+                            "BeginTimer": { "Transition": "TimerRunning" }
                         },
                         "TimerRunning": {
                             "$timer": {
-                                "Condition": {
-                                    "$after": 600
-                                },
-                                "Actions": {
-                                    "$dec": "Timeout"
-                                },
+                                "Condition": { "$after": 600 },
+                                "Actions": { "$dec": "Timeout" },
                                 "Transition": "Failure"
                             },
-                            "EndTimer": {
-                                "Transition": "Failure"
-                            },
-                            "SuccessTimer": {
-                                "Transition": "Success"
-                            }
+                            "EndTimer": { "Transition": "Failure" },
+                            "SuccessTimer": { "Transition": "Success" }
                         }
                     }
                 }
@@ -291,24 +221,16 @@
                 "Category": "condition",
                 "ExcludeFromScoring": true,
                 "OnActive": {
-                    "IfInProgress": {
-                        "Visible": false
-                    },
-                    "IfCompleted": {
-                        "Visible": false
-                    },
-                    "IfFailed": {
-                        "Visible": false
-                    }
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
                 },
                 "Definition": {
                     "Scope": "session",
                     "Context": {},
                     "States": {
                         "Start": {
-                            "LASER_TIMER_ACTIVATE": {
-                                "Transition": "Success"
-                            }
+                            "LASER_TIMER_ACTIVATE": { "Transition": "Success" }
                         }
                     }
                 }
@@ -330,15 +252,9 @@
                 "Category": "secondary",
                 "ExcludeFromScoring": true,
                 "OnActive": {
-                    "IfInProgress": {
-                        "Visible": true
-                    },
-                    "IfFailed": {
-                        "Visible": false
-                    },
-                    "IfCompleted": {
-                        "Visible": false
-                    }
+                    "IfInProgress": { "Visible": true },
+                    "IfFailed": { "Visible": false },
+                    "IfCompleted": { "Visible": false }
                 },
                 "Definition": {
                     "ContextListeners": {
@@ -354,23 +270,15 @@
                             }
                         }
                     },
-                    "Context": {
-                        "Timeout": 1
-                    },
+                    "Context": { "Timeout": 1 },
                     "States": {
                         "Start": {
-                            "LASER_TIMER_ON": {
-                                "Transition": "TimerRunning"
-                            }
+                            "LASER_TIMER_ON": { "Transition": "TimerRunning" }
                         },
                         "TimerRunning": {
                             "$timer": {
-                                "Condition": {
-                                    "$after": 60
-                                },
-                                "Actions": {
-                                    "$dec": "Timeout"
-                                },
+                                "Condition": { "$after": 60 },
+                                "Actions": { "$dec": "Timeout" },
                                 "Transition": "Failure"
                             }
                         }
@@ -384,24 +292,16 @@
                 "Category": "condition",
                 "ExcludeFromScoring": true,
                 "OnActive": {
-                    "IfInProgress": {
-                        "Visible": false
-                    },
-                    "IfCompleted": {
-                        "Visible": false
-                    },
-                    "IfFailed": {
-                        "Visible": false
-                    }
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
                 },
                 "Definition": {
                     "Scope": "session",
                     "Context": {},
                     "States": {
                         "Start": {
-                            "LASER_TIMER2_ACTIVATE": {
-                                "Transition": "Success"
-                            }
+                            "LASER_TIMER2_ACTIVATE": { "Transition": "Success" }
                         }
                     }
                 }
@@ -423,15 +323,9 @@
                 "Category": "secondary",
                 "ExcludeFromScoring": true,
                 "OnActive": {
-                    "IfInProgress": {
-                        "Visible": true
-                    },
-                    "IfFailed": {
-                        "Visible": false
-                    },
-                    "IfCompleted": {
-                        "Visible": false
-                    }
+                    "IfInProgress": { "Visible": true },
+                    "IfFailed": { "Visible": false },
+                    "IfCompleted": { "Visible": false }
                 },
                 "Definition": {
                     "ContextListeners": {
@@ -447,23 +341,15 @@
                             }
                         }
                     },
-                    "Context": {
-                        "Timeout": 1
-                    },
+                    "Context": { "Timeout": 1 },
                     "States": {
                         "Start": {
-                            "LASER_TIMER2_ON": {
-                                "Transition": "TimerRunning"
-                            }
+                            "LASER_TIMER2_ON": { "Transition": "TimerRunning" }
                         },
                         "TimerRunning": {
                             "$timer": {
-                                "Condition": {
-                                    "$after": 60
-                                },
-                                "Actions": {
-                                    "$dec": "Timeout"
-                                },
+                                "Condition": { "$after": 60 },
+                                "Actions": { "$dec": "Timeout" },
                                 "Transition": "Failure"
                             }
                         }
@@ -477,24 +363,16 @@
                 "Category": "condition",
                 "ExcludeFromScoring": true,
                 "OnActive": {
-                    "IfInProgress": {
-                        "Visible": false
-                    },
-                    "IfCompleted": {
-                        "Visible": false
-                    },
-                    "IfFailed": {
-                        "Visible": false
-                    }
+                    "IfInProgress": { "Visible": false },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
                 },
                 "Definition": {
                     "Scope": "session",
                     "Context": {},
                     "States": {
                         "Start": {
-                            "LASER_TIMER3_ACTIVATE": {
-                                "Transition": "Success"
-                            }
+                            "LASER_TIMER3_ACTIVATE": { "Transition": "Success" }
                         }
                     }
                 }
@@ -516,15 +394,9 @@
                 "Category": "secondary",
                 "ExcludeFromScoring": true,
                 "OnActive": {
-                    "IfInProgress": {
-                        "Visible": true
-                    },
-                    "IfFailed": {
-                        "Visible": false
-                    },
-                    "IfCompleted": {
-                        "Visible": false
-                    }
+                    "IfInProgress": { "Visible": true },
+                    "IfFailed": { "Visible": false },
+                    "IfCompleted": { "Visible": false }
                 },
                 "Definition": {
                     "ContextListeners": {
@@ -540,23 +412,15 @@
                             }
                         }
                     },
-                    "Context": {
-                        "Timeout": 1
-                    },
+                    "Context": { "Timeout": 1 },
                     "States": {
                         "Start": {
-                            "LASER_TIMER3_ON": {
-                                "Transition": "TimerRunning"
-                            }
+                            "LASER_TIMER3_ON": { "Transition": "TimerRunning" }
                         },
                         "TimerRunning": {
                             "$timer": {
-                                "Condition": {
-                                    "$after": 60
-                                },
-                                "Actions": {
-                                    "$dec": "Timeout"
-                                },
+                                "Condition": { "$after": 60 },
+                                "Actions": { "$dec": "Timeout" },
                                 "Transition": "Failure"
                             }
                         }
@@ -572,11 +436,19 @@
         ],
         "VR": [
             {
+                "Quality": "ps4_vr1",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/elegant/vr_overrides_llama_ps4_vr1.brick",
+                    "assembly:/_pro/scenes/missions/elegant/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
                 "Quality": "base",
                 "Bricks": [
                     "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
                     "assembly:/_pro/scenes/missions/elegant/vr_overrides_llama.brick",
-                    "assembly:/_pro/scenes/missions/elegant/vr_overrides_ps4perf.brick"
+                    "assembly:/_pro/scenes/missions/elegant/vr_overrides_low_performance.brick"
                 ]
             },
             {
@@ -596,10 +468,7 @@
                     "assembly:/_pro/scenes/missions/elegant/difficulty_easy_llama.brick"
                 ]
             },
-            {
-                "Difficulty": "normal",
-                "Bricks": []
-            },
+            { "Difficulty": "normal", "Bricks": [] },
             {
                 "Difficulty": "hard",
                 "Bricks": [
@@ -631,7 +500,7 @@
         "RequiredUnlockable": "ACCESS_HIT_LLAMA",
         "Drops": ["ACCESS_HIT_WOLVERINE"],
         "Entitlements": ["LOCATION_ELEGANT"],
-        "LastUpdate": "2021-11-09T14:55:15.180849Z",
+        "LastUpdate": "2025-03-27T14:29:02.4698389Z",
         "PublicId": "031209089947"
     },
     "UserData": {}

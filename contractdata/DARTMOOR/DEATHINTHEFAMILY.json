@@ -8,11 +8,19 @@
         ],
         "VR": [
             {
+                "Quality": "ps4_vr1",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ancestral_bulldog_ps4_vr1.brick",
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
                 "Quality": "base",
                 "Bricks": [
                     "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
                     "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ancestral_bulldog.brick",
-                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_ps4perf.brick"
+                    "assembly:/_pro/scenes/missions/ancestral/vr_overrides_low_performance.brick"
                 ]
             },
             {
@@ -31,10 +39,7 @@
                     "assembly:/_pro/scenes/missions/ancestral/difficulty_easy_bulldog.brick"
                 ]
             },
-            {
-                "Difficulty": "normal",
-                "Bricks": []
-            },
+            { "Difficulty": "normal", "Bricks": [] },
             {
                 "Difficulty": "hard",
                 "Bricks": [
@@ -81,12 +86,8 @@
                     },
                     "States": {
                         "Start": {
-                            "CaseFileAcquired": {
-                                "Transition": "Success"
-                            },
-                            "BothCasePartsAcquired": {
-                                "Transition": "Success"
-                            }
+                            "CaseFileAcquired": { "Transition": "Success" },
+                            "BothCasePartsAcquired": { "Transition": "Success" }
                         }
                     }
                 }
@@ -96,12 +97,7 @@
     "Metadata": {
         "Id": "755984a8-fb0b-4673-8637-95cfe7d34e0f",
         "CodeName_Hint": "Bulldog",
-        "Release": {
-            "Major": 3,
-            "Minor": 0,
-            "Build": 0,
-            "Revision": -1
-        },
+        "Release": { "Major": 3, "Minor": 0, "Build": 0, "Revision": -1 },
         "Type": "mission",
         "Title": "UI_CONTRACT_BULLDOG_TITLE",
         "Description": "UI_CONTRACT_BULLDOG_DESC",
@@ -111,7 +107,7 @@
         "TileImage": "images/contracts/bulldog/bulldog_tile.jpg",
         "Location": "LOCATION_ANCESTRAL_BULLDOG",
         "IsPublished": true,
-        "LastUpdate": "2022-01-20T18:29:24.354557Z",
+        "LastUpdate": "2025-03-27T14:29:02.3803681Z",
         "CreationTimestamp": "2015-03-25T13:08:00.173Z",
         "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
         "RequiredUnlockable": "ACCESS_HIT_BULLDOG",

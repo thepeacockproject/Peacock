@@ -8,12 +8,21 @@
         ],
         "VR": [
             {
+                "Quality": "ps4_vr1",
+                "Bricks": [
+                    "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/trapped/vr_overrides_wolverine_ps4_vr1.brick",
+                    "assembly:/_PRO/Scenes/Missions/trapped/vr_overrides_wolverine_2_ps4_vr1.brick",
+                    "assembly:/_PRO/Scenes/Missions/trapped/vr_overrides_low_performance.brick"
+                ]
+            },
+            {
                 "Quality": "base",
                 "Bricks": [
                     "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
                     "assembly:/_pro/scenes/missions/trapped/vr_overrides_wolverine.brick",
                     "assembly:/_PRO/Scenes/Missions/trapped/vr_overrides_wolverine_2.brick",
-                    "assembly:/_PRO/Scenes/Missions/trapped/vr_overrides_ps4perf.brick"
+                    "assembly:/_PRO/Scenes/Missions/trapped/vr_overrides_low_performance.brick"
                 ]
             },
             {
@@ -33,10 +42,7 @@
                     "assembly:/_pro/scenes/missions/trapped/difficulty_easy_trapped_wolverine.brick"
                 ]
             },
-            {
-                "Difficulty": "normal",
-                "Bricks": []
-            },
+            { "Difficulty": "normal", "Bricks": [] },
             {
                 "Difficulty": "hard",
                 "Bricks": [
@@ -85,11 +91,7 @@
                                     "Transition": "Success"
                                 }
                             ],
-                            "CompleteObjective": [
-                                {
-                                    "Transition": "Success"
-                                }
-                            ]
+                            "CompleteObjective": [{ "Transition": "Success" }]
                         }
                     }
                 }
@@ -106,15 +108,9 @@
                 },
                 "ExcludeFromScoring": true,
                 "OnActive": {
-                    "IfInProgress": {
-                        "Visible": true
-                    },
-                    "IfCompleted": {
-                        "Visible": false
-                    },
-                    "IfFailed": {
-                        "Visible": false
-                    }
+                    "IfInProgress": { "Visible": true },
+                    "IfCompleted": { "Visible": false },
+                    "IfFailed": { "Visible": false }
                 },
                 "ObjectiveType": "custom",
                 "Type": "statemachine",
@@ -133,9 +129,7 @@
                     "States": {
                         "Start": {
                             "RemoveOptionalObjective": [
-                                {
-                                    "Transition": "Success"
-                                }
+                                { "Transition": "Success" }
                             ]
                         }
                     }
@@ -152,9 +146,7 @@
                     "Context": {},
                     "States": {
                         "Start": {
-                            "EnableObjective": {
-                                "Transition": "Success"
-                            }
+                            "EnableObjective": { "Transition": "Success" }
                         }
                     }
                 }
@@ -164,12 +156,7 @@
     "Metadata": {
         "Id": "a3e19d55-64a6-4282-bb3c-d18c3f3e6e29",
         "CodeName_Hint": "Wolverine",
-        "Release": {
-            "Major": 3,
-            "Minor": 0,
-            "Build": 0,
-            "Revision": -1
-        },
+        "Release": { "Major": 3, "Minor": 0, "Build": 0, "Revision": -1 },
         "Type": "mission",
         "Title": "UI_CONTRACT_WOLVERINE_TITLE",
         "Description": "UI_CONTRACT_WOLVERINE_DESC",
@@ -179,7 +166,7 @@
         "TileImage": "images/contracts/wolverine/wolverine_tile.jpg",
         "Location": "LOCATION_TRAPPED_WOLVERINE",
         "IsPublished": true,
-        "LastUpdate": "2021-11-09T14:55:15.4518Z",
+        "LastUpdate": "2025-03-27T14:29:02.6636815Z",
         "CreationTimestamp": "2015-03-25T13:08:00.173Z",
         "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
         "NonTargetKillsAllowed": true,
