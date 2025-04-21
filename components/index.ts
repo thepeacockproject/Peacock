@@ -550,6 +550,7 @@ export async function startServer(options: {
 
         const httpServer = http.createServer(app)
 
+        log(LogLevel.INFO, `Listening on ${host}:${port}...`)
         // @ts-expect-error Non-matching method sig
         httpServer.listen(port, host)
         log(LogLevel.INFO, "Server started.")
