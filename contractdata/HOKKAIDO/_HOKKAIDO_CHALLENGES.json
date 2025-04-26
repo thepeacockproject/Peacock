@@ -4891,6 +4891,62 @@
                     "Tags": ["story", "medium", "feats"]
                 },
                 {
+                    "Id": "90c37f22-5d55-4218-8339-635d086a0f50",
+                    "Name": "UI_CHALLENGES_HOKKAIDO_CHERRY_NAME",
+                    "ImageName": "images/challenges/hokkaido/hokkaido_cherryblossom.jpg",
+                    "Description": "UI_CHALLENGES_HOKKAIDO_CHERRY_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": ["FIREARMS_HERO_PISTOL_CHERRYBALLER"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_HOKKAIDO",
+                    "ParentLocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "Type": "location",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 4
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "$.Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "SnowCrane_CherryBlossom_StepCompleted": [
+                                    {
+                                        "Actions": {
+                                            "$set": ["Count", "$Value"]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "hard", "feats"]
+                },
+                {
                     "Id": "ad82986d-8cb6-4ba9-98f1-b3175df90c84",
                     "Name": "UI_CHALLENGES_HOKKAIDO_EXP_SAVE_CURATOR_NAME",
                     "ImageName": "images/challenges/hokkaido/hokkaido_exp_save_curator.jpg",
@@ -5139,6 +5195,92 @@
                         }
                     },
                     "Tags": ["story", "hard", "feats"]
+                },
+                {
+                    "Id": "8407a0ce-82eb-4124-b4eb-50d889df6a2c",
+                    "Name": "UI_PEACOCK_CURRYMAKER_CHAOS",
+                    "ImageName": "images/contracts/escalation/contractescalation_currymaker_chaos.jpg",
+                    "Description": "UI_CHALLENGES_ESCLATION_COMPLETE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_HOKKAIDO",
+                    "ParentLocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$ContractId",
+                                            "af09780c-eee9-4478-932c-e21c7bbe10b5"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["feats", "hard"],
+                    "InclusionData": {
+                        "ContractIds": ["115425b1-e797-47bf-b517-410dc7507397"]
+                    }
+                },
+                {
+                    "Id": "8b7ebf7c-0b5c-4868-ac13-ccb8d708a9c7",
+                    "Name": "UI_CONTRACT_SAKURA_GROUP_TITLE",
+                    "ImageName": "images/contracts/escalation/ContractEscalation_Hokkaido_Sakura.jpg",
+                    "Description": "UI_CHALLENGES_ESCLATION_COMPLETE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": [],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_HOKKAIDO",
+                    "ParentLocationId": "LOCATION_PARENT_HOKKAIDO",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Context": {},
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "ContractEnd": {
+                                    "Condition": {
+                                        "$eq": [
+                                            "$ContractId",
+                                            "b007a400-66b8-43c3-a919-3195e343f7b1"
+                                        ]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["feats", "hard"],
+                    "InclusionData": {
+                        "ContractIds": ["85a2b618-2e3c-444f-931c-b89d566e45f7"]
+                    }
                 }
             ]
         },
