@@ -122,6 +122,10 @@ process.on("uncaughtException", uncaught)
 
 const app = express()
 
+app.use(function badPathRewritingMiddleware(req, _, next) {
+    req.url = req.url.replaceAll("//", "/")
+    next()
+})
 app.use(loggingMiddleware)
 
 if (getFlag("developmentLogRequests")) {
