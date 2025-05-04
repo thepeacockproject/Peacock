@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -11,6 +11,17 @@ namespace HitmanPatcher
         public bool minimizeToTray;
         public bool darkModeEnabled;
         public List<string> trayDomains;
+        public static readonly string ConfigLocation; 
+
+        static Settings()
+        {
+            ConfigLocation = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PeacockProject");
+
+            if (!Directory.Exists(ConfigLocation))
+            {
+                Directory.CreateDirectory(ConfigLocation);
+            }
+        }
 
         public Settings()
         {
@@ -32,18 +43,8 @@ namespace HitmanPatcher
 
         private static string GetSavePath()
         {
-            if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\PeacockProject"))
-            {
-                Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\PeacockProject");
-            }
-
-            string appData = Environment.GetFolderPath(Environment
-                .SpecialFolder
-                .ApplicationData);
-
-            string folder = $@"{appData}\PeacockProject\";
-            string config1 = folder + "peacock_patcher.conf";
-            string config2 = folder + "peacock_patcher2.conf";
+            string config1 = Path.Combine(ConfigLocation, "peacock_patcher.conf");
+            string config2 = Path.Combine(ConfigLocation, "peacock_patcher2.conf");
 
             if (File.Exists(config1))
             {
