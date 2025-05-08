@@ -59,6 +59,7 @@ namespace HitmanPatcher
                     {
                         CustomConfigDomain = customDomain,
                         UseHttp = checkBoxHttp.Checked,
+                        EnableDynamicResources = true,
                         DisableForceOfflineOnFailedDynamicResources = dynResources.Checked,
                         DisableCertPinning = true,
                         SetCustomConfigDomain = true,

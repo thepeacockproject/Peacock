@@ -184,6 +184,10 @@ namespace HitmanPatcher
 				{
 					patches.AddRange(v.protocol);
 				}
+				if (patchOptions.EnableDynamicResources)
+				{
+					patches.AddRange(v.dynres_enable);
+				}
 				if (patchOptions.DisableForceOfflineOnFailedDynamicResources)
 				{
 					patches.AddRange(v.dynres_noforceoffline);
@@ -275,6 +279,7 @@ namespace HitmanPatcher
 			public bool SetCustomConfigDomain;
 			public string CustomConfigDomain;
 			public bool UseHttp;
+			public bool EnableDynamicResources;
 			public bool DisableForceOfflineOnFailedDynamicResources;
         }
 
