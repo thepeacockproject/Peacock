@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.IO;
 using System.Text;
+using Timer = System.Windows.Forms.Timer;
 
 namespace HitmanPatcher
 {
@@ -59,6 +60,8 @@ namespace HitmanPatcher
 
         public MainForm()
         {
+            Compositions.Logger = this;
+            
             InitializeComponent();
             logListView.Columns[0].Width = logListView.Width - 4 - SystemInformation.VerticalScrollBarWidth;
             Timer timer = new Timer
@@ -206,15 +209,15 @@ namespace HitmanPatcher
         {
             if (status == 0)
             {
-                novikovPictureBox.Image = Properties.Resources.Novikov_standard;
+                novikovPictureBox.Image = Resources.Novikov_standard;
             }
             else if (status > 0)
             {
-                novikovPictureBox.Image = Properties.Resources.Novikov_success;
+                novikovPictureBox.Image = Resources.Novikov_success;
             }
             else
             {
-                novikovPictureBox.Image = Properties.Resources.Novikov_error;
+                novikovPictureBox.Image = Resources.Novikov_error;
             }
         }
 

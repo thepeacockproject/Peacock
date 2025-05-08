@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.serverAddressLabel = new System.Windows.Forms.Label();
             this.logListView = new System.Windows.Forms.ListView();
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
@@ -209,8 +208,8 @@
             this.novikovPictureBox.AccessibleDescription = "Icon showing the patcher status.";
             this.novikovPictureBox.AccessibleName = "Status icon";
             this.novikovPictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.novikovPictureBox.Image = global::HitmanPatcher.Properties.Resources.Novikov_standard;
-            this.novikovPictureBox.InitialImage = ((System.Drawing.Image)(resources.GetObject("novikovPictureBox.InitialImage")));
+            this.novikovPictureBox.Image = Resources.Novikov_standard;
+            this.novikovPictureBox.InitialImage = Resources.Novikov_standard;
             this.novikovPictureBox.Location = new System.Drawing.Point(313, 44);
             this.novikovPictureBox.Margin = new System.Windows.Forms.Padding(4);
             this.novikovPictureBox.Name = "novikovPictureBox";
@@ -222,7 +221,7 @@
             // trayIcon
             //
             this.trayIcon.ContextMenuStrip = this.trayMenu;
-            this.trayIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("trayIcon.Icon")));
+            this.trayIcon.Icon = Resources.Icon;
             this.trayIcon.Text = "Peacock Patcher";
             this.trayIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.menuItemOpen_Click);
             //
@@ -284,7 +283,7 @@
             this.Controls.Add(this.logLabel);
             this.Controls.Add(this.logListView);
             this.Controls.Add(this.serverAddressLabel);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Icon = Resources.Icon;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.MaximizeBox = false;
             this.MinimumSize = new System.Drawing.Size(423, 238);

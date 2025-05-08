@@ -79,8 +79,10 @@ namespace HitmanPatcher
             Task.WaitAll(alltasks);
 
             bench.Stop();
-            Console.WriteLine(bench.Elapsed.ToString());
-
+#if DEBUG
+            Compositions.Logger.log(bench.Elapsed.ToString());
+#endif
+            
             // error out if any task does not have exactly 1 result
             if (alltasks.Any(task => task.Result.Count() != 1))
             {
@@ -115,7 +117,7 @@ namespace HitmanPatcher
 #if DEBUG
         private static void Note(string name, Patch patch)
         {
-            MainForm.GetInstance().log($"{name}: {patch.offset:X} {BitConverter.ToString(patch.original).Replace("-", string.Empty)} {BitConverter.ToString(patch.patch).Replace("-", string.Empty)}");
+            Compositions.Logger.log($"{name}: {patch.offset:X} {BitConverter.ToString(patch.original).Replace("-", string.Empty)} {BitConverter.ToString(patch.patch).Replace("-", string.Empty)}");
         }
 #endif
 

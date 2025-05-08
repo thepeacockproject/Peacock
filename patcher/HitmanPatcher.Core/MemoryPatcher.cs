@@ -69,7 +69,7 @@ namespace HitmanPatcher
 						}
 						catch (Win32Exception ex)
 						{
-							if (ex.NativeErrorCode == 5 && !Program.HasAdmin)
+							if (ex.NativeErrorCode == 5 && !Compositions.HasAdmin)
 							{
 								logger.log(String.Format("Access denied, try running the patcher as admin."));
 								process.Dispose();
