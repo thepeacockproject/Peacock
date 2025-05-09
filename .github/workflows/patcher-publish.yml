@@ -2,6 +2,9 @@ name: Patcher - Publish
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - dev/patcher-ci-test
 
 env:
   GH_TOKEN: ${{ github.token }}
@@ -15,7 +18,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          ref: dev/patcher-ci-test
+          ref: ${{ github.ref_name }}
           path: repository
 
       - name: Download patcher-windows
