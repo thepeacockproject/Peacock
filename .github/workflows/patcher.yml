@@ -8,25 +8,32 @@ on:
     branches: [ "v*", "master" ]
     paths: [ "patcher/**/*" ]
 
+env:
+  DOTNET_VERSION: 8.x
+
 jobs:
   build:
     name: Build Patcher
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          persist-credentials: false
 
-      - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v2
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: Build Patcher
-        run: msbuild.exe patcher\HitmanPatcher.sln -t:Build -p:Configuration=Release -p:Platform=x64 -m
+        run: |
+          export DOTNET_NOLOGO=true
+          export DOTNET_CLI_TELEMETRY_OPTOUT=true
+          cd patcher
+          dotnet publish HitmanPatcher/HitmanPatcher.csproj -c Release -p DebugType=none -o Publish/Windows
 
-      - name: Upload Patcher Artifacts
+      - name: Upload patcher-windows
         uses: actions/upload-artifact@v4
         with:
           name: patcher-windows
-          path: patcher/bin/x64/Release/PeacockPatcher.exe
+          path: patcher/Publish/Windows/ILRepack

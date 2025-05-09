@@ -22,6 +22,7 @@ namespace HitmanPatcher
                 DisableCertPinning = true,
                 AlwaysSendAuthHeader = true,
                 SetCustomConfigDomain = true,
+                EnableDynamicResources = true,
                 DisableForceOfflineOnFailedDynamicResources = true,
             };
             darkModeEnabled = false;

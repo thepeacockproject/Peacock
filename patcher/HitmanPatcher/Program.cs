@@ -6,15 +6,13 @@ namespace HitmanPatcher
 {
     static class Program
     {
-        public static bool HasAdmin;
-
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
         private static void Main(string[] args)
         {
-            HasAdmin = CheckForAdmin();
+            Compositions.HasAdmin = CheckForAdmin();
 #if !DEBUG
             Cli.EnsureConsole(args);
 #endif
