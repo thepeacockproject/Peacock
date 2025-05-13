@@ -49,6 +49,129 @@
                     }
                 },
                 {
+                    "Id": "071b1685-7cf7-4e51-8213-c77ea04b0d08",
+                    "Name": "UI_CHALLENGES_GECKO_SIMULTANEOUSELECTROCUTION_NAME",
+                    "ImageName": "images/challenges/Golden/Golden_Gecko_SimultaneousElectrocution.jpg",
+                    "Description": "UI_CHALLENGES_GECKO_SIMULTANEOUSELECTROCUTION_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": ["PROP_DEVICE_ICA_RFID_COIN_TASER"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_GOLDEN",
+                    "ParentLocationId": "LOCATION_PARENT_GOLDEN",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Targets": [
+                                "9571d196-8d67-4d94-8dad-6e2d970d7a91",
+                                "bd0689d6-07b4-4757-b8ee-cac19f1c9e16"
+                            ],
+                            "Timeout": 5
+                        },
+                        "Context": {
+                            "TargetsKilled": []
+                        },
+                        "Scope": "hit",
+                        "States": {
+                            "Start": {
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$Value.RepositoryId"
+                                                            ]
+                                                        },
+                                                        "in": "$.Targets"
+                                                    }
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.KillMethodStrict",
+                                                        "accident_electric"
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "TargetsKilled",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        },
+                                        "Transition": "TargetKilled"
+                                    }
+                                ]
+                            },
+                            "TargetKilled": {
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$and": [
+                                                {
+                                                    "$any": {
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$Value.RepositoryId"
+                                                            ]
+                                                        },
+                                                        "in": "$.Targets"
+                                                    }
+                                                },
+                                                {
+                                                    "$eq": [
+                                                        "$Value.KillMethodStrict",
+                                                        "accident_electric"
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "TargetsKilled",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "($.TargetsKilled).Count",
+                                                "($.Targets).Count"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ],
+                                "$timer": {
+                                    "Condition": {
+                                        "$after": "$.Timeout"
+                                    },
+                                    "Transition": "Failure"
+                                }
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "hard"],
+                    "InclusionData": {
+                        "ContractIds": ["7d85f2b0-80ca-49be-a2b7-d56f67faf252"]
+                    }
+                },
+                {
                     "Id": "0e6504a4-730c-4ed3-8233-fd261f1cce60",
                     "Name": "UI_CHALLENGES_GECKO_STUYVESANT_LEDGE_NAME",
                     "ImageName": "images/challenges/Golden/Golden_Gecko_Stuyvesant_Ledge.jpg",

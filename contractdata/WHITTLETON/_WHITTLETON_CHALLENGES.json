@@ -4531,6 +4531,62 @@
                     "Tags": ["story", "feats", "medium"]
                 },
                 {
+                    "Id": "e79e6eea-0af5-4065-a0f1-427ac9f613d0",
+                    "Name": "UI_CHALLENGES_SKUNK_QUACK_CHALLENGE_NAME",
+                    "ImageName": "images/challenges/northamerica/northamerica_quack.jpg",
+                    "Description": "UI_CHALLENGES_SKUNK_QUACK_CHALLENGE_DESC",
+                    "Rewards": {
+                        "MasteryXP": 2000
+                    },
+                    "Drops": ["TOKEN_OUTFIT_HERO_EASTER_DUCK_SUIT"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_COMMUNITY",
+                    "Icon": "challenge_category_feats",
+                    "LocationId": "LOCATION_NORTHAMERICA",
+                    "ParentLocationId": "LOCATION_PARENT_NORTHAMERICA",
+                    "Type": "location",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "Goal": 6
+                        },
+                        "Context": {
+                            "Count": 0
+                        },
+                        "ContextListeners": {
+                            "Count": {
+                                "count": "$.Count",
+                                "total": "$.Goal",
+                                "type": "challengecounter"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Skunk_Duck_MuffinsThrown": [
+                                    {
+                                        "Actions": {
+                                            "$set": ["Count", "$Value"]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": ["$.Count", "$.Goal"]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "medium", "feats"]
+                },
+                {
                     "Id": "ecbd8cc1-3b1d-4473-ae1d-b963c999ab63",
                     "Name": "UI_CHALLENGES_NORTHAMERICA_CAMERAS_NAME",
                     "ImageName": "images/challenges/NORTHAMERICA/NORTHAMERICA_cameras.jpg",
