@@ -184,7 +184,9 @@ namespace HitmanPatcher
 				{
 					patches.AddRange(v.protocol);
 				}
-				if (patchOptions.EnableDynamicResources)
+                // can be null on older game versions, which is fine, this should no longer be relevant when
+                // PSVR and the main H3 branch merge back together in a late 2025 patch.
+				if (patchOptions.EnableDynamicResources && v.dynres_enable is not null)
 				{
 					patches.AddRange(v.dynres_enable);
 				}
