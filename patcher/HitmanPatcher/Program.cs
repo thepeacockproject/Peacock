@@ -29,6 +29,7 @@ namespace HitmanPatcher
                     CustomConfigDomain = o.Domain,
                     DisableCertPinning = true,
                     DisableForceOfflineOnFailedDynamicResources = o.OptionalDynRes,
+                    EnableDynamicResources = true,
                     SetCustomConfigDomain = true,
                     UseHttp = o.UseHttp
                 });
