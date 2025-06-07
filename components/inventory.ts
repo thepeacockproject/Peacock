@@ -23,6 +23,7 @@ import {
     CONCRETEART_UNLOCKABLES,
     DELUXE_UNLOCKABLES,
     EXECUTIVE_UNLOCKABLES,
+    FRENCHMARTINI_UNLOCKABLES,
     H1_GOTY_UNLOCKABLES,
     H1_REQUIEM_UNLOCKABLES,
     H2_RACCOON_STINGRAY_UNLOCKABLES,
@@ -426,6 +427,13 @@ function filterAllowedContent(gameVersion: GameVersion, entP: string[]) {
             return (
                 e.includes("70a9afcc8de84b6ab0f2b45b2018559b") ||
                 e.includes("3254350")
+            )
+        }
+
+        if (FRENCHMARTINI_UNLOCKABLES.includes(id)) {
+            return (
+                e.includes("256eeeb3d8044aa1840e1606d268e0b2") ||
+                e.includes("3711140")
             )
         }
 
