@@ -124,6 +124,7 @@ export async function packResources() {
     const start = Date.now()
 
     const contracts = await glob("contractdata/**/*.json")
+    contracts.sort()
     const b = []
     const el = []
 
