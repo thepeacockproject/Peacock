@@ -3,25 +3,27 @@
         "Bricks": [
             "assembly:/_pro/scenes/missions/miami/mission_cottonmouth.brick"
         ],
-        "DevOnlyBricks": [
-            "assembly:/_pro/scenes/missions/miami/dev_cottonmouth.brick"
-        ],
         "VR": [
             {
                 "Quality": "base",
                 "Bricks": [
                     "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
                     "assembly:/_pro/scenes/missions/miami/vr_overrides_flamingo.brick",
-                    "assembly:/_PRO/scenes/missions/miami/vr_overrides_ps4perf.brick"
+                    "assembly:/_pro/scenes/missions/miami/vr_overrides_cottonmouth.brick",
+                    "assembly:/_PRO/scenes/missions/miami/vr_overrides_low_performance.brick"
                 ]
             },
             {
                 "Quality": "better",
                 "Bricks": [
                     "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
-                    "assembly:/_pro/scenes/missions/miami/vr_overrides_flamingo.brick"
+                    "assembly:/_pro/scenes/missions/miami/vr_overrides_flamingo.brick",
+                    "assembly:/_pro/scenes/missions/miami/vr_overrides_cottonmouth.brick"
                 ]
             }
+        ],
+        "DevOnlyBricks": [
+            "assembly:/_pro/scenes/missions/miami/dev_cottonmouth.brick"
         ],
         "GameChangers": [],
         "GameDifficulties": [
@@ -31,10 +33,7 @@
                     "assembly:/_pro/scenes/missions/miami/difficulty_easy_miami_cottonmouth.brick"
                 ]
             },
-            {
-                "Difficulty": "normal",
-                "Bricks": []
-            },
+            { "Difficulty": "normal", "Bricks": [] },
             {
                 "Difficulty": "hard",
                 "Bricks": [
@@ -58,14 +57,7 @@
     "Metadata": {
         "Id": "f1ba328f-e3dd-4ef8-bb26-0363499fdd95",
         "CodeName_Hint": "Cottonmouth",
-        "Release": {
-            "Major": 2,
-            "Minor": 70,
-            "Build": 0,
-            "Revision": -1,
-            "MajorRevision": -1,
-            "MinorRevision": -1
-        },
+        "Release": { "Major": 2, "Minor": 70, "Build": 0, "Revision": -1 },
         "Type": "flashback",
         "Subtype": "specialassignment",
         "Title": "UI_CONTRACT_COTTONMOUTH_TITLE",
@@ -76,7 +68,8 @@
         "TileImage": "Images/Contracts/Cottonmouth/Tile.jpg",
         "Location": "LOCATION_MIAMI_COTTONMOUTH",
         "IsPublished": true,
-        "LastUpdate": "2021-03-16T13:07:48.510937Z",
+        "OnlyNeoVR": true,
+        "LastUpdate": "2025-06-06T22:46:18.7102031Z",
         "CreationTimestamp": "2012-12-12T12:12:12.743Z",
         "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
         "Drops": ["ACCESS_HIT_GARTERSNAKE"],

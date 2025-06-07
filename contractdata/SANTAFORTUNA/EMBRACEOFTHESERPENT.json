@@ -17,10 +17,7 @@
                     "assembly:/_pro/scenes/missions/colombia/difficulty_easy_columbia_anaconda.brick"
                 ]
             },
-            {
-                "Difficulty": "normal",
-                "Bricks": []
-            },
+            { "Difficulty": "normal", "Bricks": [] },
             {
                 "Difficulty": "hard",
                 "Bricks": [
@@ -31,25 +28,27 @@
         "Bricks": [
             "assembly:/_pro/scenes/missions/colombia/mission_anaconda.brick"
         ],
-        "DevOnlyBricks": [
-            "assembly:/_pro/scenes/missions/colombia/dev_anaconda.brick"
-        ],
         "VR": [
             {
                 "Quality": "base",
                 "Bricks": [
                     "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
                     "assembly:/_pro/scenes/missions/colombia/vr_overrides_hippo.brick",
-                    "assembly:/_PRO/scenes/missions/colombia/vr_overrides_ps4perf.brick"
+                    "assembly:/_pro/scenes/missions/colombia/vr_overrides_anaconda.brick",
+                    "assembly:/_PRO/scenes/missions/colombia/vr_overrides_low_performance.brick"
                 ]
             },
             {
                 "Quality": "better",
                 "Bricks": [
                     "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
-                    "assembly:/_pro/scenes/missions/colombia/vr_overrides_hippo.brick"
+                    "assembly:/_pro/scenes/missions/colombia/vr_overrides_hippo.brick",
+                    "assembly:/_pro/scenes/missions/colombia/vr_overrides_anaconda.brick"
                 ]
             }
+        ],
+        "DevOnlyBricks": [
+            "assembly:/_pro/scenes/missions/colombia/dev_anaconda.brick"
         ],
         "GameChangers": [],
         "Objectives": [
@@ -101,14 +100,7 @@
     "Metadata": {
         "Id": "179563a4-727a-4072-b354-c9fff4e8bff0",
         "CodeName_Hint": "Anaconda",
-        "Release": {
-            "Major": 2,
-            "Minor": 40,
-            "Build": 0,
-            "Revision": -1,
-            "MajorRevision": -1,
-            "MinorRevision": -1
-        },
+        "Release": { "Major": 2, "Minor": 40, "Build": 0, "Revision": -1 },
         "Type": "flashback",
         "Subtype": "specialassignment",
         "Title": "UI_CONTRACT_ANACONDA_TITLE",
@@ -119,7 +111,8 @@
         "TileImage": "Images/Contracts/Anaconda/Tile.jpg",
         "Location": "LOCATION_COLOMBIA_ANACONDA",
         "IsPublished": true,
-        "LastUpdate": "2021-03-16T13:07:48.4535526Z",
+        "OnlyNeoVR": true,
+        "LastUpdate": "2025-06-06T22:46:18.681629Z",
         "CreationTimestamp": "2012-12-12T12:12:12.743Z",
         "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
         "Entitlements": ["H2_LEGACY_EXPANSION"],
