@@ -92,6 +92,11 @@ export class SMFSupport {
     }
 
     private async executePlugin(plugin: string) {
+        // Check if we are running on linux and got a wine path
+        if (process.platform === "linux" && plugin.startsWith("Z:\\")) {
+            plugin = plugin.substring(2).replace(/\\/g, "/")
+        }
+
         if (!existsSync(plugin)) return
 
         await this.controller.executePlugin(
