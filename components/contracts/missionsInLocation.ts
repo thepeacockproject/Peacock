@@ -577,6 +577,7 @@ export const missionsInLocation = {
                 "7569d5e4-5270-4b69-96c8-e47b99876390",
                 "479ec396-b96f-4e01-94d9-aedaa0582ed9",
                 "09ea9b32-dc85-4633-9f6a-c5c4bfded5ac",
+                "80582fdb-c77e-4d6a-b33f-1f14f34b72c4",
             ],
             LOCATION_COASTALTOWN: [
                 "8db8fa33-cb41-4a0d-a2de-e30d884afb95",

@@ -371,7 +371,37 @@
         "IsHidden": null,
         "TileImage": "images/ContractConditions/Condition_Killmethod_Shotgun.jpg",
         "Resource": [],
-        "Objectives": [],
+        "Objectives": [
+            {
+                "_comment": "----- Silent objective to mark GameChanger as primary -----",
+                "Id": "b956c509-5d79-4c7a-80ef-b0800ad850f9",
+                "Type": "statemachine",
+                "Category": "primary",
+                "ExcludeFromScoring": true,
+                "OnActive": {
+                    "IfInProgress": {
+                        "Visible": false
+                    },
+                    "IfCompleted": {
+                        "Visible": false
+                    },
+                    "IfFailed": {
+                        "Visible": false
+                    }
+                },
+                "Definition": {
+                    "Scope": "session",
+                    "Context": {},
+                    "States": {
+                        "Start": {
+                            "-": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
         "ShowBasedOnObjectives": null,
         "IsPrestigeObjective": null
     },
@@ -8924,6 +8954,92 @@
                                 },
                                 "Transition": "Failure"
                             }
+                        }
+                    }
+                }
+            }
+        ],
+        "ShowBasedOnObjectives": null,
+        "IsPrestigeObjective": null
+    },
+    "f42433c0-9574-49fa-bfb4-ddb9e55b1474": {
+        "Name": "UI_CONTRACT_EVERGREEN_MISSION_PAYOUT_OBJ",
+        "Description": "UI_CONTRACT_EVERGREEN_MISSION_PAYOUT_OBJ",
+        "Icon": "images/challenges/default_challenge_icon.png",
+        "IsHidden": true,
+        "TileImage": "images/test/placeholder.jpg",
+        "Resource": [],
+        "Objectives": [
+            {
+                "Id": "6f7e63bc-ac2b-43e4-bc42-4e07e680ae8b",
+                "Category": "secondary",
+                "ExcludeFromScoring": true,
+                "HideInMenu": true,
+                "BriefingText": "$loc UI_CONTRACT_FRENCHMARTINI_OBJ_CURRENCY",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_FRENCHMARTINI_OBJ_CURRENCY",
+                    "iconType": 9
+                },
+                "ObjectiveType": "custom",
+                "Type": "statemachine",
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                },
+                "Definition": {
+                    "Context": {
+                        "Balance": 0,
+                        "Other": ""
+                    },
+                    "ContextListeners": {
+                        "Balance": {
+                            "type": "custom",
+                            "HUDTemplate": {
+                                "iconType": 9,
+                                "display": {
+                                    "$loc": {
+                                        "key": "UI_CONTRACT_FRENCHMARTINI_OBJ_CURRENCY",
+                                        "data": [
+                                            "$formatint $.Balance",
+                                            "$.Other"
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "States": {
+                        "Start": {
+                            "-": {
+                                "Transition": "Success"
+                            }
+                        },
+                        "Success": {
+                            "SetBalance": {
+                                "Condition": {
+                                    "$gt": ["$Value.Chips", 0]
+                                },
+                                "Actions": {
+                                    "$set": ["Balance", "$Value.Chips"]
+                                },
+                                "Transition": "Active"
+                            }
+                        },
+                        "Active": {
+                            "SetBalance": [
+                                {
+                                    "Actions": {
+                                        "$set": ["Balance", "$Value.Chips"]
+                                    }
+                                },
+                                {
+                                    "Condition": {
+                                        "$eq": ["$.Balance", 0]
+                                    },
+                                    "Transition": "Success"
+                                }
+                            ]
                         }
                     }
                 }

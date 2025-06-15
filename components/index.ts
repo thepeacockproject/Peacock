@@ -122,6 +122,8 @@ process.on("uncaughtException", uncaught)
 
 const app = express()
 
+const baseDir = __dirname
+
 app.use(function badPathRewritingMiddleware(req, _, next) {
     req.url = req.url.replaceAll("//", "/")
     next()
@@ -143,7 +145,7 @@ app.get("/", (_: Request, res) => {
         return
     }
 
-    const data = readFileSync("webui/dist/index.html").toString()
+    const data = readFileSync(`${baseDir}/webui/dist/index.html`).toString()
 
     res.contentType("text/html")
     res.send(data)
@@ -151,7 +153,7 @@ app.get("/", (_: Request, res) => {
 
 app.use(
     "/assets",
-    serveStatic("webui/dist/assets", {
+    serveStatic(`${baseDir}/webui/dist/assets`, {
         setHeaders: (res: Response, path) => {
             if (path.includes(".js")) res.contentType("application/javascript")
 
@@ -335,7 +337,7 @@ app.use(
                     break
                 case "fghi4567xQOCheZIin0pazB47qGUvZw4":
                 case STEAM_NAMESPACE_2021:
-                    req.serverVersion = "8-19"
+                    req.serverVersion = "8-20"
                     break
                 default:
                     res.status(400).json({ message: "no game data" })
@@ -470,7 +472,7 @@ app.use(
             }
 
             if (
-                ["6-74", "7-3", "7-17", "8-19"].includes(
+                ["6-74", "7-3", "7-17", "8-20"].includes(
                     <string>req.serverVersion,
                 )
             ) {

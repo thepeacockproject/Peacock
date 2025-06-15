@@ -168,6 +168,8 @@ export function scenePathToRpAsset(
             return ["elusivetequilasunrise", "The Forger", "Paris"]
         case "assembly:/_pro/scenes/missions/paris/_scene_whiterussian_01.entity":
             return ["elusivewhiterussian", "The Identity Thief", "Paris"]
+        case "assembly:/_pro/scenes/missions/paris/_scene_frenchmartini.entity":
+            return ["elusivefrenchmartini", "The Banker", "Paris"]
 
         // sapienza
         case "assembly:/_pro/scenes/missions/coastaltown/_scene_copperhead.entity":

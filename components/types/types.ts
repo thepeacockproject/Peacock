@@ -951,6 +951,7 @@ export interface MissionManifestMetadata {
     ServerVersion?: string | null
     NonTargetKillsAllowed?: boolean | null
     Difficulty?: "pro1" | string | null
+    OnlyNeoVR?: boolean | null
     CharacterSetup?:
         | {
               Mode: "singleplayer" | "multiplayer" | string
