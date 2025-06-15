@@ -201,7 +201,7 @@ export function generateUserCentric(
         return undefined
     }
 
-    subLocation.DisplayNameLocKey = `UI_${subLocation!.Id}_NAME`
+    subLocation.DisplayNameLocKey = `UI_${subLocation.Id}_NAME`
 
     if (gameVersion === "h1" || gameVersion === "h2") {
         // fix h1/h2 entitlements

@@ -631,20 +631,20 @@ export class Controller {
     }
 
     private getGroupContract(
-        json: MissionManifest,
+        contract: MissionManifest,
         gameVersion: GameVersion,
     ): MissionManifest {
-        if (escalationTypes.includes(json.Metadata.Type)) {
-            if (!json.Metadata.InGroup) {
-                return json
+        if (escalationTypes.includes(contract.Metadata.Type)) {
+            if (!contract.Metadata.InGroup) {
+                return contract
             }
 
             return (
-                this.resolveContract(json.Metadata.InGroup, gameVersion) ?? json
+                this.resolveContract(contract.Metadata.InGroup, gameVersion) ?? contract
             )
         }
 
-        return json
+        return contract
     }
 
     /**
