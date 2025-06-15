@@ -223,10 +223,20 @@ function isChallengeInContract(
         return false
     }
 
-    const groupContract = controller.resolveContract(contractId, gameVersion, true)
-    const individualContract = controller.resolveContract(contractId, gameVersion)
+    const groupContract = controller.resolveContract(
+        contractId,
+        gameVersion,
+        true,
+    )
+    const individualContract = controller.resolveContract(
+        contractId,
+        gameVersion,
+    )
 
-    assert.ok(individualContract, `Can't find contract ${contractId} for ${gameVersion}, but need to check if challenge ${challenge.Id} belongs to it`)
+    assert.ok(
+        individualContract,
+        `Can't find contract ${contractId} for ${gameVersion}, but need to check if challenge ${challenge.Id} belongs to it`,
+    )
 
     if (challenge.Type === "global") {
         return inclusionDataCheck(
@@ -262,9 +272,7 @@ function isChallengeInContract(
     // We have to resolve the non-group groupContract, `groupContract` is the group groupContract
     const isForContractType = (
         challenge.InclusionData?.ContractTypes || []
-    ).includes(
-        individualContract.Metadata.Type,
-    )
+    ).includes(individualContract.Metadata.Type)
 
     // Is this a location-wide challenge?
     // "location" is more widely used, but "parentlocation" is used in Ambrose and Berlin, as well as some "Discover XX" challenges.

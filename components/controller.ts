@@ -640,7 +640,8 @@ export class Controller {
             }
 
             return (
-                this.resolveContract(contract.Metadata.InGroup, gameVersion) ?? contract
+                this.resolveContract(contract.Metadata.InGroup, gameVersion) ??
+                contract
             )
         }
 
