@@ -262,7 +262,7 @@ function isChallengeInContract(
         return false
     }
 
-    // Is this for the current groupContract or group groupContract?
+    // Is this for the current contract or group contract?
     const isForContract = (challenge.InclusionData?.ContractIds || []).includes(
         groupContract?.Metadata.Id || "",
     )
