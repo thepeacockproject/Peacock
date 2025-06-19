@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -23,9 +23,11 @@ import {
     CONCRETEART_UNLOCKABLES,
     DELUXE_UNLOCKABLES,
     EXECUTIVE_UNLOCKABLES,
+    FRENCHMARTINI_UNLOCKABLES,
     H1_GOTY_UNLOCKABLES,
     H1_REQUIEM_UNLOCKABLES,
     H2_RACCOON_STINGRAY_UNLOCKABLES,
+    LAMBIC_UNLOCKABLES,
     MAKESHIFT_UNLOCKABLES,
     PENICILLIN_UNLOCKABLES,
     SAMBUCA_UNLOCKABLES,
@@ -70,6 +72,7 @@ const DELUXE_DATA = [
     ...SAMBUCA_UNLOCKABLES,
     ...PENICILLIN_UNLOCKABLES,
     ...TOMORROWLAND_UNLOCKABLES,
+    ...LAMBIC_UNLOCKABLES,
 ]
 
 /**
@@ -124,8 +127,8 @@ function filterUnlockedContent(
         let unlockableMasteryData: UnlockableMasteryData | undefined
 
         // Handles unlockables that belong to a package or unlocked gear from evergreen
-        if (packagedUnlocks.has(unlockable.Id)) {
-            packagedUnlocks.get(unlockable.Id) && acc[0].push(unlockable)
+        if (packagedUnlocks.get(unlockable.Id)) {
+            acc[0].push(unlockable)
         }
 
         // Handles packages
@@ -420,6 +423,20 @@ function filterAllowedContent(gameVersion: GameVersion, entP: string[]) {
             )
         }
 
+        if (LAMBIC_UNLOCKABLES.includes(id)) {
+            return (
+                e.includes("70a9afcc8de84b6ab0f2b45b2018559b") ||
+                e.includes("3254350")
+            )
+        }
+
+        if (FRENCHMARTINI_UNLOCKABLES.includes(id)) {
+            return (
+                e.includes("256eeeb3d8044aa1840e1606d268e0b2") ||
+                e.includes("3711140")
+            )
+        }
+
         return true
     }
 }
@@ -458,6 +475,7 @@ export function getUnlockableById(
             unlockables = [
                 ...unlockables,
                 ...getConfig<readonly Unlockable[]>("SniperUnlockables", false),
+                ...getConfig<readonly Unlockable[]>("VersusUnlockables", false),
             ]
         }
 
@@ -570,6 +588,7 @@ export function createInventory(
             true,
         ),
         ...getConfig<Unlockable[]>("SniperUnlockables", true),
+        ...getConfig<Unlockable[]>("VersusUnlockables", true),
     ].filter((u) => u.Type !== "location") // locations not in inventory
 
     let unlockables: Unlockable[] = allunlockables

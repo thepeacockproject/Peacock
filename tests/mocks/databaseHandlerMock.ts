@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -100,9 +100,8 @@ export async function mockDatabaseFs(): Promise<MockedFsReturn> {
         },
     }
 
-    vi.spyOn(databaseHandler.asyncGuard, "getFs").mockImplementation(
-        () => fsImpl,
-    )
+    const getFsSpy = vi.spyOn(databaseHandler.asyncGuard, "getFs")
+    getFsSpy.mockImplementation(() => fsImpl)
 
     await databaseHandler.setupFileStructure((...strings) =>
         npath.toPortablePath(npath.join(...strings)),
@@ -113,6 +112,7 @@ export async function mockDatabaseFs(): Promise<MockedFsReturn> {
         discard() {
             memoryDrive.discardAndClose()
             databaseHandler.asyncGuard.unloadAll()
+            getFsSpy.mockReset()
         },
         spies: {
             writeFileSpy: vi.spyOn(fsImpl, "writeFile"),

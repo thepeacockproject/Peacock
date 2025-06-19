@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -217,12 +217,12 @@ export function calculateScore(
     ]
 
     // Non-target kills
+    const allowNonTargetKills =
+        contractData?.Metadata.NonTargetKillsAllowed === true
     const nonTargetKills =
-        contractData?.Metadata.AllowNonTargetKills === true
-            ? 0
-            : contractSession.npcKills.size + contractSession.crowdNpcKills
+        contractSession.npcKills.size + contractSession.crowdNpcKills
 
-    let totalScore = -5000 * nonTargetKills
+    let totalScore = 0
 
     // Headlines and bonuses
     const scoringHeadlines = []
@@ -268,13 +268,24 @@ export function calculateScore(
 
     totalScore = Math.max(0, totalScore)
 
-    scoringHeadlines.push(
-        Object.assign(Object.assign({}, headlineObjTemplate), {
-            headline: "UI_SCORING_SUMMARY_KILL_PENALTY",
-            count: nonTargetKills > 0 ? `${nonTargetKills}x-5000` : "",
-            scoreTotal: -5000 * nonTargetKills,
-        }) as ScoringHeadline,
-    )
+    if (nonTargetKills === 0 || allowNonTargetKills) {
+        scoringHeadlines.push(
+            Object.assign(Object.assign({}, headlineObjTemplate), {
+                headline: "UI_SCORING_SUMMARY_KILL_PENALTY",
+                count: "",
+                scoreTotal: 0,
+            }) as ScoringHeadline,
+        )
+    } else {
+        scoringHeadlines.push(
+            Object.assign(Object.assign({}, headlineObjTemplate), {
+                headline: "UI_SCORING_SUMMARY_KILL_PENALTY",
+                count: `${nonTargetKills}x-5000`,
+                scoreTotal: -5000 * nonTargetKills,
+            }) as ScoringHeadline,
+        )
+        totalScore += -5000 * nonTargetKills
+    }
 
     const timeHours = Math.floor(timeTotal / 3600)
     const timeMinutes = Math.floor((timeTotal - timeHours * 3600) / 60)
@@ -344,9 +355,10 @@ export function calculateScore(
     // Stars
     let stars =
         5 -
-        [...bonuses, { condition: nonTargetKills === 0 }].filter(
-            (x) => !x!.condition,
-        ).length // one star less for each bonus missed
+        [
+            ...bonuses,
+            { condition: nonTargetKills === 0 || allowNonTargetKills },
+        ].filter((x) => !x!.condition).length // one star less for each bonus missed
 
     stars = stars < 0 ? 0 : stars // clamp to 0
 
@@ -362,10 +374,10 @@ export function calculateScore(
     ]
 
     // NOTE: need to have all bonuses except objectives for SA
-    const silentAssassin = [
-        ...bonuses.slice(1),
-        { condition: nonTargetKills === 0 },
-    ].every((x) => x.condition)
+    const silentAssassin =
+        [...bonuses.slice(1), { condition: nonTargetKills === 0 }].every(
+            (x) => x.condition,
+        ) && !contractSession.silentAssassinLost
 
     return {
         stars: stars,
@@ -432,7 +444,7 @@ export function calculateSniperScore(
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const baseScore = (contractSession.scoring?.Context as any)["TotalScore"]
+    const baseScore = (contractSession.scoring?.Context as any)?.["TotalScore"]
     // @ts-expect-error it's a number
     const challengeMultiplier = contractSession.scoring?.Settings["challenges"][
         "Unlockables"
@@ -629,6 +641,9 @@ export async function getMissionEndData(
         sessionDetails.userId === jwt.unique_name,
         "requested score for other user's session",
     )
+
+    // call hook
+    controller.hooks.onMissionEnd.call(sessionDetails)
 
     const realData = getUserData(jwt.unique_name, gameVersion)
     // Resolve userdata
@@ -854,14 +869,19 @@ export async function getMissionEndData(
         query.masteryUnlockableId,
     )
 
+    const masteryData = controller.masteryService.getMasteryPackage(
+        locationParentId,
+        gameVersion,
+    )
+
     // Calculate the old location progression based on the current one and process it
     const oldLocationXp = completionData.PreviouslySeenXp
         ? completionData.PreviouslySeenXp
         : completionData.XP - totalXpGain
-    let oldLocationLevel = levelForXp(oldLocationXp)
+    let oldLocationLevel = levelForXp(oldLocationXp, masteryData?.XpPerLevel)
 
     const newLocationXp = completionData.XP
-    let newLocationLevel = levelForXp(newLocationXp)
+    let newLocationLevel = levelForXp(newLocationXp, masteryData?.XpPerLevel)
 
     if (!query.masteryUnlockableId) {
         userData.Extensions.progression.Locations[
@@ -870,11 +890,6 @@ export async function getMissionEndData(
     }
 
     if (!isDryRun) writeUserData(jwt.unique_name, gameVersion)
-
-    const masteryData = controller.masteryService.getMasteryPackage(
-        locationParentId,
-        gameVersion,
-    )
 
     let maxLevel = 1
     let locationLevelInfo = [0]
@@ -888,15 +903,21 @@ export async function getMissionEndData(
                 : masteryData.MaxLevel) || DEFAULT_MASTERY_MAXLEVEL
 
         locationLevelInfo = Array.from({ length: maxLevel }, (_, i) => {
-            return xpRequiredForLevel(i + 1)
+            return xpRequiredForLevel(i + 1, masteryData.XpPerLevel)
         })
     }
 
     // Calculate the old playerprofile progression based on the current one and process it
     const oldPlayerProfileXp = playerProgressionData.Total - totalXpGain
-    const oldPlayerProfileLevel = levelForXp(oldPlayerProfileXp)
+    const oldPlayerProfileLevel = levelForXp(
+        oldPlayerProfileXp,
+        masteryData?.XpPerLevel,
+    )
     const newPlayerProfileXp = playerProgressionData.Total
-    const newPlayerProfileLevel = levelForXp(newPlayerProfileXp)
+    const newPlayerProfileLevel = levelForXp(
+        newPlayerProfileXp,
+        masteryData?.XpPerLevel,
+    )
 
     // NOTE: We assume the ProfileLevel is currently already up-to-date
     const profileLevelInfo = []
@@ -906,7 +927,9 @@ export async function getMissionEndData(
         level <= newPlayerProfileLevel + 1;
         level++
     ) {
-        profileLevelInfo.push(xpRequiredForLevel(level))
+        profileLevelInfo.push(
+            xpRequiredForLevel(level, masteryData?.XpPerLevel),
+        )
     }
 
     const profileLevelInfoOffset = oldPlayerProfileLevel - 1

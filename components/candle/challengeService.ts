@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -49,7 +49,12 @@ import {
     HandleEventOptions,
 } from "@peacockproject/statemachine-parser"
 import { ChallengeContext, SavedChallengeGroup } from "../types/challenges"
-import { fastClone, gameDifficulty, isSniperLocation } from "../utils"
+import {
+    fastClone,
+    gameDifficulty,
+    isSniperLocation,
+    ServerVer,
+} from "../utils"
 import {
     ChallengeFilterOptions,
     ChallengeFilterType,
@@ -64,6 +69,8 @@ import { SyncHook } from "../hooksImpl"
 import { getUserEscalationProgress } from "../contracts/escalations/escalationService"
 
 import { getUnlockableById } from "../inventory"
+import { enqueueEvent } from "../eventHandler"
+import { randomUUID } from "crypto"
 
 type ChallengeDefinitionLike = {
     Context?: Record<string, unknown>
@@ -205,6 +212,16 @@ export abstract class ChallengeRegistry {
                 GameVersions: ["h3"],
                 Image: "images/backgrounds/gamemode_arcade.jpg",
                 Icon: "arcademode",
+            },
+        ],
+        [
+            "versus",
+            {
+                Name: "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_VERSUS",
+                Description: "",
+                GameVersions: ["h2", "h3"],
+                Image: "images/challenges/categories/versus/tile.jpg",
+                Icon: "versus",
             },
         ],
         [
@@ -541,8 +558,8 @@ export abstract class ChallengeRegistry {
         return parseContextListeners(
             challenge.Definition?.ContextListeners || {},
             {
-                ...(Context || challenge.Definition?.Context || {}),
-                ...(challenge.Definition?.Constants || {}),
+                ...(Context || challenge.Definition?.Context),
+                ...challenge.Definition?.Constants,
             },
         )
     }
@@ -744,6 +761,39 @@ export class ChallengeService extends ChallengeRegistry {
                 challenges.push([groupId, [...groupChallenges]])
             }
         }
+    }
+
+    /**
+     * Filter all challenges (except global) within Peacock and return them as a `CompiledChallengeTreeCategory[]`.
+     *
+     * @param filter The filter to use.
+     * @param userId The user's id.
+     * @param gameVersion The active game version.
+     * @returns A CompiledChallengeTreeCategory[] returning
+     */
+    getFilteredChallengeTree(
+        filter: ChallengeFilterOptions,
+        userId: string,
+        gameVersion: GameVersion,
+    ): CompiledChallengeTreeCategory[] {
+        const challenges: GroupIndexedChallengeLists = {}
+
+        for (const challenge of this.challenges[gameVersion].values()) {
+            // Skip global challenges
+            if (challenge.inGroup === "global") continue
+
+            if (filterChallenge(filter, challenge)) {
+                challenges[challenge.inGroup!] ??= []
+                challenges[challenge.inGroup!].push(challenge)
+            }
+        }
+
+        return this.reBatchIntoSwitchedData(
+            challenges,
+            userId,
+            gameVersion,
+            true,
+        )
     }
 
     /**
@@ -961,15 +1011,21 @@ export class ChallengeService extends ChallengeRegistry {
 
         let contracts = isSniperLocation(child)
             ? // @ts-expect-error This is fine - we know it will be there
-              this.controller.missionsInLocations.sniper[child]
-            : // @ts-expect-error This is fine - we know it will be there
-              (this.controller.missionsInLocations[child] ?? [])
+              this.controller.missionsInLocation[gameVersion].sniper[child]
+            : // @ts-expect-error This is fine - we can index this
+              (this.controller.missionsInLocation[gameVersion][child] ?? [])
                   .concat(
-                      // @ts-expect-error This is fine - we know it will be there
-                      this.controller.missionsInLocations.escalations[child],
+                      // @ts-expect-error This is fine - we can index this
+                      this.controller.missionsInLocation[gameVersion]
+                          .escalations[child] ?? [],
                   )
-                  // @ts-expect-error This is fine - we know it will be there
-                  .concat(this.controller.missionsInLocations.arcade[child])
+                  .concat(
+                      gameVersion === "h3"
+                          ? // @ts-expect-error This is fine - we know it will be there
+                            this.controller.missionsInLocation[gameVersion]
+                                .arcade[child]
+                          : [],
+                  )
 
         if (!contracts) {
             contracts = []
@@ -1816,19 +1872,22 @@ export class ChallengeService extends ChallengeRegistry {
             log(LogLevel.DEBUG, `Challenge ${challenge.Id} completed`)
         }
 
-        this.onContractEvent(
-            {
-                Value: {
-                    ChallengeId: challenge.Id,
-                },
-                ContractSessionId: session.Id,
-                ContractId: session.contractId,
-                Name: "ChallengeCompleted",
-                // The timestamp (used for timers) is not important here, since it's not an event sent by the game.
-                Timestamp: 0,
+        const event = {
+            Value: {
+                ChallengeId: challenge.Id,
+                ChallengeTags: challenge.Tags,
             },
-            session,
-        )
+            ContractSessionId: session.Id,
+            ContractId: session.contractId,
+            Name: "ChallengeCompleted",
+            // The timestamp (used for timers) is not important here, since it's not an event sent by the game.
+            Timestamp: 0,
+            Id: randomUUID(),
+            Version: ServerVer,
+        }
+
+        this.onContractEvent(event, session)
+        enqueueEvent(userId, event)
 
         const userData = getUserData(userId, gameVersion)
 

@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -35,7 +35,6 @@ import { userAuths } from "../officialServerAuth"
 import { log, LogLevel } from "../loggingInterop"
 import { fastClone, getRemoteService } from "../utils"
 import { orderedETAs } from "./elusiveTargetArcades"
-import { missionsInLocations } from "./missionsInLocation"
 import assert from "assert"
 
 /**
@@ -240,7 +239,7 @@ export class HitsCategoryService {
                 const nEscalations: string[] = []
 
                 for (const escalations of Object.values(
-                    missionsInLocations.escalations,
+                    controller.missionsInLocation[gameVersion].escalations,
                 )) {
                     for (const id of escalations) {
                         const contract = controller.resolveContract(

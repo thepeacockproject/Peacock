@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -403,7 +403,8 @@ export function getSafehouseCategory(
             item.Unlockable.Type === "loadoutunlock" ||
             item.Unlockable.Type === "difficultyunlock" ||
             item.Unlockable.Type === "agencypickup" ||
-            item.Unlockable.Type === "challengemultiplier"
+            item.Unlockable.Type === "challengemultiplier" ||
+            item.Unlockable.Type === "emote"
         ) {
             continue // these types should not be displayed when not asked for
         } else if (item.Unlockable.Properties.InclusionData) {

@@ -1,10 +1,18 @@
-import { existsSync, readFileSync } from "fs"
-import path from "path"
 import { IIniObjectSection, IniValue } from "js-ini"
 import { menuSystemDatabase } from "./menuSystem"
 import { Flag, FlagSection, GameVersion } from "../types/types"
 import { defaultFlags, getAllFlags, saveFlags, setFlag } from "../flags"
 import { CommandFunction, commandService } from "../commandService"
+// @ts-expect-error This is fine.
+import PeacockMenuIndex from "../../static/peacock-menu/index.json"
+// @ts-expect-error This is fine.
+import PeacockMenuOptions from "../../static/peacock-menu/options.json"
+// @ts-expect-error This is fine.
+import PeacockMenuFlagIndex from "../../static/peacock-menu/flags/index.json"
+// @ts-expect-error This is fine.
+import PeacockMenuFlagCategory from "../../static/peacock-menu/flags/category.json"
+// @ts-expect-error This is fine.
+import PeacockMenuFlag from "../../static/peacock-menu/flags/flag.json"
 
 interface GetAllFlagsResponse {
     key: string
@@ -27,7 +35,21 @@ const commandMap = new Map<string, CommandFunction>([
     ["setFlagEnum", commandSetFlagEnum as CommandFunction],
 ])
 
-const pluginPrefix = "/pages/peacock-menu/"
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const builtInPages: Record<string, any> = {
+    "/pages/peacock-menu/index.json": PeacockMenuIndex,
+    "/pages/peacock-menu/options.json": PeacockMenuOptions,
+    "/pages/peacock-menu/flags/index.json": PeacockMenuFlagIndex,
+    "/pages/peacock-menu/flags/category.json": PeacockMenuFlagCategory,
+    "/pages/peacock-menu/flags/flag.json": PeacockMenuFlag,
+}
+
+Object.keys(builtInPages).forEach((page) => {
+    // Parse the string into an object
+    builtInPages[page] = JSON.parse(builtInPages[page])
+})
+
+const pagePrefix = "/pages/peacock-menu/"
 const jsonExtension = ".json"
 
 function getDatabaseDiff(configs: string[], gameVersion: GameVersion) {
@@ -44,29 +66,17 @@ function getConfig(name: string, _gameVersion: GameVersion) {
         name = "/pages/peacock-menu/index.json"
     }
 
-    if (!name.startsWith(pluginPrefix)) {
+    if (!name.startsWith(pagePrefix)) {
         return
     }
 
-    const fileName = name.substring(pluginPrefix.length)
-    const cacheBusterIndex = fileName.indexOf(jsonExtension)
-    const fileNameWithCacheBuster =
+    const cacheBusterIndex = name.indexOf(jsonExtension)
+    const fileNameNoCacheBuster =
         cacheBusterIndex < 0
-            ? fileName
-            : fileName.substring(0, cacheBusterIndex + jsonExtension.length)
+            ? name
+            : name.substring(0, cacheBusterIndex + jsonExtension.length)
 
-    const filePath = path.join(
-        process.cwd(),
-        "static",
-        "peacock-menu",
-        fileNameWithCacheBuster,
-    )
-
-    if (existsSync(filePath)) {
-        return JSON.parse(readFileSync(filePath).toString())
-    }
-
-    return undefined
+    return builtInPages[fileNameNoCacheBuster] ?? undefined
 }
 
 function getFlagType(

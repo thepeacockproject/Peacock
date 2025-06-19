@@ -5416,5 +5416,53 @@
             "GameModes": null
         },
         "OrderIndex": 10000
+    },
+    {
+        "Id": "4cc4da85-7b77-4ee7-a2c8-610c93f6d0a5",
+        "GroupId": "00000000-0000-0000-0000-000000000000",
+        "Name": "UI_CHALLENGES_TRAPPED_ACTIONXP_PROVIDENCE_MEMBER_KILLED",
+        "Type": "Hit",
+        "Description": "",
+        "ImageName": null,
+        "Definition": {
+            "ResetOnCycleCompletion": false,
+            "Context": {
+                "_SessionRewards": []
+            },
+            "Repeatable": {
+                "Base": 1,
+                "Delta": 0
+            },
+            "Scope": "session",
+            "States": {
+                "Start": {
+                    "Kill": {
+                        "Condition": {
+                            "$eq": ["$Value.IsTarget", false]
+                        },
+                        "Actions": {
+                            "$pushunique": [
+                                "_SessionRewards",
+                                "$Value.RepositoryId"
+                            ]
+                        },
+                        "Transition": "Success"
+                    }
+                }
+            }
+        },
+        "Tags": ["actionreward", "very-low", "elimination"],
+        "Drops": [],
+        "LastModified": "2021-01-06T23:00:38.3092409",
+        "Xp": 5,
+        "XpModifier": {},
+        "PlayableSince": null,
+        "PlayableUntil": null,
+        "InclusionData": {
+            "ContractIds": null,
+            "ContractTypes": ["mission", "escalation"],
+            "Locations": ["LOCATION_TRAPPED_WOLVERINE"],
+            "GameModes": null
+        }
     }
 ]

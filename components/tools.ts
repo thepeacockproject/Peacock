@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -28,24 +28,16 @@ import axios from "axios"
 import { Stream } from "stream"
 import { createWriteStream, existsSync, mkdirSync, readFileSync } from "fs"
 import ProgressBar from "progress"
-import { join, resolve as pathResolve } from "path"
+import { resolve as pathResolve } from "path"
 import picocolors from "picocolors"
 import { Filename, npath, PortablePath, ppath, xfs } from "@yarnpkg/fslib"
 import { makeEmptyArchive, ZipFS } from "@yarnpkg/libzip"
 import { configs } from "./configSwizzleManager"
 import * as crypto from "node:crypto"
 import * as fs from "node:fs"
+import { SMFSupport } from "./smfSupport"
 
 const IMAGE_PACK_REPO = "thepeacockproject/ImagePack"
-
-const modFrameworkDataPath: string | false =
-    (process.env.LOCALAPPDATA &&
-        join(
-            process.env.LOCALAPPDATA,
-            "Simple Mod Framework",
-            "lastDeploy.json",
-        )) ||
-    false
 
 export async function toolsMenu(options: { skip: boolean }) {
     const init = await prompts({
@@ -139,11 +131,17 @@ async function exportDebugInfo(skipEncrypt: boolean): Promise<void> {
 
     await zip.writeFilePromise(zip.resolve("meta.json" as Filename), debugJson)
 
-    if (modFrameworkDataPath && existsSync(modFrameworkDataPath)) {
-        await zip.writeFilePromise(
-            zip.resolve("lastDeploy.json" as Filename),
-            readFileSync(modFrameworkDataPath).toString(),
-        )
+    const modFrameworkDataPaths = SMFSupport.modFrameworkDataPaths
+
+    if (modFrameworkDataPaths) {
+        for (const dataPath of modFrameworkDataPaths) {
+            if (!existsSync(dataPath)) continue
+            await zip.writeFilePromise(
+                zip.resolve("lastDeploy.json" as Filename),
+                readFileSync(dataPath).toString(),
+            )
+            break
+        }
     }
 
     await copyIntoZip(zip, "logs")

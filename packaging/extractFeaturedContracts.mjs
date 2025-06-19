@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -26,10 +26,9 @@ import axios from "axios"
  * @param {AxiosInstance} axiosClient
  * @param {string} type
  * @param {number} page
- * @param gameVersion
  * @returns {Promise<*>}
  */
-async function fetchHitsCategoryPage(axiosClient, type, page, gameVersion) {
+async function fetchHitsCategoryPage(axiosClient, type, page) {
     console.log(`${pc.blue`Fetching hits category `}${type} page ${page}...`)
 
     const url = `/profiles/page/HitsCategory?page=${page}&type=${type}&mode=dataonly`
@@ -71,7 +70,7 @@ async function extract(jwt, gameVersion) {
             "User-Agent": "G2 Http/1.0 (Windows NT 10.0; DX12/1; d3d12/1)",
             "Content-Type": "application/json",
             Accept: "application/json, text/*, image/*, application/json",
-            Version: gameVersion === "h1" ? "6.74.0" : "8.17.0",
+            Version: gameVersion === "h1" ? "6.74.0" : "8.20.0",
             Authorization: `bearer ${jwt}`,
         },
     })

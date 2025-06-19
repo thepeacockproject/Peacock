@@ -22,9 +22,7 @@
                 "LongBriefingText": "$loc 893ecd0c-9a13-42a6-b3f5-72c6059d4b16_yulduz_description",
                 "Image": "images/actors/WS_Zika_Sister_yulduz.jpg",
                 "TargetConditions": [],
-                "HUDTemplate": {
-                    "display": "$loc UI_CONTRACT_ZIKA_OBJ_2"
-                },
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_ZIKA_OBJ_2" },
                 "BriefingText": "$loc UI_CONTRACT_ZIKA_OBJ_2",
                 "Type": "statemachine",
                 "Definition": {
@@ -60,14 +58,16 @@
                 "Bricks": [
                     "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
                     "assembly:/_PRO/Scenes/Missions/bangkok/vr_overrides_bangkok.brick",
-                    "assembly:/_PRO/Scenes/Missions/bangkok/vr_overrides_ps4perf.brick"
+                    "assembly:/_PRO/Scenes/Missions/bangkok/vr_overrides_zika.brick",
+                    "assembly:/_PRO/Scenes/Missions/bangkok/vr_overrides_low_performance.brick"
                 ]
             },
             {
                 "Quality": "better",
                 "Bricks": [
                     "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
-                    "assembly:/_PRO/Scenes/Missions/bangkok/vr_overrides_bangkok.brick"
+                    "assembly:/_PRO/Scenes/Missions/bangkok/vr_overrides_bangkok.brick",
+                    "assembly:/_PRO/Scenes/Missions/bangkok/vr_overrides_zika.brick"
                 ]
             }
         ],
@@ -84,13 +84,14 @@
         "Description": "UI_CONTRACT_ZIKA_DESC",
         "Id": "024b6964-a3bb-4457-b085-08f9a7dc7fb7",
         "IsPublished": true,
-        "LastUpdate": "2021-03-16T13:08:04.5983913Z",
+        "LastUpdate": "2025-06-06T22:46:35.4091433Z",
         "Location": "LOCATION_BANGKOK_ZIKA",
         "Release": "1.13.x",
         "ScenePath": "assembly:/_PRO/Scenes/Missions/bangkok/scene_zika.entity",
         "TileImage": "images/contracts/whitespider/001_zika/tile.jpg",
         "Title": "UI_CONTRACT_ZIKA_TITLE",
         "Type": "campaign",
+        "OnlyNeoVR": true,
         "GroupTitle": "UI_CONTRACT_CAMPAIGN_WHITE_SPIDER_TITLE",
         "InGroup": "3d407b2b-e2f2-4204-9c08-7da67baa78fd",
         "Drops": ["ACCESS_HIT_EBOLA"],

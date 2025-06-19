@@ -16,6 +16,8 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { MissionType } from "./types"
+
 export type MissionEndRequestQuery = Partial<{
     contractSessionId: string
     masteryUnlockableId?: string
@@ -153,6 +155,13 @@ export type ChallengeLocationQuery = {
 }
 
 /**
+ * Query for `/profiles/page/ContractTypeChallenges`.
+ */
+export type ContractTypeChallengesQuery = {
+    contractType: MissionType
+}
+
+/**
  * Body for `/authentication/api/userchannel/ReportingService/ReportContract`.
  */
 export type ContractReportBody = {
@@ -179,4 +188,12 @@ export type ResolveGamerTagsBody = {
  */
 export type GetMasteryCompletionDataForUnlockableQuery = {
     unlockableId: string
+}
+
+/**
+ * Params for `/config/:audience/:serverVersion`.
+ */
+export type ConfigRouteParams = {
+    audience: string
+    serverVersion: string
 }

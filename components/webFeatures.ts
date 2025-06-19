@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -202,7 +202,7 @@ webFeaturesRouter.get(
 
         try {
             await loadUserData(req.query.user, req.query.gv)
-        } catch (e) {
+        } catch {
             formErrorMessage(res, "Failed to load user data.")
             return
         }
@@ -253,7 +253,7 @@ webFeaturesRouter.get(
     async (req: CommonRequest, res) => {
         try {
             await loadUserData(req.query.user, req.query.gv)
-        } catch (e) {
+        } catch {
             formErrorMessage(res, "Failed to load user data.")
             return
         }
@@ -372,9 +372,9 @@ webFeaturesRouter.post(
                 false,
                 {
                     profileid: req.query.user,
-                    challengeids: controller.challengeService.getChallengeIds(
-                        req.query.gv,
-                    ),
+                    challengeids: controller.challengeService
+                        .getChallengeIds(req.query.gv)
+                        .filter((id) => uuidRegex.test(id)), // filter out potential bogus challenge ids added by plugins
                 },
             )
 

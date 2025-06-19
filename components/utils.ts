@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -43,7 +43,7 @@ export const IS_LAUNCHER = process.env.IS_PEACOCK_LAUNCHER === "true"
 
 export const ServerVer: ServerVersion = {
     _Major: 8,
-    _Minor: 15,
+    _Minor: 20,
     _Build: 0,
     _Revision: 0,
 }
@@ -51,7 +51,7 @@ export const ServerVer: ServerVersion = {
 export const PEACOCKVERSTRING = HUMAN_VERSION
 
 export const uuidRegex =
-    /^[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$/
+    /^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$/
 
 export const contractTypes = ["featured", "usercreated"]
 
@@ -100,7 +100,7 @@ export async function checkForUpdates(): Promise<void> {
                 "updates",
             )
         }
-    } catch (e) {
+    } catch {
         log(LogLevel.WARN, "Failed to check for updates!", "updates")
     }
 }
@@ -155,26 +155,29 @@ export const XP_PER_LEVEL = 6000
 
 export function getMaxProfileLevel(gameVersion: GameVersion): number {
     if (gameVersion === "h3") {
-        return 7500
+        return 12500
     }
 
     return 5000
 }
 
 /**
- * Calculates the level for the given XP based on XP_PER_LEVEL.
+ * Calculates the level for the given XP based on xpPerLevel (defaults to XP_PER_LEVEL).
  * Minimum level returned is 1.
  */
-export function levelForXp(xp: number): number {
-    return Math.max(1, Math.floor(xp / XP_PER_LEVEL) + 1)
+export function levelForXp(xp: number, xpPerLevel = XP_PER_LEVEL): number {
+    return Math.max(1, Math.floor(xp / xpPerLevel) + 1)
 }
 
 /**
- * Calculates the required XP for the given level based on XP_PER_LEVEL.
+ * Calculates the required XP for the given level based on xpPerLevel (defaults to XP_PER_LEVEL).
  * Minimum XP returned is 0.
  */
-export function xpRequiredForLevel(level: number): number {
-    return Math.max(0, (level - 1) * XP_PER_LEVEL)
+export function xpRequiredForLevel(
+    level: number,
+    xpPerLevel = XP_PER_LEVEL,
+): number {
+    return Math.max(0, (level - 1) * xpPerLevel)
 }
 
 export const EVERGREEN_LEVEL_INFO: number[] = [
@@ -587,6 +590,8 @@ export const nilUuid = "00000000-0000-0000-0000-000000000000"
 
 export const hitmapsUrl = "https://backend.rdil.rocks/partners/hitmaps/contract"
 
+export const vrTutorialId = "2d106f47-ee07-45f6-862e-77ae02d38725"
+
 export function isObjectiveActive(
     objective: MissionManifestObjective,
     doneObjectives: Set<RepositoryId>,
@@ -698,6 +703,17 @@ export function unlockOrderComparer(a: Unlockable, b: Unlockable): number {
     )
 }
 
+export function unlockLevelComparer(a: Unlockable, b: Unlockable): number {
+    return (
+        (a?.Properties?.UnlockLevel
+            ? parseInt(a?.Properties?.UnlockLevel)
+            : Number.POSITIVE_INFINITY) -
+            (b?.Properties?.UnlockLevel
+                ? parseInt(b?.Properties?.UnlockLevel)
+                : Number.POSITIVE_INFINITY) || 0
+    )
+}
+
 /**
  * Converts a contract's public ID as a long-form number into the version with dashes.
  *
@@ -786,4 +802,42 @@ export function isTrueForEveryElement<Type>(
     }
 
     return true
+}
+
+const SERVER_VERSION_REGEX = /^(?<major>\d+)_(?<minor>\d+)_(?<build>\d+)$/
+const RESOURCES_VERSION_REGEX = /^(?<major>\d+)_(?<minor>\d+)$/
+
+export function extractServerVersion(
+    serverVersion: string | undefined,
+): ServerVersion | undefined {
+    if (!serverVersion) return
+
+    const versionParts = SERVER_VERSION_REGEX.exec(serverVersion)
+
+    if (versionParts?.groups) {
+        return {
+            _Major: parseInt(versionParts.groups.major, 10),
+            _Minor: parseInt(versionParts.groups.minor, 10),
+            _Build: parseInt(versionParts.groups.build, 10),
+            _Revision: 0,
+        }
+    }
+}
+
+// TODO: use me for validation on resources!!
+export function extractResourcesVersion(
+    resourcesServerVersion: string | undefined,
+): ServerVersion | undefined {
+    if (!resourcesServerVersion) return
+
+    const versionParts = RESOURCES_VERSION_REGEX.exec(resourcesServerVersion)
+
+    if (versionParts?.groups) {
+        return {
+            _Major: parseInt(versionParts.groups.major, 10),
+            _Minor: parseInt(versionParts.groups.minor, 10),
+            _Build: 0,
+            _Revision: 0,
+        }
+    }
 }

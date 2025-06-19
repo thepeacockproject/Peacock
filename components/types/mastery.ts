@@ -48,6 +48,7 @@ export type MasteryPackage = {
     LocationId: string
     GameVersions: GameVersion[]
     MaxLevel?: number
+    XpPerLevel?: number
     HideProgression?: boolean
 } & (MasteryPackageDropExt | MasteryPackageSubPackageExt)
 

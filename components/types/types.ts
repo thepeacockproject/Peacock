@@ -126,8 +126,9 @@ export interface RequestWithJwt<
     // TODO: Make this `unknown` instead, requires lots of changes elsewhere
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     RequestBody = any,
+    Params = core.ParamsDictionary,
 > extends Request<
-        core.ParamsDictionary,
+        Params,
         // eslint-disable-next-line
         any,
         RequestBody,
@@ -310,6 +311,11 @@ export interface ContractSession {
      * @since v7.0.0
      */
     firstKillTimestamp?: number
+    /**
+     * If true, it is not possible anymore to get an SA rating.
+     * @since v8.0.0
+     */
+    silentAssassinLost?: boolean
 }
 
 /**
@@ -670,6 +676,7 @@ export type Unlockable = {
         Name?: string
         Description?: string
         UnlockOrder?: number
+        UnlockLevel?: string
         Location?: string
         Equip?: string[]
         GameAssets?: string[]
@@ -696,13 +703,8 @@ export type Unlockable = {
         /**
          * Inclusion data for an unlockable. The only known use for this is
          * sniper rifle unlockables for Sniper Assassin mode.
-         *
-         * With the `InclusionData` type added,
-         * I think this line can be `InclusionData: InclusionData`. --Moony
          */
-        InclusionData?: {
-            ContractTypes?: MissionType[] | null
-        } | null
+        InclusionData?: InclusionData
         /**
          * Item perks - only known use is for Sniper Assassin.
          */
@@ -947,8 +949,9 @@ export interface MissionManifestMetadata {
     GroupObjectiveDisplayOrder?: GroupObjectiveDisplayOrderItem[] | null
     GameVersion?: string | null
     ServerVersion?: string | null
-    AllowNonTargetKills?: boolean | null
+    NonTargetKillsAllowed?: boolean | null
     Difficulty?: "pro1" | string | null
+    OnlyNeoVR?: boolean | null
     CharacterSetup?:
         | {
               Mode: "singleplayer" | "multiplayer" | string
@@ -1023,6 +1026,7 @@ export interface GameChanger {
     Resource?: string[] | null
     Objectives?: MissionManifestObjective[] | null
     LongDescription?: string | null
+    ShowBasedOnObjectives?: boolean | null
     IsPrestigeObjective?: boolean
 }
 
@@ -1610,3 +1614,12 @@ export type OfficialSublocation = {
     Xp: number
     ActionXp: number
 }
+
+export type MILLocations = {
+    [location in `LOCATION_${string}`]: string[] | string
+}
+
+export type MissionsInLocation = Record<
+    GameVersion,
+    MILLocations & { [key: string]: MILLocations | string[] }
+>

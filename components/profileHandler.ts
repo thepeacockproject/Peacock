@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -426,7 +426,9 @@ profileRouter.post(
     },
 )
 
-profileRouter.post("/ProfileService/GetFriendsCount", (_, res) => res.send("0"))
+profileRouter.post("/ProfileService/GetFriendsCount", (_, res) => {
+    res.send("0")
+})
 
 profileRouter.post(
     "/GamePersistentDataService/GetData",
@@ -528,22 +530,11 @@ profileRouter.post(
                 }),
         )
 
-        if (json.Metadata.AllowNonTargetKills) {
+        if (json.Metadata.NonTargetKillsAllowed) {
             challenges = challenges.filter(
                 (c) =>
                     c.Challenge.Id !== "f929efad-5d5e-4fcb-9c4e-6eb61a01412c",
             )
-
-            challenges.forEach((val) => {
-                // prettier-ignore
-                if (val.Challenge.Id === "b1a85feb-55af-4707-8271-b3522661c0b1") {
-                    // @ts-expect-error State machines impossible to type.
-                    // prettier-ignore
-                    val.Challenge.Definition!["States"]["Start"][
-                        "CrowdNPC_Died"
-                    ]["Transition"] = "Success"
-                }
-            })
         }
 
         const unlockAllShortcuts = getFlag("gameplayUnlockAllShortcuts")

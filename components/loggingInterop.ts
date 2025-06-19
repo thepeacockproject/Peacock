@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -99,7 +99,9 @@ if (consoleLogLevel !== LOG_LEVEL_NONE) {
         format: winston.format.combine(
             winston.format((info) => {
                 if (
+                    // @ts-expect-error todo fix types
                     !info.data.category ||
+                    // @ts-expect-error todo fix types
                     !disabledLogCategories.includes(info.data.category)
                 ) {
                     return info
@@ -108,11 +110,13 @@ if (consoleLogLevel !== LOG_LEVEL_NONE) {
                 return false
             })(),
             winston.format.printf((info) => {
+                // @ts-expect-error todo fix types
                 if (info.data.stack) {
+                    // @ts-expect-error todo fix types
                     return `${info.message}\n${info.data.stack}`
                 }
 
-                return info.message
+                return info.message as string
             }),
         ),
     })

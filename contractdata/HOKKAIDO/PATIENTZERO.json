@@ -18,16 +18,8 @@
                 "Id": "b8ffc636-4f9a-49b5-8293-98839a6ca202",
                 "ObjectiveType": "custom",
                 "IgnoreIfInactive": true,
-                "OnActive": {
-                    "IfCompleted": {
-                        "Visible": false
-                    }
-                },
-                "OnInactive": {
-                    "IfCompleted": {
-                        "State": "Completed"
-                    }
-                },
+                "OnActive": { "IfCompleted": { "Visible": false } },
+                "OnInactive": { "IfCompleted": { "State": "Completed" } },
                 "Image": "images/contracts/whitespider/004_flu/Eliminate_Infected_Obj.jpg",
                 "BriefingName": "$loc UI_CONTRACT_FLU_ELIMINATE_INFECTED_COUNT_HEAD",
                 "BriefingText": "$loc UI_CONTRACT_FLU_ELIMINATE_INFECTED_OBJ",
@@ -50,11 +42,7 @@
                         "TargetsCounter": 0
                     },
                     "States": {
-                        "Start": {
-                            "-": {
-                                "Transition": "Success"
-                            }
-                        },
+                        "Start": { "-": { "Transition": "Success" } },
                         "Success": {
                             "TargetPicked": [
                                 {
@@ -107,9 +95,7 @@
                                     }
                                 },
                                 {
-                                    "Actions": {
-                                        "$dec": "TargetsCounter"
-                                    },
+                                    "Actions": { "$dec": "TargetsCounter" },
                                     "Condition": {
                                         "$inarray": {
                                             "in": "$.Targets",
@@ -158,15 +144,9 @@
                 "ObjectiveType": "custom",
                 "IgnoreIfInactive": true,
                 "OnActive": {
-                    "IfInProgress": {
-                        "Visible": false
-                    },
-                    "IfFailed": {
-                        "Visible": false
-                    },
-                    "IfCompleted": {
-                        "Visible": true
-                    }
+                    "IfInProgress": { "Visible": false },
+                    "IfFailed": { "Visible": false },
+                    "IfCompleted": { "Visible": true }
                 },
                 "Image": "images/contracts/whitespider/004_flu/Eliminate_Infected_Obj.jpg",
                 "BriefingName": "$loc UI_CONTRACT_FLU_ELIMINATE_INFECTED_COUNT_HEAD",
@@ -185,17 +165,11 @@
                             "header": "UI_CONTRACT_FLU_ELIMINATE_INFECTED_COUNT_HEAD"
                         }
                     },
-                    "Context": {
-                        "TotalTargetsCounter": 0
-                    },
+                    "Context": { "TotalTargetsCounter": 0 },
                     "States": {
                         "Start": {
                             "TargetPicked": [
-                                {
-                                    "Actions": {
-                                        "$inc": "TotalTargetsCounter"
-                                    }
-                                }
+                                { "Actions": { "$inc": "TotalTargetsCounter" } }
                             ],
                             "ContractLoad": [
                                 {
@@ -207,16 +181,8 @@
                                     }
                                 }
                             ],
-                            "ContractEnd": [
-                                {
-                                    "Transition": "Success"
-                                }
-                            ],
-                            "exit_gate": [
-                                {
-                                    "Transition": "Success"
-                                }
-                            ]
+                            "ContractEnd": [{ "Transition": "Success" }],
+                            "exit_gate": [{ "Transition": "Success" }]
                         }
                     }
                 }
@@ -224,9 +190,7 @@
             {
                 "Id": "b3a631f9-7a96-4997-8a55-e9271d7fc476",
                 "Category": "primary",
-                "HUDTemplate": {
-                    "display": "$loc UI_CONTRACT_FLU_OBJ_2"
-                },
+                "HUDTemplate": { "display": "$loc UI_CONTRACT_FLU_OBJ_2" },
                 "BriefingText": "$loc UI_CONTRACT_FLU_OBJ_2",
                 "Type": "statemachine",
                 "Definition": {
@@ -257,20 +221,12 @@
                 "Type": "statemachine",
                 "Category": "condition",
                 "ExcludeFromScoring": true,
-                "OnActive": {
-                    "IfInProgress": {
-                        "Visible": false
-                    }
-                },
+                "OnActive": { "IfInProgress": { "Visible": false } },
                 "Definition": {
                     "Scope": "session",
                     "Context": {},
                     "States": {
-                        "Start": {
-                            "47_Infected": {
-                                "Transition": "Success"
-                            }
-                        }
+                        "Start": { "47_Infected": { "Transition": "Success" } }
                     }
                 }
             },
@@ -278,11 +234,7 @@
                 "Id": "e98be877-94bb-40a8-959f-5353a7704825",
                 "ObjectiveType": "custom",
                 "IgnoreIfInactive": true,
-                "OnActive": {
-                    "IfCompleted": {
-                        "Visible": false
-                    }
-                },
+                "OnActive": { "IfCompleted": { "Visible": false } },
                 "Activation": {
                     "$eq": [
                         "$85745a86-a55a-4286-bff8-44a7960f87c8",
@@ -302,24 +254,14 @@
                         "Targets": ["d940d53e-738c-4033-8bfd-c2ee28ae4e8a"]
                     },
                     "States": {
-                        "Start": {
-                            "-": {
-                                "Transition": "Success"
-                            }
-                        },
+                        "Start": { "-": { "Transition": "Success" } },
                         "Success": {
-                            "47_Infected": {
-                                "Transition": "Get_Antidote"
-                            }
+                            "47_Infected": { "Transition": "Get_Antidote" }
                         },
                         "Get_Antidote": {
-                            "47_Cured": {
-                                "Transition": "Success"
-                            },
+                            "47_Cured": { "Transition": "Success" },
                             "$timer": {
-                                "Condition": {
-                                    "$after": 300
-                                },
+                                "Condition": { "$after": 300 },
                                 "Transition": "Failure"
                             }
                         }
@@ -335,14 +277,16 @@
                 "Quality": "base",
                 "Bricks": [
                     "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/hokkaido/vr_overrides_snowcrane.brick",
                     "assembly:/_pro/scenes/missions/hokkaido/vr_overrides_flu.brick",
-                    "assembly:/_PRO/scenes/missions/hokkaido/vr_overrides_ps4perf.brick"
+                    "assembly:/_PRO/scenes/missions/hokkaido/vr_overrides_low_performance.brick"
                 ]
             },
             {
                 "Quality": "better",
                 "Bricks": [
                     "assembly:/_pro/Scenes/Bricks/vr_setup.brick",
+                    "assembly:/_pro/scenes/missions/hokkaido/vr_overrides_snowcrane.brick",
                     "assembly:/_pro/scenes/missions/hokkaido/vr_overrides_flu.brick"
                 ]
             }
@@ -362,12 +306,13 @@
         "ScenePath": "assembly:/_PRO/Scenes/Missions/Hokkaido/_scene_flu.entity",
         "TileImage": "images/contracts/whitespider/004_flu/tile.jpg",
         "Location": "LOCATION_HOKKAIDO_FLU",
-        "LastUpdate": "2021-03-16T13:08:04.5442363Z",
+        "LastUpdate": "2025-06-06T22:46:35.3807403Z",
         "CreationTimestamp": "2012-12-12T12:12:12.743Z",
         "CreatorUserId": "fadb923c-e6bb-4283-a537-eb4d1150262e",
         "Type": "campaign",
         "Release": "1.13.x",
         "LimitedLoadout": false,
+        "OnlyNeoVR": true,
         "GroupTitle": "UI_CONTRACT_CAMPAIGN_WHITE_SPIDER_TITLE",
         "InGroup": "3d407b2b-e2f2-4204-9c08-7da67baa78fd",
         "RequiredUnlockable": "ACCESS_HIT_FLU",

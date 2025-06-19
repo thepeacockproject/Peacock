@@ -1,6 +1,6 @@
 /*
  *     The Peacock Project - a HITMAN server replacement.
- *     Copyright (C) 2021-2024 The Peacock Project Team
+ *     Copyright (C) 2021-2025 The Peacock Project Team
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by
@@ -201,7 +201,7 @@ export function generateUserCentric(
         return undefined
     }
 
-    subLocation.DisplayNameLocKey = `UI_${subLocation!.Id}_NAME`
+    subLocation.DisplayNameLocKey = `UI_${subLocation.Id}_NAME`
 
     if (gameVersion === "h1" || gameVersion === "h2") {
         // fix h1/h2 entitlements
@@ -294,7 +294,6 @@ export function mapObjectives(
     objectives: MissionManifestObjective[],
     gameChangers: string[],
     displayOrder: GroupObjectiveDisplayOrderItem[],
-    isEvergreenSafehouse = false,
 ): MissionManifestObjective[] {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const result = new Map<string, any>()
@@ -307,19 +306,21 @@ export function mapObjectives(
                 true,
             ),
             ...getConfig<Record<string, GameChanger>>(
+                "EvergreenGameChangerProperties",
+                true,
+            ),
+            ...getConfig<Record<string, GameChanger>>(
                 "PeacockGameChangerProperties",
                 true,
             ),
         }
 
         for (const gamechangerId of gameChangers) {
-            if (isEvergreenSafehouse) break
             const gameChangerProps = gameChangerData[gamechangerId]
 
-            if (gameChangerProps) {
+            if (gameChangerProps && !gameChangerProps.ShowBasedOnObjectives) {
                 if (gameChangerProps.IsHidden) {
                     if (gameChangerProps.Objectives?.length === 1) {
-                        // Either 0 or 1 I think.
                         const objective = gameChangerProps.Objectives[0]!
                         objective.Id = gamechangerId
                         gameChangerObjectives.push(objective)
@@ -332,15 +333,9 @@ export function mapObjectives(
                             // @ts-expect-error State machines are impossible to type
                             for (obj of gameChangerProps.Objectives) {
                                 if (obj.Category === "primary") return "primary"
-                                if (obj.Category === "secondary")
-                                    return "secondary"
                             }
 
-                            // If we've not hit a primary or secondary objective, we've hit a condition
-                            // I'm not exactly sure if below follows what official does - AF
-                            // EDIT: Turns out, conditions still show as optional, setting this to
-                            //       primary for now, awaiting future investigation - AF
-                            return "primary"
+                            return "secondary" // unless specified as primary, a gamechanger is secondary
                         })()
                     }
 
@@ -365,17 +360,11 @@ export function mapObjectives(
         }
     }
 
-    for (const objective of (objectives || []).concat(gameChangerObjectives)) {
-        if (!objective.Category) {
-            objective.Category = objective.Primary ? "primary" : "secondary"
-        }
-
+    for (const objective of objectives.concat(gameChangerObjectives)) {
         if (
             objective.Activation ||
-            (objective.OnActive?.IfInProgress &&
-                objective.OnActive.IfInProgress.Visible === false) ||
-            (objective.OnActive?.IfCompleted &&
-                objective.OnActive.IfCompleted.Visible === false &&
+            objective.OnActive?.IfInProgress?.Visible === false ||
+            (objective.OnActive?.IfCompleted?.Visible === false &&
                 // @ts-expect-error State machines are impossible to type
                 objective.Definition?.States?.Start?.["-"]?.Transition ===
                     "Success")
@@ -411,6 +400,15 @@ export function mapObjectives(
                 id = objective.Definition.Context.Targets[0]
             }
 
+            let categoryIsPrimary = true // Unless otherwise specified, an objective is primary
+
+            if (
+                (objective.Category && objective.Category !== "primary") ||
+                objective.Primary === false
+            ) {
+                categoryIsPrimary = false
+            }
+
             const properties = {
                 Id: id,
                 BriefingText: objective.BriefingText || "",
@@ -418,12 +416,14 @@ export function mapObjectives(
                     objective.LongBriefingText === undefined
                         ? objective.BriefingText || ""
                         : objective.LongBriefingText,
-                Image: objective.Image,
-                BriefingName: objective.BriefingName,
-                DisplayAsKill: objective.DisplayAsKillObjective || false,
-                ObjectivesCategory: objective.Category as
-                    | typeof objective.Category
+                Image: (objective.Image || "") as string | undefined,
+                BriefingName: (objective.BriefingName || "") as
+                    | string
                     | undefined,
+                DisplayAsKill: objective.DisplayAsKillObjective || false,
+                ObjectivesCategory: (categoryIsPrimary
+                    ? "primary"
+                    : "secondary") as string | undefined,
                 ForceShowOnLoadingScreen: (objective.ForceShowOnLoadingScreen ||
                     false) as boolean | undefined,
             }
@@ -434,6 +434,7 @@ export function mapObjectives(
                     properties.Image = undefined
                     properties.ForceShowOnLoadingScreen = undefined
                     properties.BriefingName = undefined
+                    properties.ObjectivesCategory = undefined
                     break
                 case "setpiece":
                     properties.ObjectivesCategory = undefined
@@ -479,7 +480,7 @@ export function mapObjectives(
     const sortedResult: MissionManifestObjective[] = []
     const resultIds: Set<string> = new Set()
 
-    for (const { Id, IsNew } of displayOrder || []) {
+    for (const { Id, IsNew } of displayOrder) {
         if (!resultIds.has(Id)) {
             // if not yet added
             const objective = result.get(Id)
@@ -495,23 +496,12 @@ export function mapObjectives(
         }
     }
 
-    // This is something to get the main objective to show on the planning menu - AF
-    if (isEvergreenSafehouse) {
-        sortedResult.push(result.get("f9cfcf80-9977-4ad1-b3c7-0228a2026b9c"))
-        resultIds.add("f9cfcf80-9977-4ad1-b3c7-0228a2026b9c")
-    }
-
     // add each objective or gamechanger that is not already in the result
-    for (const { Id, ExcludeFromScoring, ForceShowOnLoadingScreen } of (
-        objectives || []
-    ).concat((gameChangers || []).map((x) => ({ Id: x })))) {
+    for (const Id of objectives.map((obj) => obj.Id).concat(gameChangers)) {
         if (!resultIds.has(Id)) {
             const resultobjective = result.get(Id)
 
-            if (
-                resultobjective &&
-                (!ExcludeFromScoring || ForceShowOnLoadingScreen)
-            ) {
+            if (resultobjective) {
                 sortedResult.push(resultobjective)
                 resultIds.add(Id)
             }
