@@ -50,7 +50,10 @@
                         "Success": {
                             "SecuritySystemRecorder": {
                                 "Condition": {
-                                    "$eq": ["$Value.event", "spotted"]
+                                    "$eq": [
+                                        "$Value.event",
+                                        "spotted"
+                                    ]
                                 },
                                 "Transition": "Failure"
                             }
@@ -96,7 +99,10 @@
                         "Success": {
                             "Kill": {
                                 "Condition": {
-                                    "$eq": ["$Value.IsTarget", true]
+                                    "$eq": [
+                                        "$Value.IsTarget",
+                                        true
+                                    ]
                                 },
                                 "Actions": {
                                     "$dec": "AmountToKill"
@@ -108,7 +114,10 @@
                             "-": [
                                 {
                                     "Condition": {
-                                        "$eq": ["$.AmountToKill", 0]
+                                        "$eq": [
+                                            "$.AmountToKill",
+                                            0
+                                        ]
                                     },
                                     "Transition": "Success"
                                 },
@@ -126,7 +135,10 @@
                             },
                             "Kill": {
                                 "Condition": {
-                                    "$eq": ["$Value.IsTarget", true]
+                                    "$eq": [
+                                        "$Value.IsTarget",
+                                        true
+                                    ]
                                 },
                                 "Actions": {
                                     "$dec": "AmountToKill"
@@ -239,7 +251,10 @@
                                 "Condition": {
                                     "$and": [
                                         {
-                                            "$eq": ["$Value.IsTarget", true]
+                                            "$eq": [
+                                                "$Value.IsTarget",
+                                                true
+                                            ]
                                         },
                                         {
                                             "$not": {
@@ -262,6 +277,94 @@
                                     ]
                                 },
                                 "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "ShowBasedOnObjectives": null,
+        "IsPrestigeObjective": null
+    },
+    "6d79894f-132d-4977-b186-4d0a2382c912": {
+        "Name": "UI_PEACOCK_GAMECHANGERS_GLOBAL_PACIFYBEFOREELIMINATION_NAME",
+        "Description": "UI_PEACOCK_GAMECHANGERS_GLOBAL_PACIFYBEFOREELIMINATION_DESC",
+        "Icon": "images/challenges/default_challenge_icon.png",
+        "IsHidden": null,
+        "TileImage": "images/contracts/gamechangers/gamechanger_global_nopacifications.jpg",
+        "Resource": [],
+        "Objectives": [
+            {
+                "Id": "0b4e7a06-c544-987a-e0bd-8f6ad23406a4",
+                "Category": "secondary",
+                "AllowEtRestartOnSuccess": true,
+                "BriefingText": "$loc UI_PEACOCK_GAMECHANGERS_GLOBAL_PACIFYBEFOREELIMINATION_DESC",
+                "HUDTemplate": {
+                    "display": "$loc UI_PEACOCK_GAMECHANGERS_GLOBAL_PACIFYBEFOREELIMINATION_HUD",
+                    "iconType": 17
+                },
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "Constants": {
+                        "EligibleTargets": [
+                            "531a270c-67a1-41a1-8dfd-c84a4e8ee127",
+                            "9c2190fa-0095-4fa9-9f27-394e09c96bc5",
+                            "54f583de-f261-4473-956c-dc278e5162e2"
+                        ]
+                    },
+                    "Context": {
+                        "isPacified": false
+                    },
+                    "States": {
+                        "Start": {
+                            "-": {
+                                "Transition": "Success"
+                            }
+                        },
+                        "Success": {
+                            "Kill": {
+                                "Condition": {
+                                    "$and": [
+                                        {
+                                            "$inarray": {
+                                                "?": {
+                                                    "$eq": [
+                                                        "$.#",
+                                                        "$Value.RepositoryId"
+                                                    ]
+                                                },
+                                                "in": "$.EligibleTargets"
+                                            }
+                                        },
+                                        {
+                                            "$eq": [
+                                                "$.isPacified",
+                                                false
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "Transition": "Failure"
+                            },
+                            "Pacify": {
+                                "Condition": {
+                                    "$inarray": {
+                                        "?": {
+                                            "$eq": [
+                                                "$.#",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        },
+                                        "in": "$.EligibleTargets"
+                                    }
+                                },
+                                "Actions": {
+                                    "$set": [
+                                        "isPacified",
+                                        true
+                                    ]
+                                }
                             }
                         }
                     }
