@@ -50,10 +50,7 @@
                         "Success": {
                             "SecuritySystemRecorder": {
                                 "Condition": {
-                                    "$eq": [
-                                        "$Value.event",
-                                        "spotted"
-                                    ]
+                                    "$eq": ["$Value.event", "spotted"]
                                 },
                                 "Transition": "Failure"
                             }
@@ -99,10 +96,7 @@
                         "Success": {
                             "Kill": {
                                 "Condition": {
-                                    "$eq": [
-                                        "$Value.IsTarget",
-                                        true
-                                    ]
+                                    "$eq": ["$Value.IsTarget", true]
                                 },
                                 "Actions": {
                                     "$dec": "AmountToKill"
@@ -114,10 +108,7 @@
                             "-": [
                                 {
                                     "Condition": {
-                                        "$eq": [
-                                            "$.AmountToKill",
-                                            0
-                                        ]
+                                        "$eq": ["$.AmountToKill", 0]
                                     },
                                     "Transition": "Success"
                                 },
@@ -135,10 +126,7 @@
                             },
                             "Kill": {
                                 "Condition": {
-                                    "$eq": [
-                                        "$Value.IsTarget",
-                                        true
-                                    ]
+                                    "$eq": ["$Value.IsTarget", true]
                                 },
                                 "Actions": {
                                     "$dec": "AmountToKill"
@@ -251,10 +239,7 @@
                                 "Condition": {
                                     "$and": [
                                         {
-                                            "$eq": [
-                                                "$Value.IsTarget",
-                                                true
-                                            ]
+                                            "$eq": ["$Value.IsTarget", true]
                                         },
                                         {
                                             "$not": {
@@ -338,10 +323,7 @@
                                             }
                                         },
                                         {
-                                            "$eq": [
-                                                "$.isPacified",
-                                                false
-                                            ]
+                                            "$eq": ["$.isPacified", false]
                                         }
                                     ]
                                 },
@@ -360,10 +342,7 @@
                                     }
                                 },
                                 "Actions": {
-                                    "$set": [
-                                        "isPacified",
-                                        true
-                                    ]
+                                    "$set": ["isPacified", true]
                                 }
                             }
                         }
