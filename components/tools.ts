@@ -28,7 +28,7 @@ import axios from "axios"
 import { Stream } from "stream"
 import { createWriteStream, existsSync, mkdirSync, readFileSync } from "fs"
 import ProgressBar from "progress"
-import { resolve as pathResolve } from "path"
+import { join, resolve as pathResolve } from "path"
 import picocolors from "picocolors"
 import { Filename, npath, PortablePath, ppath, xfs } from "@yarnpkg/fslib"
 import { makeEmptyArchive, ZipFS } from "@yarnpkg/libzip"
@@ -131,7 +131,19 @@ async function exportDebugInfo(skipEncrypt: boolean): Promise<void> {
 
     await zip.writeFilePromise(zip.resolve("meta.json" as Filename), debugJson)
 
+    const patcherConfigPath = join(
+        process.env.APPDATA ?? "",
+        "PeacockProject",
+        "peacock_patcher2.conf",
+    )
     const modFrameworkDataPaths = SMFSupport.modFrameworkDataPaths
+
+    if (existsSync(patcherConfigPath)) {
+        await zip.writeFilePromise(
+            zip.resolve("peacock_patcher2.conf" as Filename),
+            readFileSync(patcherConfigPath),
+        )
+    }
 
     if (modFrameworkDataPaths) {
         for (const dataPath of modFrameworkDataPaths) {
