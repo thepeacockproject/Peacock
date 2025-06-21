@@ -628,6 +628,45 @@ const noRecordings = {
     ],
 }
 
+const noBodiesFound = {
+    IsCompleted: true,
+    ContractConditionType: "PrimarySecondary",
+    Primary: [
+        {
+            Type: "gamechanger",
+            Properties: {
+                Id: "fd37b209-4e11-461e-a11f-394c92fbbe80",
+                Name: "UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_NO_BODIES_FOUND_PRIMARY_NAME",
+                Description:
+                    "UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_NO_BODIES_FOUND_PRIMARY_DESC",
+                LongDescription:
+                    "UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_NO_BODIES_FOUND_PRIMARY_DESC",
+                TileImage:
+                    "images/contractconditions/condition_contrac_no_bodies_found.jpg",
+                Icon: "images/challenges/default_challenge_icon.png",
+                ObjectivesCategory: "primary",
+            },
+        },
+    ],
+    Secondary: [
+        {
+            Type: "gamechanger",
+            Properties: {
+                Id: "9673f602-3b2a-4bd3-94b3-b3b311b7bc7e",
+                Name: "UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_NO_BODIES_FOUND_SECONDARY_NAME",
+                Description:
+                    "UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_NO_BODIES_FOUND_SECONDARY_DESC",
+                LongDescription:
+                    "UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_NO_BODIES_FOUND_SECONDARY_DESC",
+                TileImage:
+                    "images/contractconditions/condition_contrac_no_bodies_found.jpg",
+                Icon: "images/challenges/default_challenge_icon.png",
+                ObjectivesCategory: "secondary",
+            },
+        },
+    ],
+}
+
 const headshotsOnly = {
     IsCompleted: true,
     ContractConditionType: "PrimarySecondary",
@@ -896,6 +935,7 @@ export function complications(timeString: string) {
         noDisguiseChanges,
         noPacifications,
         noRecordings,
+        noBodiesFound,
         noMissedShots,
         headshotsOnly,
         targetsOnly,
