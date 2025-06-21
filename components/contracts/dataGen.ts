@@ -808,7 +808,7 @@ const doNotGetSpotted = {
         {
             Type: "gamechanger",
             Properties: {
-                Id: "a77cf01e-ab02-4b1c-a4bd-a37fb8be1114",
+                Id: "b48bb7f9-b630-48cb-a816-720ed7959319",
                 Name: "UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_DO_NOT_GET_SPOTTED_SECONDARY_NAME",
                 Description:
                     "UI_GAMECHANGERS_GLOBAL_CONTRACTCONDITION_DO_NOT_GET_SPOTTED_SECONDARY_DESC",
