@@ -154,7 +154,7 @@ export class SteamH1Strategy extends EntitlementStrategy {
             "440962", // Hokkaido
             "440970", // Requiem Legacy Suit
             "440971", // Silenced ICA-19 Chrome Pistol
-            "440972". // White Rubber Duck Explosive
+            "440972", // White Rubber Duck Explosive
             "505180", // FULL EXPERIENCE
             "505200", // FULL EXPERIENCE Upgrade
             "505201", // Intro Pack
