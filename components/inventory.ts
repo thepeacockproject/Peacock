@@ -128,7 +128,9 @@ function filterUnlockedContent(
 
         // Handles unlockables that belong to a package or unlocked gear from evergreen
         if (packagedUnlocks.has(unlockable.Id)) {
-            packagedUnlocks.get(unlockable.Id) && acc[0].push(unlockable)
+            if (packagedUnlocks.get(unlockable.Id)) {
+                acc[0].push(unlockable)
+            }
         }
 
         // Handles packages
