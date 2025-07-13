@@ -2,8 +2,8 @@
     "$datacontext": {
         "in": "$.",
         "datavalues": {
-            "Title": "$.title",
-            "Description": "$.description",
+            "Title": "$loc $formatstring UI_PEACOCK_OPTION_FLAG_{$.title}_TITLE",
+            "Description": "$loc $formatstring UI_PEACOCK_OPTION_FLAG_{$.title}_DESC",
             "PossibleValues": {
                 "$arraysort": {
                     "source": "$.possibleValues",
@@ -36,7 +36,7 @@
                             {
                                 "case": "enum",
                                 "return": {
-                                    "displayValue": "$formatstring [{$.value}]"
+                                    "displayValue": "$loc $formatstring EUI_PEACOCK_TEXT_OPTIONS_{$.value}"
                                 }
                             },
                             {
@@ -72,7 +72,7 @@
                                             "view": "menu3.basic.OptionsListElement",
                                             "controller": "tabsitem",
                                             "data": {
-                                                "title": "{$.}"
+                                                "title": "$loc $formatstring EUI_PEACOCK_TEXT_OPTIONS_{$.}"
                                             },
                                             "actions": {
                                                 "select": {
