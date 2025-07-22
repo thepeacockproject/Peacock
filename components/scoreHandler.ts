@@ -266,8 +266,6 @@ export function calculateScore(
         }
     }
 
-    totalScore = Math.max(0, totalScore)
-
     if (nonTargetKills === 0 || allowNonTargetKills) {
         scoringHeadlines.push(
             Object.assign(Object.assign({}, headlineObjTemplate), {
@@ -286,6 +284,8 @@ export function calculateScore(
         )
         totalScore += -5000 * nonTargetKills
     }
+
+    totalScore = Math.max(0, totalScore)
 
     const timeHours = Math.floor(timeTotal / 3600)
     const timeMinutes = Math.floor((timeTotal - timeHours * 3600) / 60)
