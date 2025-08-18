@@ -267,9 +267,9 @@ function isChallengeInContract(
         groupContract?.Metadata.Id || "",
     )
 
-    // Is this for the current groupContract type?
+    // Is this for the current contract type?
     // As of v6.1.0, this is only used for ET challenges.
-    // We have to resolve the non-group groupContract, `groupContract` is the group groupContract
+    // We have to resolve the non-group contract, `groupContract` is the group contract
     const isForContractType = (
         challenge.InclusionData?.ContractTypes || []
     ).includes(individualContract.Metadata.Type)
