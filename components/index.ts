@@ -79,6 +79,7 @@ import { cheapLoadUserData, setupFileStructure } from "./databaseHandler"
 import { getFlag, saveFlags } from "./flags"
 import { initializePeacockMenu } from "./menus/settings"
 import { ConfigRouteParams } from "./types/gameSchemas"
+import { setTimeout } from "timers"
 
 const host = process.env.HOST || "0.0.0.0"
 const port = process.env.PORT || 80
@@ -165,6 +166,22 @@ app.use(
 // make sure all responses have a default content-type set
 app.use(function ensurePlainContentType(_req, res, next) {
     res.contentType("text/plain")
+
+    next()
+})
+
+app.use(function throttleResponses(_req, res, next): void {
+    const sendJson = res.json
+    const delay = getFlag("throttleMs") as number
+
+    if (delay > 0) {
+        // @ts-expect-error yes yes I know what I'm doing
+        res.json = (...args) => {
+            setTimeout(() => {
+                sendJson(...args)
+            }, delay)
+        }
+    }
 
     next()
 })

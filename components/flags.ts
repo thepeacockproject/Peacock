@@ -199,6 +199,12 @@ export const defaultFlags: Flags = {
                 desc: "When set to true, will log the body of all requests the game makes. This can cause huge log files!",
                 default: false,
             },
+            throttleMs: {
+                category: "development",
+                title: "throttleMs",
+                desc: "Number of milliseconds to throttle responses, to try and solve the game crashing from race conditions.",
+                default: 0,
+            }
         },
     },
 }
