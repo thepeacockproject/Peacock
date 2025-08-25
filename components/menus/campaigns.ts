@@ -73,7 +73,12 @@ function genSingleVideo(
     const video = videos[videoId]
 
     switch (gameVersion) {
-        // H1 is not included here as there should be no edits required for the videos from H1
+        case "h1": {
+            // h1 videos have no entitlements
+            video.Entitlements = []
+
+            break
+        }
         case "h2": {
             if (video.Data.DlcName === "GAME_STORE_METADATA_GAME_TITLE") {
                 video.Data.DlcName = "GAME_STORE_METADATA_S2_GAME_TITLE"
@@ -100,14 +105,6 @@ function genSingleVideo(
             video.Data = {
                 DlcName: "GAME_STORE_METADATA_S3_GAME_TITLE",
                 DlcImage: "images/livetile/dlc/tile_hitman3.jpg",
-            }
-
-            if (video.Entitlements.includes("GOTY_PATIENT_ZERO")) {
-                video.Entitlements = ["H1_LEGACY_STANDARD"]
-            }
-
-            if (video.Entitlements.includes("LOCATION_NEWZEALAND")) {
-                video.Entitlements = ["H2_LEGACY_STANDARD"]
             }
 
             break
