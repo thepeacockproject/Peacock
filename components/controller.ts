@@ -822,16 +822,13 @@ export class Controller {
             return
         }
 
-        this.hooks.getContractManifest.tap(
-            manifest.Metadata.Id,
-            (id, gameVersion) => {
-                if (id === manifest.Metadata.Id) {
-                    return this.fixContract(manifest, gameVersion)
-                }
+        this.hooks.getContractManifest.tap(manifest.Metadata.Id, (id) => {
+            if (id === manifest.Metadata.Id) {
+                return manifest
+            }
 
-                return undefined
-            },
-        )
+            return undefined
+        })
     }
 
     /**
