@@ -682,6 +682,29 @@ export class Controller {
                         (brick) =>
                             !brick.includes("override_constantjeff.brick"),
                     )
+
+                break
+            }
+            case "h3": {
+                if (!contract.Metadata.Entitlements) break
+
+                const locations =
+                    this.configManager.getConfig<PeacockLocationsData>(
+                        "LocationsData",
+                        false,
+                    )
+
+                // Entitlements changed in 3.230.1, thanks IOI
+                contract.Metadata.Entitlements =
+                    contract.Metadata.Entitlements.map((ent) => {
+                        const ents =
+                            locations.children[contract.Metadata.Location]
+                                ?.Properties.Entitlements
+
+                        return ent.endsWith("LEGACY_STANDARD") && ents?.length
+                            ? ents[0]
+                            : ent
+                    })
             }
         }
 
