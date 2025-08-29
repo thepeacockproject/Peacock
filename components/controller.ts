@@ -701,10 +701,14 @@ export class Controller {
                             locations.children[contract.Metadata.Location]
                                 ?.Properties.Entitlements
 
-                        return ent.endsWith("LEGACY_STANDARD") && ents?.length
-                            ? ents[0]
-                            : ent
-                    })
+                        if (ent.endsWith("LEGACY_STANDARD")) {
+                            // The entitlements 'H1_LEGACY_STANDARD' and 'H2_LEGACY_STANDARD' are no longer in the game as of v3.230.1
+                            // Either replace them with the corresponding new location entitlement or remove
+                            return ents?.[0]
+                        }
+
+                        return ent
+                    }).filter((ent) => ent !== undefined)
             }
         }
 
