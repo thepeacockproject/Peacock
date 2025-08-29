@@ -333,7 +333,7 @@ export class Controller {
         >
         getContractManifest: SyncBailHook<
             [contractId: string, gameVersion: GameVersion, isGroup: boolean],
-            MissionManifest | undefined
+            MissionManifest | [MissionManifest, boolean] | undefined
         >
         fixContract: SyncHook<
             [contract: MissionManifest, gameVersion: GameVersion]
@@ -750,19 +750,33 @@ export class Controller {
             log(LogLevel.TRACE, `No game version.`, "Contracts")
         }
 
-        const optionalPluginJson = this.hooks.getContractManifest.call(
+        let optionalPluginJson = this.hooks.getContractManifest.call(
             id,
             gameVersion,
             getGroup,
         )
 
         if (optionalPluginJson) {
-            // We skip fixing plugins as we assume they know what they're doing.
-            return fastClone(
-                getGroup
-                    ? this.getGroupContract(optionalPluginJson, gameVersion)
-                    : optionalPluginJson,
-            )
+            // If a plugin returns [MissionManifest, true] instead of MissionManifest, do not fix the MissionManifest
+            if ((optionalPluginJson as [MissionManifest, boolean])[1]) {
+                optionalPluginJson = (
+                    optionalPluginJson as [MissionManifest, boolean]
+                )[0]
+            } else {
+                optionalPluginJson = this.fixContract(
+                    optionalPluginJson as MissionManifest,
+                    gameVersion,
+                )
+            }
+
+            if (getGroup) {
+                optionalPluginJson = this.getGroupContract(
+                    optionalPluginJson as MissionManifest,
+                    gameVersion,
+                )
+            }
+
+            return fastClone(optionalPluginJson as MissionManifest)
         }
 
         const registryJson: MissionManifest | undefined = internalContracts[id]
