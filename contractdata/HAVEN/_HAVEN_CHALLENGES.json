@@ -427,6 +427,152 @@
                     }
                 },
                 {
+                    "Id": "5b753203-7dac-4746-aa07-0f84af8ad04e",
+                    "Name": "UI_CHALLENGES_STINGRAY_POISONDROWNING_NAME",
+                    "ImageName": "images/challenges/Opulent/poisondrowning.jpg",
+                    "Description": "UI_CHALLENGES_STINGRAY_POISONDROWNING_DESC",
+                    "Rewards": {
+                        "MasteryXP": 4000
+                    },
+                    "Drops": ["PROP_MELEE_COCKTAILSHAKER"],
+                    "IsPlayable": true,
+                    "IsLocked": false,
+                    "HideProgression": false,
+                    "CategoryName": "UI_MENU_PAGE_PROFILE_CHALLENGES_CATEGORY_SIGNATUREKILL",
+                    "Icon": "challenge_category_assassination",
+                    "LocationId": "LOCATION_PARENT_OPULENT",
+                    "ParentLocationId": "LOCATION_PARENT_OPULENT",
+                    "Type": "contract",
+                    "DifficultyLevels": [],
+                    "OrderIndex": 10000,
+                    "XpModifier": {},
+                    "RuntimeType": "Hit",
+                    "Definition": {
+                        "Constants": {
+                            "TargetCount": 3
+                        },
+                        "Context": {
+                            "EmeticPoisonedTargets": [],
+                            "SedativePoisonedTargets": [],
+                            "EliminatedTargets": []
+                        },
+                        "ContextListeners": {
+                            "EliminatedTargets": {
+                                "type": "challengecounter",
+                                "count": "($.EliminatedTargets).Count",
+                                "total": "$.TargetCount"
+                            }
+                        },
+                        "Scope": "session",
+                        "States": {
+                            "Start": {
+                                "Actorsick": {
+                                    "Condition": {
+                                        "$eq": ["$Value.IsTarget", true]
+                                    },
+                                    "Actions": {
+                                        "$pushunique": [
+                                            "EmeticPoisonedTargets",
+                                            "$Value.actor_R_ID"
+                                        ]
+                                    }
+                                },
+                                "ActorNoMoreSick": {
+                                    "Actions": {
+                                        "$remove": [
+                                            "EmeticPoisonedTargets",
+                                            "$Value.actor_R_ID"
+                                        ]
+                                    }
+                                },
+                                "Pacify": {
+                                    "Condition": {
+                                        "$and": [
+                                            {
+                                                "$eq": ["$Value.IsTarget", true]
+                                            },
+                                            {
+                                                "$inarray": {
+                                                    "in": "$Value.DamageEvents",
+                                                    "?": {
+                                                        "$eq": [
+                                                            "$.#",
+                                                            "Sedated"
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "Actions": {
+                                        "$pushunique": [
+                                            "SedativePoisonedTargets",
+                                            "$Value.RepositoryId"
+                                        ]
+                                    }
+                                },
+                                "Stingray_PoisonDrowning_ActorAlive": {
+                                    "Actions": {
+                                        "$remove": [
+                                            "SedativePoisonedTargets",
+                                            "$Value"
+                                        ]
+                                    }
+                                },
+                                "Kill": [
+                                    {
+                                        "Condition": {
+                                            "$or": [
+                                                {
+                                                    "$inarray": {
+                                                        "in": "$.EmeticPoisonedTargets",
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$Value.RepositoryId"
+                                                            ]
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "$inarray": {
+                                                        "in": "$.SedativePoisonedTargets",
+                                                        "?": {
+                                                            "$eq": [
+                                                                "$.#",
+                                                                "$Value.RepositoryId"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "Actions": {
+                                            "$pushunique": [
+                                                "EliminatedTargets",
+                                                "$Value.RepositoryId"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "Condition": {
+                                            "$eq": [
+                                                "($.EliminatedTargets).Count",
+                                                "$.TargetCount"
+                                            ]
+                                        },
+                                        "Transition": "Success"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tags": ["story", "assassination", "hard"],
+                    "InclusionData": {
+                        "ContractIds": ["095261b5-e15b-4ca1-9bb7-001fb85c5aaa"]
+                    }
+                },
+                {
                     "Id": "6c3f0267-5d67-4a70-ac12-fcf4ea2202eb",
                     "Name": "UI_CHALLENGES_STINGRAY_ELECTRICITYKILLALL_NAME",
                     "ImageName": "images/challenges/Opulent/electricitykillall.jpg",
