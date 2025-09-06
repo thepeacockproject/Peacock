@@ -891,7 +891,34 @@ export class Controller {
 
         a.push(groupContract.Metadata.Id)
 
-        this.scanForGroups()
+        const escalationGroup: Record<number, string> = {}
+        const order = groupContract.Metadata.GroupDefinition?.Order
+
+        if (!order) {
+            log(
+                LogLevel.ERROR,
+                `A plugin tried to add an escalation (${groupContract.Metadata.Id}) without a GroupDefinition`,
+                "addEscalation",
+            )
+            return
+        }
+
+        for (let i = 0; i < order.length; i++) {
+            const next = this.resolveContract(order[i], "h3")
+
+            if (!next) {
+                log(
+                    LogLevel.ERROR,
+                    `Could not find next contract (${order[i]}) in group ${groupContract.Metadata.Id}!`,
+                    "addEscalation",
+                )
+                return
+            }
+
+            escalationGroup[i + 1] = next.Metadata.Id
+        }
+
+        this.escalationMappings.set(groupContract.Metadata.Id, escalationGroup)
     }
 
     /**
