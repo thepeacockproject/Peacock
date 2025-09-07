@@ -674,6 +674,13 @@ export class ChallengeService extends ChallengeRegistry {
                 (<ChallengeDefinitionLike>challenge?.Definition)?.Context || {},
         }
 
+        if (data[challengeId].CurrentState !== "Start") {
+            // this is how the game reads the current state
+            data[challengeId].State.CurrentState =
+                data[challengeId].CurrentState
+            // TODO: also add $StateEntryTime here
+        }
+
         const dependencies = this.getDependenciesForChallenge(
             challengeId,
             gameVersion,
