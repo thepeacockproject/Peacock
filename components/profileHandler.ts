@@ -20,6 +20,7 @@ import { Router } from "express"
 import path from "path"
 import {
     castUserProfile,
+    fastClone,
     getMaxProfileLevel,
     LATEST_PROFILE_VERSION,
     nilUuid,
@@ -915,14 +916,6 @@ export async function loadSession(
 
     // Update challenge progression with the user's latest progression data
     for (const cid in sessionData.challengeContexts) {
-        // Make sure the ChallengeProgression is available, otherwise loading might fail!
-        userData.Extensions.ChallengeProgression[cid] ??= {
-            CurrentState: "Start",
-            State: {},
-            Completed: false,
-            Ticked: false,
-        }
-
         const challenge = controller.challengeService.getChallengeById(
             cid,
             sessionData.gameVersion,
@@ -933,12 +926,19 @@ export async function loadSession(
             `session has context for unregistered challenge ${cid}`,
         )
 
-        if (
-            !userData.Extensions.ChallengeProgression[cid].Completed &&
-            controller.challengeService.needSaveProgression(challenge)
-        ) {
+        if (controller.challengeService.needSaveProgression(challenge)) {
+            // Make sure the ChallengeProgression is available, otherwise loading might fail!
+            userData.Extensions.ChallengeProgression[cid] ??= {
+                CurrentState: "Start",
+                State: fastClone(challenge.Definition?.Context || {}),
+                Completed: false,
+                Ticked: false,
+            }
+
             sessionData.challengeContexts[cid].context =
                 userData.Extensions.ChallengeProgression[cid].State
+            sessionData.challengeContexts[cid].state =
+                userData.Extensions.ChallengeProgression[cid].CurrentState
         }
     }
 

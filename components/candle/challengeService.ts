@@ -1059,9 +1059,10 @@ export class ChallengeService extends ChallengeRegistry {
                         Ticked: false,
                         Completed: false,
                         CurrentState: "Start",
-                        State:
-                            (<ChallengeDefinitionLike>challenge?.Definition)
+                        State: fastClone(
+                            (<ChallengeDefinitionLike>challenge.Definition)
                                 ?.Context || {},
+                        ),
                     }
 
                     challengeContexts[challenge.Id].context =
