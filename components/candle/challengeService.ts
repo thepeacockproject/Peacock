@@ -1136,12 +1136,17 @@ export class ChallengeService extends ChallengeRegistry {
             )
 
             if (this.needSaveProgression(challenge)) {
-                userData.Extensions.ChallengeProgression[challengeId].State =
-                    result.context
+                if (result.state === "Failure") {
+                    delete userData.Extensions.ChallengeProgression[challengeId]
+                } else {
+                    userData.Extensions.ChallengeProgression[
+                        challengeId
+                    ].State = result.context
 
-                userData.Extensions.ChallengeProgression[
-                    challengeId
-                ].CurrentState = result.state
+                    userData.Extensions.ChallengeProgression[
+                        challengeId
+                    ].CurrentState = result.state
+                }
 
                 writeUserData(session.userId, session.gameVersion)
             }
