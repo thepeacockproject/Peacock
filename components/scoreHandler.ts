@@ -43,6 +43,7 @@ import type {
     JwtData,
     MissionManifest,
     MissionManifestObjective,
+    ProgressionData,
     Seconds,
     UserProfile,
 } from "./types/types"
@@ -882,11 +883,20 @@ export async function getMissionEndData(
 
     const newLocationXp = completionData.XP
     let newLocationLevel = levelForXp(newLocationXp, masteryData?.XpPerLevel)
+    const userProgressionLocations = userData.Extensions.progression.Locations
 
     if (!query.masteryUnlockableId) {
-        userData.Extensions.progression.Locations[
-            locationParentId
-        ].PreviouslySeenXp = newLocationXp
+        if (userProgressionLocations[locationParentId]) {
+            userProgressionLocations[locationParentId].PreviouslySeenXp = newLocationXp
+        } else {
+            log(LogLevel.WARN, `Location progression missing for ${locationParentId}, adding default progression.`)
+            const defaultProgression: ProgressionData = {
+                Xp: 0,
+                Level: 1,
+                PreviouslySeenXp: newLocationXp
+            }
+            userProgressionLocations[locationParentId] = defaultProgression
+        }
     }
 
     if (!isDryRun) writeUserData(jwt.unique_name, gameVersion)
