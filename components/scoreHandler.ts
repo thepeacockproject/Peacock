@@ -888,7 +888,7 @@ export async function getMissionEndData(
         userProgressionLocations[locationParentId] ??= {
             Xp: 0,
             Level: 1,
-            PreviouslySeenXp: newLocationXp
+            PreviouslySeenXp: newLocationXp,
         }
         userProgressionLocations[locationParentId].PreviouslySeenXp = newLocationXp
     }
