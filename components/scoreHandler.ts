@@ -886,17 +886,12 @@ export async function getMissionEndData(
     const userProgressionLocations = userData.Extensions.progression.Locations
 
     if (!query.masteryUnlockableId) {
-        if (userProgressionLocations[locationParentId]) {
-            userProgressionLocations[locationParentId].PreviouslySeenXp = newLocationXp
-        } else {
-            log(LogLevel.WARN, `Location progression missing for ${locationParentId}, adding default progression.`)
-            const defaultProgression: ProgressionData = {
-                Xp: 0,
-                Level: 1,
-                PreviouslySeenXp: newLocationXp
-            }
-            userProgressionLocations[locationParentId] = defaultProgression
+        userProgressionLocations[locationParentId] ??= {
+            Xp: 0,
+            Level: 1,
+            PreviouslySeenXp: newLocationXp
         }
+        userProgressionLocations[locationParentId].PreviouslySeenXp = newLocationXp
     }
 
     if (!isDryRun) writeUserData(jwt.unique_name, gameVersion)
