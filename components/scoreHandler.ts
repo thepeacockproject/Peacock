@@ -43,7 +43,6 @@ import type {
     JwtData,
     MissionManifest,
     MissionManifestObjective,
-    ProgressionData,
     Seconds,
     UserProfile,
 } from "./types/types"
