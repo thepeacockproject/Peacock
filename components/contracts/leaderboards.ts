@@ -87,13 +87,8 @@ export async function getLeaderboardEntries(
     const host = getFlag("leaderboardsHost") as string
 
     const entries = (
-        await axios.post<ApiLeaderboardEntry[]>(
-            `${host}/leaderboards/entries/${contractId}`,
-            {
-                gameVersion,
-                difficulty,
-                platform,
-            },
+        await axios.get<ApiLeaderboardEntry[]>(
+            `${host}/leaderboards/contracts/${contractId}/${gameVersion}/${platform}/${difficulty}/entries`,
             {
                 headers: {
                     "Peacock-Version": PEACOCKVERSTRING,
