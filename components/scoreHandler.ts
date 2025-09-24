@@ -890,7 +890,8 @@ export async function getMissionEndData(
             Level: 1,
             PreviouslySeenXp: newLocationXp,
         }
-        userProgressionLocations[locationParentId].PreviouslySeenXp = newLocationXp
+        userProgressionLocations[locationParentId].PreviouslySeenXp =
+            newLocationXp
     }
 
     if (!isDryRun) writeUserData(jwt.unique_name, gameVersion)
