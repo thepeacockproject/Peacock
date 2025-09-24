@@ -882,11 +882,15 @@ export async function getMissionEndData(
 
     const newLocationXp = completionData.XP
     let newLocationLevel = levelForXp(newLocationXp, masteryData?.XpPerLevel)
+    const userProgressionLocations = userData.Extensions.progression.Locations
 
     if (!query.masteryUnlockableId) {
-        userData.Extensions.progression.Locations[
-            locationParentId
-        ].PreviouslySeenXp = newLocationXp
+        userProgressionLocations[locationParentId] ??= {
+            Xp: 0,
+            Level: 1,
+            PreviouslySeenXp: newLocationXp,
+        }
+        userProgressionLocations[locationParentId].PreviouslySeenXp = newLocationXp
     }
 
     if (!isDryRun) writeUserData(jwt.unique_name, gameVersion)
