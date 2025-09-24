@@ -90,7 +90,7 @@ export async function getLeaderboardEntries(
             `${host}/leaderboards/contracts/${contractId}/${gameVersion}/${platform}/${difficulty}/entries`,
             {
                 params: {
-                    page,
+                    page: page + 1, // game paginates base-0, server paginates base-1
                 },
                 headers: {
                     "Peacock-Version": PEACOCKVERSTRING,
@@ -98,6 +98,11 @@ export async function getLeaderboardEntries(
             },
         )
     ).data
+
+    if (entries.length === 100) {
+        // educated guess since the API currently doesn't actually tell us
+        response.HasMore = true
+    }
 
     const ids: readonly string[] = entries.map((te) =>
         fakePlayerRegistry.index(
