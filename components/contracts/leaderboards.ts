@@ -78,7 +78,7 @@ export async function getLeaderboardEntries(
     const response: GameFacingLeaderboardData = {
         Entries: [],
         Contract: contract,
-        Page: 0,
+        Page: page,
         HasMore: false,
         LeaderboardType: "singleplayer",
     }
