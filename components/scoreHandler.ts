@@ -151,7 +151,7 @@ export function calculateScore(
             condition:
                 gameVersion === "h1" ||
                 contractData.Metadata.Id ===
-                    "2d1bada4-aa46-4954-8cf5-684989f1668a" ||
+                "2d1bada4-aa46-4954-8cf5-684989f1668a" ||
                 isTrueForEveryElement(
                     contractSession.objectives.values(),
                     (obj: MissionManifestObjective) =>
@@ -163,7 +163,7 @@ export function calculateScore(
                                 contractSession.completedObjectives,
                             )) ||
                         "Success" ===
-                            contractSession.objectiveStates.get(obj.Id),
+                        contractSession.objectiveStates.get(obj.Id),
                 ),
             fractionNumerator: 2,
             fractionDenominator: 3,
@@ -189,10 +189,10 @@ export function calculateScore(
                 gameVersion === "h1" && noticedKillsAreVanilla
                     ? contractSession.lastKill.legacyIsUnnoticed
                     : [...contractSession.killsNoticedBy].every(
-                          (witness) =>
-                              contractSession.targetKills.has(witness) ||
-                              contractSession.npcKills.has(witness),
-                      ),
+                        (witness) =>
+                            contractSession.targetKills.has(witness) ||
+                            contractSession.npcKills.has(witness),
+                    ),
         },
         {
             headline: "UI_SCORING_SUMMARY_NO_BODIES_FOUND",
@@ -315,7 +315,7 @@ export function calculateScore(
         const bonusMultiplier =
             prevmultiplier! -
             ((prevmultiplier! - multiplier) * (timeTotal - prevsecs!)) /
-                (secs - prevsecs!)
+            (secs - prevsecs!)
 
         timebonus = totalScore * bonusMultiplier
         break
@@ -428,7 +428,7 @@ export function calculateSniperScore(
         timeBonus =
             prevscore -
             ((prevscore - score) * (bonusTimeTotal - prevsecs)) /
-                (secs - prevsecs)
+            (secs - prevsecs)
         break
     }
 
@@ -448,7 +448,7 @@ export function calculateSniperScore(
     // @ts-expect-error it's a number
     const challengeMultiplier = contractSession.scoring?.Settings["challenges"][
         "Unlockables"
-    ].reduce((acc, unlockable) => {
+        ].reduce((acc, unlockable) => {
         const item = inventory.find((item) => item.Unlockable.Id === unlockable)
 
         if (item) {
@@ -472,7 +472,7 @@ export function calculateSniperScore(
     const silentAssassin =
         contractSession.challengeContexts?.[
             "029c4971-0ddd-47ab-a568-17b007eec04e"
-        ].state !== "Failure"
+            ].state !== "Failure"
     const saBonus = silentAssassin
         ? contractSession.scoring?.Settings["silentassassin"]["score"]
         : 0
@@ -558,14 +558,12 @@ async function commitLeaderboardScore(
     sniperChallengeScore: undefined | CalculateSniperScoreResult,
 ): Promise<void> {
     try {
+        const host = getFlag("leaderboardsHost") as string
+
         // update leaderboards
         await axios.post(
-            `${getFlag("leaderboardsHost")}/leaderboards/commit`,
+            `${host}/leaderboards/contracts/${sessionDetails.contractId}/${sessionDetails.gameVersion}/${jwt["platform"]}/${difficultyToString(sessionDetails.difficulty)}`,
             {
-                contractId: sessionDetails.contractId,
-                gameDifficulty: difficultyToString(sessionDetails.difficulty),
-                gameVersion: sessionDetails.gameVersion,
-                platform: jwt.platform,
                 username: userData.Gamertag,
                 platformId:
                     jwt.platform === "epic"
@@ -574,7 +572,6 @@ async function commitLeaderboardScore(
                 score: calculateScoreResult.scoreWithBonus,
                 data: {
                     Score: {
-                        Total: calculateScoreResult.scoreWithBonus,
                         AchievedMasteries:
                             result.ScoreOverview.ContractScore
                                 ?.AchievedMasteries,
@@ -592,14 +589,10 @@ async function commitLeaderboardScore(
                     },
                     GroupIndex: 0,
                     SniperChallengeScore: sniperChallengeScore,
-                    PlayStyle: result.ScoreOverview.PlayStyle || null,
+                    PlayStyle: result.ScoreOverview.PlayStyle?.Name,
                     Description: "UI_MENU_SCORE_CONTRACT_COMPLETED",
                     ContractSessionId: sessionDetails.Id,
-                    Percentile: {
-                        Spread: Array(10).fill(0),
-                        Index: 0,
-                    },
-                    peacockHeadlines:
+                    Headlines:
                         result.ScoreOverview.ScoreDetails.Headlines,
                 },
             },
