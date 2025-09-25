@@ -35,6 +35,7 @@ import { writeFileSync } from "fs"
 import { getFlag } from "./flags"
 import { getConfig, getVersionedConfig } from "./configSwizzleManager"
 import { compare } from "semver"
+import assert from "assert"
 
 /**
  * True if the server is being run by the launcher, false otherwise.
@@ -840,4 +841,17 @@ export function extractResourcesVersion(
             _Revision: 0,
         }
     }
+}
+
+export function parsePageNumber(page: unknown): number {
+    page ||= 0
+
+    if (typeof page === "string") {
+        page = parseInt(page, 10)
+    }
+
+    assert.equal(typeof page, "number")
+
+    page = Math.max(page as number, 0)
+    return page as number
 }

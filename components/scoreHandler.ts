@@ -558,14 +558,12 @@ async function commitLeaderboardScore(
     sniperChallengeScore: undefined | CalculateSniperScoreResult,
 ): Promise<void> {
     try {
+        const host = getFlag("leaderboardsHost") as string
+
         // update leaderboards
         await axios.post(
-            `${getFlag("leaderboardsHost")}/leaderboards/commit`,
+            `${host}/leaderboards/contracts/${sessionDetails.contractId}/${sessionDetails.gameVersion}/${jwt["platform"]}/${difficultyToString(sessionDetails.difficulty)}`,
             {
-                contractId: sessionDetails.contractId,
-                gameDifficulty: difficultyToString(sessionDetails.difficulty),
-                gameVersion: sessionDetails.gameVersion,
-                platform: jwt.platform,
                 username: userData.Gamertag,
                 platformId:
                     jwt.platform === "epic"
@@ -574,7 +572,6 @@ async function commitLeaderboardScore(
                 score: calculateScoreResult.scoreWithBonus,
                 data: {
                     Score: {
-                        Total: calculateScoreResult.scoreWithBonus,
                         AchievedMasteries:
                             result.ScoreOverview.ContractScore
                                 ?.AchievedMasteries,
@@ -592,15 +589,10 @@ async function commitLeaderboardScore(
                     },
                     GroupIndex: 0,
                     SniperChallengeScore: sniperChallengeScore,
-                    PlayStyle: result.ScoreOverview.PlayStyle || null,
+                    PlayStyle: result.ScoreOverview.PlayStyle?.Name,
                     Description: "UI_MENU_SCORE_CONTRACT_COMPLETED",
                     ContractSessionId: sessionDetails.Id,
-                    Percentile: {
-                        Spread: Array(10).fill(0),
-                        Index: 0,
-                    },
-                    peacockHeadlines:
-                        result.ScoreOverview.ScoreDetails.Headlines,
+                    Headlines: result.ScoreOverview.ScoreDetails.Headlines,
                 },
             },
             {
