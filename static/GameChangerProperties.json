@@ -5153,6 +5153,87 @@
         "ShowBasedOnObjectives": null,
         "IsPrestigeObjective": null
     },
+    "7de74fc2-5b8c-4b5f-a151-4f14db638908": {
+        "Name": "UI_CONTRACT_BAIJU_GAMECHANGER_CLEAN_HANDS_NAME",
+        "Description": "UI_CONTRACT_BAIJU_GAMECHANGER_CLEAN_HANDS_DESC",
+        "Icon": "images/challenges/default_challenge_icon.png",
+        "IsHidden": null,
+        "TileImage": "images/contracts/gamechangers/Gamechanger_Global_CleanHands.jpg",
+        "Resource": [
+            "assembly:/_PRO/scenes/missions/Bangkok/baiju_clean_hands.brick"
+        ],
+        "Objectives": [
+            {
+                "Id": "82603825-3f08-4708-80aa-ca9c78e3509b",
+                "BriefingText": "$loc UI_CONTRACT_BAIJU_GAMECHANGER_CLEAN_HANDS_OBJ",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_BAIJU_GAMECHANGER_CLEAN_HANDS_OBJ",
+                    "iconType": 9
+                },
+                "ExcludeFromScoring": true,
+                "Category": "primary",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "Kill": {
+                                "Condition": {
+                                    "$not": {
+                                        "$eq": ["$Value.KillContext", 1]
+                                    }
+                                },
+                                "Transition": "Failure"
+                            },
+                            "Baiju_ResetCleanHands": {
+                                "Transition": "Success"
+                            }
+                        }
+                    }
+                },
+                "OnActive": {
+                    "IfCompleted": {
+                        "Visible": false
+                    }
+                }
+            },
+            {
+                "_comment": "----- Hack to get the objective to show after neutralize assassins -----",
+                "Id": "01e957ba-3441-43d2-acc3-3b9d099853ee",
+                "BriefingText": "$loc UI_CONTRACT_BAIJU_GAMECHANGER_CLEAN_HANDS_OBJ",
+                "HUDTemplate": {
+                    "display": "$loc UI_CONTRACT_BAIJU_GAMECHANGER_CLEAN_HANDS_OBJ",
+                    "iconType": 9
+                },
+                "Activation": {
+                    "$eq": [
+                        "$82603825-3f08-4708-80aa-ca9c78e3509b",
+                        "Completed"
+                    ]
+                },
+                "ExcludeFromScoring": true,
+                "Category": "primary",
+                "Type": "statemachine",
+                "Definition": {
+                    "Scope": "session",
+                    "States": {
+                        "Start": {
+                            "Kill": {
+                                "Condition": {
+                                    "$not": {
+                                        "$eq": ["$Value.KillContext", 1]
+                                    }
+                                },
+                                "Transition": "Failure"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "ShowBasedOnObjectives": null,
+        "IsPrestigeObjective": null
+    },
     "aec224db-e0ea-4718-bf27-f9fd26aa3ab5": {
         "Name": "UI_GAMECHANGERS_COLORADO_LAPTOP_FARMHOUSE_NAME",
         "Description": "UI_GAMECHANGERS_COLORADO_LAPTOP_ROSE_OFFICE_DESC",
