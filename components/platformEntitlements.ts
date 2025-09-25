@@ -91,6 +91,8 @@ export const H3_EPIC_ENTITLEMENTS = [
     "70a9afcc8de84b6ab0f2b45b2018559b",
     // FRENCHMARTINI:
     "256eeeb3d8044aa1840e1606d268e0b2",
+    // BAIJU:
+    "04cb1b3e5b424308be25236f6bc1b2fb",
 ]
 
 export const H2_STEAM_ENTITLEMENTS = [
