@@ -596,6 +596,7 @@ export const missionsInLocation = {
                 "cab4293f-e359-419d-aa6f-83d91a158cf5",
             ],
             LOCATION_NORTHSEA: [
+                "831a29a1-bf78-4527-95e8-d2f2437aff97",
                 "b9f55fc3-c53f-4661-a4b6-9956303422aa",
                 "6de90688-ad4c-457e-ae25-c4bbc8f55196",
                 "07bc9bbf-7cba-4cdf-92bb-3ab57f09b1cc",
