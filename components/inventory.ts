@@ -19,6 +19,7 @@
 import { getConfig, getVersionedConfig } from "./configSwizzleManager"
 import type { GameVersion, Unlockable, UserProfile } from "./types/types"
 import {
+    BAIJU_UNLOCKABLES,
     brokenItems,
     CONCRETEART_UNLOCKABLES,
     DELUXE_UNLOCKABLES,
@@ -436,6 +437,13 @@ function filterAllowedContent(gameVersion: GameVersion, entP: string[]) {
             return (
                 e.includes("256eeeb3d8044aa1840e1606d268e0b2") ||
                 e.includes("3711140")
+            )
+        }
+
+        if (BAIJU_UNLOCKABLES.includes(id)) {
+            return (
+                e.includes("04cb1b3e5b424308be25236f6bc1b2fb") ||
+                e.includes("3957470")
             )
         }
 
