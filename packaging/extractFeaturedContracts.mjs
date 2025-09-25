@@ -70,7 +70,7 @@ async function extract(jwt, gameVersion) {
             "User-Agent": "G2 Http/1.0 (Windows NT 10.0; DX12/1; d3d12/1)",
             "Content-Type": "application/json",
             Accept: "application/json, text/*, image/*, application/json",
-            Version: gameVersion === "h1" ? "6.74.0" : "8.20.0",
+            Version: gameVersion === "h1" ? "6.74.0" : "8.21.0",
             Authorization: `bearer ${jwt}`,
         },
     })
