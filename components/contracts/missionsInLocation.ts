@@ -583,6 +583,7 @@ export const missionsInLocation = {
                 "8db8fa33-cb41-4a0d-a2de-e30d884afb95",
                 "9e469023-e0c4-42bf-8527-f9fcaf624421",
             ],
+            LOCATION_BANGKOK: ["80582fdb-c77e-4d6a-b33f-1f14f34b72c4"],
             LOCATION_COLORADO: [
                 "ff5b4e53-49ea-4d85-b94e-d3c8b3fc7ab3",
                 "b4d555eb-e2c9-40c2-b155-328a7019fd28",
